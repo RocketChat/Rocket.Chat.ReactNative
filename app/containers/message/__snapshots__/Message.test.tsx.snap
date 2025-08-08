@@ -4791,7 +4791,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -5884,7 +5883,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -48120,9 +48118,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -70158,7 +70154,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -70557,7 +70552,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -71133,7 +71127,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -71532,7 +71525,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -87233,9 +87225,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -87679,9 +87669,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
           <View
             style={
@@ -87973,9 +87961,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -88247,9 +88233,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -88534,9 +88518,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -88808,9 +88790,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -89095,9 +89075,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -89541,9 +89519,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                   "gap": 4,
                 }
               }
-            >
-              <View />
-            </View>
+            />
           </View>
           <View
             style={
@@ -91258,7 +91234,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -91835,7 +91810,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -92240,7 +92214,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -92590,7 +92563,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -93732,7 +93704,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -94309,7 +94280,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -94714,7 +94684,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -95064,7 +95033,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -95617,7 +95585,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -95934,7 +95901,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -96686,7 +96652,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -97003,7 +96968,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -97530,7 +97494,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -99035,7 +98998,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -99570,7 +99532,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -100073,7 +100034,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -100608,7 +100568,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -101143,7 +101102,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -101638,7 +101596,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -102398,7 +102355,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {
@@ -102893,7 +102849,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                 }
               }
             >
-              <View />
               <View
                 style={
                   {

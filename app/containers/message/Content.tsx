@@ -51,7 +51,7 @@ const Content = React.memo(
 			);
 		} else if (isPreview) {
 			content = <MarkdownPreview msg={props.msg} />;
-		} else {
+		} else if (props.msg) {
 			content = (
 				<Markdown
 					msg={props.msg}
@@ -74,7 +74,7 @@ const Content = React.memo(
 			content = <Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Message_Ignored')}</Text>;
 		}
 
-		return <View style={props.isTemp && styles.temp}>{content}</View>;
+		return content ? <View style={props.isTemp && styles.temp}>{content}</View> : null;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.isTemp !== nextProps.isTemp) {
