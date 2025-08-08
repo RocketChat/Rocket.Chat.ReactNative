@@ -50,12 +50,12 @@ jobs:
         with:
           path: |
             android/.gradle
-            android/app/build/intermediates
-            android/app/build/generated
+            android/app/build
             android/build
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: android-build-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/**/gradle-wrapper.properties') }}
+            ~/.android/build-cache
+          key: android-build-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/gradle.properties', 'android/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             android-build-${{ runner.os }}-
 

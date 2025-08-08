@@ -42,13 +42,17 @@ jobs:
           ruby-version: 2.7.7
           bundler-cache: true
 
-      - name: Cache CocoaPods
+      - name: Cache CocoaPods and derived data
         uses: actions/cache@v4
         with:
-          path: ios/Pods
-          key: pods-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock') }}
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods/repos
+            ~/Library/Developer/Xcode/DerivedData
+          key: ios-cache-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', 'ios/Podfile') }}
           restore-keys: |
-            pods-${{ runner.os }}-
+            ios-cache-${{ runner.os }}-
 
       - name: Cache Xcode DerivedData
         uses: actions/cache@v4
@@ -75,7 +79,10 @@ jobs:
       - name: Build iOS app
         run: |
           cd ios
-          bundle exec fastlane ios build_experimental_simulator
+          bundle exec fastlane ios build_experimental_simulator \
+            disable_xcpretty:false \
+            skip_package_ipa:true \
+            skip_archive:true
         env:
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
