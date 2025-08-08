@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
+import { TextInput, StyleSheet, TextInputProps, InteractionManager, View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
@@ -346,6 +346,10 @@ export const ComposerInput = memo(
 			dispatch(userTyping(rid, isTyping));
 		};
 
+		if (!placeholder) {
+			return <View style={styles.emptyPlaceholder} />;
+		}
+
 		return (
 			<TextInput
 				style={[styles.textInput, { color: colors.fontDefault }]}
@@ -382,5 +386,8 @@ const styles = StyleSheet.create({
 		textAlignVertical: 'center',
 		...sharedStyles.textRegular,
 		lineHeight: 22
+	},
+	emptyPlaceholder: {
+		flex: 1
 	}
 });
