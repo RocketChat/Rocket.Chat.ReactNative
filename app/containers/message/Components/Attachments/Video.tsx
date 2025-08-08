@@ -109,12 +109,12 @@ const Video = ({
 	};
 
 	return (
-		<>
+		<View style={{ gap: 4 }}>
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} />
 			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
 			</Touchable>
-		</>
+		</View>
 	);
 };
 
