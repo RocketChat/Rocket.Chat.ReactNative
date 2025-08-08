@@ -34,6 +34,11 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
+      - name: Fetch supported versions from Cloud
+        uses: ./.github/actions/fetch-supported-versions
+        with:
+          build_name: 'android-official'
+
       - name: Generate Version Code
         id: version
         uses: ./.github/actions/generate-version-code
@@ -61,6 +66,8 @@ jobs:
     if: ${{ inputs.trigger == 'pr' }}
     environment: upload_official_android
     needs: [build-android]
+    outputs:
+      VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}
     steps:
       - run: echo "Waiting for manual approval..."
 
@@ -80,7 +87,7 @@ jobs:
           trigger: ${{ inputs.trigger }}
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}
+          VERSIONCODE: ${{ needs.upload-hold.outputs.VERSIONCODE }}
         
   upload-internal:
     name: Internal Sharing

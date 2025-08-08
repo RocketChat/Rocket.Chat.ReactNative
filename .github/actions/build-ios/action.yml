@@ -34,10 +34,22 @@ inputs:
   BUGSNAG_KEY_OFFICIAL:
     description: 'Bugsnag API Key Official'
     required: true
+  GOOGLE_SERVICES_IOS:
+    description: 'Google service file for official version'
+    required: true
+  GOOGLE_SERVICES_IOS_EXPERIMENTAL:
+    description: 'Google service file for experimental version'
+    required: true
 
 runs:
   using: "composite"
   steps:
+    - name: Remove simulator and its cache
+      run : |
+        xcrun simctl delete all
+        sudo rm -rf ~/Library/Developer/CoreSimulator/Caches/*
+      shell: bash
+
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
@@ -86,6 +98,18 @@ runs:
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
+        fi
+      shell: bash
+
+    - name: Set Google Services
+      working-directory: ios
+      run: |
+        if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+          if [[ ${{ inputs.type }}  == "official" ]]; then
+            echo ${{ inputs.GOOGLE_SERVICES_IOS }} | base64 --decode > GoogleService-Info.plist
+          else 
+            echo ${{ inputs.GOOGLE_SERVICES_IOS_EXPERIMENTAL }} | base64 --decode > GoogleService-Info.plist
+          fi
         fi
       shell: bash
 
