@@ -50,11 +50,6 @@ runs:
         ruby-version: 2.7.7
         bundler-cache: true
 
-    - name: Cat Supported Versions
-      run: |
-        cat app-supportedversions.json
-      shell: bash
-
     - name: Install Fastlane
       working-directory: android
       run: |
