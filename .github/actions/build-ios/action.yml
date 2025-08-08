@@ -1,4 +1,4 @@
-name: 'Build iOS' 
+name: 'Build iOS'
 description: 'Build iOS app'
 inputs:
   type:
