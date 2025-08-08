@@ -40,6 +40,11 @@ jobs:
           arch: x86_64
           target: google_apis
           profile: pixel_7_pro
+          cores: 2
+          ram-size: 2048M
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
           script: |
             mkdir recording
             adb install app-experimental-release.apk
