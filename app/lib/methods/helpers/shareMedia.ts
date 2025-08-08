@@ -1,5 +1,4 @@
 import * as Sharing from 'expo-sharing';
-import { IShareAttachment } from '../../../definitions';
 
 export const shareMedia = async ({ url }: { url: string }): Promise<{ success: boolean; error?: string }> => {
 	try {
