@@ -19,7 +19,6 @@ on:
         required: true
       FASTLANE_REPO_PAT:
         required: true
-  
 
 jobs:
   ios-build:
@@ -72,6 +71,16 @@ jobs:
           cd ios
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
+
+      - name: Prebuild Pods
+        run: |
+          cd ios
+          xcodebuild -workspace RocketChatRN.xcworkspace \
+            -scheme "Rocket.Chat Experimental" \
+            -sdk iphonesimulator \
+            -configuration Release \
+            -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max' \
+            build -quiet
 
       - name: Build iOS app
         run: |

@@ -34,7 +34,10 @@ jobs:
 
       - name: Boot Simulator
         run: |
-          xcrun simctl boot "iPhone 16 Pro Max"
+          xcrun simctl shutdown all
+          xcrun simctl erase all
+          xcrun simctl boot "iPhone 16 Pro Max" --headless
+          xcrun simctl bootstatus "iPhone 16 Pro Max" -b
           xcrun simctl list devices | grep Booted
 
       - name: Get Simulator UDID 
