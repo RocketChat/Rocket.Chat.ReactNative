@@ -36,7 +36,7 @@ jobs:
         run: |
           xcrun simctl shutdown all
           xcrun simctl erase all
-          xcrun simctl boot "iPhone 16" --headless
+          xcrun simctl boot "iPhone 16"
           xcrun simctl bootstatus "iPhone 16" -b
           xcrun simctl list devices | grep Booted
 
