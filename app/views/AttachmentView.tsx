@@ -206,47 +206,47 @@ const AttachmentView = (): React.ReactElement => {
 	};
 
 	const handleShare = async () => {
-        try {
-            const { title_link, image_url, image_type, video_url, video_type } = attachment;
-            const url = video_url || title_link || image_url;
+		try {
+			const { title_link, image_url, image_type, video_url, video_type } = attachment;
+			const url = video_url || title_link || image_url;
 
-            if (!url) {
-                return;
-            }
+			if (!url) {
+				return;
+			}
 
-            if (isAndroid) {
-                const rationale = {
-                    title: I18n.t('Write_External_Permission'),
-                    message: I18n.t('Write_External_Permission_Message'),
-                    buttonPositive: 'Ok'
-                };
-                const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
-                if (!(result || result === PermissionsAndroid.RESULTS.GRANTED)) {
-                    return;
-                }
-            }
-    
-            setLoading(true);
+			if (isAndroid) {
+				const rationale = {
+					title: I18n.t('Write_External_Permission'),
+					message: I18n.t('Write_External_Permission_Message'),
+					buttonPositive: 'Ok'
+				};
+				const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
+				if (!(result || result === PermissionsAndroid.RESULTS.GRANTED)) {
+					return;
+				}
+			}
 
-            if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
-                await shareMedia({ url });
+			setLoading(true);
 
-                EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
-            } else {
-                const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
-                let filename = '';
-                if (image_url) {
-                    filename = getFilename({ title: attachment.title, type: 'image', mimeType: image_type, url });
-                } else {
-                    filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
-                }
-                const file = await fileDownload(mediaAttachment, {}, filename);
-                await shareMedia({ url: file });
-                FileSystem.deleteAsync(file, { idempotent: true });
+			if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
+				await shareMedia({ url });
 
-                EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
-            }
-        } catch (e) {
+				EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+			} else {
+				const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
+				let filename = '';
+				if (image_url) {
+					filename = getFilename({ title: attachment.title, type: 'image', mimeType: image_type, url });
+				} else {
+					filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
+				}
+				const file = await fileDownload(mediaAttachment, {}, filename);
+				await shareMedia({ url: file });
+				FileSystem.deleteAsync(file, { idempotent: true });
+
+				EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+			}
+		} catch (e) {
 			EventEmitter.emit(LISTENER, { message: I18n.t('Error-sharing-file') });
 		} finally {
 			setLoading(false);
