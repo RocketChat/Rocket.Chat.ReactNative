@@ -72,16 +72,6 @@ jobs:
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
 
-      - name: Prebuild Pods
-        run: |
-          cd ios
-          xcodebuild -workspace RocketChatRN.xcworkspace \
-            -scheme "RocketChatRN" \
-            -sdk iphonesimulator \
-            -configuration Release \
-            -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max' \
-            build -quiet
-
       - name: Build iOS app
         run: |
           cd ios
