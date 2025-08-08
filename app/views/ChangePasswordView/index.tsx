@@ -4,7 +4,6 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
@@ -57,15 +56,17 @@ const validationSchema = yup.object().shape({
 	confirmNewPassword: yup.string().min(1).required()
 });
 
+const isFromRoute = (navigation: NativeStackNavigationProp<ProfileStackParamList, 'ChangePasswordView'>, routeName: string) =>
+	navigation.getState()?.routes?.[0]?.name === routeName;
+
 interface IChangePasswordViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ChangePasswordView'>;
-	route: RouteProp<ProfileStackParamList, 'ChangePasswordView'>;
 }
 
-const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => {
-	const { fromProfileView } = route.params;
+const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
+	const fromProfileView = isFromRoute(navigation, 'ProfileView');
 
 	const { Accounts_AllowPasswordChange, Accounts_RequirePasswordConfirmation, serverURL, user } = useAppSelector(state => ({
 		Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
@@ -150,7 +151,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
 					setTwoFactorCode(code as any);
-					return onSetNewPassword();
+					return handleSetNewPassword();
 				} catch {
 					// cancelled twoFactor modal
 				}
@@ -159,11 +160,9 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 			if (e?.error === 'totp-invalid' && e?.details.method === TwoFactorMethods.PASSWORD) {
 				setError('currentPassword', { message: I18n.t('error-invalid-password'), type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(I18n.t('error-invalid-password'));
-				logEvent(events.PROFILE_SAVE_CHANGES_F);
 				return;
 			}
 
-			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			setValue('currentPassword', '');
 			setTwoFactorCode(null);
 			handleError(e, 'saving_profile');
@@ -172,7 +171,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 		}
 	};
 
-	const onSetNewPassword = async () => {
+	const handleSetNewPassword = async () => {
 		if (fromProfileView) {
 			await changePasswordFromProfileView();
 		} else {
@@ -261,7 +260,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 							disabled={!isPasswordValid}
 							title={I18n.t('Set_new_password')}
 							type='primary'
-							onPress={onSetNewPassword}
+							onPress={handleSetNewPassword}
 							testID='change-password-view-set-new-password-button'
 						/>
 					</View>

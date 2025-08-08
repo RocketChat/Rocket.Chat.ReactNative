@@ -147,7 +147,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	};
 
 	const navigateToChangePasswordView = () => {
-		navigation.navigate('ChangePasswordView', { fromProfileView: true });
+		navigation.navigate('ChangePasswordView');
 	};
 
 	const deleteOwnAccount = () => {

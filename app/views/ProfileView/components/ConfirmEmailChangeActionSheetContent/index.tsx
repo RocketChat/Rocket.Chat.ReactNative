@@ -14,14 +14,14 @@ const styles = StyleSheet.create({
 	subtitleText: {
 		...sharedStyles.textRegular,
 		fontSize: 16,
-		lineHeight: 24
+		lineHeight: 24,
+		paddingBottom: 8
 	},
-	buttonSeparator: {
-		marginRight: 12
-	},
+	button: { flex: 1 },
 	footerButtonsContainer: {
 		flexDirection: 'row',
-		paddingTop: 16
+		paddingTop: 16,
+		gap: 12
 	},
 	titleContainerText: {
 		...sharedStyles.textBold,
@@ -53,17 +53,14 @@ const FooterButtons = ({
 	return (
 		<View style={styles.footerButtonsContainer}>
 			<Button
-				style={[
-					styles.buttonSeparator,
-					{ flex: 1, backgroundColor: cancelBackgroundColor || colors.buttonBackgroundSecondaryDefault }
-				]}
+				style={[styles.button, { backgroundColor: cancelBackgroundColor || colors.buttonBackgroundSecondaryDefault }]}
 				title={cancelTitle}
 				color={colors.buttonFontSecondary}
 				onPress={cancelAction}
 				testID='profile-view-enter-password-sheet-cancel'
 			/>
 			<Button
-				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.buttonBackgroundDangerDefault }}
+				style={[styles.button, { backgroundColor: confirmBackgroundColor || colors.buttonBackgroundDangerDefault }]}
 				title={confirmTitle}
 				onPress={confirmAction}
 				disabled={disabled}

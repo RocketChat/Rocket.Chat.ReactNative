@@ -20,7 +20,7 @@ export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) 
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
-	const onChangePasswordPress = () => {
+	const handleChangePassword = () => {
 		navigation.navigate('ProfileStackNavigator', { screen: 'ChangePasswordView', params: { fromProfileView: false } });
 	};
 
@@ -35,7 +35,7 @@ export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) 
 				testID='change-password-required-button'
 				title={I18n.t('Change_password')}
 				type='primary'
-				onPress={onChangePasswordPress}
+				onPress={handleChangePassword}
 			/>
 			<Button
 				testID='change-password-required-logout'
