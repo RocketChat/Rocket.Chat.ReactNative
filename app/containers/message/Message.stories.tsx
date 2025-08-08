@@ -1776,10 +1776,6 @@ export const Ignored = () => <Message isIgnored />;
 
 export const IgnoredLargeFont = () => <MessageLargeFont isIgnored />;
 
-export const CustomStyle = () => <Message msg='Message' style={[{ backgroundColor: '#ddd' }]} />;
-
-export const CustomStyleLargeFont = () => <MessageLargeFont msg='Message' style={[{ backgroundColor: '#ddd' }]} />;
-
 export const ShowButtonAsAttachment = () => (
 	<>
 		<Message
