@@ -232,7 +232,7 @@ const Reply = React.memo(
 		}
 
 		return (
-			<View style={{ gap: 0 }}>
+			<View style={{ gap: 4 }}>
 				<Touchable
 					testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 					onPress={onPress}

@@ -995,6 +995,13 @@ export const MessageWithReply = () => (
 					ts: date,
 					timeFormat: 'LT',
 					text: 'How are you? :nyan_rocket:'
+				},
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: 'How are you? :nyan_rocket:',
+					description: 'Reply attachment can have a description'
 				}
 			]}
 		/>
