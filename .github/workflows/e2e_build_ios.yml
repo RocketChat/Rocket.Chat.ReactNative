@@ -76,7 +76,7 @@ jobs:
         run: |
           cd ios
           xcodebuild -workspace RocketChatRN.xcworkspace \
-            -scheme "Rocket.Chat Experimental" \
+            -scheme "RocketChatRN" \
             -sdk iphonesimulator \
             -configuration Release \
             -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max' \
