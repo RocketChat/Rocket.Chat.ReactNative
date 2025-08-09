@@ -1,0 +1,31 @@
+appId: chat.rocket.reactnative
+name: "Message Composer"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../../setup.js"
+---
+- launchApp:
+    label: "Launch app"
+- tapOn:
+    text: "detox-public"
+    label: "Open channel"
+- tapOn:
+    id: "message-composer-actions"
+    label: "Open message composer actions"
+- tapOn:
+    text: "Choose from library"
+    index: 1
+    label: "Select 'Choose from library' option"
+- tapOn:
+    id: "com.google.android.providers.media.module:id/icon_check"
+    index: 1
+    label: "Select the second image from the library"
+- tapOn:
+    id: "com.google.android.providers.media.module:id/button_add"
+    label: "Press add button"
+- tapOn:
+    id: "message-composer-send"
+    label: "Send the image"
+- assertVisible:
+    id: "upload-progress-item"
+    label: "upload progress indicator is visible"
