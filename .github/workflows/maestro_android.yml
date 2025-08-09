@@ -40,15 +40,18 @@ jobs:
           arch: x86_64
           target: google_apis
           profile: pixel_7_pro
-          cores: 2
-          ram-size: 2048M
+          cores: 4
+          ram-size: 4096M
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
             mkdir recording
             adb install app-experimental-release.apk
-            maestro test .maestro --format junit --output maestro-report.xml
+            adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
+            sleep 10
+            adb shell am force-stop chat.rocket.reactnative
+            maestro test .maestro --format junit --output maestro-report.xml --recording-path recording
 
       - name: Upload Recordings
         if: always()
