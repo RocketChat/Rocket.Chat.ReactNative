@@ -35,6 +35,8 @@ jobs:
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
           defaults write com.apple.iphonesimulator ShowSingleTouches 1
           defaults write com.apple.iphonesimulator SlowAnimations -bool false
+          defaults write com.apple.iphonesimulator ShowDeviceBezels -bool false
+          defaults write com.apple.iphonesimulator DisableShadows -bool true
 
       - name: Boot Simulator
         run: |
