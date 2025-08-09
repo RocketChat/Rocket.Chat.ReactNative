@@ -11,15 +11,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-    #   - name: Download APK
-    #     uses: actions/download-artifact@v4
-    #     with:
-    #       name: Android Experimental APK
-
-      - name: Download apk using curl
-        run: |
-          curl -L -o "Android_Experimental_APK.zip" "https://productionresultssa4.blob.core.windows.net/actions-results/e39f9a9b-f7a1-41c4-8ee1-ca6a6d0ab007/workflow-job-run-b8ae348d-46ae-595e-8a05-4c301d709ec8/artifacts/73656cb3c9d46138832e413075cef94865bb0b1e8a5d1b419867e97c9bbf5797.zip?rscd=attachment%3B+filename%3D%22Android+Experimental+APK.zip%22&se=2025-08-09T13%3A22%3A16Z&sig=VGALuptqCxk4GPRMo%2F2witKDCSHOZ1BJepqczUkzosE%3D&ske=2025-08-09T23%3A05%3A40Z&skoid=ca7593d4-ee42-46cd-af88-8b886a2f84eb&sks=b&skt=2025-08-09T11%3A05%3A40Z&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skv=2025-05-05&sp=r&spr=https&sr=b&st=2025-08-09T13%3A12%3A11Z&sv=2025-05-05"
-          unzip Android_Experimental_APK.zip
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: Android Experimental APK
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
@@ -54,7 +49,7 @@ jobs:
             echo "RAM and Disk BEFORE tests:"
             free -h
             df -h
-            
+
             mkdir recording
             adb install app-experimental-release.apk
             adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
