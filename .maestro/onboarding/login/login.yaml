@@ -13,6 +13,7 @@ onFlowComplete:
 - tapOn:
     id: 'login-view-email'
 - inputText: ${output.user.email}
+- hideKeyboard
 - tapOn:
     id: 'login-view-password'
 - inputText: ${output.user.password}
