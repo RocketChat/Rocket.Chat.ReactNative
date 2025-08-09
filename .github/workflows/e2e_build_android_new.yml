@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      artifact_name: Android Experimental APK
+      artifact_name: android-apk-${{ steps.hash.outputs.android_hash }}-${{ steps.hash.outputs.yarn_hash }}
 
     steps:
       - name: Checkout Repository 
@@ -74,11 +74,63 @@ jobs:
           echo "KEY_ALIAS=${{ secrets.EXPERIMENTAL_KEY_ALIAS }}" >> android/gradle.properties
           echo "KEY_PASSWORD=${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}" >> android/gradle.properties
           echo "BugsnagAPIKey=${{ secrets.BUGSNAG_KEY }}" >> android/gradle.properties
+
+      - name: Compute hashes
+        id: hash
+        run: |
+          ANDROID_HASH=$(find android -type f \( -name "*.gradle*" -o -name "gradle.properties" -o -name "gradle-wrapper.properties" \) -exec shasum -a 256 {} + | shasum -a 256 | awk '{print $1}')
+          YARN_HASH=$(shasum -a 256 yarn.lock | awk '{print $1}')
+          echo "android_hash=$ANDROID_HASH" >> $GITHUB_OUTPUT
+          echo "yarn_hash=$YARN_HASH" >> $GITHUB_OUTPUT
+        
+      - name: Download APK artifact if exists
+        id: download-apk
+        uses: actions/download-artifact@v4
+        with:
+          name: android-apk-${{ env.ANDROID_HASH }}-${{ env.YARN_HASH }}
+        continue-on-error: true
+
+      - name: Check if APK exists
+        id: apk-check
+        run: |
+          if [ -f android/app/build/outputs/apk/experimental/release/app-experimental-release.apk ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
           
       - name: Build Android Release APK
+        if: steps.apk-check.outputs.exists == 'false'
         working-directory: android
         run: ./gradlew assembleExperimentalRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
 
+      - name: Bundle Android Assets
+        if: steps.apk-check.outputs.exists == 'true'
+        run: |
+          npx react-native bundle \    
+          --platform android \
+          --dev false \
+          --entry-file index.js \
+          --bundle-output android/app/src/main/assets/index.android.bundle \
+          --assets-dest android/app/src/main/res
+
+      - name: Update APK with new bundle and assets
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.EXPERIMENTAL_KEY_ALIAS }}
+        if: steps.apk-check.outputs.exists == 'true'
+        working-directory: android/app/build/outputs/apk/experimental/release
+        run: |
+          zip -u app-experimental-release.apk src/main/assets/index.android.bundle
+          zip -ur app-experimental-release.apk src/main/res/
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+            -keystore ../../../../app/release.keystore \
+            -storepass $KEYSTORE_PASSWORD \
+            -keypass $KEY_PASSWORD \
+            app-experimental-release.apk \
+            $KEY_ALIAS
+      
       - name: Save Gradle Cache
         if: always()
         uses: actions/cache/save@v4
@@ -90,10 +142,11 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
             ~/.android/build-cache
-          key: android-build-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/gradle.properties', 'android/gradle/wrapper/gradle-wrapper.properties') }}
+          key: android-build-${{ runner.os }}-${{ env.ANDROID_HASH }}-${{ env.YARN_HASH }}
 
-      - name: Upload APK
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Android Experimental APK
+          name: android-apk-${{ env.ANDROID_HASH }}-${{ env.YARN_HASH }}
           path: android/app/build/outputs/apk/experimental/release/app-experimental-release.apk
+        
