@@ -6,20 +6,19 @@ on:
 jobs:
   android-test:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      actions: read
-      contents: read
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Download APK
-        uses: actions/download-artifact@v5
-        with:
-          artifact-ids: 3725930035
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+    #   - name: Download APK
+    #     uses: actions/download-artifact@v4
+    #     with:
+    #       name: Android Experimental APK
+
+      - name: Download apk using curl
+        run: |
+          curl -L https://github.com/RocketChat/Rocket.Chat.ReactNative/actions/runs/16849428861/artifacts/3725930035 -o app-experimental-release.apk
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
