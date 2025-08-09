@@ -56,7 +56,6 @@ jobs:
             adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
             sleep 10
             adb shell am force-stop chat.rocket.reactnative
-            maestro record .maestro/onboarding/change_password.yaml
             maestro test .maestro --format junit --output maestro-report.xml
 
       - name: Upload Recordings
