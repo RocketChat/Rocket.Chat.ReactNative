@@ -6,6 +6,7 @@ import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
 import { Emoji } from './emoji';
 import { Bold, Italic, Link, Strike } from './inline/index';
+import { Timestamp } from './timestamp'; 
 import Plain from './Plain';
 import InlineCode from './InlineCode';
 import Image from './Image';
@@ -63,6 +64,8 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 						);
 					case 'EMOJI':
 						return <Emoji block={block} index={index} />;
+					case 'TIMESTAMP': 
+                        return <Timestamp block={block} index={index} />;
 					case 'MENTION_CHANNEL':
 						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':
