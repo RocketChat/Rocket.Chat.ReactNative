@@ -18,6 +18,7 @@ onFlowStart:
 - hideKeyboard
 - tapOn:
     id: login-view-submit
-- assertVisible:
-    id: rooms-list-view
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
     timeout: 60000
