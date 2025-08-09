@@ -30,14 +30,14 @@ jobs:
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
           mkdir recording
 
-      - name: Enable Software Keyboard
+      - name: Configure Simulator
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+          defaults write com.apple.iphonesimulator ShowSingleTouches 1
+          defaults write com.apple.iphonesimulator SlowAnimations -bool false
 
       - name: Boot Simulator
         run: |
-          xcrun simctl shutdown all
-          xcrun simctl erase all
           xcrun simctl boot "iPhone 16"
           xcrun simctl bootstatus "iPhone 16" -b
           xcrun simctl list devices | grep Booted
