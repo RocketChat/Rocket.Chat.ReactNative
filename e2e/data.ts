@@ -1,6 +1,6 @@
 // @ts-ignore
 // eslint-disable-next-line import/no-unresolved, import/extensions
-import account from '../.maestro/scripts/e2e_account';
+import account from './e2e_account';
 import random from './helpers/random';
 
 export interface IUser {
