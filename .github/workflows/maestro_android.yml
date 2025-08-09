@@ -2,10 +2,6 @@ name: Maestro Tests on Android
 
 on:
   workflow_call:
-    inputs:
-      artifact_name:
-        required: true
-        type: string
 
 jobs:
   android-test:
@@ -18,7 +14,7 @@ jobs:
       - name: Download APK
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.artifact_name }}
+          name: Android Experimental APK
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account

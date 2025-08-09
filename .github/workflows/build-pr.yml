@@ -79,8 +79,6 @@ jobs:
     uses: ./.github/workflows/maestro_android.yml
     needs: [e2e-build-android]
     secrets: inherit
-    with:
-      artifact_name: ${{ needs.e2e-build-android.outputs.artifact_name }}
     
   e2e-build-ios:
     name: E2E Build iOS
@@ -95,19 +93,3 @@ jobs:
     uses: ./.github/workflows/maestro_ios.yml
     needs: [e2e-build-ios]
     secrets: inherit
-
-  e2e-build-android-new:
-    name: E2E Build Android
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/e2e_build_android_new.yml
-    needs: [e2e-hold]
-    secrets: inherit
-    
-  e2e-run-android-new:
-    name: E2E Run Android
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/maestro_android.yml
-    needs: [e2e-build-android-new]
-    secrets: inherit
-    with:
-      artifact_name: ${{ needs.e2e-build-android-new.outputs.artifact_name }}
