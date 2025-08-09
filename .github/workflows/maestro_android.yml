@@ -6,7 +6,10 @@ on:
 jobs:
   android-test:
     runs-on: ubuntu-latest
-    permissions: read-all
+    permissions:
+      id-token: write
+      actions: read
+      contents: read
 
     steps:
       - name: Checkout Repository
