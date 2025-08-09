@@ -21,3 +21,4 @@ executionOrder:
     - onboarding/forgot_password.yaml
     - onboarding/roomslist.yaml
     - onboarding/server_history.yaml
+    - onboarding/change_password.yaml
