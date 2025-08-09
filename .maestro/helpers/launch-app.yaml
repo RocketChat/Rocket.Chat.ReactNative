@@ -2,9 +2,14 @@ appId: chat.rocket.reactnative
 tags:
   - 'utill'
 ---
-- launchApp:
-    clearState: true
-    permissions:
-      all: allow
-- waitForAnimationToEnd:
-    timeout: 60000
+- retry:
+    maxRetries: 3
+    commands:
+      - launchApp:
+          clearState: true
+          permissions:
+            all: allow
+      - waitForAnimationToEnd:
+          timeout: 60000
+      - assertVisible: "Add workspace"
+          
