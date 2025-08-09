@@ -6,15 +6,17 @@ on:
 jobs:
   android-test:
     runs-on: ubuntu-latest
+    permissions: read-all
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Download APK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
-          name: Android Experimental APK
+          artifact-ids: 3725930035
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
