@@ -6,3 +6,5 @@ tags:
     clearState: true
     permissions:
       all: allow
+- waitForAnimationToEnd:
+    timeout: 60000
