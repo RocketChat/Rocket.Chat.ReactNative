@@ -5,17 +5,16 @@ jsEngine: graaljs
 onFlowStart:
   - runFlow: setup.yaml
   - evalScript: ${output.utils.createUser()}
-onFlowComplete:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
+
 ---
-- evalScript: ${output.utils.deleteCreatedUsers()}
 - runFlow: navigate-to-login.yaml
 - tapOn:
     id: login-view-email
-- inputText: ${output.user.email}
+- inputText: ${USERNAME || output.user.email}
+- hideKeyboard
 - tapOn:
     id: login-view-password
-- inputText: ${output.user.password}
+- inputText: ${PASSWORD || output.user.password}
 - hideKeyboard
 - tapOn:
     id: login-view-submit

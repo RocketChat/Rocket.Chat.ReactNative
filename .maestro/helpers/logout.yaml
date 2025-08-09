@@ -5,21 +5,39 @@ tags:
 - runFlow:
     when:
       visible:
+        id: "profile-view-open-sidebar"
+    commands:
+      - tapOn:
+          id: "profile-view-open-sidebar"
+    
+- runFlow:
+    when:
+      visible:
         id: 'rooms-list-view-sidebar'
     commands:
       - tapOn:
           id: 'rooms-list-view-sidebar'
-      - assertVisible:
-          id: 'sidebar-settings'
 
+- runFlow:
+    when:
+      platform: Android
+      visible:
+        id: 'android:id/autofill_save_no'
+    commands:
       - tapOn:
-          id: 'sidebar-settings'
+          id: "android:id/autofill_save_no"
 
-      - assertVisible:
-          id: 'settings-logout'
+- assertVisible:
+    id: 'sidebar-settings'
 
-      - tapOn:
-          id: 'settings-logout'
+- tapOn:
+    id: 'sidebar-settings'
+
+- assertVisible:
+    id: 'settings-logout'
+
+- tapOn:
+    id: 'settings-logout'
 
 - runFlow:
     when:

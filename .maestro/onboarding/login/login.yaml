@@ -12,10 +12,10 @@ onFlowComplete:
 - runFlow: ../../helpers/navigate-to-login.yaml
 - tapOn:
     id: 'login-view-email'
-- inputText: working@rocket.chat
+- inputText: ${output.user.email}
 - tapOn:
     id: 'login-view-password'
-- inputText: working@rocket.chat
+- inputText: ${output.user.password}
 - hideKeyboard
 - tapOn:
     id: login-view-submit
