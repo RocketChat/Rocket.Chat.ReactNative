@@ -1,0 +1,20 @@
+appId: chat.rocket.reactnative
+jsEngine: graaljs
+tags:
+  - 'utill'
+
+---
+- extendedWaitUntil:
+    visible: 'Add Workspace'
+    timeout: 60000
+- tapOn:
+    text: 'Workspace URL. Required.'
+- inputText: ${output.data.server}
+- tapOn: 'Connect'
+
+- waitForAnimationToEnd:
+    timeout: 6000
+
+- assertVisible:
+    id: 'workspace-view'
+- tapOn: 'Login'
