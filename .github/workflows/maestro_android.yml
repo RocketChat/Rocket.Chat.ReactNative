@@ -51,6 +51,10 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
+            echo "RAM and Disk BEFORE tests:"
+            free -h
+            df -h
+            
             mkdir recording
             adb install app-experimental-release.apk
             adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
