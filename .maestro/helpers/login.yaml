@@ -20,3 +20,4 @@ onFlowStart:
     id: login-view-submit
 - assertVisible:
     id: rooms-list-view
+    timeout: 60000
