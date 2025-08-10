@@ -57,7 +57,6 @@ jobs:
 
       - name: Run Tests
         run: |
-          maestro record .maestro/onboarding/change_password.yaml --local
           maestro test .maestro --format junit --output maestro-report.xml
 
       - name: Upload Test Report
