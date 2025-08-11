@@ -10,6 +10,7 @@ import CustomEmoji from '../../../EmojiPicker/CustomEmoji';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import { useAppSelector } from '../../../../lib/hooks';
 import { getUserSelector } from '../../../../selectors/login';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IEmojiProps {
 	block: EmojiProps;
@@ -35,9 +36,11 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();
+    const { fontScaleLimited } = useResponsiveLayout();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const spaceLeft = index && index > 0 ? ' ' : '';
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
+
 	if ('unicode' in block) {
 		return <Text style={[{ color: colors.fontDefault }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
 	}
@@ -57,16 +60,24 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 		height: 30 * fontScale
 	};
 
+    const avatarStyle = {
+		fontSize: 30 * fontScaleLimited,
+		lineHeight: 30 * fontScaleLimited,
+		textAlign: 'center',
+		textAlignVertical: 'center'
+	};
+
 	if (emoji) {
 		return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
 	}
+
 	return (
 		<Text
 			style={[
 				{ color: colors.fontDefault },
-				(isBigEmoji || isAvatar) && emojiToken !== emojiUnicode ? styles.textBig : styles.text,
+				isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text,
 				style,
-				isAvatar && { lineHeight: 35 }
+				isAvatar && avatarStyle
 			]}>
 			{spaceLeft}
 			{displayAsciiEmoji ? <Plain value={block.value!.value} /> : emojiUnicode}
