@@ -67,7 +67,7 @@ export default {
 };
 
 export const Message = (props: any) => (
-	<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(3)}>
+	<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(1)}>
 		<MessageComponent
 			baseUrl={baseUrl}
 			user={user}
