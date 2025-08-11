@@ -7,7 +7,6 @@ onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
-- startRecording: recording
 - runFlow: ../helpers/launch-app.yaml
 - runFlow: ../helpers/login.yaml
 
@@ -23,4 +22,3 @@ onFlowEnd:
     file: ../helpers/search-room.yaml
     env:
       ROOM_NAME: general
-- stopRecording
