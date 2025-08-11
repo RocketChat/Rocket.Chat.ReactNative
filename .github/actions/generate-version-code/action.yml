@@ -78,7 +78,7 @@ runs:
       if: ${{ inputs.os == 'ios' }}
       shell: bash
       run: |
-        VERSIONCODE=$(bundle exec fastlane ios get_testflight_version | grep 'VERSIONCODE=' | cut -d '=' -f2)
+        VERSIONCODE=$(bundle exec fastlane ios get_testflight_version official:${{ inputs.official }} | grep 'VERSIONCODE=' | cut -d '=' -f2)
         echo "LATEST_VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
       working-directory: ios
       env:
@@ -94,7 +94,7 @@ runs:
       if: ${{ inputs.os == 'android' }}
       shell: bash
       run: |
-        VERSIONCODE=$(bundle exec fastlane android version_code | grep 'VERSIONCODE=' | cut -d '=' -f2)
+        VERSIONCODE=$(bundle exec fastlane android version_code official:${{ inputs.official }}| grep 'VERSIONCODE=' | cut -d '=' -f2)
         echo "LATEST_VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
       working-directory: android
 

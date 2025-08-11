@@ -335,8 +335,8 @@ export const BlockQuoteLargeFont = () => (
 
 export const Lists = () => (
 	<>
-		<Message msg={'* Dogs\n  * cats\n  - cats'} />
-		<Message msg={'1. Dogs \n 2. Cats'} />
+		<Message msg={'* Dogs\n* cats\n- cats'} />
+		<Message msg={'1. Dogs \n2. Cats'} />
 		<Message msg='1. Dogs' />
 		<Message msg='2. Cats' isHeader={false} />
 	</>
@@ -344,8 +344,8 @@ export const Lists = () => (
 
 export const ListsLargeFont = () => (
 	<>
-		<MessageLargeFont msg={'* Dogs\n  * cats\n  - cats'} />
-		<MessageLargeFont msg={'1. Dogs \n 2. Cats'} />
+		<MessageLargeFont msg={'* Dogs\n* cats\n- cats'} />
+		<MessageLargeFont msg={'1. Dogs \n2. Cats'} />
 		<MessageLargeFont msg='1. Dogs' />
 		<MessageLargeFont msg='2. Cats' isHeader={false} />
 	</>
@@ -716,10 +716,20 @@ export const WithImage = () => (
 			]}
 		/>
 		<Message
+			msg='Message, not description'
 			attachments={[
 				{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
 					image_url: '/dummypath'
 				}
 			]}
@@ -784,6 +794,15 @@ export const WithVideo = () => (
 				{
 					title: 'This is a title',
 					video_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					video_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					video_url: '/dummypath2'
 				}
 			]}
 		/>
@@ -845,6 +864,15 @@ export const WithAudio = () => (
 		/>
 		<Message
 			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					audio_url: '/dummypath'
+				},
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
@@ -913,6 +941,10 @@ export const WithFile = () => (
 				{
 					text: 'File.pdf',
 					description: 'This is a description :nyan_rocket:'
+				},
+				{
+					text: 'File.pdf',
+					description: 'This is a description :nyan_rocket:'
 				}
 			]}
 			isHeader={false}
@@ -963,6 +995,13 @@ export const MessageWithReply = () => (
 					ts: date,
 					timeFormat: 'LT',
 					text: 'How are you? :nyan_rocket:'
+				},
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: 'How are you? :nyan_rocket:',
+					description: 'Reply attachment can have a description'
 				}
 			]}
 		/>
@@ -1358,64 +1397,73 @@ export const URLImagePreviewLargeFont = () => (
 	</>
 );
 
-export const CustomFields = () => (
-	<>
-		<Message
-			msg='Message'
-			attachments={[
-				{
-					author_name: 'rocket.cat',
-					ts: date,
-					timeFormat: 'LT',
-					text: 'Custom fields',
-					fields: [
-						{
-							title: 'Field 1',
-							value: 'Value 1'
-						},
-						{
-							title: 'Field 2',
-							value: 'Value 2'
-						},
-						{
-							title: 'Field 3',
-							value: 'Value 3'
-						},
-						{
-							title: 'Field 4',
-							value: 'Value 4'
-						},
-						{
-							title: 'Field 5',
-							value: 'Value 5'
-						}
-					]
-				}
-			]}
-		/>
-	</>
-);
+const CustomFieldsBase = ({ mode }: { mode: 'normal' | 'large' }) => {
+	const Component = mode === 'normal' ? Message : MessageLargeFont;
+	return (
+		<>
+			<Component
+				msg='Message'
+				attachments={[
+					{
+						author_name: 'rocket.cat',
+						ts: date,
+						timeFormat: 'LT',
+						text: 'Custom fields',
+						fields: [
+							{
+								title: 'Field 1',
+								value: 'Value 1',
+								short: true
+							},
+							{
+								title: 'Field 2',
+								value: 'Value 2',
+								short: true
+							}
+						]
+					}
+				]}
+			/>
+			<Component
+				msg='Message'
+				attachments={[
+					{
+						author_name: 'rocket.cat',
+						ts: date,
+						timeFormat: 'LT',
+						text: 'Custom fields',
+						fields: [
+							{
+								title: 'Field 1',
+								value: 'Value 1'
+							},
+							{
+								title: 'Field 2',
+								value: 'Value 2'
+							},
+							{
+								title: 'Field 3',
+								value: 'Value 3'
+							},
+							{
+								title: 'Field 4',
+								value: 'Value 4'
+							},
+							{
+								title: 'Field 5',
+								value: 'Value 5'
+							}
+						]
+					}
+				]}
+			/>
+		</>
+	);
+};
 
-export const CustomFieldsLargeFont = () => (
-	<MessageLargeFont
-		msg='Message'
-		attachments={[
-			{
-				author_name: 'rocket.cat',
-				ts: date,
-				timeFormat: 'LT',
-				text: 'Custom fields',
-				fields: [
-					{ title: 'Field 1', value: 'Value 1' },
-					{ title: 'Field 2', value: 'Value 2' },
-					{ title: 'Field 3', value: 'Value 3' },
-					{ title: 'Field 4', value: 'Value 4' },
-					{ title: 'Field 5', value: 'Value 5' }
-				]
-			}
-		]}
-	/>
-);
+export const CustomFields = () => <CustomFieldsBase mode='normal' />;
+
+export const CustomFieldsLargeFont = () => <CustomFieldsBase mode='large' />;
 
 export const TwoShortCustomFieldsWithMarkdown = () => (
 	<Message
@@ -1638,9 +1686,9 @@ export const Temp = () => <Message msg='Temp message' status={messagesStatus.TEM
 
 export const TempLargeFont = () => <MessageLargeFont msg='Temp message' status={messagesStatus.TEMP} isTemp />;
 
-export const Editing = () => <Message msg='Message being edited' editing />;
+export const Editing = () => <Message msg='Message being edited' isBeingEdited />;
 
-export const EditingLargeFont = () => <MessageLargeFont msg='Message being edited' editing />;
+export const EditingLargeFont = () => <MessageLargeFont msg='Message being edited' isBeingEdited />;
 
 export const SystemMessages = () => (
 	<>
@@ -1727,10 +1775,6 @@ export const SystemMessagesLargeFont = () => (
 export const Ignored = () => <Message isIgnored />;
 
 export const IgnoredLargeFont = () => <MessageLargeFont isIgnored />;
-
-export const CustomStyle = () => <Message msg='Message' style={[{ backgroundColor: '#ddd' }]} />;
-
-export const CustomStyleLargeFont = () => <MessageLargeFont msg='Message' style={[{ backgroundColor: '#ddd' }]} />;
 
 export const ShowButtonAsAttachment = () => (
 	<>

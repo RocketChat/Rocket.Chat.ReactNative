@@ -41,7 +41,7 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
-				<CustomIcon name='reaction-add' size={21} color={themes[theme].badgeBackgroundLevel2} />
+				<CustomIcon name='reaction-add' size={20} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
 		</Touchable>
 	);
