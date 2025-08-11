@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { Image as ExpoImage } from 'expo-image';
+import { Image } from 'expo-image';
 import { dequal } from 'dequal';
 import axios from 'axios';
 
@@ -72,15 +72,13 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	useEffect(() => {
 		if (image) {
-			Image.getSize(
-				image,
-				(width, height) => {
-					setImageDimensions({ width, height });
-				},
-				() => {
+			Image.loadAsync(image, {
+				onError: () => {
 					setImageLoadedState('error');
 				}
-			);
+			}).then(image => {
+				setImageDimensions({ width: image.width, height: image.height });
+			});
 		}
 	}, [image]);
 
@@ -113,7 +111,7 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	return (
 		<View style={containerStyle}>
-			<ExpoImage
+			<Image
 				source={{ uri: image }}
 				style={[imageStyle, imageLoadedState === 'loading' && styles.loading]}
 				contentFit='contain'
@@ -167,7 +165,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const hasContent = !!(url.title || url.description);
 
-	if (!url || url?.ignoreParse || !API_Embed) {
+	if (!url || url?.ignoreParse || !API_Embed || !hasContent) {
 		return null;
 	}
 

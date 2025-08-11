@@ -43,7 +43,7 @@ export const ComposerInput = memo(
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
 		const textRef = React.useRef('');
-		const firstRender = React.useRef(false);
+		const firstRender = React.useRef(true);
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
@@ -77,13 +77,13 @@ export const ComposerInput = memo(
 				}
 			};
 
-			if (sharing) return;
-			if (usedCannedResponse) setInput(usedCannedResponse);
-			if (action !== 'edit' && !firstRender.current) {
-				firstRender.current = true;
+			if (action !== 'edit' && firstRender.current) {
+				firstRender.current = false;
 				setDraftMessage();
 			}
-		}, [action, rid, tmid, usedCannedResponse, firstRender.current]);
+			if (sharing) return;
+			if (usedCannedResponse) setInput(usedCannedResponse);
+		}, [action, rid, tmid, usedCannedResponse]);
 
 		// Edit/quote
 		useEffect(() => {
