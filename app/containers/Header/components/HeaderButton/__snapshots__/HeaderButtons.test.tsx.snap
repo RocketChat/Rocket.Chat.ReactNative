@@ -568,11 +568,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       }
     >
       <Text
+        accessibilityRole="header"
         aria-level="1"
         collapsable={false}
         numberOfLines={1}
         onLayout={[Function]}
-        role="heading"
         style={
           [
             {
@@ -817,11 +817,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -1062,11 +1062,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -1297,11 +1297,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -1459,11 +1459,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -1701,11 +1701,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -1943,11 +1943,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -2185,11 +2185,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -2515,11 +2515,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -2901,11 +2901,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -3401,11 +3401,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityRole="header"
             aria-level="1"
             collapsable={false}
             numberOfLines={1}
             onLayout={[Function]}
-            role="heading"
             style={
               [
                 {
@@ -3936,11 +3936,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityRole="header"
             aria-level="1"
             collapsable={false}
             numberOfLines={1}
             onLayout={[Function]}
-            role="heading"
             style={
               [
                 {
@@ -4471,11 +4471,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         >
           <Text
+            accessibilityRole="header"
             aria-level="1"
             collapsable={false}
             numberOfLines={1}
             onLayout={[Function]}
-            role="heading"
             style={
               [
                 {
@@ -4894,11 +4894,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
@@ -5256,11 +5256,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         }
       >
         <Text
+          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
-          role="heading"
           style={
             [
               {
