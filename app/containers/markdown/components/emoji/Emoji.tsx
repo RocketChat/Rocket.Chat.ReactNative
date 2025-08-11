@@ -36,7 +36,7 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();
-    const { fontScaleLimited } = useResponsiveLayout();
+	const { fontScaleLimited } = useResponsiveLayout();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const spaceLeft = index && index > 0 ? ' ' : '';
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
@@ -60,7 +60,7 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 		height: 30 * fontScale
 	};
 
-    const avatarStyle = {
+	const avatarStyle = {
 		fontSize: 30 * fontScaleLimited,
 		lineHeight: 30 * fontScaleLimited,
 		textAlign: 'center',
