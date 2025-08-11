@@ -56,6 +56,7 @@ jobs:
 
       - name: Run Tests
         run: |
+          export MAESTRO_USE_GRAALJS=true
           maestro test .maestro --format junit --output maestro-report.xml
 
       - name: Upload Test Report
