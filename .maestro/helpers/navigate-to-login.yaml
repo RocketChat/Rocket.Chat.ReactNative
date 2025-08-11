@@ -6,6 +6,8 @@ tags:
 - tapOn: Workspace URL. Required.
 - inputText: ${output.data.server}
 - tapOn: Connect
-- assertVisible:
-    text: 'Login'
+- extendedWaitUntil:
+    timeout: 60000
+    visible:
+      text: 'Login'
 - tapOn: Login
