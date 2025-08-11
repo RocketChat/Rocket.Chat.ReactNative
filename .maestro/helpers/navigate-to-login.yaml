@@ -8,6 +8,5 @@ tags:
 - tapOn: Connect
 - extendedWaitUntil:
     timeout: 60000
-    visible:
-      text: 'Login'
+    visible: Login
 - tapOn: Login

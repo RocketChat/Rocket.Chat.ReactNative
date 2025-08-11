@@ -1,6 +1,7 @@
 appId: chat.rocket.reactnative
 tags:
   - 'utill'
+
 ---
 - runScript: ../scripts/random.js
 - runScript: ../scripts/e2e_account.js

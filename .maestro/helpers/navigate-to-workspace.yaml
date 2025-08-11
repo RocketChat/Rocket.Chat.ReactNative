@@ -11,10 +11,8 @@ tags:
     text: 'Workspace URL. Required.'
 - inputText: ${output.data.server}
 - tapOn: 'Connect'
-
 - waitForAnimationToEnd:
     timeout: 6000
-
 - assertVisible:
     id: 'workspace-view'
 - tapOn: 'Login'
