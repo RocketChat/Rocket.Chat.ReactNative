@@ -21,6 +21,7 @@ import { PushEndpoints } from './push';
 import { DirectoryEndpoint } from './directory';
 import { AutoTranslateEndpoints } from './autotranslate';
 import { ModerationEndpoints } from './moderation';
+import { QrCodeScannerEndpoints } from './QrScanner';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
@@ -44,4 +45,5 @@ export type Endpoints = ChannelsEndpoints &
 	PushEndpoints &
 	DirectoryEndpoint &
 	AutoTranslateEndpoints &
-	ModerationEndpoints;
+	ModerationEndpoints &
+	QrCodeScannerEndpoints;

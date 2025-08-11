@@ -267,6 +267,15 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					backgroundColor={this.currentItemKey === 'SettingsStackNavigator' ? themes[theme!].strokeLight : undefined}
 					testID='sidebar-settings'
 				/>
+
+				<List.Separator />
+				<List.Item
+					title={'QR_Login'}
+					left={() => <List.Icon name='login' />}
+					onPress={() => this.sidebarNavigate('QRLoginStackNavigator')}
+					backgroundColor={this.currentItemKey === 'QRLoginStackNavigator' ? themes[theme!].strokeLight : undefined}
+					testID='sidebar-qr-login'
+				/>
 				{this.renderAdmin()}
 			</>
 		);
