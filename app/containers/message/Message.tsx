@@ -16,7 +16,6 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
-import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
@@ -27,12 +26,13 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
+	const showTimeLarge = isLargeFontScale && props.isHeader;
 
 	if (props.isPreview) {
 		return (
 			<>
 				<User {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<>
 					<Content {...props} />
 					<Attachments {...props} />
@@ -46,7 +46,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		return (
 			<>
 				<User {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<Discussion {...props} />
 			</>
 		);
@@ -58,7 +58,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -70,7 +70,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -78,15 +78,15 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	return (
 		<>
 			<User {...props} />
-			{isLargeFontScale ? <MessageTime {...props} /> : null}
-			<>
+			{showTimeLarge ? <MessageTime {...props} /> : null}
+			<View style={{ gap: 4 }}>
 				<Content {...props} />
 				<Attachments {...props} />
-			</>
-			<Urls {...props} />
-			<Thread {...props} />
-			<Reactions {...props} />
-			<Broadcast {...props} />
+				<Urls {...props} />
+				<Thread {...props} />
+				<Reactions {...props} />
+				<Broadcast {...props} />
+			</View>
 		</>
 	);
 });
@@ -157,11 +157,11 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		// Prevent misalignment of info when the font size is increased.
 		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
-			<View style={[styles.container, props.style]}>
+			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
 				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
-					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+					<View style={styles.messageContent}>
 						<Content {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
@@ -175,10 +175,10 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
+		<View accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
-				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+				<View style={styles.messageContent}>
 					<MessageInner {...props} />
 				</View>
 				{!props.isHeader ? (
@@ -201,14 +201,14 @@ Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
-		backgroundColor = themes[theme].statusBackgroundWarning2;
+		backgroundColor = colors.statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
-		backgroundColor = themes[theme].surfaceNeutral;
+		backgroundColor = colors.surfaceNeutral;
 	}
 
 	if (props.hasError || props.isInfo) {
