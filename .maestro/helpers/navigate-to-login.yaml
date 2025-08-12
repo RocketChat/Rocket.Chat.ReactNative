@@ -9,4 +9,9 @@ tags:
 - extendedWaitUntil:
     timeout: 60000
     visible: Login
+- assertVisible: Login
 - tapOn: Login
+- extendedWaitUntil:
+    visible:
+      id: 'login-view'
+    timeout: 60000

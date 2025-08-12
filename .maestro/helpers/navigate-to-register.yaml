@@ -5,5 +5,17 @@ tags:
 ---
 - tapOn: Workspace URL. Required.
 - inputText: ${output.data.server}
+- extendedWaitUntil:
+    visible: 'Connect'
+    timeout: 60000
+- assertVisible: 'Connect'
 - tapOn: Connect
+- extendedWaitUntil:
+    visible: 'Create an account'
+    timeout: 60000
+- assertVisible: 'Create an account'
 - tapOn: Create an account
+- extendedWaitUntil:
+    visible:
+      id: 'register-view'
+    timeout: 60000

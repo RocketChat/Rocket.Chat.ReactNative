@@ -12,7 +12,12 @@ tags:
 - inputText: ${output.data.server}
 - tapOn: 'Connect'
 - waitForAnimationToEnd:
-    timeout: 6000
+    timeout: 60000
 - assertVisible:
     id: 'workspace-view'
+- assertVisible: 'Login'
 - tapOn: 'Login'
+- extendedWaitUntil:
+    visible:
+      id: 'login-view'
+    timeout: 60000
