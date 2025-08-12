@@ -61,11 +61,10 @@ const methods: IMethods = {
 	}
 };
 
-const schema = yup.object().shape({
-	code: yup.string().required(I18n.t('Code_required'))
-});
-
 const TwoFactor = React.memo(() => {
+	const schema = yup.object().shape({
+		code: yup.string().required(I18n.t('Code_required'))
+	});
 	const { colors } = useTheme();
 	const { isMasterDetail } = useAppSelector(state => ({
 		isMasterDetail: state.app.isMasterDetail as boolean
