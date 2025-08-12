@@ -53,9 +53,9 @@ const useKeyboardAnimation = () => {
 			},
 			onEnd: e => {
 				'worklet';
-                
+
 				height.value = Math.max(e.height, 0);
-			},
+			}
 		},
 		[]
 	);
