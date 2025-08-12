@@ -119,7 +119,7 @@ export default class Root extends React.Component<{}, IState> {
 		}, 5000);
 		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 
-        inAppUpdates.checkNeedsUpdate().then((response) => {
+		inAppUpdates.checkNeedsUpdate().then(response => {
 			if (response.shouldUpdate) {
 				const updateOptions: StartUpdateOptions = Platform.select({
 					android: {
