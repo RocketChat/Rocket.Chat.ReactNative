@@ -62,6 +62,7 @@ jobs:
   e2e-hold:
     name: E2E Hold
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    environment: approve_e2e_testing
     runs-on: ubuntu-latest
     steps:
       - run: echo "Waiting for manual approval..."
