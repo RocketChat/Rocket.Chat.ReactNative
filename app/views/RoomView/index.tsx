@@ -18,7 +18,7 @@ import MessageActions, { IMessageActions } from '../../containers/MessageActions
 import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
-import I18n from '../../i18n';
+ from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';

@@ -11,7 +11,7 @@ import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
@@ -422,7 +422,7 @@ async function getWebsocketInfo({
 		if (err.message && err.message.includes('400')) {
 			return {
 				success: false,
-				message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
+				message: i18n.t('Websocket_disabled', { contact: i18n.t('Contact_your_server_admin') })
 			};
 		}
 	}

@@ -3,7 +3,7 @@ import { FlatList, View, Text, StyleSheet } from 'react-native';
 
 import { themes } from '../../lib/constants';
 import SearchBox from '../../containers/SearchBox';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { ISelectedUser } from '../../reducers/selectedUsers';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';

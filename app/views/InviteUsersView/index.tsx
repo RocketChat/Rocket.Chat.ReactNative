@@ -9,7 +9,7 @@ import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { FormTextInput } from '../../containers/TextInput';
 import { IApplicationState, IBaseScreen } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { events, logEvent } from '../../lib/methods/helpers/log';

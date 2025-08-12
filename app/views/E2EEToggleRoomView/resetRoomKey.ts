@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 
-import I18n from '../../i18n';
+ from '../../i18n';
 import { Encryption } from '../../lib/encryption';
 import log from '../../lib/methods/helpers/log';
 import { showToast } from '../../lib/methods/helpers/showToast';

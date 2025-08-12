@@ -4,7 +4,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import I18n from '../i18n';
+ from '../i18n';
 import { ChatsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import KeyboardView from '../containers/KeyboardView';

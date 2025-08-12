@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { isIOS } from '../../lib/methods/helpers';
 import { IEmojiSearchBarProps } from './interfaces';
 import styles from './styles';
@@ -20,14 +20,14 @@ export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchB
 
 	return (
 		<FormTextInput
-			accessibilityLabel={I18n.t('Search_emoji')}
+			accessibilityLabel={i18n.t('Search_emoji')}
 			autoCapitalize='none'
 			autoCorrect={false}
 			autoComplete='off'
 			returnKeyType='search'
 			textContentType='none'
 			blurOnSubmit
-			placeholder={I18n.t('Search_emoji')}
+			placeholder={i18n.t('Search_emoji')}
 			placeholderTextColor={colors.fontAnnotation}
 			underlineColorAndroid='transparent'
 			onChangeText={handleTextChange}

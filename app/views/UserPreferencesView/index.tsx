@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
-import I18n from '../../i18n';
+ from '../../i18n';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import { compareServerVersion } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';

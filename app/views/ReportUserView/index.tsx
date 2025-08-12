@@ -11,7 +11,7 @@ import log from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import I18n from '../../i18n';
+ from '../../i18n';
 import UserInfo from './UserInfo';
 import styles from './styles';
 import { ControlledFormTextInput } from '../../containers/TextInput';

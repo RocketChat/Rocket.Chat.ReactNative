@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import styles from './styles';
 import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
 
@@ -23,7 +23,7 @@ const Thread = React.memo(
 		return (
 			<View style={styles.buttonContainer}>
 				<View style={[styles.button, { backgroundColor }]} testID={`message-thread-button-${msg}`}>
-					<Text style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</Text>
+					<Text style={[styles.buttonText, { color: textColor }]}>{i18n.t('View_Thread')}</Text>
 				</View>
 				<ThreadDetails
 					item={{

@@ -11,7 +11,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import I18n from '../../i18n';
+ from '../../i18n';
 import log from '../../lib/methods/helpers/log';
 import { textInputDebounceTime, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';

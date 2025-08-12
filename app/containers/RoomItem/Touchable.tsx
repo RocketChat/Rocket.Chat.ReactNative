@@ -19,7 +19,7 @@ import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { toggleFav } from '../../lib/methods/toggleFav';
 import { toggleRead } from '../../lib/methods/toggleRead';
 import { hideRoom } from '../../lib/methods/hideRoom';
@@ -109,7 +109,7 @@ const Touchable = ({
 		if (rowState.value === 0) {
 			// if no option is opened
 			if (translationX > 0 && translationX < LONG_SWIPE) {
-				if (I18n.isRTL) {
+				if (i18n.isRTL) {
 					toValue = 2 * ACTION_WIDTH;
 				} else {
 					toValue = ACTION_WIDTH;
@@ -117,14 +117,14 @@ const Touchable = ({
 				rowState.value = -1;
 			} else if (translationX >= LONG_SWIPE) {
 				toValue = 0;
-				if (I18n.isRTL) {
+				if (i18n.isRTL) {
 					handleHideChannel();
 				} else {
 					handleToggleRead();
 				}
 			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
 				// open trailing option if he swipe left
-				if (I18n.isRTL) {
+				if (i18n.isRTL) {
 					toValue = -ACTION_WIDTH;
 				} else {
 					toValue = -2 * ACTION_WIDTH;
@@ -133,7 +133,7 @@ const Touchable = ({
 			} else if (translationX <= -LONG_SWIPE) {
 				toValue = 0;
 				rowState.value = 1;
-				if (I18n.isRTL) {
+				if (i18n.isRTL) {
 					handleToggleRead();
 				} else {
 					handleHideChannel();
@@ -149,12 +149,12 @@ const Touchable = ({
 			} else if (_value > LONG_SWIPE) {
 				toValue = 0;
 				rowState.value = 0;
-				if (I18n.isRTL) {
+				if (i18n.isRTL) {
 					handleHideChannel();
 				} else {
 					handleToggleRead();
 				}
-			} else if (I18n.isRTL) {
+			} else if (i18n.isRTL) {
 				toValue = 2 * ACTION_WIDTH;
 			} else {
 				toValue = ACTION_WIDTH;
@@ -165,12 +165,12 @@ const Touchable = ({
 				toValue = 0;
 				rowState.value = 0;
 			} else if (_value < -LONG_SWIPE) {
-				if (I18n.isRTL) {
+				if (i18n.isRTL) {
 					handleToggleRead();
 				} else {
 					handleHideChannel();
 				}
-			} else if (I18n.isRTL) {
+			} else if (i18n.isRTL) {
 				toValue = -ACTION_WIDTH;
 			} else {
 				toValue = -2 * ACTION_WIDTH;

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { logout, setUser } from '../actions/login';
-import I18n from '../i18n';
+import i18n from '../i18n';
 import { useSetting } from '../lib/hooks/useSetting';
 import { showErrorAlert } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
@@ -31,16 +31,16 @@ export const ChangePasswordRequired = () => {
 			dispatch(setUser({ requirePasswordChange: false }));
 			hideActionSheet();
 		} catch (error: any) {
-			showErrorAlert(error?.reason || error?.message, I18n.t('Oops'));
+			showErrorAlert(error?.reason || error?.message, i18n.t('Oops'));
 		}
 		setLoading(false);
 	};
 
 	const showActionSheetPassword = () => {
-		const inputs = [{ placeholder: passwordPlaceholder || I18n.t('Password'), secureTextEntry: true, key: 'password' }];
+		const inputs = [{ placeholder: passwordPlaceholder || i18n.t('Password'), secureTextEntry: true, key: 'password' }];
 		if (requiresPasswordConfirmation) {
 			inputs.push({
-				placeholder: passwordConfirmationPlaceholder || I18n.t('Confirm_your_password'),
+				placeholder: passwordConfirmationPlaceholder || i18n.t('Confirm_your_password'),
 				secureTextEntry: true,
 				key: 'confirm-password'
 			});
@@ -48,7 +48,7 @@ export const ChangePasswordRequired = () => {
 		showActionSheet({
 			children: (
 				<ActionSheetContentWithInputAndSubmit
-					title={I18n.t('Please_Enter_your_new_password')}
+					title={i18n.t('Please_Enter_your_new_password')}
 					testID='change-password-required-sheet'
 					inputs={inputs}
 					onSubmit={input => changePassword(input[0])}
@@ -63,17 +63,17 @@ export const ChangePasswordRequired = () => {
 			<View style={styles.iconContainer}>
 				<CustomIcon name='info' size={36} color={colors.statusFontWarning} />
 			</View>
-			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('You_need_to_change_your_password')}</Text>
-			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('To_continue_using_RocketChat')}</Text>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{i18n.t('You_need_to_change_your_password')}</Text>
+			<Text style={[styles.description, { color: colors.fontDefault }]}>{i18n.t('To_continue_using_RocketChat')}</Text>
 			<Button
 				testID='change-password-required-button'
-				title={I18n.t('Change_password')}
+				title={i18n.t('Change_password')}
 				type='primary'
 				onPress={showActionSheetPassword}
 			/>
 			<Button
 				testID='change-password-required-logout'
-				title={I18n.t('Logout')}
+				title={i18n.t('Logout')}
 				type='secondary'
 				backgroundColor={colors.surfaceTint}
 				onPress={() => dispatch(logout())}

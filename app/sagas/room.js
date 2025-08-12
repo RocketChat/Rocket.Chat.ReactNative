@@ -6,7 +6,7 @@ import Navigation from '../lib/navigation/appNavigation';
 import * as types from '../actions/actionsTypes';
 import { removedRoom } from '../actions/room';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import I18n from '../i18n';
+import i18n from '../i18n';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { LISTENER } from '../containers/Toast';
 import { Services } from '../lib/services';
@@ -71,12 +71,12 @@ const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
 
 	if (actionType === 'leave') {
 		EventEmitter.emit(LISTENER, {
-			message: roomType === 'team' ? I18n.t('Left_The_Team_Successfully') : I18n.t('Left_The_Room_Successfully')
+			message: roomType === 'team' ? i18n.t('Left_The_Team_Successfully') : i18n.t('Left_The_Room_Successfully')
 		});
 	}
 	if (actionType === 'delete') {
 		EventEmitter.emit(LISTENER, {
-			message: roomType === 'team' ? I18n.t('Deleted_The_Team_Successfully') : I18n.t('Deleted_The_Room_Successfully')
+			message: roomType === 'team' ? i18n.t('Deleted_The_Team_Successfully') : i18n.t('Deleted_The_Room_Successfully')
 		});
 	}
 
@@ -107,11 +107,11 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 	} catch (e) {
 		logEvent(events.RA_LEAVE_F);
 		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
-			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
+			Alert.alert(i18n.t('Oops'), i18n.t(e.data.errorType));
 		} else if (e?.data?.error === 'last-owner-can-not-be-removed') {
-			Alert.alert(I18n.t('Oops'), I18n.t(e.data.error));
+			Alert.alert(i18n.t('Oops'), i18n.t(e.data.error));
 		} else {
-			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
+			Alert.alert(i18n.t('Oops'), i18n.t('There_was_an_error_while_action', { action: i18n.t('leaving_room') }));
 		}
 	}
 };
@@ -133,9 +133,9 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 	} catch (e) {
 		logEvent(events.RI_EDIT_DELETE_F);
 		Alert.alert(
-			I18n.t('Oops'),
-			I18n.t('There_was_an_error_while_action', {
-				action: roomType === 'team' ? I18n.t('deleting_team') : I18n.t('deleting_room')
+			i18n.t('Oops'),
+			i18n.t('There_was_an_error_while_action', {
+				action: roomType === 'team' ? i18n.t('deleting_team') : i18n.t('deleting_room')
 			})
 		);
 	}
@@ -152,10 +152,10 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 				Navigation.navigate('RoomsListView');
 			}
 		} else {
-			showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
+			showErrorAlert(i18n.t('No_available_agents_to_transfer'), i18n.t('Oops'));
 		}
 	} catch (e) {
-		showErrorAlert(e.reason, I18n.t('Oops'));
+		showErrorAlert(e.reason, i18n.t('Oops'));
 	}
 };
 

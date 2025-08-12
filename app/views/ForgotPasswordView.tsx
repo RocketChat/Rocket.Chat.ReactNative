@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { ControlledFormTextInput } from '../containers/TextInput';
-import I18n from '../i18n';
+ from '../i18n';
 import { Services } from '../lib/services';
 import { OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';

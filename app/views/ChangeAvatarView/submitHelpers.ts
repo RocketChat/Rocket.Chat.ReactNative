@@ -1,4 +1,4 @@
-import I18n from '../../i18n';
+ from '../../i18n';
 
 export const handleError = (e: any, action: string) => {
 	if (e.data && e.data.error.includes('[error-too-many-requests]')) {

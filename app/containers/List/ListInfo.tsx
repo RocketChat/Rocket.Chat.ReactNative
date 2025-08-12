@@ -5,7 +5,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,7 +28,7 @@ const ListInfo = React.memo(({ info, translateInfo = true }: IListInfo) => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, { color: themes[theme].fontHint }]}>{translateInfo ? I18n.t(info) : info}</Text>
+			<Text style={[styles.text, { color: themes[theme].fontHint }]}>{translateInfo ? i18n.t(info) : info}</Text>
 		</View>
 	);
 });

@@ -8,7 +8,7 @@ import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import MessageSeparator from '../../../containers/MessageSeparator';
 import sharedStyles from '../../Styles';
-import I18n from '../../../i18n';
+ from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
 import { useAppSelector } from '../../../lib/hooks';
 

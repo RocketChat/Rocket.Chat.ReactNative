@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { textInputDebounceTime } from '../../lib/constants';
 import * as List from '../../containers/List';
 import database from '../../lib/database';
-import I18n from '../../i18n';
+ from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import SearchBox from '../../containers/SearchBox';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';

@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { textInputDebounceTime } from '../../../lib/constants';
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { textParser } from '../utils';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import Items from './Items';
 import styles from './styles';
 import { useTheme } from '../../../theme';
@@ -71,7 +71,7 @@ export const MultiSelectContent = React.memo(
 					<FormTextInput
 						testID='multi-select-search'
 						onChangeText={handleSearch}
-						placeholder={I18n.t('Search')}
+						placeholder={i18n.t('Search')}
 						inputStyle={{ backgroundColor: colors.surfaceLight }}
 						bottomSheet={isIOS}
 						onSubmitEditing={() => {

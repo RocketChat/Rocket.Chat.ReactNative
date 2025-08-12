@@ -16,7 +16,7 @@ import { DisplayMode } from '../../lib/constants';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const CONDENSED_ICON_SIZE = 24;
@@ -46,7 +46,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
 					<RectButton
 						accessible
-						accessibilityLabel={I18n.t(isRead ? 'Mark_unread' : 'Mark_read')}
+						accessibilityLabel={i18n.t(isRead ? 'Mark_unread' : 'Mark_read')}
 						style={styles.actionButton}
 						onPress={onToggleReadPress}>
 						<CustomIcon
@@ -79,7 +79,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 		() => transX.value,
 		(currentTransX, previousTransX) => {
 			// Triggers the animation and hapticFeedback if swipe reaches/unreaches the threshold.
-			if (I18n.isRTL) {
+			if (i18n.isRTL) {
 				if (previousTransX && currentTransX > LONG_SWIPE && previousTransX <= LONG_SWIPE) {
 					runOnJS(triggerHideAnimation)(ACTION_WIDTH);
 				} else if (previousTransX && currentTransX <= LONG_SWIPE && previousTransX > LONG_SWIPE) {
@@ -94,7 +94,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 	);
 
 	const animatedHideStyles = useAnimatedStyle(() => {
-		if (I18n.isRTL) {
+		if (i18n.isRTL) {
 			if (transX.value < LONG_SWIPE && transX.value >= 2 * ACTION_WIDTH) {
 				const parallaxSwipe = interpolate(
 					transX.value,
@@ -134,7 +134,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 				]}>
 				<RectButton
 					accessible
-					accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
+					accessibilityLabel={i18n.t(favorite ? 'Unfavorite' : 'Favorite')}
 					style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]}
 					onPress={toggleFav}>
 					<CustomIcon
@@ -157,7 +157,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 				]}>
 				<RectButton
 					accessible
-					accessibilityLabel={I18n.t('Hide')}
+					accessibilityLabel={i18n.t('Hide')}
 					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
 					onPress={onHidePress}>
 					<CustomIcon

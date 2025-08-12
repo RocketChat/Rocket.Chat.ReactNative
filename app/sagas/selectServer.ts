@@ -21,7 +21,7 @@ import { clearUser, setUser } from '../actions/login';
 import { clearActiveUsers } from '../actions/activeUsers';
 import database from '../lib/database';
 import log, { logServerVersion } from '../lib/methods/helpers/log';
-import I18n from '../i18n';
+import i18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
@@ -103,12 +103,12 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
-				yield put(serverFailure(I18n.t('Invalid_URL')));
+				yield put(serverFailure(i18n.t('Invalid_URL')));
 				return;
 			}
 			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
-				yield put(serverFailure(I18n.t('Invalid_URL')));
+				yield put(serverFailure(i18n.t('Invalid_URL')));
 				return;
 			}
 		}

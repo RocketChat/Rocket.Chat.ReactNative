@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import I18n from '../i18n';
+ from '../i18n';
 import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';

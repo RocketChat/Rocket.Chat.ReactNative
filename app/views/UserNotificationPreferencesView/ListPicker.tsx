@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import * as List from '../../containers/List';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';

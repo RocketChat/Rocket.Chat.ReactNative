@@ -18,7 +18,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import { IApplicationState, IBaseScreen, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { getUserSelector } from '../../selectors/login';

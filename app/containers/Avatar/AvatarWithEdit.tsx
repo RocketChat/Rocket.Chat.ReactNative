@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import Button from '../Button';
 import AvatarContainer from './AvatarContainer';
 import { IAvatar } from './interfaces';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import { useAppSelector } from '../../lib/hooks';
@@ -70,7 +70,7 @@ const AvatarWithEdit = ({
 			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
 					accessibilityLabel={editAccessibilityLabel}
-					title={I18n.t('Edit')}
+					title={i18n.t('Edit')}
 					type='secondary'
 					onPress={handleEdit}
 					testID='avatar-edit-button'

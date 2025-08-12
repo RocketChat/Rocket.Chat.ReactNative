@@ -4,7 +4,7 @@ import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View, Accessibilit
 import Touch from '../Touch';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { CustomIcon } from '../CustomIcon';
@@ -61,7 +61,7 @@ const ListTitle = ({ title, color, styleTitle, translateTitle }: IListTitle) => 
 		case 'string':
 			return (
 				<Text style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
-					{translateTitle && title ? I18n.t(title) : title}
+					{translateTitle && title ? i18n.t(title) : title}
 				</Text>
 			);
 		case 'function':
@@ -123,19 +123,19 @@ const Content = React.memo(
 				return accessibilityLabel;
 			}
 			if (typeof title === 'string') {
-				label = translateTitle ? I18n.t(title) : title;
+				label = translateTitle ? i18n.t(title) : title;
 			}
 			if (subtitle) {
-				label = translateSubtitle ? `${label} ${I18n.t(subtitle)}` : `${label} ${subtitle}`;
+				label = translateSubtitle ? `${label} ${i18n.t(subtitle)}` : `${label} ${subtitle}`;
 			}
 			if (typeof additionalAcessibilityLabel === 'string') {
 				label = `${label} ${additionalAcessibilityLabel}`;
 			}
 			if (typeof additionalAcessibilityLabel === 'boolean') {
 				if (additionalAcessibilityLabelCheck) {
-					label = `${label} ${additionalAcessibilityLabel ? I18n.t('Checked') : I18n.t('Unchecked')}`;
+					label = `${label} ${additionalAcessibilityLabel ? i18n.t('Checked') : i18n.t('Unchecked')}`;
 				} else {
-					label = `${label} ${additionalAcessibilityLabel ? I18n.t('Enabled') : I18n.t('Disabled')}`;
+					label = `${label} ${additionalAcessibilityLabel ? i18n.t('Enabled') : i18n.t('Disabled')}`;
 				}
 			}
 			return label;
@@ -159,7 +159,7 @@ const Content = React.memo(
 						</View>
 						{subtitle ? (
 							<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
-								{translateSubtitle ? I18n.t(subtitle) : subtitle}
+								{translateSubtitle ? i18n.t(subtitle) : subtitle}
 							</Text>
 						) : null}
 					</View>

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { initTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { SettingsStackParamList } from '../../stacks/types';
 // import CommunityEditionPushQuota from './components/CommunityEditionPushQuota';
 import DeviceNotificationSettings from './components/DeviceNotificationSettings';

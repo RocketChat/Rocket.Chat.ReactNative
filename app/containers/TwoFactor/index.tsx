@@ -6,7 +6,7 @@ import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { FormTextInput } from '../TextInput';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { useTheme } from '../../theme';
 import Button from '../Button';
@@ -76,7 +76,7 @@ const TwoFactor = React.memo(() => {
 			if (params?.user) {
 				const response = await Services.sendEmailCode(params?.user);
 				if (response.success) {
-					showToast(I18n.t('Two_Factor_Success_message'));
+					showToast(i18n.t('Two_Factor_Success_message'));
 				}
 			}
 		} catch (e) {
@@ -138,13 +138,13 @@ const TwoFactor = React.memo(() => {
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 						{ backgroundColor: colors.surfaceTint }
 					]}>
-					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
-					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
+					<Text style={[styles.title, { color }]}>{i18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
+					{method?.text ? <Text style={[styles.subtitle, { color }]}>{i18n.t(method.text)}</Text> : null}
 					<FormTextInput
 						returnKeyType='send'
 						autoCapitalize='none'
 						testID='two-factor-input'
-						accessibilityLabel={I18n.t(
+						accessibilityLabel={i18n.t(
 							data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
 						)}
 						value={code}
@@ -155,22 +155,22 @@ const TwoFactor = React.memo(() => {
 						onSubmitEditing={onSubmit}
 						keyboardType={method?.keyboardType}
 						secureTextEntry={method?.secureTextEntry}
-						error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
+						error={data.invalid ? { error: 'totp-invalid', reason: i18n.t('Code_or_password_invalid') } : undefined}
 						containerStyle={styles.containerInput}
 					/>
 
 					{isEmail ? (
 						<Button
 							small
-							title={I18n.t('Resend_email')}
+							title={i18n.t('Resend_email')}
 							style={[styles.button, { marginTop: 12 }]}
 							type='secondary'
 							onPress={sendEmail}
 						/>
 					) : null}
 					<View style={styles.buttonContainer}>
-						<Button title={I18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
-						<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
+						<Button title={i18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
+						<Button title={i18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
 					</View>
 				</View>
 				<Toast />

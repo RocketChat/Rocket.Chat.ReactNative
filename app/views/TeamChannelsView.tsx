@@ -16,7 +16,7 @@ import SearchHeader from '../containers/SearchHeader';
 import { IApplicationState, IBaseScreen, TSubscriptionModel } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
-import I18n from '../i18n';
+ from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem from '../containers/RoomItem';

@@ -3,7 +3,7 @@ import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
@@ -89,14 +89,14 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 	if (usersTyping.length) {
 		let usersText;
 		if (usersTyping.length === 2) {
-			usersText = usersTyping.join(` ${I18n.t('and')} `);
+			usersText = usersTyping.join(` ${i18n.t('and')} `);
 		} else {
 			usersText = usersTyping.join(', ');
 		}
 		return (
 			<Text style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 				<Text style={styles.typingUsers}>{usersText} </Text>
-				{usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing')}...
+				{usersTyping.length > 1 ? i18n.t('are_typing') : i18n.t('is_typing')}...
 			</Text>
 		);
 	}

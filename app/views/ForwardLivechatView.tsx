@@ -7,7 +7,7 @@ import { forwardRoom, ITransferData } from '../actions/room';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { IServerRoom } from '../definitions';
-import I18n from '../i18n';
+ from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { Services } from '../lib/services';
 import { TNavigation } from '../stacks/stackType';

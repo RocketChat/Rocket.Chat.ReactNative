@@ -16,7 +16,7 @@ import {
 	LOCKED_OUT_TIMER_KEY,
 	PASSCODE_KEY
 } from '../../constants';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { setLocalAuthenticated } from '../../../actions/login';
 import { TServerModel } from '../../../definitions';
 import EventEmitter from './events';
@@ -77,8 +77,8 @@ export const changePasscode = async ({ force = false }: { force: boolean }): Pro
 export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.LocalAuthenticationResult> =>
 	LocalAuthentication.authenticateAsync({
 		disableDeviceFallback: true,
-		cancelLabel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback'),
-		promptMessage: I18n.t('Local_authentication_biometry_title')
+		cancelLabel: force ? i18n.t('Dont_activate') : i18n.t('Local_authentication_biometry_fallback'),
+		promptMessage: i18n.t('Local_authentication_biometry_title')
 	});
 
 /*
@@ -178,10 +178,10 @@ export const supportedBiometryLabel = async (): Promise<string | null> => {
 		const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
 		if (supported.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
-			return isIOS ? 'FaceID' : I18n.t('Local_authentication_facial_recognition');
+			return isIOS ? 'FaceID' : i18n.t('Local_authentication_facial_recognition');
 		}
 		if (supported.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) {
-			return isIOS ? 'TouchID' : I18n.t('Local_authentication_fingerprint');
+			return isIOS ? 'TouchID' : i18n.t('Local_authentication_fingerprint');
 		}
 	} catch {
 		// Do nothing

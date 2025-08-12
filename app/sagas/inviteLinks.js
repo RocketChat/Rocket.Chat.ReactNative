@@ -5,7 +5,7 @@ import { INVITE_LINKS } from '../actions/actionsTypes';
 import { inviteLinksFailure, inviteLinksSetInvite, inviteLinksSuccess } from '../actions/inviteLinks';
 import log from '../lib/methods/helpers/log';
 import Navigation from '../lib/navigation/appNavigation';
-import I18n from '../i18n';
+import i18n from '../i18n';
 import { getRoomTitle } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
@@ -42,7 +42,7 @@ const handleRequest = function* handleRequest({ token }) {
 };
 
 const handleFailure = function handleFailure() {
-	Alert.alert(I18n.t('Oops'), I18n.t('Invalid_or_expired_invite_token'));
+	Alert.alert(i18n.t('Oops'), i18n.t('Invalid_or_expired_invite_token'));
 };
 
 const handleCreateInviteLink = function* handleCreateInviteLink({ rid }) {
@@ -54,7 +54,7 @@ const handleCreateInviteLink = function* handleCreateInviteLink({ rid }) {
 			maxUses: inviteLinks.maxUses
 		});
 		if (!result.success) {
-			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_invite') }));
+			Alert.alert(i18n.t('Oops'), i18n.t('There_was_an_error_while_action', { action: i18n.t('creating_invite') }));
 			return;
 		}
 

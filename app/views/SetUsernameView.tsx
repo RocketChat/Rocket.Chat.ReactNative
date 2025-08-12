@@ -12,7 +12,7 @@ import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import { SetUsernameStackParamList } from '../definitions/navigationTypes';
-import I18n from '../i18n';
+ from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { useTheme } from '../theme';

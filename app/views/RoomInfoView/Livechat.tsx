@@ -4,7 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 import { ISubscription } from '../../definitions';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { Services } from '../../lib/services';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';

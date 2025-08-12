@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
 import { textInputDebounceTime } from '../../../lib/constants';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
@@ -48,9 +48,9 @@ export const ComposerInput = memo(
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
+		let placeholder = tmid ? i18n.t('Add_thread_reply') : '';
 		if (subscription && !tmid) {
-			placeholder = I18n.t('Message_roomname', { roomName: (subscription.t === 'd' ? '@' : '#') + getRoomTitle(subscription) });
+			placeholder = i18n.t('Message_roomname', { roomName: (subscription.t === 'd' ? '@' : '#') + getRoomTitle(subscription) });
 			if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
 				placeholder = `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;
 			}

@@ -13,7 +13,7 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
 import { LISTENER } from '../containers/Toast';
 import { IAttachment } from '../definitions';
-import I18n from '../i18n';
+import i18n from '../i18n';
 import { useAppSelector } from '../lib/hooks';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
@@ -83,7 +83,7 @@ const RenderContent = ({
 				onLoad={() => setLoading(false)}
 				onError={() => {
 					navigation.pop();
-					showErrorAlert(I18n.t('Error_play_video'));
+					showErrorAlert(i18n.t('Error_play_video'));
 				}}
 				ref={videoRef}
 			/>
@@ -162,8 +162,8 @@ const AttachmentView = (): React.ReactElement => {
 
 		if (isAndroid) {
 			const rationale = {
-				title: I18n.t('Write_External_Permission'),
-				message: I18n.t('Write_External_Permission_Message'),
+				title: i18n.t('Write_External_Permission'),
+				message: i18n.t('Write_External_Permission_Message'),
 				buttonPositive: 'Ok'
 			};
 			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
@@ -188,9 +188,9 @@ const AttachmentView = (): React.ReactElement => {
 				await CameraRoll.save(file, { album: 'Rocket.Chat' });
 				FileSystem.deleteAsync(file, { idempotent: true });
 			}
-			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+			EventEmitter.emit(LISTENER, { message: i18n.t('saved_to_gallery') });
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			EventEmitter.emit(LISTENER, { message: i18n.t(image_url ? 'error-save-image' : 'error-save-video') });
 		}
 		setLoading(false);
 	};

@@ -6,7 +6,7 @@ import { CompositeNavigationProp } from '@react-navigation/core';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
-import I18n from '../i18n';
+import i18n from '../i18n';
 import { ChatsStackParamList, DrawerParamList, NewMessageStackParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
 import { usePermissions } from '../lib/hooks';
@@ -55,7 +55,7 @@ const AddChannelTeamView = () => {
 	const canAddExisting = useAddExistingPermission(rid);
 
 	useLayoutEffect(() => {
-		navigation.setOptions({ title: I18n.t('Add_Channel_to_Team') });
+		navigation.setOptions({ title: i18n.t('Add_Channel_to_Team') });
 	}, [navigation]);
 
 	return (

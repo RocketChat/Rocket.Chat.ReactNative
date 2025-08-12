@@ -5,7 +5,7 @@ import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigat
 import { getPermalinkMessage } from '../../lib/methods';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import I18n from '../../i18n';
+ from '../../i18n';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { useTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';

@@ -11,7 +11,7 @@ import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import I18n, { setLanguage } from '../i18n';
+import i18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
@@ -303,7 +303,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
 	yield put(encryptionStop());
-	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
+	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: i18n.t('Logging_out') }));
 	const server = yield select(getServer);
 	if (server) {
 		try {
@@ -313,7 +313,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 			if (forcedByServer) {
 				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 				if (message) {
-					showErrorAlert(I18n.t(message), I18n.t('Oops'));
+					showErrorAlert(i18n.t(message), i18n.t('Oops'));
 				}
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
@@ -379,7 +379,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 
 const handleDeleteAccount = function* handleDeleteAccount() {
 	yield put(encryptionStop());
-	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Deleting_account') }));
+	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: i18n.t('Deleting_account') }));
 	const server = yield select(getServer);
 	if (server) {
 		try {

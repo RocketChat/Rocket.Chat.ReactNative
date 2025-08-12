@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Linking } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks';
 import { getServerById } from '../../lib/database/services/Server';
 import log from '../../lib/methods/helpers/log';
@@ -47,16 +47,16 @@ export const SupportedVersionsExpired = () => {
 
 	return (
 		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
-			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
+			<View accessible accessibilityLabel={i18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
 			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>
-				{I18n.t('Supported_versions_expired_title', { workspace_name: name })}
+				{i18n.t('Supported_versions_expired_title', { workspace_name: name })}
 			</Text>
-			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Supported_versions_expired_description')}</Text>
-			<Button title={I18n.t('Check_again')} type='primary' onPress={checkAgain} loading={checking} />
+			<Text style={[styles.description, { color: colors.fontDefault }]}>{i18n.t('Supported_versions_expired_description')}</Text>
+			<Button title={i18n.t('Check_again')} type='primary' onPress={checkAgain} loading={checking} />
 			<Button
-				title={I18n.t('Learn_more')}
+				title={i18n.t('Learn_more')}
 				type='secondary'
 				backgroundColor={colors.surfaceTint}
 				onPress={() => Linking.openURL(LEARN_MORE_URL)}

@@ -7,7 +7,7 @@ import { SubscriptionType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 import styles from '../styles';
-import I18n from '../../../i18n';
+ from '../../../i18n';
 
 const RoomInfoViewAvatar = ({
 	showEdit,

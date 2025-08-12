@@ -10,7 +10,7 @@ import UAParser from 'ua-parser-js';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ISubscription, IUser, SubscriptionType } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';

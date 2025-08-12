@@ -5,7 +5,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import Markdown from '../containers/markdown';
 import SafeAreaView from '../containers/SafeAreaView';
-import I18n from '../i18n';
+ from '../i18n';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 

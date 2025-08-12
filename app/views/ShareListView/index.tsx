@@ -9,7 +9,7 @@ import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
-import I18n from '../../i18n';
+ from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../containers/DirectoryItem';
 import ServerItem from '../../containers/ServerItem';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';

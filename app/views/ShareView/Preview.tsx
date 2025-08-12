@@ -8,7 +8,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer } from '../../containers/ImageViewer';
 import sharedStyles from '../Styles';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { THUMBS_HEIGHT } from './constants';
 import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';

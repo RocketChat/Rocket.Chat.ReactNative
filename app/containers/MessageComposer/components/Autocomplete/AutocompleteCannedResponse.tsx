@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import sharedStyles from '../../../../views/Styles';
 import { IAutocompleteCannedResponse } from '../../interfaces';
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import { CustomIcon } from '../../../CustomIcon';
 import { NO_CANNED_RESPONSES } from '../../constants';
 import { useStyle } from './styles';
@@ -15,7 +15,7 @@ export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCanned
 			<View style={styles.canned}>
 				<View style={styles.cannedTitle}>
 					<Text style={styles.cannedTitleText}>
-						{I18n.t('No_match_found')} <Text style={sharedStyles.textSemibold}>{I18n.t('Check_canned_responses')}</Text>
+						{i18n.t('No_match_found')} <Text style={sharedStyles.textSemibold}>{i18n.t('Check_canned_responses')}</Text>
 					</Text>
 					<CustomIcon name='chevron-right' size={24} />
 				</View>

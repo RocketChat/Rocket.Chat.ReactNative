@@ -5,7 +5,7 @@ import Emoji from '../message/Emoji';
 import { useTheme } from '../../theme';
 import { IReaction } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 
@@ -29,18 +29,18 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 	if (useRealName && item.names) {
 		displayNames = item.names
 			.slice(0, 3)
-			.map((name, index) => (item.usernames[index] === username ? I18n.t('you') : name))
+			.map((name, index) => (item.usernames[index] === username ? i18n.t('you') : name))
 			.join(', ');
 	} else {
 		displayNames = item.usernames
 			.slice(0, 3)
-			.map((otherUsername: string) => (username === otherUsername ? I18n.t('you') : otherUsername))
+			.map((otherUsername: string) => (username === otherUsername ? i18n.t('you') : otherUsername))
 			.join(', ');
 	}
 	if (count > 3) {
-		displayNames = `${displayNames} ${I18n.t('and_N_more', { count: count - 3 })}`;
+		displayNames = `${displayNames} ${i18n.t('and_N_more', { count: count - 3 })}`;
 	} else {
-		displayNames = displayNames.replace(/,(?=[^,]*$)/, ` ${I18n.t('and')}`);
+		displayNames = displayNames.replace(/,(?=[^,]*$)/, ` ${i18n.t('and')}`);
 	}
 	return (
 		<View style={styles.listItemContainer}>
@@ -52,7 +52,7 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 			/>
 			<View style={styles.textContainer}>
 				<Text style={[styles.allListNPeopleReacted, { color: colors.fontDefault }]}>
-					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
+					{count === 1 ? i18n.t('1_person_reacted') : i18n.t('N_people_reacted', { n: count })}
 				</Text>
 				<Text style={[styles.allListWhoReacted, { color: colors.fontSecondaryInfo }]}>{displayNames}</Text>
 			</View>

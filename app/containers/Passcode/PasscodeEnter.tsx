@@ -11,7 +11,7 @@ import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '
 import { biometryAuth, resetAttempts } from '../../lib/methods/helpers/localAuthentication';
 import { getDiff, getLockedUntil } from './utils';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 
 interface IPasscodePasscodeEnter {
 	hasBiometry: boolean;
@@ -83,7 +83,7 @@ const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) =
 		<Base
 			ref={ref}
 			type={TYPE.ENTER}
-			title={I18n.t('Passcode_enter_title')}
+			title={i18n.t('Passcode_enter_title')}
 			showBiometry={hasBiometry}
 			onEndProcess={onEndProcess}
 			onBiometryPress={biometry}

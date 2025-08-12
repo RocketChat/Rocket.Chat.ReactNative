@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import I18n from '../../i18n';
+ from '../../i18n';
 import { useTheme } from '../../theme';
 import CustomFields from './CustomFields';
 import Timezone from './Timezone';

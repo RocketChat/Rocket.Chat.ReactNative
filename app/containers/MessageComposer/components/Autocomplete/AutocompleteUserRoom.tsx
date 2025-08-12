@@ -5,7 +5,7 @@ import { IAutocompleteUserRoom } from '../../interfaces';
 import Avatar from '../../../Avatar';
 import RoomTypeIcon from '../../../RoomTypeIcon';
 import { fetchIsAllOrHere } from '../../helpers';
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import { useStyle } from './styles';
 
 export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) => {
@@ -29,7 +29,7 @@ export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) 
 				{item.type === '#' ? null : (
 					<View style={styles.userRoomSubtitle}>
 						<Text style={styles.userRoomSubtitleText}>{item.subtitle}</Text>
-						{item.outside ? <Text style={styles.userRoomOutsideText}>{I18n.t('Not_in_channel')}</Text> : null}
+						{item.outside ? <Text style={styles.userRoomOutsideText}>{i18n.t('Not_in_channel')}</Text> : null}
 					</View>
 				)}
 			</View>

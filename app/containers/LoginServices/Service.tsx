@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { TIconsName } from '../CustomIcon';
 import { IItemService, IOauthProvider } from './interfaces';
 import styles from './styles';
@@ -81,7 +81,7 @@ const Service = React.memo(
 		} else {
 			buttonText.current = (
 				<>
-					{I18n.t('Continue_with')} <Text style={styles.serviceName}>{modifiedName.current}</Text>
+					{i18n.t('Continue_with')} <Text style={styles.serviceName}>{modifiedName.current}</Text>
 				</>
 			);
 		}
@@ -96,7 +96,7 @@ const Service = React.memo(
 				icon={icon}
 				name={service.name}
 				authType={service.authType}
-				accessibilityLabel={`${I18n.t('Continue_with')} ${modifiedName.current}`}
+				accessibilityLabel={`${i18n.t('Continue_with')} ${modifiedName.current}`}
 			/>
 		);
 	}

@@ -1,4 +1,4 @@
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { TUserStatus } from '../../definitions';
 
 export interface IGetAccessibilityRoomLabel {
@@ -12,33 +12,33 @@ export interface IGetAccessibilityRoomLabel {
 const getRoomAccessibilityLabel = ({ type, userId, isGroupChat, status, teamMain }: IGetAccessibilityRoomLabel) => {
 	if (type === 'd' && !isGroupChat && userId && status) {
 		const statusCamelCase = `${status[0].toUpperCase()}${status.slice(1)}`;
-		return I18n.t(statusCamelCase);
+		return i18n.t(statusCamelCase);
 	}
 
 	if (type === 'l') {
-		return I18n.t('Omnichannel');
+		return i18n.t('Omnichannel');
 	}
 
 	if (teamMain) {
 		if (type === 'p') {
-			return I18n.t('Private_team');
+			return i18n.t('Private_team');
 		}
-		return I18n.t('Team');
+		return i18n.t('Team');
 	}
 
 	if (type === 'discussion') {
-		return I18n.t('Discussion');
+		return i18n.t('Discussion');
 	}
 
 	if (type === 'c') {
-		return I18n.t('Public_channel');
+		return i18n.t('Public_channel');
 	}
 
 	if (type === 'd' && isGroupChat) {
-		return I18n.t('Message');
+		return i18n.t('Message');
 	}
 
-	return I18n.t('Private_channel');
+	return i18n.t('Private_channel');
 };
 
 export default getRoomAccessibilityLabel;

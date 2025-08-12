@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 
 import * as List from '../../containers/List';
-import I18n from '../../i18n';
+ from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';

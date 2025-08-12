@@ -6,7 +6,7 @@ import { OutsideParamList } from '../stacks/types';
 import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
 import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
-import I18n from '../i18n';
+ from '../i18n';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';

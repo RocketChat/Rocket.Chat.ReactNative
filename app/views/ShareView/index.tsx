@@ -9,7 +9,7 @@ import { Dispatch } from 'redux';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';

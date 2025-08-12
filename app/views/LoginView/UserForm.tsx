@@ -11,7 +11,7 @@ import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
 import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';

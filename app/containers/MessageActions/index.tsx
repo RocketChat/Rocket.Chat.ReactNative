@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import database from '../../lib/database';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import log, { logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getMessageTranslation } from '../message/utils';
@@ -245,7 +245,7 @@ const MessageActions = React.memo(
 				try {
 					const permalink = await getPermalink(message);
 					Clipboard.setString(permalink ?? '');
-					EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
+					EventEmitter.emit(LISTENER, { message: i18n.t('Permalink_copied_to_clipboard') });
 				} catch {
 					logEvent(events.ROOM_MSG_ACTION_PERMALINK_F);
 				}
@@ -254,7 +254,7 @@ const MessageActions = React.memo(
 			const handleCopy = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_COPY);
 				await Clipboard.setString((message?.attachments?.[0]?.description || message.msg) ?? '');
-				EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+				EventEmitter.emit(LISTENER, { message: i18n.t('Copied_to_clipboard') });
 			};
 
 			const handleShare = async (message: TAnyMessageModel) => {
@@ -295,7 +295,7 @@ const MessageActions = React.memo(
 				logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
 					await Services.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
-					EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
+					EventEmitter.emit(LISTENER, { message: message.starred ? i18n.t('Message_unstarred') : i18n.t('Message_starred') });
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
 					log(e);
@@ -355,7 +355,7 @@ const MessageActions = React.memo(
 				logEvent(events.ROOM_MSG_ACTION_REPORT);
 				try {
 					await Services.reportMessage(message.id);
-					Alert.alert(I18n.t('Message_Reported'));
+					Alert.alert(i18n.t('Message_Reported'));
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_REPORT_F);
 					log(e);
@@ -364,8 +364,8 @@ const MessageActions = React.memo(
 
 			const handleDelete = (message: TAnyMessageModel) => {
 				showConfirmationAlert({
-					message: I18n.t('You_will_not_be_able_to_recover_this_message'),
-					confirmationText: I18n.t('Delete'),
+					message: i18n.t('You_will_not_be_able_to_recover_this_message'),
+					confirmationText: i18n.t('Delete'),
 					onPress: async () => {
 						try {
 							logEvent(events.ROOM_MSG_ACTION_DELETE);
@@ -386,7 +386,7 @@ const MessageActions = React.memo(
 				const isEditAllowed = allowEdit(message);
 				if (!videoConfBlock && (isOwn(message) || isEditAllowed)) {
 					options.push({
-						title: I18n.t('Edit'),
+						title: i18n.t('Edit'),
 						icon: 'edit',
 						onPress: () => handleEdit(message.id),
 						enabled: isEditAllowed
@@ -397,7 +397,7 @@ const MessageActions = React.memo(
 				const quoteMessageLink = getQuoteMessageLink(message.attachments);
 				if (quoteMessageLink && jumpToMessage) {
 					options.push({
-						title: I18n.t('Jump_to_message'),
+						title: i18n.t('Jump_to_message'),
 						icon: 'jump-to-message',
 						onPress: () => jumpToMessage(quoteMessageLink, true)
 					});
@@ -406,7 +406,7 @@ const MessageActions = React.memo(
 				// Quote
 				if (!isReadOnly && !videoConfBlock) {
 					options.push({
-						title: I18n.t('Quote'),
+						title: i18n.t('Quote'),
 						icon: 'quote',
 						onPress: () => handleQuote(message.id)
 					});
@@ -415,7 +415,7 @@ const MessageActions = React.memo(
 				// Reply
 				if (!isReadOnly && !tmid) {
 					options.push({
-						title: I18n.t('Reply_in_Thread'),
+						title: i18n.t('Reply_in_Thread'),
 						icon: 'threads',
 						onPress: () => handleReply(message.id)
 					});
@@ -424,7 +424,7 @@ const MessageActions = React.memo(
 				// Reply in DM
 				if (room.t !== 'd' && room.t !== 'l' && !videoConfBlock) {
 					options.push({
-						title: I18n.t('Reply_in_direct_message'),
+						title: i18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
 						onPress: () => handleReplyInDM(message),
 						enabled: permissions.hasCreateDirectMessagePermission
@@ -433,7 +433,7 @@ const MessageActions = React.memo(
 
 				// Create Discussion
 				options.push({
-					title: I18n.t('Start_a_Discussion'),
+					title: i18n.t('Start_a_Discussion'),
 					icon: 'discussions',
 					onPress: () => handleCreateDiscussion(message),
 					enabled: permissions.hasCreateDiscussionOtherUserPermission
@@ -441,7 +441,7 @@ const MessageActions = React.memo(
 
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
-						title: I18n.t('Forward'),
+						title: i18n.t('Forward'),
 						icon: 'arrow-forward',
 						onPress: () => handleShareMessage(message)
 					});
@@ -449,7 +449,7 @@ const MessageActions = React.memo(
 
 				// Permalink
 				options.push({
-					title: I18n.t('Get_link'),
+					title: i18n.t('Get_link'),
 					icon: 'link',
 					onPress: () => handlePermalink(message)
 				});
@@ -457,7 +457,7 @@ const MessageActions = React.memo(
 				// Copy
 				if (!videoConfBlock) {
 					options.push({
-						title: I18n.t('Copy'),
+						title: i18n.t('Copy'),
 						icon: 'copy',
 						onPress: () => handleCopy(message)
 					});
@@ -465,7 +465,7 @@ const MessageActions = React.memo(
 
 				// Share
 				options.push({
-					title: I18n.t('Share'),
+					title: i18n.t('Share'),
 					icon: 'share',
 					onPress: () => handleShare(message)
 				});
@@ -473,7 +473,7 @@ const MessageActions = React.memo(
 				// Pin
 				if (Message_AllowPinning && !videoConfBlock) {
 					options.push({
-						title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
+						title: i18n.t(message.pinned ? 'Unpin' : 'Pin'),
 						icon: 'pin',
 						onPress: () => handlePin(message),
 						enabled: permissions?.hasPinPermission
@@ -483,7 +483,7 @@ const MessageActions = React.memo(
 				// Star
 				if (Message_AllowStarring && !videoConfBlock) {
 					options.push({
-						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
+						title: i18n.t(message.starred ? 'Unstar' : 'Star'),
 						icon: message.starred ? 'star-filled' : 'star',
 						onPress: () => handleStar(message)
 					});
@@ -492,7 +492,7 @@ const MessageActions = React.memo(
 				// Mark as unread
 				if (message.u && message.u._id !== user.id) {
 					options.push({
-						title: I18n.t('Mark_unread'),
+						title: i18n.t('Mark_unread'),
 						icon: 'flag',
 						onPress: () => handleUnread(message)
 					});
@@ -501,7 +501,7 @@ const MessageActions = React.memo(
 				// Read Receipts
 				if (Message_Read_Receipt_Store_Users) {
 					options.push({
-						title: I18n.t('Read_Receipt'),
+						title: i18n.t('Read_Receipt'),
 						icon: 'info',
 						onPress: () => handleReadReceipt(message)
 					});
@@ -510,7 +510,7 @@ const MessageActions = React.memo(
 				// Toggle Auto-translate
 				if (room.autoTranslate && message.u && message.u._id !== user.id) {
 					options.push({
-						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
+						title: i18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
 						onPress: () => handleToggleTranslation(message)
 					});
@@ -518,7 +518,7 @@ const MessageActions = React.memo(
 
 				// Report
 				options.push({
-					title: I18n.t('Report'),
+					title: i18n.t('Report'),
 					icon: 'warning',
 					danger: true,
 					onPress: () => handleReport(message)
@@ -528,7 +528,7 @@ const MessageActions = React.memo(
 				const isDeleteAllowed = allowDelete(message);
 				if (isOwn(message) || isDeleteAllowed) {
 					options.push({
-						title: I18n.t('Delete'),
+						title: i18n.t('Delete'),
 						icon: 'delete',
 						danger: true,
 						onPress: () => handleDelete(message),

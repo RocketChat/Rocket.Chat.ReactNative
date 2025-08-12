@@ -19,7 +19,7 @@ import { getUserSelector } from '../../selectors/login';
 import Avatar from '../../containers/Avatar';
 import AvatarPresentational from '../../containers/Avatar/Avatar';
 import Button from '../../containers/Button';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';

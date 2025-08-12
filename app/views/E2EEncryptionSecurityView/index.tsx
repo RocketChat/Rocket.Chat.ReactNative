@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import * as List from '../../containers/List';
-import I18n from '../../i18n';
+ from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';

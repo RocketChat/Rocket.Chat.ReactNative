@@ -5,7 +5,7 @@ import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
 import openLink from '../lib/methods/helpers/openLink';
 import { useAppSelector } from '../lib/hooks';
-import I18n from '../i18n';
+import i18n from '../i18n';
 
 const styles = StyleSheet.create({
 	bottomContainer: {
@@ -39,16 +39,16 @@ const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 	};
 	return (
 		<View style={[styles.bottomContainer, styleContainer]}>
-			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Onboarding_agree_terms')}</Text>
+			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{i18n.t('Onboarding_agree_terms')}</Text>
 			<Text
 				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo }]}
 				onPress={() => openContract('terms-of-service')}>
-				{I18n.t('Terms_of_Service')}
+				{i18n.t('Terms_of_Service')}
 			</Text>
 			<Text
 				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo }]}
 				onPress={() => openContract('privacy-policy')}>
-				{I18n.t('Privacy_Policy')}
+				{i18n.t('Privacy_Policy')}
 			</Text>
 		</View>
 	);

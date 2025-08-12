@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { inviteLinksSetParams } from '../../actions/inviteLinks';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
-import I18n from '../../i18n';
+ from '../../i18n';
 import styles from './styles';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 

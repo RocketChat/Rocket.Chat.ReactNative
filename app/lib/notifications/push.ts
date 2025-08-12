@@ -12,7 +12,7 @@ import { PermissionsAndroid, Platform } from 'react-native';
 import { INotification } from '../../definitions';
 import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 
 export let deviceToken = '';
 
@@ -39,12 +39,12 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		// init
 		Notifications.ios.registerRemoteNotifications();
 
-		const notificationAction = new NotificationAction('REPLY_ACTION', 'background', I18n.t('Reply'), true, {
-			buttonTitle: I18n.t('Reply'),
-			placeholder: I18n.t('Type_message')
+		const notificationAction = new NotificationAction('REPLY_ACTION', 'background', i18n.t('Reply'), true, {
+			buttonTitle: i18n.t('Reply'),
+			placeholder: i18n.t('Type_message')
 		});
-		const acceptAction = new NotificationAction('ACCEPT_ACTION', 'foreground', I18n.t('accept'), true);
-		const rejectAction = new NotificationAction('DECLINE_ACTION', 'foreground', I18n.t('decline'), true);
+		const acceptAction = new NotificationAction('ACCEPT_ACTION', 'foreground', i18n.t('accept'), true);
+		const rejectAction = new NotificationAction('DECLINE_ACTION', 'foreground', i18n.t('decline'), true);
 
 		const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
 		const videoConfCategory = new NotificationCategory('VIDEOCONF', [acceptAction, rejectAction]);

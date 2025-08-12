@@ -4,7 +4,7 @@ import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-
 import { FlatList, ListRenderItem, useWindowDimensions } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import RoomItem from '../../../containers/RoomItem';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
@@ -59,7 +59,7 @@ const QueueListView = React.memo(() => {
 
 	useEffect(() => {
 		const options: NativeStackNavigationOptions = {
-			title: I18n.t('Queued_chats')
+			title: i18n.t('Queued_chats')
 		};
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;

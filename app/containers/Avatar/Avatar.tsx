@@ -9,7 +9,7 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import { IAvatar } from './interfaces';
 import MarkdownContext from '../markdown/contexts/MarkdownContext';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 
 const Avatar = React.memo(
 	({
@@ -40,7 +40,7 @@ const Avatar = React.memo(
 			return null;
 		}
 
-		const avatarAccessibilityLabel = accessibilityLabel ?? I18n.t('Avatar_Photo', { username: text });
+		const avatarAccessibilityLabel = accessibilityLabel ?? i18n.t('Avatar_Photo', { username: text });
 		const avatarStyle = {
 			width: size,
 			height: size,

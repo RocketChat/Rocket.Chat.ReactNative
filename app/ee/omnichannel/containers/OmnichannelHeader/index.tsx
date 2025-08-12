@@ -7,7 +7,7 @@ import * as List from '../../../../containers/List';
 import styles from './styles';
 import { useTheme } from '../../../../theme';
 import { showConfirmationAlert } from '../../../../lib/methods/helpers/info';
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../lib';
 import OmnichannelQueue from './OmnichannelQueue';
 import { isOmnichannelModuleAvailable } from '../../../../lib/methods';
@@ -32,8 +32,8 @@ const OmnichannelStatus = memo(() => {
 	const toggleLivechat = async () => {
 		if (!isOmnichannelStatusAvailable(statusLivechat)) {
 			showConfirmationAlert({
-				message: I18n.t('Omnichannel_enable_alert'),
-				confirmationText: I18n.t('Yes'),
+				message: i18n.t('Omnichannel_enable_alert'),
+				confirmationText: i18n.t('Yes'),
 				onPress: async () => {
 					try {
 						await changeLivechatStatus();

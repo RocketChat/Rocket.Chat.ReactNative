@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { createChannelRequest } from '../../actions/createChannel';
 import { themes } from '../../lib/constants';
 import SearchBox from '../../containers/SearchBox';
-import I18n from '../../i18n';
+ from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
 import { useTheme } from '../../theme';
 import { events, logEvent } from '../../lib/methods/helpers/log';

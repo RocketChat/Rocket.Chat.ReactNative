@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
-import I18n from '../i18n';
+ from '../i18n';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';

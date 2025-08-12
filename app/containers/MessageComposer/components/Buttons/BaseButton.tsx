@@ -2,7 +2,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import React from 'react';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import { CustomIcon, TIconsName } from '../../../CustomIcon';
 
 export interface IBaseButton {
@@ -30,7 +30,7 @@ export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }:
 			onPress={() => onPress()}
 			testID={testID}
 			hitSlop={hitSlop}>
-			<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
+			<View accessible accessibilityLabel={i18n.t(accessibilityLabel)} accessibilityRole='button'>
 				<CustomIcon name={icon} size={24} color={color} />
 			</View>
 		</BorderlessButton>

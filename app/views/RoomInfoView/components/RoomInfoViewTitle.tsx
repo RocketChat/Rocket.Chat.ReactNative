@@ -10,7 +10,7 @@ import { getRoomTitle } from '../../../lib/methods/helpers';
 import CollapsibleText from '../../../containers/CollapsibleText';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { LISTENER } from '../../../containers/Toast';
-import I18n from '../../../i18n';
+ from '../../../i18n';
 
 interface IRoomInfoViewTitle {
 	room?: ISubscription;

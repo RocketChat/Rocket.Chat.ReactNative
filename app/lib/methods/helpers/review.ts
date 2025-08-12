@@ -1,7 +1,7 @@
 import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { STORE_REVIEW_LINK } from '../../constants';
 import { showErrorAlert } from './info';
 import { isIOS } from './deviceInfo';
@@ -41,7 +41,7 @@ export const onReviewPress = async (): Promise<void> => {
 		}
 	} catch (e) {
 		logEvent(events.SE_REVIEW_THIS_APP_F);
-		showErrorAlert(I18n.t('Review_app_unable_store', { store }));
+		showErrorAlert(i18n.t('Review_app_unable_store', { store }));
 	}
 };
 
@@ -54,14 +54,14 @@ const onAskMeLaterPress = () => {
 	}
 };
 
-const onReviewButton = { text: I18n.t('Review_app_yes'), onPress: onReviewPress };
-const onAskMeLaterButton = { text: I18n.t('Review_app_later'), onPress: onAskMeLaterPress };
-const onCancelButton = { text: I18n.t('Review_app_no'), onPress: onCancelPress };
+const onReviewButton = { text: i18n.t('Review_app_yes'), onPress: onReviewPress };
+const onAskMeLaterButton = { text: i18n.t('Review_app_later'), onPress: onAskMeLaterPress };
+const onCancelButton = { text: i18n.t('Review_app_no'), onPress: onCancelPress };
 
 const askReview = () =>
 	Alert.alert(
-		I18n.t('Review_app_title'),
-		I18n.t('Review_app_desc', { store }),
+		i18n.t('Review_app_title'),
+		i18n.t('Review_app_desc', { store }),
 		isIOS ? [onReviewButton, onAskMeLaterButton, onCancelButton] : [onAskMeLaterButton, onCancelButton, onReviewButton],
 		{
 			cancelable: true,

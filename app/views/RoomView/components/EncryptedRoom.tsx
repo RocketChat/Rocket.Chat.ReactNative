@@ -9,7 +9,7 @@ import Button from '../../../containers/Button';
 import sharedStyles from '../../Styles';
 import { useAppSelector } from '../../../lib/hooks';
 import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption';
-import I18n from '../../../i18n';
+ from '../../../i18n';
 import { TNavigation } from '../../../stacks/stackType';
 
 const GAP = 32;

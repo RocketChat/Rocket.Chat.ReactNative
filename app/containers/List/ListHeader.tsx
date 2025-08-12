@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
 
@@ -30,7 +30,7 @@ const ListHeader = React.memo(({ title, translateTitle = true, numberOfLines }: 
 	return (
 		<View style={styles.container}>
 			<Text accessibilityRole='header' style={[styles.title, { color: themes[theme].fontHint }]} numberOfLines={numberOfLines}>
-				{translateTitle ? I18n.t(title) : title}
+				{translateTitle ? i18n.t(title) : title}
 			</Text>
 		</View>
 	);

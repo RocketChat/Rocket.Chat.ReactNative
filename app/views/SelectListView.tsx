@@ -7,7 +7,7 @@ import { RouteProp } from '@react-navigation/native';
 import { ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
-import I18n from '../i18n';
+ from '../i18n';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';

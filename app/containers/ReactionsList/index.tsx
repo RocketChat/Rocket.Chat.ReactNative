@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IReaction } from '../../definitions';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import styles from './styles';
 import AllTab from './AllTab';
 import UsersList from './UsersList';
@@ -68,7 +68,7 @@ const ReactionsList = ({ reactions, getCustomEmoji }: IReactionsListProps) => {
 		if (tab.key === 'all') {
 			return (
 				<View style={styles.tabBarItem}>
-					<Text style={[styles.allTabItem, { color }]}>{I18n.t('All')}</Text>
+					<Text style={[styles.allTabItem, { color }]}>{i18n.t('All')}</Text>
 				</View>
 			);
 		}

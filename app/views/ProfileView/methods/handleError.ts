@@ -1,4 +1,4 @@
-import I18n from '../../../i18n';
+ from '../../../i18n';
 import { showErrorAlert } from '../../../lib/methods/helpers';
 
 const handleError = (e: any, action: string) => {

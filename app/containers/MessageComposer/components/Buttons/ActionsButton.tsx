@@ -4,7 +4,7 @@ import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subsc
 import { BaseButton } from './BaseButton';
 import { TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
 import { MessageInnerContext } from '../../context';
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector, usePermissions } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
@@ -38,7 +38,7 @@ export const ActionsButton = () => {
 		const options: TActionSheetOptionsItem[] = [];
 		if (t === 'l' && permissionToViewCannedResponses) {
 			options.push({
-				title: I18n.t('Canned_Responses'),
+				title: i18n.t('Canned_Responses'),
 				icon: 'canned-response',
 				onPress: () => Navigation.navigate('CannedResponsesListView', { rid })
 			});
@@ -46,7 +46,7 @@ export const ActionsButton = () => {
 		if (permissionToUpload) {
 			options.push(
 				{
-					title: I18n.t('Take_a_photo'),
+					title: i18n.t('Take_a_photo'),
 					icon: 'camera-photo',
 					onPress: () => {
 						hideActionSheet();
@@ -57,7 +57,7 @@ export const ActionsButton = () => {
 					}
 				},
 				{
-					title: I18n.t('Take_a_video'),
+					title: i18n.t('Take_a_video'),
 					icon: 'camera',
 					onPress: () => {
 						hideActionSheet();
@@ -68,7 +68,7 @@ export const ActionsButton = () => {
 					}
 				},
 				{
-					title: I18n.t('Choose_from_library'),
+					title: i18n.t('Choose_from_library'),
 					icon: 'image',
 					onPress: () => {
 						hideActionSheet();
@@ -79,7 +79,7 @@ export const ActionsButton = () => {
 					}
 				},
 				{
-					title: I18n.t('Choose_file'),
+					title: i18n.t('Choose_file'),
 					icon: 'attach',
 					onPress: () => chooseFile()
 				}
@@ -87,7 +87,7 @@ export const ActionsButton = () => {
 		}
 
 		options.push({
-			title: I18n.t('Create_Discussion'),
+			title: i18n.t('Create_Discussion'),
 			icon: 'discussions',
 			onPress: () => createDiscussion()
 		});

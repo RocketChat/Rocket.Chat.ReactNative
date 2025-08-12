@@ -9,7 +9,7 @@ import { emojis } from '../../../lib/constants';
 import { ICustomEmoji } from '../../../definitions';
 import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { NO_CANNED_RESPONSES } from '../constants';
 
 const MENTIONS_COUNT_TO_DISPLAY = 4;
@@ -86,7 +86,7 @@ export const useAutocomplete = ({
 							parsedRes.push({
 								id: 'all',
 								title: 'all',
-								subtitle: I18n.t('Notify_all_in_this_room'),
+								subtitle: i18n.t('Notify_all_in_this_room'),
 								type,
 								t: 'd'
 							});
@@ -95,7 +95,7 @@ export const useAutocomplete = ({
 							parsedRes.push({
 								id: 'here',
 								title: 'here',
-								subtitle: I18n.t('Notify_active_in_this_room'),
+								subtitle: i18n.t('Notify_active_in_this_room'),
 								type,
 								t: 'd'
 							});

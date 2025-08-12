@@ -4,7 +4,7 @@ import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 import { textInputDebounceTime } from '../../../lib/constants';
 import { MessageInnerContext } from '../context';
 import { useTheme } from '../../../theme';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
 import { IEmoji } from '../../../definitions';
 import { useFrequentlyUsedEmoji } from '../../../lib/hooks';
@@ -52,7 +52,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 				showsHorizontalScrollIndicator={false}
 				ListEmptyComponent={() => (
 					<View style={styles.emptyContainer} testID='no-results-found'>
-						<Text style={[styles.emptyText, { color: colors.fontHint }]}>{I18n.t('No_results_found')}</Text>
+						<Text style={[styles.emptyText, { color: colors.fontHint }]}>{i18n.t('No_results_found')}</Text>
 					</View>
 				)}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}

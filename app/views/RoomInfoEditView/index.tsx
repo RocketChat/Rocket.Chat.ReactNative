@@ -12,7 +12,7 @@ import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { IBaseScreen, IRoomSettings, ISubscription, SubscriptionType } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import KeyboardView from '../../containers/KeyboardView';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';

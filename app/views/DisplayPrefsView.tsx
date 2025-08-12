@@ -11,7 +11,7 @@ import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import Radio from '../containers/Radio';
 import { IPreferences } from '../definitions';
-import I18n from '../i18n';
+ from '../i18n';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';

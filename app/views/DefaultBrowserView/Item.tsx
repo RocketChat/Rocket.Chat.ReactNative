@@ -1,6 +1,6 @@
 import React from 'react';
 
-import I18n from '../../i18n';
+ from '../../i18n';
 import { useTheme } from '../../theme';
 import * as List from '../../containers/List';
 import { IBrowsersValues, TValue } from '.';

@@ -4,7 +4,7 @@ import { Text, useWindowDimensions, View } from 'react-native';
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import { LISTENER } from '../Toast';
@@ -24,7 +24,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 			hide();
 			item?.onPress();
 		} else {
-			EventEmitter.emit(LISTENER, { message: I18n.t('You_dont_have_permission_to_perform_this_action') });
+			EventEmitter.emit(LISTENER, { message: i18n.t('You_dont_have_permission_to_perform_this_action') });
 		}
 	};
 

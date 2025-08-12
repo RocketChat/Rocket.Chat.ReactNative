@@ -4,7 +4,7 @@ import Model from '@nozbe/watermelondb/Model';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { useActionSheet } from './ActionSheet';
-import I18n from '../i18n';
+import i18n from '../i18n';
 import log from '../lib/methods/helpers/log';
 import { TMessageModel } from '../definitions';
 import { resendMessage } from '../lib/methods';
@@ -82,12 +82,12 @@ const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(
 		showActionSheet({
 			options: [
 				{
-					title: I18n.t('Resend'),
+					title: i18n.t('Resend'),
 					icon: 'send',
 					onPress: () => handleResend(message)
 				},
 				{
-					title: I18n.t('Delete'),
+					title: i18n.t('Delete'),
 					icon: 'delete',
 					danger: true,
 					onPress: () => handleDelete(message)

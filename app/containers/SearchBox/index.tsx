@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet, TextInputProps, View } from 'react-native';
 
 import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { FormTextInput } from '../TextInput';
 
 const styles = StyleSheet.create({
@@ -28,7 +28,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
-				placeholder={I18n.t('Search')}
+				placeholder={i18n.t('Search')}
 				returnKeyType='search'
 				underlineColorAndroid='transparent'
 				containerStyle={styles.inputContainer}

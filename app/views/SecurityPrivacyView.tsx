@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
-import I18n from '../i18n';
+ from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants';
 import { useAppSelector } from '../lib/hooks';
 import useServer from '../lib/methods/useServer';

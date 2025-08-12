@@ -8,7 +8,7 @@ import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
+ from '../../i18n';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';

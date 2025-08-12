@@ -11,7 +11,7 @@ import Button from '../../../containers/Button';
 import * as List from '../../../containers/List';
 import ServerItem from '../../../containers/ServerItem';
 import { RootEnum, TServerModel } from '../../../definitions';
-import I18n from '../../../i18n';
+ from '../../../i18n';
 import { TOKEN_KEY } from '../../../lib/constants';
 import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks';

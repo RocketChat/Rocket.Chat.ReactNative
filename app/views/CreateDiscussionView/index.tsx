@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import I18n from '../../i18n';
+ from '../../i18n';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import { ControlledFormTextInput } from '../../containers/TextInput';

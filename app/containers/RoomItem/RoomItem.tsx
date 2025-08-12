@@ -10,7 +10,7 @@ import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
@@ -113,7 +113,7 @@ const RoomItem = ({
 								/>
 							) : null}
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
+							{autoJoin ? <Tag testID='auto-join-tag' name={i18n.t('Auto-join')} /> : null}
 							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
 						</View>
 						<View style={styles.row} testID='room-item-last-message-container'>
@@ -153,7 +153,7 @@ const RoomItem = ({
 								sourceType={sourceType}
 							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
+							{autoJoin ? <Tag name={i18n.t('Auto-join')} /> : null}
 
 							<View style={styles.wrapUpdatedAndBadge}>
 								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}

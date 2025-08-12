@@ -7,7 +7,7 @@ import Button from '../Button';
 import { styles } from './styles';
 import { useSupportedVersionMessage } from './useSupportedVersionMessage';
 import * as HeaderButton from '../Header/components/HeaderButton';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { LEARN_MORE_URL } from './constants';
 
 export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: any; route?: any }): ReactElement | null => {
@@ -16,7 +16,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
-			title: I18n.t('Supported_versions_warning_update_required')
+			title: i18n.t('Supported_versions_warning_update_required')
 		});
 
 		if (route?.params?.showCloseButton) {
@@ -32,7 +32,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
-			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
+			<View accessible accessibilityLabel={i18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
 			{message.title ? (
@@ -52,7 +52,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 			) : null}
 			<Button
 				testID='sv-warn-button'
-				title={I18n.t('Learn_more')}
+				title={i18n.t('Learn_more')}
 				type='secondary'
 				backgroundColor={colors.surfaceTint}
 				onPress={() => Linking.openURL(message.link || LEARN_MORE_URL)}

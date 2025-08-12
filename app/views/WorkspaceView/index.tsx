@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/core';
 
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
-import I18n from '../../i18n';
+ from '../../i18n';
 import Button from '../../containers/Button';
 import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { useTheme } from '../../theme';

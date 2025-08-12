@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import { dequal } from 'dequal';
 
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
@@ -45,8 +45,8 @@ const Content = React.memo(
 			content = (
 				<Text
 					style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
-					accessibilityLabel={I18n.t('Encrypted_message')}>
-					{I18n.t('Encrypted_message')}
+					accessibilityLabel={i18n.t('Encrypted_message')}>
+					{i18n.t('Encrypted_message')}
 				</Text>
 			);
 		} else if (isPreview) {
@@ -71,7 +71,7 @@ const Content = React.memo(
 		}
 
 		if (props.isIgnored) {
-			content = <Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Message_Ignored')}</Text>;
+			content = <Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{i18n.t('Message_Ignored')}</Text>;
 		}
 
 		return content ? <View style={props.isTemp && styles.temp}>{content}</View> : null;

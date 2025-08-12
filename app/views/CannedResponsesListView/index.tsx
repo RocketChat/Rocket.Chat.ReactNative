@@ -4,7 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import database from '../../lib/database';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';

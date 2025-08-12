@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';

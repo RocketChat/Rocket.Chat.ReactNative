@@ -6,7 +6,7 @@ import { getSupportedVersionsCloud } from '../services/restApi';
 import { TCloudInfo, IServerInfo, ISupportedVersions, ISupportedVersionsData, IApiServerInfo } from '../../definitions';
 import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
 import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
@@ -53,7 +53,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			if (!serverInfo?.success) {
 				return {
 					success: false,
-					message: I18n.t('Not_RC_Server')
+					message: i18n.t('Not_RC_Server')
 				};
 			}
 
@@ -110,14 +110,14 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			}
 			return {
 				success: false,
-				message: I18n.t('Not_RC_Server')
+				message: i18n.t('Not_RC_Server')
 			};
 		}
 	}
 
 	return {
 		success: false,
-		message: I18n.t('Not_RC_Server')
+		message: i18n.t('Not_RC_Server')
 	};
 }
 

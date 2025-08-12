@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 
 import { IAutocompleteSlashCommand } from '../../interfaces';
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import { useStyle } from './styles';
 
 export const AutocompleteSlashCommand = ({ item }: { item: IAutocompleteSlashCommand }) => {
@@ -16,7 +16,7 @@ export const AutocompleteSlashCommand = ({ item }: { item: IAutocompleteSlashCom
 			</View>
 			{item.subtitle ? (
 				<View style={styles.slashSubtitle}>
-					<Text style={styles.slashSubtitleText}>{I18n.isTranslated(item.subtitle) ? I18n.t(item.subtitle) : item.subtitle}</Text>
+					<Text style={styles.slashSubtitleText}>{i18n.isTranslated(item.subtitle) ? i18n.t(item.subtitle) : item.subtitle}</Text>
 				</View>
 			) : null}
 		</View>

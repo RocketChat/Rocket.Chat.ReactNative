@@ -12,7 +12,7 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
+ from '../../i18n';
 import database from '../../lib/database';
 import UserItem from '../../containers/UserItem';
 import { ISelectedUser } from '../../reducers/selectedUsers';

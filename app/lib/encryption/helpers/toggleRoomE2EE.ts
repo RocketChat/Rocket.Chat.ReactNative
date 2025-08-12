@@ -4,7 +4,7 @@ import { Services } from '../../services';
 import database from '../../database';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import log from '../../methods/helpers/log';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { TSubscriptionModel } from '../../../definitions';
 
 const optimisticUpdate = async (room: TSubscriptionModel, value: TSubscriptionModel['encrypted']) => {
@@ -29,9 +29,9 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 	}
 
 	const isEncrypted = room.encrypted;
-	const title = I18n.t(isEncrypted ? 'Disable_encryption_title' : 'Enable_encryption_title');
-	const message = I18n.t(isEncrypted ? 'Disable_encryption_description' : 'Enable_encryption_description');
-	const confirmationText = I18n.t(isEncrypted ? 'Disable' : 'Enable');
+	const title = i18n.t(isEncrypted ? 'Disable_encryption_title' : 'Enable_encryption_title');
+	const message = i18n.t(isEncrypted ? 'Disable_encryption_description' : 'Enable_encryption_description');
+	const confirmationText = i18n.t(isEncrypted ? 'Disable' : 'Enable');
 
 	// Toggle encrypted value
 	const newValue = !room.encrypted;
@@ -44,7 +44,7 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 		message,
 		[
 			{
-				text: I18n.t('Cancel'),
+				text: i18n.t('Cancel'),
 				style: 'cancel',
 				onPress: async () => {
 					// Revert to original value

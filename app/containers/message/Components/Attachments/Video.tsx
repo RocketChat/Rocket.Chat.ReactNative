@@ -4,7 +4,7 @@ import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import { IUserMessage } from '../../../../definitions';
 import { IAttachment } from '../../../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { useTheme } from '../../../../theme';
@@ -48,7 +48,7 @@ const CancelIndicator = () => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.cancelContainer}>
-			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{i18n.t('Cancel')}</Text>
 		</View>
 	);
 };
@@ -88,7 +88,7 @@ const Video = ({
 	const _onPress = async () => {
 		if (currentFile.video_type && !isTypeSupported(currentFile.video_type)) {
 			if (isIOS) {
-				EventEmitter.emit(LISTENER, { message: I18n.t('Unsupported_format') });
+				EventEmitter.emit(LISTENER, { message: i18n.t('Unsupported_format') });
 			} else {
 				await downloadVideoToGallery(url);
 			}
@@ -101,10 +101,10 @@ const Video = ({
 		try {
 			const fileDownloaded = await fileDownload(uri, file);
 			if (fileDownloaded) {
-				EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+				EventEmitter.emit(LISTENER, { message: i18n.t('saved_to_gallery') });
 			}
 		} catch (error) {
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-video') });
+			EventEmitter.emit(LISTENER, { message: i18n.t('error-save-video') });
 		}
 	};
 

@@ -4,7 +4,7 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import Base, { IBase } from './Base';
 import { TYPE } from './constants';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 
 interface IPasscodeChoose {
 	force?: boolean;
@@ -31,7 +31,7 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 	const onError = () => {
 		setTimeout(() => {
 			setStatus(TYPE.CHOOSE);
-			setSubtitle(I18n.t('Passcode_choose_error'));
+			setSubtitle(i18n.t('Passcode_choose_error'));
 			chooseRef?.current?.animate('shake');
 			chooseRef?.current?.clearPasscode();
 			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -45,7 +45,7 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 				type={TYPE.CONFIRM}
 				onEndProcess={changePasscode}
 				previousPasscode={previousPasscode}
-				title={I18n.t('Passcode_choose_confirm_title')}
+				title={i18n.t('Passcode_choose_confirm_title')}
 				onError={onError}
 			/>
 		);
@@ -56,8 +56,8 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 			ref={chooseRef}
 			type={TYPE.CHOOSE}
 			onEndProcess={firstStep}
-			title={I18n.t('Passcode_choose_title')}
-			subtitle={subtitle || (force ? I18n.t('Passcode_choose_force_set') : null)}
+			title={i18n.t('Passcode_choose_title')}
+			subtitle={subtitle || (force ? i18n.t('Passcode_choose_force_set') : null)}
 		/>
 	);
 };

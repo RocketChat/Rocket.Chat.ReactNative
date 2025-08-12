@@ -5,7 +5,7 @@ import Touchable from './Touchable';
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { IMessageBroadcast } from './interfaces';
@@ -28,7 +28,7 @@ const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
 					testID='message-broadcast-reply'>
 					<View style={styles.buttonInnerContainer}>
 						<CustomIcon name='arrow-back' size={20} color={themes[theme].fontWhite} />
-						<Text style={[styles.buttonText, { color: themes[theme].fontWhite }]}>{I18n.t('Reply')}</Text>
+						<Text style={[styles.buttonText, { color: themes[theme].fontWhite }]}>{i18n.t('Reply')}</Text>
 					</View>
 				</Touchable>
 			</View>

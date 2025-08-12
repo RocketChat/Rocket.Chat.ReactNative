@@ -2,7 +2,7 @@ import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor } from '../../definitions';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import RoomHeader from './RoomHeader';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
@@ -54,9 +54,9 @@ const RoomHeaderContainer = React.memo(
 		);
 
 		if (connecting) {
-			subtitle = I18n.t('Connecting');
+			subtitle = i18n.t('Connecting');
 		} else if (!connected) {
-			subtitle = I18n.t('Waiting_for_network');
+			subtitle = i18n.t('Waiting_for_network');
 		} else {
 			subtitle = subtitleProp;
 		}

@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 
 import { IAvatar } from '../../definitions';
 import { Services } from '../../lib/services';
-import I18n from '../../i18n';
+ from '../../i18n';
 import styles from './styles';
 import { useTheme } from '../../theme';
 import AvatarSuggestionItem from './AvatarSuggestionItem';

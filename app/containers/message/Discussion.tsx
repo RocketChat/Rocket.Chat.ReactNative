@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import Touchable from './Touchable';
 import { BUTTON_HIT_SLOP, formatMessageCount } from './utils';
 import styles from './styles';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { DISCUSSION } from './constants';
 import MessageContext from './Context';
@@ -24,7 +24,7 @@ const Discussion = React.memo(
 		const { onDiscussionPress } = useContext(MessageContext);
 		return (
 			<View style={{ gap: 4 }}>
-				<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
+				<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{i18n.t('Started_discussion')}</Text>
 				<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{msg}</Text>
 				<View style={[styles.buttonContainer, { gap: 8 }]}>
 					<Touchable

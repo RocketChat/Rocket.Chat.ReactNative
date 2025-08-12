@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 
-import I18n from '../i18n';
+import i18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import { useTheme } from '../theme';
@@ -42,7 +42,7 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
-				<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
+				<Text style={[styles.text, unreadText]}>{i18n.t('unread_messages')}</Text>
 				<View style={[styles.line, unreadLine, styles.marginHorizontal]} />
 				<Text style={[styles.text, unreadText]}>{date}</Text>
 			</View>
@@ -59,7 +59,7 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	}
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
+			<Text style={[styles.text, unreadText, styles.marginRight]}>{i18n.t('unread_messages')}</Text>
 			<View style={[styles.line, unreadLine]} />
 		</View>
 	);

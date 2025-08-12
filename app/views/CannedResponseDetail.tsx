@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
-import I18n from '../i18n';
+ from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
 import Button from '../containers/Button';
 import { TSupportedThemes, useTheme } from '../theme';

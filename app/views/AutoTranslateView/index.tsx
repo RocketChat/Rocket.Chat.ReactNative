@@ -6,7 +6,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ISubscription } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 import { ChatsStackParamList } from '../../stacks/types';

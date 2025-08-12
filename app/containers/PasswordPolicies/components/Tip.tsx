@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
 import { CustomIcon, TIconsName } from '../../CustomIcon';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import sharedStyles from '../../../views/Styles';
 
 interface ITipProps {
@@ -32,12 +32,12 @@ const Tip = ({ iconType, description }: ITipProps) => {
 	if (iconType === 'success') {
 		icon = 'success-circle';
 		color = colors.statusFontSuccess;
-		accessibilityLabel = `${I18n.t('Password_Tip_Success')}, `;
+		accessibilityLabel = `${i18n.t('Password_Tip_Success')}, `;
 	}
 	if (iconType === 'error') {
 		icon = 'error-circle';
 		color = colors.statusFontDanger;
-		accessibilityLabel = `${I18n.t('Password_Tip_Error')}, `;
+		accessibilityLabel = `${i18n.t('Password_Tip_Error')}, `;
 	}
 
 	return (

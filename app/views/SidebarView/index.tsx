@@ -9,7 +9,7 @@ import { Dispatch } from 'redux';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import I18n from '../../i18n';
+ from '../../i18n';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import userPreferences from '../../lib/methods/userPreferences';
 import { CustomIcon } from '../../containers/CustomIcon';

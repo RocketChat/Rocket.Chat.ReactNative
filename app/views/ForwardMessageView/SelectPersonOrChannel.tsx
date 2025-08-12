@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
 import { IForwardMessageViewSelectRoom } from './interfaces';

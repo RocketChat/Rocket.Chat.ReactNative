@@ -12,7 +12,7 @@ import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
 import { WidthAwareContext, WidthAwareView } from './Components/WidthAwareView';
@@ -160,7 +160,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const onLongPress = () => {
 		Clipboard.setString(url.url);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		EventEmitter.emit(LISTENER, { message: i18n.t('Copied_to_clipboard') });
 	};
 
 	const hasContent = !!(url.title || url.description);

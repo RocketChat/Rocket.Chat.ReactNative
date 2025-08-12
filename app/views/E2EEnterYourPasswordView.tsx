@@ -10,7 +10,7 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ControlledFormTextInput } from '../containers/TextInput';
-import I18n from '../i18n';
+ from '../i18n';
 import { useAppSelector } from '../lib/hooks';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';

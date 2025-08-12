@@ -7,7 +7,7 @@ import { ChatsStackParamList } from '../../../stacks/types';
 import { ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { TNavigation } from '../../../stacks/stackType';
 import database from '../../../lib/database';
-import I18n from '../../../i18n';
+ from '../../../i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '../../../lib/methods/helpers';
 import log from '../../../lib/methods/helpers/log';
 import { deleteRoom as actionDeleteRoom } from '../../../actions/room';

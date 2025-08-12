@@ -8,7 +8,7 @@ import { CustomIcon } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { useAppSelector } from '../../lib/hooks';
 import { showErrorAlertWithEMessage } from '../../lib/methods/helpers';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';

@@ -3,7 +3,7 @@ import * as DocumentPicker from 'expo-document-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { canUploadFile } from '../../../lib/methods/helpers';
 import log from '../../../lib/methods/helpers/log';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
@@ -27,9 +27,9 @@ export const useChooseMedia = ({
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
 	const libPickerLabels = {
-		cropperChooseText: I18n.t('Choose'),
-		cropperCancelText: I18n.t('Cancel'),
-		loadingLabelText: I18n.t('Processing')
+		cropperChooseText: i18n.t('Choose'),
+		cropperCancelText: i18n.t('Cancel'),
+		loadingLabelText: i18n.t('Processing')
 	};
 
 	const takePhoto = async () => {
@@ -145,7 +145,7 @@ export const useChooseMedia = ({
 	};
 
 	const handleError = (error?: string) => {
-		Alert.alert(I18n.t('Error_uploading'), error && I18n.isTranslated(error) ? I18n.t(error) : error);
+		Alert.alert(i18n.t('Error_uploading'), error && i18n.isTranslated(error) ? i18n.t(error) : error);
 	};
 
 	return {

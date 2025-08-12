@@ -6,7 +6,7 @@ import Switch from '../../containers/Switch';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
 import { useUserPreferences } from '../../lib/methods';

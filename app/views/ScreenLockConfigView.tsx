@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
 
-import I18n from '../i18n';
+ from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
 import * as List from '../containers/List';
 import database from '../lib/database';

@@ -9,7 +9,7 @@ import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers';
@@ -78,7 +78,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 				size={24}
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.fontDefault}
 			/>
-			<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
+			<Text style={[styles.text, { color: colors.fontDefault }]}>{i18n.t('Message_composer_Send_to_channel')}</Text>
 		</TouchableWithoutFeedback>
 	);
 };

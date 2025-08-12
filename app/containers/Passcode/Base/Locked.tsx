@@ -4,7 +4,7 @@ import { Grid } from 'react-native-easy-grid';
 import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
 import { TYPE } from '../constants';
 import { getDiff, getLockedUntil } from '../utils';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { useTheme } from '../../../theme';
 import styles from './styles';
 import Title from './Title';
@@ -44,7 +44,7 @@ const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
 		return null;
 	}
 
-	return <Subtitle text={I18n.t('Passcode_app_locked_subtitle', { timeLeft })} />;
+	return <Subtitle text={i18n.t('Passcode_app_locked_subtitle', { timeLeft })} />;
 });
 
 const Locked = React.memo(({ setStatus }: IPasscodeLocked) => {
@@ -63,7 +63,7 @@ const Locked = React.memo(({ setStatus }: IPasscodeLocked) => {
 	return (
 		<Grid style={[styles.grid, { backgroundColor: colors.strokeExtraLight }]}>
 			<LockIcon />
-			<Title text={I18n.t('Passcode_app_locked_title')} />
+			<Title text={i18n.t('Passcode_app_locked_title')} />
 			<Timer time={lockedUntil} setStatus={setStatus} />
 		</Grid>
 	);

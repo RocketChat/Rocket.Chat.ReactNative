@@ -1,4 +1,4 @@
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import Navigation from '../../navigation/appNavigation';
 import { Services } from '../../services';
 import { showErrorAlert } from './info';
@@ -23,7 +23,7 @@ export const closeLivechat = async ({
 			Navigation.navigate('RoomsListView');
 		}
 	} catch (e: any) {
-		showErrorAlert(I18n.isTranslated(e.error) ? I18n.t(e.error) : e.reason, I18n.t('Oops'));
+		showErrorAlert(i18n.isTranslated(e.error) ? i18n.t(e.error) : e.reason, i18n.t('Oops'));
 		log(e);
 	}
 };

@@ -8,7 +8,7 @@ import { inviteLinksCreate } from '../../actions/inviteLinks';
 import Button from '../../containers/Button';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';

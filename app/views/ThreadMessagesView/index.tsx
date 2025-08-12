@@ -9,7 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
+ from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import buildMessage from '../../lib/methods/helpers/buildMessage';

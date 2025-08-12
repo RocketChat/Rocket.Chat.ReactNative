@@ -9,7 +9,7 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ISearch, TSubscriptionModel } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import database from '../../lib/database';
 import { useTheme } from '../../theme';
 import { goRoom as goRoomMethod, TGoRoomItem } from '../../lib/methods/helpers/goRoom';

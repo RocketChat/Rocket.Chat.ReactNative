@@ -5,7 +5,7 @@ import { Control } from 'react-hook-form';
 import { useTheme } from '../../../../theme';
 import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import { TServerHistoryModel } from '../../../../definitions';
-import I18n from '../../../../i18n';
+ from '../../../../i18n';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { showActionSheetRef, hideActionSheetRef } from '../../../../containers/ActionSheet';
 import Touch from '../../../../containers/Touch';

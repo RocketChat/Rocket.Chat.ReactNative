@@ -4,7 +4,7 @@ import { Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { Bold, Italic, Strike } from './index';
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import { LISTENER } from '../../../Toast';
 import { useTheme } from '../../../../theme';
 import openLink from '../../../../lib/methods/helpers/openLink';
@@ -33,7 +33,7 @@ const Link = ({ value }: ILinkProps) => {
 
 	const onLongPress = () => {
 		Clipboard.setString(src.value);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		EventEmitter.emit(LISTENER, { message: i18n.t('Copied_to_clipboard') });
 	};
 
 	return (

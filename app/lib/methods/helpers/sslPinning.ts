@@ -3,7 +3,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 
 import UserPreferences from '../userPreferences';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
 import { extractHostname } from './server';
 import { ICertificate } from '../../../definitions';
 
@@ -37,8 +37,8 @@ const RCSSLPinning = Platform.select({
 					}
 					const { uri, name } = res.assets[0];
 					Alert.prompt(
-						I18n.t('Certificate_password'),
-						I18n.t('Whats_the_password_for_your_certificate'),
+						i18n.t('Certificate_password'),
+						i18n.t('Whats_the_password_for_your_certificate'),
 						[
 							{
 								text: 'OK',

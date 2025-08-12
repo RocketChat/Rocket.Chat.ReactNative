@@ -7,7 +7,7 @@ import { textInputDebounceTime } from '../../lib/constants';
 import { IMessageFromServer, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
+ from '../../i18n';
 import log from '../../lib/methods/helpers/log';
 import { isIOS, useDebounce } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';

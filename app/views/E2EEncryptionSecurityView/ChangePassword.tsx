@@ -4,7 +4,7 @@ import { StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
 import { textInputDebounceTime } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import * as List from '../../containers/List';
-import I18n from '../../i18n';
+ from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { FormTextInput } from '../../containers/TextInput';
 import Button from '../../containers/Button';

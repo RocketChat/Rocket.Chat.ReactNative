@@ -3,7 +3,7 @@ import { TextStyle, Text, StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import usePreviewFormatText from '../../lib/hooks/usePreviewFormatText';
 
 interface ICollapsibleText {
@@ -44,7 +44,7 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 					{`${truncatedText}... `}
 				</Text>
 				<Text onPress={() => setShowTruncated(false)} style={[styles.textInfo, { color: colors.fontHint }]}>
-					{I18n.t('Show_more')}
+					{i18n.t('Show_more')}
 				</Text>
 			</Text>
 		);
@@ -62,7 +62,7 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 						.splice(0, linesToTruncate)
 						.map(line => line.text)
 						.join('');
-					const truncatedTextLengthWithShowMore = text.length - (4 + I18n.t('Show_more').length);
+					const truncatedTextLengthWithShowMore = text.length - (4 + i18n.t('Show_more').length);
 					const clippedText = text.slice(0, truncatedTextLengthWithShowMore);
 					setTruncatedText(clippedText);
 				} else {
@@ -75,7 +75,7 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 					testID='collapsible-text-show-less'
 					onPress={() => setShowTruncated(true)}
 					style={[styles.textInfo, { color: colors.fontHint }]}>
-					{` ${I18n.t('Show_less')}`}
+					{` ${i18n.t('Show_less')}`}
 				</Text>
 			) : null}
 		</Text>

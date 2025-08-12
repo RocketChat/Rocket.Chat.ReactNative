@@ -2,7 +2,7 @@ import React from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { StyleProp, ViewStyle } from 'react-native';
 
-import I18n from '../../../../i18n';
+import i18n from '../../../../i18n';
 import { isIOS } from '../../../../lib/methods/helpers';
 import Container from './HeaderButtonContainer';
 import Item, { IHeaderButtonItem } from './HeaderButtonItem';
@@ -25,7 +25,7 @@ export const Drawer = ({
 	return (
 		<Container style={style} left>
 			<Item
-				accessibilityLabel={I18n.t('Menu')}
+				accessibilityLabel={i18n.t('Menu')}
 				iconName='hamburguer'
 				onPress={onPress}
 				testID={testID}
@@ -41,7 +41,7 @@ export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButt
 	return (
 		<Container left>
 			<Item
-				accessibilityLabel={I18n.t('Close')}
+				accessibilityLabel={i18n.t('Close')}
 				iconName='close'
 				onPress={arg => {
 					if (onPress) return onPress(arg);
@@ -57,7 +57,7 @@ export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButt
 export const CancelModal = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container left>
 		{isIOS ? (
-			<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} {...props} />
+			<Item title={i18n.t('Cancel')} onPress={onPress} testID={testID} {...props} />
 		) : (
 			<Item iconName='close' onPress={onPress} testID={testID} {...props} />
 		)}
@@ -85,6 +85,6 @@ export const Preferences = React.memo(({ onPress, testID, ...props }: IHeaderBut
 
 export const Legal = React.memo(
 	({ navigation, testID, onPress = () => navigation?.navigate('LegalView'), ...props }: IHeaderButtonCommon) => (
-		<More accessibilityLabel={I18n.t('More')} onPress={onPress} testID={testID} {...props} />
+		<More accessibilityLabel={i18n.t('More')} onPress={onPress} testID={testID} {...props} />
 	)
 );

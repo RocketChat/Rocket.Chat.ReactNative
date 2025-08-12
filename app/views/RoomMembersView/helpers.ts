@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 
 import { LISTENER } from '../../containers/Toast';
 import { IGetRoomRoles, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';

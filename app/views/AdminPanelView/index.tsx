@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import I18n from '../../i18n';
+ from '../../i18n';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';

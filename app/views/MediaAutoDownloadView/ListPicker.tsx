@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { MediaDownloadOption } from '../../lib/constants';

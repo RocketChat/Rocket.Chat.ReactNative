@@ -1,4 +1,4 @@
-import I18n from '../../../i18n';
+ from '../../../i18n';
 import { LISTENER } from '../../../containers/Toast';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../../lib/methods/helpers';

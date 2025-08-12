@@ -3,7 +3,7 @@ import { InteractionManager, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 
-import I18n from '../../i18n';
+ from '../../i18n';
 import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';

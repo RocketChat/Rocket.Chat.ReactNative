@@ -14,7 +14,7 @@ import SearchBox from '../../containers/SearchBox';
 import UserItem from '../../containers/UserItem';
 import Radio from '../../containers/Radio';
 import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { compareServerVersion, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';

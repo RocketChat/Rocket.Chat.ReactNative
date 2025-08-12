@@ -10,7 +10,7 @@ import Button from '../containers/Button';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import { LISTENER } from '../containers/Toast';
-import I18n from '../i18n';
+ from '../i18n';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
 import { useAppSelector } from '../lib/hooks';
 import EventEmitter from '../lib/methods/helpers/events';

@@ -13,7 +13,7 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { IBaseScreen } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { getShowLoginButton } from '../../selectors/login';
 import { OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';

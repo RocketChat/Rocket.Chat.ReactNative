@@ -10,7 +10,7 @@ import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack
 import * as List from '../../containers/List';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
-import I18n from '../../i18n';
+ from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';

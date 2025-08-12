@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { IActions } from './interfaces';
 
 export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
@@ -16,7 +16,7 @@ export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 	return (
 		<>
 			<Elements />
-			{showMoreVisible && <Button title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
+			{showMoreVisible && <Button title={i18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
 		</>
 	);
 };

@@ -15,7 +15,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
-import I18n from '../../i18n';
+ from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';

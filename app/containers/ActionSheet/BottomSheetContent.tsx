@@ -3,7 +3,7 @@ import React from 'react';
 import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import I18n from '../../i18n';
+import i18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { IActionSheetItem, Item } from './Item';
 import { TActionSheetOptionsItem } from './Provider';
@@ -30,8 +30,8 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 			<Touch
 				onPress={hide}
 				style={[styles.button, { backgroundColor: colors.surfaceHover, height }]}
-				accessibilityLabel={I18n.t('Cancel')}>
-				<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>
+				accessibilityLabel={i18n.t('Cancel')}>
+				<Text style={[styles.text, { color: colors.fontDefault }]}>{i18n.t('Cancel')}</Text>
 			</Touch>
 		) : null;
 

@@ -5,7 +5,7 @@ import { textInputDebounceTime } from '../lib/constants';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
-import I18n from '../i18n';
+ from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { useDebounce } from '../lib/methods/helpers';
 import { TNavigation } from '../stacks/stackType';

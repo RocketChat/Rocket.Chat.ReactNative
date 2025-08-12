@@ -11,7 +11,7 @@ import { setUser } from '../../actions/login';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { RootEnum } from '../../definitions';
-import I18n, { isRTL, LANGUAGES } from '../../i18n';
+, { isRTL, LANGUAGES } from '../../i18n';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';

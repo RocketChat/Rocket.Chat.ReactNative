@@ -6,7 +6,7 @@ import Touch from '../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import * as List from '../../containers/List';
-import I18n from '../../i18n';
+ from '../../i18n';
 import styles from './styles';
 import Switch from '../../containers/Switch';
 import { useTheme } from '../../theme';
