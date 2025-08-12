@@ -91,13 +91,6 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
 
-      - name: Upload Fastlane gym log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fastlane-gym-log
-          path: /Users/runner/Library/Logs/gym/Rocket.Chat Experimental-RocketChatRN.log
-      
       - name: Find latest xcarchive path
         id: find_xcarchive
         run: |

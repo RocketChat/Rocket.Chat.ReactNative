@@ -13,8 +13,7 @@ onFlowStart:
     id: 'login-view-more'
 - assertVisible:
     id: 'legal-view'
-- tapOn:
-    id: 'custom-header-back'
+- runFlow: ../helpers/go-back.yaml
 - scrollUntilVisible:
     element:
       text: 'Create an account'

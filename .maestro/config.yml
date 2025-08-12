@@ -5,5 +5,4 @@ flows:
   - onboarding/register/*
   - onboarding/workspace/*
 excludeTags:
-  - 'skip'
-  - 'utill'
+  - 'util'

@@ -4,9 +4,6 @@ jsEngine: graaljs
 
 ---
 - runFlow: ../../helpers/launch-app.yaml
-- extendedWaitUntil:
-    visible: 'Add Workspace'
-    timeout: 60000
 - tapOn:
     text: 'Workspace URL. Required.'
 - inputText:

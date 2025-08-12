@@ -1,6 +1,6 @@
 appId: chat.rocket.reactnative
 tags:
-  - 'utill'
+  - 'util'
 
 ---
 - runScript: ../scripts/random.js

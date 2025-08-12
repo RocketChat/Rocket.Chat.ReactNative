@@ -1,6 +1,6 @@
 appId: chat.rocket.reactnative
 tags:
-  - 'utill'
+  - 'util'
 jsEngine: graaljs
 onFlowStart:
   - runFlow: setup.yaml

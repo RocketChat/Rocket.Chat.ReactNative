@@ -65,7 +65,7 @@ jobs:
 
       - name: Set gradle.properties
         run: |
-          echo " " >> android/gradle.properties
+          echo " " > android/gradle.properties
           echo "KEYSTORE=release.keystore" >> android/gradle.properties
           echo "KEYSTORE_PASSWORD=${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}" >> android/gradle.properties
           echo "KEY_ALIAS=${{ secrets.EXPERIMENTAL_KEY_ALIAS }}" >> android/gradle.properties
