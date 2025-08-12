@@ -1542,7 +1542,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - react-native-background-timer (2.4.1):
     - React-Core
-  - react-native-cameraroll (7.5.0):
+  - react-native-cameraroll (7.10.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1625,7 +1625,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (5.4.0):
     - React-Core
-  - react-native-simple-crypto (0.6.1):
+  - react-native-simple-crypto (0.6.2):
     - OpenSSL-Universal (= 1.1.1100)
     - React
   - react-native-slider (4.5.0):
@@ -2760,7 +2760,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 3fc69e6abffd8caed7c78ba1b481dc83ab913f4e
   React-microtasksnativemodule: 44180d1c009908666733364261fabf0613ac77e7
   react-native-background-timer: 4638ae3bee00320753647900b21260b10587b6f7
-  react-native-cameraroll: 95908ff3754b6d4adbdef02bee268f742ca3973b
+  react-native-cameraroll: 0c3468369abfd7fc451a894e6ff3e5a2091a4cf9
   react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
   react-native-keyboard-controller: 3fa890cbbc508b09b895781ff3d8ee1b5c96d97d
   react-native-mmkv-storage: b7eee9d281f4ec2108510548959b207a91854494
@@ -2768,7 +2768,7 @@ SPEC CHECKSUMS:
   react-native-notifications: 3bafa1237ae8a47569a84801f17d80242fe9f6a5
   react-native-restart: f6f591aeb40194c41b9b5013901f00e6cf7d0f29
   react-native-safe-area-context: 9d72abf6d8473da73033b597090a80b709c0b2f1
-  react-native-simple-crypto: 0a850b4cecdad714b9f06bf582b78fbcc05710e3
+  react-native-simple-crypto: 932ea9243f76ff3d468ecf85868daf4fb35422e4
   react-native-slider: 9a4de0540a45e4a479769f0f404409ff03c3c4fa
   react-native-webview: e12647c3892d4ee161aee5b86458fa49ba1e1133
   React-NativeModulesApple: 5b234860053d0dd11f3442f38b99688ff1c9733b
