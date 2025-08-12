@@ -139,6 +139,7 @@
 		"remove-markdown": "^0.3.0",
 		"reselect": "4.0.0",
 		"semver": "7.5.2",
+		"sp-react-native-in-app-updates": "^1.5.0",
 		"transliteration": "2.3.5",
 		"typed-redux-saga": "1.5.0",
 		"ua-parser-js": "1.0.33",
