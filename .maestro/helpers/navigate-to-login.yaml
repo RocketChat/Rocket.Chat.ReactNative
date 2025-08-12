@@ -9,7 +9,6 @@ tags:
 - extendedWaitUntil:
     timeout: 60000
     visible: Login
-- assertVisible: Login
 - tapOn: Login
 - extendedWaitUntil:
     visible:

@@ -25,7 +25,7 @@ const login = (username, password) => {
     return { authToken, userId }
 };
 
-const createUser = () => {
+const createUser = (customProps) => {
     login(output.account.adminUser, output.account.adminPassword);
     
     http.post(`${data.server}/api/v1/users.create`, {
@@ -42,10 +42,22 @@ const createUser = () => {
         })
     });
 
+    console.log(JSON.stringify({
+        username: user.username,
+        name: user.name,
+        password: user.password,
+        email: user.email,
+        ...(customProps || {})
+    }))
+
     data.accounts.push({
         username: user.username,
         password: user.password
     });
+}
+
+const createUserWithPasswordChange = () => {
+    createUser({ requirePasswordChange: true });
 }
 
 const deleteCreatedUser = async ({ username: usernameToDelete }) => {
@@ -88,6 +100,7 @@ output.user = user;
 
 output.utils = {
     createUser,
+    createUserWithPasswordChange,
     logAccounts,
     deleteCreatedUsers
 };

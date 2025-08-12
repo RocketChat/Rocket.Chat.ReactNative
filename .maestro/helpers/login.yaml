@@ -3,8 +3,17 @@ tags:
   - 'util'
 jsEngine: graaljs
 onFlowStart:
-  - runFlow: setup.yaml
-  - evalScript: ${output.utils.createUser()}
+  - runFlow:
+      file: setup.yaml
+      env:
+        skipUser: true
+      
+  - runFlow:
+      when:
+        true: ${!USERNAME}
+      commands:
+        - evalScript: ${console.log('No username, creating user')}
+        - evalScript: ${output.utils.createUser()}
 
 ---
 - runFlow: navigate-to-login.yaml

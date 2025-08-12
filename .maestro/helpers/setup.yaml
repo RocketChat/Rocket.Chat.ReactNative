@@ -6,4 +6,7 @@ tags:
 - runScript: ../scripts/random.js
 - runScript: ../scripts/e2e_account.js
 - runScript: ../scripts/data.js
-- runScript: ../scripts/data_setup.js
+- runScript:
+    when:
+      true: ${!skipUser}
+    file: ../scripts/data_setup.js
