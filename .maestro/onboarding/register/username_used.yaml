@@ -3,6 +3,7 @@ name: Create Account (Username Already Used)
 jsEngine: graaljs
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
+  - evalScript: ${output.utils.createUser()}
 
 ---
 - runFlow: ../../helpers/launch-app.yaml
@@ -11,10 +12,10 @@ onFlowStart:
 - inputText: ${output.user.name}
 - pressKey: enter
 - tapOn: Username. Required.
-- inputText: diego.mello
+- inputText: ${output.user.username}
 - pressKey: enter
 - tapOn: Email. Required.
-- inputText: ${output.user.email}
+- inputText: ${'new'+output.user.email}
 - pressKey: enter
 - tapOn: Password. Required.
 - inputText: ${output.user.password}
