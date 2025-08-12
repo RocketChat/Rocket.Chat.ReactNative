@@ -113,6 +113,10 @@ const TwoFactor = React.memo(() => {
 
 	const showTwoFactor = (args: EventListenerMethod) => {
 		setData(args);
+		if (args.invalid) {
+			setError('code', { message: I18n.t('Invalid_code'), type: 'validate' });
+			AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_code'));
+		}
 	};
 
 	useEffect(() => {
@@ -142,12 +146,6 @@ const TwoFactor = React.memo(() => {
 		setData({});
 	};
 
-	useEffect(() => {
-		if (data.invalid) {
-			setError('code', { message: I18n.t('Invalid_code'), type: 'validate' });
-			AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_code'));
-		}
-	}, [data.invalid]);
 	const color = colors.fontTitlesLabels;
 	return (
 		<Modal
