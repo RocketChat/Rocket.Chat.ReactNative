@@ -281,6 +281,23 @@ describe('E2E Encryption', () => {
 			await mockMessage(getMessage(5));
 			await readMessages(4);
 		});
+
+		it('should send a message, edit it and be able to read it', async () => {
+			await mockMessage(getMessage(99));
+			await element(by[textMatcher](getMessage(99)))
+				.atIndex(0)
+				.longPress();
+			await waitFor(element(by.id('action-sheet')))
+				.toExist()
+				.withTimeout(2000);
+			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
+			await element(by[textMatcher]('Edit')).atIndex(0).tap();
+			await element(by.id('message-composer-input')).replaceText(getMessage(6));
+			await element(by.id('message-composer-send')).tap();
+			await readMessages(5);
+		});
 	});
 
 	// describe('Login as UserA, accept new room key, send a message and read everything', () => {

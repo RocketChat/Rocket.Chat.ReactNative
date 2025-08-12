@@ -407,11 +407,7 @@ export default class EncryptionRoom {
 				e2eMentions: getE2EEMentions(message.msg),
 				content: {
 					algorithm: 'rc.v1.aes-sha2' as const,
-					ciphertext: await this.encryptText(
-						EJSON.stringify({
-							msg: message.msg
-						})
-					)
+					ciphertext: msg
 				}
 			};
 		} catch {
