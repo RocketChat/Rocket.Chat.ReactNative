@@ -43,6 +43,18 @@ const initialStoreState = () => {
 };
 initialStoreState();
 
+jest.mock('./hooks/useSubscription', () => ({
+	useSubscription: jest.fn(() => ({
+		rid: 'rid',
+		t: 'd',
+		name: 'Room Name',
+		fname: 'Room Name',
+		usernames: ['user1', 'user2'],
+		prid: undefined,
+		federated: false
+	}))
+}));
+
 const initialContext = {
 	rid: 'rid',
 	tmid: undefined,
