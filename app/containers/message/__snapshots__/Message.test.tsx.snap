@@ -686,6 +686,1653 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
 </RCTScrollView>
 `;
 
+exports[`Story Snapshots: Avatar should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="no.avatar 10:00:00 AM This message has no avatar..  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 10,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="no.avatar's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/no.avatar?format=png&size=72",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
+                  }
+                }
+                testID="username-header-no.avatar"
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  no.avatar
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
+              <View>
+                <View
+                  style={
+                    {
+                      "gap": 2,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="This message has no avatar."
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        This message has no avatar.
+                      </Text>
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM This message uses the user's profile picture as the avatar..  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 10,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
+                  }
+                }
+                testID="username-header-diego.mello"
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
+              <View>
+                <View
+                  style={
+                    {
+                      "gap": 2,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="This message uses the user's profile picture as the avatar."
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        This message uses the user's profile picture as the avatar.
+                      </Text>
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM This message uses a Unicode emoji as the avatar..  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 10,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "color": "#2F343D",
+                      },
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "borderRadius": 4,
+                        "height": 36,
+                        "width": 36,
+                      },
+                      {
+                        "fontSize": 30,
+                        "lineHeight": 30,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                      },
+                    ]
+                  }
+                >
+                  😄
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
+                  }
+                }
+                testID="username-header-diego.mello"
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
+              <View>
+                <View
+                  style={
+                    {
+                      "gap": 2,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="This message uses a Unicode emoji as the avatar."
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        This message uses a Unicode emoji as the avatar.
+                      </Text>
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM This message uses a custom animated emoji as the avatar..  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 10,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="contain"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  source={
+                    [
+                      {
+                        "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
+                  }
+                }
+                testID="username-header-diego.mello"
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
+              <View>
+                <View
+                  style={
+                    {
+                      "gap": 2,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="This message uses a custom animated emoji as the avatar."
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        This message uses a custom animated emoji as the avatar.
+                      </Text>
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM This message uses a custom static emoji as the avatar..  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "gap": 10,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="contain"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  source={
+                    [
+                      {
+                        "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
+                  }
+                }
+                testID="username-header-diego.mello"
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
+              <View>
+                <View
+                  style={
+                    {
+                      "gap": 2,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    <Text
+                      style={
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        }
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="This message uses a custom static emoji as the avatar."
+                        style={
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
+                        }
+                      >
+                        This message uses a custom static emoji as the avatar.
+                      </Text>
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Story Snapshots: Basic should match snapshot 1`] = `
 <RCTScrollView
   style={
@@ -70609,6 +72256,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                               "textAlign": "left",
                             },
                             {},
+                            false,
                           ]
                         }
                       >
@@ -71582,6 +73230,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                               "textAlign": "left",
                             },
                             {},
+                            false,
                           ]
                         }
                       >
