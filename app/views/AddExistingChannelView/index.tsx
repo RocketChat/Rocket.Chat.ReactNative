@@ -1,8 +1,8 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import { textInputDebounceTime } from '../../lib/constants';
 import * as List from '../../containers/List';
@@ -14,7 +14,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sendLoadingEvent } from '../../containers/Loading';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../../definitions';
@@ -123,7 +122,6 @@ const AddExistingChannelView = () => {
 	const isChecked = (rid: string) => selected.includes(rid);
 
 	const toggleChannel = (rid: string) => {
-		animateNextTransition();
 		if (!isChecked(rid)) {
 			logEvent(events.AEC_ADD_CHANNEL);
 			setSelected([...selected, rid]);
@@ -152,7 +150,7 @@ const AddExistingChannelView = () => {
 
 	return (
 		<SafeAreaView testID='add-existing-channel-view'>
-			<FlatList
+			<Animated.FlatList
 				data={channels}
 				extraData={channels}
 				keyExtractor={item => item.id}
@@ -178,6 +176,7 @@ const AddExistingChannelView = () => {
 				ItemSeparatorComponent={List.Separator}
 				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
+				itemLayoutAnimation={LinearTransition.duration(150)}
 			/>
 		</SafeAreaView>
 	);

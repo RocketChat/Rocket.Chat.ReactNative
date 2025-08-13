@@ -1,8 +1,9 @@
 import React from 'react';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import { ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
@@ -12,7 +13,6 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import Radio from '../containers/Radio';
@@ -126,7 +126,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	toggleItem = (rid: string) => {
 		const { selected } = this.state;
 
-		animateNextTransition();
 		if (this.isRadio) {
 			if (!this.isChecked(rid)) {
 				this.setState({ selected: [rid] }, () => this.setHeader());
@@ -196,7 +195,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
-				<FlatList
+				<Animated.FlatList
 					data={!isSearching ? data : dataFiltered}
 					extraData={this.state}
 					keyExtractor={item => item.rid}
@@ -204,6 +203,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
 					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
 					keyboardShouldPersistTaps='always'
+					itemLayoutAnimation={LinearTransition.duration(150)}
 				/>
 			</SafeAreaView>
 		);
