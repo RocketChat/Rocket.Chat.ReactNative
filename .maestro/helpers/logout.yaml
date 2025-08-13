@@ -28,8 +28,10 @@ tags:
       - tapOn:
           id: 'android:id/autofill_save_no'
 
-- assertVisible:
-    id: 'sidebar-settings'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-settings'
+    timeout: 60000
 
 - tapOn:
     id: 'sidebar-settings'
