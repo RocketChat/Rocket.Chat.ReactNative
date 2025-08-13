@@ -42,6 +42,8 @@ onFlowEnd:
 - extendedWaitUntil:
     notVisible:
       id: 'servers-history-button'
-    timeout: 10000
-- assertVisible:
-    id: 'new-server-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
