@@ -1,0 +1,19 @@
+appId: chat.rocket.reactnative
+name: Valid Workspace
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+
+---
+- runFlow: ../../helpers/launch-app.yaml
+- tapOn:
+    text: 'Workspace URL. Required.'
+- inputText:
+    text: ${output.data.server}
+- tapOn: 'Connect'
+- extendedWaitUntil:
+    visible: 'Login'
+    timeout: 60000
+- extendedWaitUntil:
+    visible: 'Create an account'
+    timeout: 60000
