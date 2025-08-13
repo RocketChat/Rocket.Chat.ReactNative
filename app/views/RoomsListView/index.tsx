@@ -28,6 +28,7 @@ import { useHeader } from './hooks/useHeader';
 import { useRefresh } from './hooks/useRefresh';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
+import { ITEM_LAYOUT_ANIMATION_DURATION } from '../../lib/constants/animation';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -130,7 +131,7 @@ const RoomsListView = memo(function RoomsListView() {
 			windowSize={9}
 			onEndReachedThreshold={0.5}
 			keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
-			itemLayoutAnimation={LinearTransition.duration(150)}
+			itemLayoutAnimation={LinearTransition.duration(ITEM_LAYOUT_ANIMATION_DURATION)}
 		/>
 	);
 });

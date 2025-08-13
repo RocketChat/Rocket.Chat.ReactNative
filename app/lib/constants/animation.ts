@@ -1,0 +1,1 @@
+export const ITEM_LAYOUT_ANIMATION_DURATION = 150;

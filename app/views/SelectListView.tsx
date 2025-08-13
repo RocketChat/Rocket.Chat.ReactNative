@@ -19,6 +19,7 @@ import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
 import { IApplicationState } from '../definitions';
 import { TDataSelect } from '../definitions/IDataSelect';
+import { ITEM_LAYOUT_ANIMATION_DURATION } from '../lib/constants/animation';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -203,7 +204,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
 					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
 					keyboardShouldPersistTaps='always'
-					itemLayoutAnimation={LinearTransition.duration(150)}
+					itemLayoutAnimation={LinearTransition.duration(ITEM_LAYOUT_ANIMATION_DURATION)}
 				/>
 			</SafeAreaView>
 		);

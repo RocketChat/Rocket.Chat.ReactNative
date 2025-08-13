@@ -27,6 +27,7 @@ import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
 import { shareSetParams } from '../../actions/share';
 import { appStart } from '../../actions/app';
+import { ITEM_LAYOUT_ANIMATION_DURATION } from '../../lib/constants/animation';
 
 interface IFileToShare {
 	filename: string;
@@ -496,7 +497,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
-					itemLayoutAnimation={LinearTransition.duration(150)}
+					itemLayoutAnimation={LinearTransition.duration(ITEM_LAYOUT_ANIMATION_DURATION)}
 				/>
 			</SafeAreaView>
 		);

@@ -21,6 +21,7 @@ import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import Navigation from '../../lib/navigation/appNavigation';
+import { ITEM_LAYOUT_ANIMATION_DURATION } from '../../lib/constants/animation';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 type TRoute = RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
@@ -176,7 +177,7 @@ const AddExistingChannelView = () => {
 				ItemSeparatorComponent={List.Separator}
 				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
-				itemLayoutAnimation={LinearTransition.duration(150)}
+				itemLayoutAnimation={LinearTransition.duration(ITEM_LAYOUT_ANIMATION_DURATION)}
 			/>
 		</SafeAreaView>
 	);

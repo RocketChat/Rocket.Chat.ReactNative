@@ -8,6 +8,7 @@ import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
+import { ITEM_LAYOUT_ANIMATION_DURATION } from '../../../../lib/constants/animation';
 
 const styles = StyleSheet.create({
 	list: {
@@ -50,7 +51,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				windowSize={10}
 				scrollEventThrottle={16}
 				onScroll={scrollHandler}
-				itemLayoutAnimation={LinearTransition.duration(150)}
+				itemLayoutAnimation={LinearTransition.duration(ITEM_LAYOUT_ANIMATION_DURATION)}
 				{...props}
 				{...scrollPersistTaps}
 			/>
