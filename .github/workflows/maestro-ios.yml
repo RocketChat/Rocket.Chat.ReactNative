@@ -1,10 +1,10 @@
-name: Simulator Test
+name: Maestro Tests on iOS
 
 on:
   workflow_call:
 
 jobs:
-  install-app:
+  ios-test:
     runs-on: macos-15
 
     steps:
