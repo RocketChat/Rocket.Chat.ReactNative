@@ -2209,10 +2209,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bugsnag/cli@^2.9.2":
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/@bugsnag/cli/-/cli-2.9.2.tgz#10d464bfc2841ce22157442d9115d811c419c468"
-  integrity sha512-t9AwTJGy34Tz8h7AkaXNxlVhiSJNTgnl9yQJPauIvzHytQcOdGNgP0OTZ+82rpdNTq69mbbkJsaC2k7c9jXLUg==
+"@bugsnag/cli@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@bugsnag/cli/-/cli-3.2.1.tgz#0c0149920e940c1a05f4492ef991bbe83741f2de"
+  integrity sha512-IbHTmYo2VSOMaTrFGclRByXwQF/KhIji/EGVVKAtzN8ZlJrmsD9vYr+aUEouhowagG8mcJub6jtUkBnUUOES7Q==
   dependencies:
     yaml "^2.7.0"
 
