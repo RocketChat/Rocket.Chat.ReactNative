@@ -10,9 +10,9 @@ onFlowEnd:
 - runFlow: ../helpers/launch-app.yaml
 - runFlow: ../helpers/login.yaml
 - runFlow: ../helpers/logout.yaml
+
 - assertVisible:
     id: 'servers-history-button'
-
 - tapOn:
     id: 'servers-history-button'
 - assertVisible:
@@ -26,7 +26,7 @@ onFlowEnd:
     id: 'login-view-submit'
 - assertVisible: ${output.user.username}
 
-# should delete server from history
+# we are going back to add workspace from login screen
 - runFlow: ../helpers/go-back.yaml
 - runFlow: ../helpers/go-back.yaml
 
