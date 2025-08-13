@@ -1,0 +1,68 @@
+name: Maestro Tests on Android
+
+on:
+  workflow_call:
+
+jobs:
+  android-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: Android Experimental APK
+
+      - name: Setup E2E Account
+        uses: ./.github/actions/e2e-account
+        with:
+          E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+        
+      - name: Enable KVM group permissions
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Start Android Emulator and Run Maestro Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          disk-size: 4096M
+          arch: x86_64
+          target: google_apis
+          profile: pixel_7_pro
+          cores: 4
+          ram-size: 4096M
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            adb install app-experimental-release.apk
+            adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
+            sleep 10
+            adb shell am force-stop chat.rocket.reactnative
+            export MAESTRO_USE_GRAALJS=true
+            maestro test .maestro --format junit --output maestro-report.xml
+
+      - name: Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Test Report
+          path: maestro-report.xml
+
+      - name: Upload Maestro Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Maestro Logs
+          path: ~/.maestro/tests/
