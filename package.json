@@ -32,7 +32,7 @@
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
 	},
 	"dependencies": {
-		"@bugsnag/react-native": "^8.3.0",
+		"@bugsnag/react-native": "^8.4.0",
 		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
 		"@hookform/resolvers": "^2.9.10",
 		"@notifee/react-native": "7.8.2",
@@ -162,7 +162,7 @@
 		"@babel/plugin-transform-named-capturing-groups-regex": "^7.22.5",
 		"@babel/preset-env": "^7.25.3",
 		"@babel/runtime": "^7.25.0",
-		"@bugsnag/cli": "^2.9.2",
+		"@bugsnag/cli": "^3.2.1",
 		"@bugsnag/source-maps": "^2.3.3",
 		"@gorhom/bottom-sheet": "^5.1.6",
 		"@react-native-community/cli": "18.0.0",
