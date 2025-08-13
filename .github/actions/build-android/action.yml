@@ -88,7 +88,7 @@ runs:
         echo -e "android.useAndroidX=true" >> ./gradle.properties
         echo -e "android.enableJetifier=true" >> ./gradle.properties
         echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
-        echo -e "newArchEnabled=false" >> ./gradle.properties
+        echo -e "newArchEnabled=true" >> ./gradle.properties
         echo -e "hermesEnabled=true" >> ./gradle.properties
         echo -e "VERSIONCODE=${{ inputs.VERSIONCODE }}" >> ./gradle.properties
 
