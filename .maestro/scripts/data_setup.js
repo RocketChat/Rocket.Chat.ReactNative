@@ -42,14 +42,6 @@ const createUser = (customProps) => {
         })
     });
 
-    console.log(JSON.stringify({
-        username: user.username,
-        name: user.name,
-        password: user.password,
-        email: user.email,
-        ...(customProps || {})
-    }))
-
     data.accounts.push({
         username: user.username,
         password: user.password
