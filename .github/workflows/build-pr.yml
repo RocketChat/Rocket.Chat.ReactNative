@@ -70,27 +70,27 @@ jobs:
   e2e-build-android:
     name: E2E Build Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/e2e_build_android.yml
+    uses: ./.github/workflows/e2e-build-android.yml
     needs: [e2e-hold]
     secrets: inherit
 
   e2e-run-android:
     name: E2E Run Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/maestro_android.yml
+    uses: ./.github/workflows/maestro-android.yml
     needs: [e2e-build-android]
     secrets: inherit
     
   e2e-build-ios:
     name: E2E Build iOS
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/e2e_build_ios.yml
+    uses: ./.github/workflows/e2e-build-ios.yml
     needs: [e2e-hold]
     secrets: inherit
     
   e2e-run-ios:
     name: E2E Run iOS
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/maestro_ios.yml
+    uses: ./.github/workflows/maestro-ios.yml
     needs: [e2e-build-ios]
     secrets: inherit

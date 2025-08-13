@@ -9,4 +9,4 @@ tags:
 - runScript:
     when:
       true: ${!skipUser}
-    file: ../scripts/data_setup.js
+    file: ../scripts/data-setup.js
