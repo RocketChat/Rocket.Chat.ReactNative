@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, { LinearTransition, runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
@@ -33,7 +33,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 
 	return (
 		<View style={styles.list}>
-			{/* @ts-ignore */}
+			{/* @ts-expect-error: TODO: fix this */}
 			<Animated.FlatList
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
@@ -50,6 +50,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				windowSize={10}
 				scrollEventThrottle={16}
 				onScroll={scrollHandler}
+				itemLayoutAnimation={LinearTransition.duration(150)}
 				{...props}
 				{...scrollPersistTaps}
 			/>

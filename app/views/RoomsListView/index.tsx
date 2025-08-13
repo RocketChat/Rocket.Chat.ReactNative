@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { memo, useContext } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 
@@ -114,7 +115,7 @@ const RoomsListView = memo(function RoomsListView() {
 	}
 
 	return (
-		<FlatList
+		<Animated.FlatList
 			data={searchEnabled ? searchResults : subscriptions}
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
@@ -129,6 +130,7 @@ const RoomsListView = memo(function RoomsListView() {
 			windowSize={9}
 			onEndReachedThreshold={0.5}
 			keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
+			itemLayoutAnimation={LinearTransition.duration(150)}
 		/>
 	);
 });
