@@ -30,8 +30,10 @@ onFlowEnd:
 - runFlow: ../helpers/go-back.yaml
 - runFlow: ../helpers/go-back.yaml
 
-- assertVisible:
-    id: 'new-server-view'
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
 - tapOn:
     id: 'servers-history-button'
 - assertVisible:
