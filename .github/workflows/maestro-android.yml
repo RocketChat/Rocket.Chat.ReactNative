@@ -1,4 +1,4 @@
-name: Maestro Tests on Android
+name: Maestro Tests on Android 
 
 on:
   workflow_call:
