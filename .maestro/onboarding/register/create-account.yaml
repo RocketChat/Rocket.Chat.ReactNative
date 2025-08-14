@@ -3,6 +3,8 @@ name: Create Account
 jsEngine: graaljs
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
+  - evalScript: ${output.user = output.randomUser()}
+
 
 ---
 - runFlow: ../../helpers/launch-app.yaml
