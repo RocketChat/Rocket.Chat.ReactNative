@@ -323,7 +323,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			searchResults: result,
 			searchText: text
 		});
-		w;
 	};
 
 	initSearch = () => {
