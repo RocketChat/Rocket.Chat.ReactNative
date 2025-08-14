@@ -278,7 +278,7 @@ onFlowEnd:
     visible:
       id: room-actions-view
     timeout: 60000
-    
+
 # should add users to the team
 - tapOn:
     id: room-actions-members
@@ -320,7 +320,7 @@ onFlowEnd:
 - extendedWaitUntil:
     visible:
       id: select-users-view-item-${output.secondUser.username}
-    timeout: 
+    timeout:
 - tapOn:
     id: select-users-view-item-${output.secondUser.username}
 - extendedWaitUntil:
@@ -405,7 +405,7 @@ onFlowEnd:
     timeout: 60000
 - runFlow:
     file: './utils/close-action-sheet.yaml'
-    
+
 # should leave team
 - runFlow: '../helpers/go-back.yaml'
 - extendedWaitUntil:
