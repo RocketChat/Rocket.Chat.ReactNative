@@ -5,7 +5,6 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
   - evalScript: ${output.user = output.randomUser()}
 
-
 ---
 - runFlow: ../../helpers/launch-app.yaml
 - runFlow: ../../helpers/navigate-to-register.yaml
