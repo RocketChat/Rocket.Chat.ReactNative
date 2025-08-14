@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
@@ -21,13 +21,12 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		marginTop: 4,
 		gap: 4
 	},
 	textContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		padding: 15,
+		padding: 12,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start'
 	},
@@ -68,45 +67,61 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 	const { colors } = useTheme();
 	const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
-	const maxSize = useContext(WidthAwareContext);
+	const [contentWidth, setContentWidth] = useState(0);
+	const maxSize = contentWidth;
+	// const maxSize = useContext(WidthAwareContext);
+	// console.log('maxSize', maxSize, 'loaded', imageLoadedState, 'imagedimensions', imageDimensions);
 
-	useEffect(() => {
-		if (image) {
+	useLayoutEffect(() => {
+		if (image && contentWidth > 0) {
 			Image.loadAsync(image, {
 				onError: () => {
 					setImageLoadedState('error');
-				}
+				},
+				maxWidth: contentWidth
 			}).then(image => {
 				setImageDimensions({ width: image.width, height: image.height });
 			});
 		}
-	}, [image]);
+	}, [image, contentWidth]);
 
 	let imageStyle = {};
 	let containerStyle: ViewStyle = {};
 
-	if (imageLoadedState === 'done') {
-		const width = Math.min(imageDimensions.width, maxSize) || 0;
-		const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
-		imageStyle = {
-			width,
-			height
-		};
+	if (!contentWidth || !imageDimensions.width || !imageDimensions.height) {
+		return (
+			<View
+				style={{ flex: 1, height: 150, backgroundColor: 'purple' }}
+				onLayout={ev => {
+					if (ev.nativeEvent.layout.width) {
+						setContentWidth(ev.nativeEvent.layout.width);
+					}
+				}}
+			/>
+		);
+	}
+
+	const width = Math.min(imageDimensions.width, maxSize) || 0;
+	const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
+	imageStyle = {
+		width,
+		height
+	};
+	containerStyle = {
+		overflow: 'hidden',
+		alignItems: 'center',
+		justifyContent: 'center',
+		...(imageDimensions.width <= 64 && { width: 64 }),
+		...(imageDimensions.height <= 64 && { height: 64 })
+	};
+	// TODO: test
+	if (!hasContent) {
 		containerStyle = {
-			overflow: 'hidden',
-			alignItems: 'center',
-			justifyContent: 'center',
-			...(imageDimensions.width <= 64 && { width: 64 }),
-			...(imageDimensions.height <= 64 && { height: 64 })
+			...containerStyle,
+			borderColor: colors.strokeLight,
+			borderWidth: 1,
+			borderRadius: 4
 		};
-		if (!hasContent) {
-			containerStyle = {
-				...containerStyle,
-				borderColor: colors.strokeLight,
-				borderWidth: 1,
-				borderRadius: 4
-			};
-		}
 	}
 
 	return (
