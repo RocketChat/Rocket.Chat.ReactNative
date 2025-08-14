@@ -119,7 +119,7 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
-	const [imageUrl, setImageUrl] = useState('');
+	const [imageUrl, setImageUrl] = useState(url.image);
 
 	useEffect(() => {
 		const verifyUrlIsImage = async () => {
