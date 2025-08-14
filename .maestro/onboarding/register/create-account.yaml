@@ -26,6 +26,7 @@ onFlowStart:
 - scrollUntilVisible:
     element:
       id: register-view-submit
+    centerElement: true
 - tapOn:
     id: register-view-submit
 - extendedWaitUntil:
