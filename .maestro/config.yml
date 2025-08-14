@@ -1,0 +1,8 @@
+appId: chat.rocket.reactnative
+flows:
+  - onboarding/*
+  - onboarding/login/*
+  - onboarding/register/*
+  - onboarding/workspace/*
+excludeTags:
+  - 'util'
