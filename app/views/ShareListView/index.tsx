@@ -17,7 +17,6 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
 import SearchHeader from '../../containers/SearchHeader';
 import { themes } from '../../lib/constants';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
@@ -218,15 +217,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		});
 	};
 
-	internalSetState = (...args: object[]) => {
-		const { navigation } = this.props;
-		if (navigation.isFocused()) {
-			animateNextTransition();
-		}
-		// @ts-ignore
-		this.setState(...args);
-	};
-
 	query = async (text?: string) => {
 		const db = database.active;
 		const defaultWhereClause = [
@@ -275,11 +265,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 
 		if (server) {
-			const chats = await this.query();
+			const chats = (await this.query()) as TSubscriptionModel[];
 			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
-			let serverInfo = {};
+			let serverInfo = {} as TServerModel;
 			try {
 				serverInfo = await serversCollection.find(server);
 			} catch (error) {
@@ -287,7 +277,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			}
 
 			if (this.airGappedReadOnly) {
-				this.internalSetState({
+				this.setState({
 					chats: [],
 					serversCount,
 					loading: false,
@@ -297,7 +287,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				return;
 			}
 
-			this.internalSetState({
+			this.setState({
 				chats: chats ?? [],
 				serversCount,
 				loading: false,
@@ -328,11 +318,12 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	search = async (text: string) => {
-		const result = await this.query(text);
-		this.internalSetState({
+		const result = (await this.query(text)) as TSubscriptionModel[];
+		this.setState({
 			searchResults: result,
 			searchText: text
 		});
+		w;
 	};
 
 	initSearch = () => {
@@ -341,7 +332,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	cancelSearch = () => {
-		this.internalSetState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
+		this.setState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
 		Keyboard.dismiss();
 	};
 
