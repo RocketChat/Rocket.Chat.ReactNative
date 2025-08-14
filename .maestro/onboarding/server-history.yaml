@@ -21,10 +21,10 @@ onFlowEnd:
     id: 'servers-history-https://mobile.rocket.chat'
 
 # should tap on a server history and navigate to login
-- tapOn: 'Connect to https://mobile.rocket.chat as ${output.user.username}'
+- tapOn: 'Connect to https://mobile.rocket.chat as ${output.createdUser.username}'
 - assertVisible:
     id: 'login-view-submit'
-- assertVisible: ${output.user.username}
+- assertVisible: ${output.createdUser.username}
 
 # we are going back to add workspace from login screen
 - runFlow: ../helpers/go-back.yaml

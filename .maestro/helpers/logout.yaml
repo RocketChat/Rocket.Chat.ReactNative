@@ -46,6 +46,10 @@ tags:
     when:
       platform: Android
     commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'LOGOUT'
+          timeout: 60000
       - tapOn: 'LOGOUT'
 
 - runFlow:
