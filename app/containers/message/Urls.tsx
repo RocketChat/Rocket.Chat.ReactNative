@@ -79,9 +79,6 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 		}
 	}, [image, maxSize]);
 
-	let imageStyle = {};
-	let containerStyle: ViewStyle = {};
-
 	if (!imageDimensions.width || !imageDimensions.height) {
 		return <View style={styles.loading} />;
 	}
@@ -91,11 +88,11 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	const width = Math.min(imageDimensions.width, maxSize) || 0;
 	const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
-	imageStyle = {
+	const imageStyle = {
 		width,
 		height
 	};
-	containerStyle = {
+	let containerStyle: ViewStyle = {
 		overflow: 'hidden',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -159,7 +156,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const hasContent = !!(url.title || url.description);
 
-	if (!url || url?.ignoreParse || !API_Embed || !hasContent) {
+	if (!url || url?.ignoreParse || !API_Embed) {
 		return null;
 	}
 
