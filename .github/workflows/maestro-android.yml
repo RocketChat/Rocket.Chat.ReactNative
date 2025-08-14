@@ -51,6 +51,7 @@ jobs:
             sleep 10
             adb shell am force-stop chat.rocket.reactnative
             export MAESTRO_USE_GRAALJS=true
+            export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
             maestro test .maestro --format junit --output maestro-report.xml
 
       - name: Upload Test Report
