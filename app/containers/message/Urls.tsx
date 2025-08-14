@@ -15,7 +15,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
-import { WidthAwareContext, WidthAwareView } from './Components/WidthAwareView';
+import { WidthAwareContext } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -39,10 +39,8 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	loading: {
-		height: 1,
-		width: 1,
-		borderWidth: 0,
-		marginTop: 0
+		flex: 1,
+		height: 150
 	}
 });
 
@@ -65,40 +63,30 @@ const UrlContent = ({ title, description }: { title: string; description: string
 };
 const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean }) => {
 	const { colors } = useTheme();
-	const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
-	const [contentWidth, setContentWidth] = useState(0);
-	const maxSize = contentWidth;
-	// const maxSize = useContext(WidthAwareContext);
-	// console.log('maxSize', maxSize, 'loaded', imageLoadedState, 'imagedimensions', imageDimensions);
+	const maxSize = useContext(WidthAwareContext);
 
 	useLayoutEffect(() => {
-		if (image && contentWidth > 0) {
+		if (image && maxSize) {
 			Image.loadAsync(image, {
 				onError: () => {
-					setImageLoadedState('error');
+					setImageDimensions({ width: -1, height: -1 });
 				},
-				maxWidth: contentWidth
+				maxWidth: maxSize
 			}).then(image => {
 				setImageDimensions({ width: image.width, height: image.height });
 			});
 		}
-	}, [image, contentWidth]);
+	}, [image, maxSize]);
 
 	let imageStyle = {};
 	let containerStyle: ViewStyle = {};
 
-	if (!contentWidth || !imageDimensions.width || !imageDimensions.height) {
-		return (
-			<View
-				style={{ flex: 1, height: 150, backgroundColor: 'purple' }}
-				onLayout={ev => {
-					if (ev.nativeEvent.layout.width) {
-						setContentWidth(ev.nativeEvent.layout.width);
-					}
-				}}
-			/>
-		);
+	if (!imageDimensions.width || !imageDimensions.height) {
+		return <View style={styles.loading} />;
+	}
+	if (imageDimensions.width === -1) {
+		return null;
 	}
 
 	const width = Math.min(imageDimensions.width, maxSize) || 0;
@@ -114,7 +102,6 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 		...(imageDimensions.width <= 64 && { width: 64 }),
 		...(imageDimensions.height <= 64 && { height: 64 })
 	};
-	// TODO: test
 	if (!hasContent) {
 		containerStyle = {
 			...containerStyle,
@@ -126,18 +113,10 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	return (
 		<View style={containerStyle}>
-			<Image
-				source={{ uri: image }}
-				style={[imageStyle, imageLoadedState === 'loading' && styles.loading]}
-				contentFit='contain'
-				onError={() => setImageLoadedState('error')}
-				onLoad={() => setImageLoadedState('done')}
-			/>
+			<Image source={{ uri: image }} style={imageStyle} contentFit='contain' />
 		</View>
 	);
 };
-
-type TImageLoadedState = 'loading' | 'done' | 'error';
 
 const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
@@ -200,11 +179,7 @@ const Url = ({ url }: { url: IUrl }) => {
 			]}
 			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			<>
-				{imageUrl ? (
-					<WidthAwareView>
-						<UrlImage image={imageUrl} hasContent={hasContent} />
-					</WidthAwareView>
-				) : null}
+				{imageUrl ? <UrlImage image={imageUrl} hasContent={hasContent} /> : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
 			</>
 		</Touchable>
