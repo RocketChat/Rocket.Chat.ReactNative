@@ -139,8 +139,10 @@ export const FormTextInput = ({
 						</Text>
 					) : null}
 
-					<View accessible style={styles.wrap}>
+					<View style={styles.wrap}>
 						<Input
+							accessible
+							accessibilityLabel={accessibilityLabelText}
 							style={[
 								styles.input,
 								iconLeft && styles.inputIconLeft,

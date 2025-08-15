@@ -10,7 +10,6 @@ import WatchConnectivity
 public class AppDelegate: ExpoAppDelegate {
   var window: UIWindow?
 
-//  var reactNativeDelegate: ExpoReactNativeFactoryDelegate?
   var reactNativeDelegate: ReactNativeDelegate?
   var reactNativeFactory: RCTReactNativeFactory?
   var watchConnection: WatchConnection?
@@ -33,7 +32,6 @@ public class AppDelegate: ExpoAppDelegate {
     ReplyNotification.configure()
       
     let delegate = ReactNativeDelegate()
-//    let factory = ExpoReactNativeFactory(delegate: delegate)
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
 
@@ -97,23 +95,6 @@ public class AppDelegate: ExpoAppDelegate {
     return super.application(application, continue: userActivity, restorationHandler: restorationHandler) || result
   }
 }
-
-//class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
-//  // Extension point for config-plugins
-//
-//  override func sourceURL(for bridge: RCTBridge) -> URL? {
-//    // needed to return the correct URL for expo-dev-client.
-//    bridge.bundleURL ?? bundleURL()
-//  }
-//
-//  override func bundleURL() -> URL? {
-//#if DEBUG
-//    return RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: ".expo/.virtual-metro-entry")
-//#else
-//    return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
-//#endif
-//  }
-//}
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
   override func sourceURL(for bridge: RCTBridge) -> URL? {

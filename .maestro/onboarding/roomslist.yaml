@@ -1,0 +1,24 @@
+appId: chat.rocket.reactnative
+name: Rooms List
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- runFlow: ../helpers/launch-app.yaml
+- runFlow: ../helpers/login.yaml
+
+- assertVisible:
+    id: 'rooms-list-view'
+- assertVisible:
+    id: 'rooms-list-view-item-general'
+- assertVisible:
+    id: 'rooms-list-view-create-channel'
+- assertVisible:
+    id: 'rooms-list-view-sidebar'
+- runFlow:
+    file: ../helpers/search-room.yaml
+    env:
+      ROOM_NAME: general
