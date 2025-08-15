@@ -12,8 +12,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel=""
-        accessible={true}
         style={
           [
             {
@@ -28,7 +26,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
         }
       >
         <View
-          accessible={true}
           style={
             {
               "justifyContent": "center",
@@ -37,6 +34,8 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel=""
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             blurOnSubmit={true}

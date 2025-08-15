@@ -1,0 +1,16 @@
+appId: chat.rocket.reactnative
+name: Navigate to room
+jsEngine: graaljs
+tags:
+  - 'util'
+
+---
+- scrollUntilVisible:
+    element:
+      id: 'rooms-list-view-item-${ROOM}'
+- tapOn:
+    id: 'rooms-list-view-item-${ROOM}'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${ROOM}'
+    timeout: 60000
