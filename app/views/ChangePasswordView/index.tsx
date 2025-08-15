@@ -30,6 +30,7 @@ import PasswordPolicies from '../../containers/PasswordPolicies';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import EventEmitter from '../../lib/methods/helpers/events';
 import handleError from './methods/handleError';
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 
 const styles = StyleSheet.create({
 	disabled: {
@@ -50,12 +51,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const validationSchema = yup.object().shape({
-	currentPassword: yup.string().min(1).required(),
-	newPassword: yup.string().email().required(),
-	confirmNewPassword: yup.string().min(1).required()
-});
-
 const isFromRoute = (navigation: NativeStackNavigationProp<ProfileStackParamList, 'ChangePasswordView'>, routeName: string) =>
 	navigation.getState()?.routes?.[0]?.name === routeName;
 
@@ -67,6 +62,16 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 	const fromProfileView = isFromRoute(navigation, 'ProfileView');
+
+	const validationSchema = yup.object().shape({
+		currentPassword: yup.string().min(1).required(),
+		newPassword: yup.string().email().required(),
+		confirmNewPassword: yup
+			.string()
+			.required()
+			.oneOf([yup.ref('password'), null], I18n.t('Passwords_do_not_match'))
+			.required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
+	});
 
 	const { Accounts_AllowPasswordChange, Accounts_RequirePasswordConfirmation, serverURL, user } = useAppSelector(state => ({
 		Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
@@ -81,7 +86,6 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		watch,
 		setValue,
 		setError,
-		getValues,
 		formState: { isDirty, errors }
 	} = useForm({
 		defaultValues: {
@@ -92,24 +96,17 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const newPassword = watch('newPassword') || '';
-	const saving = watch('saving');
-	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
+	const inputValues = watch();
+	const { isPasswordValid, passwordPolicies } = useVerifyPassword(inputValues?.newPassword, inputValues?.confirmNewPassword);
 
 	const onCancel = () => {
 		navigation.goBack();
 	};
 
 	const changePassword = async () => {
-		const { confirmNewPassword } = getValues();
+		const { newPassword } = inputValues;
 
 		try {
-			if (newPassword !== confirmNewPassword) {
-				setError('newPassword', { message: 'Passwords must match', type: 'validate' });
-				setError('confirmNewPassword', { message: 'Passwords must match', type: 'validate' });
-				AccessibilityInfo.announceForAccessibility('Passwords must match');
-				return;
-			}
 			setValue('saving', true);
 			await Services.setUserPassword(newPassword);
 			dispatch(setUser({ requirePasswordChange: false }));
@@ -122,7 +119,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	};
 
 	const changePasswordFromProfileView = async () => {
-		const { currentPassword, confirmNewPassword } = getValues();
+		const { currentPassword, newPassword, confirmNewPassword } = inputValues;
 		if (newPassword !== confirmNewPassword) {
 			setError('newPassword', { message: 'Passwords must match', type: 'validate' });
 			setError('confirmNewPassword', { message: 'Passwords must match', type: 'validate' });
@@ -178,6 +175,8 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 			await changePassword();
 		}
 	};
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useLayoutEffect(() => {
 		const server = serverURL?.replace(/(^\w+:|^)\/\//, '');
@@ -251,12 +250,14 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 						) : null}
 					</View>
 
-					{passwordPolicies ? <PasswordPolicies isDirty={isDirty} password={newPassword} policies={passwordPolicies} /> : null}
+					{passwordPolicies ? (
+						<PasswordPolicies isDirty={isDirty} password={inputValues.newPassword} policies={passwordPolicies} />
+					) : null}
 
 					<View style={{ columnGap: 12 }}>
 						<Button title={I18n.t('Cancel')} type='secondary' onPress={onCancel} testID='change-password-view-cancel-button' />
 						<Button
-							loading={saving}
+							loading={inputValues.saving}
 							disabled={!isPasswordValid}
 							title={I18n.t('Set_new_password')}
 							type='primary'
