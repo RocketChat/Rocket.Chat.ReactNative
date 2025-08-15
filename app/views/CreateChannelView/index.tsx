@@ -4,6 +4,8 @@ import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { sendLoadingEvent } from '../../containers/Loading';
@@ -22,6 +24,7 @@ import { ControlledFormTextInput } from '../../containers/TextInput';
 import Chip from '../../containers/Chip';
 import { RoomSettings } from './RoomSettings';
 import { ISelectedUser } from '../../reducers/selectedUsers';
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 
 const styles = StyleSheet.create({
 	containerTextInput: {
@@ -63,6 +66,10 @@ export interface IFormData {
 }
 
 const CreateChannelView = () => {
+	const schema = yup.object().shape({
+		channelName: yup.string().trim().required(I18n.t('Channel_name_required'))
+	});
+
 	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
 	const { isFetching, useRealName, users, e2eEnabledDefaultPrivateRooms } = useAppSelector(
@@ -78,8 +85,9 @@ const CreateChannelView = () => {
 	const {
 		control,
 		handleSubmit,
-		formState: { isDirty },
-		setValue
+		setValue,
+		watch,
+		formState: { errors }
 	} = useForm<IFormData>({
 		defaultValues: {
 			channelName: '',
@@ -87,7 +95,9 @@ const CreateChannelView = () => {
 			encrypted: e2eEnabledDefaultPrivateRooms,
 			readOnly: false,
 			type: createPrivateChannelPermission
-		}
+		},
+		mode: 'onChange',
+		resolver: yupResolver(schema)
 	});
 
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
@@ -96,6 +106,9 @@ const CreateChannelView = () => {
 	const teamId = params?.teamId;
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
+	const inputValues = watch();
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
 		sendLoadingEvent({ visible: isFetching });
@@ -146,8 +159,10 @@ const CreateChannelView = () => {
 							testID='create-channel-name'
 							returnKeyType='done'
 							containerStyle={styles.containerStyle}
+							inputStyle={{ backgroundColor: colors.surfaceTint }}
 							name={'channelName'}
 							control={control}
+							error={errors?.channelName?.message}
 						/>
 						<RoomSettings
 							createChannelPermission={createChannelPermission}
@@ -171,7 +186,7 @@ const CreateChannelView = () => {
 								style={[
 									styles.list,
 									{
-										backgroundColor: colors.surfaceRoom,
+										backgroundColor: colors.surfaceTint,
 										borderColor: colors.strokeLight
 									}
 								]}
@@ -198,7 +213,6 @@ const CreateChannelView = () => {
 						title={isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')}
 						type='primary'
 						onPress={handleSubmit(submit)}
-						disabled={!isDirty}
 						testID='create-channel-submit'
 						loading={isFetching}
 						style={styles.buttonCreate}

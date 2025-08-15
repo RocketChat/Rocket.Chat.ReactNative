@@ -232,6 +232,7 @@
   "Discussion": "Diskusjon",
   "Discussion_Desc": "Diskusjoner tillater separate samtaler rundt et spesifikt emne i en kanal eller et team der ethvert arbeidsområdemedlem kan legges til.",
   "Discussion_name": "Diskusjonsnavn",
+  "Discussion_name_required": "Diskusjonsnavn kreves",
   "Discussions": "Diskusjoner",
   "Display": "Vise",
   "Displays_action_text": "Viser handlingstekst",
