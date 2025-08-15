@@ -57,6 +57,7 @@ jobs:
       - name: Run Tests
         run: |
           export MAESTRO_USE_GRAALJS=true
+          export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
           maestro test .maestro --format junit --output maestro-report.xml
 
       - name: Upload Test Report
