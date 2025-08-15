@@ -721,6 +721,7 @@
   "Started_call": "{{userBy}} द्वारा शुरू की गई कॉल",
   "Started_discussion": "एक चर्चा शुरू की गई:",
   "Status_saved_successfully": "स्थिति सफलतापूर्वक सहेजी गई!",
+  "Status_text_limit_exceeded": "अक्षर सीमा पार हुई",
   "Supported_versions_expired_description": "एक प्रबंधक को मोबाइल और डेस्कटॉप ऐप्स से पहुँच को पुनः सक्षम करने के लिए कार्यक्षेत्र को समर्थित संस्करण पर अपडेट करना होगा।",
   "Supported_versions_expired_title": "{{workspace_name}} एक असमर्थित संस्करण पर चल रहा है रॉकेट.चैट का",
   "Supported_versions_warning_update_required": "अपडेट की आवश्यकता है",

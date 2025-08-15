@@ -32,7 +32,7 @@
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
 	},
 	"dependencies": {
-		"@bugsnag/react-native": "^8.3.0",
+		"@bugsnag/react-native": "^8.4.0",
 		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
 		"@hookform/resolvers": "^2.9.10",
 		"@notifee/react-native": "7.8.2",
@@ -124,7 +124,7 @@
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "^5.4.0",
 		"react-native-screens": "^4.13.1",
-		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto#chore.support-new-arch",
+		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto",
 		"react-native-skeleton-placeholder": "5.2.4",
 		"react-native-slowlog": "1.0.2",
 		"react-native-svg": "^15.11.2",
@@ -161,7 +161,7 @@
 		"@babel/plugin-transform-named-capturing-groups-regex": "^7.22.5",
 		"@babel/preset-env": "^7.25.3",
 		"@babel/runtime": "^7.25.0",
-		"@bugsnag/cli": "^2.9.2",
+		"@bugsnag/cli": "^3.2.1",
 		"@bugsnag/source-maps": "^2.3.3",
 		"@gorhom/bottom-sheet": "^5.1.6",
 		"@react-native-community/cli": "18.0.0",

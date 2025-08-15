@@ -514,6 +514,7 @@
   "Started_call": "أجرى الاتصال {{userBy}}",
   "Started_discussion": "بدأ النقاش",
   "Status_saved_successfully": "تم حفظ الحالة بنجاح!",
+  "Status_text_limit_exceeded": "تم تجاوز الحد المسموح به لعدد الأحرف",
   "Symbols": "رموز",
   "Table": "جدول",
   "Tags": "العلامات",

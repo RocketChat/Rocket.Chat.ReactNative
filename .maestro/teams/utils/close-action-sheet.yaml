@@ -1,0 +1,13 @@
+appId: chat.rocket.reactnative
+tags:
+  - 'util'
+
+---
+- swipe:
+    from:
+      id: action-sheet-handle
+    direction: down
+- extendedWaitUntil:
+    notVisible:
+      id: action-sheet-handle
+    timeout: 60000

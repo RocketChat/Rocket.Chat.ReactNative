@@ -630,6 +630,7 @@
   "Started_call": "Appel lancé par {{userBy}}",
   "Started_discussion": "A commencé une discussion :",
   "Status_saved_successfully": "Statut enregistré avec succès !",
+  "Status_text_limit_exceeded": "limite de caractères dépassée",
   "Symbols": "Symboles",
   "Table": "Tableau",
   "Tags": "Mots clés",

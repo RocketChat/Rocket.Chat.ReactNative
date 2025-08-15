@@ -547,6 +547,7 @@
   "Started_call": "Chiamata iniziata da {{userBy}}",
   "Started_discussion": "Discussione iniziata:",
   "Status_saved_successfully": "Stato salvato correttamente!",
+  "Status_text_limit_exceeded": "Limite di caratteri {{limit}} superato",
   "Symbols": "Simboli",
   "Table": "Tabella",
   "Tags": "Tag",

@@ -780,6 +780,7 @@
   "Started_call": "Hovor zahájil {{userBy}}",
   "Started_discussion": "Zahájena diskuse:",
   "Status_saved_successfully": "Stav úspěšně uložen!",
+  "Status_text_limit_exceeded": "{{limit}} překročil limit znaků",
   "Strikethrough": "Přeškrtnout",
   "Supported_versions_expired_description": "Správce potřebuje aktualizovat pracovní prostor na podporovanou verzi, aby mohl znovu povolit přístup z mobilních a desktopových aplikací.",
   "Supported_versions_expired_title": "{{workspace_name}} používá nepodporovanou verzi Rocket.Chat",

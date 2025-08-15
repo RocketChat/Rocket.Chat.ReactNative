@@ -720,6 +720,7 @@
   "Started_call": "{{userBy}} ద్వారా కాల్ ప్రారంభించబడింది",
   "Started_discussion": "ఒక చర్చను ప్రారంభించారు:",
   "Status_saved_successfully": "స్థితి విజయవంతంగా భద్రపరచబడింది!",
+  "Status_text_limit_exceeded": "{{सीमा}} अक्षर की सीमा पार हो गई",
   "Supported_versions_expired_description": "వార్క్‌స్పేస్ యాడ్మిన్ మొదటిగా మొబైల్ మరియు డెస్క్టాప్ యాప్‌ల నుండి ప్రవేశాన్ని మళ్లీ ప్రారంభించడానికి వార్క్‌స్పేస్‌ను నవీకరించాలి.",
   "Supported_versions_expired_title": "{{workspace_name}} అసమర్థిత రాకెట్.చాట్ ఒరిజినల్ వెర్షన్‌ను పరిచయించిపోయింది",
   "Supported_versions_warning_update_required": "నవీకరణ అవసరం",
