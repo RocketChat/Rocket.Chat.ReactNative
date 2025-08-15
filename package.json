@@ -125,6 +125,7 @@
 		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto#chore.support-new-arch",
 		"react-native-skeleton-placeholder": "5.2.4",
 		"react-native-slowlog": "1.0.2",
+		"react-native-svg": "^15.12.1",
 		"react-native-url-polyfill": "2.0.0",
 		"react-native-vector-icons": "9.2.0",
 		"react-native-webview": "11.26.1",
