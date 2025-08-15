@@ -70,6 +70,10 @@ export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
 	sdk.post('e2e.setRoomKeyID', { rid, keyID });
 
+export const e2eSetOrGetRoomKeyID = (rid: string, keyID: string) =>
+	// RC 0.70.0
+	sdk.methodCall('e2e.setOrGetRoomKeyID', rid, keyID);
+
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });

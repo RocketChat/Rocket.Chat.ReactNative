@@ -93,24 +93,33 @@ export default class EncryptionRoom {
 			}
 		}
 
+		const tryProcessSuggestedKey = async (suggestedKey: string) => {
+			if (suggestedKey && Encryption.privateKey) {
+				try {
+					try {
+						this.establishing = true;
+						const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(suggestedKey, Encryption.privateKey);
+						this.keyID = keyID;
+						this.roomKey = roomKey;
+						this.sessionKeyExportedString = sessionKeyExportedString;
+					} catch (error) {
+						await Services.e2eRejectSuggestedGroupKey(this.roomId);
+					}
+					await Services.e2eAcceptSuggestedGroupKey(this.roomId);
+					this.readyPromise.resolve();
+					return true;
+				} catch (e) {
+					log(e);
+				}
+			}
+			return false;
+		};
+
 		// Similar to Encryption.evaluateSuggestedKey
 		const { E2EKey, e2eKeyId, E2ESuggestedKey } = this.subscription;
 		if (E2ESuggestedKey && Encryption.privateKey) {
-			try {
-				try {
-					this.establishing = true;
-					const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2ESuggestedKey, Encryption.privateKey);
-					this.keyID = keyID;
-					this.roomKey = roomKey;
-					this.sessionKeyExportedString = sessionKeyExportedString;
-				} catch (error) {
-					await Services.e2eRejectSuggestedGroupKey(this.roomId);
-				}
-				await Services.e2eAcceptSuggestedGroupKey(this.roomId);
-				this.readyPromise.resolve();
+			if (await tryProcessSuggestedKey(E2ESuggestedKey)) {
 				return;
-			} catch (e) {
-				log(e);
 			}
 		}
 
@@ -127,9 +136,20 @@ export default class EncryptionRoom {
 
 		// If it doesn't have a e2eKeyId, we need to create keys to the room
 		if (!e2eKeyId) {
-			this.establishing = true;
-			await this.createRoomKey();
-			this.readyPromise.resolve();
+			const existingKeyData = await this.createRoomKeyOrReturnExisting();
+			if (existingKeyData) {
+				const { keyID: alreadyExistingKeyId, suggestedKey } = existingKeyData;
+				if (!await tryProcessSuggestedKey(suggestedKey)) {
+					// We shouldn't reach this, so issue a warning in the log -- Aviad, 18-Aug-2025
+					console.log('Encryption room handshake warning: Room key already exists but missing or invalid suggested key.');
+					console.log('Encryption room handshake warning: Trying to request from other users, but it might fail.');
+					console.log('Encryption room handshake warning: Suggested key received from \'e2e.setOrGetRoomKeyID\' is', suggestedKey);
+					this.requestRoomKey(alreadyExistingKeyId);
+				}
+			} else {
+				this.establishing = true;
+				this.readyPromise.resolve();
+			}
 			return;
 		}
 
@@ -202,10 +222,19 @@ export default class EncryptionRoom {
 		}
 	};
 
-	createRoomKey = async () => {
+	createRoomKeyOrReturnExisting = async () => {
 		await this.createNewRoomKey();
-		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
+		const { keyID, suggestedKey } = await Services.e2eSetOrGetRoomKeyID(this.roomId, this.keyID);
+		if (this.keyID !== keyID) {
+			// reset state to before the call to 'this.createNewRoomKey'
+			this.roomKey = new ArrayBuffer(0);
+			this.sessionKeyExportedString = '';
+			this.keyID = '';
+
+			return { keyID, suggestedKey };
+		}
 		await this.encryptKeyForOtherParticipants();
+		return null;
 	};
 
 	async resetRoomKey() {
