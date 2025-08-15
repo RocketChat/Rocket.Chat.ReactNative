@@ -9,8 +9,15 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
   }
   testID="searchbox"
 >
-  <View>
-    <View>
+  <A11yOrderView
+    orderKey=":r4:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r4:"
+    >
       <View
         accessibilityLabel=""
         accessible={true}
@@ -118,7 +125,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
-  </View>
+    </A11yIndexView>
+  </A11yOrderView>
 </View>
 `;
