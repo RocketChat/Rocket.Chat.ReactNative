@@ -3,6 +3,7 @@ name: Create Account
 jsEngine: graaljs
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
+  - evalScript: ${output.user = output.randomUser()}
 
 ---
 - runFlow: ../../helpers/launch-app.yaml
@@ -25,6 +26,7 @@ onFlowStart:
 - scrollUntilVisible:
     element:
       id: register-view-submit
+    centerElement: true
 - tapOn:
     id: register-view-submit
 - extendedWaitUntil:

@@ -5,7 +5,6 @@ const TEAM_TYPE = {
 
 let headers = {}
 const { data } = output;
-const user = output.randomUser();
 
 const login = (username, password) => {
     const response = http.post(`${data.server}/api/v1/login`, {
@@ -26,6 +25,8 @@ const login = (username, password) => {
 };
 
 const createUser = (customProps) => {
+    const user = output.randomUser();
+
     login(output.account.adminUser, output.account.adminPassword);
     
     http.post(`${data.server}/api/v1/users.create`, {
@@ -46,10 +47,12 @@ const createUser = (customProps) => {
         username: user.username,
         password: user.password
     });
+
+    return user;
 }
 
 const createUserWithPasswordChange = () => {
-    createUser({ requirePasswordChange: true });
+    return createUser({ requirePasswordChange: true });
 }
 
 const deleteCreatedUser = async ({ username: usernameToDelete }) => {
@@ -75,6 +78,42 @@ const deleteCreatedUser = async ({ username: usernameToDelete }) => {
     }
 };
 
+const createRandomTeam = (username, password) => {
+    login(username, password);
+
+    const teamName = output.randomTeamName();
+
+    http.post(`${data.server}/api/v1/teams.create`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        },
+        body: JSON.stringify({ "name": teamName, "members": [], "type": 1, "room": { "readOnly": false, "extraData": { "topic": "", "broadcast": false, "encrypted": false } } })
+    });
+
+    return teamName;
+}
+
+const createRandomRoom = ( username, password, type = 'c' ) => {
+    login(username, password);
+    const room = `room${output.random()}`;
+    
+    const response = http.post(`${data.server}/api/v1/${type === 'c' ? 'channels.create' : 'groups.create'}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        },
+        body: JSON.stringify({ name: room })
+    });
+
+    const result = json(response.body);
+
+    return {
+        _id: type === 'c' ? result.channel._id : result.group._id,
+        name: type === 'c' ? result.channel.name : result.group.name
+    };
+};
+
 // Delete created users to avoid use all the Seats Available on the server
 const deleteCreatedUsers = () => {
     if (data.accounts.length) {
@@ -88,11 +127,11 @@ function logAccounts() {
     console.log(JSON.stringify(data.accounts));
 }
 
-output.user = user;
-
 output.utils = {
     createUser,
     createUserWithPasswordChange,
     logAccounts,
-    deleteCreatedUsers
+    deleteCreatedUsers,
+    createRandomTeam,
+    createRandomRoom
 };
