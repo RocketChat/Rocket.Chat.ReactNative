@@ -7,10 +7,9 @@ export interface IPasswordPolicy {
 	name: string;
 	label: string;
 	regex: RegExp;
-	validateConfirmPassword?: boolean;
 }
 
-const useVerifyPassword = (password: string, confirmPassword: string, validateConfirmPassword = true) => {
+const useVerifyPassword = (password: string, confirmPassword: string) => {
 	const Accounts_Password_Policy_AtLeastOneLowercase = useSetting('Accounts_Password_Policy_AtLeastOneLowercase');
 	const Accounts_Password_Policy_Enabled = useSetting('Accounts_Password_Policy_Enabled');
 	const Accounts_Password_Policy_AtLeastOneNumber = useSetting('Accounts_Password_Policy_AtLeastOneNumber');
@@ -98,7 +97,7 @@ const useVerifyPassword = (password: string, confirmPassword: string, validateCo
 	]);
 
 	const isPasswordValid = () => {
-		if (validateConfirmPassword && password !== confirmPassword) return false;
+		if (password !== confirmPassword) return false;
 
 		if (!passwordPolicies) return true;
 
