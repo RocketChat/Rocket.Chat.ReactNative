@@ -12473,6 +12473,11 @@ react-is@^19.0.0, react-is@^19.1.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.1.0.tgz#805bce321546b7e14c084989c77022351bbdd11b"
   integrity sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==
 
+react-native-a11y-order@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-a11y-order/-/react-native-a11y-order-0.4.0.tgz#ba70030b3d7c57377676d605f200e87c9afe9c5a"
+  integrity sha512-qtx+cvHWcCKu2UukjuKLGAwMqTFWQG3LxblR7E2QBOjLlt204kk33vZHotGW+U7jvE+aikL7t/DcNNCwj05Kiw==
+
 react-native-animatable@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
