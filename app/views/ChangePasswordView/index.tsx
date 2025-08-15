@@ -29,8 +29,8 @@ import sharedStyles from '../Styles';
 import PasswordPolicies from '../../containers/PasswordPolicies';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import EventEmitter from '../../lib/methods/helpers/events';
-import handleError from './methods/handleError';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
+import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 
 const styles = StyleSheet.create({
 	disabled: {
@@ -162,7 +162,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 
 			setValue('currentPassword', '');
 			setTwoFactorCode(null);
-			handleError(e, 'saving_profile');
+			handleSaveUserProfileError(e, 'saving_profile');
 		} finally {
 			setValue('saving', false);
 		}

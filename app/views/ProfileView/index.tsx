@@ -37,7 +37,7 @@ import { useAppSelector } from '../../lib/hooks';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
-import handleError from './methods/handleError';
+import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import ConfirmEmailChangeActionSheetContent from './components/ConfirmEmailChangeActionSheetContent';
 
@@ -242,7 +242,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setValue('saving', false);
 			setValue('currentPassword', null);
 			setTwoFactorCode(null);
-			handleError(e, 'saving_profile');
+			handleSaveUserProfileError(e, 'saving_profile');
 		}
 	};
 
