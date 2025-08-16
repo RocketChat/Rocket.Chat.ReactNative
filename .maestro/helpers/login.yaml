@@ -12,18 +12,17 @@ onFlowStart:
       when:
         true: ${!USERNAME}
       commands:
-        - evalScript: ${console.log('No username, creating user')}
-        - evalScript: ${output.utils.createUser()}
+        - evalScript: ${output.createdUser = output.utils.createUser()}
 
 ---
 - runFlow: navigate-to-login.yaml
 - tapOn:
     id: login-view-email
-- inputText: ${USERNAME || output.user.email}
+- inputText: ${USERNAME || output.createdUser.email}
 - hideKeyboard
 - tapOn:
     id: login-view-password
-- inputText: ${PASSWORD || output.user.password}
+- inputText: ${PASSWORD || output.createdUser.password}
 - hideKeyboard
 - tapOn:
     id: login-view-submit

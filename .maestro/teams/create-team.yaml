@@ -1,0 +1,57 @@
+appId: chat.rocket.reactnative
+name: Create Team and Delete
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: '../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- runFlow: ../helpers/launch-app.yaml
+- runFlow: ../helpers/login.yaml
+- evalScript: ${output.teamname = output.randomTeamName()}
+
+- assertVisible:
+    id: 'rooms-list-view-create-channel'
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- assertVisible:
+    id: 'new-message-view-create-team'
+- tapOn:
+    id: 'new-message-view-create-team'
+- assertVisible:
+    id: 'select-users-view'
+- tapOn:
+    id: 'selected-users-view-submit'
+- assertVisible:
+    id: 'create-channel-view'
+- tapOn:
+    id: 'create-channel-name'
+- inputText: ${output.teamname}
+- pressKey: enter
+- tapOn:
+    id: 'create-channel-submit'
+- assertVisible:
+    id: 'room-view-messages'
+- assertVisible:
+    id: 'room-view-title-${output.teamname}'
+- tapOn: 'private team ${output.teamname} .'
+- assertVisible:
+    id: 'room-actions-info'
+- tapOn:
+    id: 'room-actions-info'
+- assertVisible:
+    id: 'room-info-view-edit-button'
+- tapOn:
+    id: 'room-info-view-edit-button'
+- scrollUntilVisible:
+    element:
+      id: 'room-info-edit-view-delete'
+- tapOn:
+    id: 'room-info-edit-view-delete'
+- assertVisible: 'YES, DELETE IT!'
+- tapOn: 'YES, DELETE IT!'
+- extendedWaitUntil:
+    notVisible:
+      id: rooms-list-view-item-${output.teamname}
+    timeout: 60000
