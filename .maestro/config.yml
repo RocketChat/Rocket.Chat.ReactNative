@@ -4,5 +4,6 @@ flows:
   - onboarding/login/*
   - onboarding/register/*
   - onboarding/workspace/*
+  - teams/*
 excludeTags:
   - 'util'
