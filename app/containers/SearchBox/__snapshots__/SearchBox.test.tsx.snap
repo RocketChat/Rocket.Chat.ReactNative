@@ -19,8 +19,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       orderKey=":r4:"
     >
       <View
-        accessibilityLabel=""
-        accessible={true}
         style={
           [
             {
@@ -35,6 +33,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
         }
       >
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",

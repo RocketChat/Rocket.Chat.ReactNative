@@ -18,8 +18,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       orderKey=":r0:"
     >
       <View
-        accessibilityLabel="Right icon. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -31,6 +29,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -51,6 +50,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -151,8 +151,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       orderKey=":r1:"
     >
       <View
-        accessibilityLabel="Left icon. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
-        accessible={true}
         style={
           [
             {
@@ -164,6 +162,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -184,6 +183,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -283,8 +283,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       orderKey=":r2:"
     >
       <View
-        accessibilityLabel="Both icons. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
-        accessible={true}
         style={
           [
             {
@@ -296,6 +294,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -316,6 +315,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -451,8 +451,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       orderKey=":r3:"
     >
       <View
-        accessibilityLabel="Icon and touchable clear input. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
-        accessible={true}
         style={
           [
             {
@@ -464,6 +462,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -484,6 +483,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -625,8 +625,6 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
       orderKey=":r4:"
     >
       <View
-        accessibilityLabel="Loading false. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -638,6 +636,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -658,6 +657,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -722,8 +722,6 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
       orderKey=":r5:"
     >
       <View
-        accessibilityLabel="Loading true. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -735,6 +733,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -755,6 +754,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -843,11 +843,6 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
       orderKey=":r6:"
     >
       <View
-        accessibilityLabel="Multiline text. Rocket.Chat
-
-https://open.rocket.chat/images/logo/android-chrome-512x512.png
-."
-        accessible={true}
         style={
           [
             {
@@ -859,6 +854,7 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -879,6 +875,7 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -961,8 +958,6 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
       orderKey=":r7:"
     >
       <View
-        accessibilityLabel="Secure text disabled. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -974,6 +969,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -994,6 +990,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -1058,8 +1055,6 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
       orderKey=":r8:"
     >
       <View
-        accessibilityLabel="Secure text enabled."
-        accessible={true}
         style={
           [
             {
@@ -1071,6 +1066,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -1091,6 +1087,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -1248,8 +1245,6 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
       orderKey=":r9:"
     >
       <View
-        accessibilityLabel="Short Text. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -1261,6 +1256,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -1281,6 +1277,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -1345,8 +1342,6 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
       orderKey=":ra:"
     >
       <View
-        accessibilityLabel="Long Text. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
-        accessible={true}
         style={
           [
             {
@@ -1358,6 +1353,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -1378,6 +1374,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
            
         </Text>
         <View
+          accessible={false}
           style={
             {
               "justifyContent": "center",
