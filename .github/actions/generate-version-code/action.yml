@@ -40,7 +40,7 @@ runs:
         echo "### 📦 Version Code Generated" >> $GITHUB_STEP_SUMMARY
         echo "\`Version Code: $VERSIONCODE\`" >> $GITHUB_STEP_SUMMARY
 
-    - name: Set VERSIONCODE in repo variable
+    - name: Update VERSIONCODE in repo variable
       shell: bash
       run: |
         curl -s -L \
