@@ -84,8 +84,6 @@ jobs:
       - name: Build Android Release APK
         working-directory: android
         run: |
-          set -e
-          trap "echo 'Build cancelled'; ./gradlew --stop; exit 1" SIGINT SIGTERM
           ./gradlew assembleExperimentalRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
 
       - name: Upload APK

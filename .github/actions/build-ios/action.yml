@@ -116,8 +116,6 @@ runs:
     - name: Build iOS app
       working-directory: ios
       run: |
-        set -e
-        trap "echo 'Build cancelled'; exit 1" SIGINT SIGTERM
         if [[ ${{ inputs.type }} == "official" ]]; then
           bundle exec fastlane ios build_official
         fi
