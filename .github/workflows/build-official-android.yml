@@ -43,7 +43,7 @@ jobs:
         id: version
         uses: ./.github/actions/generate-version-code
         with:
-          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+          RN_VARIABLES_PAT: ${{ secrets.RN_VARIABLES_PAT }}
 
       - name: Build Android
         uses: ./.github/actions/build-android

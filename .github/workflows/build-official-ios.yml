@@ -41,7 +41,7 @@ jobs:
         id: version
         uses: ./.github/actions/generate-version-code
         with:
-          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+          RN_VARIABLES_PAT: ${{ secrets.RN_VARIABLES_PAT }}
 
       - name: Build iOS
         uses: ./.github/actions/build-ios
