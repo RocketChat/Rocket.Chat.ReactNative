@@ -139,7 +139,7 @@ export const FormTextInput = ({
 						</Text>
 					) : null}
 
-					<View style={styles.wrap}>
+					<View accessible={false} style={styles.wrap}>
 						<Input
 							accessible
 							accessibilityLabel={accessibilityLabelText}
