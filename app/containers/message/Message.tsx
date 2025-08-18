@@ -19,6 +19,7 @@ import CallButton from './CallButton';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
+import { WidthAwareView } from './Components/WidthAwareView';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 import MessageTime from './Time';
@@ -28,8 +29,9 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
 	const showTimeLarge = isLargeFontScale && props.isHeader;
 
+	let content;
 	if (props.isPreview) {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
@@ -43,7 +45,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	if (props.type === 'discussion-created') {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
@@ -53,7 +55,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	if (props.type === 'jitsi_call_started') {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				<Content {...props} isInfo />
@@ -64,7 +66,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	if (props.blocks && props.blocks.length) {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				<Blocks {...props} />
@@ -75,20 +77,24 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		);
 	}
 
-	return (
-		<>
-			<User {...props} />
-			{showTimeLarge ? <MessageTime {...props} /> : null}
-			<View style={{ gap: 4 }}>
-				<Content {...props} />
-				<Attachments {...props} />
-				<Urls {...props} />
-				<Thread {...props} />
-				<Reactions {...props} />
-				<Broadcast {...props} />
-			</View>
-		</>
-	);
+	if (!content) {
+		content = (
+			<>
+				<User {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
+				<View style={{ gap: 4 }}>
+					<Content {...props} />
+					<Attachments {...props} />
+					<Urls {...props} />
+					<Thread {...props} />
+					<Reactions {...props} />
+					<Broadcast {...props} />
+				</View>
+			</>
+		);
+	}
+
+	return <WidthAwareView>{content}</WidthAwareView>;
 });
 MessageInner.displayName = 'MessageInner';
 
