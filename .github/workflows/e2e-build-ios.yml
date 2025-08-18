@@ -78,6 +78,7 @@ jobs:
 
       - name: Build iOS app
         run: |
+          set -e
           trap "echo 'Build cancelled'; exit 1" SIGINT SIGTERM
           cd ios
           bundle exec fastlane ios build_experimental_simulator \
