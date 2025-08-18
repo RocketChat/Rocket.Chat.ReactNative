@@ -47,7 +47,6 @@ const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
 				testID='sidebar-settings'
 			/>
 			<List.Separator />
-			{/* {this.renderAdmin()} */}
 		</>
 	);
 };
