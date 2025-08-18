@@ -12,7 +12,6 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import Radio from '../containers/Radio';
@@ -126,7 +125,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	toggleItem = (rid: string) => {
 		const { selected } = this.state;
 
-		animateNextTransition();
 		if (this.isRadio) {
 			if (!this.isChecked(rid)) {
 				this.setState({ selected: [rid] }, () => this.setHeader());
