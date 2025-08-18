@@ -37,12 +37,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.gradle/caches/modules-2
-            ~/.gradle/caches/transforms-*
-            ~/.gradle/caches/build-cache-*
-          key: gradle-transforms-v1-${{ runner.os }}-${{ hashFiles('**/*.gradle*', 'gradle-wrapper.properties') }}
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            gradle-transforms-v1-${{ runner.os }}-
+            gradle-${{ runner.os }}-
 
       - name: Set up JDK
         uses: actions/setup-java@v4
