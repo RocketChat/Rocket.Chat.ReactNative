@@ -129,9 +129,9 @@ export const FormTextInput = ({
 	return (
 		<A11y.Order>
 			<A11y.Index index={1}>
-				<View accessible accessibilityLabel={accessibilityLabelText} style={[styles.inputContainer, containerStyle]}>
+				<View style={[styles.inputContainer, containerStyle]}>
 					{label ? (
-						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
+						<Text accessible={false} style={[styles.label, { color: colors.fontTitlesLabels }]}>
 							{label}{' '}
 							{required && (
 								<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>
@@ -225,9 +225,11 @@ export const FormTextInput = ({
 						{left}
 					</View>
 					{inputError ? (
-						<View style={styles.errorContainer}>
-							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
-							<Text style={{ ...styles.error, color: colors.fontDanger }}>{inputError}</Text>
+						<View accessible={false} style={styles.errorContainer}>
+							<CustomIcon accessible={false} name='warning' size={16} color={colors.fontDanger} />
+							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
+								{inputError}
+							</Text>
 						</View>
 					) : null}
 				</View>
