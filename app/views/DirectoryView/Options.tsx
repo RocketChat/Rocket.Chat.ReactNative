@@ -45,7 +45,12 @@ const DirectoryOptions = ({
 		const iconColor = propType === itemType ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
 
 		return (
-			<Touch onPress={() => changeType(itemType)} style={styles.filterItemButton} accessibilityLabel={I18n.t(text)} accessible>
+			<Touch
+				accessibilityRole='radio'
+				onPress={() => changeType(itemType)}
+				style={styles.filterItemButton}
+				accessibilityLabel={I18n.t(text)}
+				accessible>
 				<View style={styles.filterItemContainer}>
 					<CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.filterItemIcon} />
 					<Text style={[styles.filterItemText, { color: colors.fontDefault }]}>{I18n.t(text)}</Text>

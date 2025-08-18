@@ -1,12 +1,12 @@
 import React from 'react';
-import { AccessibilityRole, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
-import { CustomIcon } from '../../containers/CustomIcon';
 import { useActionSheet } from '../../containers/ActionSheet';
 
 const styles = StyleSheet.create({
@@ -37,23 +37,27 @@ const ListPicker = ({
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const option = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
+	const insets = useSafeAreaInsets();
 
-	const getOptions = () =>
-		OPTIONS[preference].map(i => ({
-			accessibilityRole: 'radio' as AccessibilityRole,
-			title: I18n.t(i.label, { defaultValue: i.label }),
-			onPress: () => {
-				hideActionSheet();
-				onChangeValue({ [preference]: i.value.toString() });
-			},
-			right: () => (
-				<CustomIcon
-					name={option?.value === i.value ? 'radio-checked' : 'radio-unchecked'}
-					size={20}
-					color={option?.value === i.value ? colors.badgeBackgroundLevel2 : colors.strokeMedium}
-				/>
-			)
-		}));
+	const getOptions = () => (
+		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+			<List.Separator />
+			{OPTIONS[preference].map(i => (
+				<>
+					<List.Radio
+						title={i.label}
+						isSelected={option?.value === i.value}
+						value={i.value}
+						onPress={() => {
+							hideActionSheet();
+							onChangeValue({ [preference]: i.value.toString() });
+						}}
+					/>
+					<List.Separator />
+				</>
+			))}
+		</View>
+	);
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
 
@@ -61,7 +65,7 @@ const ListPicker = ({
 		<List.Item
 			title={title}
 			testID={testID}
-			onPress={() => showActionSheet({ options: getOptions() })}
+			onPress={() => showActionSheet({ children: getOptions() })}
 			right={() => <Text style={[styles.pickerText, { color: colors.fontHint }]}>{label}</Text>}
 			additionalAcessibilityLabel={label}
 		/>

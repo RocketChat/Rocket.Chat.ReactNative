@@ -101,7 +101,8 @@ const LanguageView = () => {
 						testID={`language-view-${item.value}`}
 						title={item.label}
 						value={item.value}
-						isSelected={item.value === language}
+						translateTitle={false}
+						isSelected={item.label === language}
 						onPress={submit}
 					/>
 				)}

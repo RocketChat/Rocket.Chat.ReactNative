@@ -90,7 +90,7 @@ const DefaultBrowserView = () => {
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				renderItem={({ item }) => (
 					<List.Radio
-						isSelected={item.value === browser}
+						isSelected={item.title === browser}
 						title={item.title}
 						value={item.value}
 						onPress={changeDefaultBrowser}

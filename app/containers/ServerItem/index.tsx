@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
+import I18n from '../../i18n';
 import * as List from '../List/index';
 import styles, { ROW_HEIGHT } from './styles';
 import { isIOS } from '../../lib/methods/helpers';
@@ -28,8 +29,11 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 
 	const iconName = hasCheck ? 'radio-checked' : 'radio-unchecked';
 	const iconColor = hasCheck ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+	const accessibilityLabel = `${item.name || item.id}. ${item.id}. ${I18n.t(hasCheck ? 'Selected' : 'Unselected')}`;
 	return (
 		<Pressable
+			accessible
+			accessibilityLabel={accessibilityLabel}
 			accessibilityRole='radio'
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
