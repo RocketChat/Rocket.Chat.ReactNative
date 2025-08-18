@@ -4806,31 +4806,30 @@
   resolved "https://registry.yarnpkg.com/@storybook/global/-/global-5.0.0.tgz#b793d34b94f572c1d7d9e0f44fac4e0dbc9572ed"
   integrity sha512-FcOqPAXACP0I3oJ/ws6/rrPT9WGhu915Cg8D02a9YxLo0DE9zI+a9A5gRGvmQ09fiWPukqI8ZAEoQEdWUKMQdQ==
 
-"@storybook/react-dom-shim@9.0.13":
-  version "9.0.13"
-  resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-9.0.13.tgz#35ad4391fc7f3b7d0f1984dd619cf049893c268b"
-  integrity sha512-k7fucEJu39cE7V31fX+cM2wbW869vuj9hFZJDIEPWwo33nKFFqr0f31ar01gCcYuMiad8KezbdzXnDcBw6c6Ww==
-
 "@storybook/react-dom-shim@9.0.9":
   version "9.0.9"
   resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-9.0.9.tgz#ec32bb792cfd5ee32fa5d18b3eb848a6f00c95bf"
   integrity sha512-c2jvzpHW0EcYKhb7fvl3gh2waAnrNooZJasodxJXNhOIJWa6JkslxQXvhJsBkm24/nsvPvUthUP4hg7rA20a1A==
 
-"@storybook/react-native-theming@^9.0.9":
-  version "9.0.9"
-  resolved "https://registry.yarnpkg.com/@storybook/react-native-theming/-/react-native-theming-9.0.9.tgz#98df8005ec27795fc011c05e0c2981e6727e7bc8"
-  integrity sha512-6gD3houD5GHl0LhUyydDgziiSSjsBsqT9P3bHQcvcP0wT+nNRWEdlEjrjx/+3Y4qA6UjRw3WQsfXZuDnFb/7eg==
+"@storybook/react-dom-shim@9.1.2":
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-9.1.2.tgz#09731ce72de13bf92e439485c628fb093720c5f0"
+  integrity sha512-nw7BLAHCJswPZGsuL0Gs2AvFUWriusCTgPBmcHppSw/AqvT4XRFRDE+5q3j04/XKuZBrAA2sC4L+HuC0uzEChQ==
+
+"@storybook/react-native-theming@^9.0.9", "@storybook/react-native-theming@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@storybook/react-native-theming/-/react-native-theming-9.1.0.tgz#b6a886e13e740f5b00fa253fdbe0377073b44b31"
+  integrity sha512-or5P66hPUwyYeCThhCtFR5OF+y9IoArw12IQRNNEsiME12t+pBfuikJnMKgiGY0YC8xXhX5fPZpXWLCrSKX4Wg==
   dependencies:
     polished "^4.3.1"
 
-"@storybook/react-native-ui-common@^9.0.9":
-  version "9.0.9"
-  resolved "https://registry.yarnpkg.com/@storybook/react-native-ui-common/-/react-native-ui-common-9.0.9.tgz#ed4f8fc8376ff7acaeffa17cf5d6fc77d698e749"
-  integrity sha512-SsmffGVNNJ+4T2sLU5BLCZLpEW1+eJ2y8pwOGrMenZ5mgW4eJQ5BJcD5ULvr/WTB0nVs/DG7Ui0uiThpTWSlhw==
+"@storybook/react-native-ui-common@^9.0.9", "@storybook/react-native-ui-common@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@storybook/react-native-ui-common/-/react-native-ui-common-9.1.0.tgz#761ef066b1bbe6e20519d6629c4cb260fcabcf08"
+  integrity sha512-eZ4ClLRQPpjLQ4EJlCKphg6YqsElo/oZE44ueC733eNqCgw4D1QeXRrapM138ppSfOzdO+7IIcf1shi5U0VAvQ==
   dependencies:
-    "@storybook/csf" "^0.1.13"
-    "@storybook/react" "^9.0.9"
-    "@storybook/react-native-theming" "^9.0.9"
+    "@storybook/react" "^9.1.0"
+    "@storybook/react-native-theming" "^9.1.0"
     es-toolkit "^1.38.0"
     fuse.js "^7.0.0"
     memoizerific "^1.11.3"
@@ -4839,13 +4838,13 @@
     ts-dedent "^2.2.0"
 
 "@storybook/react-native-ui@^9.0.9":
-  version "9.0.9"
-  resolved "https://registry.yarnpkg.com/@storybook/react-native-ui/-/react-native-ui-9.0.9.tgz#afa65250a608193587660fa300195259f9ec09e9"
-  integrity sha512-BJNr4EQ1KUCD16mjgsIMijAcR16ThScH+hZdaCV8Vf1PlruaLcvBpEsp0axIAPh5DM22tYwzxtlanHLNhQIvuQ==
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@storybook/react-native-ui/-/react-native-ui-9.1.0.tgz#2d6d2f752c8fb30c6d6ca6f7ffc1701a783ab190"
+  integrity sha512-Tw4dLP5TAo96DbEyLODfS00Nt+hx5E6S1lOQhL4+CnLE0eYrSaMljTeTaCh9wxGf5rBcAwmItiFXd12YrbSwzg==
   dependencies:
-    "@storybook/react" "^9.0.9"
-    "@storybook/react-native-theming" "^9.0.9"
-    "@storybook/react-native-ui-common" "^9.0.9"
+    "@storybook/react" "^9.1.0"
+    "@storybook/react-native-theming" "^9.1.0"
+    "@storybook/react-native-ui-common" "^9.1.0"
     es-toolkit "^1.38.0"
     fuse.js "^7.0.0"
     memoizerific "^1.11.3"
@@ -4880,13 +4879,13 @@
     "@storybook/global" "^5.0.0"
     "@storybook/react-dom-shim" "9.0.9"
 
-"@storybook/react@^9.0.9":
-  version "9.0.13"
-  resolved "https://registry.yarnpkg.com/@storybook/react/-/react-9.0.13.tgz#fe81485beb922e652e120868c2a34417a27e7eaf"
-  integrity sha512-kijh4vK7fSQCxs41SPCjN42gwD8I9vqgDYJV7XnQsIOJiwtWrsX+lMV4qVyN5SjTZF+HBV5oxD23XgQNlpZ31A==
+"@storybook/react@^9.0.9", "@storybook/react@^9.1.0":
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/@storybook/react/-/react-9.1.2.tgz#eaf19220eb9e7baed21ea5f9611348f1714b8492"
+  integrity sha512-VVXu1HrhDExj/yj+heFYc8cgIzBruXy1UYT3LW0WiJyadgzYz3J41l/Lf/j2FCppyxwlXb19Uv51plb1F1C77w==
   dependencies:
     "@storybook/global" "^5.0.0"
-    "@storybook/react-dom-shim" "9.0.13"
+    "@storybook/react-dom-shim" "9.1.2"
 
 "@testing-library/jest-dom@^6.6.3":
   version "6.6.3"
@@ -12257,7 +12256,7 @@ prompts@^2.0.1, prompts@^2.2.1, prompts@^2.3.2, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@*, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -12577,13 +12576,6 @@ react-native-image-crop-picker@RocketChat/react-native-image-crop-picker#5346870
   version "0.50.1"
   resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/5346870b0be10d300dc53924309dc6adc9946d50"
 
-react-native-image-progress@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-image-progress/-/react-native-image-progress-1.1.1.tgz#95bbe0875c7ebd54286df69cb37b598b94c54eb0"
-  integrity sha512-5rI2UjUo1bJoggU3lZAa+Wv29bm+N322XVR49mxfczfhaOyFdoXMIRgd5x2eXG+RQi9PcLleD6wxVDxGAPPO9Q==
-  dependencies:
-    prop-types "^15.5.10"
-
 react-native-is-edge-to-edge@1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.1.6.tgz#69ec13f70d76e9245e275eed4140d0873a78f902"
@@ -12688,13 +12680,6 @@ react-native-popover-view@5.1.7:
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.8.1"
 
-react-native-progress@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-5.0.0.tgz#f5ac6ceaeee27f184c660b00f29419e82a9d0ab0"
-  integrity sha512-KjnGIt3r9i5Kn2biOD9fXLJocf0bwxPRxOyAgXEnZTJQU2O+HyzgGFRCbM5h3izm9kKIkSc1txh8aGmMafCD9A==
-  dependencies:
-    prop-types "^15.7.2"
-
 react-native-prompt-android@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-prompt-android/-/react-native-prompt-android-1.1.0.tgz#3c5168029075cb9f72549fd5f92403372fb234e9"
@@ -12755,10 +12740,10 @@ react-native-slowlog@1.0.2:
   resolved "https://registry.yarnpkg.com/react-native-slowlog/-/react-native-slowlog-1.0.2.tgz#5520979e3ef9d5273495d431ff3be34f02e35c89"
   integrity sha512-pUiKi045MS4K+eCiqk/OB8w0V0M1nxa1pWidydHyKB6VordefOl6yO68kqiw+AWn90GgsjGdovThVlOC0dXH1A==
 
-react-native-svg@^15.11.2:
-  version "15.11.2"
-  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-15.11.2.tgz#7540e8e1eabc4dcd3b1e35ada5a1d9f1b96d37c4"
-  integrity sha512-+YfF72IbWQUKzCIydlijV1fLuBsQNGMT6Da2kFlo1sh+LE3BIm/2Q7AR1zAAR6L0BFLi1WaQPLfFUC9bNZpOmw==
+react-native-svg@^15.12.1:
+  version "15.12.1"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-15.12.1.tgz#7ba756dd6a235f86a2c312a1e7911f9b0d18ad3a"
+  integrity sha512-vCuZJDf8a5aNC2dlMovEv4Z0jjEUET53lm/iILFnFewa15b4atjVxU6Wirm6O9y6dEsdjDZVD7Q3QM4T1wlI8g==
   dependencies:
     css-select "^5.1.0"
     css-tree "^1.1.3"
