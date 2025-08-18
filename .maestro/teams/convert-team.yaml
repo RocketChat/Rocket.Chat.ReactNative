@@ -13,18 +13,16 @@ onFlowEnd:
 - evalScript: ${output.toBeMoved = 'to-be-moved-' + output.random()}
 - evalScript: ${output.publicChannelToBeConverted = 'channel-public-to-be-converted-' + output.random()}
 
-# creating a public channel
+# should convert public channel to a team
 - runFlow:
-    file: '../helpers/create-public-channel.yaml'
+    file: './utils/create-channel.yaml'
     env:
       channelName: ${output.publicChannelToBeConverted}
       publicChannel: true
-
-# should convert public channel to a team
 - runFlow:
-    file: '../../helpers/navigate-to-room-actions.yaml'
+    file: '../helpers/navigate-to-room-action.yaml'
     env:
-      ROOM: ${output.toBeConverted}
+      ROOM: ${output.publicChannelToBeConverted}
 - scrollUntilVisible:
     element:
       id: 'room-actions-convert-to-team'
@@ -40,9 +38,9 @@ onFlowEnd:
     text: 'Convert'
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-${output.toBeConverted}'
+      id: 'room-view-title-${output.publicChannelToBeConverted}'
     timeout: 60000
-- runFlow: '../../helpers/go-back.yaml'
+- runFlow: '../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -50,7 +48,11 @@ onFlowEnd:
 
 # should convert private channel to a team
 - runFlow:
-    file: '../../helpers/navigate-to-room-actions.yaml'
+    file: './utils/create-channel.yaml'
+    env:
+      channelName: ${output.toBeConverted}
+- runFlow:
+    file: '../helpers/navigate-to-room-action.yaml'
     env:
       ROOM: ${output.toBeConverted}
 - scrollUntilVisible:
@@ -70,7 +72,7 @@ onFlowEnd:
     visible:
       id: 'room-view-title-${output.toBeConverted}'
     timeout: 60000
-- runFlow: '../../helpers/go-back.yaml'
+- runFlow: '../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -78,7 +80,11 @@ onFlowEnd:
 
 # should move channel to a team
 - runFlow:
-    file: '../../helpers/navigate-to-room-actions.yaml'
+    file: './utils/create-channel.yaml'
+    env:
+      channelName: ${output.toBeMoved}
+- runFlow:
+    file: '../helpers/navigate-to-room-action.yaml'
     env:
       ROOM: ${output.toBeMoved}
 - scrollUntilVisible:
@@ -87,7 +93,8 @@ onFlowEnd:
 - tapOn:
     id: room-actions-move-to-team
 - extendedWaitUntil:
-    id: select-list-view-submit
+    visible:
+      id: select-list-view-submit
     timeout: 60000
 - tapOn:
     id: select-list-view-submit
@@ -121,8 +128,8 @@ onFlowEnd:
     visible:
       id: 'room-actions-teams'
     timeout: 60000
-- runFlow: '../../helpers/go-back.yaml'
-- runFlow: '../../helpers/go-back.yaml'
+- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -130,7 +137,7 @@ onFlowEnd:
 
 # should convert a team to a channel
 - runFlow:
-    file: '../../helpers/navigate-to-room-actions.yaml'
+    file: '../helpers/navigate-to-room-action.yaml'
     env:
       ROOM: ${output.toBeConverted}
 - scrollUntilVisible:
@@ -169,7 +176,7 @@ onFlowEnd:
     visible:
       id: 'room-view-title-${output.toBeConverted}'
     timeout: 60000
-- runFlow: '../../helpers/go-back.yaml'
+- runFlow: '../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

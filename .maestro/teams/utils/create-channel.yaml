@@ -34,17 +34,18 @@ tags:
 - tapOn:
     id: create-channel-name
 - inputText: ${channelName}
-- pressKey: Enter
+- hideKeyboard
 
 - runFlow:
     when:
-      true: ${!publicChannel}
+      true: ${publicChannel}
     commands:
       - tapOn:
           id: create-channel-type
 
 - scrollUntilVisible:
-    id: create-channel-submit
+    element:
+      id: create-channel-submit
     timeout: 60000
 - tapOn:
     id: create-channel-submit
@@ -57,10 +58,12 @@ tags:
     visible:
       id: room-view-title-${channelName}
     timeout: 60000
-- runFlow: ../../utils/tap-back.yaml
+- runFlow: ../../helpers/go-back.yaml
 - extendedWaitUntil:
     visible:
       id: rooms-list-view
     timeout: 60000
-- assertVisible:
-    id: rooms-list-view-item-${channelName}
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view-item-${channelName}
+    timeout: 60000
