@@ -1,37 +1,10 @@
 name: Generate Version Code
-description: Generates version code from GitHub run number
+description: Generates version code
 
 inputs:
-  official:
-    type: boolean
+  TOKEN:
     required: true
-  os:
     type: string
-    required: true
-  FASTLANE_GOOGLE_SERVICE_ACCOUNT:
-    type: string
-    required: true
-  APP_STORE_CONNECT_API_KEY_BASE64:
-    type: string
-    required: true
-  MATCH_KEYCHAIN_NAME:
-    type: string
-    required: false
-  MATCH_KEYCHAIN_PASSWORD:
-    type: string
-    required: false
-  MATCH_PASSWORD:
-    type: string
-    required: false
-  APP_STORE_CONNECT_API_KEY_ID:
-    type: string
-    required: false
-  APP_STORE_CONNECT_API_KEY_ISSUER_ID:
-    type: string
-    required: false
-  FASTLANE_REPO_PAT:
-    type: string
-    required: false
 
 outputs:
   VERSIONCODE:
@@ -41,74 +14,39 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up Xcode
-      if: ${{ inputs.os == 'ios' }}
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '16.2'
-
-    - name: Set up Ruby and Bundler
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7.7
-        bundler-cache: true
-
-    - name: Install Fastlane
-      if: ${{ inputs.os == 'android' }}
-      working-directory: android
-      run: |
-        bundle install --path gems
-      shell: bash
-
-    - name: Store the Google service account key
-      if: ${{ inputs.os == 'android' }}
-      working-directory: android
-      run: |
-        echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
-      shell: bash
-
-    - name: Decode p8
-      if: ${{ inputs.os == 'ios' }}
-      run: |
-        echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
-      shell: bash
-
-    - name: Compute VERSIONCODE (iOS)
-      id: compute-versioncode-ios
-      if: ${{ inputs.os == 'ios' }}
+    - name: Get VERSIONCODE from repo variable
+      id: versioncode
       shell: bash
       run: |
-        VERSIONCODE=$(bundle exec fastlane ios get_testflight_version official:${{ inputs.official }} | grep 'VERSIONCODE=' | cut -d '=' -f2)
-        echo "LATEST_VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
-      working-directory: ios
-      env:
-        MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
-        MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
-        MATCH_PASSWORD: ${{ inputs.MATCH_PASSWORD }}
-        APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
-        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
-        FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
+        RESPONSE=$(
+          curl -s -L \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ inputs.TOKEN }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/${{ github.repository }}/actions/variables/VERSIONCODE
+        )
 
-    - name: Compute VERSIONCODE (Android)
-      id: compute-versioncode-android
-      if: ${{ inputs.os == 'android' }}
-      shell: bash
-      run: |
-        VERSIONCODE=$(bundle exec fastlane android version_code official:${{ inputs.official }}| grep 'VERSIONCODE=' | cut -d '=' -f2)
-        echo "LATEST_VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
-      working-directory: android
+        VALUE=$(echo "$RESPONSE" | jq -r '.value')
+        echo "LATEST_VERSIONCODE=$VALUE" >> $GITHUB_OUTPUT
 
     - name: Compute VERSIONCODE
       id: compute
       shell: bash
       run: |
-        VERSION_IOS="${{ steps.compute-versioncode-ios.outputs.LATEST_VERSIONCODE }}"
-        VERSION_ANDROID="${{ steps.compute-versioncode-android.outputs.LATEST_VERSIONCODE }}"
-        
-        LATEST_VERSIONCODE="${VERSION_IOS:-$VERSION_ANDROID}"
-
+        LATEST_VERSIONCODE="${{ steps.versioncode.outputs.LATEST_VERSIONCODE }}"
         VERSIONCODE=$((LATEST_VERSIONCODE + 1))
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
 
         echo "### 📦 Version Code Generated" >> $GITHUB_STEP_SUMMARY
         echo "\`Version Code: $VERSIONCODE\`" >> $GITHUB_STEP_SUMMARY
+
+    - name: Set VERSIONCODE in repo variable
+      shell: bash
+      run: |
+        curl -s -L \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ inputs.TOKEN }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          -X PATCH \
+          -d '{"name": "VERSIONCODE", "value": "${{ steps.compute.outputs.VERSIONCODE }}"}' \
+          https://api.github.com/repos/${{ github.repository }}/actions/variables/VERSIONCODE

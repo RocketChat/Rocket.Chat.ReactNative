@@ -43,9 +43,7 @@ jobs:
         id: version
         uses: ./.github/actions/generate-version-code
         with:
-          official: false
-          os: android
-          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          TOKEN: ${{ secrets.TOKEN }}
 
       - name: Build Android
         uses: ./.github/actions/build-android

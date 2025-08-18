@@ -41,15 +41,7 @@ jobs:
         id: version
         uses: ./.github/actions/generate-version-code
         with:
-          official: true
-          os: ios
-          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
-          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
-          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
-          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
-          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
+          TOKEN: ${{ secrets.TOKEN }}
 
       - name: Build iOS
         uses: ./.github/actions/build-ios
