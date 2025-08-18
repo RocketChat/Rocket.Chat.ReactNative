@@ -48,5 +48,5 @@ runs:
           -H "Authorization: Bearer ${{ inputs.RN_VARIABLES_PAT }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           -X PATCH \
-          -d '{"name": "VERSIONCODE", "value": "${{ steps.compute.outputs.VERSIONCODE }}"}' \
+          -d '{"name": "BUILD_VERSION", "value": "${{ steps.compute.outputs.VERSIONCODE }}"}' \
           https://api.github.com/repos/${{ github.repository }}/actions/variables/BUILD_VERSION
