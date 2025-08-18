@@ -122,6 +122,7 @@ runs:
     - name: Build Android Release AAB
       working-directory: android
       run: |
+        trap "echo 'Build cancelled'; exit 1" SIGINT SIGTERM
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
           ./gradlew bundleExperimentalRelease
         fi
