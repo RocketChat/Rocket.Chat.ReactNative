@@ -1,7 +1,7 @@
 {
   "1_person_reacted": "1 人回复了",
   "A11y_in_app_notification": "来自{{name}}的新消息：{{message}}",
-  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "向上或向下滑动以选择接受或拒绝",
+  "A11y_incoming_call_swipe_down_to_view_options": "向下滑动以查看选项",
   "Accessibility": "无障碍性",
   "Accessibility_and_Appearance": "辅助功能和外观",
   "Accessibility_statement": "无障碍声明",
@@ -223,6 +223,7 @@
   "Glossary_of_simplified_terms": "简化术语词汇表",
   "Help": "帮助",
   "Hide": "隐藏",
+  "Hide_notification": "隐藏通知",
   "Hide_Password": "隐藏密码",
   "Hide_System_Messages": "隐藏系统信息",
   "Hide_type_messages": "隐藏 \"{{type}}\" 信息",

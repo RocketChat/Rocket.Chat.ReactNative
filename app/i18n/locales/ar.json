@@ -1,7 +1,7 @@
 {
   "1_person_reacted": "تفاعل شخص واحد",
   "A11y_in_app_notification": "رسالة جديدة من {{name}}: {{message}}",
-  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "اسحب لأعلى أو لأسفل لاختيار القبول أو الرفض",
+  "A11y_incoming_call_swipe_down_to_view_options": "اسحب لأسفل لعرض الخيارات",
   "Accessibility": "إمكانية الوصول",
   "Accessibility_and_Appearance": "إمكانية الوصول والمظهر",
   "Accessibility_statement": "بيان الوصول",
@@ -214,6 +214,7 @@
   "Glossary_of_simplified_terms": "مسرد المصطلحات المبسطة",
   "Help": "مساعدة",
   "Hide": "إخفاء",
+  "Hide_notification": "إخفاء الإشعار",
   "Hide_Password": "إخفاء كلمة المرور",
   "Hide_room": "إخفاء",
   "Hide_System_Messages": "إخفاء رسائل النظام",

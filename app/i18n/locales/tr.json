@@ -1,7 +1,7 @@
 {
   "1_person_reacted": "1 kişi tepki verdi.",
   "A11y_in_app_notification": "Yeni mesaj {{name}}: {{message}}",
-  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "Yukarı veya aşağı kaydırarak kabul et veya reddet seçin.",
+  "A11y_incoming_call_swipe_down_to_view_options": "Aşağı kaydırarak seçenekleri görüntüle",
   "Accessibility": "Erişilebilirlik",
   "Accessibility_and_Appearance": "Erişilebilirlik ve görünüm",
   "Accessibility_statement": "Erişilebilirlik beyanı",
@@ -228,6 +228,7 @@
   "Glossary_of_simplified_terms": "Basitleştirilmiş terimler sözlüğü",
   "Help": "Yardım",
   "Hide": "Sakla",
+  "Hide_notification": "Bildirimi gizle",
   "Hide_Password": "Şifreyi Gizle",
   "Hide_room": "Gizle",
   "Hide_System_Messages": "Sistem İletilerını Gizle",

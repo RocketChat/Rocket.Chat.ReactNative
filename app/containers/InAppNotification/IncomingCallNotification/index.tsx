@@ -4,6 +4,7 @@ import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
+import { isIOS } from '../../../lib/methods/helpers';
 import { acceptCall, cancelCall } from '../../../actions/videoConf';
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
@@ -57,22 +58,26 @@ const IncomingCallHeader = React.memo(
 				accessible={true}
 				accessibilityRole='button'
 				accessibilityLabel={`${i18n.t('Incoming_call_from')} ${roomName}`}
-				accessibilityHint={i18n.t('A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline')}
+				accessibilityHint={isIOS ? i18n.t('A11y_incoming_call_swipe_down_to_view_options') : undefined}
 				accessibilityActions={[
-					{ name: 'increment', label: i18n.t('accept') },
-					{ name: 'decrement', label: i18n.t('decline') }
+					{ name: 'accept', label: i18n.t('accept') },
+					{ name: 'decline', label: i18n.t('decline') },
+					{ name: 'hide', label: i18n.t('Hide_notification') }
 				]}
 				onAccessibilityAction={event => {
 					switch (event.nativeEvent.actionName) {
-						case 'increment':
+						case 'accept':
 							setAudio(!audio);
 							hideNotification();
 							dispatch(acceptCall({ callId }));
 							break;
-						case 'decrement':
+						case 'decline':
 							setAudio(!audio);
 							hideNotification();
 							dispatch(cancelCall({ callId }));
+							break;
+						case 'hide':
+							hideNotification();
 							break;
 					}
 				}}

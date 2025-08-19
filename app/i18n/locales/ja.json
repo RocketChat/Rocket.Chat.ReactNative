@@ -1,7 +1,7 @@
 {
   "1_person_reacted": "1人がリアクション",
   "A11y_in_app_notification": "{{name}} からの新しいメッセージ: {{message}}",
-  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "上にスワイプして承諾、下にスワイプして拒否を選択",
+  "A11y_incoming_call_swipe_down_to_view_options": "オプションを見るには下にスワイプしてください",
   "Accessibility": "アクセシビリティ",
   "Accessibility_and_Appearance": "アクセシビリティと外観",
   "Accessibility_statement": "アクセシビリティ声明",
@@ -215,6 +215,7 @@
   "Has_left_the_team": "チームを退出しました",
   "Help": "助け",
   "Hide": "隠す",
+  "Hide_notification": "通知を隠す",
   "Hide_Password": "パスワードを隠す",
   "Hide_room": "ルームを非表示",
   "Hide_System_Messages": "システムメッセージを非表示にする",

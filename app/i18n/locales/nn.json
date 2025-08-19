@@ -1,6 +1,6 @@
 {
   "A11y_in_app_notification": "Ny melding frå {{name}}: {{message}}",
-  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "Sveip opp eller ned for å velje accept eller decline",
+  "A11y_incoming_call_swipe_down_to_view_options": "Sveip ned for å se alternativene",
   "accept": "Aksepter",
   "Accessibility": "Tilgjengelighet",
   "Accessibility_and_Appearance": "Tilgjengelighet og utseende",
@@ -160,6 +160,7 @@
   "Glossary_of_simplified_terms": "Ordliste med forenklede termer",
   "Group_by": "Grupper etter",
   "Hide": "Skjul rom",
+  "Hide_notification": "Gøym varsel",
   "Hide_room": "Skjul rom",
   "Hide_System_Messages": "Skjul systemmeldinger",
   "Ignore": "Overse",

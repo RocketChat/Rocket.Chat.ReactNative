@@ -1,7 +1,7 @@
 {
   "1_person_reacted": "1 人回覆了",
   "A11y_in_app_notification": "來自 {{name}} 的新訊息：{{message}}",
-  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "向上或向下滑動以選擇接受或拒絕",
+  "A11y_incoming_call_swipe_down_to_view_options": "向下滑動以查看選項",
   "Accessibility": "無障礙設施",
   "Accessibility_and_Appearance": "無障礙功能與外觀",
   "Accessibility_statement": "无障碍声明",
@@ -232,6 +232,7 @@
   "Glossary_of_simplified_terms": "簡化術語詞彙表",
   "Help": "幫助",
   "Hide": "隱藏",
+  "Hide_notification": "隱藏通知",
   "Hide_Password": "隱藏密碼",
   "Hide_room": "隱藏",
   "Hide_System_Messages": "隱藏系統訊息",

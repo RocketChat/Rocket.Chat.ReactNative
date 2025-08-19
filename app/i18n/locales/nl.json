@@ -1,7 +1,7 @@
 {
   "1_person_reacted": "1 persoon heeft gereageerd",
   "A11y_in_app_notification": "Nieuw bericht van {{name}}: {{message}}",
-  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "Veeg omhoog of omlaag om te kiezen voor accepteren of weigeren",
+  "A11y_incoming_call_swipe_down_to_view_options": "Veeg omlaag om opties te bekijken",
   "Accessibility": "Toegankelijkheid",
   "Accessibility_and_Appearance": "Toegankelijkheid & uiterlijk",
   "Accessibility_statement": "Toegankelijkheidsverklaring",
@@ -270,6 +270,7 @@
   "Has_left_the_team": "heeft het team verlaten",
   "Help": "Hulp",
   "Hide": "Verbergen",
+  "Hide_notification": "Melding verbergen",
   "Hide_Password": "Wachtwoord verbergen",
   "Hide_room": "Kamer verbergen",
   "Hide_System_Messages": "Verberg systeemberichten",

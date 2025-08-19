@@ -1,7 +1,7 @@
 {
   "1_person_reacted": "1 pessoa reagiu",
   "A11y_in_app_notification": "Nova mensagem de {{name}}: {{message}}",
-  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "Deslize para cima ou para baixo para escolher aceitar ou recusar",
+  "A11y_incoming_call_swipe_down_to_view_options": "Deslize para baixo para ver as opções.",
   "Accessibility": "Acessibilidade",
   "Accessibility_and_Appearance": "Acessibilidade e aparência",
   "Accessibility_statement": "Declaração de acessibilidade",
@@ -210,6 +210,7 @@
   "Glossary_of_simplified_terms": "Glossário de termos simplificados",
   "Help": "Ajuda",
   "Hide": "Esconder",
+  "Hide_notification": "Ocultar notificação",
   "Hide_Password": "Ocultar Palavra-passe",
   "Hide_room": "Esconder sala",
   "Hide_System_Messages": "Esconder mensagens do sistema",
