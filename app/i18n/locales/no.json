@@ -326,6 +326,7 @@
   "Expiration_Days": "Utløp (dager)",
   "Favorites": "Favoritter",
   "Fetch_image_from_URL": "Hent bilde fra URL",
+  "Field_is_required": "{{field}} er påkrevd",
   "File_description": "Filbeskrivelse",
   "Files": "Filer",
   "FileUpload_Error": "Feil med filopplasting",

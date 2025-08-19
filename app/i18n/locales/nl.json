@@ -247,6 +247,7 @@
   "Favorite": "Favoriet",
   "Favorites": "Favorieten",
   "Fetch_image_from_URL": "Afbeelding ophalen van URL",
+  "Field_is_required": "{{field}} is vereist",
   "File_description": "Bestandsbeschrijving",
   "Files": "Bestanden",
   "Filter": "Filter",

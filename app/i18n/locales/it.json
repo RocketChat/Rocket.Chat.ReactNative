@@ -220,6 +220,7 @@
   "Favorite": "Preferito",
   "Favorites": "Preferiti",
   "Fetch_image_from_URL": "Recupera immagine da URL",
+  "Field_is_required": "{{field}} è obbligatorio",
   "File_description": "Descrizione file",
   "Files": "File",
   "Filter": "Filtro",

@@ -296,6 +296,7 @@
   "Favorite": "Lieblings-",
   "Favorites": "Favoriten",
   "Fetch_image_from_URL": "Bild von URL abrufen",
+  "Field_is_required": "{{field}} ist erforderlich",
   "File_description": "Dateibeschreibung",
   "Files": "Dateien",
   "FileUpload_Error": "Fehler bei Datei-Upload",

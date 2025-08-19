@@ -146,6 +146,7 @@
   "Everyone_can_access_this_channel": "Alle kan få tilgang til denne kanalen",
   "Favorite": "Favoritt",
   "Favorites": "Favoritter",
+  "Field_is_required": "{{field}} er påkrevd",
   "File_description": "Filbeskrivelse",
   "Files": "Filer",
   "Filter": "Filter",

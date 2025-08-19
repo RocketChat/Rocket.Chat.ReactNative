@@ -195,6 +195,7 @@
   "Favorite": "مفضل",
   "Favorites": "مفضلات",
   "Fetch_image_from_URL": "جلب الصورة من الرابط",
+  "Field_is_required": "{{field}} مطلوب",
   "File_description": "وصف الملف",
   "Files": "ملفات",
   "Filter": "مرشح",

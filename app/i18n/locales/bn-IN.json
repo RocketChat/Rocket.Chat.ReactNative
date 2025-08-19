@@ -302,6 +302,7 @@
   "Favorite": "প্রিয়",
   "Favorites": "প্রিয়সমূহ",
   "Fetch_image_from_URL": "URL থেকে ছবি আনুন",
+  "Field_is_required": "{{field}} প্রয়োজনীয়",
   "File_description": "ফাইল বর্ণনা",
   "Files": "ফাইলসমূহ",
   "FileUpload_Error": "ফাইল আপলোড ত্রুটি",

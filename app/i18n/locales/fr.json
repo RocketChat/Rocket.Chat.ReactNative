@@ -247,6 +247,7 @@
   "Favorite": "Favori",
   "Favorites": "Favoris",
   "Fetch_image_from_URL": "Récupérer l'image depuis l'URL",
+  "Field_is_required": "{{field}} est requis",
   "File_description": "Description du fichier",
   "Files": "Fichiers",
   "Filter": "Filtrer",

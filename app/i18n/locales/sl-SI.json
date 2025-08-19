@@ -258,6 +258,7 @@
   "Favorite": "Priljubljeno",
   "Favorites": "Priljubljeno",
   "Fetch_image_from_URL": "Pridobi sliko iz URL",
+  "Field_is_required": "{{field}} je obvezno",
   "File_description": "Opis datoteke",
   "Files": "Datoteke",
   "Filter": "Filter",

@@ -301,6 +301,7 @@
   "Favorite": "पसंदीदा",
   "Favorites": "ఇష్టాలు",
   "Fetch_image_from_URL": "URL నుండి చిత్రాన్ని పొందండి",
+  "Field_is_required": "{{field}} అవసరం",
   "File_description": "పిలుస్తూనే వివరణ",
   "Files": "పిలుస్తూనే",
   "FileUpload_Error": "ఫైల్ అప్లోడ్ లోపం",

@@ -302,6 +302,7 @@
   "Favorite": "पसंदीदा",
   "Favorites": "पसंदीदा",
   "Fetch_image_from_URL": "URL से छवि प्राप्त करें",
+  "Field_is_required": "{{field}} आवश्यक है",
   "File_description": "फ़ाइल विवरण",
   "Files": "फ़ाइलें",
   "FileUpload_Error": "फ़ाइल अपलोड त्रुटि",

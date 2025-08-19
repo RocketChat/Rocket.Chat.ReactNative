@@ -321,6 +321,7 @@
   "Favorite": "Oblíbený",
   "Favorites": "Oblíbené",
   "Fetch_image_from_URL": "Načíst obrázek z URL",
+  "Field_is_required": "{{field}} je povinný.",
   "File_description": "Popis souboru",
   "Files": "Soubory",
   "FileUpload_Error": "Chyba nahrávání souboru",

@@ -272,6 +272,7 @@
   "Favorite": "Любимый",
   "Favorites": "Избранное",
   "Fetch_image_from_URL": "получить изображение по URL",
+  "Field_is_required": "{{field}} обязательно",
   "File_description": "Описание файла",
   "Files": "Файлы",
   "Filter": "Фильтр",

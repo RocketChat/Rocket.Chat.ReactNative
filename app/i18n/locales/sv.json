@@ -281,6 +281,7 @@
   "Favorite": "Favorit",
   "Favorites": "Favoriter",
   "Fetch_image_from_URL": "Hämta bild från URL",
+  "Field_is_required": "{{field}} är obligatoriskt",
   "File_description": "Filbeskrivning",
   "Files": "Filer",
   "Filter": "Filter",

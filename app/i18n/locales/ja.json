@@ -195,6 +195,7 @@
   "Favorite": "お気に入り",
   "Favorites": "お気に入り",
   "Fetch_image_from_URL": "URLから画像を取得する",
+  "Field_is_required": "{{field}} は必須です",
   "File_description": "ファイルの説明",
   "Files": "ファイル",
   "Filter": "フィルター",

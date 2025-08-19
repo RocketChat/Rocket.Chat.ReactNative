@@ -302,6 +302,7 @@
   "Favorite": "Kedvenc",
   "Favorites": "Kedvencek",
   "Fetch_image_from_URL": "Kép betöltése az URL-ről",
+  "Field_is_required": "A(z) {{field}} megadása kötelező",
   "File_description": "Fájl leírás",
   "Files": "Fájlok",
   "FileUpload_Error": "Fájlfeltöltési hiba",

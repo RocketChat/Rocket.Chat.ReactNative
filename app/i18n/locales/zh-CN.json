@@ -203,6 +203,7 @@
   "Favorite": "收藏",
   "Favorites": "收藏",
   "Fetch_image_from_URL": "从URL获取图片",
+  "Field_is_required": "{{field}} 是必需的",
   "File_description": "文件描述",
   "Files": "文件",
   "Filter": "过滤器",

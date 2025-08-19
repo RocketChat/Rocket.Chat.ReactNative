@@ -332,6 +332,7 @@
   "Favorite": "Favorito",
   "Favorites": "Favoritos",
   "Fetch_image_from_URL": "Obter imagem da URL",
+  "Field_is_required": "{{field}} é obrigatório",
   "File_description": "Descrição do arquivo",
   "Files": "Arquivos",
   "FileUpload_Error": "Erro de upload de arquivo",

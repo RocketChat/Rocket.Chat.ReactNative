@@ -281,6 +281,7 @@
   "Favorite": "Suosikki",
   "Favorites": "Suosikit",
   "Fetch_image_from_URL": "Hae kuva URL-osoitteesta",
+  "Field_is_required": "{{field}} on pakollinen",
   "File_description": "Tiedoston kuvaus",
   "Files": "Tiedostot",
   "FileUpload_Error": "Tiedoston latausvirhe",

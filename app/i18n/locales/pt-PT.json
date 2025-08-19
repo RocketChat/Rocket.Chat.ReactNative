@@ -190,6 +190,7 @@
   "Favorite": "Favorito",
   "Favorites": "Favoritos",
   "Fetch_image_from_URL": "Pesquisar imagem do URL",
+  "Field_is_required": "{{field}} é obrigatório",
   "File_description": "Descrição do ficheiro",
   "Files": "Ficheiros",
   "Filter": "Filtro",

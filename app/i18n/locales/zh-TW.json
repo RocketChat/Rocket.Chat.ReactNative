@@ -211,6 +211,7 @@
   "Favorite": "最愛",
   "Favorites": "我的最愛",
   "Fetch_image_from_URL": "從URL獲取圖片",
+  "Field_is_required": "{{field}} 是必需的",
   "File_description": "檔案描述",
   "Files": "檔案",
   "Filter": "過濾器",
