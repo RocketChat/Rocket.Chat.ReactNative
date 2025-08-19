@@ -9,23 +9,11 @@ on:
     branches:
       - '*'
 
-#concurrency:
-#  group: ${{ github.workflow }}-${{ github.ref }}
-#  cancel-in-progress: true
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  debug-version-code:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Generate Build Version
-        id: version
-        uses: ./.github/actions/generate-version-code
-        with:
-          RN_VARIABLES_PAT: ${{ secrets.RN_VARIABLES_PAT }}
-
   run-eslint-and-test:
     name: ESLint and Test
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
