@@ -20,9 +20,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Checkout and Setup Node
-        uses: ./.github/actions/setup-node
-
       - name: Generate Build Version
         id: version
         uses: ./.github/actions/generate-version-code
