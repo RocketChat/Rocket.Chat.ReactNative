@@ -61,7 +61,7 @@ runs:
       id: compute
       shell: bash
       run: |
-        LATEST_BUILD_VERSION="${{ steps.versioncode.outputs.LATEST_BUILD_VERSION }}"
+        LATEST_BUILD_VERSION="${{ steps.build_version.outputs.LATEST_BUILD_VERSION }}"
         BUILD_VERSION=$((LATEST_BUILD_VERSION + 1))
         echo "BUILD_VERSION=$BUILD_VERSION" >> $GITHUB_OUTPUT
 
