@@ -13,6 +13,15 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: List all variables
+      shell: bash
+      run: |
+        curl -s -L \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ inputs.RN_VARIABLES_PAT }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/repos/${{ github.repository }}/actions/variables
+          
     - name: Get BUILD_VERSION from repo variable
       id: build_version
       shell: bash
