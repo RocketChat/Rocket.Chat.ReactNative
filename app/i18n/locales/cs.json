@@ -550,6 +550,7 @@
   "Notification_delay_description": "Existují faktory, které mohou přispět ke zpožděným oznámením. Další informace najdete v dokumentech Rocket.Chat.",
   "Notification_Preferences": "Předvolby oznámení",
   "Notifications": "Oznámení",
+  "Notifications_vibrate_from_new_messages": "Vibrovat při nových zprávách",
   "Notify_active_in_this_room": "Upozornit aktivní uživatele v této místnosti",
   "Notify_all_in_this_room": "Upozornit všechny v této místnosti",
   "Objects": "Předměty",

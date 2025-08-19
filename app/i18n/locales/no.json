@@ -545,6 +545,7 @@
   "Notification_delay_description": "Det er faktorer som kan bidra til forsinkede varsler. Lær mer i Rocket.Chats dokumenter.",
   "Notification_Preferences": "Varslingsinnstillinger",
   "Notifications": "Varsler",
+  "Notifications_vibrate_from_new_messages": "Vibrer for nye meldinger",
   "Notify_active_in_this_room": "Varsle aktive brukere i dette rommet",
   "Notify_all_in_this_room": "Gi beskjed til alle i dette rommet",
   "Off": "Av",

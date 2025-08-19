@@ -512,6 +512,7 @@
   "Nothing_to_save": "कुछ भी सहेजने के लिए नहीं है!",
   "Notification_Preferences": "सूचना प्राथमिकताएँ",
   "Notifications": "सूचनाएँ",
+  "Notifications_vibrate_from_new_messages": "नए संदेशों के लिए कंपन करें",
   "Notify_active_in_this_room": "इस कमरे में सक्रिय उपयोगकर्ताओं को सूचित करें",
   "Notify_all_in_this_room": "इस कमरे में सभी को सूचित करें",
   "Objects": "वस्तुएं",

@@ -327,6 +327,7 @@
   "Nothing_to_save": "保存するものはありません！",
   "Notification_Preferences": "通知設定",
   "Notifications": "通知",
+  "Notifications_vibrate_from_new_messages": "新しいメッセージで振動する",
   "Notify_active_in_this_room": "このルームのアクティブなユーザーに通知する",
   "Notify_all_in_this_room": "このルームのユーザー全員に通知する",
   "Objects": "オブジェクト",

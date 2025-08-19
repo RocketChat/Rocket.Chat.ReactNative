@@ -560,6 +560,7 @@
   "Notification_delay_description": "Existem fatores que podem contribuir para atrasos nas notificações. Saiba mais na documentação do Rocket.Chat.",
   "Notification_Preferences": "Preferências de notificação",
   "Notifications": "Notificações",
+  "Notifications_vibrate_from_new_messages": "Vibrar para novas mensagens",
   "Notify_active_in_this_room": "Notificar usuários ativos nesta sala",
   "Notify_all_in_this_room": "Notificar todos nesta sala",
   "Objects": "Objetos",

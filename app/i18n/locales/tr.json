@@ -366,6 +366,7 @@
   "Nothing_to_save": "Kaydedilecek bir şey yok!",
   "Notification_Preferences": "Bildirim Tercihleri",
   "Notifications": "Bildirimler",
+  "Notifications_vibrate_from_new_messages": "Yeni mesajlar için titreşim",
   "Notify_active_in_this_room": "Bu odadaki çevrimiçi kullanıcıları bilgilendir",
   "Notify_all_in_this_room": "Bu odadaki herkesi bilgilendir",
   "Objects": "Nesneler",
