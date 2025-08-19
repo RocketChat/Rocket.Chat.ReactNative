@@ -3,6 +3,7 @@
 exports[`Story Snapshots: Content should match snapshot 1`] = `
 [
   <View
+    accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Selected"
     accessibilityRole="radio"
     accessibilityState={
       {
@@ -180,6 +181,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     </View>
   </View>,
   <View
+    accessibilityLabel="Super Long Server Name in Rocket.Chat. https://superlongservername.tologintoasuperlongservername/. Unselected"
     accessibilityRole="radio"
     accessibilityState={
       {
@@ -357,6 +359,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     </View>
   </View>,
   <View
+    accessibilityLabel="Rocket.Chat. https://stable.rocket.chat/. Unselected"
     accessibilityRole="radio"
     accessibilityState={
       {
@@ -539,6 +542,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
 exports[`Story Snapshots: Themes should match snapshot 1`] = `
 [
   <View
+    accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
     accessibilityRole="radio"
     accessibilityState={
       {
@@ -716,6 +720,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     </View>
   </View>,
   <View
+    accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
     accessibilityRole="radio"
     accessibilityState={
       {
@@ -893,6 +898,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     </View>
   </View>,
   <View
+    accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
     accessibilityRole="radio"
     accessibilityState={
       {
@@ -1074,6 +1080,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
 
 exports[`Story Snapshots: Touchable should match snapshot 1`] = `
 <View
+  accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
   accessibilityRole="radio"
   accessibilityState={
     {
