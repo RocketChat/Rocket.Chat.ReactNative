@@ -16,10 +16,10 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
-import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
+import { WidthAwareView } from './Components/WidthAwareView';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 import MessageTime from './Time';
@@ -27,12 +27,14 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
+	const showTimeLarge = isLargeFontScale && props.isHeader;
 
+	let content;
 	if (props.isPreview) {
-		return (
+		content = (
 			<>
 				<User {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<>
 					<Content {...props} />
 					<Attachments {...props} />
@@ -43,52 +45,56 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	if (props.type === 'discussion-created') {
-		return (
+		content = (
 			<>
 				<User {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<Discussion {...props} />
 			</>
 		);
 	}
 
 	if (props.type === 'jitsi_call_started') {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
 
 	if (props.blocks && props.blocks.length) {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
 
-	return (
-		<>
-			<User {...props} />
-			{isLargeFontScale ? <MessageTime {...props} /> : null}
+	if (!content) {
+		content = (
 			<>
-				<Content {...props} />
-				<Attachments {...props} />
+				<User {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
+				<View style={{ gap: 4 }}>
+					<Content {...props} />
+					<Attachments {...props} />
+					<Urls {...props} />
+					<Thread {...props} />
+					<Reactions {...props} />
+					<Broadcast {...props} />
+				</View>
 			</>
-			<Urls {...props} />
-			<Thread {...props} />
-			<Reactions {...props} />
-			<Broadcast {...props} />
-		</>
-	);
+		);
+	}
+
+	return <WidthAwareView>{content}</WidthAwareView>;
 });
 MessageInner.displayName = 'MessageInner';
 
@@ -157,11 +163,11 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		// Prevent misalignment of info when the font size is increased.
 		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
-			<View style={[styles.container, props.style]}>
+			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
 				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
-					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+					<View style={styles.messageContent}>
 						<Content {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
@@ -175,10 +181,10 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
+		<View accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
-				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+				<View style={styles.messageContent}>
 					<MessageInner {...props} />
 				</View>
 				{!props.isHeader ? (
@@ -201,14 +207,14 @@ Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
-		backgroundColor = themes[theme].statusBackgroundWarning2;
+		backgroundColor = colors.statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
-		backgroundColor = themes[theme].surfaceNeutral;
+		backgroundColor = colors.surfaceNeutral;
 	}
 
 	if (props.hasError || props.isInfo) {

@@ -82,7 +82,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={203}
+        handlerTag={206}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -177,7 +177,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={204}
+        handlerTag={207}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -260,450 +260,6 @@ exports[`MessageComposer Audio tap record 1`] = `
 `;
 
 exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
-[
-  <View
-    onLayout={[Function]}
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "height": 48,
-            "justifyContent": "center",
-            "paddingRight": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={190}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 10,
-              "left": 10,
-              "right": 10,
-              "top": 10,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "height": 24,
-                "justifyContent": "center",
-                "opacity": 1,
-                "width": 24,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          testID="message-composer-actions"
-        >
-          <View
-            accessibilityLabel="Actions"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder="Message @Rocket Chat"
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={191}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 10,
-              "left": 10,
-              "right": 10,
-              "top": 10,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            [
-              {
-                "alignItems": "center",
-                "height": 24,
-                "justifyContent": "center",
-                "opacity": 1,
-                "width": 24,
-              },
-              {
-                "cursor": undefined,
-              },
-            ]
-          }
-          testID="message-composer-send-audio"
-        >
-          <View
-            accessibilityLabel="Record audio message"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-    </View>
-    <RCTScrollView
-      data={
-        [
-          "abc",
-        ]
-      }
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={0.0001}
-      stickyHeaderIndices={[]}
-      viewabilityConfigCallbackPairs={[]}
-    >
-      <View>
-        <View
-          onFocusCapture={[Function]}
-          onLayout={[Function]}
-          style={
-            [
-              {
-                "flexDirection": "row",
-              },
-              null,
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#F7F8FA",
-                "borderBottomRightRadius": 4,
-                "borderColor": "#EBECEF",
-                "borderLeftColor": "#9EA2A8",
-                "borderTopRightRadius": 4,
-                "borderWidth": 1,
-                "height": 64,
-                "marginRight": 8,
-                "padding": 8,
-                "paddingLeft": 16,
-                "width": 320,
-              }
-            }
-            testID="composer-quote-abc"
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#1F2329",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "700",
-                      "lineHeight": 20,
-                      "paddingRight": 4,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#9EA2A8",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "lineHeight": 16,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-              </View>
-              <RNGestureHandlerButton
-                activeOpacity={0.3}
-                borderless={true}
-                collapsable={false}
-                delayLongPress={600}
-                handlerTag={192}
-                handlerType="NativeViewGestureHandler"
-                hitSlop={
-                  {
-                    "bottom": 10,
-                    "left": 10,
-                    "right": 10,
-                    "top": 10,
-                  }
-                }
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "height": 24,
-                      "justifyContent": "center",
-                      "opacity": 1,
-                      "width": 24,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
-                  ]
-                }
-                testID="composer-quote-remove-abc"
-              >
-                <View
-                  accessibilityLabel="Remove quote message"
-                  accessibilityRole="button"
-                  accessible={true}
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </RNGestureHandlerButton>
-            </View>
-            <Text
-              accessibilityLabel="Message abc"
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
-              }
-              testID="markdown-preview-Message abc"
-            >
-              Message abc
-            </Text>
-          </View>
-        </View>
-      </View>
-    </RCTScrollView>
-  </View>,
-  <View
-    style={
-      [
-        {
-          "height": 0,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-        },
-      ]
-    }
-  />,
-]
-`;
-
-exports[`MessageComposer Quote Add quote \`def\` 1`] = `
 [
   <View
     onLayout={[Function]}
@@ -928,7 +484,6 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
       data={
         [
           "abc",
-          "def",
         ]
       }
       getItem={[Function]}
@@ -1130,187 +685,6 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             </Text>
           </View>
         </View>
-        <View
-          onFocusCapture={[Function]}
-          onLayout={[Function]}
-          style={
-            [
-              {
-                "flexDirection": "row",
-              },
-              null,
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#F7F8FA",
-                "borderBottomRightRadius": 4,
-                "borderColor": "#EBECEF",
-                "borderLeftColor": "#9EA2A8",
-                "borderTopRightRadius": 4,
-                "borderWidth": 1,
-                "height": 64,
-                "marginRight": 8,
-                "padding": 8,
-                "paddingLeft": 16,
-                "width": 320,
-              }
-            }
-            testID="composer-quote-def"
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#1F2329",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "700",
-                      "lineHeight": 20,
-                      "paddingRight": 4,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#9EA2A8",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "lineHeight": 16,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-              </View>
-              <RNGestureHandlerButton
-                activeOpacity={0.3}
-                borderless={true}
-                collapsable={false}
-                delayLongPress={600}
-                handlerTag={196}
-                handlerType="NativeViewGestureHandler"
-                hitSlop={
-                  {
-                    "bottom": 10,
-                    "left": 10,
-                    "right": 10,
-                    "top": 10,
-                  }
-                }
-                innerRef={null}
-                onActiveStateChange={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onPress={[Function]}
-                style={
-                  [
-                    {
-                      "alignItems": "center",
-                      "height": 24,
-                      "justifyContent": "center",
-                      "opacity": 1,
-                      "width": 24,
-                    },
-                    {
-                      "cursor": undefined,
-                    },
-                  ]
-                }
-                testID="composer-quote-remove-def"
-              >
-                <View
-                  accessibilityLabel="Remove quote message"
-                  accessibilityRole="button"
-                  accessible={true}
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </RNGestureHandlerButton>
-            </View>
-            <Text
-              accessibilityLabel="Message def"
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
-              }
-              testID="markdown-preview-Message def"
-            >
-              Message def
-            </Text>
-          </View>
-        </View>
       </View>
     </RCTScrollView>
   </View>,
@@ -1329,7 +703,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
 ]
 `;
 
-exports[`MessageComposer Quote Remove a quote 1`] = `
+exports[`MessageComposer Quote Add quote \`def\` 1`] = `
 [
   <View
     onLayout={[Function]}
@@ -1369,7 +743,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={197}
+          handlerTag={196}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1484,7 +858,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={198}
+          handlerTag={197}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1657,7 +1031,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={199}
+                handlerTag={198}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1838,7 +1212,633 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={200}
+                handlerTag={199}
+                handlerType="NativeViewGestureHandler"
+                hitSlop={
+                  {
+                    "bottom": 10,
+                    "left": 10,
+                    "right": 10,
+                    "top": 10,
+                  }
+                }
+                innerRef={null}
+                onActiveStateChange={[Function]}
+                onGestureHandlerEvent={[Function]}
+                onGestureHandlerStateChange={[Function]}
+                onPress={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "height": 24,
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "width": 24,
+                    },
+                    {
+                      "cursor": undefined,
+                    },
+                  ]
+                }
+                testID="composer-quote-remove-def"
+              >
+                <View
+                  accessibilityLabel="Remove quote message"
+                  accessibilityRole="button"
+                  accessible={true}
+                >
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+              </RNGestureHandlerButton>
+            </View>
+            <Text
+              accessibilityLabel="Message def"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                ]
+              }
+              testID="markdown-preview-Message def"
+            >
+              Message def
+            </Text>
+          </View>
+        </View>
+      </View>
+    </RCTScrollView>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  />,
+]
+`;
+
+exports[`MessageComposer Quote Remove a quote 1`] = `
+[
+  <View
+    onLayout={[Function]}
+    style={
+      [
+        {
+          "borderTopWidth": 1,
+          "minHeight": 48,
+          "paddingHorizontal": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderTopColor": "#CBCED1",
+        },
+      ]
+    }
+    testID="message-composer"
+  >
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "height": 48,
+            "justifyContent": "center",
+            "paddingRight": 12,
+          }
+        }
+      >
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={200}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
+            }
+          }
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "height": 24,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 24,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+          testID="message-composer-actions"
+        >
+          <View
+            accessibilityLabel="Actions"
+            accessibilityRole="button"
+            accessible={true}
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
+      </View>
+      <TextInput
+        blurOnSubmit={false}
+        defaultValue=""
+        keyboardAppearance="light"
+        multiline={true}
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        onFocus={[Function]}
+        onSelectionChange={[Function]}
+        placeholder="Message @Rocket Chat"
+        placeholderTextColor="#9EA2A8"
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flex": 1,
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "maxHeight": 200,
+              "minHeight": 48,
+              "paddingBottom": 12,
+              "paddingTop": 12,
+              "textAlign": "left",
+              "textAlignVertical": "center",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+        testID="message-composer-input"
+        underlineColorAndroid="transparent"
+      />
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 48,
+            "paddingLeft": 12,
+          }
+        }
+      >
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={201}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
+            }
+          }
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "height": 24,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 24,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+          testID="message-composer-send-audio"
+        >
+          <View
+            accessibilityLabel="Record audio message"
+            accessibilityRole="button"
+            accessible={true}
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
+      </View>
+    </View>
+    <RCTScrollView
+      data={
+        [
+          "abc",
+          "def",
+        ]
+      }
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={true}
+      keyExtractor={[Function]}
+      onContentSizeChange={[Function]}
+      onLayout={[Function]}
+      onMomentumScrollBegin={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={0.0001}
+      stickyHeaderIndices={[]}
+      viewabilityConfigCallbackPairs={[]}
+    >
+      <View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderBottomRightRadius": 4,
+                "borderColor": "#EBECEF",
+                "borderLeftColor": "#9EA2A8",
+                "borderTopRightRadius": 4,
+                "borderWidth": 1,
+                "height": 64,
+                "marginRight": 8,
+                "padding": 8,
+                "paddingLeft": 16,
+                "width": 320,
+              }
+            }
+            testID="composer-quote-abc"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "700",
+                      "lineHeight": 20,
+                      "paddingRight": 4,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#9EA2A8",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+              </View>
+              <RNGestureHandlerButton
+                activeOpacity={0.3}
+                borderless={true}
+                collapsable={false}
+                delayLongPress={600}
+                handlerTag={202}
+                handlerType="NativeViewGestureHandler"
+                hitSlop={
+                  {
+                    "bottom": 10,
+                    "left": 10,
+                    "right": 10,
+                    "top": 10,
+                  }
+                }
+                innerRef={null}
+                onActiveStateChange={[Function]}
+                onGestureHandlerEvent={[Function]}
+                onGestureHandlerStateChange={[Function]}
+                onPress={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "height": 24,
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "width": 24,
+                    },
+                    {
+                      "cursor": undefined,
+                    },
+                  ]
+                }
+                testID="composer-quote-remove-abc"
+              >
+                <View
+                  accessibilityLabel="Remove quote message"
+                  accessibilityRole="button"
+                  accessible={true}
+                >
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+              </RNGestureHandlerButton>
+            </View>
+            <Text
+              accessibilityLabel="Message abc"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                ]
+              }
+              testID="markdown-preview-Message abc"
+            >
+              Message abc
+            </Text>
+          </View>
+        </View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderBottomRightRadius": 4,
+                "borderColor": "#EBECEF",
+                "borderLeftColor": "#9EA2A8",
+                "borderTopRightRadius": 4,
+                "borderWidth": 1,
+                "height": 64,
+                "marginRight": 8,
+                "padding": 8,
+                "paddingLeft": 16,
+                "width": 320,
+              }
+            }
+            testID="composer-quote-def"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "700",
+                      "lineHeight": 20,
+                      "paddingRight": 4,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#9EA2A8",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+              </View>
+              <RNGestureHandlerButton
+                activeOpacity={0.3}
+                borderless={true}
+                collapsable={false}
+                delayLongPress={600}
+                handlerTag={203}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {

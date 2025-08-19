@@ -106,7 +106,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.setState({ loading: true });
 
 		try {
-			const { data, type, globalUsers } = this.state;
+			const { type, globalUsers } = this.state;
+			let { data } = this.state;
+			// TODO: workaround to fix Fabric batch behavior. It should be fixed when we migrate to function components
+			if (newSearch) {
+				data = [];
+			}
 			const directories = await Services.getDirectory({
 				text,
 				type,
@@ -116,11 +121,11 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
 			if (directories.success) {
-				this.setState({
-					data: [...data, ...(directories.result as IServerRoom[])],
+				this.setState(prev => ({
+					data: [...prev.data, ...(directories.result as IServerRoom[])],
 					loading: false,
 					total: directories.total
-				});
+				}));
 			} else {
 				this.setState({ loading: false });
 			}

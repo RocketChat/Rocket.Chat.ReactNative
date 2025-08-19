@@ -1,0 +1,16 @@
+appId: chat.rocket.reactnative
+tags:
+  - 'util'
+
+---
+- tapOn: Workspace URL. Required.
+- inputText: ${output.data.server}
+- tapOn: Connect
+- extendedWaitUntil:
+    timeout: 60000
+    visible: Login
+- tapOn: Login
+- extendedWaitUntil:
+    visible:
+      id: 'login-view'
+    timeout: 60000
