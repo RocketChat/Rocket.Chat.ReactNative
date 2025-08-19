@@ -17,28 +17,12 @@ default_platform :ios
 
 platform :ios do
   before_all do
-    setup_circle_ci	
+    setup_ci	
     create_keychain(	
       name: ENV["MATCH_KEYCHAIN_NAME"],	
       password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
       timeout: 1200	
     )	
-  end
-
-  desc "Get testflight version"
-  lane :get_testflight_version do |options|
-    api_key = app_store_connect_api_key(
-      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
-      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
-      key_filepath: 'fastlane/app_store_connect_api_key.p8',
-      in_house: false
-    )
-    latest_version = latest_testflight_build_number(
-        app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative'
-    )
-
-    UI.message("Latest version: #{latest_version}")
-    puts "VERSIONCODE=#{latest_version}"
   end
 
   desc "Submit a new Beta Build to Apple TestFlight (Circle CI)"
