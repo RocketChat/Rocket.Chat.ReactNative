@@ -13,7 +13,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-jobs: 
+jobs:
   run-eslint-and-test:
     name: ESLint and Test
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
