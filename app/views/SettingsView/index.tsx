@@ -1,5 +1,4 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import CookieManager from '@react-native-cookies/cookies';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
@@ -18,7 +17,6 @@ import { LISTENER } from '../../containers/Toast';
 import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
 import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
-import database from '../../lib/database';
 import { useAppSelector } from '../../lib/hooks';
 import { clearCache } from '../../lib/methods';
 import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
@@ -29,7 +27,6 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
 import { Services } from '../../lib/services';
-import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import SidebarView from '../SidebarView';
@@ -41,7 +38,6 @@ const SettingsView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const userId = useAppSelector(state => getUserSelector(state).id);
 	const { server, version } = useAppSelector(state => state.server);
 
 	useLayoutEffect(() => {
@@ -56,39 +52,12 @@ const SettingsView = (): React.ReactElement => {
 		});
 	}, [navigation, isMasterDetail]);
 
-	const checkCookiesAndLogout = async () => {
-		const db = database.servers;
-		const usersCollection = db.get('users');
-		try {
-			const userRecord = await usersCollection.find(userId);
-			if (userRecord.isFromWebView) {
-				showConfirmationAlert({
-					title: I18n.t('Clear_cookies_alert'),
-					message: I18n.t('Clear_cookies_desc'),
-					confirmationText: I18n.t('Clear_cookies_yes'),
-					dismissText: I18n.t('Clear_cookies_no'),
-					onPress: async () => {
-						await CookieManager.clearAll(true);
-						dispatch(logout());
-					},
-					onCancel: () => {
-						dispatch(logout());
-					}
-				});
-			} else {
-				dispatch(logout());
-			}
-		} catch {
-			// Do nothing: user not found
-		}
-	};
-
 	const handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
-			onPress: checkCookiesAndLogout
+			onPress: () => dispatch(logout())
 		});
 	};
 
