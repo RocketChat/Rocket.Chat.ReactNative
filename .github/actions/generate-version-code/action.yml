@@ -1,5 +1,4 @@
-name: Generate Version Code
-description: Generates version code
+name: Generate Build Version
 
 inputs:
   RN_VARIABLES_PAT:
@@ -7,9 +6,9 @@ inputs:
     type: string
 
 outputs:
-  VERSIONCODE:
-    description: "Generated version code"
-    value: ${{ steps.compute.outputs.VERSIONCODE }}
+  BUILD_VERSION:
+    description: "Generated build version"
+    value: ${{ steps.compute.outputs.BUILD_VERSION }}
 
 runs:
   using: "composite"
@@ -33,12 +32,12 @@ runs:
       id: compute
       shell: bash
       run: |
-        LATEST_VERSIONCODE="${{ steps.versioncode.outputs.LATEST_BUILD_VERSION }}"
-        VERSIONCODE=$((LATEST_VERSIONCODE + 1))
-        echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
+        LATEST_BUILD_VERSION="${{ steps.versioncode.outputs.LATEST_BUILD_VERSION }}"
+        BUILD_VERSION=$((LATEST_BUILD_VERSION + 1))
+        echo "BUILD_VERSION=$BUILD_VERSION" >> $GITHUB_OUTPUT
 
         echo "### 📦 Version Code Generated" >> $GITHUB_STEP_SUMMARY
-        echo "\`Version Code: $VERSIONCODE\`" >> $GITHUB_STEP_SUMMARY
+        echo "\`Version Code: $BUILD_VERSION\`" >> $GITHUB_STEP_SUMMARY
 
     - name: Update BUILD_VERSION in repo variable
       shell: bash

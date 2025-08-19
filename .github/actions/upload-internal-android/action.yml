@@ -10,7 +10,7 @@ inputs:
   GITHUB_TOKEN:
     description: 'GitHub token for commenting'
     required: true
-  VERSIONCODE:
+  BUILD_VERSION:
     description: 'Version code for build'
     required: true
   trigger:
@@ -84,7 +84,7 @@ runs:
         GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
         BUILD_TYPE: ${{ inputs.type }}
-        VERSION_CODE: ${{ inputs.VERSIONCODE }}
+        BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
       run: |
         if [[ -z "$INTERNAL_SHARING_URL" ]]; then
           echo "No internal sharing URL found in env"
