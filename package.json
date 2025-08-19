@@ -130,7 +130,7 @@
 		"react-native-vector-icons": "9.2.0",
 		"react-native-webview": "11.26.1",
 		"react-redux": "8.0.5",
-		"reanimated-tab-view": "^0.3.0",
+		"reanimated-tab-view": "0.3.0",
 		"redux": "4.2.0",
 		"redux-immutable-state-invariant": "2.1.0",
 		"redux-saga": "1.1.3",
