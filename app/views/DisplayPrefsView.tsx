@@ -83,7 +83,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
-		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
+		<Switch accessible={false} value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
 	const renderRadio = (value: boolean) => <Radio check={value} size={ICON_SIZE} />;
@@ -119,6 +119,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
 						additionalAcessibilityLabel={showAvatar}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 				</List.Section>

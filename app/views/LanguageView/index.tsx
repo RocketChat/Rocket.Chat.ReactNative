@@ -87,6 +87,7 @@ const LanguageView = () => {
 			log(e);
 		}
 	};
+	console.log(language, languageDefault);
 
 	return (
 		<SafeAreaView testID='language-view'>
@@ -102,7 +103,7 @@ const LanguageView = () => {
 						title={item.label}
 						value={item.value}
 						translateTitle={false}
-						isSelected={item.label === language}
+						isSelected={item.label === (language || languageDefault)}
 						onPress={submit}
 					/>
 				)}
