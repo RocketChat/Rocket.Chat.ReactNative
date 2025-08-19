@@ -23,7 +23,6 @@ import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
-import Check from '../../containers/Check';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
 
 interface IStatus {
