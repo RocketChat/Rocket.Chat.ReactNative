@@ -64,8 +64,8 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	const fromProfileView = isFromRoute(navigation, 'ProfileView');
 
 	const validationSchema = yup.object().shape({
-		currentPassword: yup.string().min(1).required(),
-		newPassword: yup.string().email().required(),
+		currentPassword: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Current_password') })}`),
+		newPassword: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('New_Password') })}`),
 		confirmNewPassword: yup
 			.string()
 			.required()
