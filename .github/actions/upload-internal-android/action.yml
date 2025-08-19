@@ -97,7 +97,7 @@ runs:
           app_name="Rocket.Chat Experimental"
         fi
 
-        version_info="$app_name $VERSION_NAME.$VERSION_CODE"
+        version_info="$app_name $VERSION_NAME.$BUILD_VERSION"
 
         message="**Android Build Available**"$'\n\n'"$version_info"$'\n\n'"Internal App Sharing: $INTERNAL_SHARING_URL"
 

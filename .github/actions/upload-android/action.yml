@@ -85,7 +85,7 @@ runs:
         gradle_file="android/app/build.gradle"
         VERSION_NAME=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
 
-        version_info="$app_name $VERSION_NAME.$VERSION_CODE"
+        version_info="$app_name $VERSION_NAME.$BUILD_VERSION"
 
         message="**Android Build Available**"$'\n\n'"$version_info"
 
