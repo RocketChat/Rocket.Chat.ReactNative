@@ -90,7 +90,7 @@ export const ComposerInput = memo(
 			const fetchMessageAndSetInput = async () => {
 				const message = await getMessageById(selectedMessages[0]);
 				if (message) {
-					setInput(message?.msg || '');
+					setInput(message?.msg || message?.attachments?.[0]?.description || '');
 				}
 			};
 
