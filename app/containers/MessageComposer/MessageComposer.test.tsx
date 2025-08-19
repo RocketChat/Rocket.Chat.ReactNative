@@ -43,19 +43,6 @@ const initialStoreState = () => {
 };
 initialStoreState();
 
-jest.mock('./hooks/useSubscription', () => ({
-	useSubscription: jest.fn(() => ({
-		rid: 'rid',
-		t: 'd',
-		tmid: undefined,
-		name: 'Rocket Chat',
-		fname: 'Rocket Chat',
-		usernames: ['user1', 'user2'],
-		prid: undefined,
-		federated: false
-	}))
-}));
-
 jest.mock('../../lib/database/services/Message', () => ({
 	getMessageById: (messageId: any) => ({
 		id: messageId,
@@ -75,6 +62,16 @@ jest.mock('../../lib/database/services/Message', () => ({
 const initialContext = {
 	rid: 'rid',
 	tmid: undefined,
+	room: {
+		rid: 'rid',
+		t: 'd',
+		tmid: undefined,
+		name: 'Rocket Chat',
+		fname: 'Rocket Chat',
+		usernames: ['user1', 'user2'],
+		prid: undefined,
+		federated: false
+	},
 	sharing: false,
 	action: null,
 	selectedMessages: [],
