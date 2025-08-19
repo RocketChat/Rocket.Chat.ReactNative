@@ -39,7 +39,7 @@ jobs:
 
       - name: Generate Build Version
         id: version
-        uses: ./.github/actions/generate-version-code
+        uses: ./.github/actions/generate-build-version
         with:
           RN_VARIABLES_PAT: ${{ secrets.RN_VARIABLES_PAT }}
 
