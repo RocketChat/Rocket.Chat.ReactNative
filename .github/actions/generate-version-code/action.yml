@@ -14,8 +14,8 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Get VERSIONCODE from repo variable
-      id: versioncode
+    - name: Get BUILD_VERSION from repo variable
+      id: build_version
       shell: bash
       run: |
         RESPONSE=$(
@@ -27,20 +27,20 @@ runs:
         )
 
         VALUE=$(echo "$RESPONSE" | jq -r '.value')
-        echo "LATEST_VERSIONCODE=$VALUE" >> $GITHUB_OUTPUT
+        echo "LATEST_BUILD_VERSION=$VALUE" >> $GITHUB_OUTPUT
 
-    - name: Compute VERSIONCODE
+    - name: Compute BUILD_VERSION
       id: compute
       shell: bash
       run: |
-        LATEST_VERSIONCODE="${{ steps.versioncode.outputs.LATEST_VERSIONCODE }}"
+        LATEST_VERSIONCODE="${{ steps.versioncode.outputs.LATEST_BUILD_VERSION }}"
         VERSIONCODE=$((LATEST_VERSIONCODE + 1))
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
 
         echo "### 📦 Version Code Generated" >> $GITHUB_STEP_SUMMARY
         echo "\`Version Code: $VERSIONCODE\`" >> $GITHUB_STEP_SUMMARY
 
-    - name: Update VERSIONCODE in repo variable
+    - name: Update BUILD_VERSION in repo variable
       shell: bash
       run: |
         curl -s -L \
