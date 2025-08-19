@@ -34,7 +34,6 @@ runs:
           https://api.github.com/repos/${{ github.repository }}/actions/variables/BUILD_VERSION
           
     - name: Get BUILD_VERSION from repo variable
-      id: build_version
       shell: bash
       run: |
         RESPONSE=$(
