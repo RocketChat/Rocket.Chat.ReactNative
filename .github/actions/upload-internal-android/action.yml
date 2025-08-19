@@ -11,7 +11,7 @@ inputs:
     description: 'GitHub token for commenting'
     required: true
   BUILD_VERSION:
-    description: 'Version code for build'
+    description: 'Build version for build'
     required: true
   trigger:
     description: 'Trigger for build'

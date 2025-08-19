@@ -37,7 +37,7 @@ jobs:
         with:
           build_name: 'ios-experimental'
 
-      - name: Generate Version Code
+      - name: Generate Build Version
         id: version
         uses: ./.github/actions/generate-version-code
         with:
