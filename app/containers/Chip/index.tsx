@@ -9,7 +9,7 @@ import Avatar from '../Avatar';
 const styles = StyleSheet.create({
 	pressable: {
 		paddingHorizontal: 8,
-		marginRight: 8,
+		marginHorizontal: 4,
 		borderRadius: 4,
 		justifyContent: 'center',
 		maxWidth: 192
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	},
 	textContainer: {
 		marginRight: 8,
-		maxWidth: 120
+		maxWidth: 110
 	},
 	name: {
 		fontSize: 16,

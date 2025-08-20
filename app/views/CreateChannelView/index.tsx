@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
@@ -17,14 +17,13 @@ import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { Review } from '../../lib/methods/helpers/review';
 import SafeAreaView from '../../containers/SafeAreaView';
-import sharedStyles from '../Styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import Button from '../../containers/Button';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import Chip from '../../containers/Chip';
 import { RoomSettings } from './RoomSettings';
 import { ISelectedUser } from '../../reducers/selectedUsers';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
+import SelectedUsersList from '../../containers/SelectedUsersList';
 
 const styles = StyleSheet.create({
 	containerTextInput: {
@@ -33,23 +32,6 @@ const styles = StyleSheet.create({
 	},
 	containerStyle: {
 		marginBottom: 16
-	},
-	list: {
-		width: '100%'
-	},
-	invitedHeader: {
-		marginVertical: 12,
-		marginHorizontal: 16,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
-	invitedCount: {
-		fontSize: 12,
-		...sharedStyles.textRegular
-	},
-	invitedList: {
-		paddingHorizontal: 16
 	},
 	buttonCreate: {
 		marginTop: 32,
@@ -172,43 +154,7 @@ const CreateChannelView = () => {
 							e2eEnabledDefaultPrivateRooms={e2eEnabledDefaultPrivateRooms}
 						/>
 					</View>
-					{users.length > 0 ? (
-						<>
-							<View style={styles.invitedHeader}>
-								<Text style={[styles.invitedCount, { color: colors.fontSecondaryInfo }]}>
-									{I18n.t('N_Selected_members', { n: users.length })}
-								</Text>
-							</View>
-							<FlatList
-								data={users}
-								extraData={users}
-								keyExtractor={item => item._id}
-								style={[
-									styles.list,
-									{
-										backgroundColor: colors.surfaceTint,
-										borderColor: colors.strokeLight
-									}
-								]}
-								contentContainerStyle={styles.invitedList}
-								renderItem={({ item }) => {
-									const name = useRealName && item.fname ? item.fname : item.name;
-									const username = item.name;
-
-									return (
-										<Chip
-											text={name}
-											avatar={username}
-											onPress={() => removeUser(item)}
-											testID={`create-channel-view-item-${item.name}`}
-										/>
-									);
-								}}
-								keyboardShouldPersistTaps='always'
-								horizontal
-							/>
-						</>
-					) : null}
+					{users.length > 0 ? <SelectedUsersList onPress={removeUser} users={users} useRealName={useRealName} /> : null}
 					<Button
 						title={isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')}
 						type='primary'

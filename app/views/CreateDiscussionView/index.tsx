@@ -27,6 +27,7 @@ import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
+import SelectedUsersList from '../../containers/SelectedUsersList';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const schema = yup.object().shape({
@@ -45,9 +46,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		result,
 		serverVersion,
 		user,
-		users
+		selectedUsers,
+		useRealName
 	} = useAppSelector(state => ({
-		users: state.selectedUsers.users.map(item => item.name),
+		selectedUsers: state.selectedUsers.users,
 		user: getUserSelector(state),
 		server: state.server.server,
 		error: state.createDiscussion.error as IError,
@@ -57,12 +59,13 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		blockUnauthenticatedAccess: !!(state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true),
 		serverVersion: state.server.version as string,
 		isMasterDetail: state.app.isMasterDetail,
-		encryptionEnabled: state.encryption.enabled
+		encryptionEnabled: state.encryption.enabled,
+		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
-
+	const initialSelectedUsers = selectedUsers.map(item => item.name);
 	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params?.channel);
 	const [encrypted, setEncrypted] = useState<boolean>(encryptionEnabled);
-	console.log(users);
+	const [users, setUsers] = useState<string[]>(initialSelectedUsers);
 	const message = route.params?.message;
 	const {
 		control,
@@ -89,6 +92,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const onEncryptedChange = (value: boolean) => {
 		logEvent(events.CD_TOGGLE_ENCRY);
 		setEncrypted(value);
+	};
+
+	const removeUser = (user: string) => {
+		setUsers(users.filter(item => item !== user));
 	};
 
 	const submit = () => {
@@ -168,6 +175,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 								additionalAcessibilityLabel={encrypted}
 							/>
 						</>
+					) : null}
+
+					{selectedUsers.length > 0 ? (
+						<SelectedUsersList onPress={removeUser} users={selectedUsers} useRealName={useRealName} />
 					) : null}
 
 					<Button

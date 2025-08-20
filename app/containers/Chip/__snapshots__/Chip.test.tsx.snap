@@ -45,7 +45,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
           "paddingHorizontal": 8,
         },
@@ -125,7 +125,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         style={
           {
             "marginRight": 8,
-            "maxWidth": 120,
+            "maxWidth": 110,
           }
         }
       >
@@ -225,7 +225,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
           "paddingHorizontal": 8,
         },
@@ -305,7 +305,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         style={
           {
             "marginRight": 8,
-            "maxWidth": 120,
+            "maxWidth": 110,
           }
         }
       >
@@ -405,7 +405,7 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
           "paddingHorizontal": 8,
         },
@@ -428,7 +428,7 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
         style={
           {
             "marginRight": 8,
-            "maxWidth": 120,
+            "maxWidth": 110,
           }
         }
       >
@@ -528,7 +528,7 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
           "paddingHorizontal": 8,
         },
@@ -551,7 +551,7 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
         style={
           {
             "marginRight": 8,
-            "maxWidth": 120,
+            "maxWidth": 110,
           }
         }
       >
@@ -625,7 +625,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
           "paddingHorizontal": 8,
         },
@@ -705,7 +705,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         style={
           {
             "marginRight": 8,
-            "maxWidth": 120,
+            "maxWidth": 110,
           }
         }
       >
