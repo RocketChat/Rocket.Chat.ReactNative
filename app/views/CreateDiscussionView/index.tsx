@@ -15,7 +15,6 @@ import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../act
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
-import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError } from './interfaces';
 import { ISearchLocal, ISubscription } from '../../definitions';
@@ -45,8 +44,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		loading,
 		result,
 		serverVersion,
-		user
+		user,
+		users
 	} = useAppSelector(state => ({
+		users: state.selectedUsers.users.map(item => item.name),
 		user: getUserSelector(state),
 		server: state.server.server,
 		error: state.createDiscussion.error as IError,
@@ -61,8 +62,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 
 	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params?.channel);
 	const [encrypted, setEncrypted] = useState<boolean>(encryptionEnabled);
-	const [users, setUsers] = useState<string[]>([]);
-
+	console.log(users);
 	const message = route.params?.message;
 	const {
 		control,
@@ -84,11 +84,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		logEvent(events.CD_SELECT_CHANNEL);
 		setChannel(value);
 		setEncrypted(value?.encrypted);
-	};
-
-	const selectUsers = ({ value }: { value: string[] }) => {
-		logEvent(events.CD_SELECT_USERS);
-		setUsers(value);
 	};
 
 	const onEncryptedChange = (value: boolean) => {
@@ -161,15 +156,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 							label={I18n.t('Discussion_name')}
 							testID='multi-select-discussion-name'
 							containerStyle={styles.inputStyle}
-						/>
-						<SelectUsers
-							server={server}
-							userId={user.id}
-							token={user.token}
-							selected={users}
-							onUserSelect={selectUsers}
-							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-							serverVersion={serverVersion}
 						/>
 					</View>
 

@@ -240,7 +240,7 @@ export type DrawerParamList = {
 
 export type NewMessageStackParamList = {
 	NewMessageView: undefined;
-	SelectedUsersViewCreateChannel: {
+	SelectUsersView: {
 		maxUsers?: number;
 		showButton?: boolean;
 		title?: string;

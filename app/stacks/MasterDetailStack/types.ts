@@ -169,7 +169,7 @@ export type ModalStackParamList = {
 	DisplayPrefsView: undefined;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;
-	SelectedUsersViewCreateChannel: {
+	SelectUsersView: {
 		maxUsers: number;
 		showButton: boolean;
 		title: string;

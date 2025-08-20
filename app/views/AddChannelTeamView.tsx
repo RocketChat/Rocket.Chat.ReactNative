@@ -68,7 +68,7 @@ const AddChannelTeamView = () => {
 							title='Create_New'
 							onPress={() =>
 								isMasterDetail
-									? navigation.navigate('SelectedUsersViewCreateChannel', {
+									? navigation.navigate('SelectUsersView', {
 											nextAction: () => navigation.navigate('CreateChannelView', { teamId })
 									  })
 									: navigation.navigate('SelectedUsersView', {

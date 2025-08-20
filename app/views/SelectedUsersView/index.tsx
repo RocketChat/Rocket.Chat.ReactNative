@@ -35,7 +35,7 @@ const SelectedUsersView = () => {
 
 	const { maxUsers, showButton, title, buttonText, showSkipText = true, nextAction } = useRoute<TRoute>().params;
 	const navigation = useNavigation<TNavigation>();
-
+	console.log(buttonText);
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
@@ -66,8 +66,8 @@ const SelectedUsersView = () => {
 
 	useLayoutEffect(() => {
 		const titleHeader = title ?? I18n.t('Select_Members');
-		const buttonTextHeader = buttonText ?? I18n.t('Next');
-		const nextActionHeader = nextAction ?? (() => {});
+		const buttonTextHeader = buttonText || I18n.t('Next');
+		const nextActionHeader = nextAction || (() => {});
 		const buttonTitle = handleButtonTitle(buttonTextHeader);
 		const options = {
 			title: titleHeader,
@@ -80,7 +80,7 @@ const SelectedUsersView = () => {
 				)
 		};
 		navigation.setOptions(options);
-	}, [navigation, users.length, maxUsers]);
+	}, [navigation, users.length, maxUsers, buttonText, nextAction]);
 
 	useEffect(() => {
 		if (isGroupChat()) {
