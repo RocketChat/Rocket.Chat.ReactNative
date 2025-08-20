@@ -4,8 +4,8 @@ inputs:
   type:
     description: 'Build type: official or experimental'
     required: true
-  VERSIONCODE:
-    description: 'Version Code'
+  BUILD_VERSION:
+    description: 'Build version'
     required: true
   APP_STORE_CONNECT_API_KEY_BASE64:
     description: 'Base64 encoded App Store Connect API Key'
@@ -84,7 +84,7 @@ runs:
     - name: Configure Info.plist and build version
       working-directory: ios
       run: |
-        agvtool new-version -all ${{ inputs.VERSIONCODE }}
+        agvtool new-version -all ${{ inputs.BUILD_VERSION }}
         if [[ ${{ inputs.type }} == "official" ]]; then
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist

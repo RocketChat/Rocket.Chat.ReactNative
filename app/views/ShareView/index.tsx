@@ -366,6 +366,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					value={{
 						rid: room.rid,
 						t: room.t,
+						room,
 						tmid: this.getThreadId(thread),
 						sharing: true,
 						action: route.params?.action,

@@ -26,7 +26,7 @@ jobs:
     needs: build-hold
     if: ${{ inputs.type == 'official' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
     outputs:
-      VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
+      BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -39,13 +39,11 @@ jobs:
         with:
           build_name: 'android-official'
 
-      - name: Generate Version Code
+      - name: Generate Build Version
         id: version
-        uses: ./.github/actions/generate-version-code
+        uses: ./.github/actions/generate-build-version
         with:
-          official: true
-          os: android
-          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          RN_VARIABLES_PAT: ${{ secrets.RN_VARIABLES_PAT }}
 
       - name: Build Android
         uses: ./.github/actions/build-android
@@ -58,7 +56,7 @@ jobs:
           KEYSTORE_OFFICIAL_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
           KEYSTORE_OFFICIAL_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
           BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
-          VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
+          BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
 
   upload-hold:
     name: Upload Hold
@@ -67,7 +65,7 @@ jobs:
     environment: upload_official_android
     needs: [build-android]
     outputs:
-      VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}
+      BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
     steps:
       - run: echo "Waiting for manual approval..."
 
@@ -87,7 +85,7 @@ jobs:
           trigger: ${{ inputs.trigger }}
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSIONCODE: ${{ needs.upload-hold.outputs.VERSIONCODE }}
+          BUILD_VERSION: ${{ needs.upload-hold.outputs.BUILD_VERSION }}
         
   upload-internal:
     name: Internal Sharing
@@ -107,4 +105,4 @@ jobs:
           type: official
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}
+          BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
