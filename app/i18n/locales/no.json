@@ -114,6 +114,7 @@
   "Channel_hint_private": "Bare inviterte brukere har tilgang til denne kanalen",
   "Channel_hint_public": "Alle kan få tilgang til denne kanalen",
   "Channel_Name": "Kanalnavn",
+  "Channel_name_already_taken": "Navn på kanalen er allerede tatt",
   "Channel_Read_Only_Hint": "Bare kanaleiere kan sende nye meldinger",
   "Channels": "Kanaler",
   "Chat_closed_by_agent": "Chatten ble avsluttet av agenten",

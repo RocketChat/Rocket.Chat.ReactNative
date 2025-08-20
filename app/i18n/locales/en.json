@@ -122,6 +122,7 @@
   "Channel_hint_private": "People can only join by being invited",
   "Channel_hint_public": "Everyone can access this channel",
   "Channel_Name": "Channel name",
+  "Channel_name_already_taken": "Channel name already taken",
   "Channel_name_required": "Channel name required",
   "Channel_Read_Only_Hint": "Only channel owners can send new messages",
   "Channels": "Channels",

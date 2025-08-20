@@ -100,6 +100,7 @@
   "Channel_hint_private": "Människor kan bara gå med genom att bli inbjudna",
   "Channel_hint_public": "Alla kan öppna kanalen",
   "Channel_Name": "Kanalnamn",
+  "Channel_name_already_taken": "Kanalnamnet är redan taget.",
   "Channel_name_required": "Kanalsnamn krävs",
   "Channel_Read_Only_Hint": "Endast kanalägare kan skicka nya meddelanden",
   "Channels": "Kanaler",

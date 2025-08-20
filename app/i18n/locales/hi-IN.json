@@ -115,6 +115,7 @@
   "Channel_hint_private": "लोग केवल आमंत्रित किए जाने पर ही जुड़ सकते हैं",
   "Channel_hint_public": "हर कोई इस चैनल तक पहुँच सकता है",
   "Channel_Name": "चैनल का नाम",
+  "Channel_name_already_taken": "चैनल का नाम पहले से लिया जा चुका है।",
   "Channel_name_required": "चैनल का नाम आवश्यक है।",
   "Channel_Read_Only_Hint": "केवल चैनल के मालिक नए संदेश भेज सकते हैं",
   "Channels": "चैनल्स",

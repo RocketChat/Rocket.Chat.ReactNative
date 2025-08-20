@@ -110,6 +110,7 @@
   "Channel_hint_private": "Menschen können nur dann durch eingeladen werden",
   "Channel_hint_public": "Jeder kann auf diesen Kanal zugreifen",
   "Channel_Name": "Channel-Name",
+  "Channel_name_already_taken": "Kanalname bereits vergeben",
   "Channel_name_required": "Kanalname erforderlich",
   "Channel_Read_Only_Hint": "Nur Kanalbesitzer können neue Nachrichten senden",
   "Channels": "Channels",
