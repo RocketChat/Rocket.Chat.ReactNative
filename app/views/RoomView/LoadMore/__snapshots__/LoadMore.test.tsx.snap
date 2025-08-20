@@ -466,7 +466,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -574,169 +573,179 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#F2F3F5",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#F2F3F5",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#E4E7EA",
+                          "color": "#9EA2A8",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Hey!"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Hey!
+                        <Text
+                          accessibilityLabel="Hey!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          Hey!
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -796,7 +805,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -812,71 +820,81 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        <Text
+                          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -943,7 +961,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -959,71 +976,81 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Older message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Older message
+                        <Text
+                          accessibilityLabel="Older message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          Older message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -1256,7 +1283,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -1364,169 +1390,179 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#F2F3F5",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#F2F3F5",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#E4E7EA",
+                          "color": "#9EA2A8",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        <Text
+                          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -1586,7 +1622,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -1602,71 +1637,81 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the third message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the third message
+                        <Text
+                          accessibilityLabel="This is the third message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          This is the third message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -1733,7 +1778,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -1749,71 +1793,81 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the second message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the second message
+                        <Text
+                          accessibilityLabel="This is the second message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          This is the second message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -1880,7 +1934,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -1988,169 +2041,179 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#F2F3F5",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#F2F3F5",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#E4E7EA",
+                          "color": "#9EA2A8",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the first message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the first message
+                        <Text
+                          accessibilityLabel="This is the first message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          This is the first message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -2306,7 +2369,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -2414,169 +2476,179 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#F2F3F5",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#F2F3F5",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#E4E7EA",
+                          "color": "#9EA2A8",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Hey!"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Hey!
+                        <Text
+                          accessibilityLabel="Hey!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          Hey!
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -2636,7 +2708,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -2652,71 +2723,81 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        <Text
+                          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -2783,7 +2864,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -2799,71 +2879,81 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Older message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Older message
+                        <Text
+                          accessibilityLabel="Older message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          Older message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -3096,7 +3186,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -3204,169 +3293,179 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#F2F3F5",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#F2F3F5",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#E4E7EA",
+                          "color": "#9EA2A8",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        <Text
+                          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -3426,7 +3525,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -3442,71 +3540,81 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the third message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the third message
+                        <Text
+                          accessibilityLabel="This is the third message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          This is the third message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -3573,7 +3681,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -3589,71 +3696,81 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#E4E7EA",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the second message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the second message
+                        <Text
+                          accessibilityLabel="This is the second message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          This is the second message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -3720,7 +3837,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -3828,169 +3944,179 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#F2F3F5",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#9EA2A8",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#F2F3F5",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#E4E7EA",
+                          "color": "#9EA2A8",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#E4E7EA",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the first message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the first message
+                        <Text
+                          accessibilityLabel="This is the first message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#E4E7EA",
+                              },
+                            ]
+                          }
+                        >
+                          This is the first message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -4146,7 +4272,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -4254,169 +4379,179 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#2F343D",
+                          "color": "#6C727A",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Hey!"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Hey!
+                        <Text
+                          accessibilityLabel="Hey!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Hey!
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -4476,7 +4611,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -4492,71 +4626,81 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        <Text
+                          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -4623,7 +4767,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -4639,71 +4782,81 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Older message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Older message
+                        <Text
+                          accessibilityLabel="Older message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Older message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -4936,7 +5089,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -5044,169 +5196,179 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#2F343D",
+                          "color": "#6C727A",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        <Text
+                          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -5266,7 +5428,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -5282,71 +5443,81 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the third message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the third message
+                        <Text
+                          accessibilityLabel="This is the third message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          This is the third message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -5413,7 +5584,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -5429,71 +5599,81 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "gap": 4,
+                  "flex": 1,
                 }
               }
             >
-              <View>
-                <View
-                  style={
-                    {
-                      "gap": 2,
-                    }
+              <View
+                style={
+                  {
+                    "gap": 4,
                   }
-                >
-                  <Text
+                }
+              >
+                <View>
+                  <View
                     style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#2F343D",
-                        },
-                      ]
+                      {
+                        "gap": 2,
+                      }
                     }
                   >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the second message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the second message
+                        <Text
+                          accessibilityLabel="This is the second message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          This is the second message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -5560,7 +5740,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
-              "gap": 10,
             }
           }
         >
@@ -5668,169 +5847,179 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             style={
               {
                 "flex": 1,
+                "marginLeft": 10,
               }
             }
           >
             <View
+              onLayout={[Function]}
               style={
                 {
-                  "alignItems": "center",
                   "flex": 1,
-                  "flexDirection": "row",
-                  "justifyContent": "space-between",
                 }
               }
             >
               <View
-                accessibilityState={
-                  {
-                    "busy": undefined,
-                    "checked": undefined,
-                    "disabled": undefined,
-                    "expanded": undefined,
-                    "selected": undefined,
-                  }
-                }
-                accessibilityValue={
-                  {
-                    "max": undefined,
-                    "min": undefined,
-                    "now": undefined,
-                    "text": undefined,
-                  }
-                }
-                accessible={true}
-                collapsable={false}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
+                    "flex": 1,
                     "flexDirection": "row",
-                    "flexShrink": 1,
-                    "gap": 4,
-                    "opacity": 1,
+                    "justifyContent": "space-between",
                   }
                 }
-                testID="username-header-diego.mello"
               >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "flexShrink": 1,
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "600",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#1F2329",
-                      },
-                    ]
-                  }
-                >
-                  diego.mello
-                </Text>
-                <Text
-                  style={
-                    [
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 13,
-                        "fontWeight": "400",
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      {
-                        "color": "#6C727A",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                {
-                  "gap": 4,
-                }
-              }
-            >
-              <View>
                 <View
-                  style={
+                  accessibilityState={
                     {
-                      "gap": 2,
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
                     }
                   }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
                 >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
                   <Text
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
                           "fontFamily": "Inter",
-                          "fontSize": 16,
+                          "fontSize": 13,
                           "fontWeight": "400",
-                          "lineHeight": 22,
+                          "lineHeight": 18,
                           "textAlign": "left",
                         },
                         {
-                          "color": "#2F343D",
+                          "color": "#6C727A",
                         },
                       ]
                     }
                   >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View>
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
                     <Text
                       style={
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        }
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
                       }
                     >
                       <Text
-                        accessibilityLabel="This is the first message"
                         style={
-                          [
-                            {
-                              "flexShrink": 1,
-                              "fontSize": 16,
-                              "lineHeight": 22,
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
                         }
                       >
-                        This is the first message
+                        <Text
+                          accessibilityLabel="This is the first message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          This is the first message
+                        </Text>
                       </Text>
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>

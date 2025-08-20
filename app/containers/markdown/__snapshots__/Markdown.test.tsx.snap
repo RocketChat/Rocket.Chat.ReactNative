@@ -1201,59 +1201,40 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
           }
         }
       >
-        <View
-          style={
+        <ViewManagerAdapter_ExpoImage
+          borderColor={4291546833}
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={300}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          source={
             [
               {
-                "height": 300,
-                "width": 300,
-              },
-              {
-                "borderColor": "#CBCED1",
+                "uri": "https://play.google.com/intl/en_us/badges/images/badge_new.png",
               },
             ]
           }
-        >
-          <ViewManagerAdapter_ExpoImage
-            bottom={0}
-            containerViewRef={"[React.ref]"}
-            contentFit="contain"
-            contentPosition={
-              {
-                "left": "50%",
-                "top": "50%",
-              }
+          style={
+            {
+              "borderColor": "#CBCED1",
+              "height": 300,
+              "width": 300,
             }
-            left={0}
-            nativeViewRef={"[React.ref]"}
-            onError={[Function]}
-            onLoad={[Function]}
-            onLoadEnd={[Function]}
-            onLoadStart={[Function]}
-            onProgress={[Function]}
-            placeholder={[]}
-            position="absolute"
-            right={0}
-            source={
-              [
-                {
-                  "uri": "https://play.google.com/intl/en_us/badges/images/badge_new.png",
-                },
-              ]
-            }
-            style={
-              {
-                "bottom": 0,
-                "left": 0,
-                "position": "absolute",
-                "right": 0,
-                "top": 0,
-              }
-            }
-            top={0}
-            transition={null}
-          />
-        </View>
+          }
+          transition={null}
+          width={300}
+        />
       </Text>
     </Text>
   </View>
