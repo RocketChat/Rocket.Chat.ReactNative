@@ -70,6 +70,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	label?: string;
 	required?: boolean;
 	error?: any;
+	showErrorMessage?: boolean;
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
@@ -79,7 +80,6 @@ export interface IRCTextInputProps extends TextInputProps {
 	left?: JSX.Element;
 	bottomSheet?: boolean;
 	onClearInput?: () => void;
-	showErrorMessage?: boolean;
 }
 
 const getInputError = (error: unknown): string => {
