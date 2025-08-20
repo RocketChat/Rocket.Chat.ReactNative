@@ -80,7 +80,6 @@ export interface IRCTextInputProps extends TextInputProps {
 	left?: JSX.Element;
 	bottomSheet?: boolean;
 	onClearInput?: () => void;
-	showErrorMessage?: boolean;
 }
 
 const getInputError = (error: unknown): string => {
