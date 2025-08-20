@@ -79,6 +79,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	left?: JSX.Element;
 	bottomSheet?: boolean;
 	onClearInput?: () => void;
+	showErrorMessage?: boolean;
 }
 
 const getInputError = (error: unknown): string => {
@@ -108,6 +109,7 @@ export const FormTextInput = ({
 	bottomSheet,
 	placeholder,
 	accessibilityLabel,
+	showErrorMessage = true,
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
 	const { colors } = useTheme();
@@ -224,7 +226,7 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{inputError ? (
+					{showErrorMessage && inputError ? (
 						<View accessible={false} style={styles.errorContainer}>
 							<CustomIcon accessible={false} name='warning' size={16} color={colors.fontDanger} />
 							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
