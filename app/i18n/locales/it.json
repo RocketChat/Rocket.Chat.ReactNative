@@ -75,6 +75,7 @@
   "changing_avatar": "cambio avatar",
   "Channel_hint_private": "Le persone possono unirsi solo essendo invitati",
   "Channel_Name": "Nome canale",
+  "Channel_name_already_taken": "Nome del canale già preso",
   "Channel_name_required": "Nome del canale richiesto",
   "Channel_Read_Only_Hint": "Solo i proprietari di canali possono inviare nuovi messaggi",
   "Channels": "Canali",

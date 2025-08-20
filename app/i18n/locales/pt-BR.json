@@ -120,6 +120,7 @@
   "Channel_hint_private": "As pessoas só podem entrar por meio de convite",
   "Channel_hint_public": "Todos podem acessar este canal",
   "Channel_Name": "Nome do canal",
+  "Channel_name_already_taken": "Nome do canal já está em uso.",
   "Channel_name_required": "Nome do canal necessário",
   "Channel_Read_Only_Hint": "Apenas os proprietários do canal podem enviar novas mensagens",
   "Channels": "Canais",

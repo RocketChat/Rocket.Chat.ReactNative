@@ -69,6 +69,7 @@
   "changing_avatar": "アバターを変更",
   "Channel_hint_private": "人々は招待されることによってのみ参加することができます",
   "Channel_Name": "チャンネル名",
+  "Channel_name_already_taken": "チャンネル名は既に使用されています。",
   "Channel_name_required": "チャンネル名が必要です。",
   "Channel_Read_Only_Hint": "チャネル所有者のみが新しいメッセージを送信できます",
   "Channels": "チャンネル",

@@ -50,6 +50,7 @@
   "Channel_hint_not_read_only": "Alle brukere i kanalen kan skrive nye meldinger",
   "Channel_hint_private": "Folk kan bare bli med ved å bli invitert",
   "Channel_hint_public": "Alle kan få tilgang til denne kanalen",
+  "Channel_name_already_taken": "Kanalnamnet er allereie tatt",
   "Channels": "Totalt antall kanaler",
   "Chat_closed_by_agent": "Chat stengt av agent",
   "Chat_started": "Chat startet",
