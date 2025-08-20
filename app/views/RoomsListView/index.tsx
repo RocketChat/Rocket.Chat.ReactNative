@@ -110,7 +110,7 @@ const RoomsListView = memo(function RoomsListView() {
 	}
 
 	if (requirePasswordChange) {
-		return <ChangePasswordRequired />;
+		return <ChangePasswordRequired navigation={navigation} />;
 	}
 
 	return (
