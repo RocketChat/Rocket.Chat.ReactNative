@@ -14,7 +14,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sendLoadingEvent } from '../../containers/Loading';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../../definitions';
@@ -123,7 +122,6 @@ const AddExistingChannelView = () => {
 	const isChecked = (rid: string) => selected.includes(rid);
 
 	const toggleChannel = (rid: string) => {
-		animateNextTransition();
 		if (!isChecked(rid)) {
 			logEvent(events.AEC_ADD_CHANNEL);
 			setSelected([...selected, rid]);

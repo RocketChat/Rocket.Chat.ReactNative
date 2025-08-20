@@ -10,8 +10,8 @@ inputs:
   GITHUB_TOKEN:
     description: 'GitHub token for commenting'
     required: true
-  VERSIONCODE:
-    description: 'Version code for build'
+  BUILD_VERSION:
+    description: 'Build version for build'
     required: true
   trigger:
     description: 'Trigger for build'
@@ -74,7 +74,7 @@ runs:
         GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
         BUILD_TYPE: ${{ inputs.type }}
-        VERSION_CODE: ${{ inputs.VERSIONCODE }}
+        BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
       run: |
         if [[ "$BUILD_TYPE" == "official" ]]; then
           app_name="Rocket.Chat"
@@ -85,7 +85,7 @@ runs:
         gradle_file="android/app/build.gradle"
         VERSION_NAME=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
 
-        version_info="$app_name $VERSION_NAME.$VERSION_CODE"
+        version_info="$app_name $VERSION_NAME.$BUILD_VERSION"
 
         message="**Android Build Available**"$'\n\n'"$version_info"
 
