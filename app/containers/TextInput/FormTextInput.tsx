@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
+import { A11y } from 'react-native-a11y-order';
 
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -10,7 +11,6 @@ import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
-import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const styles = StyleSheet.create({
 	error: {
@@ -129,11 +129,11 @@ export const FormTextInput = ({
 	}, [accessibilityLabel, label, required, inputError, secureTextEntry, value, showPassword]);
 
 	return (
-		<A11yContainer>
-			<A11yElement order={1}>
+		<A11y.Order>
+			<A11y.Index index={1}>
 				<View style={[styles.inputContainer, containerStyle]}>
 					{label ? (
-						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
+						<Text accessible={false} style={[styles.label, { color: colors.fontTitlesLabels }]}>
 							{label}{' '}
 							{required && (
 								<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>
@@ -141,7 +141,7 @@ export const FormTextInput = ({
 						</Text>
 					) : null}
 
-					<View style={styles.wrap}>
+					<View accessible={false} style={styles.wrap}>
 						<Input
 							accessible
 							accessibilityLabel={accessibilityLabelText}
@@ -202,7 +202,7 @@ export const FormTextInput = ({
 						) : null}
 
 						{secureTextEntry ? (
-							<A11yElement order={2} style={[styles.iconContainer, styles.iconRight]}>
+							<A11y.Index index={2} style={[styles.iconContainer, styles.iconRight]}>
 								<Touchable
 									accessible
 									accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
@@ -214,7 +214,7 @@ export const FormTextInput = ({
 										color={colors.fontDefault}
 									/>
 								</Touchable>
-							</A11yElement>
+							</A11y.Index>
 						) : null}
 
 						{loading ? (
@@ -227,13 +227,15 @@ export const FormTextInput = ({
 						{left}
 					</View>
 					{showErrorMessage && inputError ? (
-						<View style={styles.errorContainer}>
-							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
-							<Text style={{ ...styles.error, color: colors.fontDanger }}>{inputError}</Text>
+						<View accessible={false} style={styles.errorContainer}>
+							<CustomIcon accessible={false} name='warning' size={16} color={colors.fontDanger} />
+							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
+								{inputError}
+							</Text>
 						</View>
 					) : null}
 				</View>
-			</A11yElement>
-		</A11yContainer>
+			</A11y.Index>
+		</A11y.Order>
 	);
 };
