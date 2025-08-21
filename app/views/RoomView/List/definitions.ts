@@ -22,7 +22,6 @@ export interface IListContainerProps {
 	renderRow: Function;
 	rid: string;
 	tmid?: string;
-	loading: boolean;
 	listRef: TListRef;
 	hideSystemMessages: string[];
 	showMessageInMainThread: boolean;
