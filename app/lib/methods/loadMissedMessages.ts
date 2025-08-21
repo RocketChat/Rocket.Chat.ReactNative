@@ -97,33 +97,29 @@ export async function loadMissedMessages(args: {
 	updatedNext?: number | null;
 	deletedNext?: number | null;
 }): Promise<void> {
-	try {
-		const data = await load({
-			rid: args.rid,
-			lastOpen: args.lastOpen,
-			updatedNext: args.updatedNext,
-			deletedNext: args.deletedNext
-		});
-		if (data) {
-			const {
-				updated,
-				updatedNext,
-				deleted,
-				deletedNext
-			}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext: number | null; deletedNext: number | null } = data;
-			// @ts-ignore // TODO: remove loaderItem obligatoriness
-			await updateMessages({ rid: args.rid, update: updated, remove: deleted });
+	const data = await load({
+		rid: args.rid,
+		lastOpen: args.lastOpen,
+		updatedNext: args.updatedNext,
+		deletedNext: args.deletedNext
+	});
+	if (data) {
+		const {
+			updated,
+			updatedNext,
+			deleted,
+			deletedNext
+		}: { updated: ILastMessage[]; deleted: ILastMessage[]; updatedNext: number | null; deletedNext: number | null } = data;
+		// @ts-ignore // TODO: remove loaderItem obligatoriness
+		await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 
-			if (deletedNext || updatedNext) {
-				loadMissedMessages({
-					rid: args.rid,
-					lastOpen: args.lastOpen,
-					updatedNext,
-					deletedNext
-				});
-			}
+		if (deletedNext || updatedNext) {
+			loadMissedMessages({
+				rid: args.rid,
+				lastOpen: args.lastOpen,
+				updatedNext,
+				deletedNext
+			});
 		}
-	} catch (e) {
-		log(e);
 	}
 }

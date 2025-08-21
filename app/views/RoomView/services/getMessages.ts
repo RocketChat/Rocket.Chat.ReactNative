@@ -13,16 +13,12 @@ interface ILoadMissedMessagesParams extends IBaseParams {
 }
 
 const getMessages = async (params: ILoadMissedMessagesParams | ILoadMessagesForRoomParams): Promise<void> => {
-	try {
-		if ('lastOpen' in params) {
-			await loadMissedMessages(params);
-		} else {
-			await loadMessagesForRoom(params);
-		}
-	} catch (e) {
-		// Offline first
+	if ('lastOpen' in params) {
+		const missedMessages = await loadMissedMessages(params);
+		return missedMessages;
 	}
-	return Promise.resolve();
+	const roomMissedMessages = await loadMessagesForRoom(params);
+	return roomMissedMessages;
 };
 
 export default getMessages;
