@@ -150,6 +150,7 @@ const AuthenticationWebView = () => {
 				injectedJavaScript={isIframe ? injectedJavaScript : undefined}
 				onLoadStart={() => setLoading(true)}
 				onLoadEnd={() => setLoading(false)}
+				incognito
 			/>
 			{loading ? <ActivityIndicator size='large' absolute /> : null}
 		</>
