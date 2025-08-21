@@ -32,7 +32,7 @@ const PasswordPolicies = ({ isDirty, password, policies }: IPasswordTips) => {
 	};
 
 	return (
-		<View accessible>
+		<View>
 			<Text
 				accessibilityLabel={i18n.t('Your_Password_Must_Have')}
 				accessible
