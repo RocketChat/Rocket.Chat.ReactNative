@@ -33,14 +33,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
-				<List
-					listRef={listRef}
-					data={messages}
-					renderItem={renderItem}
-					onEndReached={onEndReached}
-					ListFooterComponent={renderFooter}
-					jumpToBottom={jumpToBottom}
-				/>
+				<List listRef={listRef} data={messages} renderItem={renderItem} onEndReached={onEndReached} jumpToBottom={jumpToBottom} />
 			</>
 		);
 	}
