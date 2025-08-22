@@ -140,7 +140,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 					showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
 					navigation.goBack();
 				} else {
-					dispatch(loginRequest({ user: email, password }, false, false, customFields));
+					dispatch(loginRequest({ user: email, password }, false, customFields));
 				}
 			}
 		} catch (error: any) {
