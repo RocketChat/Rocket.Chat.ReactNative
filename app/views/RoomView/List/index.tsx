@@ -15,14 +15,10 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			serverVersion,
 			hideSystemMessages
 		});
-		const {
-			jumpToBottom,
-			jumpToMessage,
-			cancelJumpToMessage,
-			viewabilityConfigCallbackPairs,
-			handleScrollToIndexFailed,
-			highlightedMessageId
-		} = useScroll({ listRef, messagesIds });
+		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, highlightedMessageId } = useScroll({
+			listRef,
+			messagesIds
+		});
 
 		const onEndReached = useDebounce(() => {
 			fetchMessages();
@@ -51,13 +47,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					renderItem={renderItem}
 					onEndReached={onEndReached}
 					ListFooterComponent={renderFooter}
-					onScrollToIndexFailed={handleScrollToIndexFailed}
-					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
 					jumpToBottom={jumpToBottom}
-					maintainVisibleContentPosition={{
-						minIndexForVisible: 0,
-						autoscrollToTopThreshold: 0
-					}}
 				/>
 			</>
 		);

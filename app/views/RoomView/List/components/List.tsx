@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import { AnimatedLegendList } from '@legendapp/list/reanimated';
 
-import { isIOS } from '../../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
 import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
@@ -31,27 +30,31 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		}
 	});
 
+	const test = [...props.data].reverse();
+	const initialIndex = test.length - 1;
+
+	if (!initialIndex) return;
+
 	return (
 		<View style={styles.list}>
 			{/* @ts-ignore */}
-			<Animated.FlatList
+			<AnimatedLegendList
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
-				ref={listRef}
-				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted
-				removeClippedSubviews={isIOS}
-				initialNumToRender={7}
 				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
-				scrollEventThrottle={16}
 				onScroll={scrollHandler}
-				{...props}
-				{...scrollPersistTaps}
+				data={test}
+				maintainScrollAtEnd
+				initialScrollIndex={initialIndex}
+				renderItem={props.renderItem}
+				keyExtractor={item => item.id}
+				recycleItems
+				estimatedItemSize={320}
+				maintainVisibleContentPosition
+				maintainScrollAtEndThreshold={0.1}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
