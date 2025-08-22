@@ -8,7 +8,7 @@ onFlowEnd:
 
 ---
 - runFlow: ../helpers/launch-app.yaml
-- runFlow: ../helpers/login.yaml
+- evalScript: ${output.utils.login()}
 - evalScript: ${output.toBeConverted = 'to-be-converted-' + output.random()}
 - evalScript: ${output.toBeMoved = 'to-be-moved-' + output.random()}
 - evalScript: ${output.publicChannelToBeConverted = 'channel-public-to-be-converted-' + output.random()}
