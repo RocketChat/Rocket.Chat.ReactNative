@@ -1,7 +1,6 @@
 import { ILastMessage } from '../../definitions';
 import { compareServerVersion } from './helpers';
 import updateMessages from './updateMessages';
-import log from './helpers/log';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
@@ -20,30 +19,26 @@ const getSyncMessagesFromCursor = async (
 	updatedNext?: number | null,
 	deletedNext?: number | null
 ) => {
-	try {
-		const promises = [];
+	const promises = [];
 
-		if (lastOpen && !updatedNext && !deletedNext) {
-			promises.push(syncMessages({ roomId, next: lastOpen, type: 'UPDATED' }));
-			promises.push(syncMessages({ roomId, next: lastOpen, type: 'DELETED' }));
-		}
-		if (updatedNext) {
-			promises.push(syncMessages({ roomId, next: updatedNext, type: 'UPDATED' }));
-		}
-		if (deletedNext) {
-			promises.push(syncMessages({ roomId, next: deletedNext, type: 'DELETED' }));
-		}
-
-		const [updatedMessages, deletedMessages] = await Promise.all(promises);
-		return {
-			deleted: deletedMessages?.deleted ?? [],
-			deletedNext: deletedMessages?.cursor.next,
-			updated: updatedMessages?.updated ?? [],
-			updatedNext: updatedMessages?.cursor.next
-		};
-	} catch (error) {
-		log(error);
+	if (lastOpen && !updatedNext && !deletedNext) {
+		promises.push(syncMessages({ roomId, next: lastOpen, type: 'UPDATED' }));
+		promises.push(syncMessages({ roomId, next: lastOpen, type: 'DELETED' }));
 	}
+	if (updatedNext) {
+		promises.push(syncMessages({ roomId, next: updatedNext, type: 'UPDATED' }));
+	}
+	if (deletedNext) {
+		promises.push(syncMessages({ roomId, next: deletedNext, type: 'DELETED' }));
+	}
+
+	const [updatedMessages, deletedMessages] = await Promise.all(promises);
+	return {
+		deleted: deletedMessages?.deleted ?? [],
+		deletedNext: deletedMessages?.cursor.next,
+		updated: updatedMessages?.updated ?? [],
+		updatedNext: updatedMessages?.cursor.next
+	};
 };
 
 const getLastUpdate = async (rid: string) => {
