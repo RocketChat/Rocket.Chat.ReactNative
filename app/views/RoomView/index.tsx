@@ -606,7 +606,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
-			log(e);
 			this.setState({ loading: false });
 			this.retryInitTimeout = setTimeout(() => {
 				this.init();
