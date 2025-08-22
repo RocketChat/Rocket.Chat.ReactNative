@@ -14,6 +14,16 @@ import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
 import { compareServerVersion } from './helpers';
 
+let currentSettingsSession: symbol | null = null;
+
+const SESSION_ABORTED = 'Newer session started';
+
+const verifySession = (session: symbol) => {
+	if (currentSettingsSession !== session) {
+		throw new Error(SESSION_ABORTED);
+	}
+};
+
 const serverInfoKeys = [
 	'Site_Name',
 	'UI_Use_Real_Name',
@@ -149,6 +159,10 @@ export function subscribeSettings(): void {
 type IData = ISettingsIcon | IPreparedSettings;
 
 export async function getSettings(): Promise<void> {
+	// Create unique session ID for this call
+	const session = Symbol('getSettings');
+	currentSettingsSession = session;
+
 	try {
 		const db = database.active;
 		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
@@ -160,6 +174,7 @@ export async function getSettings(): Promise<void> {
 		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
 			? `${sdk.current.client.host}/api/v1/settings.public?_id=${settingsParams.join(',')}`
 			: `${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
+
 		// Iterate over paginated results to retrieve all settings
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
@@ -175,7 +190,9 @@ export async function getSettings(): Promise<void> {
 			settings = [...settings, ...result.settings];
 			remaining = result.total - settings.length;
 			/* eslint-enable no-await-in-loop */
-		} while (remaining > 0);
+		} while (remaining > 0 && verifySession(session));
+
+		verifySession(session);
 
 		const data: IData[] = settings;
 		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
@@ -189,11 +206,14 @@ export async function getSettings(): Promise<void> {
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
 		const iconSetting = data.find(icon => icon._id === 'Assets_favicon_512');
+
 		try {
 			await serverInfoUpdate(serverInfo, iconSetting as ISettingsIcon);
 		} catch {
 			// Server not found
 		}
+
+		verifySession(session);
 
 		await db.write(async () => {
 			const settingsCollection = db.get('settings');
@@ -232,6 +252,9 @@ export async function getSettings(): Promise<void> {
 			return allRecords.length;
 		});
 	} catch (e) {
+		if (e instanceof Error && e.message === SESSION_ABORTED) {
+			return;
+		}
 		log(e);
 	}
 }
