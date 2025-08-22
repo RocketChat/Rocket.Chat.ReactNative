@@ -66,4 +66,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Android Maestro Logs
-          path: ~/.maestro/tests/ 
+          path: ~/.maestro/tests/
