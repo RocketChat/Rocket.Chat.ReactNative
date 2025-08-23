@@ -33,4 +33,4 @@ onFlowStart:
       id: register-view-submit
 - tapOn:
     id: register-view-submit
-- assertVisible: Username is already in use
+- assertVisible: .*Username is already in use.*

@@ -14,7 +14,7 @@ onFlowStart:
 - pressKey: enter
 - tapOn:
     id: register-view-username
-- inputText: ${output.user.username}
+- inputText: ${output.user.username + 'new'}
 - pressKey: enter
 - tapOn:
     id: register-view-email
@@ -33,4 +33,4 @@ onFlowStart:
       id: register-view-submit
 - tapOn:
     id: register-view-submit
-- assertVisible: Oops!
+- assertVisible: .*Email already exists.*
