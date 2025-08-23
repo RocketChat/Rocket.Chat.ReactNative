@@ -43,21 +43,35 @@ const initialStoreState = () => {
 };
 initialStoreState();
 
-jest.mock('./hooks/useSubscription', () => ({
-	useSubscription: jest.fn(() => ({
+jest.mock('../../lib/database/services/Message', () => ({
+	getMessageById: (messageId: any) => ({
+		id: messageId,
 		rid: 'rid',
-		t: 'd',
-		name: 'Room Name',
-		fname: 'Room Name',
-		usernames: ['user1', 'user2'],
-		prid: undefined,
-		federated: false
-	}))
+		msg: messageId !== 'image' ? `Message ${messageId}` : undefined,
+		attachments:
+			messageId === 'image'
+				? [
+						{
+							description: `Attachment description for ${messageId}`
+						}
+				  ]
+				: []
+	})
 }));
 
 const initialContext = {
 	rid: 'rid',
 	tmid: undefined,
+	room: {
+		rid: 'rid',
+		t: 'd',
+		tmid: undefined,
+		name: 'Rocket Chat',
+		fname: 'Rocket Chat',
+		usernames: ['user1', 'user2'],
+		prid: undefined,
+		federated: false
+	},
 	sharing: false,
 	action: null,
 	selectedMessages: [],
@@ -130,16 +144,6 @@ beforeEach(() => {
 	sharedValueSearchbar.value = false;
 	keyboardHeightSharedValue.value = 0;
 });
-
-jest.mock('./hooks/useSubscription', () => ({
-	useSubscription: jest.fn().mockReturnValue({
-		t: 'd',
-		rid: 'rid',
-		tmid: undefined,
-		fname: 'Rocket Chat',
-		name: 'Rocket Chat'
-	})
-}));
 
 describe('MessageComposer', () => {
 	describe('Toolbar', () => {
@@ -411,6 +415,17 @@ describe('MessageComposer', () => {
 			await user.press(screen.getByTestId('message-composer-send'));
 			expect(editRequest).toHaveBeenCalledTimes(1);
 			expect(editRequest).toHaveBeenCalledWith({ id, msg: `Message ${id}`, rid: 'rid' });
+		});
+	});
+
+	describe('edit image description', () => {
+		const editRequest = jest.fn();
+		const id = 'image';
+		test('edit image', async () => {
+			render(<Render context={{ rid: 'rid', selectedMessages: [id], action: 'edit', editRequest }} />);
+			await screen.findByTestId('message-composer');
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(editRequest).toHaveBeenCalledWith({ id, msg: `Attachment description for ${id}`, rid: 'rid' });
 		});
 	});
 

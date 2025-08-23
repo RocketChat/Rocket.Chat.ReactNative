@@ -198,6 +198,7 @@ export type ProfileStackParamList = {
 		room?: ISubscription;
 		t?: SubscriptionType;
 	};
+	ChangePasswordView: undefined;
 };
 
 export type SettingsStackParamList = {

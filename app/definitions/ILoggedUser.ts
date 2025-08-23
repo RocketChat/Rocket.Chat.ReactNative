@@ -19,7 +19,6 @@ export interface ILoggedUser {
 	roles?: string[];
 	avatarETag?: string;
 	showMessageInMainThread?: boolean;
-	isFromWebView?: boolean;
 	enableMessageParserEarlyAdoption: boolean;
 	alsoSendThreadToChannel: 'default' | 'always' | 'never';
 	bio?: string;

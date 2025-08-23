@@ -1,7 +1,7 @@
 import I18n from '../../../i18n';
-import { showErrorAlert } from '../../../lib/methods/helpers';
+import { showErrorAlert } from '.';
 
-const handleError = (e: any, action: string) => {
+const handleSaveUserProfileError = (e: any, action: string) => {
 	if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 		return showErrorAlert(e.data.error);
 	}
@@ -17,4 +17,4 @@ const handleError = (e: any, action: string) => {
 	showErrorAlert(msg, title);
 };
 
-export default handleError;
+export default handleSaveUserProfileError;
