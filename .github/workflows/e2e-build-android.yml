@@ -17,6 +17,7 @@ on:
 jobs:
   android-build:
     runs-on: ubuntu-latest
+    container: reactnativecommunity/react-native-android
 
     outputs:
       artifact_name: Android Experimental APK
@@ -32,31 +33,6 @@ jobs:
         uses: ./.github/actions/e2e-account
         with:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
-
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: wrapper
-          cache-disabled: true
 
       - name: Decode Keystore
         run: |
