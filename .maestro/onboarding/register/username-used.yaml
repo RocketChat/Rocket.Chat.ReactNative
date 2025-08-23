@@ -8,20 +8,25 @@ onFlowStart:
 ---
 - runFlow: ../../helpers/launch-app.yaml
 - runFlow: ../../helpers/navigate-to-register.yaml
-- tapOn: Full name. Required.
-- inputText: ${output.createdUser.name}
+- tapOn:
+    id: register-view-name
+- inputText: ${output.user.name}
 - pressKey: enter
-- tapOn: Username. Required.
-- inputText: ${output.createdUser.username}
+- tapOn:
+    id: register-view-username
+- inputText: ${output.user.username}
 - pressKey: enter
-- tapOn: Email. Required.
+- tapOn:
+    id: register-view-email
 - inputText: ${'new'+output.createdUser.email}
 - pressKey: enter
-- tapOn: Password. Required.
-- inputText: ${output.createdUser.password}
+- tapOn:
+    id: register-view-password
+- inputText: ${output.user.password}
 - pressKey: enter
-- tapOn: Confirm Password. Required.
-- inputText: ${output.createdUser.password}
+- tapOn:
+    id: register-view-confirm-password
+- inputText: ${output.user.password}
 - hideKeyboard
 - scrollUntilVisible:
     element:
