@@ -39,31 +39,8 @@ jobs:
 
       - name: Boot Simulator
         run: |
-          SIM_NAME="iPhone 16 Pro Max"
-          TIMEOUT=300  # 5 minutes in seconds
-          INTERVAL=5   # Check every 5 seconds
-    
-          xcrun simctl boot "$SIM_NAME" || true
-        
-          ELAPSED=0
-          while true; do
-            BOOTED=$(xcrun simctl list devices | grep "$SIM_NAME (" | grep "(Booted)")
-            if [ -n "$BOOTED" ]; then
-                echo "$SIM_NAME is booted"
-                break
-            fi
-        
-            if [ $ELAPSED -ge $TIMEOUT ]; then
-                echo "Simulator did not boot within 5 minutes. Retrying..."
-                xcrun simctl shutdown "$SIM_NAME"
-                xcrun simctl boot "$SIM_NAME"
-                ELAPSED=0
-            fi
-        
-            sleep $INTERVAL
-            ELAPSED=$((ELAPSED + INTERVAL))
-            done
-        
+          xcrun simctl boot "iPhone 16 Pro Max"
+          xcrun simctl bootstatus "iPhone 16 Pro Max" -b
           xcrun simctl list devices | grep Booted
 
       - name: Get Simulator UDID 
