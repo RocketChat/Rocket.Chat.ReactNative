@@ -12,4 +12,9 @@ tags:
             all: allow
       - waitForAnimationToEnd:
           timeout: 60000
+      - runFlow:
+          when:
+            visible: '.*Pixel Launcher.*'
+          commands:
+            - tapOn: 'Close App'
       - assertVisible: 'Add workspace'
