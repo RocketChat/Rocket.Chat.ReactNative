@@ -6,12 +6,14 @@ import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import { IEmojiProps } from './interfaces';
 
-export const Emoji = ({ emoji }: IEmojiProps): React.ReactElement => {
+const Emoji = ({ emoji }: IEmojiProps): React.ReactElement => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode(true);
 	const unicodeEmoji = formatShortnameToUnicode(`:${emoji}:`);
 
 	if (typeof emoji === 'string') {
-		return <Text style={styles.categoryEmoji}>{unicodeEmoji}</Text>;
+		return <Text style={styles.emoji}>{unicodeEmoji}</Text>;
 	}
-	return <CustomEmoji style={styles.customCategoryEmoji} emoji={emoji} />;
+	return <CustomEmoji style={styles.customEmoji} emoji={emoji} />;
 };
+
+export default Emoji;
