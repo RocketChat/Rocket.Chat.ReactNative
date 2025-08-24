@@ -28,7 +28,7 @@ onFlowStart:
     id: register-view-confirm-password
 - inputText: ${output.user.password}
 # on ios it will hide keyboard
-- tapOn: "Password (Required)"
+- tapOn: 'Password (Required)'
 - scrollUntilVisible:
     element:
       id: register-view-submit
