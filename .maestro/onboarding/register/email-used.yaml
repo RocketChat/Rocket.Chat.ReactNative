@@ -3,29 +3,35 @@ name: Create Account (Email Already Used)
 jsEngine: graaljs
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-  - evalScript: ${output.createdUser = output.utils.createUser()}
+  - evalScript: ${output.user = output.utils.createUser()}
 
 ---
 - runFlow: ../../helpers/launch-app.yaml
 - runFlow: ../../helpers/navigate-to-register.yaml
-- tapOn: Full name. Required.
-- inputText: ${output.createdUser.name}
+- tapOn:
+    id: register-view-name
+- inputText: ${output.user.name}
 - pressKey: enter
-- tapOn: Username. Required.
-- inputText: ${output.createdUser.username}
+- tapOn:
+    id: register-view-username
+- inputText: ${output.user.username + 'new'}
 - pressKey: enter
-- tapOn: Email. Required.
-- inputText: ${output.createdUser.email}
+- tapOn:
+    id: register-view-email
+- inputText: ${output.user.email}
 - pressKey: enter
-- tapOn: Password. Required.
-- inputText: ${output.createdUser.password}
+- tapOn:
+    id: register-view-password
+- inputText: ${output.user.password}
 - pressKey: enter
-- tapOn: Confirm Password. Required.
-- inputText: ${output.createdUser.password}
-- hideKeyboard
+- tapOn:
+    id: register-view-confirm-password
+- inputText: ${output.user.password}
+# on ios it will hide keyboard
+- tapOn: 'Password (Required)'
 - scrollUntilVisible:
     element:
       id: register-view-submit
 - tapOn:
     id: register-view-submit
-- assertVisible: Oops!
+- assertVisible: .*Email already exists.*
