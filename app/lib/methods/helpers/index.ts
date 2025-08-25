@@ -17,4 +17,4 @@ export * from './image';
 export * from './emitter';
 export * from './parseJson';
 export * from './fileDownload';
-export * from './shareMedia';
+export * from './shareMedia'; 
