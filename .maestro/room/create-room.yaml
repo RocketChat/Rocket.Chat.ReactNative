@@ -46,7 +46,7 @@ onFlowEnd:
     visible:
       id: 'new-message-view'
     timeout: 60000
-
+ 
 # should search user and navigate
 - extendedWaitUntil:
     visible:
