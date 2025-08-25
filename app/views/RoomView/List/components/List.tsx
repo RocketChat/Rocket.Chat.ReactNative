@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { AnimatedLegendList } from '@legendapp/list/reanimated';
-import { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import { LegendList } from '@legendapp/list';
 
 import { IListProps } from '../definitions';
 import { useRoomContext } from '../../context';
-import { SCROLL_LIMIT } from '../constants';
 import NavBottomFAB from './NavBottomFAB';
 
 const styles = StyleSheet.create({
@@ -19,39 +17,38 @@ const styles = StyleSheet.create({
 
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const { isAutocompleteVisible } = useRoomContext();
-
 	const [visible, setVisible] = useState(false);
-	const scrollHandler = useAnimatedScrollHandler({
-		onScroll: event => {
-			if (event.contentOffset.y > SCROLL_LIMIT) {
-				runOnJS(setVisible)(true);
-			} else {
-				runOnJS(setVisible)(false);
-			}
-		}
-	});
-	const { data } = props;
-	const index = (data?.length ?? 0) - 1;
 
-	if (index < 1) return null;
+	const checkIfAtEnd = () => {
+		if (listRef.current?.getState()?.isAtEnd) {
+			setVisible(false);
+		} else {
+			setVisible(true);
+		}
+	};
+
+	const { data } = props;
+	const initialScrollIndex = (data?.length ?? 0) - 1;
+
+	if (initialScrollIndex < 1) return null;
 
 	return (
 		<View style={styles.list}>
-			<AnimatedLegendList
+			<LegendList
+				ref={listRef}
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				onEndReachedThreshold={0.5}
-				onScroll={scrollHandler}
-				data={data}
-				initialScrollIndex={index}
+				onScroll={checkIfAtEnd}
+				initialScrollIndex={initialScrollIndex}
 				maintainScrollAtEnd
-				renderItem={props.renderItem}
 				keyExtractor={item => item?.id}
 				maintainVisibleContentPosition
 				maintainScrollAtEndThreshold={0.1}
+				{...props}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>

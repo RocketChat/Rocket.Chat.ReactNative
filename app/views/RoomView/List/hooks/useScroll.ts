@@ -20,7 +20,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	);
 
 	const jumpToBottom = useCallback(() => {
-		listRef.current?.scrollToOffset({ offset: -100 });
+		listRef.current?.scrollToEnd();
 	}, [listRef]);
 
 	const setHighlightTimeout = () => {
