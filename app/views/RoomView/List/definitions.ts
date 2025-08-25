@@ -12,7 +12,7 @@ export type IListProps = LegendListProps<TAnyMessageModel> & {
 	jumpToBottom: () => void;
 };
 
-export interface IListContainerRef extends LegendListRef {
+export interface IListContainerRef {
 	jumpToMessage: (messageId: string) => Promise<void>;
 	cancelJumpToMessage: () => void;
 }
