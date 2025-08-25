@@ -13,7 +13,7 @@ onFlowEnd:
 - evalScript: ${output.team = output.utils.createRandomTeam(output.firstUser.username, output.firstUser.password)}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.firstUser.username, output.firstUser.password)}
 - evalScript: ${output.privateRoomName = 'private' + output.random() + '-channel-team'}
-
+ 
 - runFlow:
     file: '../helpers/login.yaml'
     env:
