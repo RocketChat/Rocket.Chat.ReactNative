@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import { FlashList } from '@shopify/flash-list';
 
-import { isIOS } from '../../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
-import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from '../definitions';
-import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
 
 const styles = StyleSheet.create({
@@ -19,9 +15,9 @@ const styles = StyleSheet.create({
 });
 
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
-	const [visible, setVisible] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
-	const scrollHandler = useAnimatedScrollHandler({
+
+	/* const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
 				runOnJS(setVisible)(true);
@@ -29,31 +25,30 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				runOnJS(setVisible)(false);
 			}
 		}
-	});
+	}); */
+
+	const data = React.useMemo(() => [...(props.data || [])].reverse(), [props.data]);
 
 	return (
 		<View style={styles.list}>
-			{/* @ts-ignore */}
-			<Animated.FlatList
+			<FlashList
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
-				ref={listRef}
-				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted
-				removeClippedSubviews={isIOS}
-				initialNumToRender={7}
-				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
 				scrollEventThrottle={16}
-				onScroll={scrollHandler}
+				initialScrollIndex={data.length - 1}
+				maintainVisibleContentPosition={{
+					animateAutoScrollToBottom: true,
+					autoscrollToBottomThreshold: 0,
+					startRenderingFromBottom: true
+				}}
+				keyboardShouldPersistTaps='handled'
 				{...props}
-				{...scrollPersistTaps}
+				data={data}
 			/>
-			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
+			{/* <NavBottomFAB visible={visible} onPress={jumpToBottom} /> */}
 		</View>
 	);
 };
