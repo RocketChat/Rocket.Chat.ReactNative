@@ -27,8 +27,8 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	//		}
 	//	}
 	// });
-	const data = [...(props?.data || [])].reverse();
-	const index = data.length - 1;
+	const { data } = props;
+	const index = (data?.length ?? 0) - 1;
 
 	if (index < 1) return null;
 
