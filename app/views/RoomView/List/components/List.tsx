@@ -27,8 +27,6 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		}
 	}); */
 
-	const data = React.useMemo(() => [...(props.data || [])].reverse(), [props.data]);
-
 	return (
 		<View style={styles.list}>
 			<FlashList
@@ -38,7 +36,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				scrollEventThrottle={16}
-				initialScrollIndex={data.length - 1}
+				initialScrollIndex={props?.data?.length - 1}
 				maintainVisibleContentPosition={{
 					animateAutoScrollToBottom: true,
 					autoscrollToBottomThreshold: 0,
@@ -46,7 +44,6 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				}}
 				keyboardShouldPersistTaps='handled'
 				{...props}
-				data={data}
 			/>
 			{/* <NavBottomFAB visible={visible} onPress={jumpToBottom} /> */}
 		</View>
