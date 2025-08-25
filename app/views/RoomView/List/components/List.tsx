@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	contentContainer: {
-		paddingTop: 10
+		paddingVertical: 10
 	}
 });
 
@@ -19,6 +19,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const { isAutocompleteVisible } = useRoomContext();
 	const [visible, setVisible] = useState(false);
 
+	// TO DO: find another way to follow like SCROLL_LIMIT
 	const checkIfAtEnd = () => {
 		if (listRef.current?.getState()?.isAtEnd) {
 			setVisible(false);
@@ -47,7 +48,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				maintainScrollAtEnd
 				keyExtractor={item => item?.id}
 				maintainVisibleContentPosition
-				maintainScrollAtEndThreshold={0.1}
+				maintainScrollAtEndThreshold={0}
 				{...props}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
