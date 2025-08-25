@@ -28,7 +28,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			cancelJumpToMessage
 		}));
 
-		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index - 1], highlightedMessageId);
 
 		return (
 			<>
