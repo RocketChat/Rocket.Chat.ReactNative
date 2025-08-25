@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { AnimatedLegendList } from '@legendapp/list/reanimated';
+import { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { IListProps } from '../definitions';
 import { useRoomContext } from '../../context';
+import { SCROLL_LIMIT } from '../constants';
+import NavBottomFAB from './NavBottomFAB';
 
 const styles = StyleSheet.create({
 	list: {
@@ -17,16 +20,16 @@ const styles = StyleSheet.create({
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const { isAutocompleteVisible } = useRoomContext();
 
-	// const [visible, setVisible] = useState(false);
-	// const scrollHandler = useAnimatedScrollHandler({
-	//	onScroll: event => {
-	//		if (event.contentOffset.y > SCROLL_LIMIT) {
-	//			runOnJS(setVisible)(true);
-	//		} else {
-	//			runOnJS(setVisible)(false);
-	//		}
-	//	}
-	// });
+	const [visible, setVisible] = useState(false);
+	const scrollHandler = useAnimatedScrollHandler({
+		onScroll: event => {
+			if (event.contentOffset.y > SCROLL_LIMIT) {
+				runOnJS(setVisible)(true);
+			} else {
+				runOnJS(setVisible)(false);
+			}
+		}
+	});
 	const { data } = props;
 	const index = (data?.length ?? 0) - 1;
 
@@ -41,7 +44,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				onEndReachedThreshold={0.5}
-				// onScroll={scrollHandler}
+				onScroll={scrollHandler}
 				data={data}
 				initialScrollIndex={index}
 				maintainScrollAtEnd
@@ -50,7 +53,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				maintainVisibleContentPosition
 				maintainScrollAtEndThreshold={0.1}
 			/>
-			{/* <NavBottomFAB visible={visible} onPress={jumpToBottom} /> */}
+			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
 	);
 };
