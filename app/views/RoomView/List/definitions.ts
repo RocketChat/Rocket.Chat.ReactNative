@@ -8,10 +8,10 @@ export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 
-export interface IListProps extends LegendListProps<TAnyMessageModel> {
+export type IListProps = LegendListProps<TAnyMessageModel> & {
 	listRef: TListRef;
 	jumpToBottom: () => void;
-}
+};
 
 export interface IListContainerRef {
 	jumpToMessage: (messageId: string) => Promise<void>;

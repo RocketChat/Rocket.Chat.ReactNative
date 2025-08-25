@@ -30,11 +30,10 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		}
 	});
 
-	const test = [...props.data].reverse();
-	const initialIndex = test.length - 1;
+	const data = [...(props?.data || [])].reverse();
+	const index = data.length - 1;
 
-	if (!initialIndex) return;
-
+	if (index < 1) return null;
 	return (
 		<View style={styles.list}>
 			{/* @ts-ignore */}
@@ -46,13 +45,11 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				style={styles.list}
 				onEndReachedThreshold={0.5}
 				onScroll={scrollHandler}
-				data={test}
+				data={data}
+				initialScrollIndex={index}
 				maintainScrollAtEnd
-				initialScrollIndex={initialIndex}
 				renderItem={props.renderItem}
-				keyExtractor={item => item.id}
-				recycleItems
-				estimatedItemSize={320}
+				keyExtractor={item => item?.id}
 				maintainVisibleContentPosition
 				maintainScrollAtEndThreshold={0.1}
 			/>
