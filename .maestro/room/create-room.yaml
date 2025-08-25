@@ -341,7 +341,7 @@ onFlowEnd:
     visible:
       id: ${'rooms-list-view-item-' + output.emptyRoomName}
     timeout: 60000
-    
+
 # should create a room with non-latin alphabet and do a case insensitive search for it
 - runFlow:
     when:
