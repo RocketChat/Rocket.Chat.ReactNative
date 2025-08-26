@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useMemo } from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 
 import { useDebounce } from '../../../lib/methods/helpers';
 import { EmptyRoom, List } from './components';
@@ -14,7 +14,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			serverVersion,
 			hideSystemMessages
 		});
-		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, viewabilityConfigCallbackPairs, highlightedMessageId } = useScroll({
+		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, highlightedMessageId } = useScroll({
 			listRef,
 			messagesIds
 		});
@@ -28,7 +28,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			cancelJumpToMessage
 		}));
 
-		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index - 1], highlightedMessageId);
 
 		return (
 			<>
