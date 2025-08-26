@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useImperativeHandle, useMemo } from 'react';
 
 import { useDebounce } from '../../../lib/methods/helpers';
 import { EmptyRoom, List } from './components';
@@ -37,13 +37,8 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					listRef={listRef}
 					data={messages}
 					renderItem={renderItem}
-					onEndReached={onEndReached}
-					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+					onStartReached={onEndReached}
 					jumpToBottom={jumpToBottom}
-					maintainVisibleContentPosition={{
-						startRenderingFromBottom: true,
-						autoscrollToBottomThreshold: 0
-					}}
 				/>
 			</>
 		);

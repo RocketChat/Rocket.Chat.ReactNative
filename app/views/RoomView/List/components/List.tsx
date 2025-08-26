@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
@@ -17,21 +17,24 @@ const styles = StyleSheet.create({
 });
 
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
-	const [visible, setVisible] = useState(false);
-	const { isAutocompleteVisible } = useRoomContext();
-
-	const initialScrollIndex = (props.data?.length || 0) - 1;
-
+	/* 	const [visible, setVisible] = useState(false);
+	 */ const { isAutocompleteVisible } = useRoomContext();
+	/* 
 	const scrollHandler = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
 		if (e.nativeEvent.contentOffset.y > SCROLL_LIMIT) {
 			setVisible(true);
 		} else {
 			setVisible(false);
 		}
-	};
+	}; */
 
-	if (initialScrollIndex < 1) return null;
-
+	const maintainVisibleContentPositionConfig = useMemo(
+		() => ({
+			autoscrollToBottomThreshold: 0.1,
+			startRenderingFromBottom: true
+		}),
+		[]
+	);
 	return (
 		<View style={styles.list}>
 			<FlashList
@@ -41,18 +44,12 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				testID='room-view-messages'
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				onScroll={scrollHandler}
 				scrollEventThrottle={16}
-				initialScrollIndex={initialScrollIndex}
 				keyboardShouldPersistTaps='handled'
+				maintainVisibleContentPosition={maintainVisibleContentPositionConfig}
 				{...props}
-				maintainVisibleContentPosition={{
-					animateAutoScrollToBottom: true,
-					autoscrollToBottomThreshold: 0.1,
-					startRenderingFromBottom: true
-				}}
 			/>
-			<NavBottomFAB visible={visible} onPress={jumpToBottom} /> *
+			{/* <NavBottomFAB visible={visible} onPress={jumpToBottom} />  */}
 		</View>
 	);
 };
