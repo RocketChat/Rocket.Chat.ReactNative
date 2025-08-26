@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { LegendList } from '@legendapp/list';
 
 import { IListProps } from '../definitions';
@@ -19,9 +19,8 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const { isAutocompleteVisible } = useRoomContext();
 	const [visible, setVisible] = useState(false);
 
-	// TO DO: find another way to follow like SCROLL_LIMIT
 	const checkIfAtEnd = () => {
-		if (listRef.current?.getState()?.isAtEnd) {
+		if (listRef.current?.getState().isAtEnd) {
 			setVisible(false);
 		} else {
 			setVisible(true);
@@ -29,9 +28,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	};
 
 	const { data } = props;
-	const initialScrollIndex = (data?.length ?? 0) - 1;
-
-	if (initialScrollIndex < 1) return null;
+	const initialScrollIndex = (data?.length || 0) - 1;
 
 	return (
 		<View style={styles.list}>
@@ -54,7 +51,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				alignItemsAtEnd
 				{...props}
 			/>
-			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
+			{(data?.length || 0) > 5 ? <NavBottomFAB visible={visible} onPress={jumpToBottom} /> : null}
 		</View>
 	);
 };
