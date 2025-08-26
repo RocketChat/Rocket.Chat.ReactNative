@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ViewToken } from 'react-native';
 
-import { IListContainerRef, IListProps, TListRef, TMessagesIdsRef } from '../definitions';
+import { IListContainerRef, TListRef, TMessagesIdsRef } from '../definitions';
 
 export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
@@ -22,10 +22,6 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	const jumpToBottom = useCallback(() => {
 		listRef?.current?.scrollToEnd();
 	}, [listRef]);
-
-	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
-		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
-	};
 
 	const setHighlightTimeout = () => {
 		if (highlightTimeout.current) {
@@ -89,7 +85,6 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		jumpToBottom,
 		jumpToMessage,
 		cancelJumpToMessage,
-		handleScrollToIndexFailed,
 		highlightedMessageId
 	};
 };

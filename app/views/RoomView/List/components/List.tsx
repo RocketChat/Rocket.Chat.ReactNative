@@ -1,11 +1,9 @@
-import React, { useMemo, useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 import { IListProps } from '../definitions';
 import { useRoomContext } from '../../context';
-import NavBottomFAB from './NavBottomFAB';
-import { SCROLL_LIMIT } from '../constants';
 
 const styles = StyleSheet.create({
 	list: {
