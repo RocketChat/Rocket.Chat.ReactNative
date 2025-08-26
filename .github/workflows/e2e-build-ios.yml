@@ -79,6 +79,7 @@ jobs:
       - name: Build iOS app
         run: |
           cd ios
+          export RUNNING_E2E_TESTS=true
           bundle exec fastlane ios build_experimental_simulator \
             disable_xcpretty:false \
             skip_package_ipa:true \
