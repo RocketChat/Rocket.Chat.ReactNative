@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	/* 	const [visible, setVisible] = useState(false);
 	 */ const { isAutocompleteVisible } = useRoomContext();
+	const firstRender = useRef<boolean>(true);
 	/* 
 	const scrollHandler = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
 		if (e.nativeEvent.contentOffset.y > SCROLL_LIMIT) {
@@ -33,6 +34,17 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		}),
 		[]
 	);
+
+	useEffect(() => {
+		if ((props.data?.length || 0) > 0 && listRef?.current && firstRender.current) {
+			// delay so items have been laid out
+			setTimeout(() => {
+				listRef.current.scrollToEnd({ animated: false });
+				firstRender.current = false;
+			}, 100);
+		}
+	}, [props.data?.length]);
+
 	return (
 		<View style={styles.list}>
 			<FlashList
@@ -45,6 +57,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				scrollEventThrottle={16}
 				keyboardShouldPersistTaps='handled'
 				maintainVisibleContentPosition={maintainVisibleContentPositionConfig}
+				automaticallyAdjustContentInsets
 				{...props}
 			/>
 			{/* <NavBottomFAB visible={visible} onPress={jumpToBottom} />  */}
