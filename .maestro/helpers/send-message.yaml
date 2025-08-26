@@ -3,7 +3,6 @@ tags:
   - 'util'
 jsEngine: graaljs
 ---
-
 # When channel is thread
 - runFlow:
     when:
