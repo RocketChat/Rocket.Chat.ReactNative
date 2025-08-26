@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import { LegendList } from '@legendapp/list';
 
 import { IListProps } from '../definitions';
@@ -44,11 +44,14 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				style={styles.list}
 				onEndReachedThreshold={0.5}
 				onScroll={checkIfAtEnd}
+				keyExtractor={item => item?.id}
+				maintainScrollAtEndThreshold={0.1}
 				initialScrollIndex={initialScrollIndex}
 				maintainScrollAtEnd
-				keyExtractor={item => item?.id}
 				maintainVisibleContentPosition
-				maintainScrollAtEndThreshold={0}
+				waitForInitialLayout
+				recycleItems
+				alignItemsAtEnd
 				{...props}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
