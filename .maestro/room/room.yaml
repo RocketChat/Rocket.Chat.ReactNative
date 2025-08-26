@@ -16,8 +16,8 @@ onFlowEnd:
 - runFlow:
     file: ../helpers/login.yaml
     env:
-        USERNAME: ${output.user.username}
-        PASSWORD: ${output.user.password}
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
 - runFlow:
     file: '../helpers/navigate-to-room.yaml'
     env:
@@ -283,11 +283,10 @@ onFlowEnd:
     env:
       ROOM: ${output.room.name}
 
-
 # should open the profile view tapping on other username
 - evalScript: ${output.otherUser = output.utils.createUser()}
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'new message')}
-    
+
 - extendedWaitUntil:
     visible:
       text: ${output.otherUser.username}
