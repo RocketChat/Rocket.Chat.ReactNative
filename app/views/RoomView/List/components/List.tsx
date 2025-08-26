@@ -16,6 +16,10 @@ const styles = StyleSheet.create({
 });
 
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
+	const { data } = props;
+	const initialScrollIndex = (data?.length || 0) - 1;
+	const showScrollToBottomButton = (data?.length || 0) > 5;
+
 	const { isAutocompleteVisible } = useRoomContext();
 	const [visible, setVisible] = useState(false);
 
@@ -26,9 +30,6 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			setVisible(true);
 		}
 	};
-
-	const { data } = props;
-	const initialScrollIndex = (data?.length || 0) - 1;
 
 	return (
 		<View style={styles.list}>
@@ -51,7 +52,7 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				alignItemsAtEnd
 				{...props}
 			/>
-			{(data?.length || 0) > 5 ? <NavBottomFAB visible={visible} onPress={jumpToBottom} /> : null}
+			{showScrollToBottomButton ? <NavBottomFAB visible={visible} onPress={jumpToBottom} /> : null}
 		</View>
 	);
 };
