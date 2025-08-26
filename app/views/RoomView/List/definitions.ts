@@ -1,10 +1,9 @@
 import { RefObject } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
-import { FlashListProps } from '@shopify/flash-list';
+import { FlashListProps, FlashListRef } from '@shopify/flash-list';
 
 import { TAnyMessageModel } from '../../../definitions';
 
-export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
+export type TListRef = RefObject<FlashListRef<TAnyMessageModel>> | undefined;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 
