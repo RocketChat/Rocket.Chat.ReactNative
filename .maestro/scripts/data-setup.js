@@ -114,6 +114,27 @@ const createRandomRoom = ( username, password, type = 'c' ) => {
     };
 };
 
+const sendMessage = (username, password, channel, msg, tmid) => {
+    login(username, password);
+    const channelParam = tmid ? { roomId: channel } : { channel };
+    
+    const response = http.post(`${data.server}/api/v1/chat.postMessage`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        },
+        body: JSON.stringify({
+            ...channelParam,
+            text: msg,
+            tmid
+        })
+    });
+
+    const result = json(response.body);
+
+    return result;
+};
+
 // Delete created users to avoid use all the Seats Available on the server
 const deleteCreatedUsers = () => {
     if (data.accounts.length) {
@@ -133,5 +154,6 @@ output.utils = {
     logAccounts,
     deleteCreatedUsers,
     createRandomTeam,
-    createRandomRoom
+    createRandomRoom,
+    sendMessage
 };
