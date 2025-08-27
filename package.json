@@ -76,6 +76,7 @@
 		"expo-navigation-bar": "^4.2.4",
 		"expo-status-bar": "^2.2.3",
 		"expo-system-ui": "^5.0.7",
+		"expo-video": "~2.2.2",
 		"expo-video-thumbnails": "9.1.2",
 		"expo-web-browser": "14.1.5",
 		"hoist-non-react-statics": "3.3.2",

@@ -113,6 +113,8 @@ PODS:
     - Yoga
   - ExpoSystemUI (5.0.7):
     - ExpoModulesCore
+  - ExpoVideo (2.2.2):
+    - ExpoModulesCore
   - ExpoVideoThumbnails (9.1.2):
     - ExpoModulesCore
   - ExpoWebBrowser (14.1.5):
@@ -1796,9 +1798,31 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-webview (11.26.1):
+  - react-native-webview (13.15.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
     - MMKV (~> 1.3.9)
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - React-NativeModulesApple (0.79.4):
     - glog
     - hermes-engine
@@ -2618,6 +2642,7 @@ DEPENDENCIES:
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
+  - ExpoVideo (from `../node_modules/expo-video/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
@@ -2797,6 +2822,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-modules-core"
   ExpoSystemUI:
     :path: "../node_modules/expo-system-ui/ios"
+  ExpoVideo:
+    :path: "../node_modules/expo-video/ios"
   ExpoVideoThumbnails:
     :path: "../node_modules/expo-video-thumbnails/ios"
   ExpoWebBrowser:
@@ -3031,6 +3058,7 @@ SPEC CHECKSUMS:
   ExpoLocalAuthentication: f69863a1822e42db67a311ce839ecbac70e7fa65
   ExpoModulesCore: b4fdeaceca6a4360d4a75fbae335907427c1df6b
   ExpoSystemUI: 82c970cf8495449698e7343b4f78a0d04bcec9ee
+  ExpoVideo: ada534976cfd4a6bf082cc61aa1b17920a251e32
   ExpoVideoThumbnails: 2a448a23eb4eeb860d92ded372fec6e6a7a0cdcb
   ExpoWebBrowser: d81a92137919312afc5628d47951dc7a35554f90
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
@@ -3102,7 +3130,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: 5928d84c879db2f9eb6969ca70e68f58623dbf25
   react-native-simple-crypto: 932ea9243f76ff3d468ecf85868daf4fb35422e4
   react-native-slider: 605e731593322c4bb2eb48d7d64e2e4dbf7cbd77
-  react-native-webview: e12647c3892d4ee161aee5b86458fa49ba1e1133
+  react-native-webview: e28f476ea60826ef0b1d7297244db1dfbec74acd
   React-NativeModulesApple: 5b234860053d0dd11f3442f38b99688ff1c9733b
   React-oscompat: 472a446c740e39ee39cd57cd7bfd32177c763a2b
   React-perflogger: bbca3688c62f4f39e972d6e21969c95fe441fb6c
