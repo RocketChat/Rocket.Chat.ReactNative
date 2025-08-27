@@ -1,5 +1,4 @@
 appId: chat.rocket.reactnative
-jsEngine: graaljs
 tags:
   - 'util'
 

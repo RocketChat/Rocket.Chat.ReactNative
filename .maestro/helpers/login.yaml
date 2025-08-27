@@ -1,13 +1,11 @@
 appId: chat.rocket.reactnative
 tags:
   - 'util'
-jsEngine: graaljs
 onFlowStart:
   - runFlow:
       file: setup.yaml
       env:
         skipUser: true
-
   - runFlow:
       when:
         true: ${!USERNAME}
