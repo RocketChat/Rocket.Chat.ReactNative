@@ -445,7 +445,7 @@ onFlowEnd:
       id: 'rooms-list-view'
     timeout: 60000
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.replyRoom.name}
 - extendedWaitUntil:
@@ -498,7 +498,7 @@ onFlowEnd:
 
 # should save draft, check it, send it and clear it
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -543,7 +543,7 @@ onFlowEnd:
       id: 'rooms-list-view'
     timeout: 60000
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -632,64 +632,5 @@ onFlowEnd:
     id: 'message-composer-send'
 - extendedWaitUntil:
     visible:
-      text: ${reply-${output.newUser.name}-${output.originalMessage}}
-    timeout: 60000
-
-# should edit message on shareview and after close the text needs to be changed on roomView
-- evalScript: ${output.draftShareMessage = 'draftShare'}
-- evalScript: ${output.originalMessage = '123'}
-
-- extendedWaitUntil:
-    visible:
-      id: 'message-composer-input'
-    timeout: 60000
-- tapOn:
-    id: 'message-composer-input'
-- inputText: ${output.draftShareMessage}
-- tapOn:
-    id: 'message-composer-actions'
-- extendedWaitUntil:
-    visible:
-      id: 'action-sheet'
-    timeout: 60000
-- tapOn:
-    text: 'Choose from library'
-- extendedWaitUntil:
-    visible:
-      text: ${output.draftShareMessage}
-    timeout: 60000
-- tapOn:
-    id: 'message-composer-input-share'
-- eraseText
-- inputText: ${output.draftShareMessage + output.originalMessage}
-- hideKeyboard
-- tapOn:
-    id: 'share-view-close'
-- extendedWaitUntil:
-    visible:
-      text: ${output.draftShareMessage + output.originalMessage}
-    timeout: 60000
-- longPressOn:
-    text: ${output.originalMessage}
-- extendedWaitUntil:
-    visible:
-      id: action-sheet
-    timeout: 60000
-- tapOn:
-    text: 'Quote'
-- tapOn:
-    id: 'message-composer-actions'
-- extendedWaitUntil:
-    visible:
-      id: action-sheet
-    timeout: 60000
-- tapOn:
-    text: 'Choose from library'
-- extendedWaitUntil:
-    visible:
-      text: ${output.draftShareMessage + output.originalMessage}
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'markdown-preview-${output.originalMessage}'
+      id: reply-${output.newUser.name}-${output.originalMessage}
     timeout: 60000

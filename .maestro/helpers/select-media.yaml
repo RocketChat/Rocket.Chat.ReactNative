@@ -1,0 +1,12 @@
+appId: chat.rocket.reactnative
+tags:
+  - 'util'
+---
+- runFlow:
+    file: '../helpers/search-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- runFlow:
+    file: '../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${ROOM}
