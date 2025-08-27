@@ -6,6 +6,7 @@ import UserPreferences from '../userPreferences';
 import I18n from '../../../i18n';
 import { extractHostname } from './server';
 import { ICertificate } from '../../../definitions';
+import { CERTIFICATE_KEY } from '../../constants';
 
 const { SSLPinning } = NativeModules;
 const { documentDirectory } = FileSystem;
@@ -14,19 +15,30 @@ const extractFileScheme = (path: string) => path.replace('file://', ''); // file
 
 const getPath = (name: string) => `${documentDirectory}${name}`;
 
-const persistCertificate = (name: string, password: string) => {
+const persistCertificate = (server: string, name: string, password?: string) => {
 	const certificatePath = getPath(name);
 	const certificate: ICertificate = {
 		path: extractFileScheme(certificatePath),
 		password
 	};
 	UserPreferences.setMap(name, certificate);
+	UserPreferences.setMap(extractHostname(server), certificate);
+	UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, name);
 	return certificate;
+};
+
+const removeCertificate = (server: string) => {
+	const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+	if (certificate) {
+		UserPreferences.removeItem(certificate);
+	}
+	UserPreferences.removeItem(extractHostname(server));
+	UserPreferences.removeItem(`${CERTIFICATE_KEY}-${server}`);
 };
 
 const RCSSLPinning = Platform.select({
 	ios: {
-		pickCertificate: () =>
+		pickCertificate: (server: string) =>
 			new Promise(async (resolve, reject) => {
 				try {
 					const res = await DocumentPicker.getDocumentAsync({
@@ -46,7 +58,8 @@ const RCSSLPinning = Platform.select({
 									try {
 										const certificatePath = getPath(name);
 										await FileSystem.copyAsync({ from: uri, to: certificatePath });
-										persistCertificate(name, password!);
+										persistCertificate(server, name, password);
+										SSLPinning?.setCertificate(server, certificatePath, password);
 										resolve(name);
 									} catch (e) {
 										reject(e);
@@ -64,16 +77,17 @@ const RCSSLPinning = Platform.select({
 			if (name) {
 				let certificate = UserPreferences.getMap(name) as ICertificate;
 				if (!certificate.path.match(extractFileScheme(documentDirectory!))) {
-					certificate = persistCertificate(name, certificate.password);
+					certificate = persistCertificate(server, name, certificate.password);
 				}
-				UserPreferences.setMap(extractHostname(server), certificate);
 				SSLPinning?.setCertificate(server, certificate.path, certificate.password);
 			}
-		}
+		},
+		removeCertificate
 	},
 	android: {
 		pickCertificate: () => SSLPinning?.pickCertificate(),
-		setCertificate: name => SSLPinning?.setCertificate(name)
+		setCertificate: name => SSLPinning?.setCertificate(name),
+		removeCertificate
 	}
 });
 
