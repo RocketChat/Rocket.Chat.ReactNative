@@ -5,6 +5,8 @@ import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { Dispatch } from 'redux';
+import { createVideoPlayer } from 'expo-video';
+import { ImageManipulator } from 'expo-image-manipulator';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -201,9 +203,15 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				// get video thumbnails
 				if (isAndroid && this.files.length > 1 && item.mime?.match?.(/video/)) {
 					try {
-						const VideoThumbnails = require('expo-video-thumbnails');
-						const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
-						item.uri = uri;
+                        const player = createVideoPlayer({ uri: item.path });
+						const thumbnail = await player.generateThumbnailsAsync(1);
+                        player.release();
+
+                        const manipulated = ImageManipulator.manipulate(thumbnail[0]);
+                        const rendered = await manipulated.renderAsync();
+                        const { uri } = await rendered.saveAsync();
+
+                        item.uri = uri;
 					} catch {
 						// Do nothing
 					}
@@ -375,7 +383,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						onRemoveQuoteMessage: this.onRemoveQuoteMessage
 					}}>
 					<View style={styles.container}>
-						<Preview
+                        <Preview
 							// using key just to reset zoom/move after change selected
 							key={selected?.path}
 							item={selected}
