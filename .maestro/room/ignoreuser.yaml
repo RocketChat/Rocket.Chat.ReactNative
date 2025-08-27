@@ -23,5 +23,3 @@ onFlowStart:
       ROOM: ${output.otherUser.username}
 - runFlow:
     file: './utils/navigate-to-info-view.yaml'
-    
-  
