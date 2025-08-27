@@ -71,13 +71,13 @@ const Preview = React.memo(({ item, theme, length }: IPreview) => {
 	const thumbsHeight = length > 1 ? THUMBS_HEIGHT : 0;
 	const calculatedHeight = height - insets.top - insets.bottom - MESSAGE_COMPOSER_HEIGHT - thumbsHeight - headerHeight;
 	const [wrapperDimensions, setWrapperDimensions] = useState<{ width?: number; height?: number }>({});
-    const player = useVideoPlayer({ uri: item.path }, videoPlayer => {
-        videoPlayer.playbackRate = 1.0;
-        videoPlayer.volume = 1.0;
-        videoPlayer.muted = false;
-        videoPlayer.loop = false;
-        videoPlayer.play();
-    });
+	const player = useVideoPlayer({ uri: item.path }, videoPlayer => {
+		videoPlayer.playbackRate = 1.0;
+		videoPlayer.volume = 1.0;
+		videoPlayer.muted = false;
+		videoPlayer.loop = false;
+		videoPlayer.play();
+	});
 
 	if (item?.canUpload) {
 		if (type?.match(/video/)) {
