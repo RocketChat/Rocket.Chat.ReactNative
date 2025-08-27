@@ -190,7 +190,7 @@ export async function getSettings(): Promise<void> {
 			settings = [...settings, ...result.settings];
 			remaining = result.total - settings.length;
 			/* eslint-enable no-await-in-loop */
-		} while (remaining > 0 && verifySession(session));
+		} while (remaining > 0);
 
 		verifySession(session);
 
