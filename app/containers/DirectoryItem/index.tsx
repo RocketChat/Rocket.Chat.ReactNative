@@ -4,13 +4,13 @@ import { Text, View, ViewStyle } from 'react-native';
 import Touch from '../Touch';
 import Avatar from '../Avatar';
 import RoomTypeIcon from '../RoomTypeIcon';
-import styles, { ROW_HEIGHT } from './styles';
+import styles from './styles';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, useTheme } from '../../theme';
 import { MarkdownPreview } from '../markdown';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-export { ROW_HEIGHT };
-
+export const ROW_HEIGHT = 54;
 interface IDirectoryItemLabel {
 	text?: string;
 	theme: TSupportedThemes;
@@ -49,10 +49,13 @@ const DirectoryItem = ({
 	teamMain
 }: IDirectoryItem): React.ReactElement => {
 	const { theme } = useTheme();
+	const { fontScale } = useResponsiveLayout();
+	const height = ROW_HEIGHT * fontScale;
+
 	return (
 		<View accessible accessibilityLabel={`${title} ${rightLabel}`}>
 			<Touch onPress={onPress} style={{ backgroundColor: themes[theme].surfaceRoom }} testID={testID}>
-				<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
+				<View style={[styles.directoryItemContainer, { height }, style]}>
 					<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 					<View style={styles.directoryItemTextContainer}>
 						<View style={styles.directoryItemTextTitle}>
