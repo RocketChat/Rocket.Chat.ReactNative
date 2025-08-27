@@ -80,6 +80,10 @@ const AttachmentVideoView = ({ setLoading, url }: { setLoading: React.Dispatch<R
 		if (status === 'readyToPlay') {
 			setLoading(false);
 		}
+        if (status === 'error'){
+            navigation.pop();
+			showErrorAlert(I18n.t('Error_play_video'));
+        }
 	}, [status]);
 
 	React.useLayoutEffect(() => {
