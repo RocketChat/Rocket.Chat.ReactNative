@@ -4,28 +4,13 @@ tags:
 ---
 - assertVisible:
     id: 'rooms-list-view'
+- tapOn:
+    id: 'rooms-list-view-search'
+- tapOn:
+    id: 'rooms-list-view-search-input'
+- inputText:
+    text: ${ROOM}
 - extendedWaitUntil:
     visible:
-      id: 'rooms-list-view-item-${ROOM_NAME}'
-    timeout: 2000
-- assertVisible:
-    id: 'rooms-list-view-item-${ROOM_NAME}'
-- runFlow:
-    when:
-      visible:
-        id: 'rooms-list-view-item-${ROOM_NAME}'
-    commands:
-      - tapOn:
-          id: 'rooms-list-view-search'
-      - tapOn:
-          id: 'rooms-list-view-search-input'
-      - inputText:
-          text: ' '
-      - inputText:
-          text: '${ROOM_NAME}'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-item-${ROOM_NAME}'
+      id: 'rooms-list-view-item-${ROOM}'
     timeout: 10000
-- assertVisible:
-    id: 'rooms-list-view-item-${ROOM_NAME}'

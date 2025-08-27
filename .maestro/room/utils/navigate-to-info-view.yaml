@@ -1,0 +1,21 @@
+appId: chat.rocket.reactnative
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: room-header
+    timeout: 60000
+- tapOn:
+    id: room-header
+- extendedWaitUntil:
+    visible:
+      id: room-actions-view
+    timeout: 60000
+- tapOn:
+    id: room-actions-view
+- extendedWaitUntil:
+    visible:
+      id: room-info-view
+    timeout: 60000

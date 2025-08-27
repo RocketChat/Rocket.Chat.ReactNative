@@ -1,0 +1,27 @@
+appId: chat.rocket.reactnative
+name: Ignore User
+onFlowStart:
+  - runFlow: '../helpers/setup.yaml'
+
+---
+- runFlow: '../helpers/launch-app.yaml'
+
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: ../helpers/login.yaml
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should go to user info view
+- runFlow:
+    file: '../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+- runFlow:
+    file: './utils/navigate-to-info-view.yaml'
+    
+  
