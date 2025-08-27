@@ -86,7 +86,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
+          export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
           maestro test .maestro --format junit --output maestro-report.xml
 
       - name: Upload Test Report
