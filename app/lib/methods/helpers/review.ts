@@ -86,7 +86,7 @@ class ReviewApp {
 	positiveEventCount = 0;
 
 	pushPositiveEvent = () => {
-        if ('true' === 'true') {
+        if (process.env.RUNNING_E2E_TESTS === 'true') {
 			return;
 		}
 		if (this.positiveEventCount >= numberOfPositiveEvent) {
