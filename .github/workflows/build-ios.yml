@@ -10,7 +10,7 @@ on:
         type: string
         required: false
         default: pr
- 
+
 jobs:
   build-hold:
     name: Hold
