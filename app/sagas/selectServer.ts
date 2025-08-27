@@ -27,10 +27,9 @@ import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
-import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import {
 	checkSupportedVersions,
 	getLoginSettings,
@@ -147,10 +146,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			return;
 		}
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
-		}
+		// const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+		// console.log('handleSelectServer', certificate);
+		// if (certificate) {
+		// 	SSLPinning?.setCertificate(certificate, server);
+		// }
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
@@ -229,10 +229,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
-		}
+		// const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
+		// console.log('handleServerRequest', certificate);
+		// if (certificate) {
+		// 	SSLPinning?.setCertificate(certificate, server);
+		// }
 
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
