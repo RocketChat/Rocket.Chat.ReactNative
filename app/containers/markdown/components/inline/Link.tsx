@@ -12,6 +12,7 @@ import EventEmitter from '../../../../lib/methods/helpers/events';
 import { themes } from '../../../../lib/constants';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import styles from '../../styles';
+import { useAppSelector } from '../../../../lib/hooks';
 
 interface ILinkProps {
 	value: LinkProps['value'];
@@ -20,11 +21,17 @@ interface ILinkProps {
 const Link = ({ value }: ILinkProps) => {
 	const { theme } = useTheme();
 	const { onLinkPress } = useContext(MarkdownContext);
+    const { server } = useAppSelector(state => state.server);
 	const { src, label } = value;
 	const handlePress = () => {
 		if (!src.value) {
 			return;
 		}
+
+        if(src.value.startsWith(server)){
+            handleLinkPress();
+            return;
+        }
 
 		Alert.alert(I18n.t('leaving_app', { app_name: 'Rocket.Chat' }), I18n.t('leaving_app_to_visit', { link: src.value }), [
 			{
