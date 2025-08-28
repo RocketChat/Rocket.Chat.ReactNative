@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -12,6 +12,7 @@ import EventEmitter from '../../../../lib/methods/helpers/events';
 import { themes } from '../../../../lib/constants';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import styles from '../../styles';
+import i18n from '../../../../i18n';
 
 interface ILinkProps {
 	value: LinkProps['value'];
@@ -25,11 +26,27 @@ const Link = ({ value }: ILinkProps) => {
 		if (!src.value) {
 			return;
 		}
-		if (onLinkPress) {
+
+        Alert.alert(i18n.t('leaving_app', { app_name: 'Rocket.Chat' }), i18n.t('leaving_app_to_visit', { link: src.value }), [
+            {
+                text: i18n.t('Cancel'),
+                style: 'cancel',
+            },
+            {
+                text: i18n.t('Visit'),
+                onPress: () => handleLinkPress(),
+            }
+        ]);
+		
+	};
+
+    const handleLinkPress = () => {
+        if (onLinkPress) {
 			return onLinkPress(src.value);
 		}
+
 		openLink(src.value, theme);
-	};
+    };
 
 	const onLongPress = () => {
 		Clipboard.setString(src.value);
