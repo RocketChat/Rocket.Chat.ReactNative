@@ -36,7 +36,7 @@ onFlowStart:
     file: '../helpers/send-message.yaml'
     env:
       message: 'Hello room'
-      
+
 # should open the action sheet and tap Forward
 - extendedWaitUntil:
     visible:
