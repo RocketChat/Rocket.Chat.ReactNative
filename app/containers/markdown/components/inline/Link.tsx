@@ -27,26 +27,25 @@ const Link = ({ value }: ILinkProps) => {
 			return;
 		}
 
-        Alert.alert(i18n.t('leaving_app', { app_name: 'Rocket.Chat' }), i18n.t('leaving_app_to_visit', { link: src.value }), [
-            {
-                text: i18n.t('Cancel'),
-                style: 'cancel',
-            },
-            {
-                text: i18n.t('Visit'),
-                onPress: () => handleLinkPress(),
-            }
-        ]);
-		
+		Alert.alert(i18n.t('leaving_app', { app_name: 'Rocket.Chat' }), i18n.t('leaving_app_to_visit', { link: src.value }), [
+			{
+				text: i18n.t('Cancel'),
+				style: 'cancel'
+			},
+			{
+				text: i18n.t('Visit'),
+				onPress: () => handleLinkPress()
+			}
+		]);
 	};
 
-    const handleLinkPress = () => {
-        if (onLinkPress) {
+	const handleLinkPress = () => {
+		if (onLinkPress) {
 			return onLinkPress(src.value);
 		}
 
 		openLink(src.value, theme);
-    };
+	};
 
 	const onLongPress = () => {
 		Clipboard.setString(src.value);
