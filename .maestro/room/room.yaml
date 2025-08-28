@@ -85,17 +85,17 @@ onFlowEnd:
 - inputText: '#general'
 - extendedWaitUntil:
     visible:
-      id: autocomplete-item-general
+      id: 'autocomplete-item-general'
     timeout: 60000
 - tapOn:
-    id: autocomplete-item-general
+    id: 'autocomplete-item-general'
 - extendedWaitUntil:
     visible:
       text: '#general '
     timeout: 60000
 - extendedWaitUntil:
     notVisible:
-      id: autocomplete-item-general
+      id: 'autocomplete-item-general'
     timeout: 60000
 - tapOn:
     id: message-composer-input
@@ -265,10 +265,10 @@ onFlowEnd:
 # should open the profile view tapping on his username
 - extendedWaitUntil:
     visible:
-      text: ${output.user.username}
+      id: 'username-header-${output.user.username}'
     timeout: 60000
 - tapOn:
-    text: ${output.user.username}
+    id: 'username-header-${output.user.username}'
 - extendedWaitUntil:
     visible:
       id: room-info-view-username
