@@ -38,7 +38,7 @@ const Link = ({ value }: ILinkProps) => {
 				text: I18n.t('Cancel'),
 				style: 'cancel'
 			},
-			{ 
+			{
 				text: I18n.t('Visit'),
 				onPress: () => handleLinkPress()
 			}
