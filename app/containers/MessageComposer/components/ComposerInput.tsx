@@ -355,6 +355,7 @@ export const ComposerInput = memo(
 				}}
 				blurOnSubmit={false}
 				onChangeText={onChangeText}
+				onTouchStart={() => setFocused(true)}
 				onSelectionChange={onSelectionChange}
 				onFocus={onFocus}
 				onBlur={onBlur}
