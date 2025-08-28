@@ -111,6 +111,8 @@ export interface IMessageInner
 	blocks: [];
 	urls?: IUrl[];
 	isPreview?: boolean;
+	accessible?: boolean;
+	accessibilityLabel?: string;
 }
 
 export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {

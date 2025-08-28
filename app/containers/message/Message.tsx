@@ -181,11 +181,11 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
+		<View style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View style={styles.messageContent}>
-					<MessageInner {...props} />
+					<MessageInner accessible accessibilityLabel={accessibilityLabel} {...props} />
 				</View>
 				{!props.isHeader ? (
 					<RightIcons
@@ -230,7 +230,9 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			onLongPress={onLongPress}
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor }}>
+			style={{ backgroundColor }}
+            accessible={false}
+        >
 			<Message {...props} />
 		</Touchable>
 	);
