@@ -1,6 +1,5 @@
 appId: chat.rocket.reactnative
 name: Navigate to room
-jsEngine: graaljs
 tags:
   - 'util'
 
