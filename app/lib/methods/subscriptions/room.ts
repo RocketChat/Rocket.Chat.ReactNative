@@ -102,7 +102,7 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDDPMessage) => {
+	handleNotifyRoomReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
@@ -231,6 +231,9 @@ export default class RoomSubscription {
 					log(e);
 				}
 			});
+		} else if (ev === 'messagesRead') {
+			const lastOpen = ddpMessage.fields.args[0]?.until?.$date;
+			await loadMissedMessages({ rid: _rid, lastOpen });
 		}
 	});
 
@@ -351,6 +354,8 @@ export default class RoomSubscription {
 		});
 
 	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
+		console.log('room notified', ddpMessage, 'handleMessageReceived');
+
 		try {
 			const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0])) as IMessage;
 			await this.updateMessage(message);
