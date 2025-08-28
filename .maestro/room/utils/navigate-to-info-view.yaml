@@ -13,8 +13,10 @@ tags:
     visible:
       id: room-actions-view
     timeout: 60000
+- assertVisible:
+    id: room-actions-info
 - tapOn:
-    id: room-actions-view
+    id: room-actions-info
 - extendedWaitUntil:
     visible:
       id: room-info-view
