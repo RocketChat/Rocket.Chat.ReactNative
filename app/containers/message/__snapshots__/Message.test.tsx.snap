@@ -27,7 +27,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={false}
       onClick={[Function]}
@@ -45,8 +45,6 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message is inside an archived room.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -379,7 +377,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={false}
       onClick={[Function]}
@@ -397,8 +395,6 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message is inside an archived room.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -731,7 +727,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -749,8 +745,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="no.avatar 10:00:00 AM This message has no avatar..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -1070,7 +1064,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -1088,8 +1082,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message uses the user's profile picture as the avatar..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -1409,7 +1401,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -1427,8 +1419,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message uses a Unicode emoji as the avatar..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -1740,7 +1730,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -1758,8 +1748,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message uses a custom animated emoji as the avatar..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -2075,7 +2063,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -2093,8 +2081,6 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message uses a custom static emoji as the avatar..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -2423,7 +2409,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -2441,8 +2427,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -2762,7 +2746,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -2780,8 +2764,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -3114,7 +3096,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -3132,8 +3114,6 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -3453,7 +3433,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -3471,8 +3451,6 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -3805,7 +3783,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -3823,8 +3801,6 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -4175,7 +4151,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -4193,9 +4169,6 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote
-Testing block quote.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -4606,7 +4579,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -4624,8 +4597,6 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -4976,7 +4947,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -4994,9 +4965,6 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM > Testing block quote
-Testing block quote.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -5407,7 +5375,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -5425,8 +5393,6 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Broadcasted message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -5874,7 +5840,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -5892,8 +5858,6 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Broadcasted message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -6341,7 +6305,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -6359,8 +6323,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -7442,7 +7404,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -7460,8 +7422,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -8543,7 +8503,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -8561,8 +8521,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -9232,7 +9190,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -9250,8 +9208,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -10192,7 +10148,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -10210,8 +10166,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -10881,7 +10835,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -10899,8 +10853,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -11841,7 +11793,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -11859,8 +11811,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="rocket.cat 10:00:00 AM Fourth message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -12242,7 +12192,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -12260,8 +12210,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Third message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -12625,7 +12573,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -12643,8 +12591,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="rocket.cat 10:00:00 AM Second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -12781,7 +12727,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -12799,8 +12745,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="rocket.cat 10:00:00 AM Second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -13177,7 +13121,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -13195,8 +13139,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM First message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -13529,7 +13471,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -13547,8 +13489,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
       }
     >
       <View
-        accessibilityLabel="rocket.cat 10:00:00 AM Fourth message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -13930,7 +13870,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -13948,8 +13888,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Third message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -14313,7 +14251,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -14331,8 +14269,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
       }
     >
       <View
-        accessibilityLabel="rocket.cat 10:00:00 AM Second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -14469,7 +14405,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -14487,8 +14423,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
       }
     >
       <View
-        accessibilityLabel="rocket.cat 10:00:00 AM Second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -14865,7 +14799,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -14883,8 +14817,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM First message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -15217,7 +15149,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -15235,8 +15167,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is a discussion.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -15674,7 +15604,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -15692,8 +15622,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is a discussion.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -16133,7 +16061,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -16151,8 +16079,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -16592,7 +16518,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -16610,8 +16536,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is a discussion.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -17064,7 +16988,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -17082,8 +17006,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is a discussion.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -17521,7 +17443,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -17539,8 +17461,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is a discussion.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -17980,7 +17900,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -17998,8 +17918,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -18439,7 +18357,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -18457,8 +18375,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is a discussion.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -18911,7 +18827,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -18929,8 +18845,6 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -19286,7 +19200,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -19304,8 +19218,6 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message without header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -19491,7 +19403,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -19509,8 +19421,6 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -19866,7 +19776,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -19884,8 +19794,6 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message without header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -20071,7 +19979,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -20089,8 +19997,6 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message being edited.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -20423,7 +20329,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -20441,8 +20347,6 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message being edited.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -20775,7 +20679,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -20793,8 +20697,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 👊🤙👏.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -21113,7 +21015,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -21131,8 +21033,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 👏.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -21432,7 +21332,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -21450,8 +21350,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM :react_rocket: :nyan_rocket: :marioparty:.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -21828,7 +21726,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -21846,8 +21744,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM :react_rocket:.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -22160,7 +22056,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -22178,8 +22074,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -22511,7 +22405,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -22529,8 +22423,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:🤙🤙.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -22920,7 +22812,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -22938,8 +22830,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 👊🤙👏.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -23258,7 +23148,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -23276,8 +23166,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 👏.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -23577,7 +23465,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -23595,8 +23483,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM :react_rocket: :nyan_rocket: :marioparty:.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -23973,7 +23859,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -23991,8 +23877,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM :react_rocket:.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -24305,7 +24189,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -24323,8 +24207,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -24656,7 +24538,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -24674,8 +24556,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 🤙:react_rocket:🤙🤙.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -25065,7 +24945,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -25083,8 +24963,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -25475,7 +25353,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -25493,8 +25371,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted without Header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -25702,7 +25578,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -25720,8 +25596,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted with Reactions.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -26525,7 +26399,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -26840,7 +26714,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={false}
       onClick={[Function]}
@@ -26858,8 +26732,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Temp message encrypted.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -27256,7 +27128,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -27274,8 +27146,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message Edited encrypted.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -27650,8 +27520,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message has error and is encrypted.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -28112,7 +27980,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -28130,8 +27998,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted with Header.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -28552,7 +28418,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -28570,8 +28436,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted without Header.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -28822,7 +28686,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -28840,8 +28704,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -29232,7 +29094,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -29250,8 +29112,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted without Header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -29459,7 +29319,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -29477,8 +29337,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message Encrypted with Reactions.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -30282,7 +30140,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -30597,7 +30455,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={false}
       onClick={[Function]}
@@ -30615,8 +30473,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Temp message encrypted.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -31013,7 +30869,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -31031,8 +30887,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message Edited encrypted.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -31407,8 +31261,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message has error and is encrypted.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -31869,7 +31721,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -31887,8 +31739,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted with Header.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -32309,7 +32159,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -32327,8 +32177,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Read Receipt encrypted without Header.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -32563,8 +32411,6 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message has error.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -32939,8 +32785,6 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message has error too.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -33145,8 +32989,6 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message has error.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -33521,8 +33363,6 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This message has error too.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -33743,7 +33583,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -33761,8 +33601,6 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Diego Mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -34095,7 +33933,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -34113,8 +33951,6 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Diego Mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -34447,7 +34283,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -34465,8 +34301,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM ....  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -34786,7 +34620,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -34804,8 +34638,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Different user.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -35125,7 +34957,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -35143,8 +34975,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the third message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -35281,7 +35111,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -35299,8 +35129,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -35437,7 +35265,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -35455,8 +35283,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the first message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -35789,7 +35615,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -35807,8 +35633,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM ....  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -36128,7 +35952,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -36146,8 +35970,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Different user.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -36467,7 +36289,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -36485,8 +36307,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the third message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -36623,7 +36443,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -36641,8 +36461,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -36779,7 +36597,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -36797,8 +36615,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the first message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -37131,7 +36947,7 @@ exports[`Story Snapshots: Ignored should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -37337,7 +37153,7 @@ exports[`Story Snapshots: IgnoredLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -37543,7 +37359,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -37561,10 +37377,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM * Dogs
-* cats
-- cats.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -38060,7 +37872,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -38078,9 +37890,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs 
-2. Cats.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -38529,7 +38338,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -38547,8 +38356,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -38910,7 +38717,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -38928,8 +38735,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 2. Cats.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -39121,7 +38926,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -39139,10 +38944,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM * Dogs
-* cats
-- cats.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -39638,7 +39439,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -39656,9 +39457,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs 
-2. Cats.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -40107,7 +39905,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -40125,8 +39923,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 1. Dogs.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -40488,7 +40284,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -40506,8 +40302,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM 2. Cats.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -40699,7 +40493,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -40717,8 +40511,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM this is a normal message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -41038,7 +40830,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -41056,8 +40848,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Edited message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -41413,7 +41203,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -41431,8 +41221,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Translated message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -41787,7 +41575,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -41805,8 +41593,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Encrypted message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -42181,8 +41967,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Error message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -42573,7 +42357,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -42591,8 +42375,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Message with read receipt.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -42943,7 +42725,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -42961,8 +42743,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Message with read receipt.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -43367,8 +43147,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Show all icons .  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -43912,8 +43690,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -44274,8 +44050,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM small message.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -44665,7 +44439,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -44683,8 +44457,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM this is a normal message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -45004,7 +44776,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -45022,8 +44794,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Edited message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -45379,7 +45149,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -45397,8 +45167,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Translated message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -45753,7 +45521,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -45771,8 +45539,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Encrypted message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -46147,8 +45913,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Error message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -46539,7 +46303,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -46557,8 +46321,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Message with read receipt.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -46909,7 +46671,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -46927,8 +46689,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Message with read receipt.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -47333,8 +47093,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Show all icons .  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -47878,8 +47636,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -48240,8 +47996,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
     </View>
     <View>
       <View
-        accessibilityLabel="Long name user looooong name user 10:00:00 AM small message.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -48631,7 +48385,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -48649,8 +48403,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM rocket.cat diego.mello all here general.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -49114,7 +48866,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -49132,8 +48884,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor general incididunt ut labore et dolore magna aliqua..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -49627,7 +49377,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -49645,8 +49395,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM rocket.cat diego.mello all here general.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -50110,7 +49858,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -50128,8 +49876,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM rocket.cat Lorem ipsum dolor diego.mello sit amet, all consectetur adipiscing here elit, sed do eiusmod tempor general incididunt ut labore et dolore magna aliqua..  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -50623,7 +50369,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -50641,8 +50387,6 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -50917,7 +50661,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -50935,8 +50679,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  Message was not read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -51287,7 +51029,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -51305,8 +51047,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  Message was not read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -51474,7 +51214,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -51492,8 +51232,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -51844,7 +51582,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -51862,8 +51600,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -52044,7 +51780,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -52062,8 +51798,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  Message was not read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -52414,7 +52148,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -52432,8 +52166,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  Message was not read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -52601,7 +52333,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -52619,8 +52351,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -52971,7 +52701,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -52989,8 +52719,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  Message was read"
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -53171,7 +52899,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -53189,8 +52917,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -53677,7 +53403,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -53695,8 +53421,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -54461,7 +54185,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -54479,8 +54203,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Looks cool!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -55141,7 +54863,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -55159,8 +54881,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Yes, I am.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -55883,7 +55603,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -55901,8 +55621,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -56389,7 +56107,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -56407,8 +56125,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM I'm fine!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -56927,7 +56643,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -56945,8 +56661,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Looks cool!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -57607,7 +57321,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -57625,8 +57339,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Yes, I am.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -58349,7 +58061,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -58367,8 +58079,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM How are you?.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -58959,7 +58669,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -59274,7 +58984,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -59589,7 +59299,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -59904,7 +59614,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -60219,7 +59929,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -60534,7 +60244,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -60838,7 +60548,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -60856,8 +60566,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM How are you?.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -61448,7 +61156,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -61763,7 +61471,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -62078,7 +61786,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -62393,7 +62101,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -62708,7 +62416,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -63023,7 +62731,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -63327,7 +63035,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -63345,8 +63053,6 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -63696,7 +63402,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -63714,8 +63420,6 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message without header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -63895,7 +63599,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -63913,8 +63617,6 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -64264,7 +63966,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -64282,8 +63984,6 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message without header.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -64463,7 +64163,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -64481,8 +64181,6 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Reactions.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -65311,7 +65009,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -65329,8 +65027,6 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Multiple Reactions.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -66600,7 +66296,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -66618,8 +66314,6 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Reactions.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -67448,7 +67142,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -67466,8 +67160,6 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Multiple Reactions.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -68737,7 +68429,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -68755,8 +68447,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM How are you?.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -69347,7 +69037,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -69545,7 +69235,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -69743,7 +69433,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -69930,7 +69620,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -69948,8 +69638,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM How are you?.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -70540,7 +70228,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -70738,7 +70426,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -70936,7 +70624,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -71123,7 +70811,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -71438,7 +71126,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -71636,7 +71324,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -71834,7 +71522,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReply should ma
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -72021,7 +71709,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -72336,7 +72024,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -72534,7 +72222,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -72732,7 +72420,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadReplyLargeFont 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -72919,7 +72607,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -72937,8 +72625,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -73326,7 +73012,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -73344,8 +73030,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -73911,7 +73595,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -73929,8 +73613,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -74318,7 +74000,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -74336,8 +74018,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -74903,7 +74583,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -74921,8 +74601,6 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -75255,7 +74933,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -75273,8 +74951,6 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -84711,7 +84387,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={false}
       onClick={[Function]}
@@ -84729,8 +84405,6 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Temp message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -85069,7 +84743,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={false}
       onClick={[Function]}
@@ -85087,8 +84761,6 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Temp message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -85427,7 +85099,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -85445,8 +85117,6 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM this is a thumbnail.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -85985,7 +85655,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -86003,8 +85673,6 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM this is a thumbnail.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -86543,7 +86211,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -86561,8 +86229,6 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Testing.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -86895,7 +86561,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -86913,8 +86579,6 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Testing.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -87247,7 +86911,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -87265,8 +86929,6 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message translated.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -87634,7 +87296,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -87652,8 +87314,6 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message translated.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -88021,7 +87681,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -88039,8 +87699,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -89079,7 +88737,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -89097,8 +88755,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -90137,7 +89793,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -90155,8 +89811,6 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -90613,7 +90267,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -90631,8 +90285,6 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message :nyan_rocket:.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -91077,7 +90729,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -91095,8 +90747,6 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -91282,7 +90932,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -91300,8 +90950,6 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -91657,7 +91305,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -91675,8 +91323,6 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -91989,7 +91635,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -92007,8 +91653,6 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -92364,7 +92008,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -92382,8 +92026,6 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -92696,7 +92338,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -92714,8 +92356,6 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -93172,7 +92812,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -93190,8 +92830,6 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message :nyan_rocket:.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -93636,7 +93274,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -93654,8 +93292,6 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -93841,7 +93477,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -93859,8 +93495,6 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -94199,7 +93833,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -94217,8 +93851,6 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -94570,7 +94202,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -94588,8 +94220,6 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -94928,7 +94558,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -94946,8 +94576,6 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -95299,7 +94927,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -95317,8 +94945,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -95927,7 +95553,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -95945,8 +95571,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM First message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -96083,7 +95707,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -96101,8 +95725,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -96496,7 +96118,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -96514,8 +96136,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -96854,7 +96474,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -96872,8 +96492,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -97814,7 +97432,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -97832,8 +97450,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -98442,7 +98058,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -98460,8 +98076,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM First message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -98598,7 +98212,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -98616,8 +98230,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -99011,7 +98623,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -99029,8 +98641,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -99369,7 +98979,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -99387,8 +98997,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -99740,7 +99348,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -99758,8 +99366,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -100255,7 +99861,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -100273,8 +99879,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -100825,7 +100429,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -100843,8 +100447,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -101340,7 +100942,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -101358,8 +100960,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -101685,7 +101285,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -101703,8 +101303,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -102196,7 +101794,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -102214,8 +101812,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message, not description.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -103207,7 +102803,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -103225,8 +102821,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -103750,7 +103344,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -103768,8 +103362,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -104261,7 +103853,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -104279,8 +103871,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -104804,7 +104394,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -104822,8 +104412,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -105347,7 +104935,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -105365,8 +104953,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -105850,7 +105436,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -105868,8 +105454,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -106618,7 +106202,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -106636,8 +106220,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -107121,7 +106703,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -107139,8 +106721,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -107550,7 +107130,7 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -107568,8 +107148,6 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -107719,7 +107297,7 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -107737,8 +107315,6 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",

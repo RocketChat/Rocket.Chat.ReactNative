@@ -432,7 +432,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -450,8 +450,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Hey!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -771,7 +769,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -789,8 +787,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -927,7 +923,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -945,8 +941,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Older message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -1249,7 +1243,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -1267,8 +1261,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -1588,7 +1580,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -1606,8 +1598,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the third message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -1744,7 +1734,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -1762,8 +1752,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -1900,7 +1888,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -1918,8 +1906,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the first message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -2335,7 +2321,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -2353,8 +2339,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Hey!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -2674,7 +2658,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -2692,8 +2676,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -2830,7 +2812,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -2848,8 +2830,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Older message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -3152,7 +3132,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -3170,8 +3150,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -3491,7 +3469,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -3509,8 +3487,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the third message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -3647,7 +3623,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -3665,8 +3641,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -3803,7 +3777,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -3821,8 +3795,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the first message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -4238,7 +4210,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -4256,8 +4228,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Hey!.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -4577,7 +4547,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -4595,8 +4565,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -4733,7 +4701,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -4751,8 +4719,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Older message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -5055,7 +5021,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -5073,8 +5039,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -5394,7 +5358,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -5412,8 +5376,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the third message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -5550,7 +5512,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -5568,8 +5530,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the second message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
@@ -5706,7 +5666,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           "text": undefined,
         }
       }
-      accessible={true}
+      accessible={false}
       collapsable={false}
       focusable={true}
       onClick={[Function]}
@@ -5724,8 +5684,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="diego.mello 10:00:00 AM This is the first message.  "
-        accessible={true}
         style={
           {
             "flexDirection": "column",
