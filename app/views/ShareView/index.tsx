@@ -201,7 +201,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				item.error = error;
 
 				// get video thumbnails
-				if (isAndroid && this.files.length > 1 && item.mime?.match?.(/video/)) {
+				if (isAndroid && this.files.length > 0 && item.mime?.match?.(/video/)) {
 					try {
                         const player = createVideoPlayer({ uri: item.path });
 						const thumbnail = await player.generateThumbnailsAsync(1);
