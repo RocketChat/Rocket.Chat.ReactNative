@@ -20,4 +20,4 @@ onFlowEnd:
 - runFlow:
     file: ../helpers/search-room.yaml
     env:
-      ROOM_NAME: general
+      ROOM: general

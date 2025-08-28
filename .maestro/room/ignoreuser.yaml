@@ -28,15 +28,11 @@ onFlowStart:
 - extendedWaitUntil:
     visible:
       text: 'Block'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - tapOn: 'Block'
 - extendedWaitUntil:
     visible:
       text: 'Unblock'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - runFlow: '../helpers/go-back.yaml'
 - extendedWaitUntil:
@@ -59,15 +55,11 @@ onFlowStart:
 - extendedWaitUntil:
     visible:
       text: 'Unblock'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - tapOn: 'Unblock'
 - extendedWaitUntil:
     visible:
       text: 'Block'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - runFlow: '../helpers/go-back.yaml'
 - extendedWaitUntil:
