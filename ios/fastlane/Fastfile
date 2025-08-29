@@ -152,7 +152,7 @@ platform :ios do
         export_options: {
           compileBitcode: false
         },
-        xcbeautify: true
+        xcodebuild_formatter: "xcbeautify"
     )
   end
 
