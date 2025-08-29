@@ -354,8 +354,6 @@ export default class RoomSubscription {
 		});
 
 	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
-		console.log('room notified', ddpMessage, 'handleMessageReceived');
-
 		try {
 			const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0])) as IMessage;
 			await this.updateMessage(message);
