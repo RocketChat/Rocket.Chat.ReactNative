@@ -86,6 +86,19 @@ jobs:
 
       - name: Run Tests
         run: |
+          echo "=== System Information ==="
+          echo "--- RAM Info ---"
+          vm_stat
+
+          echo "--- Storage Info ---"
+          df -h /
+
+          echo "--- Simulator Runtime Info ---"
+          xcrun simctl list runtimes | grep iOS
+
+          echo "--- Simulator Info ---"
+          xcrun simctl list devices
+
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
           maestro test .maestro --format junit --output maestro-report.xml
 
