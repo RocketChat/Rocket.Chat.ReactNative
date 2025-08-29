@@ -42,6 +42,13 @@ jobs:
           ruby-version: 2.7.7
           bundler-cache: true
 
+      - name: Cache CocoaPods Specs
+        uses: actions/cache@v4
+        with:
+          path: ~/.cocoapods/repos
+          key: cocoapods-specs-${{ runner.os }}
+          restore-keys: cocoapods-specs-
+
       - name: Cache iOS dependencies
         uses: actions/cache@v4
         with:
@@ -49,18 +56,10 @@ jobs:
             ios/Pods
             ~/Library/Caches/CocoaPods
             ~/.cocoapods
-            ~/Library/Developer/Xcode/DerivedData/SourcePackages
-          key: ios-deps-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', '**/yarn.lock', '**/Package.resolved') }}
+            ~/Library/Developer/Xcode/DerivedData
+          key: ios-deps-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', '**/yarn.lock') }}
           restore-keys: |
             ios-deps-${{ runner.os }}-
-        
-      - name: Cache Xcode DerivedData
-        uses: actions/cache@v4
-        with:
-          path: ~/Library/Developer/Xcode/DerivedData
-          key: derived-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', '**/yarn.lock', '**/Package.resolved') }}
-          restore-keys: |
-            derived-${{ runner.os }}-
         
       - name: pod install
         run: |
