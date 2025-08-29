@@ -5,7 +5,9 @@ tags:
 ---
 - tapOn: Workspace URL. Required.
 - inputText: ${output.data.server}
-- tapOn: Connect
+- tapOn:
+    text: Connect
+    waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
     timeout: 60000
     visible: Login

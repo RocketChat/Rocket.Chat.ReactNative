@@ -1,13 +1,11 @@
 appId: chat.rocket.reactnative
 tags:
   - 'util'
-jsEngine: graaljs
 onFlowStart:
   - runFlow:
       file: setup.yaml
       env:
         skipUser: true
-
   - runFlow:
       when:
         true: ${!USERNAME}
@@ -19,7 +17,7 @@ onFlowStart:
 - tapOn:
     id: login-view-email
 - inputText: ${USERNAME || output.createdUser.email}
-- hideKeyboard
+- pressKey: enter
 - tapOn:
     id: login-view-password
 - inputText: ${PASSWORD || output.createdUser.password}

@@ -106,7 +106,7 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
             .newBuilder(this.reactContext, client)
             .build();
         Fresco.initialize(this.reactContext, config);
-        // RNCWebView onReceivedClientCertRequest
+        // RNCWebView
         RNCWebViewManager.setCertificateAlias(data);
 
         // Expo File System network layer
