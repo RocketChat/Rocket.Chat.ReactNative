@@ -11,6 +11,28 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      - name: Use Xcode 16.4 only
+        run: |
+          echo "Available Xcodes before cleanup:"
+          ls -1 /Applications | grep Xcode || true
+
+          sudo xcode-select -s "/Applications/Xcode_16.4.app"
+
+          for X in /Applications/Xcode_*; do
+            if [ "$X" != "/Applications/Xcode_16.4.app" ]; then
+              echo "Removing $X"
+              sudo rm -rf "$X"
+            fi
+          done
+
+          echo "Xcode now points to: $(xcode-select -p)"
+          echo "Remaining Xcodes:"
+          ls -1 /Applications | grep Xcode || true
+
+      - name: Show Xcode version
+        run: |
+          xcodebuild -version
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
