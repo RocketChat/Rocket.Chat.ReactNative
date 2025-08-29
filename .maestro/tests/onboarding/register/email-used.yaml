@@ -1,12 +1,12 @@
 appId: chat.rocket.reactnative
 name: Create Account (Email Already Used)
 onFlowStart:
-  - runFlow: '../../helpers/setup.yaml'
+  - runFlow: '../../../helpers/setup.yaml'
   - evalScript: ${output.user = output.utils.createUser()}
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/navigate-to-register.yaml
+- runFlow: ../../../helpers/launch-app.yaml
+- runFlow: ../../../helpers/navigate-to-register.yaml
 - tapOn:
     id: register-view-name
 - inputText: ${output.user.name}
