@@ -76,7 +76,7 @@ onFlowEnd:
 - tapOn:
     id: message-composer-input
 - eraseText
-
+ 
 # should show and tap on room autocomplete
 - extendedWaitUntil:
     visible:
