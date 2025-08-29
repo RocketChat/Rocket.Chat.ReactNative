@@ -332,6 +332,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 						<ControlledFormTextInput
 							required
 							name='email'
+							defaultValue={user?.emails?.[0]?.address ?? ''}
 							control={control}
 							editable={Accounts_AllowEmailChange}
 							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
