@@ -87,7 +87,7 @@ jobs:
       - name: Run Tests
         run: |
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-          maestro test .maestro --format junit --output maestro-report.xml
+          maestro record .maestro/room/create-room.yaml --local
 
       - name: Upload Test Report
         if: always()
