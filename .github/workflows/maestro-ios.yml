@@ -5,33 +5,11 @@ on:
 
 jobs:
   ios-test:
-    runs-on: macos-15
+    runs-on: macos-14
 
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-
-      - name: Use Xcode 16.4 only
-        run: |
-          echo "Available Xcodes before cleanup:"
-          ls -1 /Applications | grep Xcode || true
-
-          sudo xcode-select -s "/Applications/Xcode_16.4.app"
-
-          for X in /Applications/Xcode_*; do
-            if [ "$X" != "/Applications/Xcode_16.4.app" ]; then
-              echo "Removing $X"
-              sudo rm -rf "$X"
-            fi
-          done
-
-          echo "Xcode now points to: $(xcode-select -p)"
-          echo "Remaining Xcodes:"
-          ls -1 /Applications | grep Xcode || true
-
-      - name: Show Xcode version
-        run: |
-          xcodebuild -version
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -108,19 +86,6 @@ jobs:
 
       - name: Run Tests
         run: |
-          echo "=== System Information ==="
-          echo "--- RAM Info ---"
-          vm_stat
-
-          echo "--- Storage Info ---"
-          df -h /
-
-          echo "--- Simulator Runtime Info ---"
-          xcrun simctl list runtimes | grep iOS
-
-          echo "--- Simulator Info ---"
-          xcrun simctl list devices
-
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
           maestro test .maestro --format junit --output maestro-report.xml
 
