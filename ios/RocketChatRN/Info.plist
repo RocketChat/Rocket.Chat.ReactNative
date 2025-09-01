@@ -57,6 +57,7 @@
 		<string>firefox</string>
 		<string>brave</string>
 		<string>tel</string>
+		<string>comgooglemaps</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -66,6 +67,19 @@
     <false/>
     <key>NSAllowsLocalNetworking</key>
     <true/>
+	<key>NSExceptionDomains</key>
+  <dict>
+    <key>maps.locationiq.com</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSExceptionAllowsInsecureHTTPLoads</key>
+      <false/>
+      <key>NSExceptionRequiresForwardSecrecy</key>
+      <false/>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+    </dict>
   </dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Take photos to share with other users</string>
@@ -77,6 +91,10 @@
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload photos to share with other users or to change your avatar</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We use your location to share it in chat.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need permission to keep sharing your location while the app is in the background.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>
@@ -92,6 +110,7 @@
 		<string>audio</string>
 		<string>fetch</string>
 		<string>voip</string>
+		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
