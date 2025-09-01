@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 import { IListProps } from '../definitions';
 import { useRoomContext } from '../../context';
+import { SCROLL_LIMIT } from '../constants';
+import NavBottomFAB from './NavBottomFAB';
 
 const styles = StyleSheet.create({
 	list: {
@@ -15,17 +17,8 @@ const styles = StyleSheet.create({
 });
 
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
-	/* 	const [visible, setVisible] = useState(false);
-	 */ const { isAutocompleteVisible } = useRoomContext();
-	const firstRender = useRef<boolean>(true);
-	/* 
-	const scrollHandler = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-		if (e.nativeEvent.contentOffset.y > SCROLL_LIMIT) {
-			setVisible(true);
-		} else {
-			setVisible(false);
-		}
-	}; */
+	const [visible, setVisible] = useState(false);
+	const { isAutocompleteVisible } = useRoomContext();
 
 	const maintainVisibleContentPositionConfig = useMemo(
 		() => ({
@@ -35,15 +28,22 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		[]
 	);
 
-	useEffect(() => {
-		if ((props.data?.length || 0) > 0 && listRef?.current && firstRender.current) {
-			// delay so items have been laid out
-			setTimeout(() => {
-				listRef.current.scrollToEnd({ animated: false });
-				firstRender.current = false;
-			}, 100);
+	const onScrollHandler = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+		const currentScroll = Math.round(e.nativeEvent?.contentSize?.height) - Math.round(e.nativeEvent?.contentOffset.y);
+		const layoutLimit = e.nativeEvent.layoutMeasurement.height + SCROLL_LIMIT;
+
+		if (layoutLimit < currentScroll) {
+			setVisible(true);
+		} else {
+			setVisible(false);
 		}
-	}, [props.data?.length]);
+	};
+
+	useEffect(() => {
+		if (listRef?.current && listRef?.current.getFirstVisibleIndex() > 0) {
+			listRef?.current?.scrollToEnd({ animated: false });
+		}
+	}, [props?.data?.length]);
 
 	return (
 		<View style={styles.list}>
@@ -54,13 +54,13 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				testID='room-view-messages'
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
+				onScroll={onScrollHandler}
 				scrollEventThrottle={16}
 				keyboardShouldPersistTaps='handled'
 				maintainVisibleContentPosition={maintainVisibleContentPositionConfig}
-				automaticallyAdjustContentInsets
 				{...props}
 			/>
-			{/* <NavBottomFAB visible={visible} onPress={jumpToBottom} />  */}
+			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
 	);
 };
