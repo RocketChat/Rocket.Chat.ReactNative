@@ -18,8 +18,8 @@ if (__DEV__) {
 		applyAppStateMiddleware(),
 		applyInternetStateMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
-		applyMiddleware(sagaMiddleware),
-		applyMiddleware(logger)
+		applyMiddleware(sagaMiddleware)
+		// applyMiddleware(logger)
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();

@@ -1,5 +1,5 @@
 import ByteBuffer from 'bytebuffer';
-import SimpleCrypto from 'react-native-simple-crypto';
+import { aesDecryptFile, aesEncryptFile, getRandomValues, randomBytes } from '@rocket.chat/mobile-crypto';
 
 import { compareServerVersion } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
@@ -10,7 +10,24 @@ const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678
 
 // @ts-ignore
 export const b64ToBuffer = (base64: string): ArrayBuffer => toByteArray(base64).buffer;
-export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;
+export const utf8ToBuffer = (utf8: string): ArrayBuffer => {
+	const bytes = [];
+
+	let i = 0;
+	utf8 = encodeURI(utf8);
+	while (i < utf8.length) {
+		const byte = utf8.charCodeAt(i++);
+		if (byte === 37) {
+			bytes.push(parseInt(utf8.substr(i, 2), 16));
+			i += 2;
+		} else {
+			bytes.push(byte);
+		}
+	}
+
+	const array = new Uint8Array(bytes);
+	return array.buffer;
+};
 export const bufferToB64 = (arrayBuffer: ArrayBuffer): string => fromByteArray(new Uint8Array(arrayBuffer));
 // ArrayBuffer -> Base64 URI Safe
 // https://github.com/herrjemand/Base64URL-ArrayBuffer/blob/master/lib/base64url-arraybuffer.js
@@ -78,11 +95,11 @@ export const getE2EEMentions = (message?: string) => {
 };
 
 export const randomPassword = async (): Promise<string> => {
-	const random = await Promise.all(Array.from({ length: 4 }, () => SimpleCrypto.utils.getRandomValues(3)));
+	const random = await Promise.all(Array.from({ length: 4 }, () => getRandomValues(3)));
 	return `${random[0]}-${random[1]}-${random[2]}-${random[3]}`;
 };
 
-export const generateAESCTRKey = () => SimpleCrypto.utils.randomBytes(32);
+export const generateAESCTRKey = () => randomBytes(32);
 
 interface IExportedKey {
 	kty: string;
@@ -109,11 +126,9 @@ export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
 	return exportedKey;
 };
 
-export const encryptAESCTR = (path: string, key: string, vector: string): Promise<string> =>
-	SimpleCrypto.AES.encryptFile(path, key, vector);
+export const encryptAESCTR = (path: string, key: string, vector: string): Promise<string> => aesEncryptFile(path, key, vector);
 
-export const decryptAESCTR = (path: string, key: string, vector: string): Promise<string> =>
-	SimpleCrypto.AES.decryptFile(path, key, vector);
+export const decryptAESCTR = (path: string, key: string, vector: string): Promise<string> => aesDecryptFile(path, key, vector);
 
 // Missing room encryption key
 export const isMissingRoomE2EEKey = ({

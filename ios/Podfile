@@ -77,12 +77,4 @@ post_install do |installer|
     puts "Stripping bitcode: #{command}"
     system(command)
   end
-
-  framework_paths = [
-    "ios/Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework/ios-arm64_armv7/OpenSSL.framework/OpenSSL"
-  ]
-
-  framework_paths.each do |framework_relative_path|
-    strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-  end
 end

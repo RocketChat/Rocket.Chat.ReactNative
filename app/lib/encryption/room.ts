@@ -1,9 +1,17 @@
 import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
-import SimpleCrypto from 'react-native-simple-crypto';
 import ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
+import {
+	rsaDecrypt,
+	randomBytes,
+	rsaImportKey,
+	rsaEncrypt,
+	aesEncrypt,
+	calculateFileChecksum,
+	aesDecrypt
+} from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
 import {
@@ -145,13 +153,13 @@ export default class EncryptionRoom {
 		try {
 			const roomE2EKey = E2EKey.slice(12);
 
-			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
+			const decryptedKey = await rsaDecrypt(roomE2EKey, privateKey);
 			const sessionKeyExportedString = toString(decryptedKey);
 
 			let keyID = '';
 			const { version } = store.getState().server;
 			if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
-				keyID = (await SimpleCrypto.SHA.sha256(sessionKeyExportedString as string)).slice(0, 12);
+				keyID = (await sha256(sessionKeyExportedString as string)).slice(0, 12);
 			} else {
 				keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
 			}
@@ -176,7 +184,7 @@ export default class EncryptionRoom {
 	hasSessionKey = () => !!this.sessionKeyExportedString;
 
 	createNewRoomKey = async () => {
-		const key = (await SimpleCrypto.utils.randomBytes(16)) as Uint8Array;
+		const key = (await randomBytes(16)) as Uint8Array;
 		this.roomKey = key;
 
 		// Web Crypto format of a Secret Key
@@ -196,7 +204,7 @@ export default class EncryptionRoom {
 
 		const { version } = store.getState().server;
 		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
-			this.keyID = (await SimpleCrypto.SHA.sha256(this.sessionKeyExportedString as string)).slice(0, 12);
+			this.keyID = (await sha256(this.sessionKeyExportedString as string)).slice(0, 12);
 		} else {
 			this.keyID = Base64.encode(this.sessionKeyExportedString as string).slice(0, 12);
 		}
@@ -282,8 +290,8 @@ export default class EncryptionRoom {
 	// Encrypt the room key to each user in
 	encryptRoomKeyForUser = async (publicKey: string) => {
 		try {
-			const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
-			const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString as string, userKey);
+			const userKey = await rsaImportKey(EJSON.parse(publicKey));
+			const encryptedUserKey = await rsaEncrypt(this.sessionKeyExportedString as string, userKey);
 			return this.keyID + encryptedUserKey;
 		} catch (e) {
 			log(e);
@@ -309,7 +317,7 @@ export default class EncryptionRoom {
 		let userKey;
 
 		try {
-			userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
+			userKey = await rsaImportKey(EJSON.parse(publicKey));
 		} catch (e) {
 			log(e);
 			return;
@@ -321,7 +329,7 @@ export default class EncryptionRoom {
 				if (!oldRoomKey.E2EKey) {
 					continue;
 				}
-				const encryptedKey = await SimpleCrypto.RSA.encrypt(oldRoomKey.E2EKey, userKey);
+				const encryptedKey = await rsaEncrypt(oldRoomKey.E2EKey, userKey);
 				const encryptedUserKey = oldRoomKey.e2eKeyId + encryptedKey;
 				keys.push({ ...oldRoomKey, E2EKey: encryptedUserKey });
 			}
@@ -377,8 +385,8 @@ export default class EncryptionRoom {
 	// Encrypt text
 	encryptText = async (text: string | ArrayBuffer) => {
 		text = utf8ToBuffer(text as string);
-		const vector = await SimpleCrypto.utils.randomBytes(16);
-		const data = await SimpleCrypto.AES.encrypt(text, this.roomKey as ArrayBuffer, vector);
+		const vector = await randomBytes(16);
+		const data = await aesEncrypt(text, this.roomKey as ArrayBuffer, vector);
 
 		return this.keyID + bufferToB64(joinVectorData(vector, data));
 	};
@@ -445,11 +453,11 @@ export default class EncryptionRoom {
 
 	encryptFile = async (rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
 		const { path } = file;
-		const vector = await SimpleCrypto.utils.randomBytes(16);
+		const vector = await randomBytes(16);
 		const key = await generateAESCTRKey();
 		const exportedKey = await exportAESCTR(key);
 		const iv = bufferToB64(vector);
-		const checksum = await SimpleCrypto.utils.calculateFileChecksum(path);
+		const checksum = await calculateFileChecksum(path);
 		const encryptedFile = await encryptAESCTR(path, exportedKey.k, iv);
 
 		const getContent: TGetContent = async (_id, fileUrl) => {
@@ -592,7 +600,7 @@ export default class EncryptionRoom {
 			}
 		}
 
-		const decrypted = await SimpleCrypto.AES.decrypt(cipherText, oldKey || this.roomKey, vector);
+		const decrypted = await aesDecrypt(cipherText, oldKey || this.roomKey, vector);
 		return EJSON.parse(bufferToUtf8(decrypted));
 	};
 
