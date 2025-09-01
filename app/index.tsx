@@ -1,10 +1,11 @@
 import React from 'react';
-import { Dimensions, EmitterSubscription, Linking } from 'react-native';
+import { Dimensions, EmitterSubscription, Linking, Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import SpInAppUpdates, { IAUUpdateKind, StartUpdateOptions } from 'sp-react-native-in-app-updates';
 
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
@@ -57,6 +58,8 @@ interface IState {
 	scale: number;
 	fontScale: number;
 }
+
+const inAppUpdates = new SpInAppUpdates(__DEV__);
 
 const parseDeepLinking = (url: string) => {
 	if (url) {
@@ -115,6 +118,19 @@ export default class Root extends React.Component<{}, IState> {
 			});
 		}, 5000);
 		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
+
+		inAppUpdates.checkNeedsUpdate().then(response => {
+			if (response.shouldUpdate) {
+				const updateOptions: StartUpdateOptions = Platform.select({
+					android: {
+						updateType: IAUUpdateKind.FLEXIBLE
+					},
+					default: {}
+				});
+
+				inAppUpdates.startUpdate(updateOptions);
+			}
+		});
 	}
 
 	componentWillUnmount() {
