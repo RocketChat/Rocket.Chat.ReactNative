@@ -73,10 +73,18 @@ const Content = React.memo(
 		}
 
 		if (props.isIgnored) {
-			content = <Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${props.msg}`}>{I18n.t('Message_Ignored')}</Text>;
+			content = (
+				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${props.msg}`}>
+					{I18n.t('Message_Ignored')}
+				</Text>
+			);
 		}
 
-		return content ? <View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>{content}</View> : null;
+		return content ? (
+			<View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
+				{content}
+			</View>
+		) : null;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.isTemp !== nextProps.isTemp) {
