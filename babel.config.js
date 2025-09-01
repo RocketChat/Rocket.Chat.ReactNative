@@ -5,7 +5,7 @@ module.exports = {
 		'react-native-reanimated/plugin',
 		'@babel/plugin-transform-named-capturing-groups-regex',
 		['module:react-native-dotenv'],
-        ['transform-inline-environment-variables', { include: ['RUNNING_E2E_TESTS'] }]
+		['transform-inline-environment-variables', { include: ['RUNNING_E2E_TESTS'] }]
 	],
 	env: {
 		production: {
