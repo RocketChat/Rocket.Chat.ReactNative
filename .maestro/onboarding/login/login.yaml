@@ -1,6 +1,5 @@
 appId: chat.rocket.reactnative
 name: Login
-jsEngine: graaljs
 onFlowStart:
   - runFlow: ../../helpers/setup.yaml
   - evalScript: ${output.createdUser = output.utils.createUser()}

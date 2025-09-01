@@ -1,6 +1,5 @@
 appId: chat.rocket.reactnative
 name: Legal
-jsEngine: graaljs
 onFlowStart:
   - runFlow: '../helpers/setup.yaml'
 

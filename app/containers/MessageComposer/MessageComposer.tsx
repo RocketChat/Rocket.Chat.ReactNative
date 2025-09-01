@@ -81,6 +81,9 @@ export const MessageComposer = ({
 			setAlsoSendThreadToChannel(false);
 		}
 
+		// Hide autocomplete
+		setAutocompleteParams({ text: '', type: null, params: '' });
+
 		if (sharing) {
 			onSendMessage?.();
 			return;
@@ -117,9 +120,6 @@ export const MessageComposer = ({
 				return;
 			}
 		}
-
-		// Hide autocomplete
-		setAutocompleteParams({ text: '', type: null, params: '' });
 
 		// Text message
 		onSendMessage?.(textFromInput, alsoSendThreadToChannel);
