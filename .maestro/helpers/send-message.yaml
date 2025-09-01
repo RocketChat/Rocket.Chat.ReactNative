@@ -28,5 +28,5 @@ tags:
     id: message-composer-send
 - extendedWaitUntil:
     visible:
-      text: ${message}
+      id: message-item-${message}
     timeout: 60000
