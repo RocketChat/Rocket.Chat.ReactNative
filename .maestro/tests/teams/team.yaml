@@ -1,12 +1,12 @@
 appId: chat.rocket.reactnative
 name: Team
 onFlowStart:
-  - runFlow: '../helpers/setup.yaml'
+  - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
-- runFlow: '../helpers/launch-app.yaml'
+- runFlow: '../../helpers/launch-app.yaml'
 
 - evalScript: ${output.firstUser = output.utils.createUser()}
 - evalScript: ${output.secondUser = output.utils.createUser()}
@@ -15,12 +15,12 @@ onFlowEnd:
 - evalScript: ${output.privateRoomName = 'private' + output.random() + '-channel-team'}
 
 - runFlow:
-    file: '../helpers/login.yaml'
+    file: '../../helpers/login.yaml'
     env:
       USERNAME: ${output.firstUser.username}
       PASSWORD: ${output.firstUser.password}
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.team}
 
@@ -153,11 +153,11 @@ onFlowEnd:
     id: room-view-header-threads
 - assertVisible:
     id: room-view-search
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should add existing channel to team
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.team}
 - assertVisible:
@@ -261,10 +261,10 @@ onFlowEnd:
       id: rooms-list-view-item-${output.privateRoomName}
       index: 0
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.team}
 
@@ -407,7 +407,7 @@ onFlowEnd:
     file: './utils/close-action-sheet.yaml'
 
 # should leave team
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: room-actions-view
