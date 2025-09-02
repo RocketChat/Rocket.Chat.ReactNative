@@ -224,12 +224,15 @@ class Encryption {
 
 	// Encode a private key before send it to the server
 	encodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const masterKey = await this.generateMasterKey(password, userId);
+		const keyBase64 = await this.generateMasterKey(password, userId);
 
-		const vector = await randomBytes(16);
-		const data = await aesEncrypt(utf8ToBuffer(privateKey), masterKey, vector);
+		const ivArrayBuffer = b64ToBuffer(await randomBytes(16));
+		const keyHex = base64ToHex(keyBase64);
+		const ivHex = convertArrayBufferToHex(ivArrayBuffer);
 
-		return EJSON.stringify(new Uint8Array(joinVectorData(vector, data)));
+		const data = b64ToBuffer(await aesEncrypt(convertArrayBufferToBase64(utf8ToBuffer(privateKey)), keyHex, ivHex));
+
+		return EJSON.stringify(new Uint8Array(joinVectorData(ivArrayBuffer, data)));
 	};
 
 	// Decode a private key fetched from server
