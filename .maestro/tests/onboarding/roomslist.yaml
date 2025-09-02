@@ -1,13 +1,13 @@
 appId: chat.rocket.reactnative
 name: Rooms List
 onFlowStart:
-  - runFlow: '../helpers/setup.yaml'
+  - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
-- runFlow: ../helpers/launch-app.yaml
-- runFlow: ../helpers/login.yaml
+- runFlow: ../../helpers/launch-app.yaml
+- runFlow: ../../helpers/login.yaml
 
 - assertVisible:
     id: 'rooms-list-view'
@@ -18,6 +18,6 @@ onFlowEnd:
 - assertVisible:
     id: 'rooms-list-view-sidebar'
 - runFlow:
-    file: ../helpers/search-room.yaml
+    file: ../../helpers/search-room.yaml
     env:
       ROOM: general
