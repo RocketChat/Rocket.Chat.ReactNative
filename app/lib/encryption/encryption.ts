@@ -13,7 +13,7 @@ import {
 	JWK
 } from '@rocket.chat/mobile-crypto';
 import { sampleSize } from 'lodash';
-import { encode } from 'js-base64';
+import { decode as base64Decode, encode as base64Encode } from 'js-base64';
 
 import {
 	IMessage,
@@ -45,7 +45,23 @@ import { MAX_CONCURRENT_QUEUE } from './constants';
 import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
-import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer, bufferToB64 } from './utils';
+import {
+	decryptAESCTR,
+	joinVectorData,
+	randomPassword,
+	splitVectorData,
+	toString,
+	utf8ToBuffer,
+	bufferToB64,
+	joinVectorDataBase64,
+	base64ToHex,
+	splitVectorDataBase64,
+	convertArrayBufferToBase64,
+	convertUtf8ToArrayBuffer,
+	convertArrayBufferToHex,
+	bufferToUtf8,
+	b64ToBuffer
+} from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
 class Encryption {
@@ -168,7 +184,13 @@ class Encryption {
 
 	// Persist keys on UserPreferences
 	persistKeys = async (server: string, publicKey: JWK, privateKey: string) => {
-		this.privateKey = await rsaImportKey(EJSON.parse(privateKey));
+		// const parsedPrivateKey = EJSON.parse(privateKey);
+		// console.log('parsedPrivateKey', parsedPrivateKey);
+		// const privateKeyJWK = await rsaExportKey(privateKey);
+		// console.log('privateKeyJWK', privateKeyJWK);
+		const privateJWK = JSON.parse(privateKey);
+		console.log('privateJWK', privateJWK);
+		this.privateKey = await rsaImportKey(privateJWK);
 		this.publicKey = EJSON.stringify(publicKey);
 		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, this.publicKey);
 		UserPreferences.setString(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
@@ -211,26 +233,42 @@ class Encryption {
 
 	// Decode a private key fetched from server
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const masterKey = await this.generateMasterKey(password, userId);
-		const [vector, cipherText] = splitVectorData(EJSON.parse(privateKey));
+		const keyBase64 = await this.generateMasterKey(password, userId);
+		console.log('keyBase64', keyBase64);
 
-		const privKey = await aesDecrypt(bufferToB64(cipherText), masterKey, bufferToB64(vector));
+		// Split IV and cipher text (equivalent to splitVectorData)
+		const [ivArrayBuffer, cipherTextArrayBuffer] = splitVectorData(EJSON.parse(privateKey));
 
-		return toString(privKey);
+		// Convert to hex format for AES
+		const cipherTextBase64 = convertArrayBufferToBase64(cipherTextArrayBuffer);
+		const keyHex = base64ToHex(keyBase64);
+		const ivHex = convertArrayBufferToHex(ivArrayBuffer);
+		console.log('cipherTextBase64', cipherTextBase64, 'keyHex', keyHex, 'ivHex', ivHex);
+
+		// Decrypt the private key
+		const privKeyBase64 = await aesDecrypt(cipherTextBase64, keyHex, ivHex);
+
+		// Convert back from base64 (equivalent to toString)
+		return bufferToUtf8(b64ToBuffer(privKeyBase64));
 	};
 
 	// Generate a user master key, this is based on userId and a password
-	generateMasterKey = async (password: string, userId: string) => {
+	generateMasterKey = async (password: string, userId: string): Promise<string> => {
 		const iterations = 1000;
 		const hash = 'SHA256';
 		const keyLen = 32;
 
-		const passwordBuffer = encode(password);
-		const saltBuffer = encode(userId);
+		const passwordBuffer = convertUtf8ToArrayBuffer(password);
+		const saltBuffer = convertUtf8ToArrayBuffer(userId);
 
-		const masterKey = await pbkdf2Hash(passwordBuffer, saltBuffer, iterations, keyLen, hash);
+		const passwordBase64 = bufferToB64(passwordBuffer);
+		const userIdBase64 = bufferToB64(saltBuffer);
+		console.log('passwordBase64', passwordBase64, 'userIdBase64', userIdBase64);
 
-		return masterKey;
+		const masterKeyBase64 = await pbkdf2Hash(passwordBase64, userIdBase64, iterations, keyLen, hash);
+
+		console.log('masterKeyBase64', masterKeyBase64);
+		return masterKeyBase64; // base64 encoded string
 	};
 
 	// Create a random password to local created keys
