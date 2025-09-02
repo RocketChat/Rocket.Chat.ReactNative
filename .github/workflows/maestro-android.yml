@@ -9,6 +9,10 @@ on:
 
 jobs:
   android-test:
+    name: >
+      ${{ inputs.shard == '1' && 'Room Test' ||
+          inputs.shard == '2' && 'Onboarding Test' ||
+          'All Tests' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -62,12 +66,14 @@ jobs:
             adb shell am force-stop chat.rocket.reactnative
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
             
-            if [ "${{ inputs.shard }}" = "1" ]; then
-              maestro test .maestro/config/onboarding.yaml --format junit --output maestro-report.xml
-            elif [ "${{ inputs.shard }}" = "2" ]; then
-              maestro test .maestro/config/team.yaml --format junit --output maestro-report.xml
+            SHARD="${{ inputs.shard }}"
+
+            if [ "$SHARD" = "1" ]; then
+                maestro test .maestro/config/room.yaml --format junit --output maestro-report.xml
+            elif [ "$SHARD" = "2" ]; then
+                maestro test .maestro/config/onboarding.yaml --format junit --output maestro-report.xml
             else
-              maestro test .maestro --format junit --output maestro-report.xml
+                maestro test .maestro --format junit --output maestro-report.xml
             fi
 
       - name: Upload Test Report
