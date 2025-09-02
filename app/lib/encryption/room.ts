@@ -39,8 +39,7 @@ import {
 	splitVectorData,
 	toString,
 	utf8ToBuffer,
-	convertArrayBufferToBase64,
-	convertArrayBufferToHex
+	bufferToHex
 } from './utils';
 import { Encryption } from './index';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
@@ -186,7 +185,7 @@ export default class EncryptionRoom {
 	hasSessionKey = () => !!this.sessionKeyExportedString;
 
 	createNewRoomKey = async () => {
-		const key = (await randomBytes(16)) as Uint8Array;
+		const key = b64ToBuffer(await randomBytes(16));
 		this.roomKey = key;
 
 		// Web Crypto format of a Secret Key
@@ -388,9 +387,7 @@ export default class EncryptionRoom {
 	encryptText = async (text: string | ArrayBuffer) => {
 		text = utf8ToBuffer(text as string);
 		const vector = b64ToBuffer(await randomBytes(16));
-		const data = b64ToBuffer(
-			await aesEncrypt(convertArrayBufferToBase64(text), convertArrayBufferToHex(this.roomKey), convertArrayBufferToHex(vector))
-		);
+		const data = b64ToBuffer(await aesEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector)));
 
 		return this.keyID + bufferToB64(joinVectorData(vector, data));
 	};
@@ -604,11 +601,7 @@ export default class EncryptionRoom {
 			}
 		}
 
-		const decrypted = await aesDecrypt(
-			convertArrayBufferToBase64(cipherText),
-			convertArrayBufferToHex(oldKey || this.roomKey),
-			convertArrayBufferToHex(vector)
-		);
+		const decrypted = await aesDecrypt(bufferToB64(cipherText), bufferToHex(oldKey || this.roomKey), bufferToHex(vector));
 		return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
 	};
 

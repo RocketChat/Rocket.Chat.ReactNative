@@ -14,7 +14,6 @@ import {
 	calculateFileChecksum
 } from '@rocket.chat/mobile-crypto';
 import { sampleSize } from 'lodash';
-import { decode as base64Decode, encode as base64Encode } from 'js-base64';
 
 import {
 	IMessage,
@@ -51,15 +50,10 @@ import {
 	joinVectorData,
 	randomPassword,
 	splitVectorData,
-	toString,
 	utf8ToBuffer,
 	bufferToB64,
-	joinVectorDataBase64,
-	base64ToHex,
-	splitVectorDataBase64,
-	convertArrayBufferToBase64,
-	convertUtf8ToArrayBuffer,
-	convertArrayBufferToHex,
+	b64ToHex,
+	bufferToHex,
 	bufferToUtf8,
 	b64ToBuffer
 } from './utils';
@@ -185,12 +179,7 @@ class Encryption {
 
 	// Persist keys on UserPreferences
 	persistKeys = async (server: string, publicKey: JWK, privateKey: string) => {
-		// const parsedPrivateKey = EJSON.parse(privateKey);
-		// console.log('parsedPrivateKey', parsedPrivateKey);
-		// const privateKeyJWK = await rsaExportKey(privateKey);
-		// console.log('privateKeyJWK', privateKeyJWK);
 		const privateJWK = JSON.parse(privateKey);
-		console.log('privateJWK', privateJWK);
 		this.privateKey = await rsaImportKey(privateJWK);
 		this.publicKey = EJSON.stringify(publicKey);
 		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, this.publicKey);
@@ -227,10 +216,10 @@ class Encryption {
 		const keyBase64 = await this.generateMasterKey(password, userId);
 
 		const ivArrayBuffer = b64ToBuffer(await randomBytes(16));
-		const keyHex = base64ToHex(keyBase64);
-		const ivHex = convertArrayBufferToHex(ivArrayBuffer);
+		const keyHex = b64ToHex(keyBase64);
+		const ivHex = bufferToHex(ivArrayBuffer);
 
-		const data = b64ToBuffer(await aesEncrypt(convertArrayBufferToBase64(utf8ToBuffer(privateKey)), keyHex, ivHex));
+		const data = b64ToBuffer(await aesEncrypt(bufferToB64(utf8ToBuffer(privateKey)), keyHex, ivHex));
 
 		return EJSON.stringify(new Uint8Array(joinVectorData(ivArrayBuffer, data)));
 	};
@@ -238,16 +227,14 @@ class Encryption {
 	// Decode a private key fetched from server
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
 		const keyBase64 = await this.generateMasterKey(password, userId);
-		console.log('keyBase64', keyBase64);
 
 		// Split IV and cipher text (equivalent to splitVectorData)
 		const [ivArrayBuffer, cipherTextArrayBuffer] = splitVectorData(EJSON.parse(privateKey));
 
 		// Convert to hex format for AES
-		const cipherTextBase64 = convertArrayBufferToBase64(cipherTextArrayBuffer);
-		const keyHex = base64ToHex(keyBase64);
-		const ivHex = convertArrayBufferToHex(ivArrayBuffer);
-		console.log('cipherTextBase64', cipherTextBase64, 'keyHex', keyHex, 'ivHex', ivHex);
+		const cipherTextBase64 = bufferToB64(cipherTextArrayBuffer);
+		const keyHex = b64ToHex(keyBase64);
+		const ivHex = bufferToHex(ivArrayBuffer);
 
 		// Decrypt the private key
 		const privKeyBase64 = await aesDecrypt(cipherTextBase64, keyHex, ivHex);
@@ -262,17 +249,11 @@ class Encryption {
 		const hash = 'SHA256';
 		const keyLen = 32;
 
-		const passwordBuffer = convertUtf8ToArrayBuffer(password);
-		const saltBuffer = convertUtf8ToArrayBuffer(userId);
-
-		const passwordBase64 = bufferToB64(passwordBuffer);
-		const userIdBase64 = bufferToB64(saltBuffer);
-		console.log('passwordBase64', passwordBase64, 'userIdBase64', userIdBase64);
+		const passwordBase64 = bufferToB64(utf8ToBuffer(password));
+		const userIdBase64 = bufferToB64(utf8ToBuffer(userId));
 
 		const masterKeyBase64 = await pbkdf2Hash(passwordBase64, userIdBase64, iterations, keyLen, hash);
-
-		console.log('masterKeyBase64', masterKeyBase64);
-		return masterKeyBase64; // base64 encoded string
+		return masterKeyBase64;
 	};
 
 	// Create a random password to local created keys
