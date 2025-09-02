@@ -1,0 +1,134 @@
+appId: chat.rocket.reactnative
+name: Convert Team
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- evalScript: ${output.room = 'encrypted' + output.random()}
+- evalScript: ${output.userA = output.utils.createUser()}
+- evalScript: ${output.userB = output.utils.createUser()}
+
+# login as User B and change E2E password
+- runFlow: ../../helpers/launch-app.yaml
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userB.username}
+      PASSWORD: ${output.userB.password}
+- runFlow: './utils/navigate-to-e2ee-security.yaml'
+- runFlow: './utils/change-e2ee-key.yaml'
+
+# login as User A and change E2E password
+- runFlow: ../../helpers/launch-app.yaml
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
+- runFlow: './utils/navigate-to-e2ee-security.yaml'
+- runFlow: './utils/change-e2ee-key.yaml'
+
+# Create room as UserA and send a message
+# should create encrypted room
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-search'
+- inputText: ${output.userB.username}
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-${output.userB.username}'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-${output.userB.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-${output.userB.username}'
+- tapOn:
+    id: 'selected-users-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-view'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-view'
+- inputText: ${output.room}
+- pressKey: enter
+- longPressOn:
+    id: 'create-channel-encrypted'
+- tapOn:
+    id: 'create-channel-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room}'
+    timeout: 60000
+
+# should send message and be able to read it
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'm0'
+
+# should quote a message and be able to read both
+- evalScript: ${output.mockedMessageTextToQuote = 'm1'}
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: ${output.mockedMessageTextToQuote}
+- evalScript: ${output.quotedMessage = 'm2'}
+- longPressOn:
+    text: ${output.mockedMessageTextToQuote}
+- extendedWaitUntil:
+    visible:
+      id: action-sheet
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-handle
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: Quote
+    timeout: 60000
+- tapOn:
+    text: Quote
+- extendedWaitUntil:
+    visible:
+      id: message-composer-input
+    timeout: 60000
+- tapOn:
+    id: message-composer-input
+- inputText: ${output.quotedMessage}
+- extendedWaitUntil:
+    visible:
+      id: message-composer-send
+    timeout: 60000
+- tapOn:
+    id: message-composer-send
+- extendedWaitUntil:
+    visible:
+      text: ${output.quotedMessage}
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'reply-${output.userA.username}-${output.mockedMessageTextToQuote}'
+    timeout: 60000

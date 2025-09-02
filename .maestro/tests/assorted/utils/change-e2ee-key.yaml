@@ -1,0 +1,30 @@
+appId: chat.rocket.reactnative
+name: Change E2EE Key
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: e2e-encryption-security-view-password
+    timeout: 60000
+- tapOn:
+    id: e2e-encryption-security-view-password
+- inputText: abc
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: e2e-encryption-security-view-change-password
+    timeout: 60000
+- tapOn:
+    id: e2e-encryption-security-view-change-password
+- extendedWaitUntil:
+    visible:
+      text: .*Are you sure.*
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: .*Make sure you've saved it carefully somewhere else.*
+    timeout: 60000
+- tapOn:
+    text: Yes, change it
