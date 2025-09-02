@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
 
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
+	const [userScrolled, setUserScrolled] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 
 	const maintainVisibleContentPositionConfig = useMemo(
@@ -36,18 +37,20 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			setVisible(true);
 		} else {
 			setVisible(false);
+			setUserScrolled(false);
 		}
 	};
 
 	useEffect(() => {
-		if (listRef?.current && listRef?.current.getFirstVisibleIndex() > 0) {
-			listRef?.current?.scrollToEnd({ animated: false });
+		if (!userScrolled) {
+			listRef?.current?.scrollToEnd({ animated: true });
 		}
 	}, [props?.data?.length]);
 
 	return (
 		<View style={styles.list}>
 			<FlashList
+				onMomentumScrollBegin={() => setUserScrolled(true)}
 				ref={listRef}
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
