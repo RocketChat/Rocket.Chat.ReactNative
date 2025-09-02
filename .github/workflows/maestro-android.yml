@@ -2,6 +2,10 @@ name: Maestro Tests on Android
 
 on:
   workflow_call:
+    inputs:
+      shard:
+        required: true
+        type: string
 
 jobs:
   android-test:
@@ -57,7 +61,14 @@ jobs:
             sleep 10
             adb shell am force-stop chat.rocket.reactnative
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-            maestro test .maestro --format junit --output maestro-report.xml
+            
+            if [ "${{ inputs.shard }}" = "1" ]; then
+              maestro test .maestro/config/onboarding.yaml --format junit --output maestro-report.xml
+            elif [ "${{ inputs.shard }}" = "2" ]; then
+              maestro test .maestro/config/team.yaml --format junit --output maestro-report.xml
+            else
+              maestro test .maestro --format junit --output maestro-report.xml
+            fi
 
       - name: Upload Test Report
         if: always()
