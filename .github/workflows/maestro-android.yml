@@ -10,8 +10,8 @@ on:
 jobs:
   android-test:
     name: >
-      ${{ inputs.shard == '1' && 'Room Test' ||
-          inputs.shard == '2' && 'Onboarding Test' ||
+      ${{ inputs.shard == '1' && 'Onboarding Test' ||
+          inputs.shard == '2' && 'Team Test' ||
           'All Tests' }}
     runs-on: ubuntu-latest
 
@@ -69,9 +69,9 @@ jobs:
             SHARD="${{ inputs.shard }}"
 
             if [ "$SHARD" = "1" ]; then
-                maestro test .maestro/config/room.yaml --format junit --output maestro-report.xml
-            elif [ "$SHARD" = "2" ]; then
                 maestro test .maestro/config/onboarding.yaml --format junit --output maestro-report.xml
+            elif [ "$SHARD" = "2" ]; then
+                maestro test .maestro/config/team.yaml --format junit --output maestro-report.xml
             else
                 maestro test .maestro --format junit --output maestro-report.xml
             fi
