@@ -135,7 +135,7 @@ const sendMessage = (username, password, channel, msg, tmid) => {
     return result;
 };
 
-export const getProfileInfo = async (param) => {
+const getProfileInfo = async (param) => {
     let query = '';
     if ('userId' in param) {
         query += `userId=${param.userId}`;
@@ -155,7 +155,7 @@ export const getProfileInfo = async (param) => {
     return resultJson?.data?.user;
 };
 
-export const post = async (endpoint, username, password, body) => {
+const post = async (endpoint, username, password, body) => {
     login(username, password);
 
     const response = http.post(`${data.server}/api/v1/${endpoint}`, {
