@@ -387,8 +387,10 @@ export default class EncryptionRoom {
 	// Encrypt text
 	encryptText = async (text: string | ArrayBuffer) => {
 		text = utf8ToBuffer(text as string);
-		const vector = await randomBytes(16);
-		const data = await aesEncrypt(text, this.roomKey as ArrayBuffer, vector);
+		const vector = b64ToBuffer(await randomBytes(16));
+		const data = b64ToBuffer(
+			await aesEncrypt(convertArrayBufferToBase64(text), convertArrayBufferToHex(this.roomKey), convertArrayBufferToHex(vector))
+		);
 
 		return this.keyID + bufferToB64(joinVectorData(vector, data));
 	};
@@ -455,12 +457,12 @@ export default class EncryptionRoom {
 
 	encryptFile = async (rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
 		const { path } = file;
-		const vector = await randomBytes(16);
-		const key = await generateAESCTRKey();
-		const exportedKey = await exportAESCTR(key);
-		const iv = bufferToB64(vector);
+		const vectorBuffer = b64ToBuffer(await randomBytes(16));
+		const keyBuffer = b64ToBuffer(await generateAESCTRKey());
+		const exportedKey = await exportAESCTR(keyBuffer);
+		const ivBase64 = bufferToB64(vectorBuffer);
 		const checksum = await calculateFileChecksum(path);
-		const encryptedFile = await encryptAESCTR(path, exportedKey.k, iv);
+		const encryptedFile = await encryptAESCTR(path, exportedKey.k, ivBase64);
 
 		const getContent: TGetContent = async (_id, fileUrl) => {
 			const attachments: IAttachment[] = [];
@@ -472,7 +474,7 @@ export default class EncryptionRoom {
 				title_link_download: true,
 				encryption: {
 					key: exportedKey,
-					iv: bufferToB64(vector)
+					iv: ivBase64
 				},
 				hashes: {
 					sha256: checksum
@@ -542,7 +544,7 @@ export default class EncryptionRoom {
 			name: file.name,
 			encryption: {
 				key: exportedKey,
-				iv
+				iv: ivBase64
 			},
 			hashes: {
 				sha256: checksum
