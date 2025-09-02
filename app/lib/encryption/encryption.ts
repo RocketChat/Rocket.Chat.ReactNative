@@ -10,7 +10,8 @@ import {
 	rsaGenerateKeys,
 	rsaImportKey,
 	rsaExportKey,
-	JWK
+	JWK,
+	calculateFileChecksum
 } from '@rocket.chat/mobile-crypto';
 import { sampleSize } from 'lodash';
 import { decode as base64Decode, encode as base64Encode } from 'js-base64';
@@ -733,7 +734,7 @@ class Encryption {
 	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
 		if (decryptedFile) {
-			const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
+			const checksum = await calculateFileChecksum(decryptedFile);
 			if (checksum !== originalChecksum) {
 				await deleteAsync(decryptedFile);
 				return null;

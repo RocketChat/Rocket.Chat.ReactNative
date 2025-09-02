@@ -38,7 +38,9 @@ import {
 	joinVectorData,
 	splitVectorData,
 	toString,
-	utf8ToBuffer
+	utf8ToBuffer,
+	convertArrayBufferToBase64,
+	convertArrayBufferToHex
 } from './utils';
 import { Encryption } from './index';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
@@ -600,8 +602,12 @@ export default class EncryptionRoom {
 			}
 		}
 
-		const decrypted = await aesDecrypt(cipherText, oldKey || this.roomKey, vector);
-		return EJSON.parse(bufferToUtf8(decrypted));
+		const decrypted = await aesDecrypt(
+			convertArrayBufferToBase64(cipherText),
+			convertArrayBufferToHex(oldKey || this.roomKey),
+			convertArrayBufferToHex(vector)
+		);
+		return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
 	};
 
 	// Decrypt messages
