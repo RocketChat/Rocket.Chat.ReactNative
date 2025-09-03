@@ -223,11 +223,6 @@ onFlowEnd:
 - runFlow: './utils/enter-e2e-key.yaml'
 - extendedWaitUntil:
     visible:
-      id: 'read-receipt-read'
-      index: 0
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
       text: 'm0'
     timeout: 60000
 - extendedWaitUntil:
@@ -269,7 +264,14 @@ onFlowEnd:
     file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.room}
-- runFlow: './utils/enter-e2e-key.yaml'
+- extendedWaitUntil:
+    visible:
+      text: '.*Check back in a few moments.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*The encryption keys for the room need to be updated, another room member needs to be online for this to happen.*'
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-encryption'
@@ -294,6 +296,10 @@ onFlowEnd:
     text: 'Reset'
     index: 0
 - runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room}
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room}'
