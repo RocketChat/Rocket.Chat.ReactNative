@@ -1,6 +1,6 @@
 # Icons
 
-Icons are generated using IcoMoon and react-native-vector-icons https://github.com/oblador/react-native-vector-icons#createiconsetfromicomoonconfig-fontfamily-fontfile
+Icons are generated using IcoMoon and `@expo/vector-icons` https://docs.expo.dev/guides/icons/#createiconsetfromicomoon
 
 # Typescript
 
