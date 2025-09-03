@@ -1,5 +1,5 @@
 appId: chat.rocket.reactnative
-name: Convert Team
+name: E2E Encryption
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
