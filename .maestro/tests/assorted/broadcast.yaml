@@ -155,7 +155,7 @@ onFlowEnd:
     visible:
       text: 'broadcastreply'
     timeout: 60000
-- longPress:
+- longPressOn:
     text: 'message'
 - extendedWaitUntil:
     visible:
