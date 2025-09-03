@@ -135,9 +135,9 @@ onFlowEnd:
 
 # should tap on reply button and navigate to direct room
 - assertVisible:
-    id: 'message-reply-button'
+    id: 'message-broadcast-reply'
 - tapOn:
-    id: 'message-reply-button'
+    id: 'message-broadcast-reply'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.user.username}'
@@ -155,8 +155,14 @@ onFlowEnd:
     visible:
       text: 'broadcastreply'
     timeout: 60000
-- tapOn:
+- longPress:
     text: 'message'
+- extendedWaitUntil:
+    visible:
+      text: 'Jump to message'
+    timeout: 60000
+- tapOn:
+    text: 'Jump to message'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room}'
