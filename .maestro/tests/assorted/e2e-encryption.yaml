@@ -373,6 +373,7 @@ onFlowEnd:
     timeout: 60000
 - tapOn:
     text: 'Edit'
+- eraseText
 - inputText: 'm6'
 - tapOn:
     id: 'message-composer-send'
