@@ -35,7 +35,7 @@
 		"@bugsnag/react-native": "8.4.0",
 		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
 		"@hookform/resolvers": "^2.9.10",
-		"@legendapp/list": "^2.0.0-beta.3",
+		"@legendapp/list": "^2.0.0-beta.7",
 		"@notifee/react-native": "7.8.2",
 		"@nozbe/watermelondb": "^0.28.0",
 		"@react-native-async-storage/async-storage": "^1.22.3",

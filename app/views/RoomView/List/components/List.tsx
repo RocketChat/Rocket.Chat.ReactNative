@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { LegendList } from '@legendapp/list';
 
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
 
 export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const { data } = props;
-	const initialScrollIndex = (data?.length || 0) - 1;
 	const showScrollToBottomButton = (data?.length || 0) > 5;
 
 	const { isAutocompleteVisible } = useRoomContext();
@@ -30,6 +29,10 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			setVisible(true);
 		}
 	};
+
+	useEffect(() => {
+		listRef?.current?.scrollToEnd();
+	}, [props.data?.length]);
 
 	return (
 		<View style={styles.list}>
@@ -44,7 +47,6 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				onScroll={checkIfAtEnd}
 				keyExtractor={item => item?.id}
 				maintainScrollAtEndThreshold={0.1}
-				initialScrollIndex={initialScrollIndex}
 				maintainScrollAtEnd
 				maintainVisibleContentPosition
 				waitForInitialLayout
