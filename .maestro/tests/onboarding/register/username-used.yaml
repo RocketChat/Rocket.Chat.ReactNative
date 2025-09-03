@@ -1,13 +1,12 @@
 appId: chat.rocket.reactnative
-name: Create Account
-jsEngine: graaljs
+name: Create Account (Username Already Used)
 onFlowStart:
-  - runFlow: '../../helpers/setup.yaml'
-  - evalScript: ${output.user = output.randomUser()}
+  - runFlow: '../../../helpers/setup.yaml'
+  - evalScript: ${output.user = output.utils.createUser()}
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/navigate-to-register.yaml
+- runFlow: ../../../helpers/launch-app.yaml
+- runFlow: ../../../helpers/navigate-to-register.yaml
 - tapOn:
     id: register-view-name
 - inputText: ${output.user.name}
@@ -18,7 +17,7 @@ onFlowStart:
 - pressKey: enter
 - tapOn:
     id: register-view-email
-- inputText: ${output.user.email}
+- inputText: ${'new'+output.user.email}
 - pressKey: enter
 - tapOn:
     id: register-view-password
@@ -27,14 +26,11 @@ onFlowStart:
 - tapOn:
     id: register-view-confirm-password
 - inputText: ${output.user.password}
-- hideKeyboard
+# on ios it will hide keyboard
+- tapOn: 'Password (Required)'
 - scrollUntilVisible:
     element:
       id: register-view-submit
-    centerElement: true
 - tapOn:
     id: register-view-submit
-- extendedWaitUntil:
-    visible:
-      id: rooms-list-view
-    timeout: 60000
+- assertVisible: .*Username is already in use.*

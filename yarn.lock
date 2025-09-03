@@ -2287,7 +2287,7 @@
   resolved "https://registry.yarnpkg.com/@bugsnag/plugin-react/-/plugin-react-8.4.0.tgz#1a6cf495f7177379f88e7efce0a4028b314ee3cf"
   integrity sha512-a+x3SmVE6VQ7a1jsEEU4q68L35rFy9OiDbWHAnZDZRcGXJzhA3ZU2XtB6ep5RCglwfPG0wLmq2dTjQBolSVi+g==
 
-"@bugsnag/react-native@^8.4.0":
+"@bugsnag/react-native@8.4.0":
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/@bugsnag/react-native/-/react-native-8.4.0.tgz#6734082993209b68c56e398aaa9ce64e62637256"
   integrity sha512-kYTBDqRC8nMzg/54govZiDqh4uIMDW7e9iUxnMbVR91oES5NKS4NM161/ecJIh7UaUdzWf+MzDsZTJPEE5x9Xw==
@@ -3667,10 +3667,10 @@
   resolved "https://registry.yarnpkg.com/@nozbe/sqlite/-/sqlite-3.46.0.tgz#aeda9df305e2f49ef951409e44544c19a5a3e32d"
   integrity sha512-ntt8eNp5hh+axX9+kFb5uwyVE0edyfhiYYr+zHDzzFleGC7Qm+a2wHDWDtmRr5nSfbgomhY1uh30kpsHEIR3Mw==
 
-"@nozbe/watermelondb@^0.28.0-2":
-  version "0.28.0-2"
-  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.28.0-2.tgz#4a1e6e9416aa3d459a7cf80c54cdc10699182ccd"
-  integrity sha512-0BnbTpcy6n44sHnNZrgdrGQCpAgD8h/8BCi6/Sx1QkZiYp0+6bHppuBmUuGFcvJnYj3Xvnx2/5gbWh23oKUeJg==
+"@nozbe/watermelondb@^0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.28.0.tgz#6130ac9017f9019966f892919ada79234c306c70"
+  integrity sha512-40ttcqPOLCTGnbfCQAXSEo8J4KlH/QQhwTfTb9E21CyX/driMEZueiJSI2rSkHICZrI2vnu52aRubNbI3UAzQQ==
   dependencies:
     "@babel/runtime" "7.26.0"
     "@nozbe/simdjson" "3.9.4"
@@ -12776,12 +12776,20 @@ react-native-vector-icons@9.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-webview@11.26.1, react-native-webview@^11.18.2:
+react-native-webview@^11.18.2:
   version "11.26.1"
   resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.26.1.tgz#658c09ed5162dc170b361e48c2dd26c9712879da"
   integrity sha512-hC7BkxOpf+z0UKhxFSFTPAM4shQzYmZHoELa6/8a/MspcjEP7ukYKpuSUTLDywQditT8yI9idfcKvfZDKQExGw==
   dependencies:
     escape-string-regexp "2.0.0"
+    invariant "2.2.4"
+
+react-native-webview@^13.15.0:
+  version "13.15.0"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-13.15.0.tgz#b6d2f8d8dd65897db76659ddd8198d2c74ec5a79"
+  integrity sha512-Vzjgy8mmxa/JO6l5KZrsTC7YemSdq+qB01diA0FqjUTaWGAGwuykpJ73MDj3+mzBSlaDxAEugHzTtkUQkQEQeQ==
+  dependencies:
+    escape-string-regexp "^4.0.0"
     invariant "2.2.4"
 
 react-native@*:

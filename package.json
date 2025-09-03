@@ -32,12 +32,12 @@
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
 	},
 	"dependencies": {
-		"@bugsnag/react-native": "^8.4.0",
+		"@bugsnag/react-native": "8.4.0",
 		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
 		"@hookform/resolvers": "^2.9.10",
 		"@legendapp/list": "^2.0.0-beta.3",
 		"@notifee/react-native": "7.8.2",
-		"@nozbe/watermelondb": "^0.28.0-2",
+		"@nozbe/watermelondb": "^0.28.0",
 		"@react-native-async-storage/async-storage": "^1.22.3",
 		"@react-native-camera-roll/camera-roll": "^7.10.0",
 		"@react-native-clipboard/clipboard": "^1.13.2",
@@ -130,7 +130,7 @@
 		"react-native-svg": "^15.12.1",
 		"react-native-url-polyfill": "2.0.0",
 		"react-native-vector-icons": "9.2.0",
-		"react-native-webview": "11.26.1",
+		"react-native-webview": "^13.15.0",
 		"react-redux": "8.0.5",
 		"reanimated-tab-view": "^0.3.0",
 		"redux": "4.2.0",
