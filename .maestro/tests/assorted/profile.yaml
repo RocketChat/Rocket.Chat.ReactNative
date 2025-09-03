@@ -77,14 +77,14 @@ onFlowEnd:
 - tapOn:
     id: 'profile-view-name'
 - eraseText
-- inputText: '${output.user.name}new'
+- inputText: ${output.user.name + 'new'}
 - pressKey: enter
 - assertVisible:
     id: 'profile-view-username'
 - tapOn:
     id: 'profile-view-username'
 - eraseText
-- inputText: '${output.user.username}new'
+- inputText: ${output.user.username + 'new'}
 - pressKey: enter
 - scrollUntilVisible:
     visible:
@@ -99,14 +99,14 @@ onFlowEnd:
 - tapOn:
     id: 'profile-view-nickname'
 - eraseText
-- inputText: '${output.user.nickname}new'
+- inputText: ${output.user.nickname + 'new'}
 - pressKey: enter
 - assertVisible:
     id: 'profile-view-bio'
 - tapOn:
     id: 'profile-view-bio'
 - eraseText
-- inputText: '${output.user.bio}new'
+- inputText: ${output.user.bio + 'new'}
 - pressKey: enter
 - scrollUntilVisible:
     visible:
@@ -123,7 +123,7 @@ onFlowEnd:
 - tapOn:
     id: 'profile-view-email'
 - eraseText
-- inputText: 'mobile+profileChangesNew${output.random()}@rocket.chat'
+- inputText: mobile+profileChangesNew${output.random()}@rocket.chat
 - pressKey: enter
 - scrollUntilVisible:
     visible:
