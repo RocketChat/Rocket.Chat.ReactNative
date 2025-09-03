@@ -52,7 +52,6 @@ import {
 	splitVectorData,
 	utf8ToBuffer,
 	bufferToB64,
-	b64ToHex,
 	bufferToHex,
 	bufferToUtf8,
 	b64ToBuffer
@@ -216,11 +215,10 @@ class Encryption {
 		const keyBase64 = await this.generateMasterKey(password, userId);
 
 		const ivArrayBuffer = b64ToBuffer(await randomBytes(16));
-		const keyHex = b64ToHex(keyBase64);
+		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
 		const ivHex = bufferToHex(ivArrayBuffer);
 
 		const data = b64ToBuffer(await aesEncrypt(bufferToB64(utf8ToBuffer(privateKey)), keyHex, ivHex));
-
 		return EJSON.stringify(new Uint8Array(joinVectorData(ivArrayBuffer, data)));
 	};
 
@@ -228,18 +226,12 @@ class Encryption {
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
 		const keyBase64 = await this.generateMasterKey(password, userId);
 
-		// Split IV and cipher text (equivalent to splitVectorData)
-		const [ivArrayBuffer, cipherTextArrayBuffer] = splitVectorData(EJSON.parse(privateKey));
-
-		// Convert to hex format for AES
-		const cipherTextBase64 = bufferToB64(cipherTextArrayBuffer);
-		const keyHex = b64ToHex(keyBase64);
+		const [ivArrayBuffer, dataBuffer] = splitVectorData(EJSON.parse(privateKey));
+		const dataBase64 = bufferToB64(dataBuffer);
+		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
 		const ivHex = bufferToHex(ivArrayBuffer);
 
-		// Decrypt the private key
-		const privKeyBase64 = await aesDecrypt(cipherTextBase64, keyHex, ivHex);
-
-		// Convert back from base64 (equivalent to toString)
+		const privKeyBase64 = await aesDecrypt(dataBase64, keyHex, ivHex);
 		return bufferToUtf8(b64ToBuffer(privKeyBase64));
 	};
 

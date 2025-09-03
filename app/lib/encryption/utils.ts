@@ -1,6 +1,5 @@
 import ByteBuffer from 'bytebuffer';
 import { aesDecryptFile, aesEncryptFile, getRandomValues, randomBytes } from '@rocket.chat/mobile-crypto';
-import { decode as base64Decode } from 'js-base64';
 
 import { compareServerVersion } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
@@ -11,26 +10,6 @@ import { store } from '../store/auxStore';
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
 export const bufferToHex = hexLite.fromBuffer;
-
-export const b64ToHex = (base64: string): string => {
-	// Ensure the base64 string has proper padding
-	let paddedBase64 = base64;
-	while (paddedBase64.length % 4 !== 0) {
-		paddedBase64 += '=';
-	}
-
-	const binaryString = base64Decode(paddedBase64);
-	const bytes = new Uint8Array(binaryString.length);
-	for (let i = 0; i < binaryString.length; i++) {
-		bytes[i] = binaryString.charCodeAt(i);
-	}
-
-	const hex = Array.from(bytes)
-		.map(byte => byte.toString(16).padStart(2, '0'))
-		.join('');
-
-	return hex;
-};
 
 // @ts-ignore
 export const b64ToBuffer = (base64: string): ArrayBuffer => toByteArray(base64).buffer;
