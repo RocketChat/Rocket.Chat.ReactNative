@@ -67,8 +67,9 @@ onFlowEnd:
 
 # should have submit button
 - scrollUntilVisible:
-    visible:
-      id: 'profile-view-submit'
+    element:
+        visible:
+        id: 'profile-view-submit'
     timeout: 60000
 
 # should change name and username
@@ -87,7 +88,7 @@ onFlowEnd:
 - inputText: ${output.user.username + 'new'}
 - pressKey: enter
 - scrollUntilVisible:
-    visible:
+    element:
       id: 'profile-view-submit'
     timeout: 60000
 - tapOn:
@@ -109,7 +110,7 @@ onFlowEnd:
 - inputText: ${output.user.bio + 'new'}
 - pressKey: enter
 - scrollUntilVisible:
-    visible:
+    element:
       id: 'profile-view-submit'
     timeout: 60000
 - tapOn:
@@ -117,7 +118,7 @@ onFlowEnd:
 
 # should change email
 - scrollUntilVisible:
-    visible:
+    element:
       id: 'profile-view-email'
     timeout: 60000
 - tapOn:
@@ -126,7 +127,7 @@ onFlowEnd:
 - inputText: mobile+profileChangesNew${output.random()}@rocket.chat
 - pressKey: enter
 - scrollUntilVisible:
-    visible:
+    element:
       id: 'profile-view-submit'
     timeout: 60000
 - tapOn:
@@ -148,7 +149,7 @@ onFlowEnd:
 
 # should change password
 - scrollUntilVisible:
-    visible:
+    element:
       id: 'profile-view-change-my-password-button'
     timeout: 60000
 - assertVisible:
@@ -170,12 +171,12 @@ onFlowEnd:
 - inputText: ${output.user.password + 'new'}
 - pressKey: enter
 - scrollUntilVisible:
-    visible:
+    element:
       id: 'change-password-view-set-new-password-button'
     timeout: 60000
 - tapOn:
     id: 'change-password-view-set-new-password-button'
 - extendedWaitUntil:
-    visible:
+    element:
       id: 'profile-view'
     timeout: 60000
