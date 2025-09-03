@@ -1,0 +1,27 @@
+appId: chat.rocket.reactnative
+name: Enter E2EE Key
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible: '.*is encrypted.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible: '.*Enter your end-to-end encryption password to access.*'
+    timeout: 60000
+- tapOn:
+    text: 'Enter E2EE password'
+- extendedWaitUntil:
+    visible:
+      id: 'e2e-enter-your-password-view-password'
+    timeout: 60000
+- tapOn:
+    id: 'e2e-enter-your-password-view-password'
+- inputText: 'abc'
+- tapOn:
+    text: 'Confirm'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-messages'
+    timeout: 60000

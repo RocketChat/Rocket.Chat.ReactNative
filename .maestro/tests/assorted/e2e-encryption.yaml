@@ -32,6 +32,7 @@ onFlowEnd:
 
 # Create room as UserA and send a message
 # should create encrypted room
+- launchApp
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
@@ -67,13 +68,17 @@ onFlowEnd:
     id: 'selected-users-view-submit'
 - extendedWaitUntil:
     visible:
-      id: 'create-channel-view'
+      id: 'create-channel-name'
     timeout: 60000
 - tapOn:
-    id: 'create-channel-view'
+    id: 'create-channel-name'
 - inputText: ${output.room}
-- pressKey: enter
-- longPressOn:
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-encrypted'
+    timeout: 60000
+- tapOn:
     id: 'create-channel-encrypted'
 - tapOn:
     id: 'create-channel-submit'
@@ -83,6 +88,10 @@ onFlowEnd:
     timeout: 60000
 
 # should send message and be able to read it
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-input'
+    timeout: 60000
 - runFlow:
     file: '../../helpers/send-message.yaml'
     env:
@@ -131,4 +140,261 @@ onFlowEnd:
 - extendedWaitUntil:
     visible:
       id: 'reply-${output.userA.username}-${output.mockedMessageTextToQuote}'
+    timeout: 60000
+
+# If session is not encrypted, it shouldnt trigger read messages
+# should login as UserB, dont set e2ee password and dont read messages
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userB.username}
+      PASSWORD: ${output.userB.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-encrypted-room'
+    timeout: 60000
+
+# should login as UserA and check message is not read
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room}
+- runFlow: './utils/enter-e2e-key.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'read-receipt-unread'
+    timeout: 60000
+
+# should login as UserB, set e2ee password and read messages
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userB.username}
+      PASSWORD: ${output.userB.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room}
+- runFlow: './utils/enter-e2e-key.yaml'
+- extendedWaitUntil:
+    visible:
+      text: 'm0'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm1'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm2'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-input'
+    timeout: 60000
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'm3'
+
+# should login as UserA and check message is read
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room}
+- runFlow: './utils/enter-e2e-key.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'read-receipt-read'
+      index: 0
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm0'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm1'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm2'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm3'
+    timeout: 60000
+
+# Login as UserA, reset user e2ee key, reset room E2EE key and send a message
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
+
+# should reset user E2EE key, login again and recreate keys
+- runFlow: './utils/navigate-to-e2ee-security.yaml'
+- runFlow: './utils/reset-e2ee-key.yaml'
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
+- runFlow: './utils/navigate-to-e2ee-security.yaml'
+- runFlow: './utils/change-e2ee-key.yaml'
+
+# should reset room E2EE key
+- launchApp
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room}
+- runFlow: './utils/enter-e2e-key.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-encryption'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-header-encryption'
+- extendedWaitUntil:
+    visible:
+      id: 'e2ee-toggle-room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'e2ee-toggle-room-reset-key'
+    timeout: 60000
+- tapOn:
+    id: 'e2ee-toggle-room-reset-key'
+- extendedWaitUntil:
+    visible:
+      text: '.*Reset encryption key.*'
+    timeout: 60000
+- tapOn:
+    text: 'Reset'
+    index: 0
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room}'
+    timeout: 60000
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'm4'
+
+# Login as UserB, accept new room key, send a message and read everything
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.userB.username}
+      PASSWORD: ${output.userB.password}
+
+# should send message and be able to read it
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room}
+- runFlow: './utils/enter-e2e-key.yaml'
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'm5'
+- extendedWaitUntil:
+    visible:
+      text: 'm0'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm1'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm2'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm3'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm4'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm5'
+    timeout: 60000
+
+# should send a message, edit it and be able to read it
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'm99'
+- extendedWaitUntil:
+    visible:
+      text: 'm99'
+    timeout: 60000
+- longPressOn:
+    text: 'm99'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Edit'
+    timeout: 60000
+- tapOn:
+    text: 'Edit'
+- inputText: 'm6'
+- tapOn:
+    id: 'message-composer-send'
+- extendedWaitUntil:
+    visible:
+      text: 'm0'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm1'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm2'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm3'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm4'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm5'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'm6'
     timeout: 60000
