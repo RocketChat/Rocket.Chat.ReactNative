@@ -124,7 +124,7 @@ onFlowEnd:
 # should not have message composer
 - assertNotVisible:
     id: 'message-composer'
-    
+
 # should be read only
 - assertVisible:
     label: 'This room is read only'
