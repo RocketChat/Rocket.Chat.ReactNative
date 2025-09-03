@@ -68,8 +68,7 @@ onFlowEnd:
 # should have submit button
 - scrollUntilVisible:
     element:
-        visible:
-        id: 'profile-view-submit'
+      id: 'profile-view-submit'
     timeout: 60000
 
 # should change name and username
@@ -177,6 +176,6 @@ onFlowEnd:
 - tapOn:
     id: 'change-password-view-set-new-password-button'
 - extendedWaitUntil:
-    element:
+    visible:
       id: 'profile-view'
     timeout: 60000
