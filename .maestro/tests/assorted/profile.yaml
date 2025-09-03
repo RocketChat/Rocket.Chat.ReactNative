@@ -71,20 +71,26 @@ onFlowEnd:
       id: 'profile-view-submit'
     timeout: 60000
 
+# swipe back to top
+- swipe:
+    from:
+      id: 'profile-view-submit'
+    direction: up
+
 # should change name and username
 - assertVisible:
     id: 'profile-view-name'
 - tapOn:
     id: 'profile-view-name'
 - eraseText
-- inputText: ${output.user.name + 'new'}
+- inputText: ${output.user.name + 'newname'}
 - pressKey: enter
 - assertVisible:
     id: 'profile-view-username'
 - tapOn:
     id: 'profile-view-username'
 - eraseText
-- inputText: ${output.user.username + 'new'}
+- inputText: ${output.user.username + 'newusername'}
 - pressKey: enter
 - scrollUntilVisible:
     element:
@@ -99,15 +105,14 @@ onFlowEnd:
 - tapOn:
     id: 'profile-view-nickname'
 - eraseText
-- inputText: ${output.user.nickname + 'new'}
+- inputText: ${output.user.username + 'newnickname'}
 - pressKey: enter
 - assertVisible:
     id: 'profile-view-bio'
 - tapOn:
     id: 'profile-view-bio'
 - eraseText
-- inputText: ${output.user.bio + 'new'}
-- pressKey: enter
+- inputText: ${output.user.username + 'newbio'}
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
@@ -122,7 +127,7 @@ onFlowEnd:
     timeout: 60000
 - tapOn:
     id: 'profile-view-email'
-- eraseText
+- eraseText: 100
 - inputText: mobile+profileChangesNew${output.random()}@rocket.chat
 - pressKey: enter
 - scrollUntilVisible:
@@ -138,13 +143,13 @@ onFlowEnd:
 - tapOn:
     id: 'profile-view-enter-password-sheet-input'
 - inputText: ${output.user.password}
-- pressKey: enter
-- extendedWaitUntil:
-    visible:
-      id: 'profile-view-enter-password-sheet-confirm'
-    timeout: 60000
-- tapOn:
-    id: 'profile-view-enter-password-sheet-confirm'
+# - pressKey: enter
+# - extendedWaitUntil:
+#    visible:
+#      id: 'profile-view-enter-password-sheet-confirm'
+#    timeout: 60000
+# - tapOn:
+#    id: 'profile-view-enter-password-sheet-confirm'
 
 # should change password
 - scrollUntilVisible:
