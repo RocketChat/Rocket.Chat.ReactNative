@@ -1,0 +1,18 @@
+appId: chat.rocket.reactnative
+name: Broadcast
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- evalScript: ${output.room = 'broadcast' + output.random()}
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+
+- runFlow: ../../helpers/launch-app.yaml
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
