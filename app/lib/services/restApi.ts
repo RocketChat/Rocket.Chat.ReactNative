@@ -937,12 +937,12 @@ export const emitTyping = (room: IRoom, typing = true) => {
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
 
-export function e2eResetOwnKey(): Promise<boolean | {}> {
+export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
 	// {} when TOTP is enabled
 	unsubscribeRooms();
 
 	// RC 0.72.0
-	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
+	return sdk.post('users.resetE2EKey');
 }
 
 export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {

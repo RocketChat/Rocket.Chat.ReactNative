@@ -1,4 +1,4 @@
-import { Rocketchat } from '@rocket.chat/sdk';
+import { Rocketchat, settings } from '@rocket.chat/sdk';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
@@ -69,7 +69,6 @@ class Sdk {
 			const isMethodCall = endpoint?.startsWith('method.call/');
 			try {
 				const result = await this.current.post(endpoint, params);
-
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
 				 * responses have a different object structure

@@ -57,7 +57,7 @@ const E2EEncryptionSecurityView = () => {
 					 * It might return an empty object when TOTP is enabled,
 					 * that's why we're using strict equality to boolean
 					 */
-					if (res === true) {
+					if (res?.success === true) {
 						dispatch(logout());
 					}
 				} catch (e) {
