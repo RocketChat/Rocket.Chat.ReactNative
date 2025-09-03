@@ -71,6 +71,11 @@ onFlowEnd:
       id: 'profile-view-submit'
     timeout: 60000
 
+# submit button should be disabled because of no changes
+- assertVisible:
+    id: 'profile-view-submit'
+    enabled: false
+
 # swipe back to top
 - swipe:
     from:
@@ -82,15 +87,15 @@ onFlowEnd:
     id: 'profile-view-name'
 - tapOn:
     id: 'profile-view-name'
-- eraseText
+- eraseText: 100
 - inputText: ${output.user.name + 'newname'}
 - pressKey: enter
 - assertVisible:
     id: 'profile-view-username'
 - tapOn:
     id: 'profile-view-username'
-- eraseText
-- inputText: ${output.user.username + 'newusername'}
+- eraseText: 100
+- inputText: ${output.user.username + 'username'}
 - pressKey: enter
 - scrollUntilVisible:
     element:
@@ -143,21 +148,23 @@ onFlowEnd:
 - tapOn:
     id: 'profile-view-enter-password-sheet-input'
 - inputText: ${output.user.password}
-# - pressKey: enter
-# - extendedWaitUntil:
-#    visible:
-#      id: 'profile-view-enter-password-sheet-confirm'
-#    timeout: 60000
-# - tapOn:
-#    id: 'profile-view-enter-password-sheet-confirm'
+- pressKey: enter
+- extendedWaitUntil:
+    notVisible:
+      id: 'profile-view-enter-password-sheet-input'
+    timeout: 60000
 
 # should change password
 - scrollUntilVisible:
     element:
       id: 'profile-view-change-my-password-button'
     timeout: 60000
-- assertVisible:
-    id: 'change-password-view-current-password'
+- tapOn:
+    id: 'profile-view-change-my-password-button'
+- extendedWaitUntil:
+    visible:
+      id: 'change-password-view-current-password'
+    timeout: 60000
 - tapOn:
     id: 'change-password-view-current-password'
 - inputText: ${output.user.password}
@@ -167,13 +174,13 @@ onFlowEnd:
 - tapOn:
     id: 'change-password-view-new-password'
 - inputText: ${output.user.password + 'new'}
-- pressKey: enter
+- hideKeyboard
 - assertVisible:
     id: 'change-password-view-confirm-new-password'
 - tapOn:
     id: 'change-password-view-confirm-new-password'
 - inputText: ${output.user.password + 'new'}
-- pressKey: enter
+- hideKeyboard
 - scrollUntilVisible:
     element:
       id: 'change-password-view-set-new-password-button'
@@ -183,4 +190,43 @@ onFlowEnd:
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
+    timeout: 60000
+
+# should show validation error when name is empty
+- assertVisible:
+    id: 'profile-view-name'
+- tapOn:
+    id: 'profile-view-name'
+- eraseText: 100
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      text: '.*Name required.*'
+    timeout: 60000
+
+# should show validation error when username is empty
+- assertVisible:
+    id: 'profile-view-username'
+- tapOn:
+    id: 'profile-view-username'
+- eraseText: 100
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      text: '.*Username required.*'
+    timeout: 60000
+
+# should show validation error when email is wrong
+- assertVisible:
+    id: 'profile-view-email'
+- tapOn:
+    id: 'profile-view-email'
+- eraseText: 100
+- tapOn:
+    id: 'profile-view-email'
+- eraseText: 100
+- inputText: wrongemail
+- extendedWaitUntil:
+    visible:
+      text: '.*Email must be a valid email.*'
     timeout: 60000
