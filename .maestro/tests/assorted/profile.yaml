@@ -72,7 +72,8 @@ onFlowEnd:
     timeout: 60000
 
 # should change name and username
-
+- assertVisible:
+    id: 'profile-view-name'
 - tapOn:
     id: 'profile-view-name'
 - eraseText
