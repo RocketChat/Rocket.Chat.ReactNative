@@ -230,4 +230,3 @@ onFlowEnd:
     visible:
       text: '.*Email must be a valid email.*'
     timeout: 60000
- 
