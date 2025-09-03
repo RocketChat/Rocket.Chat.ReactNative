@@ -1,4 +1,4 @@
-import { Rocketchat, settings } from '@rocket.chat/sdk';
+import { Rocketchat } from '@rocket.chat/sdk';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
