@@ -1,5 +1,5 @@
 import { SORT_PREFERENCES } from '../actions/actionsTypes';
-import { DisplayMode, SortBy } from '../lib/constants';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 import { IPreferences, TApplicationActions } from '../definitions';
 
 export const initialState: IPreferences = {

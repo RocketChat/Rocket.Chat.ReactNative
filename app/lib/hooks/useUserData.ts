@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { getRoomAvatar, getUidDirectMessage } from '../methods/helpers';
+import { getRoomAvatar, getUidDirectMessage } from '../methods/helpers/helpers';
 import { SubscriptionType } from '../../definitions';
-import { Services } from '../services';
+import { getUserInfo } from '../services/restApi';
 import { useAppSelector } from './useAppSelector';
 
 const useUserData = (rid: string) => {
@@ -27,7 +27,7 @@ const useUserData = (rid: string) => {
 				});
 			} else {
 				try {
-					const result = await Services.getUserInfo(rid);
+					const result = await getUserInfo(rid);
 					if (result.success) {
 						const { user } = result;
 						const username = useRealName && user.name ? user.name : user.username;
