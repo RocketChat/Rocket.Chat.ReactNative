@@ -47,6 +47,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
+import remove2FAHeaders from '../lib/helpers/remove2FAHeaders';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
@@ -113,6 +114,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 				}
 			});
 			yield put(loginSuccess(result));
+
 			if (registerCustomFields) {
 				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
 				yield put(setUser({ ...result, ...updatedUser.user }));
@@ -222,6 +224,8 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
+
+		remove2FAHeaders();
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
