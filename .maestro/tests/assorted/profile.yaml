@@ -2,7 +2,7 @@ appId: chat.rocket.reactnative
 name: Profile
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
+onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
@@ -78,7 +78,7 @@ onFlowEnd:
 - swipe:
     from:
       id: 'profile-view-submit'
-    direction: up
+    direction: UP
 
 # should change name and username
 - assertVisible:
@@ -88,7 +88,6 @@ onFlowEnd:
     env:
       id: 'profile-view-name'
 - inputText: ${output.user.name + 'newname'}
-- pressKey: enter
 - assertVisible:
     id: 'profile-view-username'
 - runFlow:
@@ -96,7 +95,7 @@ onFlowEnd:
     env:
       id: 'profile-view-username'
 - inputText: ${output.user.username + 'username'}
-- pressKey: enter
+- tapOn: '.*Username.*' #hidekeyboard on iOS
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
@@ -107,19 +106,20 @@ onFlowEnd:
 # should change nickname and bio
 - assertVisible:
     id: 'profile-view-nickname'
-- runFlow:
-    file: '../../helpers/erase-text.yaml'
-    env:
-      id: 'profile-view-nickname'
+- tapOn:
+    id: 'profile-view-nickname'
 - inputText: ${output.user.username + 'newnickname'}
-- pressKey: enter
+- tapOn:
+    text: '.*Nickname.*'
+    index: 0
 - assertVisible:
     id: 'profile-view-bio'
-- runFlow:
-    file: '../../helpers/erase-text.yaml'
-    env:
-      id: 'profile-view-bio'
+- tapOn:
+    id: 'profile-view-bio'
 - inputText: ${output.user.username + 'newbio'}
+- tapOn:
+    text: '.*Bio.*'
+    index: 0
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
@@ -133,11 +133,19 @@ onFlowEnd:
       id: 'profile-view-email'
     timeout: 60000
 - runFlow:
+    when:
+      platform: ios
+    commands:
+      - longPressOn:
+          id: 'profile-view-email'
+- runFlow:
     file: '../../helpers/erase-text.yaml'
     env:
       id: 'profile-view-email'
 - inputText: mobile+profileChangesNew${output.random()}@rocket.chat
-- pressKey: enter
+- tapOn:
+    text: '.*Email.*'
+    index: 0
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
@@ -151,7 +159,8 @@ onFlowEnd:
 - tapOn:
     id: 'profile-view-enter-password-sheet-input'
 - inputText: ${output.user.password}
-- pressKey: enter
+- tapOn:
+    text: 'Save'
 - extendedWaitUntil:
     notVisible:
       id: 'profile-view-enter-password-sheet-input'
@@ -171,25 +180,29 @@ onFlowEnd:
 - tapOn:
     id: 'change-password-view-current-password'
 - inputText: ${output.user.password}
-- pressKey: enter
 - assertVisible:
     id: 'change-password-view-new-password'
 - tapOn:
     id: 'change-password-view-new-password'
 - inputText: ${output.user.password + 'new'}
-- hideKeyboard
 - assertVisible:
     id: 'change-password-view-confirm-new-password'
 - tapOn:
     id: 'change-password-view-confirm-new-password'
 - inputText: ${output.user.password + 'new'}
-- hideKeyboard
 - scrollUntilVisible:
     element:
       id: 'change-password-view-set-new-password-button'
     timeout: 60000
 - tapOn:
     id: 'change-password-view-set-new-password-button'
+- runFlow:
+    when:
+      visible:
+        text: 'Ok'
+    commands:
+      - tapOn: 'Ok'
+      - tapOn: 'Cancel'
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
@@ -202,7 +215,8 @@ onFlowEnd:
     file: '../../helpers/erase-text.yaml'
     env:
       id: 'profile-view-name'
-- pressKey: enter
+- tapOn:
+    id: 'profile-view'
 - extendedWaitUntil:
     visible:
       text: '.*Name required.*'
@@ -215,7 +229,8 @@ onFlowEnd:
     file: '../../helpers/erase-text.yaml'
     env:
       id: 'profile-view-username'
-- pressKey: enter
+- tapOn:
+    id: 'profile-view'
 - extendedWaitUntil:
     visible:
       text: '.*Username required.*'
