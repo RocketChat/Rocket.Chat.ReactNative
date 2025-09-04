@@ -114,7 +114,6 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 				}
 			});
 			yield put(loginSuccess(result));
-
 			if (registerCustomFields) {
 				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
 				yield put(setUser({ ...result, ...updatedUser.user }));
