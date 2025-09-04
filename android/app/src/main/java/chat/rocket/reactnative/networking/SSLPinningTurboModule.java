@@ -1,7 +1,7 @@
 package chat.rocket.reactnative.networking;
 
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.modules.network.NetworkingModule;
 import com.facebook.react.modules.network.CustomClientBuilder;
 import com.facebook.react.modules.network.ReactCookieJarContainer;
@@ -9,8 +9,6 @@ import com.facebook.react.modules.websocket.WebSocketModule;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
-import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Promise;
 
 import java.net.Socket;
 import java.security.KeyStore;
@@ -38,13 +36,13 @@ import com.reactnativecommunity.webview.RNCWebViewManager;
 import expo.modules.filesystem.FileSystemModule;
 import chat.rocket.reactnative.networking.ExpoImageClient;
 
-public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
+public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyChainAliasCallback {
 
     private Promise promise;
     private static String alias;
     private static ReactApplicationContext reactContext;
 
-    public SSLPinningModule(ReactApplicationContext reactContext) {
+    public SSLPinningTurboModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
     }
@@ -82,19 +80,20 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
 
     @Override
     public String getName() {
-        return "SSLPinning";
+        return NativeSSLPinningSpec.NAME;
     }
 
     @Override
     public void alias(String alias) {
         this.alias = alias;
-
         this.promise.resolve(alias);
     }
 
-    @ReactMethod
-    public void setCertificate(String data, Promise promise) {
-        this.alias = data;
+    @Override
+    public void setCertificate(String server, Promise promise) {
+        // For Android, we use the server parameter as the certificate alias
+        // The path and password parameters are not used in Android implementation
+        this.alias = server;
         OkHttpClient client = getOkHttpClient();
 
         // HTTP Fetch react-native layer
@@ -107,7 +106,7 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
             .build();
         Fresco.initialize(this.reactContext, config);
         // RNCWebView
-        RNCWebViewManager.setCertificateAlias(data);
+        RNCWebViewManager.setCertificateAlias(server);
 
         // Expo File System network layer
         FileSystemModule.setOkHttpClient(client);
@@ -118,9 +117,9 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         promise.resolve(null);
     }
 
-    @ReactMethod
+    @Override
     public void pickCertificate(Promise promise) {
-        Activity activity = getCurrentActivity();
+        Activity activity = getReactApplicationContext().getCurrentActivity();
 
         this.promise = promise;
 
