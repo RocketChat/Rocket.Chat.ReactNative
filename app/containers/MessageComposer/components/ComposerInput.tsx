@@ -196,6 +196,10 @@ export const ComposerInput = memo(
 			setFocused(true);
 		};
 
+		const onTouchStart: TextInputProps['onTouchStart'] = () => {
+			setFocused(true);
+		};
+
 		const onBlur: TextInputProps['onBlur'] = () => {
 			setFocused(false);
 			stopAutocomplete();
@@ -355,6 +359,7 @@ export const ComposerInput = memo(
 				}}
 				blurOnSubmit={false}
 				onChangeText={onChangeText}
+				onTouchStart={onTouchStart}
 				onSelectionChange={onSelectionChange}
 				onFocus={onFocus}
 				onBlur={onBlur}
