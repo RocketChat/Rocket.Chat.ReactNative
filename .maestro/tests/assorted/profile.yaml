@@ -6,9 +6,7 @@ onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
-- evalScript: ${output.room = 'broadcast' + output.random()}
 - evalScript: ${output.user = output.utils.createUser()}
-- evalScript: ${output.otherUser = output.utils.createUser()}
 
 - runFlow: ../../helpers/launch-app.yaml
 - runFlow:
