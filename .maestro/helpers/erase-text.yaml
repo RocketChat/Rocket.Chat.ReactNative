@@ -6,9 +6,10 @@ tags:
 ---
 - longPressOn:
     id: ${id}
-- extendedWaitUntil:
-    visible:
-      text: 'Select All'
-    timeout: 60000
-- tapOn: Select All
-- eraseText: 1
+- runFlow:
+    when:
+      visible:
+        text: 'Select All'
+    commands:
+      - tapOn: Select All
+      - eraseText: 1
