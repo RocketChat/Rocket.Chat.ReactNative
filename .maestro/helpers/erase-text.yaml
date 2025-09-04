@@ -6,7 +6,7 @@ tags:
 ---
 - longPressOn:
     id: ${id}
-- extendWaitUntil:
+- extendedWaitUntil:
     visible:
       text: 'Select All'
     timeout: 60000
