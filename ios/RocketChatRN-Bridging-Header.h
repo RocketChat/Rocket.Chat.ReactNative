@@ -11,3 +11,7 @@
 #import <react-native-notifications/RNNotificationParser.h>
 #import <RNNotifications.h>
 #import <RNBootSplash.h>
+#import <MobileCrypto/RSACrypto.h>
+#import <MobileCrypto/AESCrypto.h>
+#import <MobileCrypto/RandomUtils.h>
+#import <MobileCrypto/CryptoUtils.h>
