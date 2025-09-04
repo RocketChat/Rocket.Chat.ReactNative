@@ -153,10 +153,10 @@ onFlowEnd:
     id: 'message-composer-send'
 - extendedWaitUntil:
     visible:
-      text: 'broadcastreply'
+      text: '.*broadcastreply.*'
     timeout: 60000
 - longPressOn:
-    text: 'message'
+    text: '.*message.*'
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
