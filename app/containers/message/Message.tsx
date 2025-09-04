@@ -181,7 +181,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
+		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View style={styles.messageContent}>
