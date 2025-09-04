@@ -105,7 +105,7 @@ const ConfirmEmailChangeActionSheetContent = ({
 				autoComplete='password'
 				testID='profile-view-enter-password-sheet-input'
 				secureTextEntry
-				bottomSheet={isIOS}
+				bottomSheet={true}
 				containerStyle={styles.inputContainer}
 				error={errors.password?.message}
 			/>
