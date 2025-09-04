@@ -156,7 +156,8 @@ onFlowEnd:
       text: '.*broadcastreply.*'
     timeout: 60000
 - longPressOn:
-    text: '.*message.*'
+    text: '.*broadcastreply.*'
+    index: 0
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
