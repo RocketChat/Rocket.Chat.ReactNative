@@ -85,16 +85,18 @@ onFlowEnd:
 # should change name and username
 - assertVisible:
     id: 'profile-view-name'
-- tapOn:
-    id: 'profile-view-name'
-- eraseText: 100
+- runFlow:
+    file: '../../helpers/erase-text.yaml'
+    env:
+      id: 'profile-view-name'
 - inputText: ${output.user.name + 'newname'}
 - pressKey: enter
 - assertVisible:
     id: 'profile-view-username'
-- tapOn:
-    id: 'profile-view-username'
-- eraseText: 100
+- runFlow:
+    file: '../../helpers/erase-text.yaml'
+    env:
+      id: 'profile-view-username'
 - inputText: ${output.user.username + 'username'}
 - pressKey: enter
 - scrollUntilVisible:
@@ -107,16 +109,18 @@ onFlowEnd:
 # should change nickname and bio
 - assertVisible:
     id: 'profile-view-nickname'
-- tapOn:
-    id: 'profile-view-nickname'
-- eraseText
+- runFlow:
+    file: '../../helpers/erase-text.yaml'
+    env:
+      id: 'profile-view-nickname'
 - inputText: ${output.user.username + 'newnickname'}
 - pressKey: enter
 - assertVisible:
     id: 'profile-view-bio'
-- tapOn:
-    id: 'profile-view-bio'
-- eraseText
+- runFlow:
+    file: '../../helpers/erase-text.yaml'
+    env:
+      id: 'profile-view-bio'
 - inputText: ${output.user.username + 'newbio'}
 - scrollUntilVisible:
     element:
@@ -130,9 +134,10 @@ onFlowEnd:
     element:
       id: 'profile-view-email'
     timeout: 60000
-- tapOn:
-    id: 'profile-view-email'
-- eraseText: 100
+- runFlow:
+    file: '../../helpers/erase-text.yaml'
+    env:
+      id: 'profile-view-email'
 - inputText: mobile+profileChangesNew${output.random()}@rocket.chat
 - pressKey: enter
 - scrollUntilVisible:
@@ -195,9 +200,10 @@ onFlowEnd:
 # should show validation error when name is empty
 - assertVisible:
     id: 'profile-view-name'
-- tapOn:
-    id: 'profile-view-name'
-- eraseText: 100
+- runFlow:
+    file: '../../helpers/erase-text.yaml'
+    env:
+      id: 'profile-view-name'
 - pressKey: enter
 - extendedWaitUntil:
     visible:
@@ -207,9 +213,10 @@ onFlowEnd:
 # should show validation error when username is empty
 - assertVisible:
     id: 'profile-view-username'
-- tapOn:
-    id: 'profile-view-username'
-- eraseText: 100
+- runFlow:
+    file: '../../helpers/erase-text.yaml'
+    env:
+      id: 'profile-view-username'
 - pressKey: enter
 - extendedWaitUntil:
     visible:
@@ -219,12 +226,10 @@ onFlowEnd:
 # should show validation error when email is wrong
 - assertVisible:
     id: 'profile-view-email'
-- tapOn:
-    id: 'profile-view-email'
-- eraseText: 100
-- tapOn:
-    id: 'profile-view-email'
-- eraseText: 100
+- runFlow:
+    file: '../../helpers/erase-text.yaml'
+    env:
+      id: 'profile-view-email'
 - inputText: wrongemail
 - extendedWaitUntil:
     visible:
