@@ -1,3 +1,5 @@
+/* eslint-disable */
+// https://github.com/kevlened/hex-lite/blob/9c11ba75e79245e31047f8b7b86236be21dd4dfc/browser.mjs
 export function fromUint8Array(uint8Array) {
 	return uint8Array.reduce((ag, v) => (ag += ('00' + v.toString(16)).slice(-2)), '');
 }
