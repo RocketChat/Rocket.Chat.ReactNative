@@ -37,7 +37,6 @@ $static_framework = [
   'WatermelonDB',
   'simdjson',
   'react-native-mmkv-storage',
-  'react-native-simple-crypto',
   'react-native-notifications'
 ]
 pre_install do |installer|
