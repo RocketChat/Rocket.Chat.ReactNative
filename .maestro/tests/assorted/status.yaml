@@ -66,10 +66,6 @@ onFlowComplete:
     id: 'status-view-submit'
 - extendedWaitUntil:
     visible:
-      id: 'rooms-list-view-sidebar'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
       id: 'sidebar-view'
     timeout: 60000
 - extendedWaitUntil:
