@@ -13,7 +13,9 @@ import { useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
-import { getRoomTitle, isTablet, parseJson } from '../../../lib/methods/helpers';
+import { parseJson } from '../../../lib/methods/helpers/parseJson';
+import { getRoomTitle } from '../../../lib/methods/helpers/helpers';
+import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
 import {
 	MAX_HEIGHT,
 	MIN_HEIGHT,
@@ -26,8 +28,8 @@ import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { getMessageById } from '../../../lib/database/services/Message';
-import { generateTriggerId } from '../../../lib/methods';
-import { Services } from '../../../lib/services';
+import { generateTriggerId } from '../../../lib/methods/actions';
+import { executeCommandPreview } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector, usePrevious } from '../../../lib/hooks';
 import { ChatsStackParamList } from '../../../stacks/types';
@@ -219,7 +221,7 @@ export const ComposerInput = memo(
 					const commandRecord = await commandsCollection.find(item.text);
 					const { appId } = commandRecord;
 					const triggerId = generateTriggerId(appId);
-					Services.executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid);
+					executeCommandPreview(item.text, item.params, rid, item.preview, triggerId, tmid);
 				} catch (e) {
 					log(e);
 				}
