@@ -1,0 +1,78 @@
+diff --git a/node_modules/@rocket.chat/mobile-crypto/android/src/main/java/chat/rocket/mobilecrypto/algorithms/RSACrypto.kt b/node_modules/@rocket.chat/mobile-crypto/android/src/main/java/chat/rocket/mobilecrypto/algorithms/RSACrypto.kt
+index aa08acd..0efc94d 100644
+--- a/node_modules/@rocket.chat/mobile-crypto/android/src/main/java/chat/rocket/mobilecrypto/algorithms/RSACrypto.kt
++++ b/node_modules/@rocket.chat/mobile-crypto/android/src/main/java/chat/rocket/mobilecrypto/algorithms/RSACrypto.kt
+@@ -5,6 +5,8 @@ import com.facebook.react.bridge.Arguments
+ import com.facebook.react.bridge.ReadableMap
+ import com.facebook.react.bridge.WritableMap
+ import com.facebook.react.bridge.WritableNativeMap
++import java.io.ByteArrayInputStream
++import java.io.DataInputStream
+ import java.io.StringReader
+ import java.io.StringWriter
+ import java.math.BigInteger
+@@ -65,14 +67,24 @@ object RSACrypto {
+      * @return Base64-encoded encrypted data
+      */
+     fun encrypt(message: String, publicKeyPem: String): String {
+-        val publicKeyBytes = pemToKey(publicKeyPem)
+-        val keySpec = X509EncodedKeySpec(publicKeyBytes)
++
+         val keyFactory = KeyFactory.getInstance("RSA")
+-        val publicKey = keyFactory.generatePublic(keySpec)
++        val publicKey: PublicKey = if (publicKeyPem.contains("-----BEGIN RSA PUBLIC KEY-----")) {
++            val keyBytes = pemToKey(publicKeyPem)
++            val (modulus, exponent) = parsePkcs1PublicKey(keyBytes)
++            val spec = RSAPublicKeySpec(modulus, exponent)
++            keyFactory.generatePublic(spec)
++        } else {
++            val publicKeyBytes = pemToKey(publicKeyPem)
++            val keySpec = java.security.spec.X509EncodedKeySpec(publicKeyBytes)
++            keyFactory.generatePublic(keySpec)
++        }
++
+ 
+         val cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
+         cipher.init(Cipher.ENCRYPT_MODE, publicKey)
+         val encryptedBytes = cipher.doFinal(CryptoUtils.stringToUtf8Bytes(message))
++
+         return CryptoUtils.encodeBase64NoWrap(encryptedBytes)
+     }
+ 
+@@ -405,6 +417,36 @@ object RSACrypto {
+         return stringWriter.toString()
+     }
+ 
++    private fun parsePkcs1PublicKey(derBytes: ByteArray): Pair<BigInteger, BigInteger> {
++        val input = DataInputStream(ByteArrayInputStream(derBytes))
++
++        fun readLength(): Int {
++            var length = input.readUnsignedByte()
++            if (length and 0x80 != 0) { // long form
++                val n = length and 0x7F
++                length = 0
++                repeat(n) { length = (length shl 8) + input.readUnsignedByte() }
++            }
++            return length
++        }
++
++        fun readInteger(): BigInteger {
++            if (input.readUnsignedByte() != 0x02) throw IllegalArgumentException("Expected INTEGER")
++            val length = readLength()
++            val bytes = ByteArray(length)
++            input.readFully(bytes)
++            return BigInteger(bytes)
++        }
++
++        if (input.readUnsignedByte() != 0x30) throw IllegalArgumentException("Expected SEQUENCE")
++        readLength()
++
++        val modulus = readInteger()
++        val exponent = readInteger()
++        return Pair(modulus, exponent)
++    }
++
++
+     private fun pkcs1ToPublicKey(obj: ASN1Primitive): WritableMap {
+         val keyStruct = org.spongycastle.asn1.pkcs.RSAPublicKey.getInstance(obj)
+ 
