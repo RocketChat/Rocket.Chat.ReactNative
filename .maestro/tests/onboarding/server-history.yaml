@@ -1,15 +1,14 @@
 appId: chat.rocket.reactnative
 name: Server History
-jsEngine: graaljs
 onFlowStart:
-  - runFlow: '../helpers/setup.yaml'
+  - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
-- runFlow: ../helpers/launch-app.yaml
-- runFlow: ../helpers/login.yaml
-- runFlow: ../helpers/logout.yaml
+- runFlow: ../../helpers/launch-app.yaml
+- runFlow: ../../helpers/login.yaml
+- runFlow: ../../helpers/logout.yaml
 
 - assertVisible:
     id: 'servers-history-button'
@@ -27,8 +26,8 @@ onFlowEnd:
 - assertVisible: ${output.createdUser.username}
 
 # we are going back to add workspace from login screen
-- runFlow: ../helpers/go-back.yaml
-- runFlow: ../helpers/go-back.yaml
+- runFlow: ../../helpers/go-back.yaml
+- runFlow: ../../helpers/go-back.yaml
 
 - extendedWaitUntil:
     visible:

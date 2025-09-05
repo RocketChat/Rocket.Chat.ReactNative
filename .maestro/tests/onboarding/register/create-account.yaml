@@ -1,26 +1,30 @@
 appId: chat.rocket.reactnative
 name: Create Account
-jsEngine: graaljs
 onFlowStart:
-  - runFlow: '../../helpers/setup.yaml'
+  - runFlow: '../../../helpers/setup.yaml'
   - evalScript: ${output.user = output.randomUser()}
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/navigate-to-register.yaml
-- tapOn: Full name. Required.
+- runFlow: ../../../helpers/launch-app.yaml
+- runFlow: ../../../helpers/navigate-to-register.yaml
+- tapOn:
+    id: register-view-name
 - inputText: ${output.user.name}
 - pressKey: enter
-- tapOn: Username. Required.
+- tapOn:
+    id: register-view-username
 - inputText: ${output.user.username}
 - pressKey: enter
-- tapOn: Email. Required.
+- tapOn:
+    id: register-view-email
 - inputText: ${output.user.email}
 - pressKey: enter
-- tapOn: Password. Required.
+- tapOn:
+    id: register-view-password
 - inputText: ${output.user.password}
 - pressKey: enter
-- tapOn: Confirm Password. Required.
+- tapOn:
+    id: register-view-confirm-password
 - inputText: ${output.user.password}
 - hideKeyboard
 - scrollUntilVisible:

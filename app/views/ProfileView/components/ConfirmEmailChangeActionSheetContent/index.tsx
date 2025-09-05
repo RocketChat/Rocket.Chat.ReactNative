@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 
 import I18n from '../../../../i18n';
-import { isIOS } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../Styles';
 import Button from '../../../../containers/Button';
@@ -105,7 +104,7 @@ const ConfirmEmailChangeActionSheetContent = ({
 				autoComplete='password'
 				testID='profile-view-enter-password-sheet-input'
 				secureTextEntry
-				bottomSheet={isIOS}
+				bottomSheet={true}
 				containerStyle={styles.inputContainer}
 				error={errors.password?.message}
 			/>

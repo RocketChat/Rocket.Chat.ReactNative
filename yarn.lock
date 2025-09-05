@@ -2008,11 +2008,6 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@babel/runtime@^7.27.6":
-  version "7.28.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.2.tgz#2ae5a9d51cc583bd1f5673b3bb70d6d819682473"
-  integrity sha512-KHp2IflsnGywDjBWDkR9iEqiWSpc8GIi0lgTT3mOElT0PP1tG26P4tmFI2YvAdzgq9RGyoHZQEIEdZy6Ec5xCA==
-
 "@babel/template@^7.0.0":
   version "7.8.6"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.8.6.tgz#86b22af15f828dfb086474f964dcc3e39c43ce2b"
@@ -2287,7 +2282,7 @@
   resolved "https://registry.yarnpkg.com/@bugsnag/plugin-react/-/plugin-react-8.4.0.tgz#1a6cf495f7177379f88e7efce0a4028b314ee3cf"
   integrity sha512-a+x3SmVE6VQ7a1jsEEU4q68L35rFy9OiDbWHAnZDZRcGXJzhA3ZU2XtB6ep5RCglwfPG0wLmq2dTjQBolSVi+g==
 
-"@bugsnag/react-native@^8.4.0":
+"@bugsnag/react-native@8.4.0":
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/@bugsnag/react-native/-/react-native-8.4.0.tgz#6734082993209b68c56e398aaa9ce64e62637256"
   integrity sha512-kYTBDqRC8nMzg/54govZiDqh4uIMDW7e9iUxnMbVR91oES5NKS4NM161/ecJIh7UaUdzWf+MzDsZTJPEE5x9Xw==
@@ -3660,10 +3655,10 @@
   resolved "https://registry.yarnpkg.com/@nozbe/sqlite/-/sqlite-3.46.0.tgz#aeda9df305e2f49ef951409e44544c19a5a3e32d"
   integrity sha512-ntt8eNp5hh+axX9+kFb5uwyVE0edyfhiYYr+zHDzzFleGC7Qm+a2wHDWDtmRr5nSfbgomhY1uh30kpsHEIR3Mw==
 
-"@nozbe/watermelondb@^0.28.0-2":
-  version "0.28.0-2"
-  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.28.0-2.tgz#4a1e6e9416aa3d459a7cf80c54cdc10699182ccd"
-  integrity sha512-0BnbTpcy6n44sHnNZrgdrGQCpAgD8h/8BCi6/Sx1QkZiYp0+6bHppuBmUuGFcvJnYj3Xvnx2/5gbWh23oKUeJg==
+"@nozbe/watermelondb@^0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.28.0.tgz#6130ac9017f9019966f892919ada79234c306c70"
+  integrity sha512-40ttcqPOLCTGnbfCQAXSEo8J4KlH/QQhwTfTb9E21CyX/driMEZueiJSI2rSkHICZrI2vnu52aRubNbI3UAzQQ==
   dependencies:
     "@babel/runtime" "7.26.0"
     "@nozbe/simdjson" "3.9.4"
@@ -4742,6 +4737,10 @@
   integrity sha512-YWHdin2ejndwgQJXlHIzAmQB+xvZLeEOqOkPq8RxdyTjAaGo1DbBCrc0aU7u0LOUnGN+jm3H4grnYdI9SPwitA==
   dependencies:
     tldts "~5.7.112"
+
+"@rocket.chat/mobile-crypto@RocketChat/rocket.chat-mobile-crypto":
+  version "0.1.0"
+  resolved "https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/a460c7266ba0623f8f5da5029a0b2eddd876e743"
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
   version "1.3.3-mobile"
@@ -6182,7 +6181,7 @@ bare-path@^2.0.0, bare-path@^2.1.0:
   dependencies:
     bare-os "^2.1.0"
 
-base64-js@^1.2.3, base64-js@^1.3.0, base64-js@^1.3.1, base64-js@^1.5.1:
+base64-js@^1.2.3, base64-js@^1.3.1, base64-js@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
@@ -9103,11 +9102,6 @@ hermes-profile-transformer@^0.0.6:
   integrity sha512-cnN7bQUm65UWOy6cbGcCcZ3rpwW8Q/j4OP5aWRhEry4Z2t2aR1cjrbp0BS+KiBN0smvP1caBgAuxutvyvJILzQ==
   dependencies:
     source-map "^0.7.3"
-
-hex-lite@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/hex-lite/-/hex-lite-1.5.0.tgz#482db64f673dcacdb8be93c629a799ce5a76b24d"
-  integrity sha512-bXFMCFoKcksmJ1kDRq6B0+Go5Wgq84Dq/3rX99+0OzBQZKUBEMLguPd1lZSpvmzJACb516n07eyswF4KHAF9cg==
 
 hoek@3.x.x:
   version "3.0.4"
@@ -12727,14 +12721,6 @@ react-native-screens@^4.13.1:
     react-native-is-edge-to-edge "^1.2.1"
     warn-once "^0.1.0"
 
-react-native-simple-crypto@RocketChat/react-native-simple-crypto:
-  version "0.6.2"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/b9734cbd57148251f494272cc6022253eca22609"
-  dependencies:
-    "@babel/runtime" "^7.27.6"
-    base64-js "^1.3.0"
-    hex-lite "^1.5.0"
-
 react-native-skeleton-placeholder@5.2.4:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/react-native-skeleton-placeholder/-/react-native-skeleton-placeholder-5.2.4.tgz#a654fa083ff274a39c763e086f8a850c556d4c95"
@@ -12769,12 +12755,20 @@ react-native-vector-icons@9.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-webview@11.26.1, react-native-webview@^11.18.2:
+react-native-webview@^11.18.2:
   version "11.26.1"
   resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.26.1.tgz#658c09ed5162dc170b361e48c2dd26c9712879da"
   integrity sha512-hC7BkxOpf+z0UKhxFSFTPAM4shQzYmZHoELa6/8a/MspcjEP7ukYKpuSUTLDywQditT8yI9idfcKvfZDKQExGw==
   dependencies:
     escape-string-regexp "2.0.0"
+    invariant "2.2.4"
+
+react-native-webview@^13.15.0:
+  version "13.15.0"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-13.15.0.tgz#b6d2f8d8dd65897db76659ddd8198d2c74ec5a79"
+  integrity sha512-Vzjgy8mmxa/JO6l5KZrsTC7YemSdq+qB01diA0FqjUTaWGAGwuykpJ73MDj3+mzBSlaDxAEugHzTtkUQkQEQeQ==
+  dependencies:
+    escape-string-regexp "^4.0.0"
     invariant "2.2.4"
 
 react-native@*:
