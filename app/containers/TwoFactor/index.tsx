@@ -16,7 +16,7 @@ import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
 import { ICredentials } from '../../definitions';
-import { Services } from '../../lib/services';
+import { sendEmailCode } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
@@ -91,7 +91,7 @@ const TwoFactor = React.memo(() => {
 	const sendEmail = async () => {
 		try {
 			if (params?.user) {
-				const response = await Services.sendEmailCode(params?.user);
+				const response = await sendEmailCode(params?.user);
 				if (response.success) {
 					showToast(I18n.t('Two_Factor_Success_message'));
 				}
