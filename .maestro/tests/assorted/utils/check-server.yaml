@@ -16,7 +16,7 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'Connected to ${server}'
+      text: '.*Connected to ${server}.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
