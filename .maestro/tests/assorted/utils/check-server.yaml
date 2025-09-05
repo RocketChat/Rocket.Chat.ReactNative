@@ -24,7 +24,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'sidebar-close-drawer'
-    
+
 - runFlow:
     when:
       platform: iOS
@@ -33,4 +33,3 @@ tags:
           notVisible:
             id: 'sidebar-close-drawer'
           timeout: 60000
-    

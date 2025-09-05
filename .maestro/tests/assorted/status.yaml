@@ -38,7 +38,7 @@ onFlowComplete:
 # should have status input
 - assertVisible:
     id: 'status-view-input'
-  
+
 # should have online button
 - assertVisible:
     id: 'status-view-online'
