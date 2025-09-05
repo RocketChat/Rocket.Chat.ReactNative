@@ -6,7 +6,7 @@ import UserPreferences from '../userPreferences';
 import I18n from '../../../i18n';
 import { extractHostname } from './server';
 import { ICertificate } from '../../../definitions';
-import { CERTIFICATE_KEY } from '../../constants';
+import { CERTIFICATE_KEY } from '../../constants/keys';
 import NativeSSLPinningAndroid from '../../native/NativeSSLPinningAndroid';
 
 const SSLPinning = Platform.select({

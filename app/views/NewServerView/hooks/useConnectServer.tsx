@@ -7,13 +7,16 @@ import { selectServerClear, serverRequest } from '../../../actions/server';
 import completeUrl from '../utils/completeUrl';
 import { ISubmitParams } from '../definitions';
 import basicAuth from '../methods/basicAuth';
+import userPreferences from '../../../lib/methods/userPreferences';
+import { CERTIFICATE_KEY } from '../../../lib/constants/keys';
 
 type TUseNewServerProps = {
 	workspaceUrl: string;
+	certificate: string | null;
 	previousServer: string | null;
 };
 
-const useConnectServer = ({ workspaceUrl, previousServer }: TUseNewServerProps) => {
+const useConnectServer = ({ workspaceUrl, certificate, previousServer }: TUseNewServerProps) => {
 	const dispatch = useDispatch();
 
 	const submit = ({ fromServerHistory = false, username, serverUrl }: ISubmitParams = {}) => {
@@ -27,6 +30,11 @@ const useConnectServer = ({ workspaceUrl, previousServer }: TUseNewServerProps) 
 		if (workspaceUrl || serverUrl) {
 			Keyboard.dismiss();
 			const server = completeUrl(serverUrl ?? workspaceUrl);
+
+			// Save info - SSL Pinning
+			if (certificate) {
+				userPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
+			}
 
 			// Save info - HTTP Basic Authentication
 			basicAuth(server, serverUrl ?? workspaceUrl);

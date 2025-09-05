@@ -47,7 +47,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
 	const { certificate, chooseCertificate, removeCertificate, autocompleteCertificate } = useCertificate();
-	const { submit } = useConnectServer({ workspaceUrl, previousServer });
+	const { submit } = useConnectServer({ workspaceUrl, certificate, previousServer });
 	const phoneMarginTop = previousServer ? 32 : 84;
 	const marginTop = isTablet ? 0 : phoneMarginTop;
 	const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
