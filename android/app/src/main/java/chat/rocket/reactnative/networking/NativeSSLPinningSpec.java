@@ -1,8 +1,3 @@
-/**
- * This file was manually created to replace the auto-generated codegen spec
- * for Android-only SSLPinning TurboModule with 2-parameter signature.
- */
-
 package chat.rocket.reactnative.networking;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -25,7 +20,7 @@ public abstract class NativeSSLPinningSpec extends ReactContextBaseJavaModule im
   }
 
   @ReactMethod
-  public abstract void setCertificate(String server, Promise promise);
+  public abstract void setCertificate(String name, Promise promise);
 
   @ReactMethod
   public abstract void pickCertificate(Promise promise);
