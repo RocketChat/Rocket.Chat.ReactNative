@@ -95,13 +95,11 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 
 		// Fetch server stored e2e keys
 		const keys = yield Services.e2eFetchMyKeys();
-		console.log('keys', keys);
 
 		const publicKey = EJSON.parse(keys?.publicKey);
 
 		// Decode the current server key
 		const privateKey = yield Encryption.decodePrivateKey(keys?.privateKey, password, user.id);
-		console.log('privateKey', privateKey);
 
 		// Persist these decrypted keys
 		yield Encryption.persistKeys(server, publicKey, privateKey);
@@ -118,7 +116,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 			yield readMessages(subscribedRoom, new Date());
 		}
 	} catch (e) {
-		console.error(e);
+		log(e);
 		// Can't decrypt user private key
 		yield put(encryptionDecodeKeyFailure());
 	}
