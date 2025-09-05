@@ -1,0 +1,36 @@
+appId: chat.rocket.reactnative
+name: Check Server
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-sidebar'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Connected to ${server}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-close-drawer'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-close-drawer'
+    
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            id: 'sidebar-close-drawer'
+          timeout: 60000
+    
