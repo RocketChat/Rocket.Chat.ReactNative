@@ -22,7 +22,7 @@ onFlowEnd:
 # should have room screen
 - assertVisible:
     id: room-view
-    
+
 # should have actions button
 - assertVisible:
     id: room-header
@@ -118,7 +118,7 @@ onFlowEnd:
     env:
       message: ${output.message}
 - assertVisible:
-    text: ".*${output.message}.*"
+    text: '.*${output.message}.*'
 
 # should have notifications and leave channel
 - runFlow: '../../helpers/navigate-to-room-action.yaml'
