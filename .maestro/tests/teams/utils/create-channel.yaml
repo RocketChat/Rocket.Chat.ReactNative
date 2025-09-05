@@ -58,7 +58,7 @@ tags:
     visible:
       id: room-view-title-${channelName}
     timeout: 60000
-- runFlow: ../../helpers/go-back.yaml
+- runFlow: ../../../helpers/go-back.yaml
 - extendedWaitUntil:
     visible:
       id: rooms-list-view

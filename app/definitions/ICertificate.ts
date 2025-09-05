@@ -1,4 +1,4 @@
 export interface ICertificate {
 	path: string;
-	password: string;
+	password?: string;
 }

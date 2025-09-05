@@ -1,10 +1,14 @@
 package chat.rocket.reactnative.notification;
 
+import android.util.Log;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Callback;
 
 import com.ammarahmed.mmkv.SecureKeystore;
 import com.tencent.mmkv.MMKV;
+import com.wix.reactnativenotifications.core.AppLifecycleFacade;
+import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
 
 import java.math.BigInteger;
 
@@ -38,20 +42,21 @@ public class Ejson {
 
     Content content;
 
+    private ReactApplicationContext reactContext;
+
     private MMKV mmkv;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
 
     public Ejson() {
-        ReactApplicationContext reactApplicationContext = CustomPushNotification.reactApplicationContext;
-
-        if (reactApplicationContext == null) {
-            return;
+        AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
+        if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
+            this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
         }
 
         // Start MMKV container
-        MMKV.initialize(reactApplicationContext);
-        SecureKeystore secureKeystore = new SecureKeystore(reactApplicationContext);
+        MMKV.initialize(this.reactContext);
+        SecureKeystore secureKeystore = new SecureKeystore(this.reactContext);
 
         // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
         String alias = Utils.toHex("com.MMKV.default");
