@@ -113,6 +113,10 @@ jest.mock('./app/containers/CustomIcon', () => {
 	};
 });
 
+jest.mock('./app/lib/encryption', () => ({
+	encryptMessage: jest.fn(() => ({ rid: 'test', msg: 'test' }))
+}));
+
 jest.mock('@react-navigation/native', () => {
 	const actualNav = jest.requireActual('@react-navigation/native');
 	const { useEffect } = require('react');
