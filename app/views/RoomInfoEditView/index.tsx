@@ -1,14 +1,15 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
-import { Alert, Keyboard, ScrollView, Text, View } from 'react-native';
+import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
@@ -37,6 +38,10 @@ const MESSAGE_TYPE_VALUES = MessageTypeValues.map(m => ({
 	value: m.value,
 	text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
 }));
+
+const schema = yup.object().shape({
+	name: yup.string().required(I18n.t('Name_required'))
+});
 
 const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const { colors } = useTheme();
@@ -69,7 +74,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			enableSysMes: false,
 			encrypted: false,
 			archived: false
-		}
+		},
+		mode: 'onChange',
+		resolver: yupResolver(schema)
 	});
 
 	const initializeRoomState = (room: ISubscription) => {
@@ -181,7 +188,17 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		} catch (e: any) {
 			if (e.error === 'error-invalid-room-name') {
 				setError('name', { message: e, type: 'validate' });
+				setFocus('name');
 			}
+
+			if (e.error === 'error-duplicate-channel-name') {
+				setError('name', { message: I18n.t('Channel_name_already_taken'), type: 'validate' });
+				setFocus('name');
+			}
+
+			const a11yAnnouncement = e.error === 'error-duplicate-channel-name' ? I18n.t('Channel_name_already_taken') : e.reason;
+			AccessibilityInfo.announceForAccessibility(a11yAnnouncement);
+
 			error = true;
 			log(e);
 		}
@@ -311,7 +328,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	return (
 		<KeyboardView>
-			<StatusBar />
 			<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: colors.surfaceRoom }}>
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}

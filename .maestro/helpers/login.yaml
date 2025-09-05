@@ -1,0 +1,31 @@
+appId: chat.rocket.reactnative
+name: Login
+tags:
+  - 'util'
+onFlowStart:
+  - runFlow:
+      file: setup.yaml
+      env:
+        skipUser: true
+  - runFlow:
+      when:
+        true: ${!USERNAME}
+      commands:
+        - evalScript: ${output.createdUser = output.utils.createUser()}
+
+---
+- runFlow: navigate-to-login.yaml
+- tapOn:
+    id: login-view-email
+- inputText: ${USERNAME || output.createdUser.email}
+- pressKey: enter
+- tapOn:
+    id: login-view-password
+- inputText: ${PASSWORD || output.createdUser.password}
+- hideKeyboard
+- tapOn:
+    id: login-view-submit
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
+    timeout: 60000

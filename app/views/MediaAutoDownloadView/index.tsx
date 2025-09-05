@@ -4,7 +4,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import ListPicker from './ListPicker';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
@@ -43,7 +42,6 @@ const MediaAutoDownload = () => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container>
 				<List.Section title='Media_quality'>
 					<List.Info info='Media_quality_info' />

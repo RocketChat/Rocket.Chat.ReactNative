@@ -20,7 +20,6 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
-import StatusBar from '../../containers/StatusBar';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -954,6 +953,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (message.fromServer && !message.tmid && this.rid) {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
+				// Synchronization needed for Fabric to work
+				await new Promise(res => setTimeout(res, 100));
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
 				this.cancelJumpToMessage();
 			}
@@ -984,8 +985,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	handleRoomRemoved = ({ rid }: { rid: string }) => {
 		const { room } = this.state;
+		const { isMasterDetail } = this.props;
 		if (rid === this.rid) {
-			Navigation.navigate('RoomsListView');
+			Navigation.popToTop(isMasterDetail);
 			!this.isOmnichannel &&
 				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
 		}
@@ -1495,7 +1497,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, action, selectedMessages, isAutocompleteVisible } = this.state;
+		const { room, action, selectedMessages, isAutocompleteVisible } = this.state;
 		const { user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
@@ -1521,21 +1523,21 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				value={{
 					rid,
 					t,
+					room,
 					tmid: this.tmid,
 					sharing: false,
 					action,
 					selectedMessages,
+					updateAutocompleteVisible: this.updateAutocompleteVisible,
+					isAutocompleteVisible,
 					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
 					editCancel: this.onEditCancel,
 					editRequest: this.onEditRequest,
 					onSendMessage: this.handleSendMessage,
 					setQuotesAndText: this.setQuotesAndText,
-					getText: this.getText,
-					updateAutocompleteVisible: this.updateAutocompleteVisible,
-					isAutocompleteVisible
+					getText: this.getText
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-					<StatusBar />
 					{!this.tmid ? (
 						<Banner
 							title={I18n.t('Announcement')}
@@ -1550,7 +1552,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						rid={rid}
 						tmid={this.tmid}
 						renderRow={this.renderItem}
-						loading={loading}
 						hideSystemMessages={this.hideSystemMessages}
 						showMessageInMainThread={user.showMessageInMainThread ?? false}
 						serverVersion={serverVersion}

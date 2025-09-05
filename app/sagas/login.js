@@ -50,7 +50,7 @@ import { isIOS } from '../lib/methods/helpers';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
-const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
+const loginCall = credentials => Services.login(credentials);
 const logoutCall = args => logout(args);
 
 const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
@@ -77,17 +77,12 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 };
 
-const handleLoginRequest = function* handleLoginRequest({
-	credentials,
-	logoutOnError = false,
-	isFromWebView = false,
-	registerCustomFields
-}) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, registerCustomFields }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
-			result = yield loginCall(credentials, isFromWebView);
+			result = yield loginCall(credentials);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
@@ -205,7 +200,7 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 	try {
 		yield getEnterpriseModules();
 
-		if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
+		if (isOmnichannelStatusAvailable(user.statusLivechat) && isOmnichannelModuleAvailable()) {
 			yield put(inquiryRequest());
 		}
 	} catch (e) {
@@ -253,7 +248,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			statusText: user.statusText,
 			roles: user.roles,
-			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag,
 			bio: user.bio,
@@ -369,7 +363,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
 
 	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
-		if (isOmnichannelStatusAvailable(user)) {
+		if (isOmnichannelStatusAvailable(user.statusLivechat)) {
 			yield put(inquiryRequest());
 		} else {
 			yield put(inquiryReset());

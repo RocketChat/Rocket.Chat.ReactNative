@@ -1,0 +1,94 @@
+name: E2E Build Android
+
+on:
+  workflow_call:
+    secrets:
+      EXPERIMENTAL_KEYSTORE_BASE64:
+        required: true
+      EXPERIMENTAL_KEYSTORE_PASSWORD:
+        required: true
+      EXPERIMENTAL_KEY_ALIAS:
+        required: true
+      EXPERIMENTAL_KEY_PASSWORD:
+        required: true
+      BUGSNAG_KEY:
+        required: true
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      artifact_name: Android Experimental APK
+
+    steps:
+      - name: Checkout Repository 
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Setup E2E Account
+        uses: ./.github/actions/e2e-account
+        with:
+          E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches/modules-2
+            ~/.gradle/caches/transforms-*
+            ~/.gradle/caches/build-cache-*
+          key: gradle-transforms-v1-${{ runner.os }}-${{ hashFiles('**/*.gradle*', 'gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-transforms-v1-${{ runner.os }}-
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: wrapper
+          cache-disabled: true
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.EXPERIMENTAL_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+
+      - name: Set gradle.properties
+        working-directory: android
+        run: |
+          echo "" > ./gradle.properties
+          echo -e "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> ./gradle.properties
+          echo -e "android.useAndroidX=true" >> ./gradle.properties
+          echo -e "android.enableJetifier=true" >> ./gradle.properties
+          echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
+          echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+          echo -e "newArchEnabled=true" >> ./gradle.properties
+          echo -e "hermesEnabled=true" >> ./gradle.properties
+          echo -e "VERSIONCODE=999999" >> ./gradle.properties
+          echo -e "KEYSTORE=release.keystore" >> ./gradle.properties
+          echo -e "KEYSTORE_PASSWORD=${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}" >> ./gradle.properties
+          echo -e "KEY_ALIAS=${{ secrets.EXPERIMENTAL_KEY_ALIAS }}" >> ./gradle.properties
+          echo -e "KEY_PASSWORD=${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}" >> ./gradle.properties
+          echo -e "BugsnagAPIKey=${{ secrets.BUGSNAG_KEY }}" >> ./gradle.properties
+          
+      - name: Build Android Release APK
+        working-directory: android
+        run: ./gradlew assembleExperimentalRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
+        env:
+          RUNNING_E2E_TESTS: true
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Experimental APK
+          path: android/app/build/outputs/apk/experimental/release/app-experimental-release.apk

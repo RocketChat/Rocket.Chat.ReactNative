@@ -2,12 +2,13 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
 import { getUserSelector } from '../../selectors/login';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
@@ -26,8 +27,12 @@ import Button from '../../containers/Button';
 import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
+	const schema = yup.object().shape({
+		name: yup.string().required(I18n.t('Discussion_name_required'))
+	});
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const {
@@ -59,15 +64,20 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const [users, setUsers] = useState<string[]>([]);
 
 	const message = route.params?.message;
-	const { getValues, watch, control } = useForm({
+	const {
+		control,
+		handleSubmit,
+		watch,
+		formState: { errors }
+	} = useForm({
 		defaultValues: {
 			name: message?.msg || ''
-		}
+		},
+		resolver: yupResolver(schema)
 	});
-	const name = watch('name');
 
+	const inputValues = watch();
 	const prevLoading = useRef<boolean>(loading);
-	const isValid = channel?.rid?.trim?.().length && name?.trim().length;
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
 	const selectChannel = ({ value }: { value: ISearchLocal }) => {
@@ -89,7 +99,11 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const submit = () => {
 		const pmid = message?.id;
 		const reply = '';
-		const { name: t_name } = getValues();
+		const { name: t_name } = inputValues;
+
+		if (!t_name || (!channel.prid && !channel.rid)) {
+			return;
+		}
 
 		const params: ICreateDiscussionRequestData = {
 			prid: ('prid' in channel && channel.prid) || channel.rid,
@@ -101,9 +115,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		if (isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;
 		}
-
 		dispatch(createDiscussionRequest(params));
 	};
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
 		if (loading === prevLoading.current) {
@@ -125,7 +140,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 
 	return (
 		<KeyboardView style={styles.container} backgroundColor={colors.surfaceHover}>
-			<StatusBar />
 			<SafeAreaView testID='create-discussion-view'>
 				<ScrollView {...scrollPersistTaps}>
 					<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
@@ -143,6 +157,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 							control={control}
 							name='name'
 							required
+							error={errors.name?.message}
 							label={I18n.t('Discussion_name')}
 							testID='multi-select-discussion-name'
 							containerStyle={styles.inputStyle}
@@ -171,10 +186,9 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 
 					<Button
 						testID='create-discussion-submit'
-						disabled={!isValid}
 						style={{ marginTop: 36 }}
 						title={I18n.t('Create_Discussion')}
-						onPress={submit}
+						onPress={handleSubmit(submit)}
 					/>
 				</ScrollView>
 			</SafeAreaView>
