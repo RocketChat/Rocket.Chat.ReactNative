@@ -8,8 +8,8 @@ import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
 import { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
-import { useUserPreferences } from '../../../../../lib/methods';
-import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants';
+import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
 
