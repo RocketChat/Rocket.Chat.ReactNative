@@ -27,7 +27,6 @@ import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
-import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
@@ -47,6 +46,7 @@ import sdk from '../lib/services/sdk';
 import { appSelector } from '../lib/hooks';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
+import SSLPinning from '../lib/methods/helpers/sslPinning';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -228,12 +228,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	try {
-		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
-
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
