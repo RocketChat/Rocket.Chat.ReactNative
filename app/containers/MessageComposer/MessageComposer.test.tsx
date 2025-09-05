@@ -14,8 +14,16 @@ import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 import { initStore } from '../../lib/store/auxStore';
+import { search } from '../../lib/methods/search';
+import database from '../../lib/database';
+import { Services } from '../../lib/services';
 
 jest.useFakeTimers();
+
+// Ensure search returns at least one item so autocomplete renders
+jest.mock('../../lib/methods/search', () => ({
+	search: jest.fn(() => [{ _id: 'u1', username: 'john', name: 'John' }])
+}));
 
 const user = userEvent.setup();
 
@@ -128,6 +136,10 @@ let showEmojiSearchbar = false;
 beforeEach(() => {
 	showEmojiKeyboard = false;
 	showEmojiSearchbar = false;
+	// Default DB mocks used by autocomplete
+	(database.active.get as unknown as jest.Mock).mockImplementation(() => ({
+		query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) }))
+	}));
 	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
 		showEmojiPickerSharedValue: sharedValue,
 		showEmojiKeyboard,
@@ -382,6 +394,132 @@ describe('MessageComposer', () => {
 			expect(onSendMessage).toHaveBeenCalledTimes(1);
 			expect(onSendMessage).toHaveBeenCalledWith('@', undefined);
 			expect(screen.toJSON()).toMatchSnapshot();
+		});
+	});
+
+	describe('Autocomplete', () => {
+		test('typing @ opens autocomplete', async () => {
+			render(<Render />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+
+			jest.advanceTimersByTime(500);
+
+			await waitFor(() => expect(screen.getByTestId('autocomplete')).toBeOnTheScreen());
+		});
+
+		test('select @ user inserts mention and sends, autocomplete hides', async () => {
+			const onSendMessage = jest.fn();
+			(search as unknown as jest.Mock).mockImplementationOnce(() => [{ _id: 'u1', username: 'john', name: 'John' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-John')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-John'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('@john', undefined);
+		});
+
+		test('select # room inserts channel and sends, autocomplete hides', async () => {
+			const onSendMessage = jest.fn();
+			(search as unknown as jest.Mock).mockImplementationOnce(() => [{ rid: 'r1', name: 'general', t: 'c' }]);
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '#');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-general')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-general'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('#general', undefined);
+		});
+
+		test('select : emoji inserts emoji and sends, autocomplete hides', async () => {
+			const onSendMessage = jest.fn();
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), ':smi');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 4, end: 4 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-smile')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-smile'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith(':smile:', undefined);
+		});
+
+		test('select / command inserts command text and sends, autocomplete hides', async () => {
+			const onSendMessage = jest.fn();
+			const getSpy = jest.spyOn(database.active as any, 'get');
+			(getSpy as any).mockImplementation((table: string) => {
+				if (table === 'slash_commands') {
+					return {
+						query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([{ id: 'hello', description: 'desc' }])) }))
+					};
+				}
+				return { query: jest.fn(() => ({ fetch: jest.fn(() => Promise.resolve([])) })) };
+			});
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '/hello');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 6, end: 6 } }
+			});
+			jest.advanceTimersByTime(500);
+			await screen.findByTestId('autocomplete');
+			await user.press(screen.getByTestId('message-composer-send'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+		});
+
+		test('select ! canned response inserts text and sends, autocomplete hides', async () => {
+			const onSendMessage = jest.fn();
+			jest.spyOn(Services, 'getListCannedResponse').mockResolvedValueOnce({
+				success: true,
+				cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
+			} as any);
+			render(<Render context={{ onSendMessage, room: { ...initialContext.room, t: 'l' } }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '!');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			jest.advanceTimersByTime(500);
+			await waitFor(() => expect(screen.getByTestId('autocomplete-item-brb')).toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('autocomplete-item-brb'));
+			await waitFor(() => expect(screen.queryByTestId('autocomplete')).not.toBeOnTheScreen());
+
+			await user.press(screen.getByTestId('message-composer-send'));
+			expect(onSendMessage).toHaveBeenCalledTimes(1);
+			expect(onSendMessage).toHaveBeenCalledWith('Be right back', undefined);
 		});
 	});
 

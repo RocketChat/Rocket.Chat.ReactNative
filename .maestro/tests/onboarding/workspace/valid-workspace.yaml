@@ -1,11 +1,10 @@
 appId: chat.rocket.reactnative
 name: Valid Workspace
-jsEngine: graaljs
 onFlowStart:
-  - runFlow: '../../helpers/setup.yaml'
+  - runFlow: '../../../helpers/setup.yaml'
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
+- runFlow: ../../../helpers/launch-app.yaml
 - tapOn:
     text: 'Workspace URL. Required.'
 - inputText:

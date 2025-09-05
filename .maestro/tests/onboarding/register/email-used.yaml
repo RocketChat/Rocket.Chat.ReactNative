@@ -1,24 +1,23 @@
 appId: chat.rocket.reactnative
-name: Create Account (Username Already Used)
-jsEngine: graaljs
+name: Create Account (Email Already Used)
 onFlowStart:
-  - runFlow: '../../helpers/setup.yaml'
+  - runFlow: '../../../helpers/setup.yaml'
   - evalScript: ${output.user = output.utils.createUser()}
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/navigate-to-register.yaml
+- runFlow: ../../../helpers/launch-app.yaml
+- runFlow: ../../../helpers/navigate-to-register.yaml
 - tapOn:
     id: register-view-name
 - inputText: ${output.user.name}
 - pressKey: enter
 - tapOn:
     id: register-view-username
-- inputText: ${output.user.username}
+- inputText: ${output.user.username + 'new'}
 - pressKey: enter
 - tapOn:
     id: register-view-email
-- inputText: ${'new'+output.user.email}
+- inputText: ${output.user.email}
 - pressKey: enter
 - tapOn:
     id: register-view-password
@@ -34,4 +33,4 @@ onFlowStart:
       id: register-view-submit
 - tapOn:
     id: register-view-submit
-- assertVisible: .*Username is already in use.*
+- assertVisible: .*Email already exists.*
