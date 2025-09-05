@@ -159,7 +159,7 @@ const CreateChannelView = () => {
 							testID='create-channel-name'
 							returnKeyType='done'
 							containerStyle={styles.containerStyle}
-							inputStyle={{ backgroundColor: colors.surfaceTint }}
+							inputStyle={{ backgroundColor: colors.surfaceLight }}
 							name={'channelName'}
 							control={control}
 							error={errors?.channelName?.message}
