@@ -83,6 +83,8 @@ onFlowComplete:
     visible:
       text: '.*Delete.*'
     timeout: 60000
+- tapOn:
+    text: 'Delete'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
