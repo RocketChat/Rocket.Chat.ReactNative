@@ -1,0 +1,16 @@
+appId: chat.rocket.reactnative
+name: Close app
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: com.android.systemui:id/recent_apps
+      - swipe:
+          id: com.google.android.apps.nexuslauncher:id/snapshot
+          direction: UP
+          duration: 100

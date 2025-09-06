@@ -1,0 +1,91 @@
+appId: chat.rocket.reactnative
+name: Setting
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.login = output.utils.login(output.user.username, output.user.password)}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
+- evalScript: ${output.thread = output.random() + 'thread'}
+- evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, output.room.name, output.thread)}
+- evalScript: ${output.utils.sendMessage(output.user.username, output.user.password, output.result.message.rid, 'insidethread', output.result.message._id)}
+
+# should run a deep link to an invalid account and raise error
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.server, `userId=123&token=abc`)}
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view'
+    timeout: 60000
+
+# should authenticate and navigate
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- evalScript: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.server}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.room.name}'
+    timeout: 60000
+
+# should create a new account on another server
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/navigate-to-register.yaml'
+    env:
+      server: ${output.data.alternateServer}
+- runFlow: '../../helpers/create-account.yaml'
+
+# should authenticate and navigate back to the previous server
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- evalScript: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.server}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.room.name}'
+    timeout: 60000
