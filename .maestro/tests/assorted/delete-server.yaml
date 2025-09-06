@@ -1,0 +1,99 @@
+appId: chat.rocket.reactnative
+name: Delete Server
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should be logged in main server
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.server}
+    
+# should add server
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-server-add'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-server-add'
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view-input'
+    timeout: 60000
+- tapOn:
+    id: 'new-server-view-input'
+- inputText: ${output.data.alternateServer}
+- pressKey: 'enter'
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view-register'
+    timeout: 60000
+- tapOn:
+    id: 'workspace-view-register'
+- extendedWaitUntil:
+    visible:
+      id: 'register-view-name'
+    timeout: 60000
+- runFlow: '../../helpers/create-account.yaml'
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.alternateServer}
+
+# should delete server
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.server}'
+    timeout: 60000
+- longPressOn:
+    id: 'server-item-${output.data.server}'
+- extendedWaitUntil:
+    visible:
+      text: '.*Delete.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list'
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: 'server-item-${output.data.server}'
+    timeout: 60000
