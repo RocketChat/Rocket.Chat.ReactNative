@@ -20,7 +20,7 @@ onFlowComplete:
     file: './utils/check-server.yaml'
     env:
       server: ${output.data.server}
-    
+
 # should add server
 - extendedWaitUntil:
     visible:
