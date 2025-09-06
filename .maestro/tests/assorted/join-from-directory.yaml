@@ -75,7 +75,7 @@ onFlowComplete:
 
 # should search user and navigate
 - tapOn:
-    id: "header-back"
+    id: 'header-back'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-directory'
@@ -118,7 +118,7 @@ onFlowComplete:
 
 # should search team and navigate
 - tapOn:
-    id: "header-back"
+    id: 'header-back'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-directory'
