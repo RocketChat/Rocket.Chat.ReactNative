@@ -317,4 +317,3 @@ onFlowEnd:
     visible:
       id: 'new-server-view'
     timeout: 60000
-    
