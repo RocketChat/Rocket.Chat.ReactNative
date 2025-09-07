@@ -319,5 +319,4 @@ onFlowEnd:
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 60000 
-    
+    timeout: 60000
