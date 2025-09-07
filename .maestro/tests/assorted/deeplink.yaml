@@ -67,7 +67,6 @@ onFlowEnd:
 # should authenticate and navigate back to the previous server
 - runFlow:
     file: '../../helpers/close-app.yaml'
-- evalScript: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -89,3 +88,233 @@ onFlowEnd:
     visible:
       id: 'rooms-list-view-item-${output.room.name}'
     timeout: 60000
+
+# should navigate to the room using path
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+
+# should navigate to the thread using path
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('thread', output.data.server, 'path=group/', output.room.name, '/thread/', output.thread)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.thread}'
+    timeout: 60000
+
+# should navigate to the room using rid
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'rid=', output.room.rid)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+
+# should resume from background and navigate to the room
+- pressKey: home
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+
+# should simulate a tap on a push notification and navigate to the room
+# I literally dunno how to implement this thing...
+
+# should change server
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}'
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.alternateServer}
+- runFlow: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.alternateServer, 'path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title--${output.room.name}'
+    timeout: 60000
+
+# should add a not existing server and fallback to the previous one
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', 'https://google.com')}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+
+# should share text
+- evalScript: ${output.message = output.random()}
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: rocketchat://shareextension?text=${message}
+- extendedWaitUntil:
+    visible:
+      id: 'share-list-view'
+    timeout: 60000
+
+- extendedWaitUntil:
+    visible:
+      id: 'share-extension-item-${output.message}'
+    timeout: 60000
+- tapOn:
+    id: 'share-extension-item-${output.message}'
+- extendedWaitUntil:
+    visible:
+      id: 'share-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Send'
+    timeout: 60000
+- tapOn:
+    text: 'Send'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- extendedWaitUntil:
+    visible:
+      text: '.*${output.message}.*'
+    timeout: 60000
+
+# should change server and share text
+- evalScript: ${output.message = output.random()}
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}'
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.alternateServer}
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: rocketchat://shareextension?text=${output.message}
+- extendedWaitUntil:
+    visible:
+      id: 'share-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}'
+- extendedWaitUntil:
+    visible:
+      id: 'select-server-view'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.server}'
+- extendedWaitUntil:
+    visible:
+      id: 'share-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.server}'
+    timeout: 60000
+
+- extendedWaitUntil:
+    visible:
+      id: 'share-extension-item-${output.message}'
+    timeout: 60000
+- tapOn:
+    id: 'share-extension-item-${output.message}'
+- extendedWaitUntil:
+    visible:
+      id: 'share-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Send'
+    timeout: 60000
+- tapOn:
+    text: 'Send'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- extendedWaitUntil:
+    visible:
+      text: '.*${output.message}.*'
+    timeout: 60000
+
+# should open share without being logged in and go to onboarding
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: rocketchat://shareextension?text=whatever
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
+    
