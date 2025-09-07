@@ -33,7 +33,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const [server] = useServer();
 
 	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);
-    const user = useAppSelector(state => getUserSelector(state));
+	const user = useAppSelector(state => getUserSelector(state));
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -75,7 +75,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	return (
 		<SafeAreaView testID='security-privacy-view'>
 			<List.Container testID='security-privacy-view-list'>
-            <List.Section>
+				<List.Section>
 					<List.Separator />
 					{e2eEnabled ? (
 						<>
