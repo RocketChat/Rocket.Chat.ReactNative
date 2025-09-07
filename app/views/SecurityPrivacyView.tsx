@@ -19,6 +19,7 @@ import {
 	toggleCrashErrorsReport
 } from '../lib/methods/helpers/log';
 import Switch from '../containers/Switch';
+import { getUserSelector } from '../selectors/login';
 
 interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
@@ -30,6 +31,9 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const [server] = useServer();
 
 	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);
+    const user = useAppSelector(state => getUserSelector(state));
+
+    console.log(user)
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -67,7 +71,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	return (
 		<SafeAreaView testID='security-privacy-view'>
 			<List.Container testID='security-privacy-view-list'>
-				<List.Section>
+            <List.Section>
 					<List.Separator />
 					{e2eEnabled ? (
 						<>
@@ -85,6 +89,24 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						showActionIndicator
 						onPress={navigateToScreenLockConfigView}
 						testID='security-privacy-view-screen-lock'
+					/>
+					<List.Separator />
+				</List.Section>
+
+                <List.Section>
+                <List.Separator />
+                <List.Item
+						title='add_authenticator_app'
+						showActionIndicator
+						onPress={navigateToScreenLockConfigView}
+						testID='security-privacy-view-screen-lock'
+					/>
+					<List.Separator />
+                    <List.Item
+						title='email_two_factor_authentication'
+						testID='security-privacy-view-analytics-events'
+						right={() => <Switch value={analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
+						additionalAcessibilityLabel={analyticsEventsState}
 					/>
 					<List.Separator />
 				</List.Section>
