@@ -2,7 +2,7 @@ appId: chat.rocket.reactnative
 name: Setting
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
+onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
@@ -172,7 +172,7 @@ onFlowEnd:
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
-      link: ${output.utils.getDeepLink('room', output.data.alternateServer, 'path=group/', output.room.name)}
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
@@ -197,7 +197,7 @@ onFlowEnd:
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
-      link: rocketchat://shareextension?text=${message}
+      link: rocketchat://shareextension?text=${output.message}
 - extendedWaitUntil:
     visible:
       id: 'share-list-view'
@@ -205,10 +205,10 @@ onFlowEnd:
 
 - extendedWaitUntil:
     visible:
-      id: 'share-extension-item-${output.message}'
+      id: 'share-extension-item-${output.room.name}'
     timeout: 60000
 - tapOn:
-    id: 'share-extension-item-${output.message}'
+    id: 'share-extension-item-${output.room.name}'
 - extendedWaitUntil:
     visible:
       id: 'share-view'
@@ -284,10 +284,10 @@ onFlowEnd:
 
 - extendedWaitUntil:
     visible:
-      id: 'share-extension-item-${output.message}'
+      id: 'share-extension-item-${output.room.name}'
     timeout: 60000
 - tapOn:
-    id: 'share-extension-item-${output.message}'
+    id: 'share-extension-item-${output.room.name}'
 - extendedWaitUntil:
     visible:
       id: 'share-view'
