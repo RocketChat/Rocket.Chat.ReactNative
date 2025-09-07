@@ -9,8 +9,8 @@ onFlowEnd:
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.login = output.utils.login(output.user.username, output.user.password)}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
-- evalScript: ${output.thread = output.random() + 'thread'}
-- evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, output.room.name, output.thread)}
+- evalScript: ${output.threadMessage = 'to-thread-' + output.random()}
+- evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, output.room.name, output.threadMessage)}
 - evalScript: ${output.utils.sendMessage(output.user.username, output.user.password, output.result.message.rid, 'insidethread', output.result.message._id)}
 
 # should run a deep link to an invalid account and raise error
@@ -107,10 +107,10 @@ onFlowEnd:
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
-      link: ${output.utils.getDeepLink('thread', output.data.server, 'path=group/', output.room.name, '/thread/', output.thread)}
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name, '/thread/', output.result.message._id)}
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-${output.thread}'
+      id: 'room-view-title-${output.threadMessage}'
     timeout: 60000
 
 # should navigate to the room using rid
@@ -119,7 +119,7 @@ onFlowEnd:
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
-      link: ${output.utils.getDeepLink('room', output.data.server, 'rid=', output.room.rid)}
+      link: ${output.utils.getDeepLink('room', output.data.server, 'rid=', output.room._id)}
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
@@ -142,6 +142,9 @@ onFlowEnd:
     timeout: 60000
 
 # should simulate a tap on a push notification and navigate to the room
+- runFlow:
+    file: '../../helpers/close-app.yaml'
+- launchApp
 # I literally dunno how to implement this thing...
 
 # should change server
@@ -169,10 +172,10 @@ onFlowEnd:
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
-      link: ${output.utils.getDeepLink('auth', output.data.alternateServer, 'path=group/', output.room.name)}
+      link: ${output.utils.getDeepLink('room', output.data.alternateServer, 'path=group/', output.room.name)}
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title--${output.room.name}'
+      id: 'room-view-title-${output.room.name}'
     timeout: 60000
 
 # should add a not existing server and fallback to the previous one
@@ -316,5 +319,5 @@ onFlowEnd:
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 60000
+    timeout: 60000 
     
