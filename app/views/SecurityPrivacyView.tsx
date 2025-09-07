@@ -31,9 +31,9 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const [server] = useServer();
 
 	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);
-    const user = useAppSelector(state => getUserSelector(state));
+	const user = useAppSelector(state => getUserSelector(state));
 
-    console.log(user)
+	console.log(user);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -71,7 +71,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	return (
 		<SafeAreaView testID='security-privacy-view'>
 			<List.Container testID='security-privacy-view-list'>
-            <List.Section>
+				<List.Section>
 					<List.Separator />
 					{e2eEnabled ? (
 						<>
@@ -93,16 +93,16 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 					<List.Separator />
 				</List.Section>
 
-                <List.Section>
-                <List.Separator />
-                <List.Item
+				<List.Section>
+					<List.Separator />
+					<List.Item
 						title='add_authenticator_app'
 						showActionIndicator
 						onPress={navigateToScreenLockConfigView}
 						testID='security-privacy-view-screen-lock'
 					/>
 					<List.Separator />
-                    <List.Item
+					<List.Item
 						title='email_two_factor_authentication'
 						testID='security-privacy-view-analytics-events'
 						right={() => <Switch value={analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
