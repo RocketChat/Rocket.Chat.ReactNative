@@ -29,6 +29,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Configure node-gyp to use Python 3.11
+        run: npm config set python $(which python3)
+
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
