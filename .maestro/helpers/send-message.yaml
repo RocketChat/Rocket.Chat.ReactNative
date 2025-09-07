@@ -1,0 +1,32 @@
+appId: chat.rocket.reactnative
+name: Send message
+tags:
+  - 'util'
+---
+# When channel is thread
+- runFlow:
+    when:
+      true: ${isThread}
+    commands:
+      - tapOn:
+          id: message-composer-input-thread
+
+# When channel is not thread
+- runFlow:
+    when:
+      true: ${!isThread}
+    commands:
+      - tapOn:
+          id: message-composer-input
+
+- inputText: ${message}
+- extendedWaitUntil:
+    visible:
+      id: message-composer-send
+    timeout: 60000
+- tapOn:
+    id: message-composer-send
+- extendedWaitUntil:
+    visible:
+      text: '.*${message}.*'
+    timeout: 60000

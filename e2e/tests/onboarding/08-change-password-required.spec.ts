@@ -1,6 +1,6 @@
 import { by, device, element, waitFor } from 'detox';
 
-import { login, logout, navigateToLogin } from '../../helpers/app';
+import { login, logout, navigateToLogin, sleep } from '../../helpers/app';
 import { createRandomUser } from '../../helpers/data_setup';
 
 describe('Change password required', () => {
@@ -37,12 +37,10 @@ describe('Change password required', () => {
 				.toExist()
 				.withTimeout(5000);
 			await element(by.id('change-password-required-button')).tap();
-			await waitFor(element(by.id(`action-sheet-content-with-input-and-submit`)))
-				.toExist()
-				.withTimeout(5000);
-			await element(by.id('change-password-required-sheet-input-password')).replaceText('123456');
-			await element(by.id('change-password-required-sheet-input-confirm-password')).replaceText('123456');
-			await element(by.id('change-password-required-sheet-confirm')).tap();
+			sleep(300);
+			await element(by.id('change-password-view-new-password')).replaceText('123456');
+			await element(by.id('change-password-view-confirm-new-password')).replaceText('123456');
+			await element(by.id('change-password-view-set-new-password-button')).tap();
 			await waitFor(element(by.id(`change-password-required-button`)))
 				.not.toExist()
 				.withTimeout(5000);

@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 
 import sdk from '../../../lib/services/sdk';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
-import UserPreferences from '../../../lib/methods/userPreferences';
-import { CERTIFICATE_KEY } from '../../../lib/constants';
 import { selectServerClear, serverRequest } from '../../../actions/server';
 import completeUrl from '../utils/completeUrl';
 import { ISubmitParams } from '../definitions';
 import basicAuth from '../methods/basicAuth';
+import userPreferences from '../../../lib/methods/userPreferences';
+import { CERTIFICATE_KEY } from '../../../lib/constants/keys';
 
 type TUseNewServerProps = {
 	workspaceUrl: string;
@@ -33,7 +33,7 @@ const useConnectServer = ({ workspaceUrl, certificate, previousServer }: TUseNew
 
 			// Save info - SSL Pinning
 			if (certificate) {
-				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
+				userPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
 			}
 
 			// Save info - HTTP Basic Authentication

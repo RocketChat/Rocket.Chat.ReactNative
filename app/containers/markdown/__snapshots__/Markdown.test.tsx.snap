@@ -13,128 +13,136 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
   <View
     style={
       {
-        "alignItems": "flex-start",
-        "flexDirection": "row",
+        "gap": 2,
       }
     }
   >
     <View
       style={
-        [
-          {
-            "height": "100%",
-            "marginRight": 5,
-            "width": 2,
-          },
-          {
-            "backgroundColor": "#CBCED1",
-          },
-        ]
-      }
-    />
-    <View
-      style={
         {
-          "flex": 1,
+          "alignItems": "flex-start",
+          "flexDirection": "row",
         }
       }
     >
-      <Text
+      <View
         style={
           [
             {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
+              "height": "100%",
+              "marginRight": 5,
+              "width": 2,
             },
             {
-              "color": "#2F343D",
+              "backgroundColor": "#CBCED1",
             },
           ]
+        }
+      />
+      <View
+        style={
+          {
+            "flex": 1,
+          }
         }
       >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
-            accessibilityLabel="This is block quote"
             style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
             }
           >
-            This is block quote
+            <Text
+              accessibilityLabel="This is block quote"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              This is block quote
+            </Text>
           </Text>
         </Text>
-      </Text>
+      </View>
     </View>
-  </View>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
-        accessibilityLabel="this is a normal line"
         style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        this is a normal line
+        <Text
+          accessibilityLabel="this is a normal line"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          this is a normal line
+        </Text>
       </Text>
     </Text>
-  </Text>
+  </View>
 </View>
 `;
 
@@ -148,228 +156,11 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
     }
   }
 >
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="This is "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        This is 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "borderRadius": 4,
-              "borderWidth": 1,
-              "fontFamily": "Courier New",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "paddingLeft": 2,
-              "paddingTop": 2,
-              "textAlign": "left",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderColor": "#CBCED1",
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        <Text>
-          inline code
-        </Text>
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="Inline "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        Inline 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "borderRadius": 4,
-              "borderWidth": 1,
-              "fontFamily": "Courier New",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "paddingLeft": 2,
-              "paddingTop": 2,
-              "textAlign": "left",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderColor": "#CBCED1",
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        <Text>
-          code
-        </Text>
-      </Text>
-      <Text
-        accessibilityLabel=" has "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         has 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "borderRadius": 4,
-              "borderWidth": 1,
-              "fontFamily": "Courier New",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "paddingLeft": 2,
-              "paddingTop": 2,
-              "textAlign": "left",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderColor": "#CBCED1",
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        <Text>
-          back-ticks around
-        </Text>
-      </Text>
-      <Text
-        accessibilityLabel=" it."
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         it.
-      </Text>
-    </Text>
-  </Text>
   <View
     style={
-      [
-        {
-          "borderRadius": 4,
-          "borderWidth": 1,
-          "padding": 4,
-        },
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderColor": "#CBCED1",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
@@ -377,7 +168,7 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
         [
           {
             "backgroundColor": "transparent",
-            "fontFamily": "Courier New",
+            "fontFamily": "Inter",
             "fontSize": 16,
             "fontWeight": "400",
             "lineHeight": 22,
@@ -389,8 +180,241 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
         ]
       }
     >
-      Code block
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="This is "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          This is 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "fontFamily": "Courier New",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "paddingLeft": 2,
+                "paddingTop": 2,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+                "borderColor": "#CBCED1",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text>
+            inline code
+          </Text>
+        </Text>
+      </Text>
     </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Inline "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Inline 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "fontFamily": "Courier New",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "paddingLeft": 2,
+                "paddingTop": 2,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+                "borderColor": "#CBCED1",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text>
+            code
+          </Text>
+        </Text>
+        <Text
+          accessibilityLabel=" has "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           has 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "fontFamily": "Courier New",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "paddingLeft": 2,
+                "paddingTop": 2,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+                "borderColor": "#CBCED1",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text>
+            back-ticks around
+          </Text>
+        </Text>
+        <Text
+          accessibilityLabel=" it."
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           it.
+        </Text>
+      </Text>
+    </Text>
+    <View
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "padding": 4,
+          },
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderColor": "#CBCED1",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Courier New",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        Code block
+      </Text>
+    </View>
   </View>
 </View>
 `;
@@ -405,51 +429,433 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     }
   }
 >
-  <Text
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
-        accessibilityLabel="Unicode: "
         style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        Unicode: 
+        <Text
+          accessibilityLabel="Unicode: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Unicode: 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          😃
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          😇
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+            ]
+          }
+        >
+          👍
+        </Text>
       </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Shortnames: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Shortnames: 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {},
+              false,
+            ]
+          }
+        >
+           
+          😂
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {},
+              false,
+            ]
+          }
+        >
+           
+          👍
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Custom emojis: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Custom emojis: 
+        </Text>
+        <ViewManagerAdapter_ExpoImage
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={15}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+              },
+            ]
+          }
+          style={
+            {
+              "height": 15,
+              "width": 15,
+            }
+          }
+          transition={null}
+          width={15}
+        />
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           
+        </Text>
+        <ViewManagerAdapter_ExpoImage
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={15}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+              },
+            ]
+          }
+          style={
+            {
+              "height": 15,
+              "width": 15,
+            }
+          }
+          transition={null}
+          width={15}
+        />
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           
+        </Text>
+        <ViewManagerAdapter_ExpoImage
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={15}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+              },
+            ]
+          }
+          style={
+            {
+              "height": 15,
+              "width": 15,
+            }
+          }
+          transition={null}
+          width={15}
+        />
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
       <Text
         style={
           [
@@ -459,9 +865,9 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 16,
+              "fontSize": 30,
               "fontWeight": "400",
-              "lineHeight": 22,
+              "lineHeight": 43,
               "textAlign": "left",
             },
           ]
@@ -478,188 +884,18 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 16,
+              "fontSize": 30,
               "fontWeight": "400",
-              "lineHeight": 22,
+              "lineHeight": 43,
               "textAlign": "left",
             },
-          ]
-        }
-      >
-        😇
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
+            {},
+            false,
           ]
         }
       >
         👍
       </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="Shortnames: "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        Shortnames: 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {},
-          ]
-        }
-      >
-         
-        😂
-      </Text>
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#2F343D",
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {},
-          ]
-        }
-      >
-         
-        👍
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="Custom emojis: "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        Custom emojis: 
-      </Text>
       <ViewManagerAdapter_ExpoImage
         containerViewRef={"[React.ref]"}
         contentFit="contain"
@@ -669,105 +905,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             "top": "50%",
           }
         }
-        height={15}
-        nativeViewRef={"[React.ref]"}
-        onError={[Function]}
-        onLoad={[Function]}
-        onLoadStart={[Function]}
-        onProgress={[Function]}
-        placeholder={[]}
-        source={
-          [
-            {
-              "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
-            },
-          ]
-        }
-        style={
-          {
-            "height": 15,
-            "width": 15,
-          }
-        }
-        transition={null}
-        width={15}
-      />
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <ViewManagerAdapter_ExpoImage
-        containerViewRef={"[React.ref]"}
-        contentFit="contain"
-        contentPosition={
-          {
-            "left": "50%",
-            "top": "50%",
-          }
-        }
-        height={15}
-        nativeViewRef={"[React.ref]"}
-        onError={[Function]}
-        onLoad={[Function]}
-        onLoadStart={[Function]}
-        onProgress={[Function]}
-        placeholder={[]}
-        source={
-          [
-            {
-              "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
-            },
-          ]
-        }
-        style={
-          {
-            "height": 15,
-            "width": 15,
-          }
-        }
-        transition={null}
-        width={15}
-      />
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <ViewManagerAdapter_ExpoImage
-        containerViewRef={"[React.ref]"}
-        contentFit="contain"
-        contentPosition={
-          {
-            "left": "50%",
-            "top": "50%",
-          }
-        }
-        height={15}
+        height={30}
         nativeViewRef={"[React.ref]"}
         onError={[Function]}
         onLoad={[Function]}
@@ -783,93 +921,14 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         }
         style={
           {
-            "height": 15,
-            "width": 15,
+            "height": 30,
+            "width": 30,
           }
         }
         transition={null}
-        width={15}
+        width={30}
       />
-    </Text>
-  </Text>
-  <View
-    style={
-      {
-        "flexDirection": "row",
-      }
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "color": "#2F343D",
-          },
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 30,
-            "fontWeight": "400",
-            "lineHeight": 43,
-            "textAlign": "left",
-          },
-        ]
-      }
-    >
-      😃
-    </Text>
-    <Text
-      style={
-        [
-          {
-            "color": "#2F343D",
-          },
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 30,
-            "fontWeight": "400",
-            "lineHeight": 43,
-            "textAlign": "left",
-          },
-          {},
-        ]
-      }
-    >
-      👍
-    </Text>
-    <ViewManagerAdapter_ExpoImage
-      containerViewRef={"[React.ref]"}
-      contentFit="contain"
-      contentPosition={
-        {
-          "left": "50%",
-          "top": "50%",
-        }
-      }
-      height={30}
-      nativeViewRef={"[React.ref]"}
-      onError={[Function]}
-      onLoad={[Function]}
-      onLoadStart={[Function]}
-      onProgress={[Function]}
-      placeholder={[]}
-      source={
-        [
-          {
-            "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
-          },
-        ]
-      }
-      style={
-        {
-          "height": 30,
-          "width": 30,
-        }
-      }
-      transition={null}
-      width={30}
-    />
+    </View>
   </View>
 </View>
 `;
@@ -884,91 +943,99 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
     }
   }
 >
-  <Text
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
-        onPress={[Function]}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            {
-              "color": "#095AD2",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        test-channel
-      </Text>
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        #unknown
+        <Text
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          test-channel
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          #unknown
+        </Text>
       </Text>
     </Text>
-  </Text>
+  </View>
 </View>
 `;
 
@@ -982,78 +1049,110 @@ exports[`Story Snapshots: Headers should match snapshot 1`] = `
     }
   }
 >
-  <Text
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 24,
-          "fontWeight": "700",
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
-    Header 1
-  </Text>
-  <Text
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 24,
+            "fontWeight": "700",
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      Header 1
+    </Text>
+  </View>
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 22,
-          "fontWeight": "700",
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
-    Header 2
-  </Text>
-  <Text
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 22,
+            "fontWeight": "700",
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      Header 2
+    </Text>
+  </View>
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 20,
-          "fontWeight": "600",
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
-    Header 3
-  </Text>
-  <Text
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      Header 3
+    </Text>
+  </View>
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 18,
-          "fontWeight": "600",
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
-    Header 4
-  </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 18,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      Header 4
+    </Text>
+  </View>
 </View>
 `;
 
@@ -1067,49 +1166,43 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
     }
   }
 >
-  <Text
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
-      <View
+      <Text
         style={
-          [
-            {
-              "height": 300,
-              "width": 300,
-            },
-            {
-              "borderColor": "#CBCED1",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
         <ViewManagerAdapter_ExpoImage
-          bottom={0}
+          borderColor={4291546833}
           containerViewRef={"[React.ref]"}
           contentFit="contain"
           contentPosition={
@@ -1118,16 +1211,13 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
               "top": "50%",
             }
           }
-          left={0}
+          height={300}
           nativeViewRef={"[React.ref]"}
           onError={[Function]}
           onLoad={[Function]}
-          onLoadEnd={[Function]}
           onLoadStart={[Function]}
           onProgress={[Function]}
           placeholder={[]}
-          position="absolute"
-          right={0}
           source={
             [
               {
@@ -1137,19 +1227,17 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
           }
           style={
             {
-              "bottom": 0,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
+              "borderColor": "#CBCED1",
+              "height": 300,
+              "width": 300,
             }
           }
-          top={0}
           transition={null}
+          width={300}
         />
-      </View>
+      </Text>
     </Text>
-  </Text>
+  </View>
 </View>
 `;
 
@@ -1163,328 +1251,360 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
     }
   }
 >
-  <Text
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
-        onLongPress={[Function]}
-        onPress={[Function]}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#095AD2",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        Markdown link
-      </Text>
-      <Text
-        accessibilityLabel=": "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        : 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "borderRadius": 4,
-              "borderWidth": 1,
-              "fontFamily": "Courier New",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "paddingLeft": 2,
-              "paddingTop": 2,
-              "textAlign": "left",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderColor": "#CBCED1",
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        <Text>
-          [description](url)
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          Markdown link
+        </Text>
+        <Text
+          accessibilityLabel=": "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          : 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "fontFamily": "Courier New",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "paddingLeft": 2,
+                "paddingTop": 2,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+                "borderColor": "#CBCED1",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text>
+            [description](url)
+          </Text>
         </Text>
       </Text>
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
-        onLongPress={[Function]}
-        onPress={[Function]}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#095AD2",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        Formatted Link
-      </Text>
-      <Text
-        accessibilityLabel=": "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        : 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "borderRadius": 4,
-              "borderWidth": 1,
-              "fontFamily": "Courier New",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "paddingLeft": 2,
-              "paddingTop": 2,
-              "textAlign": "left",
-            },
-            {
-              "backgroundColor": "#E4E7EA",
-              "borderColor": "#CBCED1",
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        <Text>
-          &lt;url|description&gt;
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          Formatted Link
+        </Text>
+        <Text
+          accessibilityLabel=": "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          : 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "fontFamily": "Courier New",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "paddingLeft": 2,
+                "paddingTop": 2,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#E4E7EA",
+                "borderColor": "#CBCED1",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text>
+            &lt;url|description&gt;
+          </Text>
         </Text>
       </Text>
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
-        onLongPress={[Function]}
-        onPress={[Function]}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#095AD2",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        Markdown link
-      </Text>
-      <Text
-        accessibilityLabel=" and the text with default style"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         and the text with default style
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          Markdown link
+        </Text>
+        <Text
+          accessibilityLabel=" and the text with default style"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           and the text with default style
+        </Text>
       </Text>
     </Text>
-  </Text>
-  <Text
+  </View>
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
-        onLongPress={[Function]}
-        onPress={[Function]}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#095AD2",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        Markdown link
-      </Text>
-      <Text
-        accessibilityLabel=" and the text with a color specific as fontSecondaryInfo"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         and the text with a color specific as fontSecondaryInfo
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          Markdown link
+        </Text>
+        <Text
+          accessibilityLabel=" and the text with a color specific as fontSecondaryInfo"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           and the text with a color specific as fontSecondaryInfo
+        </Text>
       </Text>
     </Text>
-  </Text>
+  </View>
 </View>
 `;
 
@@ -1498,496 +1618,69 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
     }
   }
 >
-  <View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        • 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        <Text
-          style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
-          }
-        >
-          <Text
-            accessibilityLabel="Open Source"
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            Open Source
-          </Text>
-        </Text>
-      </Text>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        • 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        <Text
-          style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
-          }
-        >
-          <Text
-            onLongPress={[Function]}
-            onPress={[Function]}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#095AD2",
-                },
-              ]
-            }
-          >
-            Rocket.Chat
-          </Text>
-        </Text>
-      </Text>
-    </View>
-  </View>
-  <Text
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="  - nodejs"
+    <View>
+      <View
         style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-          - nodejs
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="  - ReactNative"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-          - ReactNative
-      </Text>
-    </Text>
-  </Text>
-  <View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "fontVariant": [
-                "tabular-nums",
-              ],
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        1
-        . 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
-          <Text
-            accessibilityLabel="Open Source"
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            Open Source
-          </Text>
+          • 
         </Text>
-      </Text>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "fontVariant": [
-                "tabular-nums",
-              ],
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        2
-        . 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
-          }
-        >
-          <Text
-            onLongPress={[Function]}
-            onPress={[Function]}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#095AD2",
-                },
-              ]
-            }
-          >
-            Rocket.Chat
-          </Text>
-        </Text>
-      </Text>
-    </View>
-  </View>
-  <View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        • 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        <Text
-          style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
               {
                 "backgroundColor": "transparent",
+                "flexShrink": 1,
                 "fontFamily": "Inter",
-                "fontWeight": "700",
+                "fontWeight": "400",
                 "textAlign": "left",
               }
             }
           >
             <Text
-              accessibilityLabel="bold"
+              accessibilityLabel="Open Source"
               style={
                 [
                   {
@@ -2001,189 +1694,260 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 ]
               }
             >
-              bold
+              Open Source
             </Text>
           </Text>
-          <Text
-            accessibilityLabel=" "
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-             
-          </Text>
         </Text>
-      </Text>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
+      </View>
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        • 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
               {
-                "fontStyle": "italic",
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
               }
             }
           >
             <Text
-              accessibilityLabel="italic"
+              onLongPress={[Function]}
+              onPress={[Function]}
               style={
                 [
                   {
-                    "flexShrink": 1,
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
                     "fontSize": 16,
-                    "lineHeight": 22,
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   },
                   {
-                    "color": "#2F343D",
+                    "color": "#095AD2",
                   },
                 ]
               }
             >
-              italic
+              Rocket.Chat
             </Text>
           </Text>
-          <Text
-            accessibilityLabel=" "
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-             
-          </Text>
         </Text>
-      </Text>
+      </View>
     </View>
-    <View
+    <Text
       style={
-        {
-          "flexDirection": "row",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        • 
+        <Text
+          accessibilityLabel="  - nodejs"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+            - nodejs
+        </Text>
       </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
       <Text
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="  - ReactNative"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+            - ReactNative
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          1
+          . 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
               {
-                "textDecorationLine": "line-through",
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
               }
             }
           >
             <Text
-              accessibilityLabel="strikethrough"
+              accessibilityLabel="Open Source"
               style={
                 [
                   {
@@ -2197,86 +1961,161 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 ]
               }
             >
-              strikethrough
+              Open Source
             </Text>
           </Text>
-          <Text
-            accessibilityLabel=" "
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-             
-          </Text>
         </Text>
-      </Text>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
+      </View>
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        • 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "fontVariant": [
+                  "tabular-nums",
+                ],
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          2
+          . 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
               {
-                "fontStyle": "italic",
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              onLongPress={[Function]}
+              onPress={[Function]}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              Rocket.Chat
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
               }
             }
           >
@@ -2291,7 +2130,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="bold italic"
+                accessibilityLabel="bold"
                 style={
                   [
                     {
@@ -2305,89 +2144,176 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   ]
                 }
               >
-                bold italic
+                bold
               </Text>
             </Text>
-          </Text>
-          <Text
-            accessibilityLabel=" "
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-             
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
           </Text>
         </Text>
-      </Text>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
+      </View>
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        • 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
               {
                 "backgroundColor": "transparent",
+                "flexShrink": 1,
                 "fontFamily": "Inter",
-                "fontWeight": "700",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="italic"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                italic
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
                 "textAlign": "left",
               }
             }
@@ -2400,7 +2326,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             >
               <Text
-                accessibilityLabel="bold strikethrough"
+                accessibilityLabel="strikethrough"
                 style={
                   [
                     {
@@ -2414,193 +2340,188 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                   ]
                 }
               >
-                bold strikethrough
+                strikethrough
               </Text>
             </Text>
-          </Text>
-          <Text
-            accessibilityLabel=" "
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-             
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
           </Text>
         </Text>
-      </Text>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
+      </View>
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        • 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
               {
-                "fontStyle": "italic",
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
               }
             }
           >
             <Text
               style={
                 {
-                  "textDecorationLine": "line-through",
+                  "fontStyle": "italic",
                 }
               }
             >
               <Text
-                accessibilityLabel="italic strikethrough"
                 style={
-                  [
-                    {
-                      "flexShrink": 1,
-                      "fontSize": 16,
-                      "lineHeight": 22,
-                    },
-                    {
-                      "color": "#2F343D",
-                    },
-                  ]
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  }
                 }
               >
-                italic strikethrough
+                <Text
+                  accessibilityLabel="bold italic"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  bold italic
+                </Text>
               </Text>
             </Text>
-          </Text>
-          <Text
-            accessibilityLabel=" "
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-             
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
           </Text>
         </Text>
-      </Text>
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <Text
+      </View>
+      <View
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        • 
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "flexDirection": "row",
+          }
         }
       >
         <Text
           style={
-            {
-              "backgroundColor": "transparent",
-              "flexShrink": 1,
-              "fontFamily": "Inter",
-              "fontWeight": "400",
-              "textAlign": "left",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           <Text
             style={
               {
-                "fontStyle": "italic",
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
               }
             }
           >
@@ -2622,7 +2543,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 }
               >
                 <Text
-                  accessibilityLabel="bold italic strikethrough"
+                  accessibilityLabel="bold strikethrough"
                   style={
                     [
                       {
@@ -2636,13 +2557,236 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     ]
                   }
                 >
-                  bold italic strikethrough
+                  bold strikethrough
+                </Text>
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "textDecorationLine": "line-through",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="italic strikethrough"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  italic strikethrough
+                </Text>
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+          </Text>
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          • 
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "fontStyle": "italic",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "700",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "textDecorationLine": "line-through",
+                    }
+                  }
+                >
+                  <Text
+                    accessibilityLabel="bold italic strikethrough"
+                    style={
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    bold italic strikethrough
+                  </Text>
                 </Text>
               </Text>
             </Text>
           </Text>
         </Text>
-      </Text>
+      </View>
     </View>
   </View>
 </View>
@@ -2659,388 +2803,404 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
   }
 >
   <View>
-    <Text
+    <View
       style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
+        {
+          "gap": 2,
+        }
       }
     >
       <Text
         style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         <Text
-          onPress={[Function]}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
-              },
-              {
-                "color": "#9B1325",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
           }
         >
-          rocket.cat
-        </Text>
-        <Text
-          accessibilityLabel=" "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           
-        </Text>
-        <Text
-          onPress={[Function]}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
-              },
-              {
-                "color": "#8E6300",
-              },
-            ]
-          }
-        >
-          name1
-        </Text>
-        <Text
-          accessibilityLabel=" "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           
-        </Text>
-        <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
-              },
-              {
-                "color": "#974809",
-              },
-            ]
-          }
-        >
-          all
-        </Text>
-        <Text
-          accessibilityLabel=" "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           
-        </Text>
-        <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
-              },
-              {
-                "color": "#974809",
-              },
-            ]
-          }
-        >
-          here
-        </Text>
-        <Text
-          accessibilityLabel=" "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           
-        </Text>
-        <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          @unknown
+          <Text
+            onPress={[Function]}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9B1325",
+                },
+              ]
+            }
+          >
+            rocket.cat
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            onPress={[Function]}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#8E6300",
+                },
+              ]
+            }
+          >
+            name1
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#974809",
+                },
+              ]
+            }
+          >
+            all
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#974809",
+                },
+              ]
+            }
+          >
+            here
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            @unknown
+          </Text>
         </Text>
       </Text>
-    </Text>
-    <Text
+    </View>
+    <View
       style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
+        {
+          "gap": 2,
+        }
       }
     >
       <Text
         style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         <Text
-          onPress={[Function]}
           style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
-              },
-              {
-                "color": "#9B1325",
-              },
-            ]
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
           }
         >
-          Rocket Cat
-        </Text>
-        <Text
-          accessibilityLabel=" "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           
-        </Text>
-        <Text
-          onPress={[Function]}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
-              },
-              {
-                "color": "#8E6300",
-              },
-            ]
-          }
-        >
-          Name
-        </Text>
-        <Text
-          accessibilityLabel=" "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           
-        </Text>
-        <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
-              },
-              {
-                "color": "#974809",
-              },
-            ]
-          }
-        >
-          all
-        </Text>
-        <Text
-          accessibilityLabel=" "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           
-        </Text>
-        <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "600",
-                "textAlign": "left",
-              },
-              {
-                "color": "#974809",
-              },
-            ]
-          }
-        >
-          here
-        </Text>
-        <Text
-          accessibilityLabel=" "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           
-        </Text>
-        <Text
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          @unknown
+          <Text
+            onPress={[Function]}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9B1325",
+                },
+              ]
+            }
+          >
+            Rocket Cat
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            onPress={[Function]}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#8E6300",
+                },
+              ]
+            }
+          >
+            Name
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#974809",
+                },
+              ]
+            }
+          >
+            all
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#974809",
+                },
+              ]
+            }
+          >
+            here
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            @unknown
+          </Text>
         </Text>
       </Text>
-    </Text>
+    </View>
   </View>
 </RCTScrollView>
 `;
@@ -3206,480 +3366,537 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     }
   }
 >
-  <Text
+  <View
     style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
+      {
+        "gap": 2,
+      }
     }
   >
     <Text
       style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
       }
     >
       <Text
-        accessibilityLabel="This is "
         style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
         }
       >
-        This is 
+        <Text
+          accessibilityLabel="This is "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          This is 
+        </Text>
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#095AD2",
+              },
+            ]
+          }
+        >
+          Rocket.Chat
+        </Text>
       </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
       <Text
-        onLongPress={[Function]}
-        onPress={[Function]}
         style={
-          [
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="a"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          a
+        </Text>
+      </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="b"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          b
+        </Text>
+      </Text>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="c"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          c
+        </Text>
+      </Text>
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="d"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          d
+        </Text>
+      </Text>
+    </Text>
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <View
+      style={
+        {
+          "height": 8,
+        }
+      }
+    />
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="e"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          e
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="a       b                                                                             c"
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          a       b                                                                             c
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="Emphasis: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          Emphasis: 
+        </Text>
+        <Text
+          style={
             {
               "backgroundColor": "transparent",
               "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
+              "fontWeight": "700",
               "textAlign": "left",
-            },
-            {
-              "color": "#095AD2",
-            },
-          ]
-        }
-      >
-        Rocket.Chat
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="a"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        a
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="b"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        b
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="c"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        c
-      </Text>
-    </Text>
-  </Text>
-  <View
-    style={
-      {
-        "height": 8,
-      }
-    }
-  />
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="d"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        d
-      </Text>
-    </Text>
-  </Text>
-  <View
-    style={
-      {
-        "height": 8,
-      }
-    }
-  />
-  <View
-    style={
-      {
-        "height": 8,
-      }
-    }
-  />
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="e"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        e
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="a       b                                                                             c"
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        a       b                                                                             c
-      </Text>
-    </Text>
-  </Text>
-  <Text
-    style={
-      [
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "lineHeight": 22,
-          "textAlign": "left",
-        },
-        {
-          "color": "#2F343D",
-        },
-      ]
-    }
-  >
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "flexShrink": 1,
-          "fontFamily": "Inter",
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
-      }
-    >
-      <Text
-        accessibilityLabel="Emphasis: "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-        Emphasis: 
-      </Text>
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontWeight": "700",
-            "textAlign": "left",
+            }
           }
-        }
-      >
+        >
+          <Text
+            accessibilityLabel="bold"
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            bold
+          </Text>
+        </Text>
         <Text
-          accessibilityLabel="bold"
+          accessibilityLabel=" "
           style={
             [
               {
@@ -3693,120 +3910,8 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
             ]
           }
         >
-          bold
+           
         </Text>
-      </Text>
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <Text
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="italic"
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          italic
-        </Text>
-      </Text>
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <Text
-        style={
-          {
-            "textDecorationLine": "line-through",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="strikethrough"
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          strikethrough
-        </Text>
-      </Text>
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontWeight": "700",
-            "textAlign": "left",
-          }
-        }
-      >
         <Text
           style={
             {
@@ -3815,7 +3920,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
           }
         >
           <Text
-            accessibilityLabel="bold with italic"
+            accessibilityLabel="italic"
             style={
               [
                 {
@@ -3829,37 +3934,26 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               ]
             }
           >
-            bold with italic
+            italic
           </Text>
         </Text>
-      </Text>
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontWeight": "700",
-            "textAlign": "left",
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
-        }
-      >
+        >
+           
+        </Text>
         <Text
           style={
             {
@@ -3868,7 +3962,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
           }
         >
           <Text
-            accessibilityLabel="bold with strike"
+            accessibilityLabel="strikethrough"
             style={
               [
                 {
@@ -3882,37 +3976,193 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
               ]
             }
           >
-            bold with strike
+            strikethrough
           </Text>
         </Text>
-      </Text>
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontWeight": "700",
-            "textAlign": "left",
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
-        }
-      >
+        >
+           
+        </Text>
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "700",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="bold with italic"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              bold with italic
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "700",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "textDecorationLine": "line-through",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="bold with strike"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              bold with strike
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "700",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "textDecorationLine": "line-through",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="bold with italic and strike"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                bold with italic and strike
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           
+        </Text>
         <Text
           style={
             {
@@ -3928,7 +4178,7 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
             }
           >
             <Text
-              accessibilityLabel="bold with italic and strike"
+              accessibilityLabel="italic with strike"
               style={
                 [
                   {
@@ -3942,62 +4192,12 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
                 ]
               }
             >
-              bold with italic and strike
+              italic with strike
             </Text>
           </Text>
         </Text>
       </Text>
-      <Text
-        accessibilityLabel=" "
-        style={
-          [
-            {
-              "flexShrink": 1,
-              "fontSize": 16,
-              "lineHeight": 22,
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-      >
-         
-      </Text>
-      <Text
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
-      >
-        <Text
-          style={
-            {
-              "textDecorationLine": "line-through",
-            }
-          }
-        >
-          <Text
-            accessibilityLabel="italic with strike"
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "fontSize": 16,
-                  "lineHeight": 22,
-                },
-                {
-                  "color": "#2F343D",
-                },
-              ]
-            }
-          >
-            italic with strike
-          </Text>
-        </Text>
-      </Text>
     </Text>
-  </Text>
+  </View>
 </View>
 `;

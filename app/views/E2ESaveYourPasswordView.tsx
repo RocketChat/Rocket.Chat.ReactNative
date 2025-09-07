@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
 		...sharedStyles.textBold
 	},
 	copyButton: {
-		width: 72,
-		height: 32
+		paddingHorizontal: 20,
+		paddingVertical: 8
 	},
 	info: {
 		fontSize: 16,
