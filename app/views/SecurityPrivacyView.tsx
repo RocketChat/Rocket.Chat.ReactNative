@@ -68,9 +68,9 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		navigateToScreen('ScreenLockConfigView');
 	};
 
-    const navigateToTotpView = async () => {
-        navigateToScreen('TotpView');
-    };
+	const navigateToTotpView = async () => {
+		navigateToScreen('TotpView');
+	};
 
 	return (
 		<SafeAreaView testID='security-privacy-view'>
@@ -97,29 +97,27 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 					<List.Separator />
 				</List.Section>
 
-                <List.Section>
-                <List.Separator />
-                    <List.Item
+				<List.Section>
+					<List.Separator />
+					<List.Item
 						title={user.services?.totp?.enabled ? 'remove_authenticator_app' : 'add_authenticator_app'}
 						showActionIndicator
 						onPress={navigateToTotpView}
 						testID='security-privacy-view-screen-lock'
 					/>
 					<List.Separator />
-                    {
-                        user.services?.totp?.enabled ? (
-                            <>
-                                <List.Item
-                                    title={'view_backup_codes'}
-                                    showActionIndicator
-                                    onPress={navigateToScreenLockConfigView}
-                                    testID='security-privacy-view-screen-lock'
-                                />
-                                <List.Separator />
-                            </>
-                        ) : null
-                    }
-                    <List.Item
+					{user.services?.totp?.enabled ? (
+						<>
+							<List.Item
+								title={'view_backup_codes'}
+								showActionIndicator
+								onPress={navigateToScreenLockConfigView}
+								testID='security-privacy-view-screen-lock'
+							/>
+							<List.Separator />
+						</>
+					) : null}
+					<List.Item
 						title='email_two_factor_authentication'
 						testID='security-privacy-view-analytics-events'
 						right={() => <Switch value={user?.services?.email2fa?.enabled || false} onValueChange={toggleAnalyticsEvents} />}

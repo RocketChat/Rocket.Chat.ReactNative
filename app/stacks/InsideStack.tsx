@@ -197,7 +197,7 @@ const SettingsStackNavigator = () => {
 				component={ScreenLockConfigView}
 				options={ScreenLockConfigView.navigationOptions}
 			/>
-            <SettingsStack.Screen name='TotpView' component={TotpView} />
+			<SettingsStack.Screen name='TotpView' component={TotpView} />
 		</SettingsStack.Navigator>
 	);
 };

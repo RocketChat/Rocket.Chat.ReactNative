@@ -1,7 +1,7 @@
 import type { IUser } from '../../IUser';
 
 export type MeEndpoints = {
-	'me': {
+	me: {
 		GET: () => IUser;
 	};
 };
