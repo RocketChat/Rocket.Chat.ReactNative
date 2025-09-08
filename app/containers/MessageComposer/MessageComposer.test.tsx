@@ -10,19 +10,25 @@ import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
-import { colors } from '../../lib/constants';
+import { colors } from '../../lib/constants/colors';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 import { initStore } from '../../lib/store/auxStore';
 import { search } from '../../lib/methods/search';
 import database from '../../lib/database';
-import { Services } from '../../lib/services';
 
 jest.useFakeTimers();
 
 // Ensure search returns at least one item so autocomplete renders
 jest.mock('../../lib/methods/search', () => ({
 	search: jest.fn(() => [{ _id: 'u1', username: 'john', name: 'John' }])
+}));
+
+jest.mock('../../lib/services/restApi', () => ({
+	getListCannedResponse: jest.fn(() => ({
+		success: true,
+		cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
+	}))
 }));
 
 const user = userEvent.setup();
@@ -500,10 +506,6 @@ describe('MessageComposer', () => {
 
 		test('select ! canned response inserts text and sends, autocomplete hides', async () => {
 			const onSendMessage = jest.fn();
-			jest.spyOn(Services, 'getListCannedResponse').mockResolvedValueOnce({
-				success: true,
-				cannedResponses: [{ _id: '1', shortcut: 'brb', text: 'Be right back' }]
-			} as any);
 			render(<Render context={{ onSendMessage, room: { ...initialContext.room, t: 'l' } }} />);
 
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');

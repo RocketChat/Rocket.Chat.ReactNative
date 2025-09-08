@@ -147,6 +147,10 @@ export default async function updateMessages({
 						if (newMessage && !newMessage?.md) {
 							newMessage.md = undefined;
 						}
+						if (!m?.unread && newMessage?.unread) {
+							newMessage.unread = false;
+							m.unread = false;
+						}
 						Object.assign(m, newMessage);
 
 						// If image_url didn't change, keep the same attachments, trying to stick to already downloaded media inside att.title_link (starting with file://)
