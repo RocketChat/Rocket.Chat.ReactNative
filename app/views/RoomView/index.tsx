@@ -119,7 +119,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private subObserveQuery?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
-	private retryInit = 0;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
@@ -608,12 +607,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			this.retryInit += 1;
-			if (this.retryInit <= 1) {
-				this.retryInitTimeout = setTimeout(() => {
-					this.init();
-				}, 300);
-			}
+			this.retryInitTimeout = setTimeout(() => {
+				this.init();
+			}, 300);
 		}
 	};
 

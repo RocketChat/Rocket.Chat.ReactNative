@@ -220,5 +220,13 @@
 	"snyk": true,
 	"engines": {
 		"node": ">=18"
+	},
+	"codegenConfig": {
+		"name": "SSLPinning",
+		"type": "modules",
+		"jsSrcsDir": "./app/lib/native",
+		"android": {
+			"javaPackageName": "chat.rocket.reactnative.networking"
+		}
 	}
 }
