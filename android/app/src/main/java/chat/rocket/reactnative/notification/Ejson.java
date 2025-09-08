@@ -116,12 +116,12 @@ public class Ejson {
         return url;
     }
 
-    public class Sender {
+    public static class Sender {
         String username;
         String _id;
     }
 
-    public class Content {
+    public static class Content {
         String ciphertext;
         String algorithm;
     }
