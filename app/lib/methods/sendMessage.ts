@@ -89,7 +89,8 @@ export async function sendMessage(
 	msg: string,
 	tmid: string | undefined,
 	user: Partial<Pick<IUser, 'id' | 'username' | 'name'>>,
-	tshow?: boolean
+	tshow?: boolean,
+	attachments?: any[]
 ): Promise<void> {
 	try {
 		const db = database.active;
@@ -105,7 +106,8 @@ export async function sendMessage(
 			rid,
 			msg,
 			tmid,
-			tshow
+			tshow,
+			attachments
 		} as IMessage);
 
 		const messageDate = new Date();
@@ -163,6 +165,7 @@ export async function sendMessage(
 						tm.ts = messageDate;
 						tm._updatedAt = messageDate;
 						tm.status = messagesStatus.TEMP;
+						tm.attachments = attachments as any;
 						tm.u = {
 							_id: user.id || '1',
 							username: user.username,
@@ -195,6 +198,7 @@ export async function sendMessage(
 					username: user.username,
 					name: user.name
 				};
+				m.attachments = attachments as any;
 				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
 					// m.tlm = messageDate; // I don't think this is necessary... leaving it commented just in case...

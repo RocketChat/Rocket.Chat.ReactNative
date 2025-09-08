@@ -1,3 +1,6 @@
 {
-	"name": "RocketChatRN"
+  "name": "RocketChatRN",
+  "plugins": [
+    "expo-web-browser"
+  ]
 }

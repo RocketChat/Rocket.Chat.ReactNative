@@ -293,6 +293,13 @@ export type InsideStackParamList = {
 	ModalBlockView: {
 		data: any; // TODO: Change;
 	};
+	LocationPreviewModal: {
+		rid: string;
+		tmid?: string;
+		provider: 'osm' | 'google';
+		coords: { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
+		googleKey?: string;
+	};
 };
 
 export type OutsideParamList = {

@@ -81,6 +81,7 @@
       <true/>
     </dict>
   </dict>
+</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Take photos to share with other users</string>
 	<key>NSFaceIDUsageDescription</key>

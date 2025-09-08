@@ -1,4 +1,5 @@
 import React from 'react';
+import I18n from '../i18n';
 import { I18nManager } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -74,6 +75,7 @@ import SelectListView from '../views/SelectListView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import LegalView from '../views/LegalView';
+import LocationPreviewModal from '../views/LocationShare/LocationPreviewModal';
 import {
 	AdminPanelStackParamList,
 	ChatsStackParamList,
@@ -316,6 +318,11 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
+			<InsideStack.Screen 
+				name='LocationPreviewModal'
+				component={LocationPreviewModal}
+				options={{ presentation: 'modal', title: I18n.t('Share_Location') }}
+			/>
 		</InsideStack.Navigator>
 	);
 };
