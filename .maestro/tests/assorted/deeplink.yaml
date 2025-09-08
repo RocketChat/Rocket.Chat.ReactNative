@@ -1,5 +1,5 @@
 appId: chat.rocket.reactnative
-name: Setting
+name: DeepLink Test
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
@@ -136,11 +136,10 @@ onFlowComplete:
     timeout: 60000
 
 # should simulate a tap on a push notification and navigate to the room
-- stopApp: chat.rocket.reactnative
-- launchApp
-# I literally dunno how to implement this thing...
+# we are skipping this because we can't send push on iOS simulator and for android we have similar test
 
 # should change server
+- launchApp
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
