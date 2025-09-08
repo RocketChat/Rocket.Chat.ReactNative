@@ -9,7 +9,7 @@ tags:
       id: 'custom-header-back'
     timeout: 60000
 - tapOn:
-    id: "custom-header-back"
+    id: 'custom-header-back'
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-drawer'
