@@ -1,0 +1,24 @@
+appId: chat.rocket.reactnative
+name: Go To Room List
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'custom-header-back'
+    timeout: 60000
+- tapOn:
+    id: "custom-header-back"
+- extendedWaitUntil:
+    visible:
+      id: 'accessibility-view-drawer'
+    timeout: 60000
+- tapOn:
+    id: 'accessibility-view-drawer'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-chats'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-chats'

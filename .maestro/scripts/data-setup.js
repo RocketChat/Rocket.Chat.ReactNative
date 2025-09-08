@@ -184,6 +184,23 @@ const post = async (endpoint, username, password, body) => {
     return response;
 };
 
+const createDM = (username, password, otherUsername) => {
+    login(username, password);
+
+    const result = http.post(`${data.server}/api/v1/im.create`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        },
+        body: JSON.stringify({
+            username: otherUsername
+        })
+    });
+
+    console.log(JSON.stringify(json(result.body), null, 2));
+    return json(result.body);
+}
+
 // Delete created users to avoid use all the Seats Available on the server
 const deleteCreatedUsers = () => {
     if (data.accounts.length) {
@@ -208,5 +225,6 @@ output.utils = {
     getProfileInfo,
     post,
     login,
-    getDeepLink
+    getDeepLink,
+    createDM
 };
