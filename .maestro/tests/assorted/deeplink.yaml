@@ -16,8 +16,7 @@ onFlowComplete:
 # should run a deep link to an invalid account and raise error
 - runFlow:
     file: '../../helpers/launch-app.yaml'
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -30,8 +29,7 @@ onFlowComplete:
 # should authenticate and navigate
 - runFlow:
     file: '../../helpers/launch-app.yaml'
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - evalScript: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
@@ -65,8 +63,7 @@ onFlowComplete:
 - runFlow: '../../helpers/create-account.yaml'
 
 # should authenticate and navigate back to the previous server
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -90,8 +87,7 @@ onFlowComplete:
     timeout: 60000
 
 # should navigate to the room using path
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -102,8 +98,7 @@ onFlowComplete:
     timeout: 60000
 
 # should navigate to the thread using path
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -114,8 +109,7 @@ onFlowComplete:
     timeout: 60000
 
 # should navigate to the room using rid
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -142,8 +136,7 @@ onFlowComplete:
     timeout: 60000
 
 # should simulate a tap on a push notification and navigate to the room
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - launchApp
 # I literally dunno how to implement this thing...
 
@@ -168,7 +161,7 @@ onFlowComplete:
     file: './utils/check-server.yaml'
     env:
       server: ${output.data.alternateServer}
-- runFlow: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -179,8 +172,7 @@ onFlowComplete:
     timeout: 60000
 
 # should add a not existing server and fallback to the previous one
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -192,8 +184,7 @@ onFlowComplete:
 
 # should share text
 - evalScript: ${output.message = output.random()}
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -251,8 +242,7 @@ onFlowComplete:
     file: './utils/check-server.yaml'
     env:
       server: ${output.data.alternateServer}
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
@@ -310,8 +300,7 @@ onFlowComplete:
 # should open share without being logged in and go to onboarding
 - runFlow:
     file: '../../helpers/launch-app.yaml'
-- runFlow:
-    file: '../../helpers/close-app.yaml'
+- stopApp: chat.rocket.reactnative
 - runFlow:
     file: '../../helpers/open-deeplink.yaml'
     env:
