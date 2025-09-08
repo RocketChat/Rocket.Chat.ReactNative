@@ -199,7 +199,7 @@ const SettingsStackNavigator = () => {
 				options={ScreenLockConfigView.navigationOptions}
 			/>
 			<SettingsStack.Screen name='TotpView' component={TotpView} />
-            <SettingsStack.Screen name='TotpVerifyView' component={TotpVerifyView} />
+			<SettingsStack.Screen name='TotpVerifyView' component={TotpVerifyView} />
 		</SettingsStack.Navigator>
 	);
 };
