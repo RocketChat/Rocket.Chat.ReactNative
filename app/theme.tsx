@@ -3,7 +3,7 @@ import React from 'react';
 
 import { IThemePreference } from './definitions/ITheme';
 import { TNavigationOptions } from './definitions/navigationTypes';
-import { colors } from './lib/constants';
+import { colors } from './lib/constants/colors';
 
 export type TSupportedThemes = keyof typeof colors;
 export type TColors = (typeof colors)[TSupportedThemes];

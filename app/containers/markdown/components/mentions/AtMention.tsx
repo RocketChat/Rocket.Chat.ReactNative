@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
 import { useTheme } from '../../../../theme';
-import { themes, USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
+import { USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import styles from '../../styles';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { IUserMention } from '../../interfaces';
-import { useUserPreferences } from '../../../../lib/methods';
+import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 
 interface IAtMention {
 	mention: string;
