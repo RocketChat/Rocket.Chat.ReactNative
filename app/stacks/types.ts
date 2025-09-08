@@ -216,6 +216,7 @@ export type SettingsStackParamList = {
 	GetHelpView: undefined;
 	AccessibilityAndAppearanceView: undefined;
 	TotpView: undefined;
+    TotpVerifyView: undefined;
 };
 
 export type AdminPanelStackParamList = {

@@ -1097,3 +1097,6 @@ export const getMe = () => sdk.get('me');
 
 export const requestUserTotp = (userid: string) =>
 	sdk.methodCall('2fa:enable', { msg: 'method', id: userid, method: '2fa:enable', params: [] });
+
+export const verifyUserTotp = (code: string) =>
+	sdk.methodCall('2fa:validateTempToken', [code]);
