@@ -34,14 +34,13 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 
 	return (
 		<Touch
-      accessible
+			accessible
 			accessibilityLabel={accessibilityLabel}
 			accessibilityRole='radio'
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
 			testID={`server-item-${item.id}`}
 			style={{ backgroundColor: colors.surfaceRoom }}>
-
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<Image
