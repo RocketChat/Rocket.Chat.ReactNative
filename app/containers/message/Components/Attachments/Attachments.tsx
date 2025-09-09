@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
-import { Reply } from './components';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import MessageContext from '../../Context';
@@ -77,16 +76,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 			}
 
-			return (
-				<Reply
-					key={index}
-					attachment={file}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					msg={msg}
-					showAttachment={showAttachment}
-				/>
-			);
+			return null;
 		});
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},
