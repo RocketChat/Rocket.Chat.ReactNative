@@ -17,7 +17,6 @@ exports[`Story Snapshots: Switch should match snapshot 1`] = `
           "alignItems": "center",
           "flexDirection": "row",
           "justifyContent": "space-between",
-          "maxHeight": 80,
           "minHeight": 54,
         },
         {
