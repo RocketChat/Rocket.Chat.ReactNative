@@ -19,13 +19,13 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
 		const { translateLanguage } = useContext(MessageContext);
 
-		const attachmentsWithoutQuote = attachments?.filter(removeQuote);
+		const nonQuoteAttachments = attachments?.filter(removeQuote);
 
-		if (!attachmentsWithoutQuote || attachmentsWithoutQuote.length === 0) {
+		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
 			return null;
 		}
 		// TODO: memo?
-		const attachmentsElements = attachmentsWithoutQuote.map((file: IAttachment, index: number) => {
+		const attachmentsElements = nonQuoteAttachments.map((file: IAttachment, index: number) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
 				return (
