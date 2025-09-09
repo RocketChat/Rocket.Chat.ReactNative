@@ -105,7 +105,7 @@ onFlowEnd:
       message: ${output.mockedMessageTextToQuote}
 - evalScript: ${output.quotedMessage = 'm2'}
 - longPressOn:
-    text: ${output.mockedMessageTextToQuote}
+    text: .*${output.mockedMessageTextToQuote}.*
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -135,7 +135,7 @@ onFlowEnd:
     id: message-composer-send
 - extendedWaitUntil:
     visible:
-      text: ${output.quotedMessage}
+      text: .*${output.quotedMessage}.*
     timeout: 60000
 - extendedWaitUntil:
     visible:
@@ -190,15 +190,15 @@ onFlowEnd:
 - runFlow: './utils/enter-e2e-key.yaml'
 - extendedWaitUntil:
     visible:
-      text: 'm0'
+      text: '.*m0.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm1'
+      text: '.*m1.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm2'
+      text: '.*m2.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
@@ -223,19 +223,19 @@ onFlowEnd:
 - runFlow: './utils/enter-e2e-key.yaml'
 - extendedWaitUntil:
     visible:
-      text: 'm0'
+      text: '.*m0.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm1'
+      text: '.*m1.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm2'
+      text: '.*m2.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm3'
+      text: '.*m3.*'
     timeout: 60000
 
 # Login as UserA, reset user e2ee key, reset room E2EE key and send a message
@@ -329,27 +329,27 @@ onFlowEnd:
       message: 'm5'
 - extendedWaitUntil:
     visible:
-      text: 'm0'
+      text: '.*m0.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm1'
+      text: '.*m1.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm2'
+      text: '.*m2.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm3'
+      text: '.*m3.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm4'
+      text: '.*m4.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm5'
+      text: '.*m5.*'
     timeout: 60000
 
 # should send a message, edit it and be able to read it
@@ -359,10 +359,10 @@ onFlowEnd:
       message: 'm99'
 - extendedWaitUntil:
     visible:
-      text: 'm99'
+      text: '.*m99.*'
     timeout: 60000
 - longPressOn:
-    text: 'm99'
+    text: '.*m99.*'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
@@ -379,29 +379,29 @@ onFlowEnd:
     id: 'message-composer-send'
 - extendedWaitUntil:
     visible:
-      text: 'm0'
+      text: '.*m0.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm1'
+      text: '.*m1.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm2'
+      text: '.*m2.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm3'
+      text: '.*m3.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm4'
+      text: '.*m4.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm5'
+      text: '.*m5.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'm6'
+      text: '.*m6.*'
     timeout: 60000
