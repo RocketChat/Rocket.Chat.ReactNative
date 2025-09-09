@@ -166,6 +166,7 @@ export type ModalStackParamList = {
 	ScreenLockConfigView: undefined;
 	StatusView: undefined;
 	ProfileView: undefined;
+	ChangePasswordView: undefined;
 	DisplayPrefsView: undefined;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;

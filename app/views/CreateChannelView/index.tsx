@@ -132,7 +132,7 @@ const CreateChannelView = () => {
 
 	return (
 		<KeyboardView>
-			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
+			<SafeAreaView style={{ backgroundColor: colors.surfaceTint }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
 					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>
 						<ControlledFormTextInput
@@ -141,7 +141,6 @@ const CreateChannelView = () => {
 							testID='create-channel-name'
 							returnKeyType='done'
 							containerStyle={styles.containerStyle}
-							inputStyle={{ backgroundColor: colors.surfaceTint }}
 							name={'channelName'}
 							control={control}
 							error={errors?.channelName?.message}
