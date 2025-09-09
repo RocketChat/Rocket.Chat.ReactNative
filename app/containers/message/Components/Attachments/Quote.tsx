@@ -26,11 +26,7 @@ const Quote: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
 		const { translateLanguage } = useContext(MessageContext);
 
-		if (!attachments || attachments.length === 0) {
-			return null;
-		}
-
-		const quotes = attachments.filter(isValidAttachment);
+		const quotes = attachments?.filter(isValidAttachment);
 
 		if (!quotes || !quotes?.length) {
 			return null;

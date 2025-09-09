@@ -7459,13 +7459,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -8568,13 +8561,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                     </View>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -9280,13 +9266,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -10237,13 +10216,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -10949,13 +10921,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -11906,13 +11871,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -54088,13 +54046,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -54882,13 +54833,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -55572,13 +55516,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -56311,13 +56248,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -56840,13 +56770,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -57388,13 +57311,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -58078,13 +57994,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -58817,13 +58726,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -76743,15 +76645,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
             </Text>
             <View
               pointerEvents="none"
-            >
-              <View
-                style={
-                  {
-                    "gap": 4,
-                  }
-                }
-              />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -81135,15 +81029,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
             </Text>
             <View
               pointerEvents="none"
-            >
-              <View
-                style={
-                  {
-                    "gap": 4,
-                  }
-                }
-              />
-            </View>
+            />
           </View>
         </View>
       </View>
@@ -86245,13 +86131,6 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -86813,13 +86692,6 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -89371,13 +89243,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -90439,13 +90304,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -100618,13 +100476,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -101176,13 +101027,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -101719,13 +101563,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
@@ -102052,13 +101889,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
               </View>
             </View>
           </View>
