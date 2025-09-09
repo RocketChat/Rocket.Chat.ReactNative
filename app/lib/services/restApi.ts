@@ -942,7 +942,7 @@ export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
 	// {} when TOTP is enabled
 	unsubscribeRooms();
 
-	// RC 0.72.0
+	// RC 3.6.0
 	return sdk.post('users.resetE2EKey');
 }
 
