@@ -10,6 +10,7 @@ import { BUTTON_HIT_SLOP } from './message/utils';
 import AvatarContainer from './Avatar';
 import StatusContainer from './Status';
 import DotsLoader from './DotsLoader';
+import I18n from '../i18n';
 
 type TCallHeader = {
 	mic: boolean;
@@ -46,6 +47,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 				</View>
 				<View style={style.actionSheetHeaderButtons}>
 					<Touchable
+						accessibilityLabel={cam ? I18n.t('Turn_camera_off') : I18n.t('Turn_camera_on')}
 						onPress={() => setCam(!cam)}
 						style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
 						hitSlop={BUTTON_HIT_SLOP}
@@ -53,6 +55,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
 					</Touchable>
 					<Touchable
+						accessibilityLabel={mic ? I18n.t('Turn_mic_off') : I18n.t('Turn_mic_on')}
 						onPress={() => setMic(!mic)}
 						style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
 						hitSlop={BUTTON_HIT_SLOP}

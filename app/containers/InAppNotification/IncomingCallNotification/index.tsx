@@ -59,26 +59,32 @@ const IncomingCallHeader = React.memo(
 				accessibilityRole='button'
 				accessibilityLabel={`${i18n.t('Incoming_call_from')} ${roomName}`}
 				accessibilityHint={isIOS ? i18n.t('A11y_incoming_call_swipe_down_to_view_options') : undefined}
-				accessibilityActions={[
-					{ name: 'accept', label: i18n.t('accept') },
-					{ name: 'decline', label: i18n.t('decline') },
-					{ name: 'hide', label: i18n.t('Hide_notification') }
-				]}
+				accessibilityActions={
+					isIOS
+						? [
+								{ name: 'accept', label: i18n.t('accept') },
+								{ name: 'decline', label: i18n.t('decline') },
+								{ name: 'hide', label: i18n.t('Hide_notification') }
+						  ]
+						: undefined
+				}
 				onAccessibilityAction={event => {
-					switch (event.nativeEvent.actionName) {
-						case 'accept':
-							setAudio(!audio);
-							hideNotification();
-							dispatch(acceptCall({ callId }));
-							break;
-						case 'decline':
-							setAudio(!audio);
-							hideNotification();
-							dispatch(cancelCall({ callId }));
-							break;
-						case 'hide':
-							hideNotification();
-							break;
+					if (isIOS) {
+						switch (event.nativeEvent.actionName) {
+							case 'accept':
+								setAudio(!audio);
+								hideNotification();
+								dispatch(acceptCall({ callId }));
+								break;
+							case 'decline':
+								setAudio(!audio);
+								hideNotification();
+								dispatch(cancelCall({ callId }));
+								break;
+							case 'hide':
+								hideNotification();
+								break;
+						}
 					}
 				}}
 				style={[
