@@ -82,7 +82,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 
 			return null;
 		});
-
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
