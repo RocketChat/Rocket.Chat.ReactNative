@@ -8,7 +8,6 @@ import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import StatusBar from '../containers/StatusBar';
 import { ICredentials } from '../definitions';
 import { userAgent } from '../lib/constants';
 import { useAppSelector } from '../lib/hooks';
@@ -142,7 +141,6 @@ const AuthenticationWebView = () => {
 
 	return (
 		<>
-			<StatusBar />
 			<WebView
 				source={{ uri: url }}
 				userAgent={userAgent}
@@ -152,6 +150,7 @@ const AuthenticationWebView = () => {
 				injectedJavaScript={isIframe ? injectedJavaScript : undefined}
 				onLoadStart={() => setLoading(true)}
 				onLoadEnd={() => setLoading(false)}
+				incognito
 			/>
 			{loading ? <ActivityIndicator size='large' absolute /> : null}
 		</>

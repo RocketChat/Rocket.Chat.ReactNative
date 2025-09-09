@@ -12,7 +12,6 @@ export interface IUserLogin {
 	statusText: string;
 	roles: string[];
 	avatarETag?: string;
-	isFromWebView: boolean;
 	showMessageInMainThread: boolean;
 	enableMessageParserEarlyAdoption: boolean;
 	emails: Record<string, any>[];

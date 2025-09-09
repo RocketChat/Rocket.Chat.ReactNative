@@ -4,7 +4,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -54,11 +53,8 @@ const E2EEncryptionSecurityView = () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
 					const res = await Services.e2eResetOwnKey();
-					/**
-					 * It might return an empty object when TOTP is enabled,
-					 * that's why we're using strict equality to boolean
-					 */
-					if (res === true) {
+
+					if (res?.success === true) {
 						dispatch(logout());
 					}
 				} catch (e) {
@@ -71,7 +67,6 @@ const E2EEncryptionSecurityView = () => {
 
 	return (
 		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.surfaceRoom }}>
-			<StatusBar />
 			<List.Container>
 				<View style={styles.container}>
 					<ChangePassword />
