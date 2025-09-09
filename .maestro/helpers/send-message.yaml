@@ -1,7 +1,7 @@
 appId: chat.rocket.reactnative
+name: Send message
 tags:
   - 'util'
-jsEngine: graaljs
 ---
 # When channel is thread
 - runFlow:
@@ -28,5 +28,5 @@ jsEngine: graaljs
     id: message-composer-send
 - extendedWaitUntil:
     visible:
-      text: ${message}
+      text: '.*${message}.*'
     timeout: 60000

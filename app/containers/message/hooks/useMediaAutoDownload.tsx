@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { IAttachment, IUserMessage } from '../../../definitions';
-import { isImageBase64 } from '../../../lib/methods';
+import { isImageBase64 } from '../../../lib/methods/isImageBase64';
 import { fetchAutoDownloadEnabled } from '../../../lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
@@ -11,7 +11,7 @@ import {
 	MediaTypes,
 	TDownloadState
 } from '../../../lib/methods/handleMediaDownload';
-import { emitter } from '../../../lib/methods/helpers';
+import { emitter } from '../../../lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
 import MessageContext from '../Context';
 import { useFile } from './useFile';

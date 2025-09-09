@@ -36,7 +36,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
 		email: yup
 			.string()
-			.email(I18n.t('Email_must_be_valid'))
+			.email(I18n.t('Email_must_be_a_valid_email'))
 			.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
 		username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
 		password: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Password') })),

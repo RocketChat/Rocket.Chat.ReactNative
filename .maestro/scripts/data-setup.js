@@ -135,6 +135,40 @@ const sendMessage = (username, password, channel, msg, tmid) => {
     return result;
 };
 
+const getProfileInfo = async (param) => {
+    let query = '';
+    if ('userId' in param) {
+        query += `userId=${param.userId}`;
+    } else if ('username' in param) {
+        query += `username=${param.username}`;
+    }
+
+    const result = http.get(`${data.server}/api/v1/users.info?${query}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        }
+    });
+
+    const resultJson = json(result.body);
+
+    return resultJson?.data?.user;
+};
+
+const post = async (endpoint, username, password, body) => {
+    login(username, password);
+
+    const response = http.post(`${data.server}/api/v1/${endpoint}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        },
+        body: JSON.stringify(body)
+    });
+
+    return response;
+};
+
 // Delete created users to avoid use all the Seats Available on the server
 const deleteCreatedUsers = () => {
     if (data.accounts.length) {
@@ -155,5 +189,7 @@ output.utils = {
     deleteCreatedUsers,
     createRandomTeam,
     createRandomRoom,
-    sendMessage
+    sendMessage,
+    getProfileInfo,
+    post
 };
