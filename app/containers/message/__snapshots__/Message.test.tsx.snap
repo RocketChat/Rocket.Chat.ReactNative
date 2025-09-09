@@ -7459,6 +7459,13 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -8561,6 +8568,13 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                     </View>
                   </View>
                 </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -8858,65 +8872,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                 }
               >
                 <View
-                  testID="message-content-Message"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Message"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Message
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -9266,6 +9221,72 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -9549,65 +9570,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  testID="message-content-Message"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Message"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Message
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
                 <View
                   style={
                     {
@@ -10216,6 +10178,72 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -10513,65 +10541,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                 }
               >
                 <View
-                  testID="message-content-Message"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Message"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Message
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -10921,6 +10890,72 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -11204,65 +11239,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  testID="message-content-Message"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Message"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Message
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
                 <View
                   style={
                     {
@@ -11871,6 +11847,72 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -53821,65 +53863,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 }
               >
                 <View
-                  testID="message-content-I'm fine!"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="I'm fine!"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          I'm fine!
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -54046,6 +54029,72 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-I'm fine!"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="I'm fine!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          I'm fine!
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -54329,65 +54378,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  testID="message-content-I'm fine!"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="I'm fine!"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          I'm fine!
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
                 <View
                   style={
                     {
@@ -54833,6 +54823,72 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-I'm fine!"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="I'm fine!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          I'm fine!
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -55116,65 +55172,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  testID="message-content-Looks cool!"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Looks cool!"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Looks cool!
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
                 <View
                   style={
                     {
@@ -55516,6 +55513,72 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Looks cool!"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Looks cool!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Looks cool!
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -55799,65 +55862,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  testID="message-content-Yes, I am"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Yes, I am"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Yes, I am
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
                 <View
                   style={
                     {
@@ -56248,6 +56252,72 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Yes, I am"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Yes, I am"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Yes, I am
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -56545,65 +56615,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                 }
               >
                 <View
-                  testID="message-content-I'm fine!"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="I'm fine!"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          I'm fine!
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -56770,6 +56781,72 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-I'm fine!"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="I'm fine!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          I'm fine!
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -57054,65 +57131,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                 }
               >
                 <View
-                  testID="message-content-I'm fine!"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="I'm fine!"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          I'm fine!
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -57311,6 +57329,72 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-I'm fine!"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="I'm fine!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          I'm fine!
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -57594,65 +57678,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                   }
                 }
               >
-                <View
-                  testID="message-content-Looks cool!"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Looks cool!"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Looks cool!
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
                 <View
                   style={
                     {
@@ -57994,6 +58019,72 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Looks cool!"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Looks cool!"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Looks cool!
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -58277,65 +58368,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                   }
                 }
               >
-                <View
-                  testID="message-content-Yes, I am"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Yes, I am"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Yes, I am
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
                 <View
                   style={
                     {
@@ -58726,6 +58758,72 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Yes, I am"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Yes, I am"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Yes, I am
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -73686,6 +73784,13 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -74088,6 +74193,13 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
@@ -74680,6 +74792,13 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -75082,6 +75201,13 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
@@ -76652,167 +76778,7 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                     "gap": 4,
                   }
                 }
-              >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                >
-                  <View
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": false,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "alignItems": "center",
-                        "alignSelf": "flex-start",
-                        "borderColor": "#CBCED1",
-                        "borderLeftWidth": 2,
-                        "flex": 1,
-                        "flexDirection": "row",
-                        "opacity": 1,
-                      }
-                    }
-                    testID="reply-rocket.cat-First message"
-                  >
-                    <View
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "paddingLeft": 8,
-                          "paddingVertical": 4,
-                        }
-                      }
-                    >
-                      <View
-                        style={
-                          {
-                            "flex": 1,
-                            "flexDirection": "column",
-                            "gap": 4,
-                            "width": 200,
-                          }
-                        }
-                      >
-                        <View
-                          style={
-                            {
-                              "alignItems": "center",
-                              "flex": 1,
-                              "flexDirection": "row",
-                              "gap": 4,
-                            }
-                          }
-                        >
-                          <Text
-                            numberOfLines={1}
-                            style={
-                              [
-                                {
-                                  "backgroundColor": "transparent",
-                                  "flexShrink": 1,
-                                  "fontFamily": "Inter",
-                                  "fontSize": 16,
-                                  "fontWeight": "500",
-                                  "textAlign": "left",
-                                },
-                                {
-                                  "color": "#6C727A",
-                                },
-                              ]
-                            }
-                          >
-                            rocket.cat
-                          </Text>
-                        </View>
-                        <View
-                          style={
-                            {
-                              "gap": 2,
-                            }
-                          }
-                        >
-                          <Text
-                            style={
-                              [
-                                {
-                                  "backgroundColor": "transparent",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 16,
-                                  "fontWeight": "400",
-                                  "lineHeight": 22,
-                                  "textAlign": "left",
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            <Text
-                              style={
-                                {
-                                  "backgroundColor": "transparent",
-                                  "flexShrink": 1,
-                                  "fontFamily": "Inter",
-                                  "fontWeight": "400",
-                                  "textAlign": "left",
-                                }
-                              }
-                            >
-                              <Text
-                                accessibilityLabel="First message"
-                                style={
-                                  [
-                                    {
-                                      "flexShrink": 1,
-                                      "fontSize": 16,
-                                      "lineHeight": 22,
-                                    },
-                                    {
-                                      "color": "#2F343D",
-                                    },
-                                  ]
-                                }
-                              >
-                                First message
-                              </Text>
-                            </Text>
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
+              />
             </View>
           </View>
         </View>
@@ -81204,167 +81170,7 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
                     "gap": 4,
                   }
                 }
-              >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                >
-                  <View
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": false,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "alignItems": "center",
-                        "alignSelf": "flex-start",
-                        "borderColor": "#CBCED1",
-                        "borderLeftWidth": 2,
-                        "flex": 1,
-                        "flexDirection": "row",
-                        "opacity": 1,
-                      }
-                    }
-                    testID="reply-rocket.cat-First message"
-                  >
-                    <View
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "paddingLeft": 8,
-                          "paddingVertical": 4,
-                        }
-                      }
-                    >
-                      <View
-                        style={
-                          {
-                            "flex": 1,
-                            "flexDirection": "column",
-                            "gap": 4,
-                            "width": 200,
-                          }
-                        }
-                      >
-                        <View
-                          style={
-                            {
-                              "alignItems": "center",
-                              "flex": 1,
-                              "flexDirection": "row",
-                              "gap": 4,
-                            }
-                          }
-                        >
-                          <Text
-                            numberOfLines={1}
-                            style={
-                              [
-                                {
-                                  "backgroundColor": "transparent",
-                                  "flexShrink": 1,
-                                  "fontFamily": "Inter",
-                                  "fontSize": 16,
-                                  "fontWeight": "500",
-                                  "textAlign": "left",
-                                },
-                                {
-                                  "color": "#6C727A",
-                                },
-                              ]
-                            }
-                          >
-                            rocket.cat
-                          </Text>
-                        </View>
-                        <View
-                          style={
-                            {
-                              "gap": 2,
-                            }
-                          }
-                        >
-                          <Text
-                            style={
-                              [
-                                {
-                                  "backgroundColor": "transparent",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 16,
-                                  "fontWeight": "400",
-                                  "lineHeight": 22,
-                                  "textAlign": "left",
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            <Text
-                              style={
-                                {
-                                  "backgroundColor": "transparent",
-                                  "flexShrink": 1,
-                                  "fontFamily": "Inter",
-                                  "fontWeight": "400",
-                                  "textAlign": "left",
-                                }
-                              }
-                            >
-                              <Text
-                                accessibilityLabel="First message"
-                                style={
-                                  [
-                                    {
-                                      "flexShrink": 1,
-                                      "fontSize": 16,
-                                      "lineHeight": 22,
-                                    },
-                                    {
-                                      "color": "#2F343D",
-                                    },
-                                  ]
-                                }
-                              >
-                                First message
-                              </Text>
-                            </Text>
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
+              />
             </View>
           </View>
         </View>
@@ -86203,65 +86009,6 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                 }
               >
                 <View
-                  testID="message-content-this is a thumbnail"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="this is a thumbnail"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          this is a thumbnail
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -86467,6 +86214,72 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-this is a thumbnail"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="this is a thumbnail"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          this is a thumbnail
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -86764,65 +86577,6 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                 }
               >
                 <View
-                  testID="message-content-this is a thumbnail"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="this is a thumbnail"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          this is a thumbnail
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -87028,6 +86782,72 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-this is a thumbnail"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="this is a thumbnail"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          this is a thumbnail
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -88815,65 +88635,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                 }
               >
                 <View
-                  testID="message-content-Message"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Message"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Message
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -89579,6 +89340,72 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -89876,65 +89703,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                 }
               >
                 <View
-                  testID="message-content-Message"
-                >
-                  <View
-                    style={
-                      {
-                        "gap": 2,
-                      }
-                    }
-                  >
-                    <Text
-                      style={
-                        [
-                          {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "Inter",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "lineHeight": 22,
-                            "textAlign": "left",
-                          },
-                          {
-                            "color": "#2F343D",
-                          },
-                        ]
-                      }
-                    >
-                      <Text
-                        style={
-                          {
-                            "backgroundColor": "transparent",
-                            "flexShrink": 1,
-                            "fontFamily": "Inter",
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          }
-                        }
-                      >
-                        <Text
-                          accessibilityLabel="Message"
-                          style={
-                            [
-                              {
-                                "flexShrink": 1,
-                                "fontSize": 16,
-                                "lineHeight": 22,
-                              },
-                              {
-                                "color": "#2F343D",
-                              },
-                            ]
-                          }
-                        >
-                          Message
-                        </Text>
-                      </Text>
-                    </Text>
-                  </View>
-                </View>
-                <View
                   style={
                     {
                       "gap": 4,
@@ -90640,6 +90408,72 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                     </View>
                   </View>
                 </View>
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -96130,6 +95964,13 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -96728,6 +96569,13 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -97142,6 +96990,13 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -97495,6 +97350,13 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
@@ -98652,6 +98514,13 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -99250,6 +99119,13 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -99664,6 +99540,13 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -100017,6 +99900,13 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
@@ -100812,6 +100702,13 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -101363,6 +101260,13 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -101899,6 +101803,13 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -102225,6 +102136,13 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                     </View>
                   </View>
                 </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
               </View>
             </View>
           </View>
@@ -102528,6 +102446,13 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
@@ -103040,6 +102965,13 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   testID="message-content-Message, not description"
                 >
@@ -104060,6 +103992,13 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -104604,6 +104543,13 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -105110,6 +105056,13 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
@@ -105654,6 +105607,13 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
@@ -106204,6 +106164,13 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -106702,6 +106669,13 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
@@ -107477,6 +107451,13 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
+                />
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
                 >
                   <View
                     style={
@@ -107975,6 +107956,13 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                />
                 <View
                   style={
                     {
