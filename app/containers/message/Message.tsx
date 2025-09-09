@@ -77,8 +77,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		);
 	}
 
-
-if (!content) {
+	if (!content) {
 		content = (
 			<>
 				<User {...props} />
