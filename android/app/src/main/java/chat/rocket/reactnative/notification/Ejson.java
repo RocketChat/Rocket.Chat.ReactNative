@@ -54,16 +54,27 @@ public class Ejson {
             this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
         }
 
-        // Start MMKV container
-        MMKV.initialize(this.reactContext);
-        SecureKeystore secureKeystore = new SecureKeystore(this.reactContext);
+        // Only initialize MMKV if we have a valid React context
+        if (this.reactContext != null) {
+            try {
+                // Start MMKV container
+                MMKV.initialize(this.reactContext);
+                SecureKeystore secureKeystore = new SecureKeystore(this.reactContext);
 
-        // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
-        String alias = Utils.toHex("com.MMKV.default");
+                // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
+                String alias = Utils.toHex("com.MMKV.default");
 
-        // Retrieve container password
-        String password = secureKeystore.getSecureKey(alias);
-        mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
+                // Retrieve container password
+                String password = secureKeystore.getSecureKey(alias);
+                mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
+            } catch (Exception e) {
+                Log.e("Ejson", "Failed to initialize MMKV: " + e.getMessage());
+                mmkv = null;
+            }
+        } else {
+            Log.w("Ejson", "React context is null, MMKV will not be initialized");
+            mmkv = null;
+        }
     }
 
     public String getAvatarUri() {
@@ -105,12 +116,12 @@ public class Ejson {
         return url;
     }
 
-    public class Sender {
+    public static class Sender {
         String username;
         String _id;
     }
 
-    public class Content {
+    public static class Content {
         String ciphertext;
         String algorithm;
     }
