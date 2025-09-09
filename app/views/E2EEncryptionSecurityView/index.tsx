@@ -53,10 +53,7 @@ const E2EEncryptionSecurityView = () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
 					const res = await Services.e2eResetOwnKey();
-					/**
-					 * It might return an empty object when TOTP is enabled,
-					 * that's why we're using strict equality to boolean
-					 */
+
 					if (res?.success === true) {
 						dispatch(logout());
 					}

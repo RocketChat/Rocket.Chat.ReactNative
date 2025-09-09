@@ -224,8 +224,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
 
-		remove2FAHeaders();
-
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
