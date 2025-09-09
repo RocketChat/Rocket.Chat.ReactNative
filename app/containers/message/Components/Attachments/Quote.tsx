@@ -30,7 +30,13 @@ const Quote: React.FC<IMessageAttachments> = React.memo(
 			return null;
 		}
 
-		const attachmentsElements = attachments.filter(isValidAttachment)?.map((file: IAttachment, index: number) => {
+		const quotes = attachments.filter(isValidAttachment);
+
+		if (!quotes || !quotes?.length) {
+			return null;
+		}
+
+		const quotesElements = quotes.map((file: IAttachment, index: number) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
 
 			return (
@@ -44,7 +50,8 @@ const Quote: React.FC<IMessageAttachments> = React.memo(
 				/>
 			);
 		});
-		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
+
+		return <View style={{ gap: 4 }}>{quotesElements}</View>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
 );

@@ -73784,13 +73784,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -74193,13 +74186,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   style={
                     {
@@ -74792,13 +74778,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -75201,13 +75180,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   style={
                     {
@@ -95964,13 +95936,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -96569,13 +96534,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -96990,13 +96948,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -97350,13 +97301,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   style={
                     {
@@ -98514,13 +98458,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -99119,13 +99056,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -99540,13 +99470,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -99900,13 +99823,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   style={
                     {
@@ -102452,13 +102368,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -102965,13 +102874,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   testID="message-content-Message, not description"
                 >
@@ -103992,13 +103894,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -104543,13 +104438,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -105056,13 +104944,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   style={
                     {
@@ -105607,13 +105488,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   style={
                     {
@@ -106164,13 +106038,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -106669,13 +106536,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   style={
                     {
@@ -107451,13 +107311,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                       "gap": 4,
                     }
                   }
-                />
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
                 >
                   <View
                     style={
@@ -107956,13 +107809,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                   }
                 }
               >
-                <View
-                  style={
-                    {
-                      "gap": 4,
-                    }
-                  }
-                />
                 <View
                   style={
                     {
