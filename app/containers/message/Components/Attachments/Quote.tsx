@@ -8,7 +8,7 @@ import { IMessageAttachments } from '../../interfaces';
 import { IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
-const isValidAttachment = (file?: IAttachment): boolean => {
+const isQuoteAttachment = (file?: IAttachment): boolean => {
 	if (!file) return false;
 
 	if (file.image_url || file.audio_url || file.video_url || file.collapsed) {
@@ -26,7 +26,7 @@ const Quote: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
 		const { translateLanguage } = useContext(MessageContext);
 
-		const quotes = attachments?.filter(isValidAttachment);
+		const quotes = attachments?.filter(isQuoteAttachment);
 
 		if (!quotes || !quotes?.length) {
 			return null;
