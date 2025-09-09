@@ -24,7 +24,8 @@ onFlowStart:
     id: login-view-password
 - inputText: ${PASSWORD || output.createdUser.password}
 - tapOn:
-    text: '.*Password.*'
+    text: Login
+    index: 0
 - tapOn:
     id: login-view-submit
 - extendedWaitUntil:
