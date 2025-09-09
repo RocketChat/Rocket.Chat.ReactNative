@@ -18,17 +18,14 @@ import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings } from '../constants';
-import {
-	getSettings,
-	IActiveUsers,
-	unsubscribeRooms,
-	_activeUsers,
-	_setUser,
-	_setUserTimer,
-	onRolesChanged,
-	setPresenceCap
-} from '../methods';
-import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
+import { getSettings } from '../methods/getSettings';
+import { onRolesChanged } from '../methods/getRoles';
+import { setPresenceCap } from '../methods/getUsersPresence';
+import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../methods/setUser';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { isIOS } from '../methods/helpers/deviceInfo';
+import { isSsl } from '../methods/helpers/isSsl';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -50,10 +47,6 @@ let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
-		if (sdk.current?.client?.host === server) {
-			return resolve();
-		}
-
 		// Check for running requests and abort them before connecting to the server
 		abort();
 
@@ -285,7 +278,7 @@ function stopListener(listener: any): boolean {
 	return listener && listener.stop();
 }
 
-async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
+async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
 	await sdk.current.login(credentials);
 	const serverVersion = store.getState().server.version;
@@ -312,7 +305,6 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			emails: result.me.emails,
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
-			isFromWebView,
 			showMessageInMainThread,
 			enableMessageParserEarlyAdoption,
 			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
@@ -324,18 +316,22 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 	}
 }
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWebView = false): Promise<ILoggedUser> {
+function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const result = await login(params, isFromWebView);
+			const result = await login(params);
 			if (result) {
 				return resolve(result);
 			}
 		} catch (e: any) {
 			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
-				const { details } = e.data;
+				const { details, error } = e.data;
 				try {
-					const code = await twoFactor({ params, method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
+					const code = await twoFactor({
+						params,
+						method: details?.method || 'totp',
+						invalid: (details.error || error) === 'totp-invalid'
+					});
 
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));
@@ -394,9 +390,9 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 	return loginTOTP(params, true);
 }
 
-async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
-	const result = await loginTOTP(params, false, isFromWebView);
-	store.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
+async function loginOAuthOrSso(params: ICredentials) {
+	const result = await loginTOTP(params, false);
+	store.dispatch(loginRequest({ resume: result.token }, false));
 }
 
 function abort() {
@@ -468,11 +464,11 @@ async function getLoginServices(server: string) {
 }
 
 function determineAuthType(services: IServices) {
-	const { name, custom, showButton = true, service } = services;
+	const { name, custom, showButton, service } = services;
 
 	const authName = name || service;
 
-	if (custom && showButton) {
+	if (custom && showButton !== false) {
 		return 'oauth_custom';
 	}
 

@@ -1,0 +1,66 @@
+appId: chat.rocket.reactnative
+name: Logout
+tags:
+  - 'util'
+
+---
+- runFlow:
+    when:
+      visible:
+        id: 'profile-view-open-sidebar'
+    commands:
+      - tapOn:
+          id: 'profile-view-open-sidebar'
+
+- runFlow:
+    when:
+      visible:
+        id: 'rooms-list-view-sidebar'
+    commands:
+      - tapOn:
+          id: 'rooms-list-view-sidebar'
+
+- runFlow:
+    when:
+      platform: Android
+      visible:
+        id: 'android:id/autofill_save_no'
+    commands:
+      - tapOn:
+          id: 'android:id/autofill_save_no'
+
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-settings'
+    timeout: 60000
+
+- tapOn:
+    id: 'sidebar-settings'
+
+- assertVisible:
+    id: 'settings-logout'
+
+- tapOn:
+    id: 'settings-logout'
+
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: 'LOGOUT'
+          timeout: 60000
+      - tapOn: 'LOGOUT'
+
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          point: '67%,57%'
+
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000

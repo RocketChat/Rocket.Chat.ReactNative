@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -16,22 +16,25 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
-import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
+import { WidthAwareView } from './Components/WidthAwareView';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
+import MessageTime from './Time';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const MessageInner = React.memo((props: IMessageInner) => {
-	const hasQuote = props.attachments?.some(
-		file => !file.image_url && !file.video_url && !file.audio_url && !file.actions && typeof file.collapsed !== 'boolean'
-	);
+	const { isLargeFontScale } = useResponsiveLayout();
+	const showTimeLarge = isLargeFontScale && props.isHeader;
 
+	let content;
 	if (props.isPreview) {
-		return (
+		content = (
 			<>
 				<User {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<>
 					<Content {...props} />
 					<Attachments {...props} />
@@ -42,76 +45,130 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	if (props.type === 'discussion-created') {
-		return (
+		content = (
 			<>
 				<User {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<Discussion {...props} />
 			</>
 		);
 	}
 
 	if (props.type === 'jitsi_call_started') {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
 
 	if (props.blocks && props.blocks.length) {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
 
-	if (hasQuote) {
-		return (
+
+if (!content) {
+		content = (
 			<>
 				<User {...props} />
-				<>
-					<Attachments {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
+				<View style={{ gap: 4 }}>
 					<Content {...props} />
-				</>
-				<Urls {...props} />
-				<Thread {...props} />
-				<Reactions {...props} />
-				<Broadcast {...props} />
+					<Attachments {...props} />
+					<Urls {...props} />
+					<Thread {...props} />
+					<Reactions {...props} />
+					<Broadcast {...props} />
+				</View>
 			</>
 		);
 	}
 
-	return (
-		<>
-			<User {...props} />
-			<>
-				<Content {...props} />
-				<Attachments {...props} />
-			</>
-			<Urls {...props} />
-			<Thread {...props} />
-			<Reactions {...props} />
-			<Broadcast {...props} />
-		</>
-	);
+	return <WidthAwareView>{content}</WidthAwareView>;
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: IMessage) => {
+const Message = React.memo((props: IMessageTouchable & IMessage) => {
+	const handleMentionsOnAccessibilityLabel = (label: string) => {
+		const { mentions = [], channels = [] } = props;
+
+		mentions.forEach(item => {
+			if (item?.username) {
+				label = label.replaceAll(`@${item.username}`, item.username);
+			}
+		});
+
+		channels.forEach(item => {
+			if (item?.name) {
+				label = label.replaceAll(`#${item.name}`, item.name);
+			}
+		});
+
+		return label;
+	};
+
+	// temp accessibilityLabel
+	const accessibilityLabel = useMemo(() => {
+		let label = '';
+		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
+		if (props.isThreadReply) {
+			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
+		}
+		if (props.isThreadSequential) {
+			label = `thread message ${props.msg}`;
+		}
+		if (props.isEncrypted) {
+			label = i18n.t('Encrypted_message');
+		}
+		if (props.isInfo) {
+			// @ts-ignore
+			label = getInfoMessage({ ...props });
+		}
+		label = handleMentionsOnAccessibilityLabel(label);
+
+		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
+		const user = props.useRealName ? props.author?.name : props.author?.username || '';
+		const readOrUnreadLabel =
+			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
+		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
+		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
+		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
+	}, [
+		props.msg,
+		props.tmid,
+		props.isThreadReply,
+		props.isThreadSequential,
+		props.isEncrypted,
+		props.isInfo,
+		props.ts,
+		props.useRealName,
+		props.author,
+		props.mentions,
+		props.channels,
+		props.unread
+	]);
+
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
+		// Prevent misalignment of info when the font size is increased.
+		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
-			<View style={[styles.container, props.style]}>
+			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
-				<View style={styles.flex}>
+				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
-					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+					<View style={styles.messageContent}>
 						<Content {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
@@ -125,10 +182,10 @@ const Message = React.memo((props: IMessage) => {
 	}
 
 	return (
-		<View style={[styles.container, props.style]}>
+		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
-				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+				<View style={styles.messageContent}>
 					<MessageInner {...props} />
 				</View>
 				{!props.isHeader ? (
@@ -151,39 +208,17 @@ Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
-		backgroundColor = themes[theme].statusBackgroundWarning2;
+		backgroundColor = colors.statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
-		backgroundColor = themes[theme].surfaceNeutral;
+		backgroundColor = colors.surfaceNeutral;
 	}
 
-	// temp accessibilityLabel
-	const accessibilityLabel = useMemo(() => {
-		let label = '';
-		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
-		if (props.isThreadReply) {
-			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
-		}
-		if (props.isThreadSequential) {
-			label = `thread message ${props.msg}`;
-		}
-		if (props.isEncrypted) {
-			label = i18n.t('Encrypted_message');
-		}
-		if (props.isInfo) {
-			// @ts-ignore
-			label = getInfoMessage({ ...props });
-		}
-		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
-		const user = props.useRealName ? props.author?.name : props.author?.username || '';
-		return `${user} ${hour} ${label}`;
-	}, []);
-
-	if (props.hasError) {
+	if (props.hasError || props.isInfo) {
 		return (
 			<View>
 				<Message {...props} />
@@ -197,9 +232,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
 			style={{ backgroundColor }}>
-			<View accessible accessibilityLabel={accessibilityLabel}>
-				<Message {...props} />
-			</View>
+			<Message {...props} />
 		</Touchable>
 	);
 });

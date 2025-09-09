@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
+import { A11y } from 'react-native-a11y-order';
 
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -10,16 +11,22 @@ import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
-import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const styles = StyleSheet.create({
 	error: {
-		...sharedStyles.textAlignCenter,
-		paddingTop: 5
+		...sharedStyles.textRegular,
+		lineHeight: 20,
+		fontSize: 14
 	},
 	inputContainer: {
 		marginBottom: 10,
 		gap: 4
+	},
+	errorContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4,
+		paddingVertical: 4
 	},
 	label: {
 		fontSize: 16,
@@ -63,6 +70,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	label?: string;
 	required?: boolean;
 	error?: any;
+	showErrorMessage?: boolean;
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
@@ -73,6 +81,15 @@ export interface IRCTextInputProps extends TextInputProps {
 	bottomSheet?: boolean;
 	onClearInput?: () => void;
 }
+
+const getInputError = (error: unknown): string => {
+	if (typeof error === 'string') return error;
+	if (typeof error === 'object' && error !== null && 'reason' in error) {
+		const { reason } = error as { reason?: unknown };
+		if (typeof reason === 'string') return reason;
+	}
+	return '';
+};
 
 export const FormTextInput = ({
 	label,
@@ -92,6 +109,7 @@ export const FormTextInput = ({
 	bottomSheet,
 	placeholder,
 	accessibilityLabel,
+	showErrorMessage = true,
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
 	const { colors } = useTheme();
@@ -99,17 +117,23 @@ export const FormTextInput = ({
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 
-	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
-	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
+	const inputError = getInputError(error);
+	const accessibilityLabelText = useMemo(() => {
+		const baseLabel = `${accessibilityLabel || label || ''}`;
+		const formattedAccessibilityLabel = baseLabel ? `${baseLabel}.` : '';
+		const requiredText = required ? ` ${i18n.t('Required')}.` : '';
+		const errorText = inputError ? ` ${i18n.t('Error_prefix', { message: inputError })}.` : '';
+		const valueText = (!secureTextEntry && value && isIOS) || showPassword ? ` ${value || ''}.` : '';
+		const a11yLabel = `${formattedAccessibilityLabel}${requiredText}${errorText}${valueText}`.trim();
+		return a11yLabel;
+	}, [accessibilityLabel, label, required, inputError, secureTextEntry, value, showPassword]);
+
 	return (
-		<A11yContainer>
-			<A11yElement order={1}>
-				<View
-					accessible
-					accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
-					style={[styles.inputContainer, containerStyle]}>
+		<A11y.Order>
+			<A11y.Index index={1}>
+				<View style={[styles.inputContainer, containerStyle]}>
 					{label ? (
-						<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
+						<Text accessible={false} style={[styles.label, { color: colors.fontTitlesLabels }]}>
 							{label}{' '}
 							{required && (
 								<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>
@@ -117,21 +141,24 @@ export const FormTextInput = ({
 						</Text>
 					) : null}
 
-					<View accessible style={styles.wrap}>
+					<View accessible={false} style={styles.wrap}>
 						<Input
+							accessible
+							accessibilityLabel={accessibilityLabelText}
 							style={[
 								styles.input,
 								iconLeft && styles.inputIconLeft,
-								(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
+								secureTextEntry || iconRight || showClearInput ? styles.inputIconRight : {},
 								{
 									backgroundColor: colors.surfaceRoom,
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},
-								error?.error && {
-									color: colors.buttonBackgroundDangerDefault,
-									borderColor: colors.buttonBackgroundDangerDefault
-								},
+								inputError
+									? {
+											borderColor: colors.buttonBackgroundDangerDefault
+									  }
+									: {},
 								inputStyle
 							]}
 							// @ts-ignore ref error
@@ -175,7 +202,7 @@ export const FormTextInput = ({
 						) : null}
 
 						{secureTextEntry ? (
-							<A11yElement order={2} style={[styles.iconContainer, styles.iconRight]}>
+							<A11y.Index index={2} style={[styles.iconContainer, styles.iconRight]}>
 								<Touchable
 									accessible
 									accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
@@ -187,7 +214,7 @@ export const FormTextInput = ({
 										color={colors.fontDefault}
 									/>
 								</Touchable>
-							</A11yElement>
+							</A11y.Index>
 						) : null}
 
 						{loading ? (
@@ -199,9 +226,16 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{error && error.reason ? <Text style={[styles.error, { color: colors.fontDanger }]}>{error.reason}</Text> : null}
+					{showErrorMessage && inputError ? (
+						<View accessible={false} style={styles.errorContainer}>
+							<CustomIcon accessible={false} name='warning' size={16} color={colors.fontDanger} />
+							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
+								{inputError}
+							</Text>
+						</View>
+					) : null}
 				</View>
-			</A11yElement>
-		</A11yContainer>
+			</A11y.Index>
+		</A11y.Order>
 	);
 };

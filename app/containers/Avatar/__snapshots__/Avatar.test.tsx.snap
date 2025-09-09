@@ -1,0 +1,1011 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = `
+<View
+  accessibilityLabel="Avatar's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*&format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
+<View
+  accessibilityLabel="[missing {{username}} value]'s avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
+<View
+  accessibilityLabel="[missing {{username}} value]'s avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/room/devWBbYr7inwupPqK?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
+<View
+  accessibilityLabel="Avatar's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
+<View
+  accessibilityLabel="[missing {{username}} value]'s avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: Channel should match snapshot 1`] = `
+<View
+  accessibilityLabel="general's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/@general?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: Children should match snapshot 1`] = `
+<View
+  accessibilityLabel="Avatar's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+  <Text
+    allowFontScaling={false}
+    selectable={false}
+    style={
+      [
+        {
+          "color": "#D40C26",
+          "fontSize": 24,
+        },
+        [
+          {
+            "lineHeight": 24,
+          },
+          [
+            {
+              "height": 24,
+              "textAlignVertical": "center",
+              "width": 24,
+            },
+            [
+              {
+                "borderRadius": 10,
+                "bottom": -2,
+                "position": "absolute",
+                "right": -2,
+              },
+            ],
+          ],
+        ],
+        {
+          "fontFamily": "custom",
+          "fontStyle": "normal",
+          "fontWeight": "normal",
+        },
+        {},
+      ]
+    }
+  >
+    
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
+<View
+  accessibilityLabel="Avatar's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 28,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={28}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 28,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
+<View
+  accessibilityLabel="Avatar's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      {
+        "padding": 16,
+      },
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: Direct should match snapshot 1`] = `
+<View
+  accessibilityLabel="diego.mello's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: Emoji should match snapshot 1`] = `
+<View
+  accessibilityLabel="[missing {{username}} value]'s avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="contain"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    source={
+      [
+        {
+          "uri": "https://open.rocket.chat/emoji-custom/troll.jpg",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`] = `
+<View
+  accessibilityLabel="[missing {{username}} value]'s avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://cdn.pensador.com/img/authors/ho/me/homer-simpson-l.jpg?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: Static should match snapshot 1`] = `
+<View
+  accessibilityLabel="[missing {{username}} value]'s avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: Touchable should match snapshot 1`] = `
+<View
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <View
+    accessibilityLabel="Avatar's avatar"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "opacity": 1,
+      }
+    }
+  >
+    <ViewManagerAdapter_ExpoImage
+      borderRadius={4}
+      containerViewRef={"[React.ref]"}
+      contentFit="cover"
+      contentPosition={
+        {
+          "left": "50%",
+          "top": "50%",
+        }
+      }
+      height={56}
+      nativeViewRef={"[React.ref]"}
+      onError={[Function]}
+      onLoad={[Function]}
+      onLoadStart={[Function]}
+      onProgress={[Function]}
+      placeholder={[]}
+      priority="high"
+      source={
+        [
+          {
+            "headers": undefined,
+            "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
+          },
+        ]
+      }
+      style={
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        }
+      }
+      transition={null}
+      width={56}
+    />
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: WithETag should match snapshot 1`] = `
+<View
+  accessibilityLabel="djorkaeff.alexandre's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=112&etag=5ag8KffJcZj9m5rCv",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
+<View
+  accessibilityLabel="djorkaeff.alexandre's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;
+
+exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
+<View
+  accessibilityLabel="Avatar's avatar"
+  accessible={true}
+  style={
+    [
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      },
+      undefined,
+    ]
+  }
+  testID="avatar"
+>
+  <ViewManagerAdapter_ExpoImage
+    borderRadius={4}
+    containerViewRef={"[React.ref]"}
+    contentFit="cover"
+    contentPosition={
+      {
+        "left": "50%",
+        "top": "50%",
+      }
+    }
+    height={56}
+    nativeViewRef={"[React.ref]"}
+    onError={[Function]}
+    onLoad={[Function]}
+    onLoadStart={[Function]}
+    onProgress={[Function]}
+    placeholder={[]}
+    priority="high"
+    source={
+      [
+        {
+          "headers": undefined,
+          "uri": "https://google.com/avatar/Avatar?format=png&size=112",
+        },
+      ]
+    }
+    style={
+      {
+        "borderRadius": 4,
+        "height": 56,
+        "width": 56,
+      }
+    }
+    transition={null}
+    width={56}
+  />
+</View>
+`;

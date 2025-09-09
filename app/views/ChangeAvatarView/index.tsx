@@ -1,17 +1,15 @@
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { AccessibilityInfo, ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
-import { HeaderBackButton } from '@react-navigation/elements';
-import type { ImagePickerOptions } from 'expo-image-picker';
+import { useForm } from 'react-hook-form';
 
 import { textInputDebounceTime } from '../../lib/constants';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as List from '../../containers/List';
@@ -27,11 +25,10 @@ import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
-import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
-import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
-import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
-import { isImageURL, isTablet, useDebounce } from '../../lib/methods/helpers';
-import { FormTextInput } from '../../containers/TextInput';
+import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { isImageURL, useDebounce } from '../../lib/methods/helpers';
+import { ControlledFormTextInput } from '../../containers/TextInput';
+import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -68,8 +65,18 @@ function reducer(state: IState, action: IReducerAction) {
 }
 
 const ChangeAvatarView = () => {
+	const {
+		control,
+		getValues,
+		setValue,
+		setError,
+		clearErrors,
+		formState: { errors }
+	} = useForm({
+		mode: 'onChange',
+		defaultValues: { rawImageUrl: '' }
+	});
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const [rawImageUrl, setRawImageUrl] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
 	const { userId, username, server } = useAppSelector(
@@ -87,15 +94,7 @@ const ChangeAvatarView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: titleHeader || I18n.t('Avatar'),
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.goBack()}
-					tintColor={colors.fontDefault}
-					testID='header-back'
-					style={{ margin: 0, marginRight: isTablet ? 5 : -5, marginLeft: -12 }}
-				/>
-			)
+			headerLeft: () => <HeaderBackButton onPress={() => navigation.goBack()} />
 		});
 	}, [titleHeader, navigation]);
 
@@ -123,27 +122,36 @@ const ChangeAvatarView = () => {
 		dispatch(action);
 	};
 
-	const onChangeText = useDebounce(async (value: string) => {
-		const result = await isImageURL(rawImageUrl);
+	const validateImage = useDebounce(async (value: string) => {
+		const result = await isImageURL(value);
 
 		if (!result || !value) {
 			dispatchAvatar({
-				type: AvatarStateActions.RESET_USER_AVATAR,
-				payload: { resetUserAvatar: `@${username}` }
+				type: AvatarStateActions.CHANGE_AVATAR,
+				payload: { url: '', data: '', service: 'url' }
 			});
 		}
-
-		setRawImageUrl(value);
 	}, textInputDebounceTime);
 
+	const onChangeText = (value: string) => {
+		setValue('rawImageUrl', value);
+		validateImage(value);
+	};
+
 	const fetchImageFromURL = async () => {
+		const { rawImageUrl } = getValues();
 		const result = await isImageURL(rawImageUrl);
 		if (result) {
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: rawImageUrl, data: rawImageUrl, service: 'url' }
 			});
+			clearErrors();
+			return;
 		}
+
+		AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 	};
 
 	const submit = async () => {
@@ -152,7 +160,7 @@ const ChangeAvatarView = () => {
 			if (context === 'room' && room?.rid) {
 				// Change Rooms Avatar
 				await changeRoomsAvatar(room.rid, state?.data);
-			} else if (state?.url || state?.data) {
+			} else if (state?.url) {
 				// Change User's Avatar
 				await changeUserAvatar(state);
 			} else if (state.resetUserAvatar) {
@@ -170,20 +178,23 @@ const ChangeAvatarView = () => {
 	};
 
 	const pickImage = async (isCam = false) => {
+		const options = {
+			cropping: true,
+			compressImageQuality: 0.8,
+			freeStyleCropEnabled: true,
+			cropperAvoidEmptySpaceAroundImage: false,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			includeBase64: true
+		};
 		try {
-			const options: ImagePickerOptions = {
-				exif: true,
-				base64: true
-			};
-			await getPermissions(isCam ? 'camera' : 'library');
-			const response = isCam ? await ImagePicker.launchCameraAsync(options) : await ImagePicker.launchImageLibraryAsync(options);
-			if (response.canceled) {
-				return;
-			}
-			const [media] = mapMediaResult(response.assets);
+			const response: Image =
+				isCam === true
+					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
+					: await ImagePicker.openPicker(options);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: media.path, data: `data:image/jpeg;base64,${media.base64}`, service: 'upload' }
+				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {
@@ -195,8 +206,7 @@ const ChangeAvatarView = () => {
 	const deletingRoomAvatar = context === 'room' && state.data === null;
 
 	return (
-		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
-			<StatusBar />
+		<KeyboardView>
 			<SafeAreaView testID='change-avatar-view'>
 				<ScrollView
 					contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 32 }}
@@ -216,7 +226,7 @@ const ChangeAvatarView = () => {
 							<Avatar
 								text={room?.name || state.resetUserAvatar || username}
 								avatar={state?.url}
-								isStatic={state?.url}
+								isStatic={Boolean(state?.url)}
 								size={120}
 								type={t}
 								rid={room?.rid}
@@ -225,11 +235,14 @@ const ChangeAvatarView = () => {
 					</View>
 					{context === 'profile' ? (
 						<>
-							<FormTextInput
+							<ControlledFormTextInput
+								control={control}
+								name='rawImageUrl'
 								label={I18n.t('Avatar_Url')}
-								onChangeText={onChangeText}
 								testID='change-avatar-view-avatar-url'
+								error={errors.rawImageUrl?.message}
 								containerStyle={{ marginBottom: 0 }}
+								onChangeText={onChangeText}
 							/>
 							<Button
 								title={I18n.t('Fetch_image_from_URL')}

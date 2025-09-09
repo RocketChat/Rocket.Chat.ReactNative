@@ -11,7 +11,7 @@ import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom, getServerInfo } from '../lib/methods';
-import { getUidDirectMessage } from '../lib/methods/helpers';
+import { emitter, getUidDirectMessage } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
@@ -20,6 +20,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { Services } from '../lib/services';
 import sdk from '../lib/services/sdk';
+import Navigation from '../lib/navigation/appNavigation';
 
 const roomTypes = {
 	channel: 'c',
@@ -39,8 +40,21 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 	}
 };
 
+const waitForNavigation = () => {
+	if (Navigation.navigationRef.current) {
+		return Promise.resolve();
+	}
+	return new Promise(resolve => {
+		const listener = () => {
+			emitter.off('navigationReady', listener);
+			resolve();
+		};
+
+		emitter.on('navigationReady', listener);
+	});
+};
+
 const navigate = function* navigate({ params }) {
-	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
 		let type;
 		let name;
@@ -61,13 +75,14 @@ const navigate = function* navigate({ params }) {
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const jumpToMessageId = params.messageId;
-
-				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
+				yield waitForNavigation();
+				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 			}
 		} else {
 			yield handleInviteLink({ params });
 		}
 	}
+	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 };
 
 const fallbackNavigation = function* fallbackNavigation() {
@@ -204,7 +219,7 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 		const room = yield subsCollection.find(params.rid);
 		if (room) {
 			const isMasterDetail = yield select(state => state.app.isMasterDetail);
-			yield navigateToRoom({ item: room, isMasterDetail, popToRoot: true });
+			yield navigateToRoom({ item: room, isMasterDetail });
 			const uid = params.caller._id;
 			const { rid, callId, event } = params;
 			if (event === 'accept') {

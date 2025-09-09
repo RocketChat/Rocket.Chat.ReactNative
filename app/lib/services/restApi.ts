@@ -1,6 +1,7 @@
 import {
 	IAvatarSuggestion,
 	IMessage,
+	IMessagePreferences,
 	INotificationPreferences,
 	IPreviewItem,
 	IProfileParams,
@@ -17,7 +18,8 @@ import { TEAM_TYPE } from '../../definitions/ITeam';
 import { OperationParams, ResultFor } from '../../definitions/rest/helpers';
 import { SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
-import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
+import { RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
 import { store as reduxStore } from '../store/auxStore';
@@ -632,7 +634,7 @@ export const saveUserProfile = (
 	// RC 0.62.2
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
-export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
+export const saveUserPreferences = (data: Partial<INotificationPreferences & IMessagePreferences>) =>
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { data });
 
@@ -745,7 +747,7 @@ export const getMessages = ({
 	// RC 0.59.0
 	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
- 
+
 export const getPinnedMessages = ({ roomId, offset, count }: { roomId: string; offset: number; count: number }) =>
 	sdk.get('chat.getPinnedMessages', {
 		roomId,

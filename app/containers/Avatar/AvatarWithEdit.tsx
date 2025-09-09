@@ -8,7 +8,7 @@ import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import { useAppSelector } from '../../lib/hooks';
-import { compareServerVersion } from '../../lib/methods/helpers';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
 
 interface IAvatarContainer extends Omit<IAvatar, 'size'> {
 	handleEdit?: () => void;
+	editAccessibilityLabel?: string;
 }
 
 const AvatarWithEdit = ({
@@ -41,7 +42,8 @@ const AvatarWithEdit = ({
 	getCustomEmoji,
 	isStatic,
 	rid,
-	handleEdit
+	handleEdit,
+	editAccessibilityLabel
 }: IAvatarContainer): React.ReactElement => {
 	const { colors } = useTheme();
 
@@ -67,7 +69,7 @@ const AvatarWithEdit = ({
 			/>
 			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
-					accessibilityLabel={I18n.t('Edit_Room_Photo')}
+					accessibilityLabel={editAccessibilityLabel}
 					title={I18n.t('Edit')}
 					type='secondary'
 					onPress={handleEdit}

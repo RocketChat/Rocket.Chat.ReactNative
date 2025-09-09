@@ -1,6 +1,6 @@
 import { device, element, by } from 'detox';
 
-import { navigateToRegister, expectValidRegisterOrRetry } from '../../helpers/app';
+import { navigateToRegister, expectValidRegisterOrRetry, sleep } from '../../helpers/app';
 import data from '../../data';
 
 describe('Create user screen', () => {
@@ -19,6 +19,12 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-email')).tapReturnKey();
 			await element(by.id('register-view-password')).replaceText(user.password);
 			await element(by.id('register-view-password')).tapReturnKey();
+			await element(by.id('register-view-confirm-password')).replaceText(user.password);
+			await element(by.id('register-view')).swipe('down', 'fast', 0.5);
+			await sleep(300);
+			await element(by.id('register-view')).swipe('up', 'fast', 0.5);
+			await sleep(300);
+			await element(by.id('register-view-submit')).tap();
 
 			await expectValidRegisterOrRetry(device.getPlatform());
 		});

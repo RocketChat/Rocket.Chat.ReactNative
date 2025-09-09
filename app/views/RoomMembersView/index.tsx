@@ -7,11 +7,10 @@ import { TActionSheetOptionsItem, useActionSheet } from '../../containers/Action
 import { sendLoadingEvent } from '../../containers/Loading';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
-import StatusBar from '../../containers/StatusBar';
 import UserItem from '../../containers/UserItem';
 import Radio from '../../containers/Radio';
 import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
@@ -41,6 +40,7 @@ import {
 	TRoomType
 } from './helpers';
 import styles from './styles';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 const PAGE_SIZE = 25;
 
@@ -380,17 +380,14 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
+	const filter = sanitizeLikeString(state.filter.toLowerCase()) || '';
 	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
-			? state.members.filter(
-					m =>
-						m.username.toLowerCase().match(state.filter.toLowerCase()) || m.name?.toLowerCase().match(state.filter.toLowerCase())
-			  )
+			? state.members.filter(m => m.username.toLowerCase().match(filter) || m.name?.toLowerCase().match(filter))
 			: null;
 
 	return (
 		<SafeAreaView testID='room-members-view'>
-			<StatusBar />
 			<FlatList
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (

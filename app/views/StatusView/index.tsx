@@ -1,15 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
-import { FormTextInput } from '../../containers/TextInput';
+import { ControlledFormTextInput } from '../../containers/TextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
@@ -20,6 +24,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
 import Check from '../../containers/Check';
+import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
 
 interface IStatus {
 	id: TUserStatus;
@@ -94,26 +99,46 @@ const Status = ({
 };
 
 const StatusView = (): React.ReactElement => {
+	const validationSchema = yup.object().shape({
+		statusText: yup
+			.string()
+			.max(USER_STATUS_TEXT_MAX_LENGTH, I18n.t('Status_text_limit_exceeded', { limit: USER_STATUS_TEXT_MAX_LENGTH }))
+	});
+
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 	const Accounts_AllowInvisibleStatusOption = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
 	);
 
-	const [statusText, setStatusText] = useState(user.statusText || '');
-	const [status, setStatus] = useState(user.status);
+	const {
+		control,
+		watch,
+		setValue,
+		formState: { errors, isValid }
+	} = useForm({
+		mode: 'onChange',
+		defaultValues: { statusText: user.statusText || '', status: user.status },
+
+		resolver: yupResolver(validationSchema)
+	});
+	const inputValues = watch();
+	const { statusText } = inputValues;
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 	const { colors } = useTheme();
 
 	const submit = async () => {
+		const { status } = inputValues;
 		logEvent(events.STATUS_DONE);
 		if (statusText !== user.statusText || status !== user.status) {
 			await setCustomStatus(status, statusText);
 		}
 		goBack();
 	};
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
 		const setHeader = () => {
@@ -123,7 +148,11 @@ const StatusView = (): React.ReactElement => {
 			});
 		};
 		setHeader();
-	}, [statusText, status]);
+	}, [isMasterDetail]);
+
+	const setStatus = (updatedStatus: TUserStatus) => {
+		setValue('status', updatedStatus);
+	};
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
 		sendLoadingEvent({ visible: true });
@@ -146,16 +175,19 @@ const StatusView = (): React.ReactElement => {
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
-	const isStatusMatching = () => {
+	const isStatusChanged = () => {
+		const { status } = inputValues;
+		if (!isValid) {
+			return true;
+		}
 		const isStatusEqual = status === user.status;
-		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) || (!user.statusText && !statusText);
-
-		return isStatusEqual && isStatusTextEqual;
+		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) ?? (!user.statusText && !statusText);
+		return !isValid && isStatusEqual && isStatusTextEqual;
 	};
 
 	const FooterComponent = () => (
 		<View style={styles.footerComponent}>
-			<Button testID='status-view-submit' disabled={isStatusMatching()} onPress={submit} title={I18n.t('Save')} />
+			<Button testID='status-view-submit' disabled={isStatusChanged()} onPress={submit} title={I18n.t('Save')} />
 		</View>
 	);
 
@@ -164,16 +196,18 @@ const StatusView = (): React.ReactElement => {
 			<FlatList
 				data={statusType}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status statusType={item} status={status} setStatus={setStatus} />}
+				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} />}
 				ListHeaderComponent={
 					<>
-						<FormTextInput
+						<ControlledFormTextInput
+							name='statusText'
+							control={control}
 							label={I18n.t('Message')}
 							value={statusText}
 							containerStyle={styles.inputContainer}
-							onChangeText={text => setStatusText(text)}
 							inputStyle={styles.inputStyle}
 							testID='status-view-input'
+							error={errors.statusText?.message}
 						/>
 						<List.Separator />
 					</>

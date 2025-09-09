@@ -20,22 +20,8 @@ jobs:
         with:
           fetch-depth: 0
           
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-      
-      - name: Install dependencies
-        run: yarn install
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
 
       - name: Run Prettier
         run: yarn prettier --write .
@@ -52,7 +38,7 @@ jobs:
           fi
       
       - name: Commit and push changes
-        if: env.changes == 'true'
+        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"

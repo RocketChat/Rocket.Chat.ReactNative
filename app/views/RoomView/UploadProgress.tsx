@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { Observable, Subscription } from 'rxjs';
+import { A11y } from 'react-native-a11y-order';
 
 import database from '../../lib/database';
 import log from '../../lib/methods/helpers/log';
@@ -172,20 +173,28 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 
 		if (!item.error) {
 			return [
-				<View key='row' style={styles.row}>
-					<CustomIcon name='attach' size={20} color={themes[theme!].fontSecondaryInfo} />
-					<Text
-						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]}
-						numberOfLines={1}>
-						{I18n.t('Uploading')} {item.name}
-					</Text>
-					<CustomIcon
-						name='close'
-						size={20}
-						color={themes[theme!].fontSecondaryInfo}
-						onPress={() => this.handleCancelUpload(item)}
-					/>
-				</View>,
+				<A11y.Order>
+					<A11y.Index index={1}>
+						<View accessible accessibilityLabel={`${I18n.t('Uploading')} ${item.name}`} key='row' style={styles.row}>
+							<CustomIcon name='attach' size={20} color={themes[theme!].fontSecondaryInfo} />
+							<Text
+								style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]}
+								numberOfLines={1}>
+								{I18n.t('Uploading')} {item.name}
+							</Text>
+							<A11y.Index index={2}>
+								<CustomIcon
+									accessible
+									accessibilityLabel={I18n.t('Cancel_upload')}
+									name='close'
+									size={20}
+									color={themes[theme!].fontSecondaryInfo}
+									onPress={() => this.handleCancelUpload(item)}
+								/>
+							</A11y.Index>
+						</View>
+					</A11y.Index>
+				</A11y.Order>,
 				<View
 					key='progress'
 					style={[
@@ -196,20 +205,35 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 			];
 		}
 		return (
-			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
-				<View style={styles.descriptionContainer}>
-					<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
-						{I18n.t('Error_uploading')} {item.name}
-					</Text>
-					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
-							{I18n.t('Try_again')}
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} onPress={() => this.deleteUpload(item)} />
-			</View>
+			<A11y.Order>
+				<A11y.Index index={1}>
+					<View accessible accessibilityLabel={`${I18n.t('Error_uploading')} ${item.name}`} style={styles.row}>
+						<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
+						<View style={styles.descriptionContainer}>
+							<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
+								{I18n.t('Error_uploading')} {item.name}
+							</Text>
+							<A11y.Index index={2}>
+								<TouchableOpacity onPress={() => this.tryAgain(item)}>
+									<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
+										{I18n.t('Try_again')}
+									</Text>
+								</TouchableOpacity>
+							</A11y.Index>
+						</View>
+						<A11y.Index index={3}>
+							<CustomIcon
+								accessible
+								accessibilityLabel={I18n.t('Cancel_upload')}
+								name='close'
+								size={20}
+								color={themes[theme!].fontSecondaryInfo}
+								onPress={() => this.deleteUpload(item)}
+							/>
+						</A11y.Index>
+					</View>
+				</A11y.Index>
+			</A11y.Order>
 		);
 	};
 

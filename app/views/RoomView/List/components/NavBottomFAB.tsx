@@ -4,13 +4,14 @@ import { StyleSheet, View } from 'react-native';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import Touch from '../../../../containers/Touch';
-import { useNavBottomStyle } from '../hooks';
 import { EDGE_DISTANCE } from '../constants';
+import i18n from '../../../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
-		right: EDGE_DISTANCE
+		right: EDGE_DISTANCE,
+		bottom: EDGE_DISTANCE
 	},
 	button: {
 		borderRadius: 25
@@ -25,25 +26,27 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = memo(
-	({ visible, onPress, isThread }: { visible: boolean; onPress: Function; isThread: boolean }): React.ReactElement | null => {
-		const { colors } = useTheme();
-		const positionStyle = useNavBottomStyle(isThread);
+const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Function }): React.ReactElement | null => {
+	const { colors } = useTheme();
 
-		if (!visible) {
-			return null;
-		}
-
-		return (
-			<View style={[styles.container, positionStyle]} testID='nav-jump-to-bottom'>
-				<Touch onPress={() => onPress()} style={[styles.button, { backgroundColor: colors.surfaceRoom }]}>
-					<View style={[styles.content, { borderColor: colors.strokeLight }]}>
-						<CustomIcon name='chevron-down' size={36} />
-					</View>
-				</Touch>
-			</View>
-		);
+	if (!visible) {
+		return null;
 	}
-);
+
+	return (
+		<View style={styles.container}>
+			<Touch
+				accessible
+				accessibilityLabel={i18n.t('Jump_to_last_message')}
+				onPress={() => onPress()}
+				style={[styles.button, { backgroundColor: colors.surfaceRoom }]}
+				testID='nav-jump-to-bottom'>
+				<View style={[styles.content, { borderColor: colors.strokeLight }]}>
+					<CustomIcon name='chevron-down' size={36} />
+				</View>
+			</Touch>
+		</View>
+	);
+});
 
 export default NavBottomFAB;

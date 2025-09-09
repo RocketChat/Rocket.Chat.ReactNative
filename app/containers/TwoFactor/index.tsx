@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { InteractionManager, Text, View } from 'react-native';
+import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import { FormTextInput } from '../TextInput';
+import { ControlledFormTextInput } from '../TextInput';
 import I18n from '../../i18n';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { useTheme } from '../../theme';
@@ -13,7 +16,7 @@ import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
 import { ICredentials } from '../../definitions';
-import { Services } from '../../lib/services';
+import { sendEmailCode } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
@@ -59,13 +62,27 @@ const methods: IMethods = {
 };
 
 const TwoFactor = React.memo(() => {
+	const schema = yup.object().shape({
+		code: yup.string().required(I18n.t('Code_required'))
+	});
 	const { colors } = useTheme();
 	const { isMasterDetail } = useAppSelector(state => ({
 		isMasterDetail: state.app.isMasterDetail as boolean
 	}));
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
-	const [code, setCode] = useState<string>('');
+	const {
+		control,
+		setValue,
+		getValues,
+		formState: { errors },
+		setError
+	} = useForm({
+		defaultValues: {
+			code: ''
+		},
+		resolver: yupResolver(schema)
+	});
 
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
@@ -74,7 +91,7 @@ const TwoFactor = React.memo(() => {
 	const sendEmail = async () => {
 		try {
 			if (params?.user) {
-				const response = await Services.sendEmailCode(params?.user);
+				const response = await sendEmailCode(params?.user);
 				if (response.success) {
 					showToast(I18n.t('Two_Factor_Success_message'));
 				}
@@ -86,7 +103,7 @@ const TwoFactor = React.memo(() => {
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
-			setCode('');
+			setValue('code', '');
 			setVisible(true);
 		} else {
 			setVisible(false);
@@ -95,6 +112,10 @@ const TwoFactor = React.memo(() => {
 
 	const showTwoFactor = (args: EventListenerMethod) => {
 		setData(args);
+		if (args.invalid) {
+			setError('code', { message: I18n.t('Invalid_code'), type: 'validate' });
+			AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_code'));
+		}
 	};
 
 	useEffect(() => {
@@ -114,6 +135,7 @@ const TwoFactor = React.memo(() => {
 	const onSubmit = () => {
 		const { submit } = data;
 		if (submit) {
+			const { code } = getValues();
 			if (data.method === 'password') {
 				submit(sha256(code));
 			} else {
@@ -140,20 +162,20 @@ const TwoFactor = React.memo(() => {
 					]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
-					<FormTextInput
+					<ControlledFormTextInput
+						name='code'
+						control={control}
+						autoFocus
 						returnKeyType='send'
 						autoCapitalize='none'
 						testID='two-factor-input'
 						accessibilityLabel={I18n.t(
 							data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
 						)}
-						value={code}
-						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
-						onChangeText={setCode}
 						onSubmitEditing={onSubmit}
 						keyboardType={method?.keyboardType}
 						secureTextEntry={method?.secureTextEntry}
-						error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
+						error={errors.code?.message}
 						containerStyle={styles.containerInput}
 					/>
 

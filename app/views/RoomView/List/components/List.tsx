@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { isIOS } from '../../../../lib/methods/helpers';
@@ -7,6 +7,7 @@ import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps
 import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
+import { useRoomContext } from '../../context';
 
 const styles = StyleSheet.create({
 	list: {
@@ -17,9 +18,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
+export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
-
+	const { isAutocompleteVisible } = useRoomContext();
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
@@ -31,8 +32,11 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 	});
 
 	return (
-		<>
+		<View style={styles.list}>
+			{/* @ts-ignore */}
 			<Animated.FlatList
+				accessibilityElementsHidden={isAutocompleteVisible}
+				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
 				ref={listRef}
 				keyExtractor={item => item.id}
@@ -49,7 +53,7 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				{...props}
 				{...scrollPersistTaps}
 			/>
-			<NavBottomFAB visible={visible} onPress={jumpToBottom} isThread={isThread} />
-		</>
+			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
+		</View>
 	);
 };

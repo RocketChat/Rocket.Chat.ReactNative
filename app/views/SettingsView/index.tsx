@@ -1,5 +1,4 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import CookieManager from '@react-native-cookies/cookies';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
@@ -10,16 +9,14 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
 import { selectServerRequest } from '../../actions/server';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import NewWindowIcon from '../../containers/NewWindowIcon';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
 import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
 import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
-import database from '../../lib/database';
 import { useAppSelector } from '../../lib/hooks';
 import { clearCache } from '../../lib/methods';
 import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
@@ -30,7 +27,6 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
 import { Services } from '../../lib/services';
-import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import SidebarView from '../SidebarView';
@@ -42,7 +38,6 @@ const SettingsView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const userId = useAppSelector(state => getUserSelector(state).id);
 	const { server, version } = useAppSelector(state => state.server);
 
 	useLayoutEffect(() => {
@@ -57,39 +52,12 @@ const SettingsView = (): React.ReactElement => {
 		});
 	}, [navigation, isMasterDetail]);
 
-	const checkCookiesAndLogout = async () => {
-		const db = database.servers;
-		const usersCollection = db.get('users');
-		try {
-			const userRecord = await usersCollection.find(userId);
-			if (userRecord.isFromWebView) {
-				showConfirmationAlert({
-					title: I18n.t('Clear_cookies_alert'),
-					message: I18n.t('Clear_cookies_desc'),
-					confirmationText: I18n.t('Clear_cookies_yes'),
-					dismissText: I18n.t('Clear_cookies_no'),
-					onPress: async () => {
-						await CookieManager.clearAll(true);
-						dispatch(logout());
-					},
-					onCancel: () => {
-						dispatch(logout());
-					}
-				});
-			} else {
-				dispatch(logout());
-			}
-		} catch {
-			// Do nothing: user not found
-		}
-	};
-
 	const handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
-			onPress: checkCookiesAndLogout
+			onPress: () => dispatch(logout())
 		});
 	};
 
@@ -165,22 +133,19 @@ const SettingsView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView testID='settings-view'>
-			<StatusBar />
 			<List.Container>
 				{isMasterDetail ? (
 					<>
 						<List.Section>
-							<List.Separator />
-							<SidebarView />
-							<List.Separator />
+							<SidebarView navigation={navigation as any} />
 						</List.Section>
 						<List.Section>
 							<List.Separator />
 							<List.Item
-								title='Display'
-								onPress={() => navigateToScreen('DisplayPrefsView')}
+								title='Accessibility_and_Appearance'
+								onPress={() => navigateToScreen('AccessibilityAndAppearanceView')}
 								showActionIndicator
-								left={() => <List.Icon name='sort' />}
+								left={() => <List.Icon name='accessibility' />}
 							/>
 							<List.Separator />
 							<List.Item
@@ -214,14 +179,6 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
-						title='Theme'
-						showActionIndicator
-						onPress={() => navigateToScreen('ThemeView')}
-						testID='settings-view-theme'
-						left={() => <List.Icon name='moon' />}
-					/>
-					<List.Separator />
-					<List.Item
 						title='Media_auto_download'
 						showActionIndicator
 						onPress={() => navigateToScreen('MediaAutoDownloadView')}
@@ -240,6 +197,7 @@ const SettingsView = (): React.ReactElement => {
 				</List.Section>
 
 				<List.Section>
+					<List.Separator />
 					<List.Item
 						title='Get_help'
 						left={() => <List.Icon name='support' />}

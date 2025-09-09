@@ -48,13 +48,16 @@ async function navigateToLogin(server?: string) {
 async function navigateToRegister(server?: string) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
-	await waitFor(element(by.id('register-view')))
+	await waitFor(element(by.id('register-view-name')))
 		.toExist()
 		.withTimeout(2000);
 }
 
 async function signup(): Promise<string> {
 	const randomUser = data.randomUser();
+	await waitFor(element(by.id('register-view-name')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('register-view-name')).replaceText(randomUser.name);
 	await element(by.id('register-view-name')).tapReturnKey();
 	await element(by.id('register-view-username')).replaceText(randomUser.username);
@@ -62,15 +65,25 @@ async function signup(): Promise<string> {
 	await element(by.id('register-view-email')).replaceText(randomUser.email);
 	await element(by.id('register-view-email')).tapReturnKey();
 	await element(by.id('register-view-password')).replaceText(randomUser.password);
-	await element(by.id('register-view')).swipe('down', 'fast');
-	await element(by.id('register-view-submit')).tap();
+	await element(by.id('register-view-password')).tapReturnKey();
+	await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
+	await sleep(300);
+	await element(by.id('register-view')).swipe('down', 'fast', 0.5);
+	await sleep(300);
+	await element(by.id('register-view')).swipe('up', 'fast', 0.5);
+	await sleep(1000);
+	await waitFor(element(by.id('register-view-submit')))
+		.toBeVisible()
+		.withTimeout(2000);
+	await element(by.id('register-view-submit')).atIndex(0).tap();
+
 	await expectValidRegisterOrRetry(device.getPlatform());
 	return randomUser.username;
 }
 
 async function login(username: string, password: string) {
-	await waitFor(element(by.id('login-view')))
-		.toExist()
+	await waitFor(element(by.id('login-view-email')))
+		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('login-view-email')).replaceText(username);
 	await element(by.id('login-view-email')).tapReturnKey();
@@ -92,7 +105,8 @@ async function logout() {
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
-	await element(by.id('settings-view')).swipe('up');
+	await element(by.id('settings-view')).swipe('up', 'fast', 0.5);
+	await sleep(300);
 	await waitFor(element(by.id('settings-logout')))
 		.toBeVisible()
 		.withTimeout(2000);
@@ -180,7 +194,7 @@ async function searchRoom(
 }
 
 async function navigateToRoom(room: string) {
-	await searchRoom(room);
+	await searchRoom(room, 'replaceText');
 	await element(by.id(`rooms-list-view-item-${room}`)).tap();
 	await checkRoomTitle(room);
 }

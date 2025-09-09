@@ -1,0 +1,96 @@
+name: Build PR
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-eslint-and-test:
+    name: ESLint and Test
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/eslint.yml
+
+  android-build-experimental-store:
+    name: Build Android Experimental
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/build-android.yml
+    needs: [run-eslint-and-test]
+    secrets: inherit
+    with:
+      type: experimental
+      trigger: "pr"
+
+  android-build-official-store:
+    name: Build Android Official
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/build-official-android.yml
+    needs: [run-eslint-and-test]
+    secrets: inherit
+    with:
+      type: official
+      trigger: "pr"
+
+  ios-build-experimental-store:
+    name: Build iOS Experimental
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/build-ios.yml
+    needs: [run-eslint-and-test]
+    secrets: inherit
+    with:
+      type: experimental
+      trigger: "pr"
+      
+  ios-build-official-store:
+    name: Build iOS Official
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/build-official-ios.yml
+    needs: [run-eslint-and-test]
+    secrets: inherit
+    with:
+      type: official
+      trigger: "pr"
+
+  e2e-hold:
+    name: E2E Hold
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    environment: approve_e2e_testing
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Waiting for manual approval..."
+    
+  e2e-build-android:
+    name: E2E Build Android
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/e2e-build-android.yml
+    needs: [e2e-hold]
+    secrets: inherit
+
+  e2e-run-android:
+    name: E2E Run Android
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/maestro-android.yml
+    needs: [e2e-build-android]
+    secrets: inherit
+    
+  e2e-build-ios:
+    name: E2E Build iOS
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/e2e-build-ios.yml
+    needs: [e2e-hold]
+    secrets: inherit
+    
+  e2e-run-ios:
+    name: E2E Run iOS
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/maestro-ios.yml
+    needs: [e2e-build-ios]
+    secrets: inherit

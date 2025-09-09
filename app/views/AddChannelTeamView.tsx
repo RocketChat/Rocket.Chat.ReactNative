@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { CompositeNavigationProp } from '@react-navigation/core';
 
 import * as List from '../containers/List';
-import StatusBar from '../containers/StatusBar';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { ChatsStackParamList, DrawerParamList, NewMessageStackParamList } from '../stacks/types';
@@ -61,7 +60,6 @@ const AddChannelTeamView = () => {
 
 	return (
 		<SafeAreaView testID='add-channel-team-view'>
-			<StatusBar />
 			<List.Container>
 				<List.Separator />
 				{canCreateNew ? (

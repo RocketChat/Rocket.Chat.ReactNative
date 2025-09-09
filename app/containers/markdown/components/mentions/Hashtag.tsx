@@ -2,12 +2,14 @@ import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
 import i18n from '../../../../i18n';
-import { themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
+import { ROOM_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { useAppSelector } from '../../../../lib/hooks';
-import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { useUserPreferences } from '../../../../lib/methods/userPreferences';
+import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';
-import { Services } from '../../../../lib/services';
+import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
 import { IUserChannel } from '../../interfaces';
@@ -22,8 +24,9 @@ interface IHashtag {
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
+	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-
+	const preffix = roomsWithHashTagSymbol ? '#' : '';
 	const handlePress = async () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);
 		if (typeof index !== 'undefined' && navToRoomInfo) {
@@ -37,7 +40,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			} else if (navParam.rid) {
 				sendLoadingEvent({ visible: true });
 				try {
-					await Services.getRoomInfo(navParam.rid);
+					await getRoomInfo(navParam.rid);
 					sendLoadingEvent({ visible: false });
 					navToRoomInfo(navParam);
 				} catch (error) {
@@ -59,11 +62,11 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 					...style
 				]}
 				onPress={handlePress}>
-				{`#${hashtag}`}
+				{`${preffix}${hashtag}`}
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].fontInfo }, ...style]}>{`#${hashtag}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
 });
 
 export default Hashtag;

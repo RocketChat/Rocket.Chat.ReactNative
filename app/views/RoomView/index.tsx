@@ -1,5 +1,5 @@
 import React from 'react';
-import { InteractionManager, PixelRatio, Text, View } from 'react-native';
+import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
@@ -20,7 +20,6 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
-import StatusBar from '../../containers/StatusBar';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -110,17 +109,16 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	private messageComposerRef: React.RefObject<IMessageComposerRef>;
-	private joinCode: React.RefObject<IJoinCode>;
+	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
+	private joinCode: React.RefObject<IJoinCode | null>;
 	// ListContainer component
-	private list: React.RefObject<IListContainerRef>;
+	private list: React.RefObject<IListContainerRef | null>;
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
 	private subObserveQuery?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
-	private retryInit = 0;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
@@ -178,7 +176,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
 			isOnHold: false,
-			rightButtonsWidth: 0
+			isAutocompleteVisible: false
 		};
 
 		this.setHeader();
@@ -249,7 +247,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
-		const { roomUpdate, member, isOnHold } = state;
+		const { roomUpdate, member, isOnHold, isAutocompleteVisible } = state;
 		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
@@ -264,6 +262,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return true;
 		}
 		if (isOnHold !== nextState.isOnHold) {
+			return true;
+		}
+		if (isAutocompleteVisible !== nextState.isAutocompleteVisible) {
 			return true;
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
@@ -283,7 +284,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined, rightButtonsWidth } = this.state;
+		const { roomUpdate, joined } = this.state;
 		const { insets, route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
@@ -306,11 +307,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
-		if (
-			insets.left !== prevProps.insets.left ||
-			insets.right !== prevProps.insets.right ||
-			rightButtonsWidth !== prevState.rightButtonsWidth
-		) {
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
 		this.setReadOnly();
@@ -427,9 +424,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, rightButtonsWidth } =
-			this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = this.props;
+		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
+		const { navigation, isMasterDetail, baseUrl, user, route, encryptionEnabled } = this.props;
 		const { rid, tmid } = this;
 
 		if (!rid) {
@@ -477,10 +473,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			visitor = room.visitor;
 		}
 
-		const onLayout = ({ nativeEvent }: { nativeEvent: any }) => {
-			this.setState({ rightButtonsWidth: nativeEvent.layout.width });
-		};
-
 		const t = room?.t;
 		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
@@ -498,7 +490,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					userId={userId}
 					token={token}
 					title={avatar}
-					theme={theme}
 					t={t}
 					goRoomActionsView={this.goRoomActionsView}
 					isMasterDetail={isMasterDetail}
@@ -519,11 +510,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
-					rightButtonsWidth={rightButtonsWidth}
 				/>
 			),
 			headerRight: () => (
 				<RightButtons
+					roomName={title}
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
@@ -537,8 +528,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
-					onLayout={onLayout}
 					hasE2EEWarning={e2eeWarning}
+					teamMain={teamMain}
+					isGroupChat={isGroupChatConst}
 				/>
 			)
 		});
@@ -615,12 +607,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			this.retryInit += 1;
-			if (this.retryInit <= 1) {
-				this.retryInitTimeout = setTimeout(() => {
-					this.init();
-				}, 300);
-			}
+			this.retryInitTimeout = setTimeout(() => {
+				this.init();
+			}, 300);
 		}
 	};
 
@@ -960,6 +949,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (message.fromServer && !message.tmid && this.rid) {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
+				// Synchronization needed for Fabric to work
+				await new Promise(res => setTimeout(res, 100));
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
 				this.cancelJumpToMessage();
 			}
@@ -990,8 +981,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	handleRoomRemoved = ({ rid }: { rid: string }) => {
 		const { room } = this.state;
+		const { isMasterDetail } = this.props;
 		if (rid === this.rid) {
-			Navigation.navigate('RoomsListView');
+			Navigation.popToTop(isMasterDetail);
 			!this.isOmnichannel &&
 				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
 		}
@@ -1463,7 +1455,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => (this.messageActions = ref)}
+					ref={(ref: IMessageActions | null) => {
+						this.messageActions = ref;
+					}}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1475,14 +1469,31 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
+				<MessageErrorActions
+					ref={(ref: IMessageErrorActions | null) => {
+						this.messageErrorActions = ref;
+					}}
+					tmid={this.tmid}
+				/>
 			</>
 		);
 	};
 
+	updateAutocompleteVisible = (updatedAutocompleteVisible: boolean) => {
+		if (!!updatedAutocompleteVisible && !this.state.isAutocompleteVisible) {
+			// timeout to prevent conflict with default keyboard announcement.
+			setTimeout(() => {
+				AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
+			}, 800);
+		}
+		if (updatedAutocompleteVisible !== this.state.isAutocompleteVisible) {
+			this.setState({ isAutocompleteVisible: updatedAutocompleteVisible });
+		}
+	};
+
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, action, selectedMessages } = this.state;
+		const { room, action, selectedMessages, isAutocompleteVisible } = this.state;
 		const { user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
@@ -1508,10 +1519,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				value={{
 					rid,
 					t,
+					room,
 					tmid: this.tmid,
 					sharing: false,
 					action,
 					selectedMessages,
+					updateAutocompleteVisible: this.updateAutocompleteVisible,
+					isAutocompleteVisible,
 					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
 					editCancel: this.onEditCancel,
 					editRequest: this.onEditRequest,
@@ -1520,7 +1534,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getText: this.getText
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-					<StatusBar />
 					{!this.tmid ? (
 						<Banner
 							title={I18n.t('Announcement')}
@@ -1535,7 +1548,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						rid={rid}
 						tmid={this.tmid}
 						renderRow={this.renderItem}
-						loading={loading}
 						hideSystemMessages={this.hideSystemMessages}
 						showMessageInMainThread={user.showMessageInMainThread ?? false}
 						serverVersion={serverVersion}

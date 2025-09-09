@@ -1,18 +1,6 @@
-import React from 'react';
-import Animated, {
-	useAnimatedGestureHandler,
-	useSharedValue,
-	useAnimatedStyle,
-	withSpring,
-	runOnJS
-} from 'react-native-reanimated';
-import {
-	LongPressGestureHandler,
-	PanGestureHandler,
-	State,
-	HandlerStateChangeEventPayload,
-	PanGestureHandlerEventPayload
-} from 'react-native-gesture-handler';
+import React, { useRef, memo } from 'react';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
+import { Gesture, GestureDetector, GestureUpdateEvent, PanGestureHandlerEventPayload } from 'react-native-gesture-handler';
 
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
@@ -20,6 +8,10 @@ import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
+import { toggleFav } from '../../lib/methods/toggleFav';
+import { toggleRead } from '../../lib/methods/toggleRead';
+import { hideRoom } from '../../lib/methods/hideRoom';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 const Touchable = ({
 	children,
@@ -31,43 +23,35 @@ const Touchable = ({
 	favorite,
 	isRead,
 	rid,
-	toggleFav,
-	toggleRead,
-	hideChannel,
 	isFocused,
 	swipeEnabled,
 	displayMode
 }: ITouchableProps): React.ReactElement => {
 	const { colors } = useTheme();
-
+	const serverVersion = useAppSelector(state => state.server.version);
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
-	let _value = 0;
+	const valueRef = useRef(0);
 
 	const close = () => {
 		rowState.value = 0;
 		transX.value = withSpring(0, { overshootClamping: true });
 		rowOffSet.value = 0;
+		valueRef.current = 0;
 	};
 
 	const handleToggleFav = () => {
-		if (toggleFav) {
-			toggleFav(rid, favorite);
-		}
+		toggleFav(rid, favorite);
 		close();
 	};
 
 	const handleToggleRead = () => {
-		if (toggleRead) {
-			toggleRead(rid, isRead);
-		}
+		toggleRead(rid, isRead, serverVersion);
 	};
 
 	const handleHideChannel = () => {
-		if (hideChannel) {
-			hideChannel(rid, type);
-		}
+		hideRoom(rid, type);
 	};
 
 	const onToggleReadPress = () => {
@@ -101,15 +85,9 @@ const Touchable = ({
 		}
 	};
 
-	const onLongPressHandlerStateChange = ({ nativeEvent }: { nativeEvent: HandlerStateChangeEventPayload }) => {
-		if (nativeEvent.state === State.ACTIVE) {
-			handleLongPress();
-		}
-	};
-
-	const handleRelease = (event: PanGestureHandlerEventPayload) => {
+	const handleRelease = (event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
 		const { translationX } = event;
-		_value += translationX;
+		valueRef.current += translationX;
 		let toValue = 0;
 		if (rowState.value === 0) {
 			// if no option is opened
@@ -148,10 +126,10 @@ const Touchable = ({
 			}
 		} else if (rowState.value === -1) {
 			// if left option is opened
-			if (_value < SMALL_SWIPE) {
+			if (valueRef.current < SMALL_SWIPE) {
 				toValue = 0;
 				rowState.value = 0;
-			} else if (_value > LONG_SWIPE) {
+			} else if (valueRef.current > LONG_SWIPE) {
 				toValue = 0;
 				rowState.value = 0;
 				if (I18n.isRTL) {
@@ -166,10 +144,10 @@ const Touchable = ({
 			}
 		} else if (rowState.value === 1) {
 			// if right option is opened
-			if (_value > -2 * SMALL_SWIPE) {
+			if (valueRef.current > -2 * SMALL_SWIPE) {
 				toValue = 0;
 				rowState.value = 0;
-			} else if (_value < -LONG_SWIPE) {
+			} else if (valueRef.current < -LONG_SWIPE) {
 				if (I18n.isRTL) {
 					handleToggleRead();
 				} else {
@@ -183,56 +161,66 @@ const Touchable = ({
 		}
 		transX.value = withSpring(toValue, { overshootClamping: true });
 		rowOffSet.value = toValue;
-		_value = toValue;
+		valueRef.current = toValue;
 	};
 
-	const onGestureEvent = useAnimatedGestureHandler({
-		onActive: event => {
+	const longPressGesture = Gesture.LongPress()
+		.minDuration(500)
+		.onStart(() => {
+			runOnJS(handleLongPress)();
+		});
+
+	const panGesture = Gesture.Pan()
+		.activeOffsetX([-10, 10]) // More sensitive horizontal detection
+		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
+		.enabled(swipeEnabled)
+		.onUpdate(event => {
 			transX.value = event.translationX + rowOffSet.value;
 			if (transX.value > 2 * width) transX.value = 2 * width;
-		},
-		onEnd: event => {
+		})
+		.onEnd(event => {
 			runOnJS(handleRelease)(event);
-		}
-	});
+		});
 
-	const animatedStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
+	// Use Race instead of Simultaneous to prevent conflicts
+	// Pan gesture will take priority over long press for horizontal swipes
+	const composedGesture = Gesture.Race(panGesture, longPressGesture);
+
+	const animatedStyles = useAnimatedStyle(() => ({
+		transform: [{ translateX: transX.value }]
+	}));
 
 	return (
-		<LongPressGestureHandler onHandlerStateChange={onLongPressHandlerStateChange}>
+		<GestureDetector gesture={composedGesture}>
 			<Animated.View>
-				<PanGestureHandler activeOffsetX={[-20, 20]} onGestureEvent={onGestureEvent} enabled={swipeEnabled}>
-					<Animated.View>
-						<LeftActions
-							transX={transX}
-							isRead={isRead}
-							width={width}
-							onToggleReadPress={onToggleReadPress}
-							displayMode={displayMode}
-						/>
-						<RightActions
-							transX={transX}
-							favorite={favorite}
-							width={width}
-							toggleFav={handleToggleFav}
-							onHidePress={onHidePress}
-							displayMode={displayMode}
-						/>
-						<Animated.View style={animatedStyles}>
-							<Touch
-								onPress={handlePress}
-								testID={testID}
-								style={{
-									backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
-								}}>
-								{children}
-							</Touch>
-						</Animated.View>
-					</Animated.View>
-				</PanGestureHandler>
+				<LeftActions
+					transX={transX}
+					isRead={isRead}
+					width={width}
+					onToggleReadPress={onToggleReadPress}
+					displayMode={displayMode}
+				/>
+				<RightActions
+					transX={transX}
+					favorite={favorite}
+					width={width}
+					toggleFav={handleToggleFav}
+					onHidePress={onHidePress}
+					displayMode={displayMode}
+				/>
+				<Animated.View style={animatedStyles}>
+					<Touch
+						onPress={handlePress}
+						testID={testID}
+						style={{
+							backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
+						}}>
+						{children}
+					</Touch>
+				</Animated.View>
 			</Animated.View>
-		</LongPressGestureHandler>
+		</GestureDetector>
 	);
 };
 
-export default Touchable;
+export default memo(Touchable);

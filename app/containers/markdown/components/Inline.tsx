@@ -62,7 +62,7 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 							/>
 						);
 					case 'EMOJI':
-						return <Emoji block={block} />;
+						return <Emoji block={block} index={index} />;
 					case 'MENTION_CHANNEL':
 						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':
