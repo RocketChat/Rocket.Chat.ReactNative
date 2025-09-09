@@ -1,24 +1,24 @@
 appId: chat.rocket.reactnative
 name: Ignore User
 onFlowStart:
-  - runFlow: '../helpers/setup.yaml'
+  - runFlow: '../../helpers/setup.yaml'
 
 ---
-- runFlow: '../helpers/launch-app.yaml'
+- runFlow: '../../helpers/launch-app.yaml'
 
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.otherUser = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 
 - runFlow:
-    file: ../helpers/login.yaml
+    file: '../../helpers/login.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 
 # should go to user info view
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 - runFlow:
@@ -34,14 +34,14 @@ onFlowStart:
     visible:
       text: 'Unblock'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 - extendedWaitUntil:
@@ -61,25 +61,25 @@ onFlowStart:
     visible:
       text: 'Block'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 - extendedWaitUntil:
     visible:
       id: 'message-composer'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should ignore user from message
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.room.name}
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'message-01')}
@@ -103,11 +103,11 @@ onFlowStart:
       childOf:
         id: room-info-view-ignore
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should tap to display message
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -145,9 +145,9 @@ onFlowStart:
       childOf:
         id: room-info-view-ignore
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -157,9 +157,9 @@ onFlowStart:
     timeout: 60000
 
 # should go to user info view from a DM
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.otherUser.username}
 - runFlow: './utils/navigate-to-info-view.yaml'
@@ -196,9 +196,9 @@ onFlowStart:
     timeout: 60000
 
 # should go to user info view from a channel
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
