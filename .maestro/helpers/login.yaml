@@ -18,11 +18,13 @@ onFlowStart:
 - tapOn:
     id: login-view-email
 - inputText: ${USERNAME || output.createdUser.email}
-- pressKey: enter
+- tapOn:
+    text: '.*Username or email.*'
 - tapOn:
     id: login-view-password
 - inputText: ${PASSWORD || output.createdUser.password}
-- hideKeyboard
+- tapOn:
+    text: '.*Password.*'
 - tapOn:
     id: login-view-submit
 - extendedWaitUntil:
