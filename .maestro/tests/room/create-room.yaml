@@ -201,7 +201,7 @@ onFlowComplete:
     visible:
       id: ${'room-view-title-' + output.publicRoomName}
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
