@@ -55,7 +55,7 @@ public class AppDelegate: ExpoAppDelegate {
     }
 
     // Initialize SSL Pinning
-    SSLPinning().migrate()
+     SSLPinning().migrate()
 
     // Initialize Watch Connection
     watchConnection = WatchConnection(session: WCSession.default)

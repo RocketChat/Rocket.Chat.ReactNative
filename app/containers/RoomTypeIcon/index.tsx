@@ -4,7 +4,7 @@ import { ImageStyle } from 'expo-image';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 import { CustomIcon, TIconsName } from '../CustomIcon';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import Status from '../Status';
 import { useTheme } from '../../theme';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
