@@ -150,7 +150,7 @@ export const FormTextInput = ({
 								iconLeft && styles.inputIconLeft,
 								secureTextEntry || iconRight || showClearInput ? styles.inputIconRight : {},
 								{
-									backgroundColor: colors.surfaceRoom,
+									backgroundColor: colors.surfaceLight,
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},
