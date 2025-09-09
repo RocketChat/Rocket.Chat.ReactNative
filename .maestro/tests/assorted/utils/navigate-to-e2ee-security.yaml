@@ -36,8 +36,10 @@ tags:
     visible:
       id: security-privacy-view
     timeout: 60000
-- assertVisible: End-to-end encryption
-- tapOn: End-to-end encryption
+- assertVisible:
+    text: End-to-end encryption
+- tapOn:
+    text: End-to-end encryption
 - extendedWaitUntil:
     visible:
       id: e2e-encryption-security-view
