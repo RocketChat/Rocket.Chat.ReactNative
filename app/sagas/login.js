@@ -47,7 +47,6 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
-import remove2FAHeaders from '../lib/helpers/remove2FAHeaders';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
