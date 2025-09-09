@@ -1336,7 +1336,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
     </View>
     <View
       accessibilityLabel="2 selecteds"
-      accessibilityRole="button"
+      accessibilityRole="combobox"
       accessibilityState={
         {
           "busy": undefined,
@@ -1475,7 +1475,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
     </View>
     <View
       accessibilityLabel="0 selecteds"
-      accessibilityRole="button"
+      accessibilityRole="combobox"
       accessibilityState={
         {
           "busy": undefined,
