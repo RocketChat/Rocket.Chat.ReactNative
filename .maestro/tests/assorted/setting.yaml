@@ -35,6 +35,8 @@ onFlowComplete:
     visible:
       id: 'settings-view'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 60000
 
 # should have settings view
 - assertVisible:
