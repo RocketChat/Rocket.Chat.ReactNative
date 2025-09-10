@@ -76,6 +76,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Autoplay_gifs'
 						right={renderAutoplayGifs}
 						onPress={toggleAutoplayGifs}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Item
@@ -83,6 +84,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Mentions_With_@_Symbol'
 						right={renderMentionsWithAtSymbolSwitch}
 						onPress={toggleMentionsWithAtSymbol}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Item
@@ -90,6 +92,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Rooms_With_#_Symbol'
 						right={renderRoomsWithHashTagSwitch}
 						onPress={toggleRoomsWithHashTag}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 				</List.Section>
