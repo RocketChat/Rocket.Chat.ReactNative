@@ -81,7 +81,6 @@ const DefaultBrowserView = () => {
 			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
 	}, []);
-
 	return (
 		<SafeAreaView testID='default-browser-view'>
 			<FlatList
@@ -90,7 +89,7 @@ const DefaultBrowserView = () => {
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				renderItem={({ item }) => (
 					<List.Radio
-						isSelected={item.title === browser}
+						isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}
 						title={item.title}
 						value={item.value}
 						onPress={changeDefaultBrowser}
