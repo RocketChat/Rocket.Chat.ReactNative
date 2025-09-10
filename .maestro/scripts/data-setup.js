@@ -162,7 +162,7 @@ const getProfileInfo = async (userId) => {
 
     const resultJson = json(result.body);
 
-    return resultJson?.data?.user;
+    return resultJson?.user;
 };
 
 const post = async (endpoint, username, password, body) => {
