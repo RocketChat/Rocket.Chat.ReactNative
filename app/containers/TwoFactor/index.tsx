@@ -75,6 +75,7 @@ const TwoFactor = React.memo(() => {
 		control,
 		setValue,
 		getValues,
+		clearErrors,
 		formState: { errors },
 		setError
 	} = useForm({
@@ -91,7 +92,9 @@ const TwoFactor = React.memo(() => {
 	const sendEmail = async () => {
 		try {
 			if (params?.user) {
+				clearErrors();
 				const response = await sendEmailCode(params?.user);
+
 				if (response.success) {
 					showToast(I18n.t('Two_Factor_Success_message'));
 				}
@@ -142,6 +145,7 @@ const TwoFactor = React.memo(() => {
 				submit(code);
 			}
 		}
+		clearErrors();
 		setData({});
 	};
 
