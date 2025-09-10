@@ -83,7 +83,6 @@ onFlowComplete:
 # should change the avatar through upload image
 - addMedia:
     - '../../scripts/avatar.png'
-
 - extendedWaitUntil:
     visible:
       id: 'avatar-edit-button'
@@ -99,11 +98,11 @@ onFlowComplete:
     id: 'change-avatar-view-upload-image'
 - runFlow:
     when:
-      platform: Android
+      platform: 'Android'
     commands:
       - tapOn: '.*Photo taken on.*'
       - tapOn:
-          id: menu_crop
+          id: 'menu_crop'
 
 - extendedWaitUntil:
     visible:
@@ -117,3 +116,37 @@ onFlowComplete:
     timeout: 60000
 - evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
 - assertTrue: ${output.newUserInfo.avatarETag !== output.previousUserInfo.avatarETag}
+
+# should change avatar from URL
+- extendedWaitUntil:
+    visible:
+      id: 'avatar-edit-button'
+    timeout: 60000
+- tapOn:
+    id: 'avatar-edit-button'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-avatar-url'
+    timeout: 60000
+- tapOn:
+    id: 'change-avatar-view-avatar-url'
+- inputText: 'https://play-lh.googleusercontent.com/AMPmTxPV498lwVj3HsEJkvoUF6RurRcwYz2xbTCP7XndQdaWBmll4eSCcnwtbehUUw=w480-h960-rw'
+- extendedWaitUntil:
+    visible:
+      text: 'Fetch image from URL'
+    timeout: 60000
+- tapOn:
+    text: 'Fetch image from URL'
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+    timeout: 60000
+- tapOn:
+    id: 'change-avatar-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'profile-view'
+    timeout: 60000
+- evalScript: ${output.avatarFromLinkInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- assertTrue: ${output.newUserInfo.avatarETag !== output.avatarFromLinkInfo.avatarETag}
