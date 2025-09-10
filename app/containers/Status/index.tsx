@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 
 import Status from './Status';
 import { IStatus } from './definition';
-import { useAppSelector } from '../../lib/hooks';
-import { getUserPresence } from '../../lib/methods';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { getUserPresence } from '../../lib/methods/getUsersPresence';
 
 const StatusContainer = ({ id, style, status, size = 32, ...props }: IStatus): React.ReactElement => {
 	const connected = useAppSelector(state => state.meteor.connected);

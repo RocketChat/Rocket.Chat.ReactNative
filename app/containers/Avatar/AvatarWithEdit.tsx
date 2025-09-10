@@ -8,7 +8,7 @@ import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import { useAppSelector } from '../../lib/hooks';
-import { compareServerVersion } from '../../lib/methods/helpers';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({

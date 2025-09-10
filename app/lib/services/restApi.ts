@@ -18,7 +18,8 @@ import { TEAM_TYPE } from '../../definitions/ITeam';
 import { OperationParams, ResultFor } from '../../definitions/rest/helpers';
 import { SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
-import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
+import { RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
 import { store as reduxStore } from '../store/auxStore';
@@ -937,12 +938,12 @@ export const emitTyping = (room: IRoom, typing = true) => {
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
 
-export function e2eResetOwnKey(): Promise<boolean | {}> {
+export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
 	// {} when TOTP is enabled
 	unsubscribeRooms();
 
-	// RC 0.72.0
-	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
+	// RC 3.6.0
+	return sdk.post('users.resetE2EKey');
 }
 
 export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {

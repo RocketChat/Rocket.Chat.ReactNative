@@ -13,9 +13,9 @@ import PlayButton from './PlayButton';
 import AudioManager from '../../lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { TDownloadState } from '../../lib/methods/handleMediaDownload';
-import { emitter } from '../../lib/methods/helpers';
+import { emitter } from '../../lib/methods/helpers/emitter';
 import { TAudioState } from './types';
-import { useUserPreferences } from '../../lib/methods';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
 
 interface IAudioPlayerProps {
 	fileUri: string;
