@@ -15,7 +15,6 @@ export const changeRoomsAvatar = async (rid: string, roomAvatar: string | null) 
 export const changeUserAvatar = async (avatarUpload: IAvatar) => {
 	try {
 		await Services.setAvatarFromService(avatarUpload);
-        
 	} catch (e) {
 		return handleError(e, 'changing_avatar');
 	}
