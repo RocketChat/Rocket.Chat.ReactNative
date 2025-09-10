@@ -11,6 +11,7 @@ import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
 import { useUserPreferences } from '../../lib/methods';
 import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY, AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants';
+import { isIOS } from '../../lib/methods/helpers';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
@@ -76,7 +77,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Autoplay_gifs'
 						right={renderAutoplayGifs}
 						onPress={toggleAutoplayGifs}
-						accessibilityRole='switch'
+						accessibilityRole={isIOS ? 'switch' : 'none'}
 					/>
 					<List.Separator />
 					<List.Item
@@ -84,7 +85,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Mentions_With_@_Symbol'
 						right={renderMentionsWithAtSymbolSwitch}
 						onPress={toggleMentionsWithAtSymbol}
-						accessibilityRole='switch'
+						accessibilityRole={isIOS ? 'switch' : 'none'}
 					/>
 					<List.Separator />
 					<List.Item
@@ -92,7 +93,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Rooms_With_#_Symbol'
 						right={renderRoomsWithHashTagSwitch}
 						onPress={toggleRoomsWithHashTag}
-						accessibilityRole='switch'
+						accessibilityRole={isIOS ? 'switch' : 'none'}
 					/>
 					<List.Separator />
 				</List.Section>

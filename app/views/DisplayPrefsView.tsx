@@ -17,6 +17,7 @@ import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods';
 import { useAppSelector } from '../lib/hooks';
+import { isIOS } from '../lib/methods/helpers';
 
 const DisplayPrefsView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
@@ -119,7 +120,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
 						additionalAcessibilityLabel={showAvatar}
-						accessibilityRole='switch'
+						accessibilityRole={isIOS ? 'switch' : 'none'}
 					/>
 					<List.Separator />
 				</List.Section>
