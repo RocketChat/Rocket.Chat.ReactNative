@@ -117,6 +117,7 @@ onFlowComplete:
       - assertTrue: ${output.newUserInfo.avatarETag !== output.previousUserInfo.avatarETag}
 
 # should change avatar from URL
+- evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
 - extendedWaitUntil:
     visible:
       id: 'avatar-edit-button'
