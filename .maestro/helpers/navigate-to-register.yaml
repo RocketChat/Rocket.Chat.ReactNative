@@ -5,7 +5,7 @@ tags:
 
 ---
 - tapOn: Workspace URL. Required.
-- inputText: ${output.data.server}
+- inputText: ${server || output.data.server}
 - extendedWaitUntil:
     visible: 'Connect'
     timeout: 60000
