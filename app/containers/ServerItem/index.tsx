@@ -5,7 +5,6 @@ import { Image } from 'expo-image';
 import I18n from '../../i18n';
 import * as List from '../List/index';
 import styles, { ROW_HEIGHT } from './styles';
-import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import Touch from '../Touch';
 
