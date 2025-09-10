@@ -10,7 +10,7 @@ onFlowComplete:
 - evalScript: ${output.otherUser = output.utils.createUser()}
 - evalScript: ${output.team = output.utils.createRandomTeam(output.user.username, output.user.password)}
 - evalScript: ${output.thread = output.random() + 'thread'}
-- evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, output.data.channels.detoxpublic.name, output.thread)}
+- evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, 'join-from-directory', output.thread)}
 - evalScript: ${output.threadReply = output.utils.sendMessage(output.user.username, output.user.password, output.result.message.rid, 'insidethread', output.result.message._id)}
 
 - runFlow: '../../helpers/launch-app.yaml'
@@ -39,20 +39,20 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: 'directory-view-search'
-- inputText: ${output.data.channels.detoxpublic.name}
+- inputText: join-from-directory
 - extendedWaitUntil:
     visible:
-      id: 'directory-view-item-${output.data.channels.detoxpublic.name}'
+      id: 'directory-view-item-join-from-directory'
     timeout: 60000
 - tapOn:
-    id: 'directory-view-item-${output.data.channels.detoxpublic.name}'
+    id: 'directory-view-item-join-from-directory'
 - extendedWaitUntil:
     visible:
       id: 'room-view'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-${output.data.channels.detoxpublic.name}'
+      id: 'room-view-title-join-from-directory'
     timeout: 60000
 
 # should navigate to thread messages view and load messages
@@ -101,6 +101,19 @@ onFlowComplete:
 - tapOn:
     id: 'directory-view-search'
 - inputText: ${output.otherUser.username}
+
+# This is to handle debouncing on search (iOS only)
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - eraseText: 1
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - inputText: ${output.otherUser.username.slice(-1)}
+
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-${output.otherUser.username}'
