@@ -150,7 +150,7 @@ const sendMessage = (username, password, channel, msg, tmid) => {
     return result;
 };
 
-const getProfileInfo = async (userId) => {
+const getProfileInfo = (userId) => {
     login(output.account.adminUser, output.account.adminPassword);
     
     const result = http.get(`${data.server}/api/v1/users.info?userId=${userId}`, {
@@ -165,7 +165,7 @@ const getProfileInfo = async (userId) => {
     return resultJson?.user;
 };
 
-const post = async (endpoint, username, password, body) => {
+const post = (endpoint, username, password, body) => {
     login(username, password);
 
     const response = http.post(`${data.server}/api/v1/${endpoint}`, {
