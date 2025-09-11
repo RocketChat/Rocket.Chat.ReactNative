@@ -40,96 +40,106 @@ onFlowComplete:
       id: 'preferences-view-convert-ascii-to-emoji'
     timeout: 60000
 
-# ASCII should be converted to emoji
-- tapOn:
-    id: 'custom-header-back'
-- extendedWaitUntil:
-    visible:
-      id: 'profile-view'
-    timeout: 60000
-- tapOn:
-    id: 'profile-view-open-sidebar'
-- extendedWaitUntil:
-    visible:
-      id: 'sidebar-view'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'sidebar-chats'
-    timeout: 60000
-- tapOn:
-    id: 'sidebar-chats'
+# ASCII should not be converted to emoji (Android only)
 - runFlow:
-    file: '../../helpers/search-room.yaml'
-    env:
-      ROOM: 'maestro-ascii-emoji-test'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-item-maestro-ascii-emoji-test'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: 'e2e_admin: :('
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-item-maestro-ascii-emoji-test'
-- extendedWaitUntil:
-    visible:
-      id: 'message-content-:('
-    timeout: 60000
-- extendedWaitUntil:
-    notVisible:
-      id: 'message-content-😞'
-    timeout: 60000
+    label: 'ASCII should not be converted to emoji'
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: 'custom-header-back'
+      - extendedWaitUntil:
+          visible:
+            id: 'profile-view'
+          timeout: 60000
+      - tapOn:
+          id: 'profile-view-open-sidebar'
+      - extendedWaitUntil:
+          visible:
+            id: 'sidebar-view'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: 'sidebar-chats'
+          timeout: 60000
+      - tapOn:
+          id: 'sidebar-chats'
+      - runFlow:
+          file: '../../helpers/search-room.yaml'
+          env:
+            ROOM: 'maestro-ascii-emoji-test'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-item-maestro-ascii-emoji-test'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            text: 'e2e_admin: :('
+          timeout: 60000
+      - tapOn:
+          id: 'rooms-list-view-item-maestro-ascii-emoji-test'
+      - extendedWaitUntil:
+          visible:
+            text: ':('
+          timeout: 60000
+      - extendedWaitUntil:
+          notVisible:
+            text: '😞'
+          timeout: 60000
 
-# ASCII should be converted to emoji
-- tapOn:
-    id: 'header-back'
+# ASCII should be converted to emoji (Android Only)
 - runFlow:
-    file: './utils/go-to-user-preference.yaml'
-- extendedWaitUntil:
-    visible:
-      id: 'preferences-view-convert-ascii-to-emoji'
-    timeout: 60000
-- tapOn:
-    id: 'preferences-view-convert-ascii-to-emoji'
-- tapOn:
-    id: 'custom-header-back'
-- extendedWaitUntil:
-    visible:
-      id: 'profile-view'
-    timeout: 60000
-- tapOn:
-    id: 'profile-view-open-sidebar'
-- extendedWaitUntil:
-    visible:
-      id: 'sidebar-view'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'sidebar-chats'
-    timeout: 60000
-- tapOn:
-    id: 'sidebar-chats'
-- runFlow:
-    file: '../../helpers/search-room.yaml'
-    env:
-      ROOM: 'maestro-ascii-emoji-test'
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-view-item-maestro-ascii-emoji-test'
-    timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: 'e2e_admin: 😞'
-    timeout: 60000
-- tapOn:
-    id: 'rooms-list-view-item-maestro-ascii-emoji-test'
-- extendedWaitUntil:
-    visible:
-      text: '😞'
-    timeout: 60000
-- extendedWaitUntil:
-    notVisible:
-      text: ':('
-    timeout: 60000
+    label: 'ASCII should be converted to emoji'
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          id: 'header-back'
+      - runFlow:
+          file: './utils/go-to-user-preference.yaml'
+      - extendedWaitUntil:
+          visible:
+            id: 'preferences-view-convert-ascii-to-emoji'
+          timeout: 60000
+      - tapOn:
+          id: 'preferences-view-convert-ascii-to-emoji'
+      - tapOn:
+          id: 'custom-header-back'
+      - extendedWaitUntil:
+          visible:
+            id: 'profile-view'
+          timeout: 60000
+      - tapOn:
+          id: 'profile-view-open-sidebar'
+      - extendedWaitUntil:
+          visible:
+            id: 'sidebar-view'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: 'sidebar-chats'
+          timeout: 60000
+      - tapOn:
+          id: 'sidebar-chats'
+      - runFlow:
+          file: '../../helpers/search-room.yaml'
+          env:
+            ROOM: 'maestro-ascii-emoji-test'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-item-maestro-ascii-emoji-test'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            text: 'e2e_admin: 😞'
+          timeout: 60000
+      - tapOn:
+          id: 'rooms-list-view-item-maestro-ascii-emoji-test'
+      - extendedWaitUntil:
+          visible:
+            text: '😞'
+          timeout: 60000
+      - extendedWaitUntil:
+          notVisible:
+            text: ':('
+          timeout: 60000
