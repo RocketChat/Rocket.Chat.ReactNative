@@ -3096,7 +3096,7 @@ SPEC CHECKSUMS:
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   MMKV: 5854d45476fc3757bacfa7e13cc0fbcd274ab0e4
   MMKVCore: edbad9714bb70344544148f086a4a69061ff31b6
-  MobileCrypto: 101b85a7b88b0a370f35a775e3be75ce8dd6fbd9
+  MobileCrypto: a64e4611902a704760cef55f6499d4ec59b21f13
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
@@ -3172,7 +3172,7 @@ SPEC CHECKSUMS:
   React-timing: 2d07431f1c1203c5b0aaa6dc7b5f503704519218
   React-utils: 67cf7dcfc18aa4c56bec19e11886033bb057d9fa
   ReactAppDependencyProvider: bf62814e0fde923f73fc64b7e82d76c63c284da9
-  ReactCodegen: c51a63d05629675dd61caf58d1a093c4457972c0
+  ReactCodegen: df3ff45729335a27d1c85bed1787e79783289968
   ReactCommon: 177fca841e97b2c0e288e86097b8be04c6e7ae36
   RNBootSplash: 1280eeb18d887de0a45bb4923d4fc56f25c8b99c
   RNCAsyncStorage: edb872909c88d8541c0bfade3f86cd7784a7c6b3
