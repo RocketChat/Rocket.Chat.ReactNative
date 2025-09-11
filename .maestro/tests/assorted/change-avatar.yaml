@@ -1,5 +1,5 @@
 appId: chat.rocket.reactnative
-name: Profile
+name: Change Avatar
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
@@ -96,10 +96,14 @@ onFlowComplete:
       - evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
       - extendedWaitUntil:
           visible:
-            id: 'change-avatar-view-upload-image'
+            text: 'Upload image'
           timeout: 60000
       - tapOn:
-          id: 'change-avatar-view-upload-image'
+          text: 'Upload image'
+      - extendedWaitUntil:
+          visible:
+            text: '.*Photo taken on.*'
+          timeout: 60000
       - tapOn: '.*Photo taken on.*'
       - tapOn:
           id: 'menu_crop'
