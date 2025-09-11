@@ -1,20 +1,20 @@
 package chat.rocket.reactnative.notification;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
+import com.wix.reactnativenotifications.core.AppLifecycleFacade;
+import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
 import com.google.gson.Gson;
-import com.pedrouid.crypto.RCTAes;
-import com.pedrouid.crypto.RCTRsaUtils;
-import com.pedrouid.crypto.RSA;
-import com.pedrouid.crypto.Util;
+import chat.rocket.mobilecrypto.algorithms.AESCrypto;
+import chat.rocket.mobilecrypto.algorithms.RSACrypto;
+import chat.rocket.mobilecrypto.algorithms.CryptoUtils;
+import com.nozbe.watermelondb.WMDatabase;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -73,25 +73,25 @@ class Encryption {
 
     public Room readRoom(final Ejson ejson) {
         String dbName = getDatabaseName(ejson.serverURL());
-        SQLiteDatabase db = null;
+        WMDatabase db = null;
 
         try {
-            db = SQLiteDatabase.openDatabase(dbName, null, SQLiteDatabase.OPEN_READONLY);
-            String[] queryArgs = {ejson.rid};
+           db = WMDatabase.getInstance(dbName, reactContext);
+           String[] queryArgs = {ejson.rid};
 
-            Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", queryArgs);
+           Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", queryArgs);
 
-            if (cursor.getCount() == 0) {
-                cursor.close();
-                return null;
-            }
+           if (cursor.getCount() == 0) {
+               cursor.close();
+               return null;
+           }
 
-            cursor.moveToFirst();
-            String e2eKey = cursor.getString(cursor.getColumnIndex("e2e_key"));
-            Boolean encrypted = cursor.getInt(cursor.getColumnIndex("encrypted")) > 0;
-            cursor.close();
+           cursor.moveToFirst();
+           String e2eKey = cursor.getString(cursor.getColumnIndex("e2e_key"));
+           Boolean encrypted = cursor.getInt(cursor.getColumnIndex("encrypted")) > 0;
+           cursor.close();
 
-            return new Room(e2eKey, encrypted);
+           return new Room(e2eKey, encrypted);
 
         } catch (Exception e) {
             Log.e("[ENCRYPTION]", "Error reading room", e);
@@ -117,15 +117,16 @@ class Encryption {
             e.printStackTrace();
         }
 
-        String dbName = serverUrl.replace("https://", "");
+        // Match JS WatermelonDB naming: strip scheme, replace '/' with '.', add '-experimental' when needed, and append one ".db".
+        String name = serverUrl.replaceFirst("^(\\w+:)?//", "").replace("/", ".");
         if (!isOfficial) {
-            dbName += "-experimental";
+            name += "-experimental";
         }
-        // Old issue. Safer to accept it then to migrate away from it.
-        dbName += ".db.db";
-        // https://github.com/Nozbe/WatermelonDB/blob/a757e646141437ad9a06f7314ad5555a8a4d252e/native/android-jsi/src/main/java/com/nozbe/watermelondb/jsi/JSIInstaller.java#L18
-        File databasePath = new File(reactContext.getDatabasePath(dbName).getPath().replace("/databases", ""));
-        return databasePath.getPath();
+        name += ".db";
+
+        // Important: return just the name (not an absolute path). WMDatabase will resolve and append its own ".db" internally,
+        // so the physical file becomes "*.db.db", matching the JS adapter.
+        return name;
     }
 
     public String readUserKey(final Ejson ejson) throws Exception {
@@ -146,7 +147,7 @@ class Encryption {
         jwk.putString("dq", privKey.dq);
         jwk.putString("qi", privKey.qi);
 
-        return new RCTRsaUtils(reactContext).jwkToPrivatePkcs1(jwk);
+        return RSACrypto.INSTANCE.importJwkKey(jwk);
     }
 
     public String decryptRoomKey(final String e2eKey, final Ejson ejson) throws Exception {
@@ -158,28 +159,29 @@ class Encryption {
             return null;
         }
 
-        RSA rsa = new RSA();
-        rsa.setPrivateKey(userKey);
-        String decrypted = rsa.decrypt(key);
+        String decrypted = RSACrypto.INSTANCE.decrypt(key, userKey);
 
         RoomKey roomKey = gson.fromJson(decrypted, RoomKey.class);
         byte[] decoded = Base64.decode(roomKey.k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
 
-        return Util.bytesToHex(decoded);
+        return CryptoUtils.INSTANCE.bytesToHex(decoded);
     }
 
     private String decryptText(String text, String e2eKey) throws Exception {
         String msg = text.substring(12);
         byte[] msgData = Base64.decode(msg, Base64.NO_WRAP);
         String b64 = Base64.encodeToString(Arrays.copyOfRange(msgData, 16, msgData.length), Base64.DEFAULT);
-        String decrypted = RCTAes.decrypt(b64, e2eKey, Util.bytesToHex(Arrays.copyOfRange(msgData, 0, 16)));
+        String decrypted = AESCrypto.INSTANCE.decryptBase64(b64, e2eKey, CryptoUtils.INSTANCE.bytesToHex(Arrays.copyOfRange(msgData, 0, 16)));
         byte[] data = Base64.decode(decrypted, Base64.NO_WRAP);
         return new String(data, "UTF-8");
     }
 
     public String decryptMessage(final Ejson ejson, final ReactApplicationContext reactContext) {
         try {
-            this.reactContext = reactContext;
+            AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
+            if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
+                this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
+            }
 
             Room room = readRoom(ejson);
             if (room == null || room.e2eKey == null) {
@@ -213,6 +215,11 @@ class Encryption {
 
     public String encryptMessage(final String message, final String id, final Ejson ejson) {
         try {
+            AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
+            if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
+                this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
+            }
+            
             Room room = readRoom(ejson);
             if (room == null || !room.encrypted || room.e2eKey == null) {
                 return message;
@@ -230,7 +237,7 @@ class Encryption {
             byte[] bytes = new byte[16];
             random.nextBytes(bytes);
 
-            String encrypted = RCTAes.encrypt(Base64.encodeToString(cypher.getBytes("UTF-8"), Base64.NO_WRAP), e2eKey, Util.bytesToHex(bytes));
+            String encrypted = AESCrypto.INSTANCE.encryptBase64(Base64.encodeToString(cypher.getBytes("UTF-8"), Base64.NO_WRAP), e2eKey, CryptoUtils.INSTANCE.bytesToHex(bytes));
             byte[] data = Base64.decode(encrypted, Base64.NO_WRAP);
 
             return keyId + Base64.encodeToString(concat(bytes, data), Base64.NO_WRAP);
