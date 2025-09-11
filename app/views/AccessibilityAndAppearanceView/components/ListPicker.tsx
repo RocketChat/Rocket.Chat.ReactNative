@@ -80,10 +80,14 @@ const ListPicker = ({
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
 
+	const openOptions = () => {
+		const options = getOptions();
+		showActionSheet({ options });
+	};
 	return (
 		<List.Item
 			accessibilityLabel={`${title}. ${option?.label}`}
-			onPress={() => showActionSheet({ options: getOptions() })}
+			onPress={openOptions}
 			title={() => (
 				<View style={styles.leftTitleContainer}>
 					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
