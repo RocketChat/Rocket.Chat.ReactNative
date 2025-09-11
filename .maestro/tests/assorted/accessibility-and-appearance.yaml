@@ -15,7 +15,7 @@ onFlowEnd:
       PASSWORD: ${output.user.password}
 - runFlow:
     file: './utils/go-to-accessibility-appearance.yaml'
-    
+
 # should have accessibility view list
 - extendedWaitUntil:
     visible:
@@ -27,7 +27,7 @@ onFlowEnd:
     visible:
       id: 'accessibility-view-drawer'
     timeout: 60000
-  
+
 # should have theme button
 - extendedWaitUntil:
     visible:
