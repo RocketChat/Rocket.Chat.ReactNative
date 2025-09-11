@@ -55,7 +55,6 @@ onFlowComplete:
     id: 'reset-avatar-suggestion'
 
 # should appear the discard alert when click the back icon
-- startRecording: recording
 - tapOn:
     id: 'header-back'
 - extendedWaitUntil:
@@ -81,45 +80,32 @@ onFlowComplete:
 - tapOn:
     text: 'Discard'
 
-# should change the avatar through upload image (Android Only because Maestro is unable to select image from iOS picker)
-- runFlow:
-    when:
-      platform: 'Android'
-    commands:
-      - addMedia:
-          - '../../scripts/avatar.png'
-      - extendedWaitUntil:
-          visible:
-            id: 'avatar-edit-button'
-          timeout: 60000
-      - tapOn:
-          id: 'avatar-edit-button'
-      - evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
-      - extendedWaitUntil:
-          visible:
-            text: 'Upload image'
-          timeout: 60000
-      - tapOn:
-          text: 'Upload image'
-      - extendedWaitUntil:
-          visible:
-            text: '.*Photo taken on.*'
-          timeout: 60000
-      - tapOn: '.*Photo taken on.*'
-      - tapOn:
-          id: 'menu_crop'
-      - extendedWaitUntil:
-          visible:
-            id: 'change-avatar-view-submit'
-          timeout: 60000
-      - tapOn:
-          id: 'change-avatar-view-submit'
-      - extendedWaitUntil:
-          visible:
-            id: 'profile-view'
-          timeout: 60000
-      - evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
-      - assertTrue: ${output.newUserInfo.avatarETag !== output.previousUserInfo.avatarETag}
+# should change the avatar through upload image
+- extendedWaitUntil:
+    visible:
+      id: 'avatar-edit-button'
+    timeout: 60000
+- tapOn:
+    id: 'avatar-edit-button'
+- evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- extendedWaitUntil:
+    visible:
+      text: 'Upload image'
+    timeout: 60000
+- tapOn:
+    text: 'Upload image'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+    timeout: 60000
+- tapOn:
+    id: 'change-avatar-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'profile-view'
+    timeout: 60000
+- evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- assertTrue: ${output.newUserInfo.avatarETag !== output.previousUserInfo.avatarETag}
 
 # should change avatar from URL
 - evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
@@ -155,4 +141,3 @@ onFlowComplete:
     timeout: 60000
 - evalScript: ${output.avatarFromLinkInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
 - assertTrue: ${output.newUserInfo.avatarETag !== output.avatarFromLinkInfo.avatarETag}
-- stopRecording
