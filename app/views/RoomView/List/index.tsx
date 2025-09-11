@@ -38,7 +38,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					data={messages}
 					renderItem={renderItem}
 					onStartReached={onEndReached}
-					onStartReachedThreshold={0.5}
+					onStartReachedThreshold={0.9}
 					jumpToBottom={jumpToBottom}
 				/>
 			</>

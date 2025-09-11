@@ -23,8 +23,9 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 
 	const maintainVisibleContentPositionConfig = useMemo(
 		() => ({
-			autoscrollToBottomThreshold: 0.1,
-			startRenderingFromBottom: true
+			autoscrollToBottomThreshold: 0.05,
+			startRenderingFromBottom: true,
+			animateAutoScrollToBottom: true
 		}),
 		[]
 	);
@@ -43,9 +44,11 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 
 	useEffect(() => {
 		if (!userScrolled) {
-			listRef?.current?.scrollToEnd({ animated: true });
+			setTimeout(() => {
+				listRef?.current.scrollToEnd();
+			}, 200);
 		}
-	}, [props?.data?.length]);
+	}, [props.data?.length]);
 
 	return (
 		<View style={styles.list}>
