@@ -10,7 +10,9 @@ import {
 	rsaEncrypt,
 	aesEncrypt,
 	calculateFileChecksum,
-	aesDecrypt
+	aesDecrypt,
+	aesGcmEncrypt,
+	aesGcmDecrypt
 } from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
@@ -185,7 +187,7 @@ export default class EncryptionRoom {
 	hasSessionKey = () => !!this.sessionKeyExportedString;
 
 	createNewRoomKey = async () => {
-		const key = b64ToBuffer(await randomBytes(16));
+		const key = b64ToBuffer(await randomBytes(32));
 		this.roomKey = key;
 
 		// Web Crypto format of a Secret Key
@@ -193,7 +195,7 @@ export default class EncryptionRoom {
 			// Type of Secret Key
 			kty: 'oct',
 			// Algorithm
-			alg: 'A128CBC',
+			alg: 'A256GCM',
 			// Base64URI encoded array of bytes
 			k: bufferToB64URI(this.roomKey),
 			// Specific Web Crypto properties
@@ -386,9 +388,20 @@ export default class EncryptionRoom {
 	// Encrypt text
 	encryptText = async (text: string | ArrayBuffer) => {
 		text = utf8ToBuffer(text as string);
-		const vector = b64ToBuffer(await randomBytes(16));
+		const vectorBase64 = await randomBytes(12);
+		const vector = b64ToBuffer(vectorBase64);
+		// if server is greater than or equal to 7.9.0, we call aesGcmEncrypt
+		const { version } = store.getState().server;
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0')) {
+			const data = await aesGcmEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector));
+			console.log('data', data);
+			return EJSON.stringify({
+				key_id: this.keyID,
+				iv: vectorBase64,
+				ciphertext: data
+			});
+		}
 		const data = b64ToBuffer(await aesEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector)));
-
 		return this.keyID + bufferToB64(joinVectorData(vector, data));
 	};
 
@@ -408,6 +421,8 @@ export default class EncryptionRoom {
 				})
 			);
 
+			console.log('msg', msg);
+
 			return {
 				...message,
 				t: E2E_MESSAGE_TYPE,
@@ -419,7 +434,8 @@ export default class EncryptionRoom {
 					ciphertext: msg
 				}
 			};
-		} catch {
+		} catch (e) {
+			console.error(e);
 			// Do nothing
 		}
 
@@ -583,26 +599,53 @@ export default class EncryptionRoom {
 		return data;
 	};
 
+	parse = (payload: string) => {
+		console.log('payload', payload);
+		if (payload.startsWith('{')) {
+			const { key_id, iv, ciphertext } = EJSON.parse(payload);
+			return { key_id, iv: b64ToBuffer(iv), ciphertext };
+		}
+
+		const keyID = payload.slice(0, 12);
+		const contentBuffer = b64ToBuffer(payload.slice(12) as string);
+		const [iv, ciphertext] = splitVectorData(contentBuffer);
+		return { key_id: keyID, iv, ciphertext: bufferToB64(ciphertext) };
+	};
+
 	decryptContent = async (contentBase64: string) => {
-		if (!contentBase64) {
+		try {
+			if (!contentBase64) {
+				return null;
+			}
+
+			const { key_id, iv, ciphertext } = this.parse(contentBase64);
+			console.log('key_id', key_id, 'iv', iv, 'ciphertext', ciphertext);
+
+			let oldKey;
+			if (key_id !== this.keyID) {
+				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === key_id);
+				if (oldRoomKey?.E2EKey && Encryption.privateKey) {
+					const { roomKey } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
+					oldKey = roomKey;
+				}
+			}
+
+			const { version } = store.getState().server;
+
+			const keyHex = bufferToHex(oldKey || this.roomKey);
+			const ivHex = bufferToHex(iv);
+			let decrypted;
+			if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0')) {
+				decrypted = await aesGcmDecrypt(ciphertext, keyHex, ivHex);
+				console.log('decrypted', decrypted);
+			} else {
+				decrypted = await aesDecrypt(ciphertext, keyHex, ivHex);
+			}
+			return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
+		} catch (error) {
+			console.error(error);
 			return null;
 		}
-
-		const keyID = contentBase64.slice(0, 12);
-		const contentBuffer = b64ToBuffer(contentBase64.slice(12) as string);
-		const [vector, cipherText] = splitVectorData(contentBuffer);
-
-		let oldKey;
-		if (keyID !== this.keyID) {
-			const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === keyID);
-			if (oldRoomKey?.E2EKey && Encryption.privateKey) {
-				const { roomKey } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
-				oldKey = roomKey;
-			}
-		}
-
-		const decrypted = await aesDecrypt(bufferToB64(cipherText), bufferToHex(oldKey || this.roomKey), bufferToHex(vector));
-		return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
 	};
 
 	// Decrypt messages
