@@ -73,7 +73,7 @@ jobs:
     uses: ./.github/workflows/e2e-build-android.yml
     needs: [e2e-hold]
     secrets: inherit
- 
+
   e2e-run-android:
     name: E2E Run Android
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
