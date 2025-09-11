@@ -44,7 +44,7 @@ jobs:
           api-level: 34
           disk-size: 4096M
           arch: x86_64
-          target: google_apis
+          target: google_apis_playstore
           profile: pixel_7_pro
           cores: 4
           ram-size: 4096M
