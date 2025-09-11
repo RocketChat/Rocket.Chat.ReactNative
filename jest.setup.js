@@ -168,4 +168,12 @@ jest.mock('react-native-math-view', () => {
 	};
 });
 
+jest.mock('@rocket.chat/mobile-crypto', () => {
+	const react = require('react-native');
+	return {
+		__esModule: true,
+		default: react.View
+	};
+});
+
 jest.mock('react-native-keyboard-controller');

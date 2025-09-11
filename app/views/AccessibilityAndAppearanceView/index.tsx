@@ -15,7 +15,7 @@ import {
 	ROOM_MENTIONS_PREFERENCES_KEY,
 	AUTOPLAY_GIFS_PREFERENCES_KEY,
 	ALERT_DISPLAY_TYPE_PREFERENCES_KEY
-} from '../../lib/constants';
+} from '../../lib/constants/keys';
 import ListPicker from './components/ListPicker';
 
 export type TAlertDisplayType = 'TOAST' | 'DIALOG';

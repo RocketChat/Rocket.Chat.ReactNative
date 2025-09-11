@@ -7,7 +7,7 @@ import { TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
-import { ALERT_DISPLAY_TYPE_PREFERENCES_KEY } from '../lib/constants';
+import { ALERT_DISPLAY_TYPE_PREFERENCES_KEY } from '../lib/constants/keys';
 
 const styles = StyleSheet.create({
 	toast: {
