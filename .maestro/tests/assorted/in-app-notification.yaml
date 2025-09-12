@@ -2,7 +2,7 @@ appId: chat.rocket.reactnative
 name: In App Notification
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
+onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
