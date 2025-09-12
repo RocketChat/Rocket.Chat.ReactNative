@@ -83,9 +83,9 @@ jobs:
           
       - name: Build Android Release APK
         working-directory: android
-        run: |
-          export RUNNING_E2E_TESTS=true
-          ./gradlew assembleExperimentalRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
+        run: ./gradlew assembleExperimentalRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
+        env:
+          RUNNING_E2E_TESTS: true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

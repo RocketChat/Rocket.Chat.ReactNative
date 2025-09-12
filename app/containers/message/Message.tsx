@@ -24,6 +24,7 @@ import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import Quote from './Components/Attachments/Quote';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -36,6 +37,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<>
+					<Quote {...props} />
 					<Content {...props} />
 					<Attachments {...props} />
 				</>
@@ -83,6 +85,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<View style={{ gap: 4 }}>
+					<Quote {...props} />
 					<Content {...props} />
 					<Attachments {...props} />
 					<Urls {...props} />
@@ -181,7 +184,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View style={styles.container}>
+		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View style={styles.messageContent}>

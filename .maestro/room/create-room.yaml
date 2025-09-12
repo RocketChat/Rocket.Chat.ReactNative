@@ -1,0 +1,440 @@
+appId: chat.rocket.reactnative
+name: Create Room
+onFlowStart:
+  - runFlow: '../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- runFlow: ../helpers/launch-app.yaml
+- runFlow: ../helpers/login.yaml
+
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+
+# should have new message screen
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+    timeout: 60000
+
+# should have search input
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-search'
+    timeout: 60000
+
+# should back to rooms list
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-close'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-close'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+    timeout: 60000
+
+# should search user and navigate
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-search'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-search'
+- inputText: 'rocket.cat'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-item-rocket.cat'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-item-rocket.cat'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-rocket.cat'
+    timeout: 60000
+- runFlow: '../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+
+# should navigate to select users
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view'
+    timeout: 60000
+
+# should search users
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-search'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-search'
+- inputText: 'rocket.cat'
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-rocket.cat'
+    timeout: 60000
+
+# should select/unselect user
+- tapOn:
+    id: 'select-users-view-item-rocket.cat'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-rocket.cat'
+    timeout: 60000
+- tapOn:
+    id: 'selected-user-rocket.cat'
+- extendedWaitUntil:
+    notVisible:
+      id: 'selected-user-rocket.cat'
+    timeout: 60000
+- assertVisible:
+    id: 'select-users-view-item-rocket.cat'
+- tapOn:
+    id: 'select-users-view-item-rocket.cat'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-rocket.cat'
+    timeout: 60000
+
+# should navigate to create channel view
+- extendedWaitUntil:
+    visible:
+      id: 'selected-users-view-submit'
+    timeout: 60000
+- tapOn:
+    id: 'selected-users-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-view'
+    timeout: 60000
+
+# should render all fields
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-name'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-type'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-readonly'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-broadcast'
+    timeout: 60000
+
+# should get invalid room
+- tapOn:
+    id: 'create-channel-name'
+- inputText: 'general'
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-submit'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-submit'
+- extendedWaitUntil:
+    visible:
+      text: '.*A channel with name general exists.*'
+    timeout: 60000
+- tapOn: 'OK'
+
+# should create public room
+- evalScript: ${output.publicRoomName = 'public' + output.random()}
+- tapOn:
+    id: 'create-channel-name'
+- eraseText: 100
+- inputText: ${output.publicRoomName}
+- hideKeyboard
+- tapOn:
+    id: 'create-channel-type'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-submit'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: ${'room-view-title-' + output.publicRoomName}
+    timeout: 60000
+- runFlow: '../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: ${'rooms-list-view-item-' + output.publicRoomName}
+    timeout: 60000
+
+# should create private room
+- evalScript: ${output.privateRoomName = 'private' + output.random()}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-rocket.cat'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-rocket.cat'
+    timeout: 60000
+- tapOn:
+    id: 'selected-users-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-view'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-name'
+- inputText: ${output.privateRoomName}
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-submit'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: ${'room-view-title-' + output.privateRoomName}
+    timeout: 60000
+- runFlow: '../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: ${'rooms-list-view-item-' + output.privateRoomName}
+    timeout: 60000
+
+# should create empty room
+- evalScript: ${output.emptyRoomName = 'empty' + output.random()}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view'
+    timeout: 60000
+- tapOn:
+    id: 'selected-users-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-name'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-name'
+- inputText: ${output.emptyRoomName}
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-submit'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: ${'room-view-title-' + output.emptyRoomName}
+    timeout: 60000
+- runFlow: '../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: ${'rooms-list-view-item-' + output.emptyRoomName}
+    timeout: 60000
+
+# should create a room with non-latin alphabet and do a case insensitive search for it
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - evalScript: ${output.nonLatinRoomName = 'ПРОВЕРКА' + output.random()}
+      - evalScript: ${output.nonLatinRoomNameLower = output.nonLatinRoomName.toLowerCase()}
+
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-create-channel'
+          timeout: 60000
+      - tapOn:
+          id: 'rooms-list-view-create-channel'
+      - extendedWaitUntil:
+          visible:
+            id: 'new-message-view'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: 'new-message-view-create-channel'
+          timeout: 60000
+      - tapOn:
+          id: 'new-message-view-create-channel'
+      - extendedWaitUntil:
+          visible:
+            id: 'select-users-view'
+          timeout: 60000
+      - tapOn:
+          id: 'selected-users-view-submit'
+      - extendedWaitUntil:
+          visible:
+            id: 'create-channel-view'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: 'create-channel-name'
+          timeout: 60000
+      - tapOn:
+          id: 'create-channel-name'
+      - inputText: ${output.nonLatinRoomName}
+      - hideKeyboard
+      - extendedWaitUntil:
+          visible:
+            id: 'create-channel-submit'
+          timeout: 60000
+      - tapOn:
+          id: 'create-channel-submit'
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: ${'room-view-title-' + output.nonLatinRoomName}
+          timeout: 60000
+      - runFlow: '../helpers/go-back.yaml'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: ${'rooms-list-view-item-' + output.nonLatinRoomName}
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-search'
+          timeout: 60000
+      - tapOn:
+          id: 'rooms-list-view-search'
+      - extendedWaitUntil:
+          visible:
+            id: 'rooms-list-view-search-input'
+          timeout: 60000
+      - tapOn:
+          id: 'rooms-list-view-search-input'
+      - inputText: ${output.nonLatinRoomNameLower}
+      - hideKeyboard
+      - extendedWaitUntil:
+          visible:
+            id: ${'rooms-list-view-item-' + output.nonLatinRoomName}
+          timeout: 60000
+      - tapOn:
+          id: ${'rooms-list-view-item-' + output.nonLatinRoomName}
+      - extendedWaitUntil:
+          visible:
+            id: 'room-view'
+          timeout: 60000
+      - extendedWaitUntil:
+          visible:
+            id: ${'room-view-title-' + output.nonLatinRoomName}
+          timeout: 60000
