@@ -5,6 +5,7 @@ import {
 	INotificationPreferences,
 	IPreviewItem,
 	IProfileParams,
+	IRoleUser,
 	IRoom,
 	IRoomNotifications,
 	IServerRoom,
@@ -1075,7 +1076,12 @@ export const saveUserProfileMethod = (
 		twoFactorCode: string;
 		twoFactorMethod: string;
 	} | null
-) => sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
+) => {
+	if (compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.0.0')) {
+		return sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
+	}
+	return sdk.current.methodCall('users.updateOwnBasicInfo', params, customFields, twoFactorOptions);
+};
 
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0
@@ -1086,7 +1092,17 @@ export const postMessage = (roomId: string, text: string) => sdk.post('chat.post
 export const notifyUser = (type: string, params: Record<string, any>): Promise<boolean> =>
 	sdk.methodCall('stream-notify-user', type, params);
 
-export const getUsersRoles = (): Promise<boolean> => sdk.methodCall('getUserRoles');
+export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
+	if (compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.0.0')) {
+		// RC 8.0.0
+		const response = await sdk.get('roles.getUsersInPublicRoles');
+		if (response.success) {
+			return response.users;
+		}
+		return false;
+	}
+	return sdk.methodCall('getUserRoles');
+};
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
