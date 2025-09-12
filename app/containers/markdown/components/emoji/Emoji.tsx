@@ -1,16 +1,15 @@
 import React, { useContext } from 'react';
-import { Text, useWindowDimensions } from 'react-native';
+import {useWindowDimensions } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
-import Plain from '../Plain';
 import useShortnameToUnicode from '../../../../lib/hooks/useShortnameToUnicode';
 import { useTheme } from '../../../../theme';
 import styles from '../../styles';
-import CustomEmoji from '../../../EmojiPicker/CustomEmoji';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import { useAppSelector } from '../../../../lib/hooks';
 import { getUserSelector } from '../../../../selectors/login';
 import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import EmojiRenderer from '../../../../components/Emoji/Emoji';
 
 interface IEmojiProps {
 	block: EmojiProps;
@@ -42,7 +41,13 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
 
 	if ('unicode' in block) {
-		return <Text style={[{ color: colors.fontDefault }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
+		return (
+		<EmojiRenderer
+		   emoji={block.unicode}
+		   size={isBigEmoji ? 30 * fontScale : 15 * fontScale}
+		   style={[{ color: colors.fontDefault }, style]}
+		/>
+		);
 	}
 
 	const emojiToken = getEmojiToken(block, isAvatar);
@@ -68,20 +73,20 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 	};
 
 	if (emoji) {
-		return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
+		return <EmojiRenderer style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
 	}
 
 	return (
-		<Text
+		<EmojiRenderer
+		   emoji={`${spaceLeft}${displayAsciiEmoji ? block.value!.value : emojiUnicode}`}
+		    size={isBigEmoji ? 30 * fontScale : 15 * fontScale}
 			style={[
 				{ color: colors.fontDefault },
 				isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text,
 				style,
 				isAvatar && avatarStyle
-			]}>
-			{spaceLeft}
-			{displayAsciiEmoji ? <Plain value={block.value!.value} /> : emojiUnicode}
-		</Text>
+			]}
+		/>
 	);
 };
 
