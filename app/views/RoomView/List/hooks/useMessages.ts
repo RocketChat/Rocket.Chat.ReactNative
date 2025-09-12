@@ -81,7 +81,8 @@ export const useMessages = ({
 			}
 
 			readThread();
-			setMessages(newMessages);
+			const reversedMessages = newMessages.reverse();
+			setMessages(reversedMessages);
 			messagesIds.current = newMessages.map(m => m.id);
 		});
 	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages]);

@@ -1,17 +1,16 @@
 import { RefObject } from 'react';
-import { FlatListProps } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { LegendListProps, LegendListRef } from '@legendapp/list';
 
 import { TAnyMessageModel } from '../../../definitions';
 
-export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
+export type TListRef = RefObject<LegendListRef | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 
-export interface IListProps extends FlatListProps<TAnyMessageModel> {
+export type IListProps = LegendListProps<TAnyMessageModel> & {
 	listRef: TListRef;
 	jumpToBottom: () => void;
-}
+};
 
 export interface IListContainerRef {
 	jumpToMessage: (messageId: string) => Promise<void>;

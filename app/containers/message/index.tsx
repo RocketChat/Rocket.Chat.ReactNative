@@ -450,6 +450,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
 					isEncrypted: this.isEncrypted
 				}}>
+				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 				{/* @ts-ignore*/}
 				<Message
 					id={id}
@@ -505,7 +506,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isPreview={isPreview}
 					pinned={pinned}
 				/>
-				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</MessageContext.Provider>
 		);
 	}
