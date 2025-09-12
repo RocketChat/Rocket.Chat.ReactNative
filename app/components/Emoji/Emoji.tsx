@@ -15,8 +15,29 @@ const Emoji = ({ emoji, style, size = 16 }: IEmojiProps) => {
   const { formatShortnameToUnicode } = useShortnameToUnicode(true);
 
   if (typeof emoji === 'string') {
-    const unicodeEmoji = formatShortnameToUnicode(`:${emoji}:`);
-    return <Text style={[{ fontSize: size }, style as StyleProp<TextStyle>]}>{unicodeEmoji}</Text>;
+    const trimmed = emoji.trim();
+
+    const isColonShortname = /^:[^:\s]+:$/.test(trimmed);
+    const isBareShortname = /^[a-z0-9_+\-]+$/i.test(trimmed);
+
+    const leading = emoji.match(/^\s*/)?.[0] ?? '';
+    const trailing = emoji.match(/\s*$/)?.[0] ?? '';
+
+    let converted: string;
+    if (isColonShortname) {
+        converted = formatShortnameToUnicode(trimmed);
+    } else if (isBareShortname) {
+        converted = formatShortnameToUnicode(`:${trimmed}:`);
+    } else {
+        converted = emoji;
+    }
+
+
+      return (
+      <Text style={[{ fontSize: size }, style as StyleProp<TextStyle>]}>
+        {`${leading}${converted}${trailing}`}
+      </Text>
+    );
   }
 
   return (
