@@ -1069,20 +1069,6 @@ export const videoConferenceStart = (roomId: string) => sdk.post('video-conferen
 
 export const videoConferenceCancel = (callId: string) => sdk.post('video-conference.cancel', { callId });
 
-export const saveUserProfileMethod = (
-	params: IProfileParams,
-	customFields = {},
-	twoFactorOptions: {
-		twoFactorCode: string;
-		twoFactorMethod: string;
-	} | null
-) => {
-	if (compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.0.0')) {
-		return sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
-	}
-	return sdk.current.methodCall('users.updateOwnBasicInfo', params, customFields, twoFactorOptions);
-};
-
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0
 	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });
@@ -1106,5 +1092,3 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
-
-export const setUserPassword = (password: string) => sdk.methodCall('setUserPassword', password);

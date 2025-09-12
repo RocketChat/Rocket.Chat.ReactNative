@@ -193,11 +193,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		}
 
 		try {
-			const twoFactorOptions = params.currentPassword
-				? { twoFactorCode: params.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
-				: null;
-
-			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+			const result = await Services.saveUserProfile(params, customFields);
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
