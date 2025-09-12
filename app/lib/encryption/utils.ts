@@ -77,7 +77,7 @@ export const joinVectorData = (vector: ArrayBuffer, data: ArrayBuffer): ArrayBuf
 	return output.buffer;
 };
 
-export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uint8Array): string | ByteBuffer => {
+export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uint8Array): string => {
 	if (typeof thing === 'string') {
 		return thing;
 	}
