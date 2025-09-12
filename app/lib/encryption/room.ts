@@ -664,16 +664,17 @@ export default class EncryptionRoom {
 
 			// If message type is e2e and it's encrypted still
 			if (t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE) {
-				const { msg, tmsg } = message;
+				const { msg } = message;
 				// Decrypt msg
 				if (msg) {
 					message.msg = await this.decryptText(msg);
 				}
 
 				// Decrypt tmsg
-				if (tmsg) {
-					message.tmsg = await this.decryptText(tmsg);
-				}
+				// TODO: is this needed? Isn't tmsg decrypted already? Maybe not if we need to fetch from server?
+				// if (tmsg) {
+				// 	message.tmsg = await this.decryptText(tmsg);
+				// }
 
 				if (message.content?.algorithm === 'rc.v1.aes-sha2') {
 					const content = await this.decryptContent(message.content.ciphertext);
