@@ -81,13 +81,18 @@ onFlowComplete:
     text: 'Discard'
 
 # should change the avatar through upload image
+- evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
 - extendedWaitUntil:
     visible:
       id: 'avatar-edit-button'
     timeout: 60000
 - tapOn:
     id: 'avatar-edit-button'
-- evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: false
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       text: 'Upload image'
@@ -97,6 +102,7 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
+      enabled: true
     timeout: 60000
 - tapOn:
     id: 'change-avatar-view-submit'
@@ -105,16 +111,54 @@ onFlowComplete:
       id: 'profile-view'
     timeout: 60000
 - evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
-- assertTrue: ${output.newUserInfo.avatarETag !== output.previousUserInfo.avatarETag}
+- assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}
 
-# should change avatar from URL
-- evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+# should change the avatar taking a photo
+- evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
 - extendedWaitUntil:
     visible:
       id: 'avatar-edit-button'
     timeout: 60000
 - tapOn:
     id: 'avatar-edit-button'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: false
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Take a photo'
+    timeout: 60000
+- tapOn:
+    text: 'Take a photo'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: true
+    timeout: 60000
+- tapOn:
+    id: 'change-avatar-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'profile-view'
+    timeout: 60000
+- evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}
+
+# should change avatar from URL
+- evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- extendedWaitUntil:
+    visible:
+      id: 'avatar-edit-button'
+    timeout: 60000
+- tapOn:
+    id: 'avatar-edit-button'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: false
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-avatar-url'
@@ -132,6 +176,7 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
+      enabled: true
     timeout: 60000
 - tapOn:
     id: 'change-avatar-view-submit'
@@ -139,5 +184,5 @@ onFlowComplete:
     visible:
       id: 'profile-view'
     timeout: 60000
-- evalScript: ${output.avatarFromLinkInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
-- assertTrue: ${output.newUserInfo.avatarETag !== output.avatarFromLinkInfo.avatarETag}
+- evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}
