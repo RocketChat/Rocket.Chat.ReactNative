@@ -629,6 +629,8 @@ export default class EncryptionRoom {
 					oldKey = roomKey;
 				}
 				if (!oldKey) {
+					// TODO: needs testing, but it makes sense
+					this.requestRoomKey(key_id);
 					return null;
 				}
 			}
