@@ -1,6 +1,5 @@
 import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
-import ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 import {
@@ -61,7 +60,7 @@ export default class EncryptionRoom {
 	userId: string;
 	establishing: boolean;
 	readyPromise: Deferred;
-	sessionKeyExportedString: string | ByteBuffer;
+	sessionKeyExportedString: string;
 	keyID: string;
 	roomKey: ArrayBuffer;
 	subscription: TSubscriptionModel | null;
@@ -152,7 +151,7 @@ export default class EncryptionRoom {
 	importRoomKey = async (
 		E2EKey: string,
 		privateKey: string
-	): Promise<{ sessionKeyExportedString: string | ByteBuffer; roomKey: ArrayBuffer; keyID: string }> => {
+	): Promise<{ sessionKeyExportedString: string; roomKey: ArrayBuffer; keyID: string }> => {
 		try {
 			const roomE2EKey = E2EKey.slice(12);
 
