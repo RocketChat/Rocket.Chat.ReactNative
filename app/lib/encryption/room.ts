@@ -628,6 +628,9 @@ export default class EncryptionRoom {
 					const { roomKey } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
 					oldKey = roomKey;
 				}
+				if (!oldKey) {
+					return null;
+				}
 			}
 
 			const { version } = store.getState().server;
