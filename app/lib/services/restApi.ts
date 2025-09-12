@@ -1079,7 +1079,8 @@ export const notifyUser = (type: string, params: Record<string, any>): Promise<b
 	sdk.methodCall('stream-notify-user', type, params);
 
 export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
-	if (compareServerVersion(reduxStore.getState().server.version, 'greaterThanOrEqualTo', '8.0.0')) {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
 		// RC 8.0.0
 		const response = await sdk.get('roles.getUsersInPublicRoles');
 		if (response.success) {
@@ -1087,6 +1088,7 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 		}
 		return false;
 	}
+	// https://github.com/RocketChat/Rocket.Chat/blob/7787147da2be90f5f4d137ba477e708083dcf814/apps/meteor/app/lib/server/methods/getUserRoles.ts#L20
 	return sdk.methodCall('getUserRoles');
 };
 
