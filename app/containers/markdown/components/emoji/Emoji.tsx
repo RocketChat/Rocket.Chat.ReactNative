@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import {useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
 import useShortnameToUnicode from '../../../../lib/hooks/useShortnameToUnicode';
@@ -42,11 +42,11 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 
 	if ('unicode' in block) {
 		return (
-		<EmojiRenderer
-		   emoji={block.unicode}
-		   size={isBigEmoji ? 30 * fontScale : 15 * fontScale}
-		   style={[{ color: colors.fontDefault }, style]}
-		/>
+			<EmojiRenderer
+				emoji={block.unicode}
+				size={isBigEmoji ? 30 * fontScale : 15 * fontScale}
+				style={[{ color: colors.fontDefault }, style]}
+			/>
 		);
 	}
 
@@ -78,8 +78,8 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 
 	return (
 		<EmojiRenderer
-		   emoji={`${spaceLeft}${displayAsciiEmoji ? block.value!.value : emojiUnicode}`}
-		    size={isBigEmoji ? 30 * fontScale : 15 * fontScale}
+			emoji={`${spaceLeft}${displayAsciiEmoji ? block.value!.value : emojiUnicode}`}
+			size={isBigEmoji ? 30 * fontScale : 15 * fontScale}
 			style={[
 				{ color: colors.fontDefault },
 				isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text,

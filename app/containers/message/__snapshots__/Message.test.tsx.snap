@@ -1522,27 +1522,32 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                   style={
                     [
                       {
-                        "color": "#2F343D",
+                        "fontSize": 15,
                       },
-                      {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "Inter",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "lineHeight": 22,
-                        "textAlign": "left",
-                      },
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "fontSize": 30,
-                        "lineHeight": 30,
-                        "textAlign": "center",
-                        "textAlignVertical": "center",
-                      },
+                      [
+                        {
+                          "color": "#2F343D",
+                        },
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "borderRadius": 4,
+                          "height": 36,
+                          "width": 36,
+                        },
+                        {
+                          "fontSize": 30,
+                          "lineHeight": 30,
+                          "textAlign": "center",
+                          "textAlignVertical": "center",
+                        },
+                      ],
                     ]
                   }
                 >
@@ -21178,16 +21183,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         style={
                           [
                             {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
                               "fontSize": 30,
-                              "fontWeight": "400",
-                              "lineHeight": 43,
-                              "textAlign": "left",
                             },
+                            [
+                              {
+                                "color": "#2F343D",
+                              },
+                              {},
+                            ],
                           ]
                         }
                       >
@@ -21197,16 +21200,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         style={
                           [
                             {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
                               "fontSize": 30,
-                              "fontWeight": "400",
-                              "lineHeight": 43,
-                              "textAlign": "left",
                             },
+                            [
+                              {
+                                "color": "#2F343D",
+                              },
+                              {},
+                            ],
                           ]
                         }
                       >
@@ -21519,16 +21520,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         style={
                           [
                             {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
                               "fontSize": 30,
-                              "fontWeight": "400",
-                              "lineHeight": 43,
-                              "textAlign": "left",
                             },
+                            [
+                              {
+                                "color": "#2F343D",
+                              },
+                              {},
+                            ],
                           ]
                         }
                       >
@@ -22575,16 +22574,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         style={
                           [
                             {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
                               "fontSize": 30,
-                              "fontWeight": "400",
-                              "lineHeight": 43,
-                              "textAlign": "left",
                             },
+                            [
+                              {
+                                "color": "#2F343D",
+                              },
+                              {},
+                            ],
                           ]
                         }
                       >
@@ -22950,16 +22947,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                           style={
                             [
                               {
-                                "color": "#2F343D",
+                                "fontSize": 15,
                               },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {},
+                              ],
                             ]
                           }
                         >
@@ -22986,16 +22981,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                           style={
                             [
                               {
-                                "color": "#2F343D",
+                                "fontSize": 15,
                               },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {},
+                              ],
                             ]
                           }
                         >
@@ -23005,16 +22998,14 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                           style={
                             [
                               {
-                                "color": "#2F343D",
+                                "fontSize": 15,
                               },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {},
+                              ],
                             ]
                           }
                         >
@@ -23341,16 +23332,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         style={
                           [
                             {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
                               "fontSize": 30,
-                              "fontWeight": "400",
-                              "lineHeight": 43,
-                              "textAlign": "left",
                             },
+                            [
+                              {
+                                "color": "#2F343D",
+                              },
+                              {},
+                            ],
                           ]
                         }
                       >
@@ -23360,16 +23349,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         style={
                           [
                             {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
                               "fontSize": 30,
-                              "fontWeight": "400",
-                              "lineHeight": 43,
-                              "textAlign": "left",
                             },
+                            [
+                              {
+                                "color": "#2F343D",
+                              },
+                              {},
+                            ],
                           ]
                         }
                       >
@@ -23682,16 +23669,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         style={
                           [
                             {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
                               "fontSize": 30,
-                              "fontWeight": "400",
-                              "lineHeight": 43,
-                              "textAlign": "left",
                             },
+                            [
+                              {
+                                "color": "#2F343D",
+                              },
+                              {},
+                            ],
                           ]
                         }
                       >
@@ -24738,16 +24723,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                         style={
                           [
                             {
-                              "color": "#2F343D",
-                            },
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
                               "fontSize": 30,
-                              "fontWeight": "400",
-                              "lineHeight": 43,
-                              "textAlign": "left",
                             },
+                            [
+                              {
+                                "color": "#2F343D",
+                              },
+                              {},
+                            ],
                           ]
                         }
                       >
@@ -25113,16 +25096,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                           style={
                             [
                               {
-                                "color": "#2F343D",
+                                "fontSize": 15,
                               },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {},
+                              ],
                             ]
                           }
                         >
@@ -25149,16 +25130,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                           style={
                             [
                               {
-                                "color": "#2F343D",
+                                "fontSize": 15,
                               },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {},
+                              ],
                             ]
                           }
                         >
@@ -25168,16 +25147,14 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                           style={
                             [
                               {
-                                "color": "#2F343D",
+                                "fontSize": 15,
                               },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {},
+                              ],
                             ]
                           }
                         >
@@ -74134,18 +74111,23 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                           style={
                             [
                               {
-                                "color": "#2F343D",
+                                "fontSize": 15,
                               },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {},
-                              false,
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "400",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {},
+                                false,
+                              ],
                             ]
                           }
                         >
@@ -75128,18 +75110,23 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                           style={
                             [
                               {
-                                "color": "#2F343D",
+                                "fontSize": 15,
                               },
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "400",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {},
-                              false,
+                              [
+                                {
+                                  "color": "#2F343D",
+                                },
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "400",
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                {},
+                                false,
+                              ],
                             ]
                           }
                         >

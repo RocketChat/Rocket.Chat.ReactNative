@@ -3769,16 +3769,14 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
               style={
                 [
                   {
-                    "color": "#2F343D",
+                    "fontSize": 15,
                   },
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
+                  [
+                    {
+                      "color": "#2F343D",
+                    },
+                    {},
+                  ],
                 ]
               }
             >
