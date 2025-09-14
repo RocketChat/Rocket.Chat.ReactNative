@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, Platform } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 
-import I18n from '../i18n';
-import SafeAreaView from '../containers/SafeAreaView';
-import Button from '../containers/Button';
-import { TextInput } from '../containers/TextInput';
-import { useTheme } from '../theme';
-import { verifyUserTotp } from '../lib/services/restApi';
-import { useAppSelector } from '../lib/hooks';
-import { getUserSelector } from '../selectors/login';
+import I18n from '../../i18n';
+import SafeAreaView from '../../containers/SafeAreaView';
+import Button from '../../containers/Button';
+import { TextInput } from '../../containers/TextInput';
+import { useTheme } from '../../theme';
+import { verifyUserTotp } from '../../lib/services/restApi';
+import { useAppSelector } from '../../lib/hooks';
+import { getUserSelector } from '../../selectors/login';
 
 function TotpVerifyView() {
 	const user = useAppSelector(state => getUserSelector(state));

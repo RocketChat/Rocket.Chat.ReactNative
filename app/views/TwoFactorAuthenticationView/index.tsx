@@ -4,15 +4,15 @@ import QRCode from 'react-native-qrcode-svg';
 import { ActivityIndicator, Linking, Pressable, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { SettingsStackParamList } from '../stacks/types';
+import { SettingsStackParamList } from '../../stacks/types';
 
-import I18n from '../i18n';
-import SafeAreaView from '../containers/SafeAreaView';
-import { useAppSelector } from '../lib/hooks';
-import { getUserSelector } from '../selectors/login';
-import { requestUserTotp } from '../lib/services/restApi';
-import { useTheme } from '../theme';
-import Button from '../containers/Button';
+import I18n from '../../i18n';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { useAppSelector } from '../../lib/hooks';
+import { getUserSelector } from '../../selectors/login';
+import { requestUserTotp } from '../../lib/services/restApi';
+import { useTheme } from '../../theme';
+import Button from '../../containers/Button';
 
 interface State {
 	isLoading: boolean;

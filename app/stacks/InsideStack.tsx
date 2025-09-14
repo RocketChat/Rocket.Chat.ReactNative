@@ -90,8 +90,8 @@ import {
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
-import TotpView from '../views/TotpView';
-import TotpVerifyView from '../views/TotpVerifyView';
+import TotpView from '../views/TwoFactorAuthenticationView';
+import TotpVerifyView from '../views/TwoFactorAuthenticationView/VerifyView';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
