@@ -15,7 +15,6 @@ import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
 
 interface State {
-	isLoading: boolean;
 	secret: string;
 	url: string;
 }
@@ -24,41 +23,41 @@ function TotpView() {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'TotpView'>>();
 	const user = useAppSelector(state => getUserSelector(state));
 	const { colors } = useTheme();
+    const [isLoading, setIsLoading] = useState(true);
 	const [state, setState] = useState<State>({
-		isLoading: true,
 		secret: '',
 		url: ''
 	});
-
+    const isEmailNotVerified = (user.emails || []).filter(email => !email.verified).length > 0;
+    
 	useEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Two_Factor_Authentication_Setup_Verification_Title')
+			title: I18n.t('TOTP_Setup_Title')
 		});
 	}, []);
 
 	useFocusEffect(
 		useCallback(() => {
-			console.log('TotpView');
-			fetchTotp();
+			if (!user.services?.totp?.enabled && !isEmailNotVerified) {
+				fetchTotp();
+			} else {
+				setIsLoading(false);
+			}
 		}, [])
 	);
 
 	const fetchTotp = async () => {
-		setState({
-			isLoading: true,
-			secret: '',
-			url: ''
-		});
+		setIsLoading(true);
 
 		const res = await requestUserTotp(user.id);
 		setState({
-			isLoading: false,
 			secret: res.secret,
 			url: res.url
 		});
+		setIsLoading(false);
 	};
 
-	if (state.isLoading) {
+	if (isLoading) {
 		return (
 			<View style={[styles.loadingContainer, { backgroundColor: colors.surfaceRoom }]}>
 				<ActivityIndicator size='large' color={colors.fontDefault} />
@@ -67,14 +66,22 @@ function TotpView() {
 		);
 	}
 
+    if(isEmailNotVerified) {
+        return (
+            <SafeAreaView>
+                <View style={[styles.container, { backgroundColor: colors.surfaceRoom, justifyContent: 'center' }]}>
+                    <Text style={[styles.infoText, { color: colors.fontDefault }]}>
+                        {I18n.t('TOTP_email_not_verified')}
+                    </Text>
+                </View>
+            </SafeAreaView>
+        );
+    }
+
 	return (
 		<SafeAreaView>
 			<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
-				<Text style={[styles.title, { color: colors.fontDefault }]}>{I18n.t('Two_Factor_Authentication')}</Text>
-
-				<Text style={[styles.infoText, { color: colors.fontDefault }]}>
-					Scan this QR code in Authy, Google Authenticator, or any TOTP app.
-				</Text>
+				<Text style={[styles.infoText, { color: colors.fontDefault }]}>{I18n.t('Scan_TOTP_QR_code')}</Text>
 
 				<View style={styles.qrWrapper}>
 					<QRCode value={state.url} size={220} color={colors.fontDefault} backgroundColor='transparent' />
@@ -100,7 +107,7 @@ function TotpView() {
 					Linking.openURL(state.url);
 					navigation.navigate('TotpVerifyView');
 				}}
-				title={I18n.t('Open_Authentication_App')}
+				title={I18n.t('TOTP_Open_Authentication_App')}
 				type='primary'
 				testID='e2e-encryption-security-view-reset-key'
 				style={{ width: '95%', alignSelf: 'center' }}
@@ -109,7 +116,7 @@ function TotpView() {
 				onPress={() => {
 					navigation.navigate('TotpVerifyView');
 				}}
-				title={I18n.t('Enter_Code')}
+				title={I18n.t('TOTP_enter_Code')}
 				type='primary'
 				testID='totp-view-enter-code'
 				style={{ width: '95%', alignSelf: 'center' }}

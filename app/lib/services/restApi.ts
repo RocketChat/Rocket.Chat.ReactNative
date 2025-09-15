@@ -1099,3 +1099,7 @@ export const requestUserTotp = (userid: string) =>
 	sdk.methodCall('2fa:enable', { msg: 'method', id: userid, method: '2fa:enable', params: [] });
 
 export const verifyUserTotp = (code: string) => sdk.methodCall('2fa:validateTempToken', [code]);
+
+export const enableEmail2fa = () => sdk.post('users.2fa.enableEmail');
+
+export const disableEmail2fa = () => sdk.post('users.2fa.disableEmail');

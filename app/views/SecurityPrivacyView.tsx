@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -20,8 +21,9 @@ import {
 } from '../lib/methods/helpers/log';
 import Switch from '../containers/Switch';
 import { getUserSelector } from '../selectors/login';
-import { getMe } from '../lib/services/restApi';
-import { IUser } from '../definitions';
+import { disableEmail2fa, enableEmail2fa, getMe } from '../lib/services/restApi';
+import { showToast } from '../lib/methods/helpers/showToast';
+import { setUser } from '../actions/login';
 
 interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
@@ -31,6 +33,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();
+    const dispatch = useDispatch();
 
 	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);
 	const user = useAppSelector(state => getUserSelector(state));
@@ -54,6 +57,34 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		setAnalyticsEventsState(value);
 		toggleAnalyticsEventsReport(value);
 	};
+
+    const toggleEmail2fa = async (value: boolean) => {
+        if(!value){
+            try {
+                const res = await disableEmail2fa();
+                if(res.success){
+                    showToast('Email 2FA disabled successfully');
+
+                    const updatedMe = await getMe();
+                    dispatch(setUser(updatedMe));
+                }
+            } catch (error) {
+                console.log('error', error);
+            }
+        }else{
+            try {
+                const res = await enableEmail2fa();
+                if(res.success){
+                    showToast('Email 2FA enabled successfully');
+
+                    const updatedMe = await getMe();
+                    dispatch(setUser(updatedMe));
+                }
+            } catch (error) {
+                console.log('error', error);
+            }
+        }
+    };
 
 	const navigateToScreen = (screen: 'E2EEncryptionSecurityView' | 'ScreenLockConfigView' | 'TotpView') => {
 		// @ts-ignore
@@ -100,7 +131,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={user.services?.totp?.enabled ? 'remove_authenticator_app' : 'add_authenticator_app'}
+						title={user.services?.totp?.enabled ? 'Disable_totp_authenticator_app' : 'Enable_totp_authenticator_app'}
 						showActionIndicator
 						onPress={navigateToTotpView}
 						testID='security-privacy-view-screen-lock'
@@ -118,10 +149,9 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						</>
 					) : null}
 					<List.Item
-						title='email_two_factor_authentication'
+						title={user.services?.email2fa?.enabled ? 'Disable_two_factor_auth_via_email' : 'Enable_two_factor_auth_via_email'}
 						testID='security-privacy-view-analytics-events'
-						right={() => <Switch value={user?.services?.email2fa?.enabled || false} onValueChange={toggleAnalyticsEvents} />}
-						additionalAcessibilityLabel={analyticsEventsState}
+						right={() => <Switch value={user?.services?.email2fa?.enabled || false} onValueChange={toggleEmail2fa} />}
 					/>
 					<List.Separator />
 				</List.Section>

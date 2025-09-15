@@ -1,7 +1,7 @@
 import { IProfileParams } from '../../IProfile';
 import type { ITeam } from '../../ITeam';
 import type { IUser } from '../../IUser';
-import { INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
+import { INotificationPreferences, IUserPreferences, IUserRegistered, IUserTwoFactorDisable } from '../../IUser';
 
 export type UsersEndpoints = {
 	'users.2fa.sendEmailCode': {
@@ -64,4 +64,7 @@ export type UsersEndpoints = {
 	'users.deleteOwnAccount': {
 		POST: (params: { password: string; confirmRelinquish: boolean }) => { success: boolean };
 	};
+    'users.2fa.disableEmail': {
+        POST: (params: { emailOrUsername: string }) => IUserTwoFactorDisable;
+    }
 };

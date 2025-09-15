@@ -173,3 +173,16 @@ export type IUserDataEvent = {
 );
 
 export type TUserModel = IUser & Model;
+
+export interface IUserTwoFactorDisable {
+    success: boolean,
+    error: string,
+    errorType: "totp-required" | "totp-invalid",
+    details: {
+        method: string,
+        emailOrUsername: string,
+        codeGenerated: boolean,
+        codeExpires: string,
+        availableMethods: string[]
+    }
+}
