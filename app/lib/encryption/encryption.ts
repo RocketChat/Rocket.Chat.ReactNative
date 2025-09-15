@@ -2,7 +2,17 @@ import { Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system';
-import SimpleCrypto from 'react-native-simple-crypto';
+import {
+	pbkdf2Hash,
+	aesEncrypt,
+	aesDecrypt,
+	randomBytes,
+	rsaGenerateKeys,
+	rsaImportKey,
+	rsaExportKey,
+	JWK,
+	calculateFileChecksum
+} from '@rocket.chat/mobile-crypto';
 import { sampleSize } from 'lodash';
 
 import {
@@ -35,7 +45,17 @@ import { MAX_CONCURRENT_QUEUE } from './constants';
 import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
-import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
+import {
+	decryptAESCTR,
+	joinVectorData,
+	randomPassword,
+	splitVectorData,
+	utf8ToBuffer,
+	bufferToB64,
+	bufferToHex,
+	bufferToUtf8,
+	b64ToBuffer
+} from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
 class Encryption {
@@ -157,8 +177,9 @@ class Encryption {
 	};
 
 	// Persist keys on UserPreferences
-	persistKeys = async (server: string, publicKey: string, privateKey: string) => {
-		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
+	persistKeys = async (server: string, publicKey: JWK, privateKey: string) => {
+		const privateJWK = JSON.parse(privateKey);
+		this.privateKey = await rsaImportKey(privateJWK);
 		this.publicKey = EJSON.stringify(publicKey);
 		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, this.publicKey);
 		UserPreferences.setString(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
@@ -167,11 +188,11 @@ class Encryption {
 	// Could not obtain public-private keypair from server.
 	createKeys = async (userId: string, server: string) => {
 		// Generate new keys
-		const key = await SimpleCrypto.RSA.generateKeys(2048);
+		const key = await rsaGenerateKeys(2048);
 
 		// Cast these keys to the properly server format
-		const publicKey = await SimpleCrypto.RSA.exportKey(key.public);
-		const privateKey = await SimpleCrypto.RSA.exportKey(key.private);
+		const publicKey = await rsaExportKey(key.public);
+		const privateKey = await rsaExportKey(key.private);
 
 		// Persist these new keys
 		this.persistKeys(server, publicKey, EJSON.stringify(privateKey));
@@ -191,36 +212,40 @@ class Encryption {
 
 	// Encode a private key before send it to the server
 	encodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const masterKey = await this.generateMasterKey(password, userId);
+		const keyBase64 = await this.generateMasterKey(password, userId);
 
-		const vector = await SimpleCrypto.utils.randomBytes(16);
-		const data = await SimpleCrypto.AES.encrypt(utf8ToBuffer(privateKey), masterKey, vector);
+		const ivArrayBuffer = b64ToBuffer(await randomBytes(16));
+		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
+		const ivHex = bufferToHex(ivArrayBuffer);
 
-		return EJSON.stringify(new Uint8Array(joinVectorData(vector, data)));
+		const data = b64ToBuffer(await aesEncrypt(bufferToB64(utf8ToBuffer(privateKey)), keyHex, ivHex));
+		return EJSON.stringify(new Uint8Array(joinVectorData(ivArrayBuffer, data)));
 	};
 
 	// Decode a private key fetched from server
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const masterKey = await this.generateMasterKey(password, userId);
-		const [vector, cipherText] = splitVectorData(EJSON.parse(privateKey));
+		const keyBase64 = await this.generateMasterKey(password, userId);
 
-		const privKey = await SimpleCrypto.AES.decrypt(cipherText, masterKey, vector);
+		const [ivArrayBuffer, dataBuffer] = splitVectorData(EJSON.parse(privateKey));
+		const dataBase64 = bufferToB64(dataBuffer);
+		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
+		const ivHex = bufferToHex(ivArrayBuffer);
 
-		return toString(privKey);
+		const privKeyBase64 = await aesDecrypt(dataBase64, keyHex, ivHex);
+		return bufferToUtf8(b64ToBuffer(privKeyBase64));
 	};
 
 	// Generate a user master key, this is based on userId and a password
-	generateMasterKey = async (password: string, userId: string) => {
+	generateMasterKey = async (password: string, userId: string): Promise<string> => {
 		const iterations = 1000;
 		const hash = 'SHA256';
 		const keyLen = 32;
 
-		const passwordBuffer = utf8ToBuffer(password);
-		const saltBuffer = utf8ToBuffer(userId);
+		const passwordBase64 = bufferToB64(utf8ToBuffer(password));
+		const userIdBase64 = bufferToB64(utf8ToBuffer(userId));
 
-		const masterKey = await SimpleCrypto.PBKDF2.hash(passwordBuffer, saltBuffer, iterations, keyLen, hash);
-
-		return masterKey;
+		const masterKeyBase64 = await pbkdf2Hash(passwordBase64, userIdBase64, iterations, keyLen, hash);
+		return masterKeyBase64;
 	};
 
 	// Create a random password to local created keys
@@ -232,7 +257,7 @@ class Encryption {
 
 	changePassword = async (server: string, password: string) => {
 		// Cast key to the format server is expecting
-		const privateKey = await SimpleCrypto.RSA.exportKey(this.privateKey as string);
+		const privateKey = await rsaExportKey(this.privateKey as string);
 
 		// Encode the private key
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId as string);
@@ -685,7 +710,7 @@ class Encryption {
 	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
 		if (decryptedFile) {
-			const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
+			const checksum = await calculateFileChecksum(decryptedFile);
 			if (checksum !== originalChecksum) {
 				await deleteAsync(decryptedFile);
 				return null;

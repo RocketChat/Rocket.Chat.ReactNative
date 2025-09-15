@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
 	titleContainer: {
 		flexShrink: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		gap: 4
 	},
 	alias: {
 		fontSize: 14,

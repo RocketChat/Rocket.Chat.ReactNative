@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView, StatusBar } from 'react-native';
+import { ScrollView } from 'react-native';
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
@@ -49,6 +49,7 @@ const ReportUserView = () => {
 	const {
 		control,
 		handleSubmit,
+		watch,
 		formState: { errors }
 	} = useForm<ISubmit>({
 		mode: 'onChange',
@@ -56,7 +57,9 @@ const ReportUserView = () => {
 		defaultValues: { description: '' }
 	});
 
-	useA11yErrorAnnouncement({ error: errors.description?.message });
+	const inputValues = watch();
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
@@ -85,7 +88,6 @@ const ReportUserView = () => {
 		<KeyboardView>
 			<SafeAreaView style={styles.containerView} testID='report-user-view'>
 				<ScrollView contentContainerStyle={styles.scroll}>
-					<StatusBar />
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput
 						name='description'

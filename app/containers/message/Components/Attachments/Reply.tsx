@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: 4,
 		alignSelf: 'flex-start',
 		borderLeftWidth: 2
 	},
@@ -41,12 +40,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 8
+		gap: 4
 	},
 	titleAndDescriptionContainer: {
 		flexDirection: 'column',
 		flex: 1,
-		width: 200
+		width: 200,
+		gap: 4
 	},
 	author: {
 		fontSize: 16,
@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
 	fieldsContainer: {
 		flex: 1,
 		flexWrap: 'wrap',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		rowGap: 12
 	},
 	fieldContainer: {
-		flexDirection: 'column',
-		padding: 10
+		flexDirection: 'column'
 	},
 	fieldTitle: {
 		fontSize: 14,
@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
 	title: {
 		flex: 1,
 		fontSize: 16,
-		marginBottom: 3,
 		...sharedStyles.textMedium
 	}
 });
@@ -95,7 +94,6 @@ const styles = StyleSheet.create({
 interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
-	index: number;
 	getCustomEmoji: TGetCustomEmoji;
 	msg?: string;
 	showAttachment?: (file: IAttachment) => void;
@@ -204,7 +202,7 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
+	({ attachment, timeFormat, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
@@ -234,15 +232,12 @@ const Reply = React.memo(
 		}
 
 		return (
-			<>
-				{/* The testID is to test properly quoted messages using it as ancestor  */}
+			<View style={{ gap: 4 }}>
 				<Touchable
 					testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 					onPress={onPress}
 					style={[
 						styles.button,
-						index > 0 && styles.marginTop,
-						msg && styles.marginBottom,
 						{
 							borderColor: strokeLight
 						}
@@ -257,7 +252,7 @@ const Reply = React.memo(
 								attachments={attachment.attachments}
 								getCustomEmoji={getCustomEmoji}
 								timeFormat={timeFormat}
-								style={[{ color: themes[theme].fontHint, fontSize: 14, marginBottom: 8 }]}
+								style={[{ color: themes[theme].fontHint, fontSize: 14 }]}
 								isReply
 								showAttachment={showAttachment}
 							/>
@@ -277,7 +272,7 @@ const Reply = React.memo(
 					</View>
 				</Touchable>
 				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} />
-			</>
+			</View>
 		);
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)

@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
 	button: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 6,
 		borderWidth: 1,
 		borderRadius: 4,
 		minHeight: 40
@@ -34,8 +33,7 @@ const styles = StyleSheet.create({
 	fieldContainer: {
 		flexDirection: 'column',
 		paddingLeft: 10,
-		paddingTop: 10,
-		paddingBottom: 10
+		paddingVertical: 10
 	},
 	fieldText: {
 		fontSize: 15,
@@ -58,9 +56,6 @@ const styles = StyleSheet.create({
 	},
 	touchableContainer: {
 		flexDirection: 'row'
-	},
-	markdownFontSize: {
-		fontSize: 15
 	},
 	iconContainer: {
 		width: 20,
@@ -85,7 +80,6 @@ interface IMessageFields {
 interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
-	index: number;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
@@ -118,12 +112,7 @@ const Fields = React.memo(
 						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
 							{field.title}
 						</Text>
-						<Markdown
-							msg={field?.value || ''}
-							username={user.username}
-							getCustomEmoji={getCustomEmoji}
-							style={[styles.markdownFontSize]}
-						/>
+						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}
 			</>
@@ -133,7 +122,7 @@ const Fields = React.memo(
 );
 
 const CollapsibleQuote = React.memo(
-	({ attachment, index, getCustomEmoji }: IMessageReply) => {
+	({ attachment, getCustomEmoji }: IMessageReply) => {
 		const { theme } = useTheme();
 		const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 
@@ -166,7 +155,6 @@ const CollapsibleQuote = React.memo(
 					onPress={onPress}
 					style={[
 						styles.button,
-						index > 0 && styles.marginTop,
 						attachment.description && styles.marginBottom,
 						{
 							backgroundColor,

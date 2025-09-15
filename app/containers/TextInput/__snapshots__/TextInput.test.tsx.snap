@@ -8,11 +8,16 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
     }
   }
 >
-  <View>
-    <View>
+  <A11yOrderView
+    orderKey=":r0:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r0:"
+    >
       <View
-        accessibilityLabel="Right icon. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -24,6 +29,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -44,7 +50,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -53,6 +59,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Right icon. Rocket.Chat."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -131,13 +139,18 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
-  </View>
-  <View>
-    <View>
+    </A11yIndexView>
+  </A11yOrderView>
+  <A11yOrderView
+    orderKey=":r1:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r1:"
+    >
       <View
-        accessibilityLabel="Left icon. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
-        accessible={true}
         style={
           [
             {
@@ -149,6 +162,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -169,7 +183,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -178,6 +192,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Left icon. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -255,13 +271,18 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
-  </View>
-  <View>
-    <View>
+    </A11yIndexView>
+  </A11yOrderView>
+  <A11yOrderView
+    orderKey=":r2:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r2:"
+    >
       <View
-        accessibilityLabel="Both icons. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
-        accessible={true}
         style={
           [
             {
@@ -273,6 +294,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -293,7 +315,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -302,6 +324,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Both icons. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -415,13 +439,18 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
-  </View>
-  <View>
-    <View>
+    </A11yIndexView>
+  </A11yOrderView>
+  <A11yOrderView
+    orderKey=":r3:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r3:"
+    >
       <View
-        accessibilityLabel="Icon and touchable clear input. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
-        accessible={true}
         style={
           [
             {
@@ -433,6 +462,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -453,7 +483,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -462,6 +492,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Icon and touchable clear input. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -570,8 +602,8 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           </View>
         </View>
       </View>
-    </View>
-  </View>
+    </A11yIndexView>
+  </A11yOrderView>
 </View>
 `;
 
@@ -583,11 +615,16 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
     }
   }
 >
-  <View>
-    <View>
+  <A11yOrderView
+    orderKey=":r4:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r4:"
+    >
       <View
-        accessibilityLabel="Loading false. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -599,6 +636,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -619,7 +657,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -628,6 +666,8 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Loading false. Rocket.Chat."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -670,13 +710,18 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
           />
         </View>
       </View>
-    </View>
-  </View>
-  <View>
-    <View>
+    </A11yIndexView>
+  </A11yOrderView>
+  <A11yOrderView
+    orderKey=":r5:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r5:"
+    >
       <View
-        accessibilityLabel="Loading true. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -688,6 +733,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -708,7 +754,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -717,6 +763,8 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Loading true. Rocket.Chat."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -772,8 +820,8 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
           />
         </View>
       </View>
-    </View>
-  </View>
+    </A11yIndexView>
+  </A11yOrderView>
 </View>
 `;
 
@@ -785,14 +833,16 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
     }
   }
 >
-  <View>
-    <View>
+  <A11yOrderView
+    orderKey=":r6:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r6:"
+    >
       <View
-        accessibilityLabel="Multiline text. Rocket.Chat
-
-https://open.rocket.chat/images/logo/android-chrome-512x512.png
-."
-        accessible={true}
         style={
           [
             {
@@ -804,6 +854,7 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -824,7 +875,7 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -833,6 +884,11 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
           }
         >
           <TextInput
+            accessibilityLabel="Multiline text. Rocket.Chat
+
+https://open.rocket.chat/images/logo/android-chrome-512x512.png
+."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -879,8 +935,8 @@ https://open.rocket.chat/images/logo/android-chrome-512x512.png
           />
         </View>
       </View>
-    </View>
-  </View>
+    </A11yIndexView>
+  </A11yOrderView>
 </View>
 `;
 
@@ -892,11 +948,16 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
     }
   }
 >
-  <View>
-    <View>
+  <A11yOrderView
+    orderKey=":r7:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r7:"
+    >
       <View
-        accessibilityLabel="Secure text disabled. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -908,6 +969,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -928,7 +990,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -937,6 +999,8 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Secure text disabled. Rocket.Chat."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -979,13 +1043,18 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
           />
         </View>
       </View>
-    </View>
-  </View>
-  <View>
-    <View>
+    </A11yIndexView>
+  </A11yOrderView>
+  <A11yOrderView
+    orderKey=":r8:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r8:"
+    >
       <View
-        accessibilityLabel="Secure text enabled."
-        accessible={true}
         style={
           [
             {
@@ -997,6 +1066,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -1017,7 +1087,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -1026,6 +1096,8 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Secure text enabled."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -1069,7 +1141,11 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
             underlineColorAndroid="transparent"
             value="Rocket.Chat"
           />
-          <View
+          <A11yIndexView
+            importantForAccessibility="yes"
+            orderFocusType={0}
+            orderIndex={2}
+            orderKey=":r8:"
             style={
               [
                 {
@@ -1143,11 +1219,11 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                 
               </Text>
             </View>
-          </View>
+          </A11yIndexView>
         </View>
       </View>
-    </View>
-  </View>
+    </A11yIndexView>
+  </A11yOrderView>
 </View>
 `;
 
@@ -1159,11 +1235,16 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
     }
   }
 >
-  <View>
-    <View>
+  <A11yOrderView
+    orderKey=":r9:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r9:"
+    >
       <View
-        accessibilityLabel="Short Text. Rocket.Chat."
-        accessible={true}
         style={
           [
             {
@@ -1175,6 +1256,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -1195,7 +1277,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -1204,6 +1286,8 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Short Text. Rocket.Chat."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -1246,13 +1330,18 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
           />
         </View>
       </View>
-    </View>
-  </View>
-  <View>
-    <View>
+    </A11yIndexView>
+  </A11yOrderView>
+  <A11yOrderView
+    orderKey=":ra:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":ra:"
+    >
       <View
-        accessibilityLabel="Long Text. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
-        accessible={true}
         style={
           [
             {
@@ -1264,6 +1353,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
         }
       >
         <Text
+          accessible={false}
           style={
             [
               {
@@ -1284,7 +1374,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
            
         </Text>
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -1293,6 +1383,8 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel="Long Text. https://open.rocket.chat/images/logo/android-chrome-512x512.png."
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             keyboardAppearance="light"
@@ -1335,7 +1427,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
           />
         </View>
       </View>
-    </View>
-  </View>
+    </A11yIndexView>
+  </A11yOrderView>
 </View>
 `;

@@ -12,7 +12,6 @@ import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
 import { textInputDebounceTime, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
@@ -331,7 +330,6 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		const { theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='search-messages-view'>
-				<StatusBar />
 				<View style={styles.searchContainer}>
 					<FormTextInput
 						autoFocus
