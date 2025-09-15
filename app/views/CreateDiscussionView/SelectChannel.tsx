@@ -65,7 +65,6 @@ const SelectChannel = ({
 				onChange={onChannelSelect}
 				onSearch={getChannels}
 				value={initial && [initial]}
-				disabled={!!initial}
 				options={channels.map(channel => ({
 					value: channel,
 					text: { text: getRoomTitle(channel) },
