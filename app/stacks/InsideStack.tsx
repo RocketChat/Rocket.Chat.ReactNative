@@ -60,6 +60,7 @@ import E2ESaveYourPasswordView from '../views/E2ESaveYourPasswordView';
 import E2EHowItWorksView from '../views/E2EHowItWorksView';
 // E2EEnterYourPassword Stack
 import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
+import E2EResetYourPasswordView from '../views/E2EResetYourPasswordView';
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
@@ -289,6 +290,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 	return (
 		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<E2EEnterYourPasswordStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
+			<E2EEnterYourPasswordStack.Screen name='E2EResetYourPasswordView' component={E2EResetYourPasswordView} />
 		</E2EEnterYourPasswordStack.Navigator>
 	);
 };

@@ -1,9 +1,11 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, AccessibilityInfo } from 'react-native';
+import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { E2EEnterYourPasswordStackParamList } from '../stacks/types';
 import { encryptionDecodeKey } from '../actions/encryption';
 import Button from '../containers/Button';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
@@ -18,6 +20,7 @@ import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 import { showToast } from '../lib/methods/helpers/showToast';
 import { showErrorAlert, useDebounce } from '../lib/methods/helpers';
+import { Separator } from '../containers/List';
 
 const styles = StyleSheet.create({
 	info: {
@@ -25,12 +28,24 @@ const styles = StyleSheet.create({
 		lineHeight: 24,
 		marginTop: 24,
 		...sharedStyles.textRegular
+	},
+	content: {
+		gap: 32
+	},
+	e2eePasswordInput: {
+		marginBottom: 0
+	},
+	forgotE2EEPasswordButton: {
+		marginTop: 0
 	}
 });
 
-const E2EEnterYourPasswordView = (): React.ReactElement => {
+interface IE2EEnterYourPasswordView {
+	navigation: NativeStackNavigationProp<E2EEnterYourPasswordStackParamList, 'E2EEnterYourPasswordView'>;
+}
+
+const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): React.ReactElement => {
 	const { colors } = useTheme();
-	const navigation = useNavigation();
 	const isFocused = useIsFocused();
 	const dispatch = useDispatch();
 	const { enabled: encryptionEnabled, failure: encryptionFailure } = useAppSelector(state => state.encryption);
@@ -96,12 +111,14 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 			<ScrollView
 				{...scrollPersistTaps}
 				style={sharedStyles.container}
-				contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 24 }}>
-				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
+				contentContainerStyle={{ ...sharedStyles.containerScrollView }}>
+				<SafeAreaView style={{ ...styles.content, backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
+					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
+
 					<ControlledFormTextInput
 						name='password'
 						control={control}
-						label={I18n.t('Password')}
+						label={I18n.t('E2EE_password')}
 						error={errors.password?.message}
 						returnKeyType='send'
 						secureTextEntry
@@ -110,15 +127,31 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 						autoComplete='password'
 						textContentType='password'
 						importantForAutofill='yes'
-						containerStyle={{ marginBottom: 0 }}
+						containerStyle={styles.e2eePasswordInput}
 					/>
+					<View>
+						<Button
+							onPress={handleSubmit(submit)}
+							title={I18n.t('Enable_encryption_button_label')}
+							testID='e2e-enter-your-password-view-confirm'
+						/>
+						<Button
+							type='secondary'
+							onPress={() => navigation.navigate('E2EResetYourPasswordView')}
+							title={I18n.t('Forgot_E2EE_password')}
+							testID='e2e-enter-your-password-view-forgot-password'
+							style={styles.forgotE2EEPasswordButton}
+						/>
+					</View>
+
+					<Separator />
+
 					<Button
-						onPress={handleSubmit(submit)}
-						title={I18n.t('Confirm')}
-						testID='e2e-enter-your-password-view-confirm'
-						style={{ marginTop: 36 }}
+						type='secondary'
+						onPress={() => navigation.goBack()}
+						title={I18n.t('Do_it_later')}
+						testID='e2e-enter-your-password-view-do-it-later'
 					/>
-					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

@@ -271,6 +271,7 @@ export type E2ESaveYourPasswordStackParamList = {
 
 export type E2EEnterYourPasswordStackParamList = {
 	E2EEnterYourPasswordView: undefined;
+	E2EResetYourPasswordView: undefined;
 };
 
 export type InsideStackParamList = {
