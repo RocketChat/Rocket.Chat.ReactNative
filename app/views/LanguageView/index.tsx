@@ -10,7 +10,6 @@ import { appStart } from '../../actions/app';
 import { setUser } from '../../actions/login';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { RootEnum } from '../../definitions';
 import I18n, { isRTL, LANGUAGES } from '../../i18n';
 import database from '../../lib/database';
@@ -91,7 +90,6 @@ const LanguageView = () => {
 
 	return (
 		<SafeAreaView testID='language-view'>
-			<StatusBar />
 			<FlatList
 				data={LANGUAGES}
 				keyExtractor={item => item.value}

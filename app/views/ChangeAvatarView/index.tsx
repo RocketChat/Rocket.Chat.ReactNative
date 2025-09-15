@@ -10,7 +10,6 @@ import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as List from '../../containers/List';
@@ -208,7 +207,6 @@ const ChangeAvatarView = () => {
 
 	return (
 		<KeyboardView>
-			<StatusBar />
 			<SafeAreaView testID='change-avatar-view'>
 				<ScrollView
 					contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 32 }}

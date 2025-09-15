@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants';
 import { useAppSelector } from '../lib/hooks';
@@ -67,7 +66,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 
 	return (
 		<SafeAreaView testID='security-privacy-view'>
-			<StatusBar />
 			<List.Container testID='security-privacy-view-list'>
 				<List.Section>
 					<List.Separator />

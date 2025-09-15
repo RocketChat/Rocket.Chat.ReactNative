@@ -9,7 +9,6 @@ import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
@@ -366,7 +365,6 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
-				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

@@ -1,0 +1,293 @@
+diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
+index 5932fc1..1ce86e8 100644
+--- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
++++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebView.java
+@@ -223,6 +223,7 @@ public class RNCWebView extends WebView implements LifecycleEventListener {
+     public void setWebViewClient(WebViewClient client) {
+         super.setWebViewClient(client);
+         if (client instanceof RNCWebViewClient) {
++            ((RNCWebViewClient) client).setReactContext(this.getReactApplicationContext());
+             mRNCWebViewClient = (RNCWebViewClient) client;
+             mRNCWebViewClient.setProgressChangedFilter(progressChangedFilter);
+         }
+diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
+index 251939e..763cc50 100644
+--- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
++++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewClient.java
+@@ -34,6 +34,11 @@ import com.reactnativecommunity.webview.events.TopShouldStartLoadWithRequestEven
+ import android.webkit.CookieManager;
+ import android.webkit.CookieSyncManager;
+ 
++import java.security.cert.X509Certificate;
++import java.security.PrivateKey;
++import android.webkit.ClientCertRequest;
++import android.os.AsyncTask;
++import android.security.KeyChain;
+ import java.util.concurrent.atomic.AtomicReference;
+ 
+ public class RNCWebViewClient extends WebViewClient {
+@@ -45,6 +50,9 @@ public class RNCWebViewClient extends WebViewClient {
+     protected @Nullable String ignoreErrFailedForThisURL = null;
+     protected @Nullable RNCBasicAuthCredential basicAuthCredential = null;
+ 
++    private static String certificateAlias = null;
++    private ReactContext reactContext;
++
+     public void setIgnoreErrFailedForThisURL(@Nullable String url) {
+         ignoreErrFailedForThisURL = url;
+     }
+@@ -53,6 +61,53 @@ public class RNCWebViewClient extends WebViewClient {
+         basicAuthCredential = credential;
+     }
+ 
++    public static void setCertificateAlias(String alias) {
++        certificateAlias = alias;
++    }
++
++    public void setReactContext(ReactContext reactContext) {
++        this.reactContext = reactContext;
++    }
++
++    @Override
++    public void onReceivedClientCertRequest(WebView view, ClientCertRequest request) {
++        class SslStuff {
++            PrivateKey privKey;
++            X509Certificate[] certChain;
++
++            public SslStuff(PrivateKey privKey, X509Certificate[] certChain) {
++                this.privKey = privKey;
++                this.certChain = certChain;
++            }
++        }
++
++        if (certificateAlias != null && reactContext != null) {
++            AsyncTask<Void, Void, SslStuff> task = new AsyncTask<Void, Void, SslStuff>() {
++                @Override
++                protected SslStuff doInBackground(Void... params) {
++                    try {
++                        PrivateKey privKey = KeyChain.getPrivateKey(reactContext, certificateAlias);
++                        X509Certificate[] certChain = KeyChain.getCertificateChain(reactContext, certificateAlias);
++
++                        return new SslStuff(privKey, certChain);
++                    } catch (Exception e) {
++                        return null;
++                    }
++                }
++
++                @Override
++                protected void onPostExecute(SslStuff sslStuff) {
++                    if (sslStuff != null) {
++                        request.proceed(sslStuff.privKey, sslStuff.certChain);
++                    }
++                }
++            };
++            task.execute();
++        } else {
++            super.onReceivedClientCertRequest(view, request);
++        }
++    }
++
+     @Override
+     public void onPageFinished(WebView webView, String url) {
+         super.onPageFinished(webView, url);
+diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
+index 951749c..05792b8 100644
+--- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
++++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewModuleImpl.java
+@@ -551,4 +551,8 @@ public class RNCWebViewModuleImpl implements ActivityEventListener {
+         }
+         return (PermissionAwareActivity) activity;
+     }
++
++    public static void setCertificateAlias(String alias) {
++        RNCWebViewClient.setCertificateAlias(alias);
++    }
+ }
+\ No newline at end of file
+diff --git a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
+index e20ae03..01887a6 100644
+--- a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
++++ b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewManager.java
+@@ -44,6 +44,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper>
+         mRNCWebViewManagerImpl = new RNCWebViewManagerImpl(true);
+     }
+ 
++    public static void setCertificateAlias(String alias) {
++        RNCWebViewModule.setCertificateAlias(alias);
++    }
++
+     @Nullable
+     @Override
+     protected ViewManagerDelegate<RNCWebViewWrapper> getDelegate() {
+diff --git a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java
+index 4df0aae..867aa73 100644
+--- a/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java
++++ b/node_modules/react-native-webview/android/src/newarch/com/reactnativecommunity/webview/RNCWebViewModule.java
+@@ -49,6 +49,10 @@ public class RNCWebViewModule extends NativeRNCWebViewModuleSpec {
+         return mRNCWebViewModuleImpl.grantFileDownloaderPermissions(downloadingMessage, lackPermissionToDownloadMessage);
+     }
+ 
++    public static void setCertificateAlias(String alias) {
++        RNCWebViewModuleImpl.setCertificateAlias(alias);
++    }
++
+     @NonNull
+     @Override
+     public String getName() {
+diff --git a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
+index 44d3378..3972014 100644
+--- a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
++++ b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewManager.java
+@@ -31,6 +31,10 @@ public class RNCWebViewManager extends ViewGroupManager<RNCWebViewWrapper> {
+         mRNCWebViewManagerImpl = new RNCWebViewManagerImpl();
+     }
+ 
++    public static void setCertificateAlias(String alias) {
++        RNCWebViewModule.setCertificateAlias(alias);
++    }
++
+     @Override
+     public String getName() {
+         return RNCWebViewManagerImpl.NAME;
+diff --git a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
+index 526cc16..8f3318d 100644
+--- a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
++++ b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
+@@ -51,6 +51,10 @@ public class RNCWebViewModule extends ReactContextBaseJavaModule {
+         return mRNCWebViewModuleImpl.grantFileDownloaderPermissions(downloadingMessage, lackPermissionToDownloadMessage);
+     }
+ 
++    public static void setCertificateAlias(String alias) {
++        RNCWebViewModuleImpl.setCertificateAlias(alias);
++    }
++
+     @NonNull
+     @Override
+     public String getName() {
+diff --git a/node_modules/react-native-webview/apple/RNCWebViewImpl.m b/node_modules/react-native-webview/apple/RNCWebViewImpl.m
+index 7f5c24d..8e11e4c 100644
+--- a/node_modules/react-native-webview/apple/RNCWebViewImpl.m
++++ b/node_modules/react-native-webview/apple/RNCWebViewImpl.m
+@@ -17,6 +17,9 @@
+ 
+ #import "objc/runtime.h"
+ 
++#import "SecureStorage.h"
++#import <MMKV/MMKV.h>
++
+ static NSTimer *keyboardTimer;
+ static NSString *const HistoryShimName = @"ReactNativeHistoryShim";
+ static NSString *const MessageHandlerName = @"ReactNativeWebView";
+@@ -1149,6 +1152,68 @@ + (void)setCustomCertificatesForHost:(nullable NSDictionary*)certificates {
+   customCertificatesForHost = certificates;
+ }
+ 
++-(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
++{
++  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
++  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
++
++  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || path == nil || password == nil) {
++    return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++  } else if (path && password) {
++    NSMutableArray *policies = [NSMutableArray array];
++    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
++    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
++
++    SecTrustResultType result;
++    SecTrustEvaluate(serverTrust, &result);
++
++    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
++    {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSData *p12data = [NSData dataWithContentsOfFile:path];
++    NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
++    CFArrayRef rawItems = NULL;
++    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
++                                      (__bridge CFDictionaryRef)options,
++                                      &rawItems);
++
++    if (status != noErr) {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
++    NSDictionary* firstItem = nil;
++    if ((status == errSecSuccess) && ([items count]>0)) {
++        firstItem = items[0];
++    }
++
++    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
++    SecCertificateRef certificate = NULL;
++    if (identity) {
++        SecIdentityCopyCertificate(identity, &certificate);
++        if (certificate) { CFRelease(certificate); }
++    }
++
++    NSMutableArray *certificates = [[NSMutableArray alloc] init];
++    [certificates addObject:CFBridgingRelease(certificate)];
++
++    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++  }
++
++  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++}
++
++- (NSString *)stringToHex:(NSString *)string
++{
++  char *utf8 = (char *)[string UTF8String];
++  NSMutableString *hex = [NSMutableString string];
++  while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++  return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
++}
++
+ - (void)                    webView:(WKWebView *)webView
+   didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+                   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable))completionHandler
+@@ -1158,7 +1223,31 @@ - (void)                    webView:(WKWebView *)webView
+     host = webView.URL.host;
+   }
+   if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodClientCertificate) {
+-    completionHandler(NSURLSessionAuthChallengeUseCredential, clientAuthenticationCredential);
++    NSString *host = challenge.protectionSpace.host;
++
++    // Read the clientSSL info from MMKV
++    __block NSDictionary *clientSSL;
++    SecureStorage *secureStorage = [[SecureStorage alloc] init];
++    
++    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++    NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
++    NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    
++    if (key == NULL) {
++       return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
++    }
++    
++    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++    MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++    clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++    
++    if (clientSSL != (id)[NSNull null]) {
++      NSString *path = [clientSSL objectForKey:@"path"];
++      NSString *password = [clientSSL objectForKey:@"password"];
++      credential = [self getUrlCredential:challenge path:path password:password];
++    }
++    
++    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+     return;
+   }
+   if ([[challenge protectionSpace] serverTrust] != nil && customCertificatesForHost != nil && host != nil) {
+diff --git a/node_modules/react-native-webview/react-native-webview.podspec b/node_modules/react-native-webview/react-native-webview.podspec
+index 24e7a13..c7304b0 100644
+--- a/node_modules/react-native-webview/react-native-webview.podspec
++++ b/node_modules/react-native-webview/react-native-webview.podspec
+@@ -43,4 +43,6 @@ Pod::Spec.new do |s|
+       s.dependency "React-Core"
+     end
+   end
++
++  s.dependency 'MMKV', '~> 1.3.9'
+ end

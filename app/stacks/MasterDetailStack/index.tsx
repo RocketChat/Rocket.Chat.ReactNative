@@ -34,6 +34,7 @@ import ThreadMessagesView from '../../views/ThreadMessagesView';
 import TeamChannelsView from '../../views/TeamChannelsView';
 import ReadReceiptsView from '../../views/ReadReceiptView';
 import ProfileView from '../../views/ProfileView';
+import ChangePasswordView from '../../views/ChangePasswordView';
 import DisplayPrefsView from '../../views/DisplayPrefsView';
 import SettingsView from '../../views/SettingsView';
 import LanguageView from '../../views/LanguageView';
@@ -93,9 +94,7 @@ const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
 const DrawerNavigator = React.memo(() => (
 	<Drawer.Navigator
 		screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } }}
-		drawerContent={({ navigation, state }) => (
-			<RoomsListView navigation={navigation} route={{ name: 'RoomsListView' }} state={state} />
-		)}>
+		drawerContent={() => <RoomsListView />}>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 	</Drawer.Navigator>
 ));
@@ -176,6 +175,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='StatusView' component={StatusView} />
 				<ModalStack.Screen name='ProfileView' component={ProfileView} />
+				<ModalStack.Screen name='ChangePasswordView' component={ChangePasswordView} />
 				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen name='AdminPanelView' component={AdminPanelView} />
 				<ModalStack.Screen name='NewMessageView' component={NewMessageView} />
