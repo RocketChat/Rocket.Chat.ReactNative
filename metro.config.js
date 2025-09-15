@@ -12,26 +12,30 @@ const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro
 const sourceExts = [...defaultSourceExts, 'mjs'];
 
 const config = {
-	transformer: {
-		unstable_allowRequireContext: true
-	},
-	resolver: {
-		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts
-	}
+    transformer: {
+        unstable_allowRequireContext: true
+    },
+    resolver: {
+        sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts
+    }
 };
 
 const finalConfig = wrapWithReanimatedMetroConfig(mergeConfig(getDefaultConfig(__dirname), config));
 
 const storybookOptions = {
-	// set to false to disable storybook specific settings
-	// you can use a env variable to toggle this
-	enabled: process.env.USE_STORYBOOK === 'true',
-	// path to your storybook config folder
-	configPath: path.resolve(__dirname, './.rnstorybook'),
-	// set this to true to remove storybook from the bundle when disabled
-	onDisabledRemoveStorybook: true
+    // set to false to disable storybook specific settings
+    // you can use a env variable to toggle this
+    enabled: process.env.USE_STORYBOOK === 'true',
+    // path to your storybook config folder
+    configPath: path.resolve(__dirname, './.rnstorybook'),
+    // set this to true to remove storybook from the bundle when disabled
+    onDisabledRemoveStorybook: true
 };
 
 module.exports = withRozenite(
-	withRozeniteExpoAtlasPlugin(withRozeniteReduxDevTools(withStorybook(finalConfig, storybookOptions)))
+    withStorybook(finalConfig, storybookOptions), {
+        enabled: process.env.WITH_ROZENITE === 'true',
+        enhanceMetroConfig: (config) =>
+            withRozeniteExpoAtlasPlugin(withRozeniteReduxDevTools(config)),
+    }
 );
