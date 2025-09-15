@@ -1,0 +1,114 @@
+appId: chat.rocket.reactnative
+name: Enter E2EE encryption
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+# Reset E2E password from settings
+- runFlow: ../../helpers/launch-app.yaml
+- runFlow: ../../helpers/login.yaml
+- tapOn: 'Menu'
+- tapOn: 'Settings'
+- tapOn: 'Security and privacy'
+- tapOn: 'End-to-end encryption'
+- tapOn:
+    id: 'e2e-encryption-security-view-password'
+- inputText: 'password123encrypted'
+- tapOn: 'Save changes'
+- tapOn: 'Yes, change it'
+- extendedWaitUntil:
+    visible:
+      text: 'E2E key password changed successfully!'
+    timeout: 60000
+
+# Enter E2EE password
+- tapOn:
+    id: custom-header-back
+- tapOn:
+    id: custom-header-back
+- tapOn: Menu
+- tapOn: Chats
+- runFlow: '../../helpers/logout.yaml'
+- runFlow: '../../helpers/navigate-to-login.yaml'
+- tapOn:
+    id: login-view-email
+- inputText: ${USERNAME || output.createdUser.email}
+- tapOn:
+    text: '.*Username or email.*'
+- tapOn:
+    id: login-view-password
+- inputText: ${PASSWORD || output.createdUser.password}
+- tapOn:
+    text: Login
+    index: 0
+- tapOn:
+    id: login-view-submit
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
+    timeout: 60000
+- tapOn: 'Enter E2EE password'
+- tapOn:
+    id: 'e2e-enter-your-password-view-password'
+- inputText: 'password123encrypted'
+- tapOn: 'Enable encryption'
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      text: 'Enter E2EE password'
+    timeout: 60000
+
+# Reset E2EE password from Enter E2EE password view
+- tapOn: 'Menu'
+- tapOn: 'Settings'
+- tapOn: 'Security and privacy'
+- tapOn: 'End-to-end encryption'
+- tapOn:
+    id: 'e2e-encryption-security-view-password'
+- inputText: 'password123encrypted'
+- tapOn: 'Save changes'
+- tapOn: 'Yes, change it'
+- extendedWaitUntil:
+    visible:
+      text: 'E2E key password changed successfully!'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
+- tapOn:
+    id: custom-header-back
+- tapOn: Menu
+- tapOn: Chats
+- runFlow: '../../helpers/logout.yaml'
+- runFlow: '../../helpers/navigate-to-login.yaml'
+- tapOn:
+    id: login-view-email
+- inputText: ${USERNAME || output.createdUser.email}
+- tapOn:
+    text: '.*Username or email.*'
+- tapOn:
+    id: login-view-password
+- inputText: ${PASSWORD || output.createdUser.password}
+- tapOn:
+    text: Login
+    index: 0
+- tapOn:
+    id: login-view-submit
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
+    timeout: 60000
+- tapOn: 'Enter E2EE password'
+- tapOn:
+    id: 'e2e-enter-your-password-view-forgot-password'
+- tapOn:
+    text: 'Reset E2EE password'
+#- tapOn: 'Enter E2EE password'
+#- tapOn: 'Forgot E2EE password?'
+#- tapOn:
+#    id: 'e2e-reset-your-password-view-reset-password'
+#- tapOn: 'Yes, reset it'
