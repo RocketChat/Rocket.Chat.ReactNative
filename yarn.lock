@@ -4739,8 +4739,8 @@
     tldts "~5.7.112"
 
 "@rocket.chat/mobile-crypto@RocketChat/rocket.chat-mobile-crypto#fix.gcm":
-  version "0.1.0"
-  resolved "https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/95af36834d3e01b06e12774be4b9ae1d39efac7e"
+  version "0.2.0"
+  resolved "https://codeload.github.com/RocketChat/rocket.chat-mobile-crypto/tar.gz/83ecb6ec840d5629294819b015e34f281f42fe69"
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
   version "1.3.3-mobile"
