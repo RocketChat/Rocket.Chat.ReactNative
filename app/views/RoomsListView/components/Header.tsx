@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { showActionSheetRef } from '../../../containers/ActionSheet';
+// import { showActionSheetRef } from '../../../containers/ActionSheet';
 import SearchHeader from '../../../containers/SearchHeader';
 import I18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
-import ServersList from './ServersList';
+// import ServersList from './ServersList';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,9 +41,9 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 
-	const onPress = () => {
-		showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
-	};
+	// const onPress = () => {
+	// 	showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
+	// };
 
 	if (searchEnabled) {
 		// This value is necessary to keep the alignment in MasterDetail.
@@ -64,21 +64,21 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	}
 	return (
 		<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
-			<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
-				<View style={styles.button}>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
-						{serverName}
-					</Text>
-				</View>
-				{subtitle ? (
-					<Text
-						testID='rooms-list-header-server-subtitle'
-						style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
-						numberOfLines={1}>
-						{subtitle}
-					</Text>
-				) : null}
-			</TouchableOpacity>
+			{/* <TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'> */}
+			<View style={styles.button}>
+				<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+					{serverName}
+				</Text>
+			</View>
+			{subtitle ? (
+				<Text
+					testID='rooms-list-header-server-subtitle'
+					style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
+					numberOfLines={1}>
+					{subtitle}
+				</Text>
+			) : null}
+			{/* </TouchableOpacity> */}
 		</View>
 	);
 };
