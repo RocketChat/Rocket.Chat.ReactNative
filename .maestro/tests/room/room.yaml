@@ -2,30 +2,30 @@ appId: chat.rocket.reactnative
 name: Room
 jsEngine: graaljs
 onFlowStart:
-  - runFlow: '../helpers/setup.yaml'
+  - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
-- runFlow: ../helpers/launch-app.yaml
+- runFlow: '../../helpers/launch-app.yaml'
 
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 - evalScript: ${output.randomMessage = 'message'}
 
 - runFlow:
-    file: ../helpers/login.yaml
+    file: '../../helpers/login.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.room.name}
 
 # should send message
 - runFlow:
-    file: '../helpers/send-message.yaml'
+    file: '../../helpers/send-message.yaml'
     env:
       message: ${output.randomMessage}
 
@@ -277,9 +277,9 @@ onFlowEnd:
     visible:
       text: ${'@'+output.user.username}
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.room.name}
 
@@ -301,15 +301,15 @@ onFlowEnd:
     visible:
       text: ${'@'+output.otherUser.username}
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.room.name}
 
 # should edit message
 - runFlow:
-    file: '../helpers/send-message.yaml'
+    file: '../../helpers/send-message.yaml'
     env:
       message: 'edit'
 - extendedWaitUntil:
@@ -346,7 +346,7 @@ onFlowEnd:
 
 # should quote message
 - runFlow:
-    file: '../helpers/send-message.yaml'
+    file: '../../helpers/send-message.yaml'
     env:
       message: 'quote'
 - evalScript: ${output.quotedMessage = 'quoted'}
@@ -385,7 +385,7 @@ onFlowEnd:
     timeout: 60000
 
 # should back to rooms list view and see the last message correctly and navigate again to room
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: rooms-list-view
@@ -399,7 +399,7 @@ onFlowEnd:
 
 # should delete message
 - runFlow:
-    file: '../helpers/send-message.yaml'
+    file: '../../helpers/send-message.yaml'
     env:
       message: 'message to delete'
 - extendedWaitUntil:
@@ -431,7 +431,7 @@ onFlowEnd:
     notVisible:
       text: 'message to delete'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should reply in DM to another user
 - evalScript: ${output.replyUser = output.utils.createUser()}
@@ -445,7 +445,7 @@ onFlowEnd:
       id: 'rooms-list-view'
     timeout: 60000
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.replyRoom.name}
 - extendedWaitUntil:
@@ -494,11 +494,11 @@ onFlowEnd:
     timeout: 60000
 - tapOn:
     text: ${output.replyMessage}
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should save draft, check it, send it and clear it
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -509,9 +509,9 @@ onFlowEnd:
     id: message-composer-input
 - inputText: 'draft'
 - hideKeyboard
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
@@ -528,7 +528,7 @@ onFlowEnd:
     visible:
       text: 'draft'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 
 # should save message and quote draft correctly
 - evalScript: ${output.newUser = output.utils.createUser()}
@@ -543,7 +543,7 @@ onFlowEnd:
       id: 'rooms-list-view'
     timeout: 60000
 - runFlow:
-    file: '../helpers/search-and-navigate-room.yaml'
+    file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -564,9 +564,9 @@ onFlowEnd:
     id: message-composer-input
 - inputText: ${output.draftMessage}
 - hideKeyboard
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -589,9 +589,9 @@ onFlowEnd:
     visible:
       id: 'markdown-preview-${output.originalMessage}'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -602,9 +602,9 @@ onFlowEnd:
     id: 'message-composer-input'
 - eraseText
 - inputText: ${output.quoteMessage}
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
@@ -615,9 +615,9 @@ onFlowEnd:
     id: 'message-composer-input'
 - eraseText
 - inputText: ${output.quoteMessage}
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - runFlow:
-    file: '../helpers/navigate-to-room.yaml'
+    file: '../../helpers/navigate-to-room.yaml'
     env:
       ROOM: ${output.draftRoom.name}
 - extendedWaitUntil:
