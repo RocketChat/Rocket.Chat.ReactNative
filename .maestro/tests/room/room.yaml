@@ -3,7 +3,7 @@ name: Room
 jsEngine: graaljs
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
+onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 
 ---
@@ -104,10 +104,10 @@ onFlowEnd:
 # should react to message
 - extendedWaitUntil:
     visible:
-      text: ${output.randomMessage}
+      text: .*${output.randomMessage}.*
     timeout: 60000
 - longPressOn:
-    text: ${output.randomMessage}
+    text: .*${output.randomMessage}.*
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
@@ -139,10 +139,10 @@ onFlowEnd:
 # should search emojis in the reaction picker and react
 - extendedWaitUntil:
     visible:
-      text: ${output.randomMessage}
+      text: .*${output.randomMessage}.*
     timeout: 60000
 - longPressOn:
-    text: ${output.randomMessage}
+    text: .*${output.randomMessage}.*
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
@@ -188,10 +188,10 @@ onFlowEnd:
 # should react to message with frequently used emoji
 - extendedWaitUntil:
     visible:
-      text: ${output.randomMessage}
+      text: .*${output.randomMessage}.*
     timeout: 60000
 - longPressOn:
-    text: ${output.randomMessage}
+    text: .*${output.randomMessage}.*
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
@@ -275,7 +275,7 @@ onFlowEnd:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: ${'@'+output.user.username}
+      text: .*${'@'+output.user.username}.*
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
@@ -289,17 +289,17 @@ onFlowEnd:
 
 - extendedWaitUntil:
     visible:
-      text: ${output.otherUser.username}
+      text: .*${output.otherUser.username}.*
     timeout: 60000
 - tapOn:
-    text: ${output.otherUser.username}
+    text: .*${output.otherUser.username}.*
 - extendedWaitUntil:
     visible:
       id: room-info-view-username
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: ${'@'+output.otherUser.username}
+      text: .*${'@'+output.otherUser.username}.*
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
@@ -314,10 +314,10 @@ onFlowEnd:
       message: 'edit'
 - extendedWaitUntil:
     visible:
-      text: 'edit'
+      text: '.*edit.*'
     timeout: 60000
 - longPressOn:
-    text: 'edit'
+    text: '.*edit.*'
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -341,7 +341,7 @@ onFlowEnd:
     id: message-composer-send
 - extendedWaitUntil:
     visible:
-      text: 'edited'
+      text: '.*edited.*'
     timeout: 60000
 
 # should quote message
@@ -352,10 +352,10 @@ onFlowEnd:
 - evalScript: ${output.quotedMessage = 'quoted'}
 - extendedWaitUntil:
     visible:
-      text: 'quote'
+      text: '.*quote.*'
     timeout: 60000
 - longPressOn:
-    text: 'quote'
+    text: '.*quote.*'
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -375,10 +375,10 @@ onFlowEnd:
     id: message-composer-send
 - extendedWaitUntil:
     visible:
-      text: ${output.quotedMessage}
+      text: .*${output.quotedMessage}.*
     timeout: 60000
 - tapOn:
-    text: ${output.quotedMessage}
+    text: .*${output.quotedMessage}.*
 - extendedWaitUntil:
     visible:
       id: reply-${output.user.name}-quote
@@ -404,10 +404,10 @@ onFlowEnd:
       message: 'message to delete'
 - extendedWaitUntil:
     visible:
-      text: 'message to delete'
+      text: '.*message to delete.*'
     timeout: 60000
 - longPressOn:
-    text: 'message to delete'
+    text: '.*message to delete.*'
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -429,7 +429,7 @@ onFlowEnd:
     text: 'Delete'
 - extendedWaitUntil:
     notVisible:
-      text: 'message to delete'
+      text: '.*message to delete.*'
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 
@@ -450,7 +450,7 @@ onFlowEnd:
       ROOM: ${output.replyRoom.name}
 - extendedWaitUntil:
     visible:
-      text: ${output.originalMessage}
+      text: .*${output.originalMessage}.*
     timeout: 60000
 - extendedWaitUntil:
     visible:
@@ -463,7 +463,7 @@ onFlowEnd:
       id: 'room-view-join-button'
     timeout: 60000
 - longPressOn:
-    text: ${output.originalMessage}
+    text: .*${output.originalMessage}.*
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -490,10 +490,10 @@ onFlowEnd:
     id: message-composer-send
 - extendedWaitUntil:
     visible:
-      text: ${output.replyMessage}
+      text: .*${output.replyMessage}.*
     timeout: 60000
 - tapOn:
-    text: ${output.replyMessage}
+    text: .*${output.replyMessage}.*
 - runFlow: '../../helpers/go-back.yaml'
 
 # should save draft, check it, send it and clear it
@@ -520,13 +520,13 @@ onFlowEnd:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'draft'
+      text: '.*draft.*'
     timeout: 60000
 - tapOn:
     id: 'message-composer-send'
 - extendedWaitUntil:
     visible:
-      text: 'draft'
+      text: '.*draft.*'
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 
@@ -575,10 +575,10 @@ onFlowEnd:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: ${output.draftMessage}
+      text: .*${output.draftMessage}.*
     timeout: 60000
 - longPressOn:
-    text: ${output.originalMessage}
+    text: .*${output.originalMessage}.*
 - extendedWaitUntil:
     visible:
       id: action-sheet
