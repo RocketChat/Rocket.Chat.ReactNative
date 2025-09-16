@@ -1,0 +1,173 @@
+appId: chat.rocket.reactnative
+name: Room Actions
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- runFlow: '../../helpers/launch-app.yaml'
+
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room-action.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+# should have room actions screen
+
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+
+# should have info
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-info'
+    timeout: 60000
+
+# should have members
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-members'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*1 members.*'
+    timeout: 60000
+
+# should have files
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-files'
+    timeout: 60000
+
+# should have mentions
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-mentioned'
+    timeout: 60000
+
+# should have starred
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-starred'
+    timeout: 60000
+
+# should have share
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-share'
+    timeout: 60000
+
+# should have pinned
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-pinned'
+    timeout: 60000
+
+# should have notifications
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-notifications'
+    timeout: 60000
+
+# should have leave channel
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-leave-channel'
+    timeout: 60000
+
+# should show mentioned messages
+- tapOn:
+    id: 'room-actions-mentioned'
+- extendedWaitUntil:
+    visible:
+      id: 'mentioned-messages-view'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+
+# should star and show in starred message
+- tapOn:
+    id: custom-header-back
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'messageToStar'
+- extendedWaitUntil:
+    visible:
+      text: 'messageToStar'
+    timeout: 10000
+- longPressOn:
+    id: message-content-messageToStar
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 10000
+- swipe:
+    from:
+      id: action-sheet-handle
+    direction: UP
+- extendedWaitUntil:
+    visible:
+      text: 'Star'
+      index: 1
+    timeout: 10000
+- tapOn:
+    text: 'Star'
+    index: 1
+- tapOn:
+    id: 'room-header'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    text: 'Starred'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-messageToStar'
+    timeout: 60000
+# should unstar
+- tapOn:
+    id: custom-header-back
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
+- extendedWaitUntil:
+    visible:
+      text: 'messageToStar'
+    timeout: 10000
+- longPressOn:
+    id: message-content-messageToStar
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 10000
+- swipe:
+    from:
+      id: action-sheet-handle
+    direction: UP
+- extendedWaitUntil:
+    visible:
+      text: 'Unstar'
+    timeout: 10000
+- tapOn:
+    text: 'Unstar'
