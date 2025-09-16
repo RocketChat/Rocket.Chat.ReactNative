@@ -46,7 +46,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const workspaceUrl = watch('workspaceUrl');
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
-	const { certificate, chooseCertificate, removeCertificate, autocompleteCertificate } = useCertificate();
+	const { certificate, chooseCertificate, removeCertificate } = useCertificate();
 	const { submit } = useConnectServer({ workspaceUrl, certificate, previousServer });
 	const phoneMarginTop = previousServer ? 32 : 84;
 	const marginTop = isTablet ? 0 : phoneMarginTop;
@@ -56,12 +56,10 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		setValue('workspaceUrl', text);
 		queryServerHistory(text);
 		clearErrors();
-		autocompleteCertificate(completeUrl(text));
 	};
 
 	const onPressServerHistory = (serverHistory: TServerHistoryModel) => {
 		setValue('workspaceUrl', serverHistory.url);
-		autocompleteCertificate(serverHistory.url);
 		submit({ fromServerHistory: true, username: serverHistory?.username, serverUrl: serverHistory?.url });
 	};
 
@@ -187,9 +185,9 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 			</FormContainerInner>
 			<CertificatePicker
 				certificate={certificate}
-				chooseCertificate={() => chooseCertificate(completeUrl(workspaceUrl))}
+				chooseCertificate={chooseCertificate}
 				connecting={connecting}
-				handleRemove={() => removeCertificate(completeUrl(workspaceUrl))}
+				handleRemove={removeCertificate}
 				previousServer={previousServer}
 				showBottomInfo
 			/>

@@ -90,8 +90,10 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
     }
 
     @Override
-    public void setCertificate(String name, Promise promise) {
-        this.alias = name;
+    public void setCertificate(String server, Promise promise) {
+        // For Android, we use the server parameter as the certificate alias
+        // The path and password parameters are not used in Android implementation
+        this.alias = server;
         OkHttpClient client = getOkHttpClient();
 
         // HTTP Fetch react-native layer
@@ -104,7 +106,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             .build();
         Fresco.initialize(this.reactContext, config);
         // RNCWebView
-        RNCWebViewManager.setCertificateAlias(name);
+        RNCWebViewManager.setCertificateAlias(server);
 
         // Expo File System network layer
         FileSystemModule.setOkHttpClient(client);
