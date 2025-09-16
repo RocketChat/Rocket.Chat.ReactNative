@@ -71,7 +71,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 					{I18n.t('Reset_password')}
 				</Text>
 				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22, fontSize: 16 }]}>
-					{I18n.t('email')}
+					{I18n.t('Email')}
 				</Text>
 				<ControlledFormTextInput
 					name='email'

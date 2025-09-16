@@ -1,0 +1,75 @@
+appId: chat.rocket.reactnative
+name: I18N Test
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow: ../../helpers/launch-app.yaml
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should select 'en'
+- runFlow: './utils/nav-to-language.yaml'
+- tapOn:
+    id: 'language-view-en'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Chats'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Profile'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Settings'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-close-drawer'
+
+# should select 'nl' and fallback to 'en'
+- runFlow: './utils/nav-to-language.yaml'
+- tapOn:
+    id: 'language-view-nl'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Chats'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Profiel'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Instellingen'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-close-drawer'
