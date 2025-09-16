@@ -295,7 +295,7 @@ const MessageActions = React.memo(
 				logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
 					await Services.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
-                    console.log('message.starred', message.starred);
+					console.log('message.starred', message.starred);
 					EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_starred') : I18n.t('Message_unstarred') });
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
