@@ -264,10 +264,295 @@ onFlowComplete:
       id: 'message-content-messageToPin'
     timeout: 60000
 - tapOn:
+    id: 'custom-header-back'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+
+# should navigate to notification preference view
+- scrollUntilVisible:
+    element:
+      id: 'room-actions-notifications'
+    timeout: 60000
+- tapOn:
+    id: 'room-actions-notifications'
+- extendedWaitUntil:
+    visible:
+      id: 'notification-preference-view'
+    timeout: 60000
+
+# should have receive notification option
+- extendedWaitUntil:
+    visible:
+      id: 'notification-preference-view-receive-notification'
+    timeout: 60000
+
+# should have show unread count option
+- extendedWaitUntil:
+    visible:
+      id: 'notification-preference-view-mark-as-unread'
+    timeout: 60000
+
+# should have notification alert option
+- extendedWaitUntil:
+    visible:
+      id: 'notification-preference-view-alert'
+    timeout: 60000
+
+# should have push notification option
+- extendedWaitUntil:
+    visible:
+      id: 'notification-preference-view-push-notification'
+    timeout: 60000
+
+# should have notification sound option
+- scrollUntilVisible:
+    element:
+      id: 'notification-preference-view-sound'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'notification-preference-view-sound'
+    timeout: 60000
+
+# should have email alert option
+- scrollUntilVisible:
+    element:
+      id: 'notification-preference-view-email-alert'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'notification-preference-view-email-alert'
+    timeout: 60000
+
+- tapOn:
     id: custom-header-back
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
     timeout: 60000
+
+# should tap on leave channel and raise alert
+- scrollUntilVisible:
+    element:
+      id: room-actions-leave-channel
+    timeout: 60000
+- tapOn:
+    id: room-actions-leave-channel
+- extendedWaitUntil:
+    visible:
+      text: '.*Are you sure you want to leave the room.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*YES, LEAVE IT!.*'
+    timeout: 60000
+- tapOn:
+    text: '.*YES, LEAVE IT!.*'
+- extendedWaitUntil:
+    visible:
+      text: '.*You are the last owner. Please set new owner before leaving the room.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'OK'
+    timeout: 60000
+- tapOn:
+    text: 'OK'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+
+# should add users to the room
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-members'
+    timeout: 60000
+- tapOn:
+    id: 'room-actions-members'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-add-user'
+    timeout: 60000
+- tapOn:
+    id: room-actions-add-user
+- evalScript: ${output.result = output.utils.createDM(output.user.username, output.user.password, 'rocket.cat')}
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-rocket.cat'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-rocket.cat'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-rocket.cat'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-search'
+    timeout: 60000
+- tapOn:
+    id: select-users-view-search
+- inputText: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: selected-users-view-submit
 - tapOn:
     id: custom-header-back
+- extendedWaitUntil:
+    visible:
+      text: '.*3 members.*'
+    timeout: 60000
+
+# should show all users
+- tapOn:
+    id: 'room-actions-members'
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-filter'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-filter'
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-toggle-status-all'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-toggle-status-all'
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-members-view-toggle-status-all'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'custom-header-back'
+
+# should filter user
+- tapOn:
+    id: 'room-actions-members'
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-search'
+    timeout: 60000
+- tapOn:
+    id: room-members-view-search
+- inputText: 'rocket'
+- tapOn:
+    id: room-members-view
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-rocket.cat'
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: clear-text-input
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-rocket.cat'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+
+# should remove user from room
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-rocket.cat'
+    timeout: 60000
+- tapOn:
+    id: room-members-view-item-rocket.cat
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-remove-from-room'
+    timeout: 60000
+- tapOn:
+    id: action-sheet-remove-from-room
+- extendedWaitUntil:
+    visible:
+      text: '.*The user will be removed from.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*YES, REMOVE USER!.*'
+    timeout: 60000
+- tapOn: YES, REMOVE USER!
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-members-view-item-rocket.cat'
+    timeout: 60000
+
+# should set/remove as owner
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-owner'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-owner-unchecked'
+    timeout: 60000
+- tapOn:
+    id: action-sheet-set-owner
+
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-owner'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-owner-checked'
+    timeout: 60000
+- tapOn:
+    id: action-sheet-set-owner
+
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-owner'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-owner-unchecked'
+    timeout: 60000
