@@ -11,7 +11,7 @@ onFlowComplete:
 
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
-- evalScript: ${output.randomMessage = 'message'}
+- evalScript: ${output.randomMessage = 'random-message'}
 
 - runFlow:
     file: '../../helpers/login.yaml'
