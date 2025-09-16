@@ -79,11 +79,11 @@ const RCSSLPinning = Platform.select({
 			}),
 		setCertificate: (name: string, server: string) => {
 			if (name) {
-				const certificate = UserPreferences.getMap(name) as ICertificate;
-				if (certificate) {
-					persistCertificate(server, name, certificate.password);
-					SSLPinning?.setCertificate(server, certificate.path, certificate.password);
+				let certificate = UserPreferences.getMap(name) as ICertificate;
+				if (!certificate.path.match(extractFileScheme(documentDirectory!))) {
+					certificate = persistCertificate(server, name, certificate.password);
 				}
+				SSLPinning?.setCertificate(server, certificate.path, certificate.password);
 			}
 		},
 		removeCertificate
