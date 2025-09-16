@@ -23,7 +23,6 @@ onFlowComplete:
       ROOM: ${output.room.name}
 
 # should have room actions screen
-
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
@@ -100,17 +99,17 @@ onFlowComplete:
     visible:
       id: 'room-actions-view'
     timeout: 60000
-
-# should star and show in starred message
 - tapOn:
     id: custom-header-back
+
+# should star and show in starred message
 - runFlow:
     file: '../../helpers/send-message.yaml'
     env:
       message: 'messageToStar'
 - extendedWaitUntil:
     visible:
-      text: 'messageToStar'
+      id: message-content-messageToStar
     timeout: 10000
 - longPressOn:
     id: message-content-messageToStar
@@ -130,6 +129,10 @@ onFlowComplete:
 - tapOn:
     text: 'Star'
     index: 1
+- extendedWaitUntil:
+    visible:
+      text: 'Message starred'
+    timeout: 10000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
@@ -138,6 +141,10 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     text: 'Starred'
+- extendedWaitUntil:
+    visible:
+      id: starred-messages-view
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'message-content-messageToStar'
@@ -153,7 +160,7 @@ onFlowComplete:
     id: custom-header-back
 - extendedWaitUntil:
     visible:
-      text: 'messageToStar'
+      id: message-content-messageToStar
     timeout: 10000
 - longPressOn:
     id: message-content-messageToStar
@@ -171,3 +178,96 @@ onFlowComplete:
     timeout: 10000
 - tapOn:
     text: 'Unstar'
+- extendedWaitUntil:
+    visible:
+      text: 'Message unstarred'
+    timeout: 10000
+- tapOn:
+    id: 'room-header'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    text: 'Starred'
+- extendedWaitUntil:
+    visible:
+      id: starred-messages-view
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: 'message-content-messageToStar'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
+
+# should pin a message and show in pinned
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'messageToPin'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-messageToPin'
+    timeout: 10000
+- longPressOn:
+    id: message-content-messageToPin
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 10000
+- swipe:
+    from:
+      id: action-sheet-handle
+    direction: UP
+- extendedWaitUntil:
+    visible:
+      text: Pin
+      index: 1
+    timeout: 60000
+- tapOn:
+    text: Pin
+    index: 1
+- extendedWaitUntil:
+    visible:
+      text: '.*Pinned a message:.*'
+    timeout: 60000
+- tapOn:
+    id: 'room-header'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn: Pinned
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-messageToPin'
+    timeout: 60000
+
+# should unpin a message
+- longPressOn:
+    id: message-content-messageToPin
+- extendedWaitUntil:
+    visible:
+      text: 'Unpin'
+    timeout: 60000
+- tapOn:
+    text: 'Unpin'
+- extendedWaitUntil:
+    notVisible:
+      id: 'message-content-messageToPin'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
