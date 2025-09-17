@@ -1,0 +1,14 @@
+diff --git a/node_modules/@rocket.chat/sdk/lib/api/api.ts b/node_modules/@rocket.chat/sdk/lib/api/api.ts
+index 301432d..31296e9 100644
+--- a/node_modules/@rocket.chat/sdk/lib/api/api.ts
++++ b/node_modules/@rocket.chat/sdk/lib/api/api.ts
+@@ -155,7 +155,8 @@ class Client implements IClient {
+   }
+   private async handle (r: any) {
+     const { status } = r
+-    const data = await r.json()
++    const text = await r.text();
++    const data = text ? JSON.parse(text) : null;
+     
+     return { status, data }
+ 
