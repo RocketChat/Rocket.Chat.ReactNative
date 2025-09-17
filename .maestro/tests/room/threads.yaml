@@ -1,0 +1,371 @@
+appId: chat.rocket.reactnative
+name: Threads
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- runFlow: '../../helpers/launch-app.yaml'
+
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+
+# should have room screen
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+
+# should have actions button
+- extendedWaitUntil:
+    visible:
+      id: 'room-header'
+    timeout: 60000
+
+# should have threads button
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-threads'
+    timeout: 60000
+
+# should create thread
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: thread
+- tapOn:
+    id: 'room-view-messages'
+- assertVisible:
+    id: 'message-content-thread'
+- longPressOn:
+    id: 'message-content-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Reply in thread'
+      index: 1
+    timeout: 60000
+- tapOn:
+    text: 'Reply in thread'
+    index: 1
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-input-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-input-thread'
+- inputText: replied
+- tapOn:
+    id: 'message-composer-send'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-replied'
+    timeout: 60000
+- tapOn:
+    id: 'header-back'
+# should navigate to thread from button
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-button-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-thread-button-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+
+# should toggle follow thread
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-unfollow'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-header-unfollow'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-follow'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-header-follow'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-unfollow'
+    timeout: 60000
+
+# should send message in thread only
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: threadonly
+      isThread: 'true'
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-view-title-thread'
+    timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 5000
+- extendedWaitUntil:
+    notVisible:
+      id: 'message-content-threadonly'
+    timeout: 5000
+
+# should mark send to channel and show on main channel
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-button-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-thread-button-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-input-thread'
+- inputText: 'sendToChannel'
+- tapOn:
+    id: send-to-channel-unchecked
+- tapOn:
+    id: message-composer-send
+- tapOn:
+    id: header-back
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-view-title-thread'
+    timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: 'message-preview-sendToChannel'
+    timeout: 5000
+
+# should navigate to thread from thread name
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: dummymessagebetweenthethread
+- tapOn:
+    id: 'message-thread-button-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-input-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-input-thread'
+- inputText: 'threadname'
+- tapOn:
+    id: 'message-composer-send-to-channel'
+- tapOn:
+    id: 'message-composer-send'
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-replied-on-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-thread-replied-on-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- tapOn:
+    id: 'header-back'
+
+# should navigate to thread from threads view
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-threads'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-header-threads'
+- extendedWaitUntil:
+    visible:
+      id: 'thread-messages-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'thread-messages-view-thread'
+    timeout: 60000
+- tapOn:
+    id: 'thread-messages-view-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-messages'
+    timeout: 60000
+
+# should draft thread message
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-button-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-thread-button-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-input-thread'
+- inputText: 'draftthread'
+- tapOn:
+    id: 'header-back'
+
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-button-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-thread-button-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*draftthread.*'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-input-thread'
+- eraseText
+- tapOn:
+    id: 'header-back'
+
+- extendedWaitUntil:
+    visible:
+      id: 'message-thread-button-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-thread-button-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread'
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      text: '.*draftthread.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*Add thread reply.*'
+    timeout: 60000
+- tapOn:
+    id: 'header-back'
+
+# should create thread delete the message and the thread show the correct number of messages
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'thread-message-count'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-thread-message-count'
+    timeout: 60000
+- longPressOn:
+    id: 'message-thread-button-thread'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Reply in thread'
+      index: 1
+    timeout: 60000
+- tapOn:
+    text: 'Reply in thread'
+    index: 1
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread-message-count'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-input-thread'
+    timeout: 60000
+- tapOn:
+    id: 'message-composer-input-thread'
+- inputText: 'replied'
+- tapOn:
+    id: 'message-composer-send'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-replied'
+    timeout: 60000
+- longPressOn:
+    id: 'message-content-replied'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- swipe:
+    from:
+      id: 'action-sheet-handle'
+    direction: UP
+- extendedWaitUntil:
+    visible:
+      text: 'Delete'
+      index: 1
+    timeout: 60000
+- tapOn:
+    text: 'Delete'
+    index: 1
+- extendedWaitUntil:
+    visible:
+      text: '.*You will not be able to recover this message.*'
+    timeout: 60000
+- tapOn: 'DELETE'
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${room.name}'
+- extendedWaitUntil:
+    visible:
+      id: 'thread-count-0'
+    timeout: 60000
