@@ -1,0 +1,112 @@
+appId: chat.rocket.reactnative
+name: Discussion
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- runFlow: '../../helpers/launch-app.yaml'
+
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.discussionFromNewMessage = output.random() + ' Discussion NewMessageView'}
+- evalScript: ${output.discussionFromMessageComposer = output.random() + ' Discussion MessageComposer actions'}
+- evalScript: ${output.selectUser = 'rocket.cat'}
+
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should create discussion from NewMessageView
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- assertVisible:
+    id: 'rooms-list-view-create-channel'
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-create-discussion'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-create-discussion'
+- extendedWaitUntil:
+    visible:
+      id: 'create-discussion-view'
+    timeout: 60000
+- tapOn: 'Select a channel'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'multi-select-item-${output.room.name}'
+    timeout: 60000
+- tapOn:
+    id: 'multi-select-item-${output.room.name}'
+- tapOn:
+    id: 'multi-select-discussion-name'
+- inputText: ${output.discussionFromNewMessage}
+- tapOn: 'Select users'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- tapOn:
+    id: 'multi-select-search'
+- inputText: ${output.selectUser}
+- extendedWaitUntil:
+    visible:
+      id: 'multi-select-item-${output.selectUser}'
+    timeout: 60000
+- tapOn:
+    id: 'multi-select-item-${output.selectUser}'
+- extendedWaitUntil:
+    visible:
+      id: 'multi-select-chip-${output.selectUser}'
+    timeout: 60000
+- eraseText
+- inputText: 'user'
+- extendedWaitUntil:
+    notVisible:
+      id: 'multi-select-item-${output.selectUser}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'multi-select-chip-${output.selectUser}'
+    timeout: 60000
+- tapOn:
+    id: 'create-discussion-view'
+- tapOn:
+    id: 'multi-select-chip-${output.selectUser}'
+- extendedWaitUntil:
+    notVisible:
+      id: 'multi-select-chip-${output.selectUser}'
+    timeout: 60000
+- tapOn:
+    id: 'create-discussion-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.discussionFromNewMessage}'
+    timeout: 60000
+- tapOn: 'Back'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.discussionFromNewMessage}'
+    timeout: 60000
+
+# should create discussion from MessageComposer Actions
