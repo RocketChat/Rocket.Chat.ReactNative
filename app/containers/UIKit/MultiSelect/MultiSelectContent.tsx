@@ -73,7 +73,7 @@ export const MultiSelectContent = React.memo(
 						onChangeText={handleSearch}
 						placeholder={I18n.t('Search')}
 						inputStyle={{ backgroundColor: colors.surfaceLight }}
-						bottomSheet={isIOS}
+						bottomSheet={true}
 						onSubmitEditing={() => {
 							setTimeout(() => {
 								hideActionSheet();
