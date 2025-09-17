@@ -682,8 +682,7 @@ onFlowComplete:
     text: 'Cancel'
 
 # should ignore user
-- evalScript: ${output.message = 'ignoredmessagecontent'
-- evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room.name, output.message)}
+- evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room.name, 'ignoredmessagecontent')}
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-item-${output.otherUser.username}'
@@ -716,7 +715,7 @@ onFlowComplete:
     text: '.*Message ignored. Tap to display it.*'
 - extendedWaitUntil:
     visible:
-      text: '.*${output.message}.*'
+      text: '.*ignoredmessagecontent.*'
     timeout: 60000
 
 # should navigate to direct message
