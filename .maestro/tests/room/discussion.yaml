@@ -108,5 +108,4 @@ onFlowComplete:
     visible:
       id: 'rooms-list-view-item-${output.discussionFromNewMessage}'
     timeout: 60000
-
 # should create discussion from MessageComposer Actions
