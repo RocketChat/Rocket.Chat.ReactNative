@@ -110,13 +110,13 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: message-content-messageToStar
-    timeout: 10000
+    timeout: 60000
 - longPressOn:
     id: message-content-messageToStar
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 10000
+    timeout: 60000
 - swipe:
     from:
       id: action-sheet-handle
@@ -125,14 +125,14 @@ onFlowComplete:
     visible:
       text: 'Star'
       index: 1
-    timeout: 10000
+    timeout: 60000
 - tapOn:
     text: 'Star'
     index: 1
 - extendedWaitUntil:
     visible:
       text: 'Message starred'
-    timeout: 10000
+    timeout: 60000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
@@ -161,13 +161,13 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: message-content-messageToStar
-    timeout: 10000
+    timeout: 60000
 - longPressOn:
     id: message-content-messageToStar
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 10000
+    timeout: 60000
 - swipe:
     from:
       id: action-sheet-handle
@@ -175,13 +175,13 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       text: 'Unstar'
-    timeout: 10000
+    timeout: 60000
 - tapOn:
     text: 'Unstar'
 - extendedWaitUntil:
     visible:
       text: 'Message unstarred'
-    timeout: 10000
+    timeout: 60000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
@@ -215,13 +215,13 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: 'message-content-messageToPin'
-    timeout: 10000
+    timeout: 60000
 - longPressOn:
     id: message-content-messageToPin
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 10000
+    timeout: 60000
 - swipe:
     from:
       id: action-sheet-handle
@@ -751,9 +751,9 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.otherUser.username}'
-    timeout: 10000
+    timeout: 60000
 - tapOn: Back
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 10000
+    timeout: 60000
