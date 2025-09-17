@@ -183,7 +183,7 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: 'message-composer-input-thread'
-- inputText: 'threadname'
+- inputText: 'navthreadname'
 - tapOn:
     id: 'message-composer-send-to-channel'
 - tapOn:
@@ -307,7 +307,7 @@ onFlowComplete:
       id: 'message-content-thread-message-count'
     timeout: 60000
 - longPressOn:
-    id: 'message-thread-button-thread'
+    id: 'message-content-thread-message-count'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
@@ -347,14 +347,12 @@ onFlowComplete:
     from:
       id: 'action-sheet-handle'
     direction: UP
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       text: 'Delete'
-      index: 1
     timeout: 60000
 - tapOn:
     text: 'Delete'
-    index: 1
 - extendedWaitUntil:
     visible:
       text: '.*You will not be able to recover this message.*'
