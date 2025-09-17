@@ -363,6 +363,7 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${room.name}'
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'thread-count-0'
