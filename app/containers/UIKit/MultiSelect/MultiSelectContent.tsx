@@ -10,7 +10,6 @@ import styles from './styles';
 import { useTheme } from '../../../theme';
 import { IItemData } from '.';
 import { debounce } from '../../../lib/methods/helpers/debounce';
-import { isIOS } from '../../../lib/methods/helpers';
 import { useActionSheet } from '../../ActionSheet';
 
 interface IMultiSelectContentProps {
