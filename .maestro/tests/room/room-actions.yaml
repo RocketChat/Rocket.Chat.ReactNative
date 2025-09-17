@@ -682,7 +682,7 @@ onFlowComplete:
     text: 'Cancel'
 
 # should ignore user
-- evalScript: ${output.message = ${output.random()} + 'ignoredmessagecontent'}
+- evalScript: ${output.message = 'ignoredmessagecontent'
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room.name, output.message)}
 - extendedWaitUntil:
     visible:
