@@ -14,61 +14,16 @@
 #import "SRWebSocket.h"
 #import "EXSessionTaskDispatcher.h"
 
-@implementation Challenge : NSObject
-+(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
-{
-  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
-  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
-
-  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || path == nil || password == nil) {
-    return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-  } else if (path && password) {
-    NSMutableArray *policies = [NSMutableArray array];
-    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
-    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
-
-    SecTrustResultType result;
-    SecTrustEvaluate(serverTrust, &result);
-
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-    {
-      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-    }
-
-    NSData *p12data = [NSData dataWithContentsOfFile:path];
-    NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
-    CFArrayRef rawItems = NULL;
-    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
-                                      (__bridge CFDictionaryRef)options,
-                                      &rawItems);
-
-    if (status != noErr) {
-      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-    }
-
-    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
-    NSDictionary* firstItem = nil;
-    if ((status == errSecSuccess) && ([items count]>0)) {
-        firstItem = items[0];
-    }
-
-    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
-    SecCertificateRef certificate = NULL;
-    if (identity) {
-        SecIdentityCopyCertificate(identity, &certificate);
-        if (certificate) { CFRelease(certificate); }
-    }
-
-    NSMutableArray *certificates = [[NSMutableArray alloc] init];
-    [certificates addObject:CFBridgingRelease(certificate)];
-
-    [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
-
-    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
-  }
-
-  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+static os_log_t SSLLog(void) {
+  static os_log_t sLog;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sLog = os_log_create("chat.rocket.ssl", "authentication");
+  });
+  return sLog;
 }
+
+@implementation Challenge : NSObject
 
 +(NSString *)stringToHex:(NSString *)string
 {
@@ -79,37 +34,143 @@
   return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
 }
 
-+(void)runChallenge:(NSURLSession *)session
- didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
-  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
++ (NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password {
+  os_log_t sslLog = SSLLog();
+
+  NSString *authMethod = challenge.protectionSpace.authenticationMethod;
+  if (![authMethod isEqualToString:NSURLAuthenticationMethodClientCertificate]) {
+    os_log_info(sslLog, "Not a client-certificate challenge");
+    return nil;
+  }
+
+  if (path.length == 0 || password.length == 0) {
+    os_log_info(sslLog, "No path/password configured for client cert");
+    return nil;
+  }
+
+  if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+    os_log_error(sslLog, "Client cert file not found at path: %{public}@", path);
+    return nil;
+  }
+
+  NSData *p12data = [NSData dataWithContentsOfFile:path];
+  if (!p12data) {
+    os_log_error(sslLog, "Failed to read PKCS12 data");
+    return nil;
+  }
+
+  NSDictionary *options = @{ (id)kSecImportExportPassphrase : password };
+  CFArrayRef rawItems = NULL;
+  OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
+                                    (__bridge CFDictionaryRef)options,
+                                    &rawItems);
+  if (status != errSecSuccess || rawItems == NULL) {
+    os_log_error(sslLog, "SecPKCS12Import failed: %d", (int)status);
+    if (rawItems) CFRelease(rawItems);
+    return nil;
+  }
+
+  NSArray *items = (__bridge_transfer NSArray *)rawItems;
+  if (items.count == 0) {
+    os_log_error(sslLog, "PKCS12 import returned zero items");
+    return nil;
+  }
+
+  NSDictionary *firstItem = items[0];
+  id identityObj = firstItem[(id)kSecImportItemIdentity];
+  if (!identityObj) {
+    os_log_error(sslLog, "No identity found in PKCS12");
+    return nil;
+  }
+
+  SecIdentityRef identity = (__bridge SecIdentityRef)identityObj;
+  // Copy certificate from identity
+  SecCertificateRef certificate = NULL;
+  OSStatus certStatus = SecIdentityCopyCertificate(identity, &certificate);
+  if (certStatus != errSecSuccess || certificate == NULL) {
+    os_log_error(sslLog, "SecIdentityCopyCertificate failed: %d", (int)certStatus);
+    if (certificate) CFRelease(certificate);
+    return nil;
+  }
+
+  // Build NSArray of certificates (the array should contain certificates, not the identity).
+  // Some APIs accept an array starting with identity, but NSURLCredential expects
+  // an array of SecCertificateRef objects (chain). We'll pass the certificate we copied.
+  id certObj = (__bridge_transfer id)certificate; // certificate will be released by ARC
+  NSArray *certs = certObj ? @[certObj] : @[];
+
+  // Create credential. Choose persistence according to desired policy.
+  // Use NSURLCredentialPersistenceNone for one-off, or ForSession if you want reuse within a session.
+  NSURLCredential *cred = [NSURLCredential credentialWithIdentity:identity
+                                                     certificates:certs
+                                                      persistence:NSURLCredentialPersistenceNone];
+
+  os_log_info(sslLog, "Created client credential (certs: %lu)", (unsigned long)certs.count);
+  return cred;
+}
+
++ (void)runChallenge:(NSURLSession *)session
+   didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+    completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
-  NSString *host = challenge.protectionSpace.host;
+  os_log_t sslLog = SSLLog();
+  static NSInteger seq = 0; seq++;
+  NSString *host = challenge.protectionSpace.host ?: @"(unknown)";
+  NSString *authMethod = challenge.protectionSpace.authenticationMethod ?: @"(none)";
 
-  // Read the clientSSL info from MMKV
-  __block NSString *clientSSL;
-  SecureStorage *secureStorage = [[SecureStorage alloc] init];
+  os_log_info(sslLog, "Challenge #%ld host=%{public}@ authMethod=%{public}@", (long)seq, host, authMethod);
 
-  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
-  NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
-  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+  if ([authMethod isEqualToString:NSURLAuthenticationMethodClientCertificate]) {
+    // Read stored client config (your existing MMKV code) — if not found, perform default handling.
+    SecureStorage *secureStorage = [[SecureStorage alloc] init];
+    NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
+    if (key == nil) {
+      os_log_info(sslLog, "No secure storage key -> default handling");
+      completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+      return;
+    }
 
-  if (key == NULL) {
-    return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
+    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
+    MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
+    NSString *clientSSL = [mmkv getStringForKey:host];
+
+    if (!clientSSL) {
+      os_log_info(sslLog, "No client SSL configuration for host %{public}@", host);
+      completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+      return;
+    }
+
+    NSData *jsonData = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *jsonErr = nil;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&jsonErr];
+    if (jsonErr || ![dict isKindOfClass:[NSDictionary class]]) {
+      os_log_error(sslLog, "Malformed clientSSL JSON for host %{public}@: %{public}@", host, jsonErr.localizedDescription);
+      completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+      return;
+    }
+
+    NSString *path = dict[@"path"];
+    NSString *password = dict[@"password"];
+    if (!path || !password) {
+      os_log_error(sslLog, "clientSSL entry missing path/password");
+      completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+      return;
+    }
+
+    NSURLCredential *clientCred = [self getUrlCredential:challenge path:path password:password];
+    if (clientCred) {
+      os_log_info(sslLog, "Presenting client certificate for host %{public}@", host);
+      completionHandler(NSURLSessionAuthChallengeUseCredential, clientCred);
+      return;
+    } else {
+      os_log_error(sslLog, "Failed to build client credential - default handling");
+      completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
+      return;
+    }
   }
 
-  NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
-  MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
-  clientSSL = [mmkv getStringForKey:host];
-
-  if (clientSSL) {
-    NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
-    id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    NSString *path = [dict objectForKey:@"path"];
-    NSString *password = [dict objectForKey:@"password"];
-    credential = [self getUrlCredential:challenge path:path password:password];
-  }
-
-  completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+  // For all other auth methods, allow system default handling:
+  completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
 }
 @end
 
