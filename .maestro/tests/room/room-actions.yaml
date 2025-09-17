@@ -556,3 +556,204 @@ onFlowComplete:
     visible:
       id: 'action-sheet-set-owner-unchecked'
     timeout: 60000
+- tapOn:
+    text: Cancel
+
+# should set/remove as moderator
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-moderator'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-moderator-unchecked'
+    timeout: 60000
+- tapOn:
+    id: action-sheet-set-moderator
+
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-moderator'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-moderator-checked'
+    timeout: 60000
+- tapOn:
+    id: action-sheet-set-moderator
+
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-moderator'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-set-moderator-unchecked'
+    timeout: 60000
+- tapOn:
+    text: 'Cancel'
+
+# should set/remove as mute
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-mute-user'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Disable writing in room'
+    timeout: 60000
+- tapOn:
+    id: 'action-sheet-mute-user'
+- extendedWaitUntil:
+    visible:
+      text: '.*Are you sure?.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*DISABLE WRITING IN ROOM.*'
+    timeout: 60000
+- tapOn: 'DISABLE WRITING IN ROOM'
+
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-mute-user'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Enable writing in room'
+    timeout: 60000
+- tapOn:
+    id: action-sheet-mute-user
+- extendedWaitUntil:
+    visible:
+      text: '.*Are you sure?.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*ENABLE WRITING IN ROOM.*'
+    timeout: 60000
+- tapOn: 'ENABLE WRITING IN ROOM'
+
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-mute-user'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Disable writing in room'
+    timeout: 60000
+- tapOn:
+    text: 'Cancel'
+
+# should ignore user
+- evalScript: ${output.message = '${output.random()}ignoredmessagecontent'}
+- evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room.name, output.message)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet-ignore-user'
+    timeout: 60000
+- tapOn:
+    id: action-sheet-ignore-user
+- extendedWaitUntil:
+    visible:
+      text: 'User has been ignored'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    id: custom-header-back
+- extendedWaitUntil:
+    visible:
+      text: '.*Message ignored. Tap to display it.*'
+    timeout: 60000
+- tapOn:
+    text: '.*Message ignored. Tap to display it.*'
+- extendedWaitUntil:
+    visible:
+      text: '.*${output.message}.*'
+    timeout: 60000
+
+# should navigate to direct message
+- tapOn:
+    id: 'room-header'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    id: 'room-actions-members'
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'room-members-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      text: 'Direct message'
+    timeout: 60000
+- tapOn:
+    text: 'Direct message'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.otherUser.username}'
+    timeout: 10000
+- tapOn: Back
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 10000
