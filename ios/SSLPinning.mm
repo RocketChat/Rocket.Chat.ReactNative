@@ -49,7 +49,7 @@ static os_log_t SSLLog(void) {
   }
 
   if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-    os_log_error(sslLog, "Client cert file not found at path: %{public}@", path);
+    os_log_error(sslLog, "Client cert file not found at path: %{private}@", path);
     return nil;
   }
 
