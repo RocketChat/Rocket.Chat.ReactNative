@@ -241,6 +241,45 @@ export const encodePrefixedBase64 = (prefix: string, data: Uint8Array<ArrayBuffe
 	return prefix + base64Data;
 };
 
+export const parsePrivateKey = (
+	privateKey: string,
+	userId: string
+): { iv: ArrayBuffer; ciphertext: ArrayBuffer; salt: string; iterations: number; version: 'v1' | 'v2' } => {
+	const json: unknown = JSON.parse(privateKey);
+	if (typeof json !== 'object' || json === null) {
+		throw new TypeError('Invalid private key format');
+	}
+
+	const salt = 'salt' in json && typeof json.salt === 'string' ? json.salt : userId;
+
+	if (
+		'iv' in json &&
+		'ciphertext' in json &&
+		typeof json.iv === 'string' &&
+		typeof json.ciphertext === 'string' &&
+		'iterations' in json &&
+		typeof json.iterations === 'number'
+	) {
+		// v2: { iv: base64, ciphertext: base64, salt: string }
+		return {
+			iv: b64ToBuffer(json.iv),
+			ciphertext: b64ToBuffer(json.ciphertext),
+			salt,
+			iterations: json.iterations,
+			version: 'v2'
+		};
+	}
+
+	if ('$binary' in json && typeof json.$binary === 'string') {
+		// v1: { $binary: base64(iv[16] + ciphertext) }
+		const binary = b64ToBuffer(json.$binary);
+		const [iv, ciphertext] = splitVectorData(binary);
+		return { iv, ciphertext, salt, iterations: 1000, version: 'v1' };
+	}
+
+	throw new TypeError('Invalid private key format');
+};
+
 export const getFileExtension = (fileName?: string): string => {
 	if (!fileName) {
 		return 'file';
