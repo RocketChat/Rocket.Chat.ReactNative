@@ -278,6 +278,7 @@ export default class EncryptionRoom {
 	// can send the encryption key at the moment.
 	// Each time you see a encrypted message of a room that you don't have a key
 	// this will be called again and run once in 5 seconds
+	// TODO: remove debounce? It should be async, right?
 	requestRoomKey = debounce(
 		async (e2eKeyId: string) => {
 			try {
@@ -680,7 +681,6 @@ export default class EncryptionRoom {
 			}
 
 			const { key_id, iv, ciphertext } = this.parse(contentBase64);
-			console.log('key_id', key_id, 'iv', iv, 'ciphertext', ciphertext);
 
 			if (key_id !== this.keyID) {
 				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === key_id);
