@@ -358,7 +358,7 @@ onFlowComplete:
     id: 'header-back'
 - extendedWaitUntil:
     visible:
-      id: 'room-view-title-${room.name}'
+      id: 'room-view-title-${output.room.name}'
     timeout: 60000
 - extendedWaitUntil:
     visible:
