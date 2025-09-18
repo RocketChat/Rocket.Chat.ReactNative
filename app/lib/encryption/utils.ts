@@ -197,6 +197,50 @@ export const hasE2EEWarning = ({
 };
 
 // https://github.com/RocketChat/Rocket.Chat/blob/7a57f3452fd26a603948b70af8f728953afee53f/apps/meteor/lib/utils/getFileExtension.ts#L1
+// A 256-byte array always encodes to 344 characters in Base64.
+const DECODED_LENGTH = 256;
+// ((4 * 256 / 3) + 3) & ~3 = 344
+const ENCODED_LENGTH = 344;
+
+export const decodePrefixedBase64 = (input: string): [prefix: string, data: Uint8Array<ArrayBuffer>] => {
+	// 1. Validate the input string length
+	if (input.length < ENCODED_LENGTH) {
+		throw new RangeError('Invalid input length.');
+	}
+
+	// 2. Split the string into its two parts
+	const prefix = input.slice(0, -ENCODED_LENGTH);
+	const base64Data = input.slice(-ENCODED_LENGTH);
+
+	// 3. Decode the Base64 string
+	const bytes = b64ToBuffer(base64Data);
+
+	if (bytes.byteLength !== DECODED_LENGTH) {
+		// This is a sanity check in case the Base64 string was valid but didn't decode to 256 bytes.
+		throw new RangeError('Decoded data length is too short.');
+	}
+
+	return [prefix, new Uint8Array(bytes)];
+};
+
+export const encodePrefixedBase64 = (prefix: string, data: Uint8Array<ArrayBuffer>): string => {
+	// 1. Validate the input data length
+	if (data.length !== DECODED_LENGTH) {
+		throw new RangeError(`Input data length is ${data.length}, but expected ${DECODED_LENGTH} bytes.`);
+	}
+
+	// 2. Convert the byte array to base64
+	const base64Data = bufferToB64(data.buffer);
+
+	if (base64Data.length !== ENCODED_LENGTH) {
+		// This is a sanity check in case something went wrong during encoding.
+		throw new RangeError(`Encoded Base64 length is ${base64Data.length}, but expected ${ENCODED_LENGTH} characters.`);
+	}
+
+	// 3. Concatenate the prefix and the Base64 string
+	return prefix + base64Data;
+};
+
 export const getFileExtension = (fileName?: string): string => {
 	if (!fileName) {
 		return 'file';

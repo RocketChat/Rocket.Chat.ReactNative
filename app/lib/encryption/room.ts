@@ -11,7 +11,8 @@ import {
 	calculateFileChecksum,
 	aesDecrypt,
 	aesGcmEncrypt,
-	aesGcmDecrypt
+	aesGcmDecrypt,
+	randomUuid
 } from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
@@ -40,7 +41,9 @@ import {
 	splitVectorData,
 	toString,
 	utf8ToBuffer,
-	bufferToHex
+	bufferToHex,
+	decodePrefixedBase64,
+	encodePrefixedBase64
 } from './utils';
 import { Encryption } from './index';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
@@ -54,6 +57,8 @@ import { getMessageById } from '../database/services/Message';
 import { TEncryptFileResult, TGetContent } from './definitions';
 import { store } from '../store/auxStore';
 
+type TVersion = 'v1' | 'v2' | '';
+
 export default class EncryptionRoom {
 	ready: boolean;
 	roomId: string;
@@ -62,6 +67,7 @@ export default class EncryptionRoom {
 	readyPromise: Deferred;
 	sessionKeyExportedString: string;
 	keyID: string;
+	version: TVersion;
 	roomKey: ArrayBuffer;
 	subscription: TSubscriptionModel | null;
 
@@ -71,6 +77,7 @@ export default class EncryptionRoom {
 		this.userId = userId;
 		this.establishing = false;
 		this.keyID = '';
+		this.version = '';
 		this.sessionKeyExportedString = '';
 		this.roomKey = new ArrayBuffer(0);
 		this.readyPromise = new Deferred();
@@ -109,10 +116,14 @@ export default class EncryptionRoom {
 			try {
 				try {
 					this.establishing = true;
-					const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2ESuggestedKey, Encryption.privateKey);
+					const { keyID, roomKey, sessionKeyExportedString, version } = await this.importRoomKey(
+						E2ESuggestedKey,
+						Encryption.privateKey
+					);
 					this.keyID = keyID;
 					this.roomKey = roomKey;
 					this.sessionKeyExportedString = sessionKeyExportedString;
+					this.version = version;
 				} catch (error) {
 					await Services.e2eRejectSuggestedGroupKey(this.roomId);
 				}
@@ -127,10 +138,11 @@ export default class EncryptionRoom {
 		// If this room has a E2EKey, we import it
 		if (E2EKey && Encryption.privateKey) {
 			this.establishing = true;
-			const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2EKey, Encryption.privateKey);
+			const { keyID, roomKey, sessionKeyExportedString, version } = await this.importRoomKey(E2EKey, Encryption.privateKey);
 			this.keyID = keyID;
 			this.roomKey = roomKey;
 			this.sessionKeyExportedString = sessionKeyExportedString;
+			this.version = version;
 			this.readyPromise.resolve();
 			return;
 		}
@@ -151,32 +163,40 @@ export default class EncryptionRoom {
 	importRoomKey = async (
 		E2EKey: string,
 		privateKey: string
-	): Promise<{ sessionKeyExportedString: string; roomKey: ArrayBuffer; keyID: string }> => {
+	): Promise<{ sessionKeyExportedString: string; roomKey: ArrayBuffer; keyID: string; version: TVersion }> => {
 		try {
-			const roomE2EKey = E2EKey.slice(12);
+			// Parse the encrypted key using prefixed base64
+			const [keyIdPrefix, encryptedData] = decodePrefixedBase64(E2EKey);
 
-			const decryptedKey = await rsaDecrypt(roomE2EKey, privateKey);
+			// Decrypt the session key
+			const decryptedKey = await rsaDecrypt(bufferToB64(encryptedData.buffer), privateKey);
 			const sessionKeyExportedString = toString(decryptedKey);
 
 			let keyID = '';
-			const { version } = store.getState().server;
-			if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
-				keyID = (await sha256(sessionKeyExportedString as string)).slice(0, 12);
-			} else {
-				keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
-			}
+			let roomKey: ArrayBuffer;
 
-			// Extract K from Web Crypto Secret Key
-			// K is a base64URL encoded array of bytes
-			// Web Crypto API uses this as a private key to decrypt/encrypt things
-			// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
-			const { k } = EJSON.parse(sessionKeyExportedString as string);
-			const roomKey = b64ToBuffer(k);
+			// Parse the decrypted session key to determine format
+			const parsedKey = EJSON.parse(sessionKeyExportedString);
+			let version: TVersion = '';
+
+			// Check if this is v2 format (has 'kid' field)
+			if (parsedKey.kid && parsedKey.sessionKeyExported) {
+				// V2 format: extract keyID from 'kid' field
+				keyID = parsedKey.kid;
+				roomKey = b64ToBuffer(parsedKey.sessionKeyExported.k);
+				version = 'v2';
+			} else {
+				// V1 format: use the prefix as keyID
+				keyID = keyIdPrefix;
+				roomKey = b64ToBuffer(parsedKey.k);
+				version = 'v1';
+			}
 
 			return {
 				sessionKeyExportedString,
 				roomKey,
-				keyID
+				keyID,
+				version
 			};
 		} catch (e: any) {
 			throw new Error(e);
@@ -186,15 +206,35 @@ export default class EncryptionRoom {
 	hasSessionKey = () => !!this.sessionKeyExportedString;
 
 	createNewRoomKey = async () => {
-		const key = b64ToBuffer(await randomBytes(32));
-		this.roomKey = key;
+		const { version } = store.getState().server;
+		// v2
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0')) {
+			this.roomKey = b64ToBuffer(await randomBytes(32));
+			// Web Crypto format of a Secret Key
+			const sessionKeyExported = {
+				// Type of Secret Key
+				kty: 'oct',
+				// Algorithm
+				alg: 'A256GCM',
+				// Base64URI encoded array of bytes
+				k: bufferToB64URI(this.roomKey),
+				// Specific Web Crypto properties
+				ext: true,
+				key_ops: ['encrypt', 'decrypt']
+			};
+			this.keyID = await randomUuid();
+			this.sessionKeyExportedString = EJSON.stringify({ sessionKeyExported, kid: this.keyID });
+			return;
+		}
 
+		// v1
+		this.roomKey = b64ToBuffer(await randomBytes(16));
 		// Web Crypto format of a Secret Key
 		const sessionKeyExported = {
 			// Type of Secret Key
 			kty: 'oct',
 			// Algorithm
-			alg: 'A256GCM',
+			alg: 'A128CBC',
 			// Base64URI encoded array of bytes
 			k: bufferToB64URI(this.roomKey),
 			// Specific Web Crypto properties
@@ -204,7 +244,6 @@ export default class EncryptionRoom {
 
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
 
-		const { version } = store.getState().server;
 		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
 			this.keyID = (await sha256(this.sessionKeyExportedString as string)).slice(0, 12);
 		} else {
@@ -294,7 +333,12 @@ export default class EncryptionRoom {
 		try {
 			const userKey = await rsaImportKey(EJSON.parse(publicKey));
 			const encryptedUserKey = await rsaEncrypt(this.sessionKeyExportedString as string, userKey);
-			return this.keyID + encryptedUserKey;
+
+			// Convert base64 string to Uint8Array for prefixed encoding
+			const encryptedBuffer = b64ToBuffer(encryptedUserKey as string);
+
+			// Use prefixed base64 encoding with keyID as prefix (like web)
+			return encodePrefixedBase64(this.keyID, new Uint8Array(encryptedBuffer));
 		} catch (e) {
 			log(e);
 		}
@@ -389,9 +433,7 @@ export default class EncryptionRoom {
 		text = utf8ToBuffer(text as string);
 		const vectorBase64 = await randomBytes(12);
 		const vector = b64ToBuffer(vectorBase64);
-		// if server is greater than or equal to 7.9.0, we call aesGcmEncrypt
-		const { version } = store.getState().server;
-		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0')) {
+		if (this.version === 'v2') {
 			const data = await aesGcmEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector));
 			console.log('data', data);
 			return EJSON.stringify({
