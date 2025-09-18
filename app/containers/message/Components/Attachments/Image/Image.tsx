@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, ViewStyle } from 'react-native';
-import { Image } from 'expo-image';
+import { View, ViewStyle, Image } from 'react-native';
+import { Image as ExpoImage } from 'expo-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
@@ -11,7 +11,6 @@ import { WidthAwareContext } from '../../WidthAwareView';
 import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
 import ImageBadge from './ImageBadge';
-import log from '../../../../../lib/methods/helpers/log';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	const { colors } = useTheme();
@@ -23,12 +22,8 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 
 	useEffect(() => {
 		if (status === 'downloaded') {
-			Image.loadAsync(uri, {
-				onError: e => {
-					log(e);
-				}
-			}).then(image => {
-				setImageDimensions({ width: image.width, height: image.height });
+			Image.getSize(uri, (width, height) => {
+				setImageDimensions({ width, height });
 			});
 		}
 	}, [uri, status]);
@@ -67,13 +62,13 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
+					<ExpoImage autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
 				<>
 					{imagePreview && imageType && !encrypted ? (
-						<Image
+						<ExpoImage
 							autoplay={autoplayGifs}
 							style={styles.image}
 							source={{ uri: `data:${imageType};base64,${imagePreview}` }}

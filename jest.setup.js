@@ -1,7 +1,7 @@
 import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
@@ -16,8 +16,8 @@ jest.mock('react-native-safe-area-context', () => {
 	};
 });
 
-const loadAsyncMock = jest.spyOn(Image, 'loadAsync');
-loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300 }));
+const getSizeMock = jest.spyOn(Image, 'getSize');
+getSizeMock.mockImplementation(() => {});
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
