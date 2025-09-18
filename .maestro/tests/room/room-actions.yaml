@@ -124,11 +124,9 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       text: 'Star'
-      index: 1
     timeout: 60000
 - tapOn:
     text: 'Star'
-    index: 1
 - extendedWaitUntil:
     visible:
       text: 'Message starred'
@@ -229,11 +227,9 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       text: Pin
-      index: 1
     timeout: 60000
 - tapOn:
     text: Pin
-    index: 1
 - extendedWaitUntil:
     visible:
       text: '.*Pinned a message:.*'

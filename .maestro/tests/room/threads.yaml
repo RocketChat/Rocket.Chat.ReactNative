@@ -58,11 +58,9 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       text: 'Reply in thread'
-      index: 1
     timeout: 60000
 - tapOn:
     text: 'Reply in thread'
-    index: 1
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
@@ -315,11 +313,9 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       text: 'Reply in thread'
-      index: 1
     timeout: 60000
 - tapOn:
     text: 'Reply in thread'
-    index: 1
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread-message-count'
