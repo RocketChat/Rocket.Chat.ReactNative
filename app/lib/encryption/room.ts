@@ -431,9 +431,9 @@ export default class EncryptionRoom {
 	// Encrypt text
 	encryptText = async (text: string | ArrayBuffer) => {
 		text = utf8ToBuffer(text as string);
-		const vectorBase64 = await randomBytes(12);
-		const vector = b64ToBuffer(vectorBase64);
 		if (this.version === 'v2') {
+			const vectorBase64 = await randomBytes(12);
+			const vector = b64ToBuffer(vectorBase64);
 			const data = await aesGcmEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector));
 			console.log('data', data);
 			return EJSON.stringify({
@@ -442,6 +442,9 @@ export default class EncryptionRoom {
 				ciphertext: data
 			});
 		}
+
+		const vectorBase64 = await randomBytes(16);
+		const vector = b64ToBuffer(vectorBase64);
 		const data = b64ToBuffer(await aesEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector)));
 		return this.keyID + bufferToB64(joinVectorData(vector, data));
 	};
@@ -653,6 +656,23 @@ export default class EncryptionRoom {
 		return { key_id: keyID, iv, ciphertext: bufferToB64(ciphertext) };
 	};
 
+	doDecrypt = async (ciphertext: string, key: ArrayBuffer, iv: ArrayBuffer, version: TVersion) => {
+		const keyHex = bufferToHex(key);
+		const ivHex = bufferToHex(iv);
+		let decrypted;
+		if (version === 'v2') {
+			decrypted = await aesGcmDecrypt(ciphertext, keyHex, ivHex);
+			console.log('decrypted v2', decrypted);
+		} else {
+			decrypted = await aesDecrypt(ciphertext, keyHex, ivHex);
+			console.log('decrypted v1', decrypted);
+		}
+		if (!decrypted) {
+			return null;
+		}
+		return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
+	};
+
 	decryptContent = async (contentBase64: string) => {
 		try {
 			if (!contentBase64) {
@@ -662,32 +682,21 @@ export default class EncryptionRoom {
 			const { key_id, iv, ciphertext } = this.parse(contentBase64);
 			console.log('key_id', key_id, 'iv', iv, 'ciphertext', ciphertext);
 
-			let oldKey;
 			if (key_id !== this.keyID) {
 				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === key_id);
 				if (oldRoomKey?.E2EKey && Encryption.privateKey) {
-					const { roomKey } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
-					oldKey = roomKey;
+					const { roomKey, version } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
+					return this.doDecrypt(ciphertext, roomKey, iv, version);
 				}
-				if (!oldKey) {
+				if (!oldRoomKey) {
 					// TODO: needs testing, but it makes sense
 					this.requestRoomKey(key_id);
-					return null;
+					console.log('Old key not found');
 				}
+				return null;
 			}
 
-			const { version } = store.getState().server;
-
-			const keyHex = bufferToHex(oldKey || this.roomKey);
-			const ivHex = bufferToHex(iv);
-			let decrypted;
-			if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0')) {
-				decrypted = await aesGcmDecrypt(ciphertext, keyHex, ivHex);
-				console.log('decrypted', decrypted);
-			} else {
-				decrypted = await aesDecrypt(ciphertext, keyHex, ivHex);
-			}
-			return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
+			return this.doDecrypt(ciphertext, this.roomKey, iv, this.version);
 		} catch (error) {
 			console.error(error);
 			return null;
