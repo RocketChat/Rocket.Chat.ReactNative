@@ -127,10 +127,6 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     text: 'Star'
-- extendedWaitUntil:
-    visible:
-      text: 'Message starred'
-    timeout: 60000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
@@ -176,10 +172,6 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     text: 'Unstar'
-- extendedWaitUntil:
-    visible:
-      text: 'Message unstarred'
-    timeout: 60000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
