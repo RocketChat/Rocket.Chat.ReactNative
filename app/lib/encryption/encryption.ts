@@ -11,7 +11,9 @@ import {
 	rsaImportKey,
 	rsaExportKey,
 	JWK,
-	calculateFileChecksum
+	calculateFileChecksum,
+	aesGcmDecrypt,
+	aesGcmEncrypt
 } from '@rocket.chat/mobile-crypto';
 import { sampleSize } from 'lodash';
 
@@ -49,12 +51,12 @@ import {
 	decryptAESCTR,
 	joinVectorData,
 	randomPassword,
-	splitVectorData,
 	utf8ToBuffer,
 	bufferToB64,
 	bufferToHex,
 	bufferToUtf8,
-	b64ToBuffer
+	b64ToBuffer,
+	parsePrivateKey
 } from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
@@ -212,32 +214,50 @@ class Encryption {
 
 	// Encode a private key before send it to the server
 	encodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const keyBase64 = await this.generateMasterKey(password, userId);
+		const { version } = store.getState().server;
+		const keyBase64 = await this.generateMasterKey(
+			password,
+			userId,
+			compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0') ? 100000 : 1000
+		);
 
-		const ivArrayBuffer = b64ToBuffer(await randomBytes(16));
+		const ivB64 = compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0') ? await randomBytes(12) : await randomBytes(16);
+		const ivArrayBuffer = b64ToBuffer(ivB64);
 		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
 		const ivHex = bufferToHex(ivArrayBuffer);
 
+		// v2
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0')) {
+			const ciphertextB64 = await aesGcmEncrypt(bufferToB64(utf8ToBuffer(privateKey)), keyHex, ivHex);
+			return EJSON.stringify({ iv: ivB64, ciphertext: ciphertextB64, salt: userId, iterations: 100000 });
+		}
+
+		// v1
 		const data = b64ToBuffer(await aesEncrypt(bufferToB64(utf8ToBuffer(privateKey)), keyHex, ivHex));
 		return EJSON.stringify(new Uint8Array(joinVectorData(ivArrayBuffer, data)));
 	};
 
 	// Decode a private key fetched from server
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const keyBase64 = await this.generateMasterKey(password, userId);
+		const { iv: ivBuffer, ciphertext: ciphertextBuffer, iterations, version } = parsePrivateKey(privateKey, userId);
+		console.log('iv', ivBuffer, 'ciphertext', ciphertextBuffer, 'iterations', iterations, 'version', version);
+		const ciphertextB64 = bufferToB64(ciphertextBuffer);
+		const ivHex = bufferToHex(ivBuffer);
 
-		const [ivArrayBuffer, dataBuffer] = splitVectorData(EJSON.parse(privateKey));
-		const dataBase64 = bufferToB64(dataBuffer);
+		const keyBase64 = await this.generateMasterKey(password, userId, iterations);
 		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
-		const ivHex = bufferToHex(ivArrayBuffer);
 
-		const privKeyBase64 = await aesDecrypt(dataBase64, keyHex, ivHex);
+		let privKeyBase64;
+		if (version === 'v2') {
+			privKeyBase64 = await aesGcmDecrypt(ciphertextB64, keyHex, ivHex);
+		} else {
+			privKeyBase64 = await aesDecrypt(ciphertextB64, keyHex, ivHex);
+		}
 		return bufferToUtf8(b64ToBuffer(privKeyBase64));
 	};
 
 	// Generate a user master key, this is based on userId and a password
-	generateMasterKey = async (password: string, userId: string): Promise<string> => {
-		const iterations = 1000;
+	generateMasterKey = async (password: string, userId: string, iterations: number): Promise<string> => {
 		const hash = 'SHA256';
 		const keyLen = 32;
 
