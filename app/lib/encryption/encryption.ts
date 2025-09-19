@@ -50,13 +50,13 @@ import EncryptionRoom from './room';
 import {
 	decryptAESCTR,
 	joinVectorData,
-	randomPassword,
 	utf8ToBuffer,
 	bufferToB64,
 	bufferToHex,
 	bufferToUtf8,
 	b64ToBuffer,
-	parsePrivateKey
+	parsePrivateKey,
+	generatePassphrase
 } from './utils';
 
 const ROOM_KEY_EXCHANGE_SIZE = 10;
@@ -270,7 +270,7 @@ class Encryption {
 
 	// Create a random password to local created keys
 	createRandomPassword = async (server: string) => {
-		const password = await randomPassword();
+		const password = await generatePassphrase();
 		UserPreferences.setString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
 		return password;
 	};

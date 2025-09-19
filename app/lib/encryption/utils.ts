@@ -1,5 +1,5 @@
 import ByteBuffer from 'bytebuffer';
-import { aesDecryptFile, aesEncryptFile, getRandomValues, randomBytes } from '@rocket.chat/mobile-crypto';
+import { aesDecryptFile, aesEncryptFile, randomBytes } from '@rocket.chat/mobile-crypto';
 
 import { compareServerVersion } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
@@ -102,11 +102,6 @@ export const getE2EEMentions = (message?: string) => {
 	};
 };
 
-export const randomPassword = async (): Promise<string> => {
-	const random = await Promise.all(Array.from({ length: 4 }, () => getRandomValues(3)));
-	return `${random[0]}-${random[1]}-${random[2]}-${random[3]}`;
-};
-
 export const generateAESCTRKey = () => randomBytes(32);
 
 interface IExportedKey {
@@ -202,7 +197,7 @@ const DECODED_LENGTH = 256;
 // ((4 * 256 / 3) + 3) & ~3 = 344
 const ENCODED_LENGTH = 344;
 
-export const decodePrefixedBase64 = (input: string): [prefix: string, data: Uint8Array<ArrayBuffer>] => {
+export const decodePrefixedBase64 = (input: string): [prefix: string, data: Uint8Array] => {
 	// 1. Validate the input string length
 	if (input.length < ENCODED_LENGTH) {
 		throw new RangeError('Invalid input length.');
@@ -223,7 +218,7 @@ export const decodePrefixedBase64 = (input: string): [prefix: string, data: Uint
 	return [prefix, new Uint8Array(bytes)];
 };
 
-export const encodePrefixedBase64 = (prefix: string, data: Uint8Array<ArrayBuffer>): string => {
+export const encodePrefixedBase64 = (prefix: string, data: Uint8Array): string => {
 	// 1. Validate the input data length
 	if (data.length !== DECODED_LENGTH) {
 		throw new RangeError(`Input data length is ${data.length}, but expected ${DECODED_LENGTH} bytes.`);
@@ -293,3 +288,42 @@ export const getFileExtension = (fileName?: string): string => {
 
 	return arr.pop()?.toLocaleUpperCase() || 'file';
 };
+
+/**
+ * Generates 12 uniformly random words from the word list.
+ *
+ * @remarks
+ * Uses {@link https://en.wikipedia.org/wiki/Rejection_sampling | rejection sampling} to ensure uniform distribution.
+ *
+ * @returns A space-separated passphrase.
+ */
+export async function generatePassphrase() {
+	const { wordlist } = await import('./wordList');
+
+	const WORD_COUNT = 12;
+	const MAX_UINT32 = 0xffffffff;
+	const range = wordlist.length; // 2048
+	const rejectionThreshold = Math.floor(MAX_UINT32 / range) * range;
+
+	const words: string[] = [];
+
+	for (let i = 0; i < WORD_COUNT; i++) {
+		let v: number;
+		do {
+			// eslint-disable-next-line no-await-in-loop
+			const randomBase64 = await randomBytes(4);
+			const randomBuffer = b64ToBuffer(randomBase64);
+			const randomArray = new Uint8Array(randomBuffer);
+
+			// Combine 4 bytes into 32-bit big-endian integer
+			v = (randomArray[0] << 24) | (randomArray[1] << 16) | (randomArray[2] << 8) | randomArray[3];
+
+			// Convert to unsigned 32-bit (JavaScript numbers are signed)
+			v >>>= 0;
+		} while (v >= rejectionThreshold);
+
+		words.push(wordlist[v % range]);
+	}
+
+	return words.join(' ');
+}
