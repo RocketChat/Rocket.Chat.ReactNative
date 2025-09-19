@@ -486,7 +486,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 						icon: message.starred ? 'star-filled' : 'star',
-						onPress: () => handleStar(message.id, message.starred)
+						onPress: () => handleStar(message.id, message.starred || false)
 					});
 				}
 
