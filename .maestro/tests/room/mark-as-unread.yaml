@@ -51,3 +51,9 @@ onFlowComplete:
     visible:
       id: 'rooms-list-view-item-${output.otherUser.username}'
     timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*1.*'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
