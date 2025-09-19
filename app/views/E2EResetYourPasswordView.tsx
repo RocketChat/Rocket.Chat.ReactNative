@@ -75,7 +75,7 @@ const E2EResetYourPasswordView = ({ navigation }: IE2EResetYourPasswordView): Re
 				{...scrollPersistTaps}
 				style={sharedStyles.container}
 				contentContainerStyle={{ ...sharedStyles.containerScrollView }}>
-				<SafeAreaView style={{ ...styles.content, backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
+				<SafeAreaView style={{ ...styles.content, backgroundColor: colors.surfaceRoom }} testID='e2e-reset-your-password-view'>
 					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
 
 					<View>
@@ -84,7 +84,7 @@ const E2EResetYourPasswordView = ({ navigation }: IE2EResetYourPasswordView): Re
 							title={I18n.t('Reset_E2EE_Password')}
 							testID='e2e-reset-your-password-view-reset-password'
 						/>
-						<Button type='secondary' onPress={cancel} title={I18n.t('Cancel')} testID='e2e-enter-your-password-view-cancel' />
+						<Button type='secondary' onPress={cancel} title={I18n.t('Cancel')} testID='e2e-reset-your-password-view-cancel' />
 					</View>
 				</SafeAreaView>
 			</ScrollView>
