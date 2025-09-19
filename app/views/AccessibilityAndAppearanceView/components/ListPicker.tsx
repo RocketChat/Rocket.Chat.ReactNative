@@ -51,7 +51,7 @@ const OPTIONS: TOPTIONS = [
 ];
 
 interface IBaseParams {
-	value: string;
+	value: TAlertDisplayType;
 	onChangeValue: (value: TAlertDisplayType) => void;
 }
 
@@ -64,7 +64,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
+	const option = OPTIONS.find(option => option.value === value) || OPTIONS[0];
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS.map(i => ({

@@ -42,15 +42,12 @@ const Toast = (): React.ReactElement => {
 	};
 
 	const showToast = ({ message }: { message: string }) => {
+		if (alertDisplayType === 'DIALOG') {
+			Alert.alert(message);
+			return;
+		}
 		if (toast && toast.show) {
-			switch (alertDisplayType) {
-				case 'DIALOG':
-					Alert.alert(message);
-					break;
-				case 'TOAST':
-					toast.show(message, 1000);
-					break;
-			}
+			toast.show(message, 1000);
 		}
 	};
 
