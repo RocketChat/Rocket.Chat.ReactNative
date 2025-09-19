@@ -393,8 +393,11 @@ public class CustomPushNotification extends PushNotification {
         try {
             return gson.fromJson(json, classOfT);
         } catch (Exception e) {
-            android.util.Log.e("CustomPushNotification",
-                    "Failed to parse JSON into " + classOfT.getSimpleName() + ": " + json, e);
+            android.util.Log.e(
+                    "CustomPushNotification",
+                    "Failed to parse JSON into " + classOfT.getSimpleName() + " (payload redacted).",
+                    e
+            );
             return null;
         }
     }
