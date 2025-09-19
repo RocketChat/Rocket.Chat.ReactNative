@@ -97,13 +97,36 @@ onFlowEnd:
     text: Login
     index: 0
 - tapOn:
-    id: login-view-submit
+    id: 'login-view-submit'
 - extendedWaitUntil:
     visible:
-      id: rooms-list-view
+      id: 'rooms-list-view'
     timeout: 60000
 - tapOn: 'Enter E2EE password'
 - tapOn:
     id: 'e2e-enter-your-password-view-forgot-password'
 - tapOn:
     text: 'Reset E2EE password'
+- tapOn:
+    id: e2e-reset-your-password-view-reset-password
+- tapOn: 'Yes, reset it'
+- assertVisible: 'Add workspace'
+- runFlow: '../../helpers/navigate-to-login.yaml'
+- tapOn:
+    id: login-view-email
+- inputText: ${USERNAME || output.createdUser.email}
+- tapOn:
+    text: '.*Username or email.*'
+- tapOn:
+    id: 'login-view-password'
+- inputText: ${PASSWORD || output.createdUser.password}
+- tapOn:
+    text: 'Login'
+    index: 0
+- tapOn:
+    id: 'login-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- assertVisible: 'Save your encryption password'
