@@ -240,7 +240,6 @@ class Encryption {
 	// Decode a private key fetched from server
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
 		const { iv: ivBuffer, ciphertext: ciphertextBuffer, iterations, version } = parsePrivateKey(privateKey, userId);
-		console.log('iv', ivBuffer, 'ciphertext', ciphertextBuffer, 'iterations', iterations, 'version', version);
 		const ciphertextB64 = bufferToB64(ciphertextBuffer);
 		const ivHex = bufferToHex(ivBuffer);
 

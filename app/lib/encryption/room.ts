@@ -436,7 +436,6 @@ export default class EncryptionRoom {
 			const vectorBase64 = await randomBytes(12);
 			const vector = b64ToBuffer(vectorBase64);
 			const data = await aesGcmEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector));
-			console.log('data', data);
 			return EJSON.stringify({
 				key_id: this.keyID,
 				iv: vectorBase64,
@@ -465,8 +464,6 @@ export default class EncryptionRoom {
 					ts: new Date()
 				})
 			);
-
-			console.log('msg', msg);
 
 			return {
 				...message,
@@ -645,7 +642,6 @@ export default class EncryptionRoom {
 	};
 
 	parse = (payload: string) => {
-		console.log('payload', payload);
 		if (payload.startsWith('{')) {
 			const { key_id, iv, ciphertext } = EJSON.parse(payload);
 			return { key_id, iv: b64ToBuffer(iv), ciphertext };
@@ -663,10 +659,8 @@ export default class EncryptionRoom {
 		let decrypted;
 		if (version === 'v2') {
 			decrypted = await aesGcmDecrypt(ciphertext, keyHex, ivHex);
-			console.log('decrypted v2', decrypted);
 		} else {
 			decrypted = await aesDecrypt(ciphertext, keyHex, ivHex);
-			console.log('decrypted v1', decrypted);
 		}
 		if (!decrypted) {
 			return null;
@@ -691,7 +685,6 @@ export default class EncryptionRoom {
 				if (!oldRoomKey) {
 					// TODO: needs testing, but it makes sense
 					this.requestRoomKey(key_id);
-					console.log('Old key not found');
 				}
 				return null;
 			}
