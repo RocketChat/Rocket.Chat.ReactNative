@@ -109,7 +109,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 
 		try {
 			setValue('saving', true);
-			await Services.saveUserProfile({ newPassword, currentPassword } as IProfileParams);
+			await Services.saveUserProfile({ newPassword, currentPassword: sha256(currentPassword) } as IProfileParams);
 			dispatch(setUser({ requirePasswordChange: false }));
 			navigation.goBack();
 		} catch (error: any) {
