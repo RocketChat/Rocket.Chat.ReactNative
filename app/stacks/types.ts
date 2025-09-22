@@ -300,6 +300,13 @@ export type InsideStackParamList = {
 		coords: { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
 		googleKey?: string;
 	};
+	LiveLocationPreviewModal: {
+		rid: string;
+		tmid?: string;
+		provider: 'osm' | 'google';
+		googleKey?: string;
+		osmKey?: string;
+	};
 };
 
 export type OutsideParamList = {
