@@ -424,4 +424,4 @@ onFlowComplete:
       id: 'user-roles'
     timeout: 60000
 - assertVisible:
-    id: user-role-Livechat-Agent
+    id: 'user-role-Livechat-Agent'
