@@ -192,16 +192,16 @@ class Encryption {
                 return null;
             }
 
-            if (ejson.msg != null && !ejson.msg.isEmpty()) {
-                String message = ejson.msg;
-                String decryptedText = decryptText(message, e2eKey);
-                Message m = gson.fromJson(decryptedText, Message.class);
-                return m.text;
-            } else if (ejson.content != null && "rc.v1.aes-sha2".equals(ejson.content.algorithm)) {
+            if (ejson.content != null && "rc.v1.aes-sha2".equals(ejson.content.algorithm)) {
                 String message = ejson.content.ciphertext;
                 String decryptedText = decryptText(message, e2eKey);
                 DecryptedContent m = gson.fromJson(decryptedText, DecryptedContent.class);
                 return m.msg;
+            } else if (ejson.msg != null && !ejson.msg.isEmpty()) {
+                String message = ejson.msg;
+                String decryptedText = decryptText(message, e2eKey);
+                Message m = gson.fromJson(decryptedText, Message.class);
+                return m.text;
             } else {
                 return null;
             }
