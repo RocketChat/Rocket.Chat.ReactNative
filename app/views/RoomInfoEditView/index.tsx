@@ -179,7 +179,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		// Encrypted
-		if (room.encrypted !== encrypted) {
+		if (room.encrypted !== encrypted && params.roomType !== 'c') {
 			params.encrypted = encrypted;
 		}
 
@@ -284,7 +284,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const toggleRoomType = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
 		setValue('t', value);
-		setValue('encrypted', value && encrypted);
+		setValue('encrypted', !value && encrypted);
 	};
 
 	const toggleReadOnly = (value: boolean) => {
@@ -462,9 +462,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 						{encryptionEnabled ? (
 							<SwitchContainer
 								value={encrypted as boolean}
-								disabled={!t}
+								disabled={t}
 								leftLabelPrimary={I18n.t('Encrypted')}
-								leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
+								leftLabelSecondary={t ? I18n.t('Channel_hint_encrypted_not_available') : I18n.t('End_to_end_encrypted_room')}
 								testID='room-info-edit-switch-encrypted'
 								onValueChange={toggleEncrypted}
 								labelContainerStyle={styles.hideSystemMessages}
