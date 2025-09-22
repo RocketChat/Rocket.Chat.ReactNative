@@ -14,7 +14,7 @@ import { useAppSelector } from '../../lib/hooks';
 import { isAndroid, showErrorAlert } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { TwoFactorMethods } from '../../definitions/ITotp';
-import { Services } from '../../lib/services';
+import { saveUserProfileMethod, setUserPassword } from '../../lib/services/restApi';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { setUser } from '../../actions/login';
 import { LISTENER } from '../../containers/Toast';
@@ -108,7 +108,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 
 		try {
 			setValue('saving', true);
-			await Services.setUserPassword(newPassword);
+			await setUserPassword(newPassword);
 			dispatch(setUser({ requirePasswordChange: false }));
 			navigation.goBack();
 		} catch (error: any) {
@@ -134,7 +134,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 				const twoFactorOptions = currentPassword
 					? { twoFactorCode: params?.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
 					: null;
-				const result = await Services.saveUserProfileMethod(params, {}, twoFactorCode || twoFactorOptions);
+				const result = await saveUserProfileMethod(params, {}, twoFactorCode || twoFactorOptions);
 
 				if (result) {
 					logEvent(events.PROFILE_SAVE_CHANGES);

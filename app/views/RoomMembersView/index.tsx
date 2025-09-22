@@ -21,7 +21,7 @@ import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { Services } from '../../lib/services';
+import { getRoomMembers } from '../../lib/services/restApi';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -357,7 +357,7 @@ const RoomMembersView = (): React.ReactElement => {
 
 		updateState({ isLoading: true });
 		try {
-			const membersResult = await Services.getRoomMembers({
+			const membersResult = await getRoomMembers({
 				rid: room.rid,
 				roomType: t,
 				type: !status ? 'all' : 'online',

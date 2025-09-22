@@ -10,9 +10,9 @@ import log from './helpers/log';
 import sdk from '../services/sdk';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
 import UserPreferences from './userPreferences';
-import { Services } from '../services';
+import { removePushToken } from '../services/restApi';
 import { roomsSubscription } from './subscriptions/rooms';
-import { _activeUsersSubTimeout } from '.';
+import { _activeUsersSubTimeout } from './getUsersPresence';
 
 async function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
@@ -102,7 +102,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 	}
 
 	try {
-		await Services.removePushToken();
+		await removePushToken();
 	} catch (e) {
 		log(e);
 	}

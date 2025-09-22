@@ -17,7 +17,7 @@ import BackgroundContainer from '../../containers/BackgroundContainer';
 import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';
 import Item from './Item';
-import { Services } from '../../lib/services';
+import { getDiscussions } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 
@@ -56,7 +56,7 @@ const DiscussionsView = () => {
 
 		setLoading(true);
 		try {
-			const result = await Services.getDiscussions({
+			const result = await getDiscussions({
 				roomId: rid,
 				offset: offset.current,
 				count: API_FETCH_COUNT,

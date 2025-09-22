@@ -12,7 +12,7 @@ import { ICredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks';
 import { useDebounce } from '../lib/methods/helpers';
-import { Services } from '../lib/services';
+import { loginOAuthOrSso } from '../lib/services/connect';
 import { OutsideModalParamList } from '../stacks/types';
 
 // iframe uses a postMessage to send the token to the client
@@ -66,7 +66,7 @@ const AuthenticationWebView = () => {
 		}
 		setLogging(true);
 		try {
-			Services.loginOAuthOrSso(params);
+			loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
 		}

@@ -12,7 +12,7 @@ import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../Styles';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../definitions';
-import { sendFileMessage } from '../../lib/methods';
+import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
 const styles = StyleSheet.create({

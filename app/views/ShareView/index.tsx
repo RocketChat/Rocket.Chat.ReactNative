@@ -32,7 +32,8 @@ import {
 	TSubscriptionModel,
 	TThreadModel
 } from '../../definitions';
-import { sendFileMessage, sendMessage } from '../../lib/methods';
+import { sendFileMessage } from '../../lib/methods/sendFileMessage';
+import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { appStart } from '../../actions/app';

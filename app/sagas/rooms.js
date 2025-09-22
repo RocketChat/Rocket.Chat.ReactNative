@@ -8,7 +8,8 @@ import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import buildMessage from '../lib/methods/helpers/buildMessage';
-import { getRooms, subscribeRooms } from '../lib/methods';
+import { getRooms } from '../lib/methods/getRooms';
+import { subscribeRooms } from '../lib/methods/subscribeRooms';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;

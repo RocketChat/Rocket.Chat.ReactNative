@@ -5,7 +5,7 @@ import { TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
-import { addFrequentlyUsed } from '../../lib/methods';
+import { addFrequentlyUsed } from '../../lib/methods/emojis';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import sharedStyles from '../../views/Styles';

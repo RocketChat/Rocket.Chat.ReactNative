@@ -24,7 +24,7 @@ import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
 import styles from './styles';
 import Options from './Options';
-import { Services } from '../../lib/services';
+import { getDirectory, createDirectMessage, getRoomByTypeAndName } from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IDirectoryViewProps {
@@ -112,7 +112,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			if (newSearch) {
 				data = [];
 			}
-			const directories = await Services.getDirectory({
+			const directories = await getDirectory({
 				text,
 				type,
 				workspace: globalUsers ? 'all' : 'local',
@@ -184,7 +184,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		try {
 			const { type } = this.state;
 			if (type === 'users') {
-				const result = await Services.createDirectMessage(item.username as string);
+				const result = await createDirectMessage(item.username as string);
 				if (result.success) {
 					this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
 				}
@@ -196,7 +196,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				return;
 			}
 			if (['p', 'c'].includes(item.t) && !item.teamMain) {
-				const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
+				const result = await getRoomByTypeAndName(item.t, item.name || item.fname);
 				if (result) {
 					this.goRoom({
 						rid: item._id,

@@ -25,21 +25,16 @@ import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
-import {
-	getCustomEmojis,
-	getEnterpriseModules,
-	getPermissions,
-	getRoles,
-	getSlashCommands,
-	getUserPresence,
-	isOmnichannelModuleAvailable,
-	logout,
-	removeServerData,
-	removeServerDatabase,
-	subscribeSettings,
-	subscribeUsersPresence
-} from '../lib/methods';
-import { Services } from '../lib/services';
+import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
+import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/methods/enterpriseModules';
+import { getPermissions } from '../lib/methods/getPermissions';
+import { getRoles } from '../lib/methods/getRoles';
+import { getSlashCommands } from '../lib/methods/getSlashCommands';
+import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
+import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
+import { subscribeSettings } from '../lib/methods/getSettings';
+import { connect, loginWithPassword, login } from '../lib/services/connect';
+import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import { appGroupSuiteName } from '../lib/methods/appGroup';
@@ -49,8 +44,8 @@ import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
 
 const getServer = state => state.server.server;
-const loginWithPasswordCall = args => Services.loginWithPassword(args);
-const loginCall = credentials => Services.login(credentials);
+const loginWithPasswordCall = args => loginWithPassword(args);
+const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
 
 const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
@@ -114,7 +109,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
+				const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
 				yield put(setUser({ ...result, ...updatedUser.user }));
 			}
 		}
@@ -182,7 +177,7 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 
 const registerPushTokenFork = function* registerPushTokenFork() {
 	try {
-		yield Services.registerPushToken();
+		yield registerPushToken();
 	} catch (e) {
 		log(e);
 	}
@@ -210,7 +205,7 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 
 const fetchUsersRoles = function* fetchRoomsFork() {
 	try {
-		const roles = yield Services.getUsersRoles();
+		const roles = yield getUsersRoles();
 		if (roles.length) {
 			yield put(setUsersRoles(roles));
 		}

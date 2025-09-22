@@ -17,7 +17,7 @@ import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/meth
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
+import { createDirectMessage, getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
@@ -126,7 +126,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadVisitor = async () => {
 		try {
 			if (room?.visitor?._id) {
-				const result = await Services.getVisitorInfo(room.visitor._id);
+				const result = await getVisitorInfo(room.visitor._id);
 				if (result.success) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
@@ -165,7 +165,7 @@ const RoomInfoView = (): React.ReactElement => {
 		if (isEmpty(roomUser)) {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
-				const result = await Services.getUserInfo(roomUserId);
+				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
 					const r = handleRoles(user);
@@ -202,7 +202,7 @@ const RoomInfoView = (): React.ReactElement => {
 		} else {
 			try {
 				if (!isDirect) {
-					const result = await Services.getRoomInfo(rid);
+					const result = await getRoomInfo(rid);
 					if (result.success) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
 				}
 			} catch (e) {
@@ -218,7 +218,7 @@ const RoomInfoView = (): React.ReactElement => {
 			// We don't need to create a direct
 			if (!isEmpty(member)) return resolve();
 			try {
-				const result = await Services.createDirectMessage(roomUser.username);
+				const result = await createDirectMessage(roomUser.username);
 				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
 			} catch (e) {
 				reject(e);
@@ -263,7 +263,7 @@ const RoomInfoView = (): React.ReactElement => {
 		if (!r?.rid) return;
 		logEvent(events.RI_TOGGLE_BLOCK_USER);
 		try {
-			await Services.toggleBlockUser(r.rid, userBlocked, !blocker);
+			await toggleBlockUser(r.rid, userBlocked, !blocker);
 		} catch (e) {
 			log(e);
 		}

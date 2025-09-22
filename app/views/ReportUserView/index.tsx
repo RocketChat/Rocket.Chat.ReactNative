@@ -19,7 +19,7 @@ import Button from '../../containers/Button';
 import { useAppSelector } from '../../lib/hooks';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
-import { Services } from '../../lib/services';
+import { reportUser } from '../../lib/services/restApi';
 import KeyboardView from '../../containers/KeyboardView';
 import Navigation from '../../lib/navigation/appNavigation';
 
@@ -70,7 +70,7 @@ const ReportUserView = () => {
 	const submit = async ({ description }: ISubmit) => {
 		try {
 			setLoading(true);
-			await Services.reportUser(userId, description);
+			await reportUser(userId, description);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Report_sent_successfully') });
 			setLoading(false);
 			if (isMasterDetail) {

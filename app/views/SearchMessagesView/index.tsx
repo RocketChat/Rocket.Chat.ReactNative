@@ -38,7 +38,7 @@ import {
 	TGetCustomEmoji,
 	ICustomEmoji
 } from '../../definitions';
-import { Services } from '../../lib/services';
+import { searchMessages } from '../../lib/services/restApi';
 import { TNavigation } from '../../stacks/stackType';
 import Navigation from '../../lib/navigation/appNavigation';
 
@@ -159,7 +159,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await Services.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
+		const result = await searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
 			const urlRenderMessages = result.messages?.map(message => {
 				if (message.urls && message.urls.length > 0) {

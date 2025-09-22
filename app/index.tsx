@@ -19,7 +19,7 @@ import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
 import { colors, themes } from './lib/constants/colors';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './lib/constants/tablet';
-import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
+import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
 import { debounce, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';

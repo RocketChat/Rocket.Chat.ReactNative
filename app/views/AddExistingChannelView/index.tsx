@@ -18,7 +18,7 @@ import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../../definitions';
 import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import { addRoomsToTeam } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks';
 import Navigation from '../../lib/navigation/appNavigation';
 
@@ -136,7 +136,7 @@ const AddExistingChannelView = () => {
 		sendLoadingEvent({ visible: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await Services.addRoomsToTeam({ rooms: selected, teamId });
+			const result = await addRoomsToTeam({ rooms: selected, teamId });
 			if (result.success) {
 				sendLoadingEvent({ visible: false });
 				Navigation.resetTo();

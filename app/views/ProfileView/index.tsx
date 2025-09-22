@@ -25,7 +25,7 @@ import { compareServerVersion } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { Services } from '../../lib/services';
+import { saveUserProfileMethod } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
@@ -197,7 +197,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 				? { twoFactorCode: params.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
 				: null;
 
-			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+			const result = await saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);

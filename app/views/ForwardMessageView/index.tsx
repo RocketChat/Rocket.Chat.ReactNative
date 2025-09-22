@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
-import { getPermalinkMessage } from '../../lib/methods';
+import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
