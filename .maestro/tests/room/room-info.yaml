@@ -250,7 +250,7 @@ onFlowComplete:
       id: 'room-info-edit-view-t'
     timeout: 60000
 - assertVisible:
-    checked: false
+    checked: true
     childOf:
       id: 'room-info-edit-view-t'
 - scrollUntilVisible:
@@ -395,3 +395,33 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     text: 'Yes, archive it.'
+
+# should delete room
+- scrollUntilVisible:
+    element:
+      id: 'room-info-edit-view-delete'
+    timeout: 60000
+- tapOn:
+    id: 'room-info-edit-view-delete'
+- extendedWaitUntil:
+    visible:
+      text: '.*Deleting a room will delete all messages posted within the room. This cannot be undone..*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*YES, DELETE IT!.*'
+    timeout: 60000
+- tapOn:
+    text: '.*YES, DELETE IT.*'
+
+# should see user role correctly
+- runFlow:
+    file: './utils/navigate-to-room-info.yaml'
+    env:
+      ROOM: 'roles-test'
+- extendedWaitUntil:
+    visible:
+      id: 'user-roles'
+    timeout: 60000
+- assertVisible:
+    id: user-role-Livechat-Agent
