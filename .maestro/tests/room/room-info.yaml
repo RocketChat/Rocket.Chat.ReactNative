@@ -9,7 +9,7 @@ onFlowComplete:
 - runFlow: '../../helpers/launch-app.yaml'
 
 - evalScript: ${output.user = output.utils.createUser()}
-- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
 
 - runFlow:
     file: '../../helpers/login.yaml'
@@ -250,7 +250,7 @@ onFlowComplete:
       id: 'room-info-edit-view-t'
     timeout: 60000
 - assertVisible:
-    checked: true
+    checked: false
     childOf:
       id: 'room-info-edit-view-t'
 - scrollUntilVisible:
