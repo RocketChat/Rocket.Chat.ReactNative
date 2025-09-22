@@ -10,6 +10,24 @@ import Foundation
 import CommonCrypto
 import MobileCrypto
 
+// MARK: - Helper Structs
+struct PrefixedData {
+    let prefix: String
+    let data: Data
+}
+
+struct ParsedMessage {
+    let keyId: String
+    let iv: Data
+    let ciphertext: String
+    let isV2: Bool
+}
+
+struct RoomKeyResult {
+    let decryptedKey: String
+    let version: String
+}
+
 final class Encryption {
   final var roomKey: String? = nil
   final var keyId: String? = nil
@@ -41,53 +59,148 @@ final class Encryption {
     self.rid = rid
     
     if let E2EKey = Database(server: server).readRoomEncryptionKey(for: rid) {
-      self.roomKey = decryptRoomKey(E2EKey: E2EKey)
+      if let result = decryptRoomKey(E2EKey: E2EKey) {
+        self.roomKey = result.decryptedKey
+      }
     }
   }
   
-  func decryptRoomKey(E2EKey: String) -> String? {
-    if let userKey = userKey {
-      let index = E2EKey.index(E2EKey.startIndex, offsetBy: 12)
-      let roomKey = String(E2EKey[index...])
-      keyId = String(E2EKey[..<index])
-      
-      if let decryptedMessage = RSACrypto.decrypt(roomKey, privateKeyPem: userKey) {
-        if let messageData = decryptedMessage.data(using: .utf8) {
-          if let key = try? JSONDecoder().decode(RoomKey.self, from: messageData) {
-            if let base64Encoded = key.k.toData() {
-              return CryptoUtils.bytes(toHex: base64Encoded)
-            }
-          }
-        }
+  // MARK: - Utility Functions
+  private func decodePrefixedBase64(_ input: String) -> PrefixedData? {
+    // A 256-byte array always encodes to 344 characters in Base64.
+    let encodedLength = 344
+    
+    guard input.count >= encodedLength else {
+      return nil
+    }
+    
+    let endIndex = input.index(input.endIndex, offsetBy: -encodedLength)
+    let prefix = String(input[..<endIndex])
+    let base64Data = String(input[endIndex...])
+    
+    guard let data = Data(base64Encoded: base64Data), data.count == 256 else {
+      return nil
+    }
+    
+    return PrefixedData(prefix: prefix, data: data)
+  }
+  
+  private func encodePrefixedBase64(_ prefix: String, _ data: Data) -> String? {
+    guard data.count == 256 else {
+      return nil
+    }
+    
+    let base64Data = data.base64EncodedString()
+    return prefix + base64Data
+  }
+  
+  private func parseMessage(_ payload: String) -> ParsedMessage? {
+    if payload.hasPrefix("{") {
+      // V2 format: JSON structure
+      guard let data = payload.data(using: .utf8),
+            let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+            let keyId = json["key_id"] as? String,
+            let ivString = json["iv"] as? String,
+            let ciphertext = json["ciphertext"] as? String,
+            let ivData = Data(base64Encoded: ivString) else {
+        return nil
       }
+      
+      return ParsedMessage(keyId: keyId, iv: ivData, ciphertext: ciphertext, isV2: true)
+    } else {
+      // V1 format: keyId + base64(iv + data)
+      guard payload.count > 12 else {
+        return nil
+      }
+      
+      let index = payload.index(payload.startIndex, offsetBy: 12)
+      let keyId = String(payload[..<index])
+      let msg = String(payload[index...])
+      
+      guard let data = msg.toData(), data.count > kCCBlockSizeAES128 else {
+        return nil
+      }
+      
+      let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
+      let cypherData = data.subdata(in: kCCBlockSizeAES128..<data.count)
+      let ciphertext = cypherData.base64EncodedString()
+      
+      return ParsedMessage(keyId: keyId, iv: iv, ciphertext: ciphertext, isV2: false)
+    }
+  }
+  
+  func decryptRoomKey(E2EKey: String) -> RoomKeyResult? {
+    guard let userKey = userKey else {
+      return nil
+    }
+    
+    // Parse using prefixed base64
+    guard let parsed = decodePrefixedBase64(E2EKey) else {
+      return nil
+    }
+    
+    let keyIdPrefix = parsed.prefix
+    
+    // Decrypt the session key
+    guard let decryptedMessage = RSACrypto.decrypt(parsed.data.base64EncodedString(), privateKeyPem: userKey),
+          let messageData = decryptedMessage.data(using: .utf8),
+          let sessionKey = try? JSONSerialization.jsonObject(with: messageData, options: []) as? [String: Any] else {
+      return nil
+    }
+    
+    // Determine format and extract key information
+    if let kid = sessionKey["kid"] as? String,
+       let sessionKeyExported = sessionKey["sessionKeyExported"] as? [String: Any],
+       let k = sessionKeyExported["k"] as? String {
+      // V2 format
+      keyId = kid
+      guard let base64Encoded = k.toData() else {
+        return nil
+      }
+      let decryptedKey = CryptoUtils.bytes(toHex: base64Encoded)
+      return RoomKeyResult(decryptedKey: decryptedKey, version: "v2")
+    } else if let k = sessionKey["k"] as? String {
+      // V1 format
+      keyId = keyIdPrefix
+      guard let base64Encoded = k.toData() else {
+        return nil
+      }
+      let decryptedKey = CryptoUtils.bytes(toHex: base64Encoded)
+      return RoomKeyResult(decryptedKey: decryptedKey, version: "v1")
     }
     
     return nil
   }
   
   func decryptMessage(message: String) -> String? {
-    if let roomKey = self.roomKey {
-      let index = message.index(message.startIndex, offsetBy: 12)
-      let msg = String(message[index...])
-      if let data = msg.toData() {
-        let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
-        let cypher = data.subdata(in: kCCBlockSizeAES128..<data.count)
-        
-        let cypherBase64 = cypher.base64EncodedString()
-        let ivHex = CryptoUtils.bytes(toHex: iv)
-        
-        if let decryptedBase64 = AESCrypto.decryptBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex),
-           let decryptedData = Data(base64Encoded: decryptedBase64) {
-          // First try decoding as DecryptedContent
-          if let decryptedContent = try? JSONDecoder().decode(DecryptedContent.self, from: decryptedData) {
-            return decryptedContent.msg
-          }
-          // If decoding as DecryptedContent fails, try decoding as Message
-          else if let messageContent = try? JSONDecoder().decode(Message.self, from: decryptedData) {
-            return messageContent.text
-          }
-        }
-      }
+    guard let roomKey = self.roomKey,
+          let parsed = parseMessage(message) else {
+      return nil
+    }
+    
+    let ivHex = CryptoUtils.bytes(toHex: parsed.iv)
+    let decryptedBase64: String?
+    
+    if parsed.isV2 {
+      // Use AES-GCM decryption for v2
+      decryptedBase64 = AESCrypto.decryptGcmBase64(parsed.ciphertext, keyHex: roomKey, ivHex: ivHex)
+    } else {
+      // Use AES-CBC decryption for v1 (existing logic)
+      decryptedBase64 = AESCrypto.decryptBase64(parsed.ciphertext, keyHex: roomKey, ivHex: ivHex)
+    }
+    
+    guard let decryptedBase64 = decryptedBase64,
+          let decryptedData = Data(base64Encoded: decryptedBase64) else {
+      return nil
+    }
+    
+    // First try decoding as DecryptedContent
+    if let decryptedContent = try? JSONDecoder().decode(DecryptedContent.self, from: decryptedData) {
+      return decryptedContent.msg
+    }
+    // If decoding as DecryptedContent fails, try decoding as Message
+    else if let messageContent = try? JSONDecoder().decode(Message.self, from: decryptedData) {
+      return messageContent.text
     }
     
     return nil
