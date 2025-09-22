@@ -1,0 +1,16 @@
+appId: chat.rocket.reactnative
+name: Expect Thread Messages
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-thread 1'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: '.*message-content-${message}.*'
+    timeout: 60000
+- tapOn:
+    id: '.*message-content-${message}.*'
