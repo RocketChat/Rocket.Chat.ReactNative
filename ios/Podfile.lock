@@ -30,9 +30,9 @@ PODS:
   - EXAV (15.1.7):
     - ExpoModulesCore
     - ReactCommon/turbomodule/core
-  - EXConstants (17.1.7):
+  - EXConstants (18.0.9):
     - ExpoModulesCore
-  - Expo (53.0.19):
+  - Expo (54.0.9):
     - DoubleConversion
     - ExpoModulesCore
     - glog
@@ -61,7 +61,7 @@ PODS:
     - Yoga
   - ExpoAppleAuthentication (7.2.4):
     - ExpoModulesCore
-  - ExpoAsset (11.1.7):
+  - ExpoAsset (12.0.9):
     - ExpoModulesCore
   - ExpoCamera (16.1.11):
     - ExpoModulesCore
@@ -71,7 +71,7 @@ PODS:
     - ExpoModulesCore
   - ExpoFileSystem (18.1.11):
     - ExpoModulesCore
-  - ExpoFont (13.3.2):
+  - ExpoFont (14.0.8):
     - ExpoModulesCore
   - ExpoHaptics (14.1.4):
     - ExpoModulesCore
@@ -86,7 +86,9 @@ PODS:
     - ExpoModulesCore
   - ExpoLocalAuthentication (16.0.5):
     - ExpoModulesCore
-  - ExpoModulesCore (2.4.2):
+  - ExpoLocation (19.0.7):
+    - ExpoModulesCore
+  - ExpoModulesCore (3.0.17):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2620,10 +2622,10 @@ PODS:
     - Yoga
   - RNVectorIcons (9.2.0):
     - React-Core
-  - SDWebImage (5.21.1):
-    - SDWebImage/Core (= 5.21.1)
-  - SDWebImage/Core (5.21.1)
-  - SDWebImageAVIFCoder (0.11.0):
+  - SDWebImage (5.21.2):
+    - SDWebImage/Core (= 5.21.2)
+  - SDWebImage/Core (5.21.2)
+  - SDWebImageAVIFCoder (0.11.1):
     - libavif/core (>= 0.11.0)
     - SDWebImage (~> 5.10)
   - SDWebImageSVGCoder (1.7.0):
@@ -2662,6 +2664,7 @@ DEPENDENCIES:
   - ExpoImage (from `../node_modules/expo-image/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
+  - ExpoLocation (from `../node_modules/expo-location/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
@@ -2839,6 +2842,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoLocalAuthentication:
     :path: "../node_modules/expo-local-authentication/ios"
+  ExpoLocation:
+    :path: "../node_modules/expo-location/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
   ExpoSystemUI:
@@ -3063,19 +3068,20 @@ SPEC CHECKSUMS:
   BVLinearGradient: 7815a70ab485b7b155186dd0cc836363e0288cad
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   EXAV: ae28256069c4cdde93d185c007d8f68d92902c2e
-  EXConstants: 98bcf0f22b820f9b28f9fee55ff2daededadd2f8
-  Expo: 4918756619ac34910307e16b10d0ccb8e891a1e0
+  EXConstants: a95804601ee4a6aa7800645f9b070d753b1142b3
+  Expo: 9a2178c2b3c8f07751aca7132bdf6846f80e23bd
   ExpoAppleAuthentication: 4d2e0c88a4463229760f1fbb9a937a810efb6863
-  ExpoAsset: ef06e880126c375f580d4923fdd1cdf4ee6ee7d6
+  ExpoAsset: 9ba6fbd677fb8e241a3899ac00fa735bc911eadf
   ExpoCamera: e1879906d41184e84b57d7643119f8509414e318
   ExpoDocumentPicker: b263a279685b6640b8c8bc70d71c83067aeaae55
   ExpoFileSystem: 7f92f7be2f5c5ed40a7c9efc8fa30821181d9d63
-  ExpoFont: cf508bc2e6b70871e05386d71cab927c8524cc8e
+  ExpoFont: 86ceec09ffed1c99cfee36ceb79ba149074901b5
   ExpoHaptics: 0ff6e0d83cd891178a306e548da1450249d54500
   ExpoImage: e4102c93d1dbe99ff54b075452d1bc9d6ec21b7c
   ExpoKeepAwake: bf0811570c8da182bfb879169437d4de298376e7
   ExpoLocalAuthentication: c35f18692dcb35775a1be0f37b2131096951a6bd
-  ExpoModulesCore: b0282ef361d46ddf759228430382226293060051
+  ExpoLocation: 93d7faa0c2adbd5a04686af0c1a61bc6ed3ee2f7
+  ExpoModulesCore: ab45288c794b8e6ddf5c7d3add56952cdff10ca7
   ExpoSystemUI: c2724f9d5af6b1bb74e013efadf9c6a8fae547a2
   ExpoVideoThumbnails: ef1a4c7bff9ab3b4e006ce17576c3f09320b4cf4
   ExpoWebBrowser: dc39a88485f007e61a3dff05d6a75f22ab4a2e92
@@ -3201,8 +3207,8 @@ SPEC CHECKSUMS:
   RNScreens: 90b905d545a5ebbe976985702b8a39e3475727b2
   RNSVG: 680e961f640e381aab730a04b2371969686ed9f7
   RNVectorIcons: 5784330be9dddb5474e8b378d5f6947996c84e55
-  SDWebImage: f29024626962457f3470184232766516dee8dfea
-  SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90
+  SDWebImage: 9f177d83116802728e122410fb25ad88f5c7608a
+  SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   simdjson: 7bb9e33d87737cec966e7b427773c67baa4458fe
