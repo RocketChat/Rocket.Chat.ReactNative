@@ -464,7 +464,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 								value={encrypted as boolean}
 								disabled={t}
 								leftLabelPrimary={I18n.t('Encrypted')}
-								leftLabelSecondary={t ? I18n.t('Channel_hint_encrypted_not_available') :I18n.t('End_to_end_encrypted_room')}
+								leftLabelSecondary={t ? I18n.t('Channel_hint_encrypted_not_available') : I18n.t('End_to_end_encrypted_room')}
 								testID='room-info-edit-switch-encrypted'
 								onValueChange={toggleEncrypted}
 								labelContainerStyle={styles.hideSystemMessages}
