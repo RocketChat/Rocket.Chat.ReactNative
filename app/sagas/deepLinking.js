@@ -7,7 +7,7 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom, getServerInfo } from '../lib/methods';

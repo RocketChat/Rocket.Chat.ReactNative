@@ -11,7 +11,7 @@ import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import { THUMBS_HEIGHT } from './constants';
 import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { IShareAttachment } from '../../definitions';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;

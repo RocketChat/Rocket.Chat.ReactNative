@@ -17,7 +17,7 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { debounce } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';

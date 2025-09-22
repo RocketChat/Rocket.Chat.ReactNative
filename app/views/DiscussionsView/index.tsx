@@ -3,7 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import { textInputDebounceTime } from '../../lib/constants';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { IMessageFromServer, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import { useTheme } from '../../theme';
 import IconOrAvatar from './IconOrAvatar';
 import { IWrapperProps } from './interfaces';

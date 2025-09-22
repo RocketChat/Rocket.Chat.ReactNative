@@ -11,7 +11,7 @@ import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import I18n from '../../i18n';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';

@@ -3,7 +3,7 @@ import { AccessibilityInfo } from 'react-native';
 import { FieldErrorsImpl } from 'react-hook-form';
 
 import { useDebounce } from '../methods/helpers';
-import { accessibilityErrorAnnouncementDebounceTime } from '../constants';
+import { accessibilityErrorAnnouncementDebounceTime } from '../constants/debounceConfig';
 
 type TInputValues = {
 	[key: string]: any;

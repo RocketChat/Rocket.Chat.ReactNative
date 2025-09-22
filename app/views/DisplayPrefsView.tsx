@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
-import { DisplayMode, SortBy } from '../lib/constants';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';

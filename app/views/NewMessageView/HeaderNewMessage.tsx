@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { createChannelRequest } from '../../actions/createChannel';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import SearchBox from '../../containers/SearchBox';
 import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';

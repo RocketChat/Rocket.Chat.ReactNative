@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { textInputDebounceTime } from '../../lib/constants/index';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
 import { IEmoji } from '../../definitions';

@@ -9,7 +9,7 @@ import parse from 'url-parse';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ICredentials } from '../definitions';
-import { userAgent } from '../lib/constants';
+import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks';
 import { useDebounce } from '../lib/methods/helpers';
 import { Services } from '../lib/services';

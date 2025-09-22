@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { shallowEqual } from 'react-redux';
 
-import { DisplayMode } from '../../../lib/constants';
+import { DisplayMode } from '../../../lib/constants/constantDisplayMode';
 import { useAppSelector } from '../../../lib/hooks';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 

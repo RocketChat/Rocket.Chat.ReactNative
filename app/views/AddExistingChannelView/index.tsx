@@ -4,7 +4,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
-import { textInputDebounceTime } from '../../lib/constants';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import * as List from '../../containers/List';
 import database from '../../lib/database';
 import I18n from '../../i18n';

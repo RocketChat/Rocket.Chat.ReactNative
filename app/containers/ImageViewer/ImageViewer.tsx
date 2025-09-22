@@ -6,7 +6,7 @@ import { Image, ImageStyle } from 'expo-image';
 
 import Touch from '../Touch';
 import { useUserPreferences } from '../../lib/methods';
-import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
 import { useTheme } from '../../theme';
 
 interface ImageViewerProps {

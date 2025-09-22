@@ -14,7 +14,7 @@ import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import log from '../../lib/methods/helpers/log';
 import CannedResponseItem from './CannedResponseItem';
 import DepartmentFilter from './DepartmentFilter';

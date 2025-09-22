@@ -4,7 +4,7 @@ import { shallowEqual } from 'react-redux';
 import { Subscription } from 'rxjs';
 
 import { type TSubscriptionModel } from '../../../definitions';
-import { SortBy } from '../../../lib/constants';
+import { SortBy } from '../../../lib/constants/constantDisplayMode';
 import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks';
 import { getUserSelector } from '../../../selectors/login';

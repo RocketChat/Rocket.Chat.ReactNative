@@ -3,7 +3,9 @@ import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageComponent from './Message';
-import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
+import { E2E_MESSAGE_TYPE } from '../../lib/constants/keys';
+import { messagesStatus } from '../../lib/constants/messagesStatus';
+import { themes } from '../../lib/constants/colors';
 import MessageSeparator from '../MessageSeparator';
 import {
 	BASE_ROW_HEIGHT,

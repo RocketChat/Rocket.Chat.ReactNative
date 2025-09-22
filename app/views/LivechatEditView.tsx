@@ -7,7 +7,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import log from '../lib/methods/helpers/log';
 import { TSupportedThemes, withTheme } from '../theme';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 import { FormTextInput } from '../containers/TextInput';
 import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';

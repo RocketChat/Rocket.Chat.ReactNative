@@ -3,7 +3,7 @@ import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../../../lib/constants';
+import { themes } from '../../../../../lib/constants/colors';
 import { IAttachment } from '../../../../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../../CustomIcon';

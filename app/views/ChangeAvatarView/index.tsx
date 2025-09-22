@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { textInputDebounceTime } from '../../lib/constants';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';

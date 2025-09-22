@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, BackHandler, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 
-import { userAgent } from '../../lib/constants';
+import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks';
 import { isIOS } from '../../lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFromJitsiCall';

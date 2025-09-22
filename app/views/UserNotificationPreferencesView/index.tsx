@@ -15,7 +15,7 @@ import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useUserPreferences } from '../../lib/methods';
-import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants';
+import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import Switch from '../../containers/Switch';
 
 type TNavigation = CompositeNavigationProp<

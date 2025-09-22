@@ -61,14 +61,10 @@ import {
 	TGetCustomEmoji,
 	RoomType
 } from '../../definitions';
-import {
-	E2E_MESSAGE_TYPE,
-	E2E_STATUS,
-	MESSAGE_TYPE_ANY_LOAD,
-	MessageTypeLoad,
-	themes,
-	NOTIFICATION_IN_APP_VIBRATION
-} from '../../lib/constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
+import { themes } from '../../lib/constants/colors';
+import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,

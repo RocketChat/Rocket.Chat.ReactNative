@@ -42,7 +42,7 @@ import {
 	bufferToHex
 } from './utils';
 import { Encryption } from './index';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { Services } from '../services';
 import { getMessageUrlRegex } from './helpers/getMessageUrlRegex';
 import { mapMessageFromAPI } from './helpers/mapMessageFromApi';

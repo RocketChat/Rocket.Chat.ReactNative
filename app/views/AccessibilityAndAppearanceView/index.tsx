@@ -10,7 +10,11 @@ import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
 import { useUserPreferences } from '../../lib/methods';
-import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY, AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants';
+import {
+	USER_MENTIONS_PREFERENCES_KEY,
+	ROOM_MENTIONS_PREFERENCES_KEY,
+	AUTOPLAY_GIFS_PREFERENCES_KEY
+} from '../../lib/constants/keys';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();

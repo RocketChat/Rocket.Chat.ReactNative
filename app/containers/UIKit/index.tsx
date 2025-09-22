@@ -15,7 +15,7 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
 import { FormTextInput } from '../TextInput';
 import { textParser, useBlockContext } from './utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../../views/Styles';
 import { Divider } from './Divider';
 import { Section } from './Section';

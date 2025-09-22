@@ -5,7 +5,9 @@ import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
-import { DisplayMode, textInputDebounceTime, themes } from '../lib/constants';
+import { DisplayMode } from '../lib/constants/constantDisplayMode';
+import { textInputDebounceTime } from '../lib/constants/debounceConfig';
+import { themes } from '../lib/constants/colors';
 import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';

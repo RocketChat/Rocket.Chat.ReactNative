@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import { TSupportedThemes, useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { addFrequentlyUsed } from '../../lib/methods';

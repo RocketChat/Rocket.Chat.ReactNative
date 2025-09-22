@@ -8,7 +8,7 @@ import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import sdk from '../services/sdk';
-import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';
+import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
 import UserPreferences from './userPreferences';
 import { Services } from '../services';
 import { roomsSubscription } from './subscriptions/rooms';

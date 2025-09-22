@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import SearchBox from '../../containers/SearchBox';
 import I18n from '../../i18n';
 import { ISelectedUser } from '../../reducers/selectedUsers';

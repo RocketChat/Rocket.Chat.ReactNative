@@ -16,7 +16,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { LISTENER } from '../../containers/Toast';
 import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
-import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
+import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants/links';
 import { useAppSelector } from '../../lib/hooks';
 import { clearCache } from '../../lib/methods';
 import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';

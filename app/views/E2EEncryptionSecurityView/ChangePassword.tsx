@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
 
-import { textInputDebounceTime } from '../../lib/constants';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { useTheme } from '../../theme';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';

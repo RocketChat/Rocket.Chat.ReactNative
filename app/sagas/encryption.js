@@ -8,7 +8,7 @@ import database from '../lib/database';
 import UserPreferences from '../lib/methods/userPreferences';
 import { getUserSelector } from '../selectors/login';
 import log from '../lib/methods/helpers/log';
-import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
+import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/constants/keys';
 import { Services } from '../lib/services';
 import { readMessages } from '../lib/methods';
 

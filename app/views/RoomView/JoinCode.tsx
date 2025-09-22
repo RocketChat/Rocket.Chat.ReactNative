@@ -7,7 +7,7 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { IApplicationState } from '../../definitions';
 import { Services } from '../../lib/services';
 import { TSupportedThemes } from '../../theme';

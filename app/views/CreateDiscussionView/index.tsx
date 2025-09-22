@@ -19,7 +19,7 @@ import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError } from './interfaces';
 import { ISearchLocal, ISubscription } from '../../definitions';
-import { E2E_ROOM_TYPES } from '../../lib/constants';
+import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
 import { getRoomTitle } from '../../lib/methods/helpers';
 import * as List from '../../containers/List';
 import Switch from '../../containers/Switch';

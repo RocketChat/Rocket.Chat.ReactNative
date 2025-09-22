@@ -4,7 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
-import { textInputDebounceTime } from '../../../lib/constants';
+import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';

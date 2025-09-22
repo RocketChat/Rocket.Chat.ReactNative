@@ -29,7 +29,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import {
 	checkSupportedVersions,
 	getLoginSettings,

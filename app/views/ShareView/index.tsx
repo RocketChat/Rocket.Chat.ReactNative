@@ -8,7 +8,7 @@ import { Dispatch } from 'redux';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import I18n from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';

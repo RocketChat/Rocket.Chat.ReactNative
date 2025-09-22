@@ -30,7 +30,8 @@ import Touch from '../../containers/Touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
-import { E2E_ROOM_TYPES, themes } from '../../lib/constants';
+import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
+import { themes } from '../../lib/constants/colors';
 import { getPermalinkChannel } from '../../lib/methods';
 import {
 	canAutoTranslate as canAutoTranslateMethod,

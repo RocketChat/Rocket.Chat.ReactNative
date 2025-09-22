@@ -8,7 +8,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import Button from '../containers/Button';
 import { TSupportedThemes, useTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';

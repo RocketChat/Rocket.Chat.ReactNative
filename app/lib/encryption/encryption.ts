@@ -32,7 +32,7 @@ import {
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
-} from '../constants';
+} from '../constants/keys';
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from '../methods/helpers/log';
