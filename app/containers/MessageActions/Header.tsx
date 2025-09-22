@@ -6,7 +6,7 @@ import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { addFrequentlyUsed } from '../../lib/methods/emojis';
-import { useFrequentlyUsedEmoji } from '../../lib/hooks';
+import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import sharedStyles from '../../views/Styles';
 import { IEmoji, TAnyMessageModel } from '../../definitions';

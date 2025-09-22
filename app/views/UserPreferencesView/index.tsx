@@ -11,7 +11,7 @@ import * as List from '../../containers/List';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
 import { saveUserPreferences } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
 import { IUser } from '../../definitions';

@@ -10,7 +10,7 @@ import ActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ICredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers';
 import { loginOAuthOrSso } from '../lib/services/connect';
 import { OutsideModalParamList } from '../stacks/types';

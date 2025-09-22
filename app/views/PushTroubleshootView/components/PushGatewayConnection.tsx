@@ -3,7 +3,8 @@ import { Alert } from 'react-native';
 
 import * as List from '../../../containers/List';
 import i18n from '../../../i18n';
-import { useAppSelector, usePermissions } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { compareServerVersion, showErrorAlertWithEMessage } from '../../../lib/methods/helpers';
 import { pushTest } from '../../../lib/services/restApi';
 import { useTheme } from '../../../theme';

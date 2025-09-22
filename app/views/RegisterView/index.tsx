@@ -21,7 +21,7 @@ import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpe
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { register } from '../../lib/services/restApi';
 import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import PasswordPolicies from '../../containers/PasswordPolicies';
 import getCustomFields from '../../lib/methods/getCustomFields';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';

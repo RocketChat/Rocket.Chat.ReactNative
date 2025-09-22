@@ -23,7 +23,7 @@ import { IApplicationState, IUser } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { getAgentDepartments, getCustomFields, editLivechat, getTagsList } from '../lib/services/restApi';
-import { usePermissions } from '../lib/hooks';
+import { usePermissions } from '../lib/hooks/usePermissions';
 
 const styles = StyleSheet.create({
 	container: {

@@ -24,7 +24,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { useDebounce } from '../../lib/methods/helpers';
 import { getListCannedResponse, getDepartments } from '../../lib/services/restApi';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { ISubscription } from '../../definitions';
 
 const COUNT = 25;

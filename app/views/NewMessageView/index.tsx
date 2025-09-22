@@ -16,7 +16,7 @@ import { goRoom as goRoomMethod, TGoRoomItem } from '../../lib/methods/helpers/g
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { NewMessageStackParamList } from '../../stacks/types';
 import { search as searchMethod } from '../../lib/methods/search';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import UserItem from '../../containers/UserItem';
 import HeaderNewMessage from './HeaderNewMessage';
 

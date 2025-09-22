@@ -10,7 +10,7 @@ import MessageSeparator from '../../../containers/MessageSeparator';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	button: {

@@ -18,7 +18,7 @@ import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';
 import Item from './Item';
 import { getDiscussions } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;

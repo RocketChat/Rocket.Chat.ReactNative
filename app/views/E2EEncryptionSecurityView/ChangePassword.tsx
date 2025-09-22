@@ -14,7 +14,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import { useDebounce } from '../../lib/methods/helpers';
 import sharedStyles from '../Styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	title: {

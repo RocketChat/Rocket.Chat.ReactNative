@@ -12,7 +12,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { LISTENER } from '../containers/Toast';
 import I18n from '../i18n';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/constants/keys';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import EventEmitter from '../lib/methods/helpers/events';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';

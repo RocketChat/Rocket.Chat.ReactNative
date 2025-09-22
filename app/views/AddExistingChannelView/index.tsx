@@ -19,7 +19,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../../definitions';
 import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
 import { addRoomsToTeam } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Navigation from '../../lib/navigation/appNavigation';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;

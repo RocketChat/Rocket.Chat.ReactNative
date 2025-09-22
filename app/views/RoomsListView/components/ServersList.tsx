@@ -14,7 +14,7 @@ import { RootEnum, TServerModel } from '../../../definitions';
 import I18n from '../../../i18n';
 import { TOKEN_KEY } from '../../../lib/constants/keys';
 import database from '../../../lib/database';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { removeServer } from '../../../lib/methods/logout';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';

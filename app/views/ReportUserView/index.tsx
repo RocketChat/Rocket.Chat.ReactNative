@@ -16,7 +16,7 @@ import UserInfo from './UserInfo';
 import styles from './styles';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import Button from '../../containers/Button';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import { reportUser } from '../../lib/services/restApi';

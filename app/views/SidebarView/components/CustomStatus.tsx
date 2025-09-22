@@ -7,7 +7,7 @@ import Status from '../../../containers/Status/Status';
 import * as List from '../../../containers/List';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
 import { setNotificationPresenceCap } from '../../../actions/app';
 import userPreferences from '../../../lib/methods/userPreferences';

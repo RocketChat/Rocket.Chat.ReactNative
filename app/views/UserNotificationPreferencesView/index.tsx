@@ -9,7 +9,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
 import { INotificationPreferences } from '../../definitions';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';

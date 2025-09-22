@@ -6,7 +6,7 @@ import { ActivityIndicator, BackHandler, Linking, SafeAreaView, StyleSheet, View
 import WebView, { WebViewNavigation } from 'react-native-webview';
 
 import { userAgent } from '../../lib/constants/userAgent';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isIOS } from '../../lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFromJitsiCall';
 import { events, logEvent } from '../../lib/methods/helpers/log';

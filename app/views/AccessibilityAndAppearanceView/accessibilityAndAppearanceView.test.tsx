@@ -12,7 +12,7 @@ jest.mock('../../lib/methods/userPreferences', () => ({
 	useUserPreferences: jest.fn()
 }));
 
-jest.mock('../../lib/hooks', () => ({
+jest.mock('../../lib/hooks/useAppSelector', () => ({
 	useAppSelector: () => false
 }));
 

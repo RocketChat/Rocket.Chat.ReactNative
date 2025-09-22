@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { type TSubscriptionModel } from '../../../definitions';
 import { SortBy } from '../../../lib/constants/constantDisplayMode';
 import database from '../../../lib/database';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../selectors/login';
 
 const CHATS_HEADER = 'Chats';

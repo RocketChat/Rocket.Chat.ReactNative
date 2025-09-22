@@ -39,7 +39,7 @@ import { setPermissions } from '../lib/methods/getPermissions';
 import { setRoles } from '../lib/methods/getRoles';
 import { connect, disconnect, getWebsocketInfo, getLoginServices } from '../lib/services/connect';
 import sdk from '../lib/services/sdk';
-import { appSelector } from '../lib/hooks';
+import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 import SSLPinning from '../lib/methods/helpers/sslPinning';

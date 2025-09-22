@@ -9,7 +9,7 @@ import { INAPP_NOTIFICATION_EMITTER } from '../containers/InAppNotification';
 import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
-import { appSelector } from '../lib/hooks';
+import { appSelector } from '../lib/hooks/useAppSelector';
 import { callJitsi } from '../lib/methods/callJitsi';
 import { compareServerVersion, showErrorAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';

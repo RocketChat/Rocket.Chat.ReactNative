@@ -23,7 +23,7 @@ import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { search as searchMethod, TSearch } from '../../lib/methods/search';
 import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Header from './Header';
 
 type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;

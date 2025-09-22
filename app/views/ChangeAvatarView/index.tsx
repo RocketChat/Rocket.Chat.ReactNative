@@ -14,7 +14,7 @@ import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as List from '../../containers/List';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import Avatar from '../../containers/Avatar';
 import AvatarPresentational from '../../containers/Avatar/Avatar';

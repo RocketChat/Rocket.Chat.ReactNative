@@ -13,7 +13,8 @@ import { useTheme } from '../../theme';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { NewMessageStackParamList } from '../../stacks/types';
 import { compareServerVersion } from '../../lib/methods/helpers';
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 import ButtonCreate from './ButtonCreate';
 
 const styles = StyleSheet.create({

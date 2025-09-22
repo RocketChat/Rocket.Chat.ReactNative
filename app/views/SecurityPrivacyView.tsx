@@ -6,7 +6,7 @@ import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
 import { SettingsStackParamList } from '../stacks/types';
 import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
