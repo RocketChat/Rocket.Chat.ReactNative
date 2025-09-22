@@ -11,8 +11,9 @@ import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { Platform, PermissionsAndroid, Alert } from 'react-native';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
-import { getCurrentPositionOnce} from '../../../../views/LocationShare/services/staticLocation';
+import { getCurrentPositionOnce } from '../../../../views/LocationShare/services/staticLocation';
 import { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
+import { isLiveLocationActive, reopenLiveLocationModal } from '../../../../views/LocationShare/LiveLocationPreviewModal';
 
 export const ActionsButton = () => {
 	const { rid, tmid, t } = useRoomContext();
@@ -40,70 +41,104 @@ export const ActionsButton = () => {
 
 	const openCurrentPreview = async (provider: MapProviderName) => {
 		try {
-		if (!rid) {
-			showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
-			return;
-		}
-		if (Platform.OS === 'android') {
-			const res = await PermissionsAndroid.requestMultiple([
-			PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-			PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-			]);
-			const fine = res[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
-			const coarse = res[PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
-			if (fine !== PermissionsAndroid.RESULTS.GRANTED && coarse !== PermissionsAndroid.RESULTS.GRANTED) {
-			throw new Error(I18n.t('Permission_denied'));
+			if (!rid) {
+				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
+				return;
 			}
-		}
-		// get fix now so preview is instant
-		const fix = await getCurrentPositionOnce();
-		
-		const params = {
-			rid,
-			tmid,
-			provider,
-			coords: fix,
-			googleKey: provider === 'google' ? 'AIzaSyBeNJSMCi8kD4c6SOvZ4vxHnWYp2yzDbmg' : undefined,
-			osmKey: provider === 'osm' ? 'pk.898e468814facdcffda869b42260a2f0' : undefined // <-- Mapbox-style key
-		};
-		if (isMasterDetail) {
-			// @ts-ignore
-			Navigation.navigate('ModalStackNavigator', { screen: 'LocationPreviewModal', params });
-		} else {
-			// @ts-ignore
-			// Navigation.navigate('LocationPreviewModal', { rid, tmid, provider, coords: fix, googleKey: undefined });
-			Navigation.navigate('LocationPreviewModal', params);
-		}
+			if (Platform.OS === 'android') {
+				const res = await PermissionsAndroid.requestMultiple([
+					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+					PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+				]);
+				const fine = res[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
+				const coarse = res[PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
+				if (fine !== PermissionsAndroid.RESULTS.GRANTED && coarse !== PermissionsAndroid.RESULTS.GRANTED) {
+					throw new Error(I18n.t('Permission_denied'));
+				}
+			}
+
+			const preview = await getCurrentPositionOnce();
+
+			const params = {
+				rid,
+				tmid,
+				provider,
+				coords: preview,
+				googleKey: provider === 'google' ? 'AIzaSyBeNJSMCi8kD4c6SOvZ4vxHnWYp2yzDbmg' : undefined,
+				osmKey: provider === 'osm' ? 'pk.898e468814facdcffda869b42260a2f0' : undefined // <-- Mapbox-style key
+			};
+			if (isMasterDetail) {
+				// @ts-ignore
+				Navigation.navigate('ModalStackNavigator', { screen: 'LocationPreviewModal', params });
+			} else {
+				// @ts-ignore
+				// Navigation.navigate('LocationPreviewModal', { rid, tmid, provider, coords: fix, googleKey: undefined });
+				Navigation.navigate('LocationPreviewModal', params);
+			}
 		} catch (e: any) {
-		showErrorAlert(e?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
+			showErrorAlert(e?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
+		}
+	};
+
+	const openLivePreview = async (provider: MapProviderName) => {
+		try {
+			if (!rid) {
+				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
+				return;
+			}
+			if (Platform.OS === 'android') {
+				const res = await PermissionsAndroid.requestMultiple([
+					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+					PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+				]);
+				const fine = res[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
+				const coarse = res[PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
+				if (fine !== PermissionsAndroid.RESULTS.GRANTED && coarse !== PermissionsAndroid.RESULTS.GRANTED) {
+					throw new Error(I18n.t('Permission_denied'));
+				}
+			}
+
+			const params = {
+				rid,
+				tmid,
+				provider,
+				googleKey: provider === 'google' ? 'AIzaSyBeNJSMCi8kD4c6SOvZ4vxHnWYp2yzDbmg' : undefined,
+				osmKey: provider === 'osm' ? 'pk.898e468814facdcffda869b42260a2f0' : undefined
+			};
+
+			if (isMasterDetail) {
+				// @ts-ignore
+				Navigation.navigate('ModalStackNavigator', { screen: 'LiveLocationPreviewModal', params });
+			} else {
+				// @ts-ignore
+				Navigation.navigate('LiveLocationPreviewModal', params);
+			}
+		} catch (e: any) {
+			showErrorAlert(e?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
 		}
 	};
 
 	const openModeSheetForProvider = (provider: MapProviderName) => {
 		const modeOptions: TActionSheetOptionsItem[] = [
-		{
-			title: I18n.t('Share_current_location'),
-			icon: 'pin-map',
-			onPress: () => {
-			hideActionSheet();
-			setTimeout(() => openCurrentPreview(provider), 250);
+			{
+				title: I18n.t('Share_current_location'),
+				icon: 'pin-map',
+				onPress: () => {
+					hideActionSheet();
+					setTimeout(() => openCurrentPreview(provider), 250);
+				}
+			},
+			{
+				title: I18n.t('Start_live_location'),
+				icon: 'live',
+				onPress: () => {
+					hideActionSheet();
+					setTimeout(() => openLivePreview(provider), 250);
+				}
 			}
-		},
-		{
-			title: I18n.t('Start_live_location'),
-			icon: 'live', // placeholder icon
-			onPress: () => {
-			hideActionSheet();
-			setTimeout(() => {
-				// Placeholder (live not implemented yet)
-				Alert.alert(I18n.t('Start_live_location'), I18n.t('Coming_soon'));
-			}, 250);
-			}
-		}
 		];
 		showActionSheet({ options: modeOptions });
 	};
-
 
 	const onPress = () => {
 		const options: TActionSheetOptionsItem[] = [];
@@ -168,22 +203,22 @@ export const ActionsButton = () => {
 			icon: 'pin-map',
 			onPress: () => {
 				const providerOptions: TActionSheetOptionsItem[] = [
-				{
-					title: 'OpenStreetMap',
-					icon: 'pin-map',
-					onPress: () => {
-					hideActionSheet();
-					setTimeout(() => openModeSheetForProvider('osm'), 250);
+					{
+						title: 'OpenStreetMap',
+						icon: 'pin-map',
+						onPress: () => {
+							hideActionSheet();
+							setTimeout(() => openModeSheetForProvider('osm'), 250);
+						}
+					},
+					{
+						title: 'Google Maps',
+						icon: 'pin-map',
+						onPress: () => {
+							hideActionSheet();
+							setTimeout(() => openModeSheetForProvider('google'), 250);
+						}
 					}
-				},
-				{
-					title: 'Google Maps',
-					icon: 'pin-map',
-					onPress: () => {
-					hideActionSheet();
-					setTimeout(() => openModeSheetForProvider('google'), 250);
-					}
-				}
 				];
 				hideActionSheet();
 				setTimeout(() => showActionSheet({ options: providerOptions }), 250);

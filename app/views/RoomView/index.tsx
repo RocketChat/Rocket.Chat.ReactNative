@@ -103,6 +103,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import LiveLocationStatusBar from '../LocationShare/LiveLocationStatusBar';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -1536,6 +1537,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
 					<StatusBar />
+					<LiveLocationStatusBar />
 					{!this.tmid ? (
 						<Banner
 							title={I18n.t('Announcement')}

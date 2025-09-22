@@ -37,6 +37,7 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+import { handleLiveLocationUrl } from '../app/views/LocationShare/services/handleLiveLocationUrl';
 
 enableScreens();
 initStore(store);
@@ -107,6 +108,10 @@ export default class Root extends React.Component<{}, IState> {
 	componentDidMount() {
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
+				// First: try our live-location handler
+				if (handleLiveLocationUrl(url)) return;
+
+				// Else: fall back to existing deep link flow
 				const parsedDeepLinkingURL = parseDeepLinking(url);
 				if (parsedDeepLinkingURL) {
 					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
@@ -140,6 +145,13 @@ export default class Root extends React.Component<{}, IState> {
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
+
+		// First: handle live-location links
+		if (deepLinking && handleLiveLocationUrl(deepLinking)) {
+			return;
+		}
+
+		// Then: your existing flow
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
 		if (parsedDeepLinkingURL) {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));

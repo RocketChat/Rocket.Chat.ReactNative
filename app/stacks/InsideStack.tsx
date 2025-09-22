@@ -76,6 +76,7 @@ import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import LegalView from '../views/LegalView';
 import LocationPreviewModal from '../views/LocationShare/LocationPreviewModal';
+import LiveLocationPreviewModal from '../views/LocationShare/LiveLocationPreviewModal';
 import {
 	AdminPanelStackParamList,
 	ChatsStackParamList,
@@ -318,10 +319,15 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
-			<InsideStack.Screen 
+			<InsideStack.Screen
 				name='LocationPreviewModal'
 				component={LocationPreviewModal}
 				options={{ presentation: 'modal', title: I18n.t('Share_Location') }}
+			/>
+			<InsideStack.Screen
+				name='LiveLocationPreviewModal'
+				component={LiveLocationPreviewModal}
+				options={{ presentation: 'modal', title: I18n.t('Live_Location') }}
 			/>
 		</InsideStack.Navigator>
 	);

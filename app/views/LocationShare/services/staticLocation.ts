@@ -1,73 +1,58 @@
-import { Platform } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import { MapProviderName, mapsDeepLink, staticMapUrl, providerAttribution } from './mapProviders';
+import * as Location from 'expo-location';
 
 export type Coords = { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
 
-export async function getCurrentPositionOnce(): Promise<Coords> {
-  if (Platform.OS === 'ios') {
-    const status = await Geolocation.requestAuthorization('whenInUse');
-    if (status !== 'granted') throw new Error('Location permission not granted');
-  }
-  return new Promise((resolve, reject) => {
-    Geolocation.getCurrentPosition(
-      pos => {
-        const { latitude, longitude, accuracy } = pos.coords;
-        resolve({ latitude, longitude, accuracy, timestamp: pos.timestamp });
-      },
-      err => reject(new Error(err?.message || 'Failed to get location')),
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0,
-        forceRequestLocation: true,
-        showLocationDialog: true
-      }
-    );
-  });
+const LOCATION_TIMEOUT_MS = 15_000;
+const LAST_KNOWN_MAX_AGE_MS = 15_000;
+
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
+	return new Promise((resolve, reject) => {
+		const t = setTimeout(() => reject(new Error('Location request timed out')), ms);
+		p.then(v => {
+			clearTimeout(t);
+			resolve(v);
+		}).catch(e => {
+			clearTimeout(t);
+			reject(e);
+		});
+	});
 }
 
-export async function createStaticLocationAttachment(
-  provider: MapProviderName,
-  coords: Coords,
-  googleApiKey?: string,
-  osmApiKey?: string
-) {
-  const { url, width, height } = staticMapUrl(
-    provider,
-    { latitude: coords.latitude, longitude: coords.longitude },
-    { size: '640x320', zoom: 15, googleApiKey, osmApiKey }
-  );
+export async function getCurrentPositionOnce(): Promise<Coords> {
+	// 1) Ask permission
+	const { status } = await Location.requestForegroundPermissionsAsync();
+	if (status !== 'granted') throw new Error('Location permission not granted');
 
-  const mapImage = encodeURI(url);
-  const deep = await mapsDeepLink(provider, {
-    latitude: coords.latitude,
-    longitude: coords.longitude
-  });
+	// 2) Fast path: last known (if fresh enough)
+	try {
+		const last = await Location.getLastKnownPositionAsync({ maxAge: LAST_KNOWN_MAX_AGE_MS });
+		if (last?.coords) {
+			const { latitude, longitude, accuracy } = last.coords;
+			return {
+				latitude,
+				longitude,
+				accuracy: accuracy ?? undefined,
+				timestamp: last.timestamp
+			};
+		}
+	} catch {
+		// ignore and fall through to fresh fetch
+	}
 
-  console.log('[staticLocationAttachment] provider:', provider);
-  console.log('[staticLocationAttachment] coords:', coords);
-  console.log('[staticLocationAttachment] mapImage URL:', mapImage);
-  console.log('[staticLocationAttachment] dimensions:', { width, height });
-  console.log('[staticLocationAttachment] deep link:', deep);
+	// 3) Fresh position, with our own timeout wrapper
+	const loc = await withTimeout(
+		Location.getCurrentPositionAsync({
+			accuracy: Location.Accuracy.High
+			// Note: expo-location types do NOT include maximumAge/timeout here
+		}),
+		LOCATION_TIMEOUT_MS
+	);
 
-  return {
-    title: 'Open in Maps',
-    title_link: deep,
-    title_link_download: false,
-
-    image_url: mapImage,
-    image_type: 'image/png',
-    image_dimensions: { width, height }, // ✅ uses the values from staticMap
-    description: `${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`,
-    ts: new Date(),
-    footer: providerAttribution(provider),
-    fields: [
-      {
-        short: true,
-        title: 'Accuracy (m)',
-        value: coords.accuracy != null ? String(Math.round(coords.accuracy)) : '—'
-      }
-    ]
-  };
+	const { latitude, longitude, accuracy } = loc.coords;
+	return {
+		latitude,
+		longitude,
+		accuracy: accuracy ?? undefined,
+		timestamp: loc.timestamp
+	};
 }
