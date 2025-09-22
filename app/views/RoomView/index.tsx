@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
+import { AccessibilityInfo, InteractionManager, Keyboard, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
@@ -351,6 +351,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
+		Keyboard.dismiss();
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		if (!this.tmid) {
