@@ -6,6 +6,7 @@ import { Encryption } from '../../encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
 import { IFormData } from '../helpers/fileUpload/definitions';
+import fetch from '../helpers/fetch';
 
 export async function sendFileMessageV2(
 	rid: string,
