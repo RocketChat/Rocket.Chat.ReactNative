@@ -146,9 +146,10 @@ onFlowComplete:
       id: 'message-content-50'
     direction: DOWN
     timeout: 60000
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       text: '.*Load newer.*'
+    direction: DOWN
     timeout: 60000
 - tapOn:
     text: '.*Load newer.*'
