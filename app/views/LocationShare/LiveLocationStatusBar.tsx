@@ -5,7 +5,8 @@ import {
 	stopGlobalLiveLocation,
 	isLiveLocationActive,
 	addStatusChangeListener,
-	removeStatusChangeListener
+	removeStatusChangeListener,
+	getCurrentLiveParams
 } from './LiveLocationPreviewModal';
 
 type Props = {
@@ -64,8 +65,16 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 	};
 
 	const handleStop = () => {
-		stopGlobalLiveLocation();
-		setIsActive(false);
+		const params = getCurrentLiveParams();
+		const currentUserIsOwner = params?.ownerName === /* current username from selector */ '';
+
+		if (currentUserIsOwner) {
+			// Owner: stop sharing
+			stopGlobalLiveLocation();
+		} else {
+			// Viewer: just hide status bar
+			setIsActive(false);
+		}
 	};
 
 	if (!isActive) return null;

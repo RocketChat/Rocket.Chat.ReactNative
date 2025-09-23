@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Linking } from 'react-native';
-import { Image } from 'expo-image';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Linking, Image } from 'react-native';
 import Navigation from '../../lib/navigation/appNavigation';
 import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
 import { sendMessage } from '../../lib/methods/sendMessage';
@@ -63,7 +62,12 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 				{ size: '640x320', zoom: 15, googleApiKey: googleKey, osmApiKey: osmKey }
 			);
 
-			const deep = await mapsDeepLink(provider, coords);
+			let deep = null;
+			if (provider == 'google') {
+				deep = await mapsDeepLink(provider, coords);
+			} else {
+				deep = url;
+			}
 
 			const locationText = `${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`;
 			const providerName = providerLabel(provider);
@@ -73,15 +77,12 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 
 **Coordinates:** ${locationText}
 
-[🗺️ Open in ${providerName}](${deep})
-
-${url}`;
+[🗺️ Open in ${providerName}](${deep})`;
 
 			await sendMessage(rid, message, tmid, { id, username }, false);
 
-			Alert.alert(I18n.t('Success'), I18n.t('Location_shared_successfully'), [
-				{ text: I18n.t('OK'), onPress: () => Navigation.back() }
-			]);
+			// Silently close the modal after successful location sharing
+			Navigation.back();
 		} catch (e: any) {
 			console.error('[LocationPreview] Error sending message:', e);
 			Alert.alert(I18n.t('Oops'), e?.message || I18n.t('Could_not_send_message'));
@@ -107,15 +108,7 @@ ${url}`;
 				</TouchableOpacity>
 
 				<View style={styles.mapContainer}>
-					<Image
-						source={{ uri: mapUrl.url }}
-						style={styles.mapImage}
-						contentFit='cover'
-						transition={200}
-						placeholder='🗺️'
-						placeholderContentFit='scale-down'
-						cachePolicy='memory-disk'
-					/>
+					<Image source={{ uri: mapUrl.url }} style={styles.mapImage} resizeMode='cover' />
 				</View>
 
 				<View style={styles.buttons}>
