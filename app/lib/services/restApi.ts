@@ -24,6 +24,7 @@ import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
+import fetch from '../methods/helpers/fetch';
 
 export const createChannel = ({
 	name,
