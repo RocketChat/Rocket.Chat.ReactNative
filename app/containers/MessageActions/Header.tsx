@@ -7,7 +7,7 @@ import { CustomIcon } from '../CustomIcon';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { addFrequentlyUsed } from '../../lib/methods';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks';
-import CustomEmoji from '../EmojiPicker/CustomEmoji';
+import { CustomEmoji } from '../Emoji';
 import sharedStyles from '../../views/Styles';
 import { IEmoji, TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';

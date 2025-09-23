@@ -5,7 +5,7 @@ import styles, { EMOJI_BUTTON_SIZE } from './styles';
 import { IEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
-import { Emoji } from './Emoji';
+import { Emoji } from '../Emoji';
 
 export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (emoji: IEmoji) => void }): React.ReactElement => {
 	const { colors } = useTheme();

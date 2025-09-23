@@ -6,7 +6,7 @@ import Plain from '../Plain';
 import useShortnameToUnicode from '../../../../lib/hooks/useShortnameToUnicode';
 import { useTheme } from '../../../../theme';
 import styles from '../../styles';
-import CustomEmoji from '../../../EmojiPicker/CustomEmoji';
+import { CustomEmoji } from "../../../Emoji"
 import MarkdownContext from '../../contexts/MarkdownContext';
 import { useAppSelector } from '../../../../lib/hooks';
 import { getUserSelector } from '../../../../selectors/login';
