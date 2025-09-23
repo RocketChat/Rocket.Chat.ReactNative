@@ -13,10 +13,16 @@ struct MessageBody: Codable {
   
   struct Message: Codable {
     let _id: String
-    let msg: String
+    let msg: String?
+    let content: MessageContent?
     let rid: String
     let tmid: String?
     let t: MessageType?
+  }
+  
+  struct MessageContent: Codable {
+    let algorithm: String
+    let ciphertext: String
   }
 }
 
@@ -27,25 +33,37 @@ struct MessageResponse: Response {
 final class SendMessageRequest: Request {
   typealias ResponseType = MessageResponse
   
-  
   let method: HTTPMethod = .post
   let path = "/api/v1/chat.sendMessage"
   
   let id: String
   let roomId: String
-  let text: String
+  let text: String?
+  let content: MessageBody.MessageContent?
   let messageType: MessageType?
   let threadIdentifier: String?
   
+  // Regular message constructor
   init(id: String, roomId: String, text: String, threadIdentifier: String? = nil, messageType: MessageType? = nil) {
     self.id = id
     self.roomId = roomId
     self.text = text
+    self.content = nil
+    self.messageType = messageType
+    self.threadIdentifier = threadIdentifier
+  }
+  
+  // Encrypted message constructor
+  init(id: String, roomId: String, content: MessageBody.MessageContent, threadIdentifier: String? = nil, messageType: MessageType? = nil) {
+    self.id = id
+    self.roomId = roomId
+    self.text = nil
+    self.content = content
     self.messageType = messageType
     self.threadIdentifier = threadIdentifier
   }
   
   func body() -> Data? {
-    return try? JSONEncoder().encode(MessageBody(message: MessageBody.Message(_id: id, msg: text, rid: roomId, tmid: threadIdentifier, t: messageType)))
+    return try? JSONEncoder().encode(MessageBody(message: MessageBody.Message(_id: id, msg: text, content: content, rid: roomId, tmid: threadIdentifier, t: messageType)))
   }
 }

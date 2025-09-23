@@ -114,15 +114,24 @@ public class ReplyBroadcast extends BroadcastReceiver {
 
         String id = getMessageId();
 
-        String msg = Encryption.shared.encryptMessage(message, id, ejson);
+        String encryptedMessage = Encryption.shared.encryptMessage(message, id, ejson);
 
         Map msgMap = new HashMap();
         msgMap.put("_id", id);
         msgMap.put("rid", rid);
-        msgMap.put("msg", msg);
-        if (msg != message) {
+        
+        if (encryptedMessage != message) {
+            // Encrypted message - use content structure
+            Map contentMap = new HashMap();
+            contentMap.put("algorithm", "rc.v1.aes-sha2");
+            contentMap.put("ciphertext", encryptedMessage);
+            msgMap.put("content", contentMap);
             msgMap.put("t", "e2e");
+        } else {
+            // Regular message - use msg field
+            msgMap.put("msg", message);
         }
+        
         if(ejson.tmid != null) {
             msgMap.put("tmid", ejson.tmid);
         }

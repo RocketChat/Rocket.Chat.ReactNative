@@ -39,20 +39,32 @@ final class RocketChat {
   func sendMessage(rid: String, message: String, threadIdentifier: String?, completion: @escaping((MessageResponse?) -> Void)) {
     let id = String.random(length: 17)
     
-    var msg = message
     let encrypted = Database(server: server).readRoomEncrypted(for: rid)
-    if encrypted {
-      msg = encryptMessage(rid: rid, id: id, message: message)
-    }
     
-    api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, threadIdentifier: threadIdentifier, messageType: encrypted ? .e2e : nil )) { response in
-      switch response {
-      case .resource(let response):
-        completion(response)
-        
-      case .error:
-        completion(nil)
-        break
+    if encrypted {
+      let encryptedMessage = encryptMessage(rid: rid, id: id, message: message)
+      let content = MessageBody.MessageContent(algorithm: "rc.v1.aes-sha2", ciphertext: encryptedMessage)
+      
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, content: content, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
+        switch response {
+        case .resource(let response):
+          completion(response)
+          
+        case .error:
+          completion(nil)
+          break
+        }
+      }
+    } else {
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: message, threadIdentifier: threadIdentifier, messageType: nil)) { response in
+        switch response {
+        case .resource(let response):
+          completion(response)
+          
+        case .error:
+          completion(nil)
+          break
+        }
       }
     }
   }
@@ -70,4 +82,5 @@ final class RocketChat {
       return encryption.encryptMessage(id: id, message: message)
     }
   }
+  
 }
