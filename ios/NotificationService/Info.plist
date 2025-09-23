@@ -4,8 +4,6 @@
 <dict>
 	<key>AppGroup</key>
 	<string>group.ios.chat.rocket</string>
-	<key>IS_OFFICIAL</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -24,6 +22,8 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>IS_OFFICIAL</key>
+	<false/>
 	<key>KeychainGroup</key>
 	<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
 	<key>NSExtension</key>
@@ -33,5 +33,7 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).NotificationService</string>
 	</dict>
+	<key>RCTNewArchEnabled</key>
+	<true/>
 </dict>
 </plist>

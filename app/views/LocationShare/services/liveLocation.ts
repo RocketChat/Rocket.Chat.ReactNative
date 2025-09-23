@@ -181,7 +181,7 @@ export function createLiveLocationMessage(
 	const appDeepLink = `rocketchat://live-location?${params.toString()}`;
 
 	// Keep the message simple Markdown so your existing sendMessage(rid, msg, ...) works
-	return `📍 **Live Location**
+	return `📍 **Live Location Start**
 
 [🔴 View Live Location](${appDeepLink})`;
 }
@@ -191,11 +191,5 @@ export function createLiveLocationStopMessage(
 	provider: MapProviderName,
 	lastCoords: { latitude: number; longitude: number }
 ): string {
-	const { latitude, longitude } = lastCoords;
-	const locationText = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
-
-	return `📍 **Live Location Ended**
-
-Final location: ${locationText}
-*This live location session has ended*`;
+	return `📍 **Live Location Ended**`;
 }

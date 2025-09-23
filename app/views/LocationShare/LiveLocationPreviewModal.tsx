@@ -9,8 +9,10 @@ import {
 	LiveLocationTracker,
 	LiveLocationState,
 	generateLiveLocationId,
-	createLiveLocationMessage
+	createLiveLocationMessage,
+	createLiveLocationStopMessage
 } from './services/liveLocation';
+import { markLiveLocationAsEnded } from './services/handleLiveLocationUrl';
 import { useAppSelector } from '../../lib/hooks';
 import { getUserSelector } from '../../selectors/login';
 import { shallowEqual } from 'react-redux';
@@ -66,6 +68,14 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	const trackerRef = useRef<LiveLocationTracker | null>(null);
 
 	const serverUrl = useAppSelector(state => state.server.server);
+	const { id, token, username } = useAppSelector(
+		state => ({
+			id: getUserSelector(state).id,
+			token: getUserSelector(state).token,
+			username: getUserSelector(state).username
+		}),
+		shallowEqual
+	);
 
 	// Create a location update handler that works both when modal is open and minimized
 	const handleLocationUpdate = (state: LiveLocationState) => {
@@ -119,10 +129,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			});
 		}
 
-		return () => {
-			// Don't clear global callback when component unmounts if minimized
-			// Only clear when explicitly stopped
-		};
+		return () => {};
 	}, [provider, googleKey, osmKey, isTracking]);
 
 	const openInMaps = async () => {
@@ -159,15 +166,6 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 
 			const currentLiveLocationId = liveLocationId || generateLiveLocationId();
 			const message = createLiveLocationMessage(currentLiveLocationId, provider, locationState.coords, serverUrl, rid, tmid);
-
-			const { id, token, username } = useAppSelector(
-				state => ({
-					id: getUserSelector(state).id,
-					token: getUserSelector(state).token,
-					username: getUserSelector(state).username
-				}),
-				shallowEqual
-			);
 
 			await sendMessage(rid, message, tmid, { id, username }, false);
 
@@ -211,14 +209,51 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		Navigation.back();
 	};
 
-	const onStopSharing = () => {
+	const onStopSharing = async () => {
+		// If the user is just viewing (not the owner), simply close the modal
+		if (!isOwner()) {
+			Navigation.back();
+			return;
+		}
+
+		// Owner stopping the live location sharing
 		if (trackerRef.current) {
+			const currentState = trackerRef.current.getCurrentState();
+
+			// Resolve the correct liveLocationId (route OR global)
+			const idToStop = liveLocationId ?? (globalTrackerParams && globalTrackerParams.liveLocationId) ?? null;
+
+			// Stop tracking first
 			trackerRef.current.stopTracking();
 			globalTracker = null;
 			globalTrackerParams = null;
 			globalLocationUpdateCallback = null;
+
+			// Mark session as ended so UI disables "View Live Location"
+			if (idToStop) {
+				try {
+					markLiveLocationAsEnded(idToStop);
+				} catch (e) {
+					console.error('Failed to mark live location as ended:', e);
+				}
+			}
+
+			// Notify listeners AFTER marking ended
 			emitStatusChange();
+
+			// Best effort stop message with the last known coords
+			if (idToStop && currentState?.coords) {
+				try {
+					const stopMessage = createLiveLocationStopMessage(idToStop, provider, currentState.coords);
+					await sendMessage(rid, stopMessage, tmid, { id, username }, false);
+				} catch (error) {
+					console.error('Failed to send stop message:', error);
+				}
+			}
 		}
+
+		// Update local UI too
+		setIsShared(false);
 		Navigation.back();
 	};
 
@@ -226,24 +261,43 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		return new Date(timestamp).toLocaleTimeString();
 	};
 
+	// Determine if the current user is the owner of this live location
+	const isOwner = () => {
+		// If isTracking is true, this user started the sharing session
+		if (isTracking) return true;
+
+		// If ownerName exists and matches current username, this user is the owner
+		if (ownerName && username && ownerName === username) return true;
+
+		// If no ownerName is provided but isShared is true, assume this user is the owner
+		if (!ownerName && isShared) return true;
+
+		// Otherwise, this user is just viewing
+		return false;
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
 				{/* Header with minimize button */}
 				<View style={styles.header}>
-					<Text style={styles.title}>{isShared || isTracking ? '📍 Live Location' : '🧪 Live Location Preview'}</Text>
-					{ownerName && <Text style={styles.ownerName}>Shared by {ownerName}</Text>}
+					<View style={styles.titleContainer}>
+						<Text style={styles.title}>{isShared || isTracking ? '📍 Live Location' : '🧪 Live Location Preview'}</Text>
+						{ownerName && <Text style={styles.ownerName}>Shared by {ownerName}</Text>}
+					</View>
 					{/* Minimize button - only show when sharing */}
 					{(isShared || isTracking) && (
-						<TouchableOpacity onPress={onMinimize} style={styles.minimizeButton}>
-							<Text style={styles.minimizeText}>➖ Minimize</Text>
+						<TouchableOpacity onPress={onMinimize} style={styles.minimizeButton} activeOpacity={0.7}>
+							<View style={styles.minimizeIcon}>
+								<View style={styles.minimizeLine} />
+							</View>
 						</TouchableOpacity>
 					)}
 				</View>
 
 				{/* Status indicator */}
 				<View style={styles.statusContainer}>
-					<View style={[styles.statusDot, { backgroundColor: locationState?.isActive ? '#4CAF50' : '#FF5722' }]} />
+					<View style={[styles.statusDot, { backgroundColor: locationState?.isActive ? '#27ae60' : '#e74c3c' }]} />
 					<Text style={styles.statusText}>
 						{locationState?.isActive
 							? isShared || isTracking
@@ -303,7 +357,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					{isShared || isTracking ? (
 						// Tracking mode buttons
 						<TouchableOpacity onPress={onStopSharing} style={[styles.btn, styles.btnDanger]} testID='live-location-stop'>
-							<Text style={[styles.btnText, styles.btnTextDanger]}>{isTracking ? 'Stop Sharing' : 'Stop Sharing'}</Text>
+							<Text style={[styles.btnText, styles.btnTextDanger]}>{isOwner() ? 'Stop Sharing' : 'Stop Viewing'}</Text>
 						</TouchableOpacity>
 					) : (
 						// Preview mode buttons
@@ -319,7 +373,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 								{submitting ? (
 									<ActivityIndicator color='#fff' />
 								) : (
-									<Text style={[styles.btnText, styles.btnTextPrimary]}>Share Live Location</Text>
+									<Text style={[styles.btnText, styles.btnTextPrimary]}>Start</Text>
 								)}
 							</TouchableOpacity>
 						</>
@@ -343,6 +397,11 @@ export function reopenLiveLocationModal() {
 
 export function stopGlobalLiveLocation() {
 	if (globalTracker) {
+		// Mark the live location session as ended if we have the ID
+		if (globalTrackerParams?.liveLocationId) {
+			markLiveLocationAsEnded(globalTrackerParams.liveLocationId);
+		}
+
 		globalTracker.stopTracking();
 		globalTracker = null;
 		globalTrackerParams = null;
@@ -354,157 +413,222 @@ export function stopGlobalLiveLocation() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 16,
+		padding: 20,
 		justifyContent: 'center',
-		backgroundColor: '#f5f5f5'
+		backgroundColor: '#ecf0f1'
 	},
 	content: {
-		backgroundColor: '#fff',
-		borderRadius: 12,
-		padding: 16,
+		backgroundColor: '#ffffff',
+		borderRadius: 16,
+		padding: 20,
 		shadowColor: '#000',
-		shadowOpacity: 0.1,
-		shadowRadius: 10,
-		shadowOffset: { width: 0, height: 4 },
-		elevation: 3
+		shadowOpacity: 0.15,
+		shadowRadius: 12,
+		shadowOffset: { width: 0, height: 6 },
+		elevation: 8,
+		borderWidth: 1,
+		borderColor: '#e9ecef'
 	},
 	header: {
+		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 12,
-		position: 'relative'
+		justifyContent: 'space-between',
+		marginBottom: 16,
+		paddingHorizontal: 4
+	},
+	titleContainer: {
+		flex: 1,
+		alignItems: 'center'
 	},
 	title: {
-		fontSize: 18,
-		fontWeight: '600',
-		textAlign: 'center'
+		fontSize: 20,
+		fontWeight: '700',
+		textAlign: 'center',
+		color: '#2c3e50'
 	},
 	ownerName: {
 		fontSize: 14,
-		color: '#666',
-		marginTop: 4
+		color: '#7f8c8d',
+		marginTop: 4,
+		fontWeight: '500'
 	},
 	minimizeButton: {
-		position: 'absolute',
-		top: 0,
-		right: 0,
-		paddingHorizontal: 12,
-		paddingVertical: 6,
-		backgroundColor: '#f0f0f0',
-		borderRadius: 15
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		backgroundColor: '#f8f9fa',
+		justifyContent: 'center',
+		alignItems: 'center',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+		elevation: 3,
+		borderWidth: 1,
+		borderColor: '#e9ecef'
 	},
-	minimizeText: {
-		fontSize: 12,
-		color: '#666',
-		fontWeight: '500'
+	minimizeIcon: {
+		width: 20,
+		height: 20,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	minimizeLine: {
+		width: 14,
+		height: 2,
+		backgroundColor: '#6c757d',
+		borderRadius: 1
 	},
 	statusContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 12
+		marginBottom: 16,
+		paddingVertical: 8,
+		paddingHorizontal: 16,
+		backgroundColor: '#f8f9fa',
+		borderRadius: 20,
+		borderWidth: 1,
+		borderColor: '#e9ecef'
 	},
 	statusDot: {
-		width: 10,
-		height: 10,
-		borderRadius: 5,
+		width: 8,
+		height: 8,
+		borderRadius: 4,
 		marginRight: 8
 	},
 	statusText: {
 		fontSize: 14,
-		fontWeight: '500'
+		fontWeight: '600',
+		color: '#495057'
 	},
 	infoContainer: {
-		marginBottom: 16,
-		alignItems: 'center'
+		marginBottom: 20,
+		alignItems: 'center',
+		backgroundColor: '#ffffff',
+		padding: 16,
+		borderRadius: 12,
+		borderWidth: 1,
+		borderColor: '#e9ecef'
 	},
 	coordsLine: {
-		fontSize: 14,
-		fontWeight: '500',
+		fontSize: 15,
+		fontWeight: '600',
 		textAlign: 'center',
-		marginBottom: 4
+		marginBottom: 6,
+		color: '#2c3e50'
 	},
 	timestamp: {
 		fontSize: 12,
-		opacity: 0.7,
-		textAlign: 'center'
+		color: '#6c757d',
+		textAlign: 'center',
+		fontWeight: '500'
 	},
 	mapLinkText: {
-		color: '#1d74f5',
+		color: '#3498db',
 		fontSize: 16,
-		fontWeight: '600',
+		fontWeight: '700',
 		textAlign: 'center',
-		marginBottom: 16
+		marginBottom: 16,
+		paddingVertical: 8
 	},
 	disabledLink: {
 		color: '#ccc'
 	},
 	mapContainer: {
-		borderRadius: 8,
+		borderRadius: 12,
 		overflow: 'hidden',
-		marginBottom: 12
+		marginBottom: 16,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 4
+		},
+		shadowOpacity: 0.1,
+		shadowRadius: 8,
+		elevation: 4,
+		borderWidth: 1,
+		borderColor: '#e9ecef'
 	},
 	mapImage: {
 		width: '100%',
-		height: 200
+		height: 220
 	},
 	mapPlaceholder: {
 		width: '100%',
-		height: 200,
-		backgroundColor: '#eee',
+		height: 220,
+		backgroundColor: '#f8f9fa',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	loadingText: {
-		marginTop: 8,
+		marginTop: 12,
 		fontSize: 14,
-		opacity: 0.7
+		color: '#6c757d',
+		fontWeight: '500'
 	},
 	liveIndicator: {
-		fontSize: 12,
-		color: '#FF5722',
+		fontSize: 13,
+		color: '#e74c3c',
 		textAlign: 'center',
-		marginBottom: 16,
-		fontStyle: 'italic'
+		marginBottom: 20,
+		fontStyle: 'italic',
+		fontWeight: '600'
 	},
 	testInfo: {
-		fontSize: 12,
-		color: '#FF9800',
+		fontSize: 13,
+		color: '#f39c12',
 		textAlign: 'center',
-		marginBottom: 16,
-		fontStyle: 'italic'
+		marginBottom: 20,
+		fontStyle: 'italic',
+		fontWeight: '600'
 	},
 	buttons: {
 		flexDirection: 'row',
-		gap: 12
+		gap: 16,
+		marginTop: 8
 	},
 	btn: {
 		flex: 1,
-		paddingVertical: 12,
-		borderRadius: 10,
+		paddingVertical: 16,
+		borderRadius: 12,
 		alignItems: 'center',
-		borderWidth: 1,
-		borderColor: '#ccc',
-		backgroundColor: '#fff'
+		borderWidth: 2,
+		borderColor: '#e9ecef',
+		backgroundColor: '#ffffff',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.05,
+		shadowRadius: 4,
+		elevation: 2
 	},
 	btnPrimary: {
-		backgroundColor: '#1d74f5',
-		borderColor: '#1d74f5'
+		backgroundColor: '#3498db',
+		borderColor: '#3498db'
 	},
 	btnDanger: {
-		backgroundColor: '#FF5722',
-		borderColor: '#FF5722'
+		backgroundColor: '#e74c3c',
+		borderColor: '#e74c3c'
 	},
 	btnDisabled: {
-		backgroundColor: '#ccc',
-		borderColor: '#ccc'
+		backgroundColor: '#ecf0f1',
+		borderColor: '#bdc3c7'
 	},
 	btnText: {
-		fontWeight: '600'
+		fontWeight: '700',
+		fontSize: 16,
+		color: '#2c3e50'
 	},
 	btnTextPrimary: {
-		color: '#fff'
+		color: '#ffffff'
 	},
 	btnTextDanger: {
-		color: '#fff'
+		color: '#ffffff'
 	}
 });
