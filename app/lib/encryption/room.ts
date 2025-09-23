@@ -729,6 +729,9 @@ export default class EncryptionRoom {
 							e2e: 'pending'
 						}))
 					};
+					if (content.text) {
+						message.msg = content.text;
+					}
 				}
 
 				const decryptedMessage: IMessage = {
