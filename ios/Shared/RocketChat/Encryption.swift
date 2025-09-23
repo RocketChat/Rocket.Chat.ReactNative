@@ -31,6 +31,7 @@ struct RoomKeyResult {
 final class Encryption {
   final var roomKey: String? = nil
   final var keyId: String? = nil
+  final var version: String? = nil
   
   private let privateKey: String?
   private let credentials: Credentials?
@@ -61,6 +62,7 @@ final class Encryption {
     if let E2EKey = Database(server: server).readRoomEncryptionKey(for: rid) {
       if let result = decryptRoomKey(E2EKey: E2EKey) {
         self.roomKey = result.decryptedKey
+        self.version = result.version
       }
     }
   }
@@ -207,25 +209,62 @@ final class Encryption {
   }
   
   func encryptMessage(id: String, message: String) -> String {
-    if let userId = credentials?.userId, let roomKey = roomKey {
-      let m = Message(_id: id, text: message, userId: userId)
-      if let cypherData = try? encoder.encode(m) {
-        let cypherBase64 = cypherData.base64EncodedString()
-        
-        if let randomBytesHex = RandomUtils.generateRandomKeyHex(UInt(kCCBlockSizeAES128)),
-           let iv = Data(hexString: randomBytesHex) {
-          let ivHex = CryptoUtils.bytes(toHex: iv)
-          
-          if let encryptedBase64 = AESCrypto.encryptBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex),
-             let encryptedData = Data(base64Encoded: encryptedBase64),
-             let keyId = keyId {
-            let joined = Data.join(vector: iv, data: encryptedData)
-            return keyId + joined.base64EncodedString()
-          }
-        }
-      }
+    guard let userId = credentials?.userId, 
+          let roomKey = roomKey,
+          let keyId = keyId,
+          let version = version else {
+      return message
     }
     
-    return message
+    let m = Message(_id: id, text: message, userId: userId)
+    guard let cypherData = try? encoder.encode(m) else {
+      return message
+    }
+    
+    let cypherBase64 = cypherData.base64EncodedString()
+    
+    if version == "v2" {
+      // V2 format: Use AES-GCM with 12-byte IV and return JSON structure
+      guard let randomBytesHex = RandomUtils.generateRandomKeyHex(12),
+            let iv = Data(hexString: randomBytesHex) else {
+        return message
+      }
+      
+      let ivHex = CryptoUtils.bytes(toHex: iv)
+      
+      guard let encryptedBase64 = AESCrypto.encryptGcmBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex) else {
+        return message
+      }
+      
+      // Return JSON structure for v2
+      let jsonObject: [String: Any] = [
+        "key_id": keyId,
+        "iv": iv.base64EncodedString(),
+        "ciphertext": encryptedBase64
+      ]
+      
+      guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject, options: []),
+            let jsonString = String(data: jsonData, encoding: .utf8) else {
+        return message
+      }
+      
+      return jsonString
+    } else {
+      // V1 format: Use AES-CBC with 16-byte IV (existing logic)
+      guard let randomBytesHex = RandomUtils.generateRandomKeyHex(UInt(kCCBlockSizeAES128)),
+            let iv = Data(hexString: randomBytesHex) else {
+        return message
+      }
+      
+      let ivHex = CryptoUtils.bytes(toHex: iv)
+      
+      guard let encryptedBase64 = AESCrypto.encryptBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex),
+            let encryptedData = Data(base64Encoded: encryptedBase64) else {
+        return message
+      }
+      
+      let joined = Data.join(vector: iv, data: encryptedData)
+      return keyId + joined.base64EncodedString()
+    }
   }
 }
