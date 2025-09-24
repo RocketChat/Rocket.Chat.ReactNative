@@ -88,8 +88,7 @@ public class CustomPushNotification extends PushNotification {
         boolean hasSender = loadedEjson.sender != null;
         String title = bundle.getString("title");
 
-        // If it has a encrypted message
-        if (loadedEjson.msg != null) {
+        if (loadedEjson.content != null || loadedEjson.msg != null) {
             // Override message with the decrypted content
             String decrypted = Encryption.shared.decryptMessage(loadedEjson, reactApplicationContext);
             if (decrypted != null) {

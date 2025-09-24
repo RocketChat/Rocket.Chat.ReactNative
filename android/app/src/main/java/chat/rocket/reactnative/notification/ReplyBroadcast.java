@@ -121,14 +121,13 @@ public class ReplyBroadcast extends BroadcastReceiver {
         msgMap.put("rid", rid);
         
         if (encryptedMessage != message) {
-            // Encrypted message - use content structure
             Map contentMap = new HashMap();
             contentMap.put("algorithm", "rc.v1.aes-sha2");
             contentMap.put("ciphertext", encryptedMessage);
             msgMap.put("content", contentMap);
             msgMap.put("t", "e2e");
+            msgMap.put("msg", encryptedMessage);
         } else {
-            // Regular message - use msg field
             msgMap.put("msg", message);
         }
         
