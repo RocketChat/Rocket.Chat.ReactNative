@@ -489,6 +489,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 					<Button
 						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						title={I18n.t('RESET')}
+						color={colors.buttonFontSecondary}
 						onPress={onResetPress}
 						disabled={!isDirty}
 						testID='room-info-edit-view-reset'

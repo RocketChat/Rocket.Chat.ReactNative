@@ -1985,3 +1985,33 @@ export const LongNameUserLargeFont = () => (
 		/>
 	</>
 );
+
+const collapsedAttachments = {
+	collapsed: true,
+	title: 'Title collapsed',
+	fields: [
+		{
+			title: 'Field 1',
+			value: 'Value 1'
+		},
+		{
+			title: 'Field 2',
+			value: 'Value 2'
+		}
+	]
+};
+export const CollapsedAttachments = () => (
+	<>
+		<Message msg='Message' attachments={[collapsedAttachments]} />
+		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
+		<Message msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
+	</>
+);
+
+export const CollapsedAttachmentsLargeFont = () => (
+	<>
+		<MessageLargeFont msg='Message' attachments={[collapsedAttachments]} />
+		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
+		<MessageLargeFont msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
+	</>
+);
