@@ -222,10 +222,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		};
 	};
 
-	startShareView = () => {
+	startShareView = async () => {
 		const startShareView = this.props.route.params?.startShareView;
 		if (startShareView) {
 			const { selectedMessages, text } = startShareView();
+			// Synchronization needed for Fabric to work
+			await new Promise(resolve => setTimeout(resolve, 100));
 			this.messageComposerRef.current?.setInput(text);
 			this.setState({ selectedMessages });
 		}
@@ -364,6 +366,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					value={{
 						rid: room.rid,
 						t: room.t,
+						room,
 						tmid: this.getThreadId(thread),
 						sharing: true,
 						action: route.params?.action,

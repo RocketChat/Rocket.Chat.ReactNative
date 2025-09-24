@@ -9,7 +9,6 @@ import RoomItem from '../../../containers/RoomItem';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import SafeAreaView from '../../../containers/SafeAreaView';
-import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
@@ -85,8 +84,7 @@ const QueueListView = React.memo(() => {
 				// we're calling v as visitor on our mergeSubscriptionsRooms
 				visitor: item.v
 			},
-			isMasterDetail,
-			popToRoot: true
+			isMasterDetail
 		});
 	};
 
@@ -111,7 +109,6 @@ const QueueListView = React.memo(() => {
 
 	return (
 		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
-			<StatusBar />
 			<FlatList
 				ref={getScrollRef}
 				data={queued}

@@ -17,11 +17,11 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		const isMasterDetail = yield select(state => state.app.isMasterDetail);
 
 		if (subscriptions.length) {
-			goRoom({ item: subscriptions[0], isMasterDetail, popToRoot: true, messageId: message.id });
+			goRoom({ item: subscriptions[0], isMasterDetail, messageId: message.id });
 		} else {
 			const result = yield Services.createDirectMessage(username);
 			if (result?.success) {
-				goRoom({ item: result?.room, isMasterDetail, popToRoot: true, messageId: message.id });
+				goRoom({ item: result?.room, isMasterDetail, messageId: message.id });
 			}
 		}
 	} catch (e) {

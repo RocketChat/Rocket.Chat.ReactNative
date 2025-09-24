@@ -1,0 +1,23 @@
+appId: chat.rocket.reactnative
+name: Navigate to workspace
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible: 'Add Workspace'
+    timeout: 60000
+- tapOn:
+    text: 'Workspace URL. Required.'
+- inputText: ${output.data.server}
+- tapOn: 'Connect'
+- waitForAnimationToEnd:
+    timeout: 60000
+- assertVisible:
+    id: 'workspace-view'
+- assertVisible: 'Login'
+- tapOn: 'Login'
+- extendedWaitUntil:
+    visible:
+      id: 'login-view'
+    timeout: 60000

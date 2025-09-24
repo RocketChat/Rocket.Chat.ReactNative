@@ -3,20 +3,20 @@ import { useDispatch } from 'react-redux';
 
 import sdk from '../../../lib/services/sdk';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
-import UserPreferences from '../../../lib/methods/userPreferences';
-import { CERTIFICATE_KEY } from '../../../lib/constants';
 import { selectServerClear, serverRequest } from '../../../actions/server';
 import completeUrl from '../utils/completeUrl';
 import { ISubmitParams } from '../definitions';
 import basicAuth from '../methods/basicAuth';
+import userPreferences from '../../../lib/methods/userPreferences';
+import { CERTIFICATE_KEY } from '../../../lib/constants/keys';
 
 type TUseNewServerProps = {
-	text: string;
+	workspaceUrl: string;
 	certificate: string | null;
 	previousServer: string | null;
 };
 
-const useConnectServer = ({ text, certificate, previousServer }: TUseNewServerProps) => {
+const useConnectServer = ({ workspaceUrl, certificate, previousServer }: TUseNewServerProps) => {
 	const dispatch = useDispatch();
 
 	const submit = ({ fromServerHistory = false, username, serverUrl }: ISubmitParams = {}) => {
@@ -27,17 +27,17 @@ const useConnectServer = ({ text, certificate, previousServer }: TUseNewServerPr
 			sdk.disconnect();
 			dispatch(selectServerClear());
 		}
-		if (text || serverUrl) {
+		if (workspaceUrl || serverUrl) {
 			Keyboard.dismiss();
-			const server = completeUrl(serverUrl ?? text);
+			const server = completeUrl(serverUrl ?? workspaceUrl);
 
 			// Save info - SSL Pinning
 			if (certificate) {
-				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
+				userPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
 			}
 
 			// Save info - HTTP Basic Authentication
-			basicAuth(server, serverUrl ?? text);
+			basicAuth(server, serverUrl ?? workspaceUrl);
 
 			if (fromServerHistory) {
 				dispatch(serverRequest(server, username, true));

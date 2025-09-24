@@ -11,7 +11,6 @@ import { isImageBase64 } from '../lib/methods';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
-import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import { IAttachment } from '../definitions';
 import I18n from '../i18n';
@@ -198,7 +197,6 @@ const AttachmentView = (): React.ReactElement => {
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
-			<StatusBar />
 			<RenderContent attachment={attachment} setLoading={setLoading} />
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}
 		</View>

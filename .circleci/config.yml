@@ -146,7 +146,7 @@ commands:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
-            echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "newArchEnabled=true" >> ./gradle.properties
             echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
@@ -297,7 +297,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android beta official:<< parameters.official >>
+          command: bundle exec fastlane android beta_circle_ci official:<< parameters.official >>
           working_directory: android
 
   # EXPERIMENTAL ONLY
@@ -314,7 +314,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android internal_app_sharing
+          command: bundle exec fastlane android internal_app_sharing_circle_ci
           working_directory: android
 
   # EXPERIMENTAL ONLY
@@ -332,7 +332,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android production
+          command: bundle exec fastlane android production_circle_ci
           working_directory: android
 
   upload-to-testflight:
@@ -354,7 +354,7 @@ commands:
           name: Fastlane Tesflight Upload
           command: |
             echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-            bundle exec fastlane ios beta official:<< parameters.official >>
+            bundle exec fastlane ios beta_circle_ci official:<< parameters.official >>
           working_directory: ios
       - save_cache: *save-gems-cache
 
@@ -482,7 +482,7 @@ jobs:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
-            echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "newArchEnabled=true" >> ./gradle.properties
             echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
             echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
@@ -714,14 +714,4 @@ workflows:
           requires:
             - android-hold-google-play-beta-official
 
-      # Android Automatic Experimental
-      - android-automatic-build-experimental:
-          filters:
-            branches:
-              only:
-                - develop
-          requires:
-            - lint-testunit
-      - android-google-play-production-experimental:
-          requires:
-            - android-automatic-build-experimental
+

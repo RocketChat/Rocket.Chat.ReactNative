@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import { IThemePreference, TDarkLevel, TThemeMode } from '../definitions/ITheme';
 import I18n from '../i18n';
 import { THEME_PREFERENCES_KEY } from '../lib/constants';
@@ -130,7 +129,6 @@ const ThemeView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView testID='theme-view'>
-			<StatusBar />
 			<List.Container>
 				<List.Section title='Theme'>
 					<List.Separator />

@@ -54,7 +54,11 @@ const Avatar = React.memo(
 					value={{
 						getCustomEmoji
 					}}>
-					<Emoji block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }} style={avatarStyle} />
+					<Emoji
+						block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }}
+						style={avatarStyle}
+						isAvatar={true}
+					/>
 				</MarkdownContext.Provider>
 			);
 		} else {

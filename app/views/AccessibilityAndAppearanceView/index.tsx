@@ -1,12 +1,11 @@
 import React, { useLayoutEffect } from 'react';
-import { Switch } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
+import Switch from '../../containers/Switch';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
@@ -49,7 +48,6 @@ const AccessibilityAndAppearanceView = () => {
 	}, []);
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container testID='accessibility-view-list'>
 				<List.Section>
 					<List.Separator />
