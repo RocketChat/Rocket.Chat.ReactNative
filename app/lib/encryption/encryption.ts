@@ -420,6 +420,9 @@ class Encryption {
 			const preparedSubscriptions: (Model | null)[] = await Promise.all(
 				subsEncrypted.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
+					if (lastMessage?.e2e === 'done') {
+						return null;
+					}
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					try {
 						return sub.prepareUpdate(
