@@ -53,8 +53,8 @@ export function loadMessagesForRoom(args: {
 					} as IMessage;
 					data.push(loadMoreMessage);
 				}
-
-				if (uniqueTmids) {
+				const onlyThreadMessages = !data.find(item => !item.tmid);
+				if (uniqueTmids && onlyThreadMessages) {
 					await Promise.allSettled(
 						uniqueTmids.map(async tmid => {
 							const threadMessageRecord = (await sdk.get('chat.getMessage', { msgId: tmid as string })) as any;
