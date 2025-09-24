@@ -14,6 +14,7 @@ import { useAppSelector } from '../lib/hooks';
 import { useDebounce } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 import { OutsideModalParamList } from '../stacks/types';
+import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
 
 // iframe uses a postMessage to send the token to the client
 // We'll handle this sending the token to the hash of the window.location
@@ -76,7 +77,9 @@ const AuthenticationWebView = () => {
 
 	const tryLogin = useDebounce(
 		async () => {
-			const data = await fetch(Accounts_Iframe_api_url, { method: Accounts_Iframe_api_method }).then(response => response.json());
+			const data = await fetch(Accounts_Iframe_api_url, { method: Accounts_Iframe_api_method as TMethods }).then(response =>
+				response.json()
+			);
 			const resume = data?.login || data?.loginToken;
 			if (resume) {
 				login({ resume });
