@@ -86,22 +86,19 @@ onFlowStart:
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'message-02')}
 - extendedWaitUntil:
     visible:
-      text: ${output.otherUser.username}
+      id: 'username-header-${output.otherUser.username}'
       index: 0
     timeout: 60000
-- tapOn: ${output.otherUser.username}
+- tapOn:
+    id: 'username-header-${output.otherUser.username}'
 - extendedWaitUntil:
     visible:
       text: 'Ignore'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - tapOn: 'Ignore'
 - extendedWaitUntil:
     visible:
       text: 'Unignore'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 
@@ -115,35 +112,34 @@ onFlowStart:
       text: .*Message ignored. Tap to display it.*
       index: 0
     timeout: 60000
-- tapOn: .*Message ignored. Tap to display it.*
+- tapOn:
+    text: .*Message ignored. Tap to display it.*
+    index: 0
 - extendedWaitUntil:
     visible:
-      text: ${output.otherUser.username}
+      id: 'username-header-${output.otherUser.username}'
       index: 0
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'message-02'
+      text: 'message-01'
       index: 0
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: ${output.otherUser.username}
+      id: 'username-header-${output.otherUser.username}'
       index: 0
     timeout: 60000
-- tapOn: ${output.otherUser.username}
+- tapOn:
+    id: 'username-header-${output.otherUser.username}'
 - extendedWaitUntil:
     visible:
       text: 'Unignore'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - tapOn: 'Unignore'
 - extendedWaitUntil:
     visible:
       text: 'Ignore'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
@@ -168,8 +164,6 @@ onFlowStart:
 - extendedWaitUntil:
     visible:
       text: 'Report'
-      childOf:
-        id: room-info-view-warning
     timeout: 60000
 - tapOn: 'Report'
 - extendedWaitUntil:
@@ -215,8 +209,6 @@ onFlowStart:
 - extendedWaitUntil:
     visible:
       text: 'Report'
-      childOf:
-        id: room-info-view-warning
 - tapOn: 'Report'
 - extendedWaitUntil:
     visible:
