@@ -43,7 +43,8 @@ onFlowComplete:
     visible:
       id: 'create-discussion-view'
     timeout: 60000
-- tapOn: 'Select a channel'
+- tapOn:
+    id: 'create-discussion-select-channel'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
@@ -141,7 +142,7 @@ onFlowComplete:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: ${output.room.name}
+      text: .*${output.room.name}.*
     timeout: 60000
 - tapOn:
     id: multi-select-discussion-name
@@ -311,10 +312,10 @@ onFlowComplete:
 # should navigate to discussion
 - extendedWaitUntil:
     visible:
-      text: .*${output.discussionFromNewMessage}.*
+      id: 'discussions-view-${output.discussionFromNewMessage}'
     timeout: 60000
 - tapOn:
-    text: .*${output.discussionFromNewMessage}.*
+    id: 'discussions-view-${output.discussionFromNewMessage}'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.discussionFromNewMessage}'
