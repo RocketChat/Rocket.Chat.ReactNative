@@ -42,7 +42,8 @@ export function loadMessagesForRoom(args: {
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id as string);
-				if (!lastMessageRecord && data.length === COUNT) {
+				const uniqueTmids = [...new Set(data.map(m => m.tmid).filter(Boolean))];
+				if (!lastMessageRecord && data.length === COUNT && !uniqueTmids) {
 					const loadMoreMessage = {
 						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,
@@ -52,6 +53,16 @@ export function loadMessagesForRoom(args: {
 					} as IMessage;
 					data.push(loadMoreMessage);
 				}
+
+				if (uniqueTmids) {
+					await Promise.allSettled(
+						uniqueTmids.map(async tmid => {
+							const threadMessageRecord = (await sdk.get('chat.getMessage', { msgId: tmid as string })) as any;
+							data.push(threadMessageRecord?.message as IMessage);
+						})
+					);
+				}
+
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
 				return resolve();
 			}
