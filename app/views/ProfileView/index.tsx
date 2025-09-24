@@ -380,14 +380,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							customFields={customFields}
 							onCustomFieldChange={value => setCustomFields(value)}
 						/>
-						{Accounts_AllowPasswordChange ? (
-							<Button
-								title={I18n.t('Change_my_password')}
-								type='secondary'
-								onPress={navigateToChangePasswordView}
-								testID='profile-view-change-my-password-button'
-							/>
-						) : null}
 					</View>
 
 					<Button
@@ -401,6 +393,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					/>
 
 					<ListSeparator style={{ marginVertical: 12 }} />
+					{Accounts_AllowPasswordChange ? (
+						<Button
+							title={I18n.t('Change_my_password')}
+							type='secondary'
+							onPress={navigateToChangePasswordView}
+							testID='profile-view-change-my-password-button'
+						/>
+					) : null}
 					<Button
 						title={I18n.t('Logout_from_other_logged_in_locations')}
 						type='secondary'
