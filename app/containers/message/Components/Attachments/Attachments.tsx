@@ -13,7 +13,7 @@ import { IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
-	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0;
+	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed;
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
