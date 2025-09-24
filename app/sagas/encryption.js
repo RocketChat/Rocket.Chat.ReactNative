@@ -115,7 +115,8 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		if (subscribedRoom) {
 			yield readMessages(subscribedRoom, new Date());
 		}
-	} catch {
+	} catch (e) {
+		log(e);
 		// Can't decrypt user private key
 		yield put(encryptionDecodeKeyFailure());
 	}

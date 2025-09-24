@@ -1,5 +1,4 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
@@ -28,7 +27,6 @@ import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
-import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
@@ -48,6 +46,7 @@ import sdk from '../lib/services/sdk';
 import { appSelector } from '../lib/hooks';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
+import SSLPinning from '../lib/methods/helpers/sslPinning';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -104,14 +103,12 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
-				Alert.alert(I18n.t('Invalid_workspace_URL'), serverInfoResult.message);
-				yield put(serverFailure());
+				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
 			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
-				Alert.alert(I18n.t('Invalid_workspace_URL'), websocketInfo.message);
-				yield put(serverFailure());
+				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
 		}
@@ -231,12 +228,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	try {
-		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
-
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');

@@ -103,7 +103,6 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
-import LiveLocationStatusBar from '../LocationShare/LiveLocationStatusBar';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -121,7 +120,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private subObserveQuery?: Subscription;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
-	private retryInit = 0;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions?: IMessageErrorActions | null;
 	private messageActions?: IMessageActions | null;
@@ -610,12 +608,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			this.retryInit += 1;
-			if (this.retryInit <= 1) {
-				this.retryInitTimeout = setTimeout(() => {
-					this.init();
-				}, 300);
-			}
+			this.retryInitTimeout = setTimeout(() => {
+				this.init();
+			}, 300);
 		}
 	};
 
@@ -955,6 +950,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (message.fromServer && !message.tmid && this.rid) {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
+				// Synchronization needed for Fabric to work
+				await new Promise(res => setTimeout(res, 100));
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
 				this.cancelJumpToMessage();
 			}
@@ -985,8 +982,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	handleRoomRemoved = ({ rid }: { rid: string }) => {
 		const { room } = this.state;
+		const { isMasterDetail } = this.props;
 		if (rid === this.rid) {
-			Navigation.navigate('RoomsListView');
+			Navigation.popToTop(isMasterDetail);
 			!this.isOmnichannel &&
 				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
 		}
@@ -1522,18 +1520,19 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				value={{
 					rid,
 					t,
+					room,
 					tmid: this.tmid,
 					sharing: false,
 					action,
 					selectedMessages,
+					updateAutocompleteVisible: this.updateAutocompleteVisible,
+					isAutocompleteVisible,
 					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
 					editCancel: this.onEditCancel,
 					editRequest: this.onEditRequest,
 					onSendMessage: this.handleSendMessage,
 					setQuotesAndText: this.setQuotesAndText,
-					getText: this.getText,
-					updateAutocompleteVisible: this.updateAutocompleteVisible,
-					isAutocompleteVisible
+					getText: this.getText
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
 					<StatusBar />
@@ -1552,7 +1551,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						rid={rid}
 						tmid={this.tmid}
 						renderRow={this.renderItem}
-						loading={loading}
 						hideSystemMessages={this.hideSystemMessages}
 						showMessageInMainThread={user.showMessageInMainThread ?? false}
 						serverVersion={serverVersion}

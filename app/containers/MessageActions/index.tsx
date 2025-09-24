@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import database from '../../lib/database';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import I18n from '../../i18n';
 import log, { logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
@@ -219,8 +220,11 @@ const MessageActions = React.memo(
 					const db = database.active;
 					const result = await Services.markAsUnread({ messageId });
 					if (result.success) {
-						const subCollection = db.get('subscriptions');
-						const subRecord = await subCollection.find(rid);
+						const subRecord = await getSubscriptionByRoomId(rid);
+						if (!subRecord) {
+							return;
+						}
+
 						await db.write(async () => {
 							try {
 								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
@@ -228,11 +232,11 @@ const MessageActions = React.memo(
 								// do nothing
 							}
 						});
-						Navigation.navigate('RoomsListView');
 					}
 				} catch (e) {
-					logEvent(events.ROOM_MSG_ACTION_UNREAD_F);
 					log(e);
+				} finally {
+					Navigation.popToTop(isMasterDetail);
 				}
 			};
 
@@ -287,11 +291,12 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleStar = async (message: TAnyMessageModel) => {
-				logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
+			const handleStar = async (messageId: string, starred: boolean) => {
+				logEvent(starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
-					await Services.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
-					EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
+					await Services.toggleStarMessage(messageId, starred);
+
+					EventEmitter.emit(LISTENER, { message: starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
 					log(e);
@@ -481,7 +486,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 						icon: message.starred ? 'star-filled' : 'star',
-						onPress: () => handleStar(message)
+						onPress: () => handleStar(message.id, message.starred || false)
 					});
 				}
 

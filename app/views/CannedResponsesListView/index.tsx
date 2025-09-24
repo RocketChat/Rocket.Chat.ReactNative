@@ -7,7 +7,6 @@ import database from '../../lib/database';
 import I18n from '../../i18n';
 import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
@@ -102,7 +101,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const navigateToRoom = (item: ICannedResponse) => {
 		if (room?.rid) {
-			goRoom({ item: room, isMasterDetail, popToRoot: true, usedCannedResponse: item.text });
+			goRoom({ item: room, isMasterDetail, usedCannedResponse: item.text });
 		}
 	};
 
@@ -292,12 +291,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		);
 	};
 
-	return (
-		<SafeAreaView>
-			<StatusBar />
-			{renderContent()}
-		</SafeAreaView>
-	);
+	return <SafeAreaView>{renderContent()}</SafeAreaView>;
 };
 
 export default CannedResponsesListView;

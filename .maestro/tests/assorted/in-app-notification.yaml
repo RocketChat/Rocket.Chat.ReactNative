@@ -1,0 +1,58 @@
+appId: chat.rocket.reactnative
+name: In App Notification
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- evalScript: ${output.sender = output.utils.createUser()}
+- evalScript: ${output.receiver = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.sender.username, output.sender.password)}
+- evalScript: ${output.result = output.utils.createDM(output.receiver.username, output.receiver.password, output.sender.username)}
+- evalScript: ${output.dmCreatedRid = output.result.room.rid}
+
+- runFlow: ../../helpers/launch-app.yaml
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.receiver.username}
+      PASSWORD: ${output.receiver.password}
+
+# receive in RoomsListView
+- evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, output.dmCreatedRid, 'Message in DM')}
+- extendedWaitUntil:
+    visible:
+      id: 'in-app-notification-Message in DM'
+    timeout: 60000
+- tapOn:
+    id: 'in-app-notification-Message in DM'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.sender.username}'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+
+# receive in another room
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, output.dmCreatedRid, 'Another msg')}
+- extendedWaitUntil:
+    visible:
+      id: 'in-app-notification-Another msg'
+    timeout: 60000
+- tapOn:
+    id: 'in-app-notification-Another msg'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.sender.username}'
+    timeout: 60000
+
+# should tap back and go back to RoomsListView
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000

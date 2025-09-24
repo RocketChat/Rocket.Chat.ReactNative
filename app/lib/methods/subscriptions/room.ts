@@ -28,39 +28,20 @@ import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import { updateLastOpen } from '../updateLastOpen';
-
-const WINDOW_TIME = 1000;
+import markMessagesRead from '../helpers/markMessagesRead';
 
 export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
-	private timer: ReturnType<typeof setTimeout> | null;
-	private queue: { [key: string]: IMessage };
-	private messagesBatch: {};
-	private _messagesBatch: { [key: string]: TMessageModel };
-	private threadsBatch: {};
-	private _threadsBatch: { [key: string]: TThreadModel };
-	private threadMessagesBatch: {};
-	private _threadMessagesBatch: { [key: string]: TThreadMessageModel };
 	private promises?: Promise<TSubscriptionModel[]>;
 	private connectedListener?: Promise<any>;
 	private disconnectedListener?: Promise<any>;
 	private notifyRoomListener?: Promise<any>;
 	private messageReceivedListener?: Promise<any>;
-	private lastOpen?: Date;
 
 	constructor(rid: string) {
 		this.rid = rid;
 		this.isAlive = true;
-		this.timer = null;
-		this.queue = {};
-		this.messagesBatch = {};
-		this.threadsBatch = {};
-		this.threadMessagesBatch = {};
-
-		this._messagesBatch = {};
-		this._threadsBatch = {};
-		this._threadMessagesBatch = {};
 	}
 
 	subscribe = async () => {
@@ -99,9 +80,6 @@ export default class RoomSubscription {
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
-		if (this.timer) {
-			clearTimeout(this.timer);
-		}
 	};
 
 	removeListener = async (promise?: Promise<any>): Promise<void> => {
@@ -119,15 +97,13 @@ export default class RoomSubscription {
 		try {
 			reduxStore.dispatch(clearUserTyping());
 			await loadMissedMessages({ rid: this.rid });
-			const _lastOpen = new Date();
-			this.read(_lastOpen);
-			this.lastOpen = _lastOpen;
+			this.read();
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDDPMessage) => {
+	handleNotifyRoomReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
@@ -256,11 +232,14 @@ export default class RoomSubscription {
 					log(e);
 				}
 			});
+		} else if (ev === 'messagesRead') {
+			const lastOpen = ddpMessage.fields.args[0]?.until?.$date;
+			await markMessagesRead({ rid: this.rid, lastOpen });
 		}
 	});
 
-	read = debounce((lastOpen: Date) => {
-		readMessages(this.rid, lastOpen);
+	read = debounce(() => {
+		readMessages(this.rid, new Date());
 	}, 300);
 
 	updateMessage = (message: IMessage): Promise<void> =>
@@ -269,6 +248,7 @@ export default class RoomSubscription {
 				return resolve();
 			}
 
+			const batch: TMessageModel[] | TThreadModel[] | TThreadMessageModel[] = [];
 			const db = database.active;
 			const msgCollection = db.get('messages');
 			const threadsCollection = db.get('threads');
@@ -279,24 +259,26 @@ export default class RoomSubscription {
 
 			// Create or update message
 			try {
-				let operation = null;
 				const messageRecord = await getMessageById(message._id);
 				if (messageRecord) {
-					operation = messageRecord.prepareUpdate(
-						protectedFunction((m: TMessageModel) => {
-							Object.assign(m, message);
-						})
+					batch.push(
+						messageRecord.prepareUpdate(
+							protectedFunction((m: TMessageModel) => {
+								Object.assign(m, message);
+							})
+						)
 					);
 				} else {
-					operation = msgCollection.prepareCreate(
-						protectedFunction((m: TMessageModel) => {
-							m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-							if (m.subscription) m.subscription.id = this.rid;
-							Object.assign(m, message);
-						})
+					batch.push(
+						msgCollection.prepareCreate(
+							protectedFunction((m: TMessageModel) => {
+								m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+								if (m.subscription) m.subscription.id = this.rid;
+								Object.assign(m, message);
+							})
+						)
 					);
 				}
-				this._messagesBatch[message._id] = operation;
 			} catch (e) {
 				log(e);
 			}
@@ -304,24 +286,26 @@ export default class RoomSubscription {
 			// Create or update thread
 			if (message.tlm) {
 				try {
-					let operation = null;
 					const threadRecord = await getThreadById(message._id);
 					if (threadRecord) {
-						operation = threadRecord.prepareUpdate(
-							protectedFunction((t: TThreadModel) => {
-								Object.assign(t, message);
-							})
+						batch.push(
+							threadRecord.prepareUpdate(
+								protectedFunction((t: TThreadModel) => {
+									Object.assign(t, message);
+								})
+							)
 						);
 					} else {
-						operation = threadsCollection.prepareCreate(
-							protectedFunction((t: TThreadModel) => {
-								t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
-								if (t.subscription) t.subscription.id = this.rid;
-								Object.assign(t, message);
-							})
+						batch.push(
+							threadsCollection.prepareCreate(
+								protectedFunction((t: TThreadModel) => {
+									t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
+									if (t.subscription) t.subscription.id = this.rid;
+									Object.assign(t, message);
+								})
+							)
 						);
 					}
-					this._threadsBatch[message._id] = operation;
 				} catch (e) {
 					log(e);
 				}
@@ -330,89 +314,53 @@ export default class RoomSubscription {
 			// Create or update thread message
 			if (message.tmid) {
 				try {
-					let operation = null;
 					const threadMessageRecord = await getThreadMessageById(message._id);
 					if (threadMessageRecord) {
-						operation = threadMessageRecord.prepareUpdate(
-							protectedFunction((tm: TThreadMessageModel) => {
-								Object.assign(tm, message);
-								if (message.tmid) {
-									tm.rid = message.tmid;
-									delete tm.tmid;
-								}
-							})
+						batch.push(
+							threadMessageRecord.prepareUpdate(
+								protectedFunction((tm: TThreadMessageModel) => {
+									Object.assign(tm, message);
+									if (message.tmid) {
+										tm.rid = message.tmid;
+										delete tm.tmid;
+									}
+								})
+							)
 						);
 					} else {
-						operation = threadMessagesCollection.prepareCreate(
-							protectedFunction((tm: TThreadMessageModel) => {
-								tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
-								Object.assign(tm, message);
-								if (tm.subscription) {
-									tm.subscription.id = this.rid;
-								}
-								if (message.tmid) {
-									tm.rid = message.tmid;
-									delete tm.tmid;
-								}
-							})
+						batch.push(
+							threadMessagesCollection.prepareCreate(
+								protectedFunction((tm: TThreadMessageModel) => {
+									tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
+									Object.assign(tm, message);
+									if (tm.subscription) {
+										tm.subscription.id = this.rid;
+									}
+									if (message.tmid) {
+										tm.rid = message.tmid;
+										delete tm.tmid;
+									}
+								})
+							)
 						);
 					}
-					this._threadMessagesBatch[message._id] = operation;
 				} catch (e) {
 					log(e);
 				}
 			}
 
-			return resolve();
+			await db.write(async () => {
+				await db.batch(...batch);
+			});
 		});
 
-	handleMessageReceived = (ddpMessage: IDDPMessage) => {
-		if (!this.timer) {
-			this.timer = setTimeout(async () => {
-				// copy variables values to local and clean them
-				const _lastOpen = this.lastOpen;
-				const _queue = Object.keys(this.queue).map(key => this.queue[key]);
-				this._messagesBatch = this.messagesBatch;
-				this._threadsBatch = this.threadsBatch;
-				this._threadMessagesBatch = this.threadMessagesBatch;
-				this.queue = {};
-				this.messagesBatch = {};
-				this.threadsBatch = {};
-				this.threadMessagesBatch = {};
-				this.timer = null;
-
-				for (let i = 0; i < _queue.length; i += 1) {
-					try {
-						// eslint-disable-next-line no-await-in-loop
-						await this.updateMessage(_queue[i]);
-					} catch (e) {
-						log(e);
-					}
-				}
-
-				try {
-					const db = database.active;
-					await db.write(async () => {
-						await db.batch(
-							...Object.values(this._messagesBatch),
-							...Object.values(this._threadsBatch),
-							...Object.values(this._threadMessagesBatch)
-						);
-					});
-
-					this.read(_lastOpen);
-				} catch (e) {
-					log(e);
-				}
-
-				// Clean local variables
-				this._messagesBatch = {};
-				this._threadsBatch = {};
-				this._threadMessagesBatch = {};
-			}, WINDOW_TIME);
+	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
+		try {
+			const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0])) as IMessage;
+			await this.updateMessage(message);
+			this.read();
+		} catch (e) {
+			log(e);
 		}
-		this.lastOpen = new Date();
-		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0])) as IMessage;
-		this.queue[message._id] = message;
 	};
 }

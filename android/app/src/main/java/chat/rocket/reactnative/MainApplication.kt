@@ -25,7 +25,7 @@ import com.wix.reactnativenotifications.core.notification.INotificationsApplicat
 import com.wix.reactnativenotifications.core.notification.IPushNotification
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
-import chat.rocket.reactnative.networking.SSLPinningPackage;
+import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
 
 open class MainApplication : Application(), ReactApplication, INotificationsApplication {
@@ -34,7 +34,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
-              add(SSLPinningPackage())
+              add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
             }
 

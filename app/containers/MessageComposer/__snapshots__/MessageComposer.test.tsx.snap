@@ -82,7 +82,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={203}
+        handlerTag={262}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -177,7 +177,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={204}
+        handlerTag={263}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -246,9 +246,14 @@ exports[`MessageComposer Audio tap record 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -294,7 +299,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={190}
+          handlerTag={249}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -368,6 +373,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -409,7 +415,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={191}
+          handlerTag={250}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -581,7 +587,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={192}
+                handlerTag={251}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -685,9 +691,14 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -733,7 +744,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={193}
+          handlerTag={252}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -807,6 +818,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -848,7 +860,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={194}
+          handlerTag={253}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1021,7 +1033,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={195}
+                handlerTag={254}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1202,7 +1214,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={196}
+                handlerTag={255}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1306,9 +1318,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -1354,7 +1371,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={197}
+          handlerTag={256}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1428,6 +1445,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -1469,7 +1487,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={198}
+          handlerTag={257}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1642,7 +1660,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={199}
+                handlerTag={258}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1823,7 +1841,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={200}
+                handlerTag={259}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1927,9 +1945,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -1970,6 +1993,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -2534,9 +2558,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -2577,6 +2606,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -3141,9 +3171,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -3184,6 +3219,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -3748,9 +3784,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -3791,6 +3832,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -4355,9 +4397,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -4398,6 +4445,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -4962,9 +5010,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -5005,6 +5058,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -5569,9 +5623,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -5612,6 +5671,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -6176,9 +6236,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -6219,6 +6284,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -6783,9 +6849,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -6826,6 +6897,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -7390,9 +7462,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -7433,6 +7510,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -7997,9 +8075,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -8040,6 +8123,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -8604,9 +8688,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -8647,6 +8736,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -9059,9 +9149,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -9102,6 +9197,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -9362,9 +9458,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   >
     <View
@@ -10980,6 +11081,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -11392,9 +11494,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
