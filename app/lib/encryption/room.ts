@@ -110,6 +110,11 @@ export default class EncryptionRoom {
 			}
 		}
 
+		// Redundancy check to avoid multiple handshakes, because of the async sub fetch
+		if (this.establishing) {
+			return this.readyPromise;
+		}
+
 		// Similar to Encryption.evaluateSuggestedKey
 		const { E2EKey, e2eKeyId, E2ESuggestedKey } = this.subscription;
 		if (E2ESuggestedKey && Encryption.privateKey) {
