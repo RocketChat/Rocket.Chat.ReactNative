@@ -2,6 +2,7 @@ import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { Subscription } from 'rxjs';
 
+import { loadMissedMessages } from '../../../../lib/methods';
 import { TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
@@ -32,6 +33,7 @@ export const useMessages = ({
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
 		count.current += QUERY_SIZE;
+		const prevIds = messagesIds.current;
 
 		if (!rid) {
 			return;
@@ -66,7 +68,7 @@ export const useMessages = ({
 				.observe();
 		}
 
-		subscription.current = observable.subscribe(result => {
+		subscription.current = observable.subscribe(async result => {
 			let newMessages: TAnyMessageModel[] = result;
 			if (tmid && thread.current) {
 				newMessages.push(thread.current);
@@ -83,6 +85,29 @@ export const useMessages = ({
 			readThread();
 			setMessages(newMessages);
 			messagesIds.current = newMessages.map(m => m.id);
+
+			const newIds = newMessages.map(m => m.id);
+			const addedIds = newIds.filter(id => !prevIds.includes(id));
+			if (!addedIds.length) {
+				const tsNumbers = newMessages
+					.map(m => {
+						const { ts } = m as any;
+						if (typeof ts === 'number') return ts;
+						if (typeof ts === 'string') {
+							const n = Number(ts);
+							return Number.isFinite(n) ? n : Date.parse(ts);
+						}
+						if (ts instanceof Date) return ts.getTime();
+						return NaN;
+					})
+					.filter(n => Number.isFinite(n)) as number[];
+
+				const oldestTsNumber = tsNumbers.length > 0 ? Math.min(...tsNumbers) : undefined;
+				if (oldestTsNumber) {
+					console.log('loadMissedMessages');
+					await loadMissedMessages({ rid, lastOpen: new Date(oldestTsNumber) });
+				}
+			}
 		});
 	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages]);
 
