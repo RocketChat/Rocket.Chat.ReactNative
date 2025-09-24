@@ -2,7 +2,6 @@ import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { Subscription } from 'rxjs';
 
-import { loadMissedMessages } from '../../../../lib/methods';
 import { TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
@@ -10,6 +9,7 @@ import { getThreadById } from '../../../../lib/database/services/Thread';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { Services } from '../../../../lib/services';
 import { QUERY_SIZE } from '../constants';
+import loadPreviousMessages from '../../../../lib/methods/loadPreviousMessages';
 
 export const useMessages = ({
 	rid,
@@ -86,26 +86,17 @@ export const useMessages = ({
 			setMessages(newMessages);
 			messagesIds.current = newMessages.map(m => m.id);
 
-			const newIds = newMessages.map(m => m.id);
-			const addedIds = newIds.filter(id => !prevIds.includes(id));
-			if (!addedIds.length) {
-				const tsNumbers = newMessages
-					.map(m => {
-						const { ts } = m as any;
-						if (typeof ts === 'number') return ts;
-						if (typeof ts === 'string') {
-							const n = Number(ts);
-							return Number.isFinite(n) ? n : Date.parse(ts);
-						}
-						if (ts instanceof Date) return ts.getTime();
-						return NaN;
-					})
-					.filter(n => Number.isFinite(n)) as number[];
+			const addedIds = messagesIds.current?.filter(id => !prevIds.includes(id));
 
+			if (!addedIds.length) {
+				const tsNumbers = newMessages.map(m => {
+					const { ts } = m as any;
+					return ts?.getTime();
+				});
 				const oldestTsNumber = tsNumbers.length > 0 ? Math.min(...tsNumbers) : undefined;
 				if (oldestTsNumber) {
-					console.log('loadMissedMessages');
-					await loadMissedMessages({ rid, lastOpen: new Date(oldestTsNumber) });
+					console.log('here');
+					await loadPreviousMessages({ rid, lastOpen: new Date(oldestTsNumber) });
 				}
 			}
 		});
