@@ -72,7 +72,7 @@ const SelectChannel = ({
 				}))}
 				onClose={() => getChannels('')}
 				placeholder={{ text: I18n.t('Select_a_Channel') }}
-                testID='create-discussion-select-channel'
+				testID='create-discussion-select-channel'
 			/>
 		</View>
 	);
