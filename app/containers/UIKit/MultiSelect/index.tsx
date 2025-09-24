@@ -38,6 +38,7 @@ interface IMultiSelect {
 	value?: any[];
 	disabled?: boolean;
 	innerInputStyle?: object;
+	testID?: string;
 }
 
 export const MultiSelect = React.memo(
@@ -53,7 +54,8 @@ export const MultiSelect = React.memo(
 		onClose = () => {},
 		disabled,
 		inputStyle,
-		innerInputStyle
+		innerInputStyle,
+		testID
 	}: IMultiSelectWithMultiSelect | IMultiSelectWithoutMultiSelect) => {
 		const { colors } = useTheme();
 		const [selected, select] = useState<IItemData[]>(Array.isArray(values) ? values : []);
@@ -116,9 +118,15 @@ export const MultiSelect = React.memo(
 		};
 
 		let button = multiselect ? (
-			<Button accessibilityRole='combobox' title={`${selected.length} selecteds`} onPress={onShow} loading={loading} />
+			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} testID={testID} />
 		) : (
-			<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
+			<Input
+				onPress={onShow}
+				loading={loading}
+				disabled={disabled}
+				inputStyle={inputStyle}
+				innerInputStyle={innerInputStyle}
+				testID={testID}>
 				<Text style={[styles.pickerText, { color: currentValue ? colors.fontTitlesLabels : colors.fontSecondaryInfo }]}>
 					{currentValue || placeholder.text}
 				</Text>
@@ -127,7 +135,13 @@ export const MultiSelect = React.memo(
 
 		if (context === BlockContext.FORM) {
 			button = (
-				<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
+				<Input
+					onPress={onShow}
+					loading={loading}
+					disabled={disabled}
+					inputStyle={inputStyle}
+					innerInputStyle={innerInputStyle}
+					testID={testID}>
 					{selected.length ? (
 						<Chips items={selected} onSelect={(item: any) => (disabled ? {} : onSelect(item))} />
 					) : (
