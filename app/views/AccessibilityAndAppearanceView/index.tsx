@@ -10,7 +10,15 @@ import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
 import { useUserPreferences } from '../../lib/methods';
-import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY, AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants';
+import {
+	USER_MENTIONS_PREFERENCES_KEY,
+	ROOM_MENTIONS_PREFERENCES_KEY,
+	AUTOPLAY_GIFS_PREFERENCES_KEY,
+	ALERT_DISPLAY_TYPE_PREFERENCES_KEY
+} from '../../lib/constants/keys';
+import ListPicker from './components/ListPicker';
+
+export type TAlertDisplayType = 'TOAST' | 'DIALOG';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
@@ -18,6 +26,10 @@ const AccessibilityAndAppearanceView = () => {
 	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
 	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
 	const [autoplayGifs, setAutoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
+	const [alertDisplayType, setAlertDisplayType] = useUserPreferences<TAlertDisplayType>(
+		ALERT_DISPLAY_TYPE_PREFERENCES_KEY,
+		'TOAST'
+	);
 
 	const toggleMentionsWithAtSymbol = () => {
 		setMentionsWithAtSymbol(!mentionsWithAtSymbol);
@@ -90,6 +102,17 @@ const AccessibilityAndAppearanceView = () => {
 						title='Rooms_With_#_Symbol'
 						right={renderRoomsWithHashTagSwitch}
 						onPress={toggleRoomsWithHashTag}
+					/>
+					<List.Separator />
+				</List.Section>
+				<List.Section>
+					<List.Separator />
+					<ListPicker
+						onChangeValue={value => {
+							setAlertDisplayType(value);
+						}}
+						title={I18n.t('A11y_appearance_show_alerts_as')}
+						value={alertDisplayType}
 					/>
 					<List.Separator />
 				</List.Section>

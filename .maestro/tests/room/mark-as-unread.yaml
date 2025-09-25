@@ -1,0 +1,59 @@
+appId: chat.rocket.reactnative
+name: Mark as unread
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- runFlow: '../../helpers/launch-app.yaml'
+
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+- evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, 'message-mark-as-unread')}
+
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+
+# should mark message as unread
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-message-mark-as-unread'
+    timeout: 60000
+- longPressOn:
+    id: 'message-content-message-mark-as-unread'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- swipe:
+    from:
+      id: 'action-sheet-handle'
+    direction: UP
+- extendedWaitUntil:
+    visible:
+      text: 'Mark unread'
+    timeout: 60000
+- tapOn:
+    text: 'Mark unread'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*1.*'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
