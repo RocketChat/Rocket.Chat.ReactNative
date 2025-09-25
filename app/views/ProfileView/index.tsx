@@ -155,6 +155,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		showActionSheet({ children: <DeleteAccountActionSheetContent /> });
 	};
 
+	// TODO: function is too long, split it
 	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
