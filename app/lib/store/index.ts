@@ -1,6 +1,5 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { rozeniteDevToolsEnhancer } from '@rozenite/redux-devtools-plugin';
 
 import reducers from '../../reducers';
 import sagas from '../../sagas';
@@ -11,6 +10,7 @@ let sagaMiddleware;
 let enhancers;
 
 if (__DEV__) {
+    const { rozeniteDevToolsEnhancer } = require('@rozenite/redux-devtools-plugin');
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 	sagaMiddleware = createSagaMiddleware();
 
