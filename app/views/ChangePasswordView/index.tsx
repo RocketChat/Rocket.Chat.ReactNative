@@ -7,6 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
+import { IProfileParams } from '../../definitions/IProfile';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
@@ -104,11 +105,11 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	};
 
 	const changePassword = async () => {
-		const { newPassword } = inputValues;
+		const { newPassword, currentPassword } = inputValues;
 
 		try {
 			setValue('saving', true);
-			await Services.setUserPassword(newPassword);
+			await Services.saveUserProfile({ newPassword, currentPassword: sha256(currentPassword) } as IProfileParams);
 			dispatch(setUser({ requirePasswordChange: false }));
 			navigation.goBack();
 		} catch (error: any) {
@@ -131,10 +132,8 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 			const { username, emails } = user;
 			if (fromProfileView) {
 				const params = { currentPassword: sha256(currentPassword), newPassword, username, email: emails?.[0].address || '' };
-				const twoFactorOptions = currentPassword
-					? { twoFactorCode: params?.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
-					: null;
-				const result = await Services.saveUserProfileMethod(params, {}, twoFactorCode || twoFactorOptions);
+
+				const result = await Services.saveUserProfile(params);
 
 				if (result) {
 					logEvent(events.PROFILE_SAVE_CHANGES);
