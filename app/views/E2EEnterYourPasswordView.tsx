@@ -1,5 +1,5 @@
-import { useIsFocused } from '@react-navigation/native';
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -46,7 +46,6 @@ interface IE2EEnterYourPasswordView {
 
 const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): React.ReactElement => {
 	const { colors } = useTheme();
-	const isFocused = useIsFocused();
 	const dispatch = useDispatch();
 	const { enabled: encryptionEnabled, failure: encryptionFailure } = useAppSelector(state => state.encryption);
 	const prevEncryptionFailure = useRef<boolean>(encryptionFailure);
@@ -81,9 +80,18 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 	}
 
 	// If screen is closed and e2ee is still disabled, warns the user via toast
-	if (!isFocused && !encryptionEnabled) {
-		showToast(I18n.t('e2ee_disabled'));
-	}
+	useFocusEffect(
+		useCallback(
+			() => () => {
+				const navigatingToResetPassword = navigation.getState().routes.some(route => route.name === 'E2EResetYourPasswordView');
+
+				if (!encryptionEnabled && !navigatingToResetPassword) {
+					showToast(I18n.t('e2ee_disabled'));
+				}
+			},
+			[navigation, encryptionEnabled]
+		)
+	);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
