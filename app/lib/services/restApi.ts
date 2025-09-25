@@ -1080,8 +1080,8 @@ export const notifyUser = (type: string, params: Record<string, any>): Promise<b
 
 export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 	const serverVersion = reduxStore.getState().server.version;
-	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '8.0.0')) {
-		// RC 8.0.0
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.10.0')) {
+		// RC 7.10.0
 		const response = await sdk.get('roles.getUsersInPublicRoles');
 		if (response.success) {
 			return response.users;
