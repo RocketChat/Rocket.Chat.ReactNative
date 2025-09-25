@@ -110,6 +110,7 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 	}, [encryptionFailure, prevEncryptionFailure]);
 
 	const submit = () => {
+		prevEncryptionFailure.current = false;
 		logEvent(events.E2E_ENTER_PW_SUBMIT);
 		dispatch(encryptionDecodeKey(password));
 	};
