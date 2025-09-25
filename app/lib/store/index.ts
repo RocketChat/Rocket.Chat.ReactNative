@@ -10,7 +10,7 @@ let sagaMiddleware;
 let enhancers;
 
 if (__DEV__) {
-    const { rozeniteDevToolsEnhancer } = require('@rozenite/redux-devtools-plugin');
+	const { rozeniteDevToolsEnhancer } = require('@rozenite/redux-devtools-plugin');
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
 	sagaMiddleware = createSagaMiddleware();
 
