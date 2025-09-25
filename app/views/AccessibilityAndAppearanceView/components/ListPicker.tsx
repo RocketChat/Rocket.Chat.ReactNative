@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../../containers/ActionSheet';
@@ -37,19 +37,6 @@ const styles = StyleSheet.create({
 
 type TOPTIONS = { label: string; value: TAlertDisplayType; description: string | null }[];
 
-const OPTIONS: TOPTIONS = [
-	{
-		label: I18n.t('A11y_appearance_toasts'),
-		value: 'TOAST',
-		description: I18n.t('A11y_appearance_toast_dismissed_automatically')
-	},
-	{
-		label: I18n.t('A11y_appearance_dialogs'),
-		value: 'DIALOG',
-		description: I18n.t('A11y_appearance_dialog_require_manual_dismissal')
-	}
-];
-
 interface IBaseParams {
 	value: TAlertDisplayType;
 	onChangeValue: (value: TAlertDisplayType) => void;
@@ -64,6 +51,23 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+
+	const OPTIONS: TOPTIONS = useMemo(
+		() => [
+			{
+				label: I18n.t('A11y_appearance_toasts'),
+				value: 'TOAST' as TAlertDisplayType,
+				description: I18n.t('A11y_appearance_toast_dismissed_automatically')
+			},
+			{
+				label: I18n.t('A11y_appearance_dialogs'),
+				value: 'DIALOG' as TAlertDisplayType,
+				description: I18n.t('A11y_appearance_dialog_require_manual_dismissal')
+			}
+		],
+		[I18n.locale]
+	);
+
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[0];
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
