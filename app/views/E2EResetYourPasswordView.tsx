@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { E2EEnterYourPasswordStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
-import { Services } from '../lib/services';
+import { e2eResetOwnKey } from '../lib/services/restApi';
 import { showConfirmationAlert, showErrorAlert } from '../lib/methods/helpers';
 import { logout } from '../actions/login';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
@@ -45,7 +45,7 @@ const E2EResetYourPasswordView = ({ navigation }: IE2EResetYourPasswordView): Re
 			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					const res = await Services.e2eResetOwnKey();
+					const res = await e2eResetOwnKey();
 
 					if (res?.success === true) {
 						dispatch(logout());
