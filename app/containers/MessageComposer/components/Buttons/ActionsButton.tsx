@@ -9,11 +9,10 @@ import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector, usePermissions } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
-import { Platform, PermissionsAndroid, Alert } from 'react-native';
+import { Platform, PermissionsAndroid, InteractionManager } from 'react-native';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { getCurrentPositionOnce } from '../../../../views/LocationShare/services/staticLocation';
 import { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
-import { isLiveLocationActive, reopenLiveLocationModal } from '../../../../views/LocationShare/LiveLocationPreviewModal';
 
 export const ActionsButton = () => {
 	const { rid, tmid, t } = useRoomContext();
@@ -28,6 +27,25 @@ export const ActionsButton = () => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
+	// --- Sheet transition helpers ---
+	const sheetBusyRef = React.useRef(false);
+	/** Safely close the current ActionSheet and then run `fn` (open next sheet) */
+	const openSheetSafely = (fn: () => void, delayMs = 350) => {
+		if (sheetBusyRef.current) return;
+		sheetBusyRef.current = true;
+
+		hideActionSheet();
+		InteractionManager.runAfterInteractions(() => {
+			setTimeout(() => {
+				try {
+					fn();
+				} finally {
+					sheetBusyRef.current = false;
+				}
+			}, delayMs);
+		});
+	};
+
 	const createDiscussion = async () => {
 		if (!rid) return;
 		const subscription = await getSubscriptionByRoomId(rid);
@@ -40,42 +58,48 @@ export const ActionsButton = () => {
 	};
 
 	const openCurrentPreview = async (provider: MapProviderName) => {
+		console.log('openCurrentPreview called with provider:', provider);
+
 		try {
 			if (!rid) {
+				console.log('Error: rid is missing');
 				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
 				return;
 			}
-			if (Platform.OS === 'android') {
-				const res = await PermissionsAndroid.requestMultiple([
-					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-					PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-				]);
-				const fine = res[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
-				const coarse = res[PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
-				if (fine !== PermissionsAndroid.RESULTS.GRANTED && coarse !== PermissionsAndroid.RESULTS.GRANTED) {
-					throw new Error(I18n.t('Permission_denied'));
-				}
-			}
 
-			const preview = await getCurrentPositionOnce();
+			console.log('rid exists:', rid);
+
+			// Remove the manual Android permission check since getCurrentPositionOnce() handles it
+			console.log('Getting current position...');
+			const coords = await getCurrentPositionOnce();
+			console.log('Got coordinates:', coords);
 
 			const params = {
 				rid,
 				tmid,
 				provider,
-				coords: preview,
+				coords,
 				googleKey: provider === 'google' ? 'AIzaSyBeNJSMCi8kD4c6SOvZ4vxHnWYp2yzDbmg' : undefined,
-				osmKey: provider === 'osm' ? 'pk.898e468814facdcffda869b42260a2f0' : undefined // <-- Mapbox-style key
+				osmKey: provider === 'osm' ? 'pk.898e468814facdcffda869b42260a2f0' : undefined
 			};
-			if (isMasterDetail) {
-				// @ts-ignore
-				Navigation.navigate('ModalStackNavigator', { screen: 'LocationPreviewModal', params });
-			} else {
-				// @ts-ignore
-				// Navigation.navigate('LocationPreviewModal', { rid, tmid, provider, coords: fix, googleKey: undefined });
-				Navigation.navigate('LocationPreviewModal', params);
-			}
+
+			console.log('Navigation params:', params);
+			console.log('isMasterDetail:', isMasterDetail);
+
+			// Defer navigation until after animations are done
+			InteractionManager.runAfterInteractions(() => {
+				console.log('Starting navigation...');
+				if (isMasterDetail) {
+					// @ts-ignore
+					Navigation.navigate('ModalStackNavigator', { screen: 'LocationPreviewModal', params });
+				} else {
+					// @ts-ignore
+					Navigation.navigate('LocationPreviewModal', params);
+				}
+				console.log('Navigation called');
+			});
 		} catch (e: any) {
+			console.error('openCurrentPreview error:', e);
 			showErrorAlert(e?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
 		}
 	};
@@ -86,6 +110,7 @@ export const ActionsButton = () => {
 				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
 				return;
 			}
+
 			if (Platform.OS === 'android') {
 				const res = await PermissionsAndroid.requestMultiple([
 					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -106,13 +131,15 @@ export const ActionsButton = () => {
 				osmKey: provider === 'osm' ? 'pk.898e468814facdcffda869b42260a2f0' : undefined
 			};
 
-			if (isMasterDetail) {
+			// Defer navigation until after sheets/animations are done
+			InteractionManager.runAfterInteractions(() => {
 				// @ts-ignore
-				Navigation.navigate('ModalStackNavigator', { screen: 'LiveLocationPreviewModal', params });
-			} else {
-				// @ts-ignore
-				Navigation.navigate('LiveLocationPreviewModal', params);
-			}
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'LiveLocationPreviewModal', params });
+				} else {
+					Navigation.navigate('LiveLocationPreviewModal', params);
+				}
+			});
 		} catch (e: any) {
 			showErrorAlert(e?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
 		}
@@ -124,16 +151,16 @@ export const ActionsButton = () => {
 				title: I18n.t('Share_current_location'),
 				icon: 'pin-map',
 				onPress: () => {
-					hideActionSheet();
-					setTimeout(() => openCurrentPreview(provider), 250);
+					// sheet -> navigation: close current sheet safely, then start flow
+					openSheetSafely(() => openCurrentPreview(provider));
 				}
 			},
 			{
 				title: I18n.t('Start_live_location'),
 				icon: 'live',
 				onPress: () => {
-					hideActionSheet();
-					setTimeout(() => openLivePreview(provider), 250);
+					// sheet -> navigation: close current sheet safely, then start flow
+					openSheetSafely(() => openLivePreview(provider));
 				}
 			}
 		];
@@ -142,13 +169,20 @@ export const ActionsButton = () => {
 
 	const onPress = () => {
 		const options: TActionSheetOptionsItem[] = [];
+
 		if (t === 'l' && permissionToViewCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
 				icon: 'canned-response',
-				onPress: () => Navigation.navigate('CannedResponsesListView', { rid })
+				onPress: () => {
+					hideActionSheet();
+					InteractionManager.runAfterInteractions(() => {
+						Navigation.navigate('CannedResponsesListView', { rid });
+					});
+				}
 			});
 		}
+
 		if (permissionToUpload) {
 			options.push(
 				{
@@ -156,10 +190,9 @@ export const ActionsButton = () => {
 					icon: 'camera-photo',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
+						InteractionManager.runAfterInteractions(() => {
 							takePhoto();
-						}, 250);
+						});
 					}
 				},
 				{
@@ -167,10 +200,9 @@ export const ActionsButton = () => {
 					icon: 'camera',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
+						InteractionManager.runAfterInteractions(() => {
 							takeVideo();
-						}, 250);
+						});
 					}
 				},
 				{
@@ -178,16 +210,20 @@ export const ActionsButton = () => {
 					icon: 'image',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
+						InteractionManager.runAfterInteractions(() => {
 							chooseFromLibrary();
-						}, 250);
+						});
 					}
 				},
 				{
 					title: I18n.t('Choose_file'),
 					icon: 'attach',
-					onPress: () => chooseFile()
+					onPress: () => {
+						hideActionSheet();
+						InteractionManager.runAfterInteractions(() => {
+							chooseFile();
+						});
+					}
 				}
 			);
 		}
@@ -195,7 +231,12 @@ export const ActionsButton = () => {
 		options.push({
 			title: I18n.t('Create_Discussion'),
 			icon: 'discussions',
-			onPress: () => createDiscussion()
+			onPress: () => {
+				hideActionSheet();
+				InteractionManager.runAfterInteractions(() => {
+					createDiscussion();
+				});
+			}
 		});
 
 		options.push({
@@ -206,22 +247,18 @@ export const ActionsButton = () => {
 					{
 						title: 'OpenStreetMap',
 						icon: 'pin-map',
-						onPress: () => {
-							hideActionSheet();
-							setTimeout(() => openModeSheetForProvider('osm'), 250);
-						}
+						onPress: () => openSheetSafely(() => openModeSheetForProvider('osm'))
 					},
 					{
 						title: 'Google Maps',
 						icon: 'pin-map',
-						onPress: () => {
-							hideActionSheet();
-							setTimeout(() => openModeSheetForProvider('google'), 250);
-						}
+						onPress: () => openSheetSafely(() => openModeSheetForProvider('google'))
 					}
 				];
-				hideActionSheet();
-				setTimeout(() => showActionSheet({ options: providerOptions }), 250);
+
+				openSheetSafely(() => {
+					showActionSheet({ options: providerOptions });
+				});
 			}
 		});
 

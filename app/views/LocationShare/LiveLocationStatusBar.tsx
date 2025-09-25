@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated, InteractionManager, Linking } from 'react-native';
 import {
 	reopenLiveLocationModal,
 	stopGlobalLiveLocation,
@@ -8,72 +8,89 @@ import {
 	removeStatusChangeListener,
 	getCurrentLiveParams
 } from './LiveLocationPreviewModal';
+import { handleLiveLocationUrl, isLiveMessageLink } from './services/handleLiveLocationUrl';
+import { useAppSelector } from '../../lib/hooks';
+import { getUserSelector } from '../../selectors/login';
 
-type Props = {
-	onPress?: () => void;
-};
+type Props = { onPress?: () => void };
 
 export default function LiveLocationStatusBar({ onPress }: Props) {
 	const [isActive, setIsActive] = useState(false);
 	const [pulseAnim] = useState(new Animated.Value(1));
+	const username = useAppSelector(state => getUserSelector(state).username);
 
+	// mounted guard
+	const mounted = useRef(true);
+	useEffect(
+		() => () => {
+			mounted.current = false;
+		},
+		[]
+	);
+	const safeSet = (fn: () => void) => {
+		if (mounted.current) fn();
+	};
+
+	// subscribe to global live-location status
 	useEffect(() => {
-		// Check status initially
-		setIsActive(isLiveLocationActive());
-
-		// Listen for status changes using the callback system
-		const handleStatusChange = (active: boolean) => {
-			setIsActive(active);
-		};
-
+		safeSet(() => setIsActive(isLiveLocationActive()));
+		const handleStatusChange = (active: boolean) => safeSet(() => setIsActive(active));
 		addStatusChangeListener(handleStatusChange);
-
-		return () => {
-			removeStatusChangeListener(handleStatusChange);
-		};
+		return () => removeStatusChangeListener(handleStatusChange);
 	}, []);
 
+	// GLOBAL DEEPLINK LISTENER (works around openLink.ts)
 	useEffect(() => {
-		if (isActive) {
-			// Start pulsing animation
-			const pulse = Animated.loop(
-				Animated.sequence([
-					Animated.timing(pulseAnim, {
-						toValue: 1.3,
-						duration: 1000,
-						useNativeDriver: true
-					}),
-					Animated.timing(pulseAnim, {
-						toValue: 1,
-						duration: 1000,
-						useNativeDriver: true
-					})
-				])
-			);
-			pulse.start();
+		const sub = Linking.addEventListener('url', ({ url }) => {
+			if (isLiveMessageLink(url)) {
+				handleLiveLocationUrl(url);
+			}
+		});
+		// also handle the case when app is cold-started by the link
+		Linking.getInitialURL().then(url => {
+			if (url && isLiveMessageLink(url)) {
+				handleLiveLocationUrl(url);
+			}
+		});
+		return () => sub.remove();
+	}, []);
 
-			return () => pulse.stop();
-		}
+	// pulse animation lifecycle
+	useEffect(() => {
+		if (!isActive) return;
+		const pulse = Animated.loop(
+			Animated.sequence([
+				Animated.timing(pulseAnim, { toValue: 1.3, duration: 1000, useNativeDriver: true }),
+				Animated.timing(pulseAnim, { toValue: 1, duration: 1000, useNativeDriver: true })
+			])
+		);
+		pulse.start();
+		return () => pulse.stop();
 	}, [isActive, pulseAnim]);
 
 	const handlePress = () => {
-		if (onPress) {
-			onPress();
-		} else {
-			reopenLiveLocationModal();
-		}
+		if (onPress) onPress();
+		else InteractionManager.runAfterInteractions(reopenLiveLocationModal);
 	};
 
-	const handleStop = () => {
+	const stoppingRef = useRef(false);
+	const handleStop = async () => {
+		if (stoppingRef.current) return;
+		stoppingRef.current = true;
+
 		const params = getCurrentLiveParams();
-		const currentUserIsOwner = params?.ownerName === /* current username from selector */ '';
+		const currentUserIsOwner = params?.ownerName && username ? params.ownerName === username : !!params?.isTracking;
 
 		if (currentUserIsOwner) {
-			// Owner: stop sharing
-			stopGlobalLiveLocation();
+			try {
+				await stopGlobalLiveLocation(); // sends “Ended” and clears globals
+			} finally {
+				safeSet(() => setIsActive(false));
+				stoppingRef.current = false;
+			}
 		} else {
-			// Viewer: just hide status bar
-			setIsActive(false);
+			safeSet(() => setIsActive(false));
+			stoppingRef.current = false;
 		}
 	};
 
@@ -115,30 +132,12 @@ const styles = StyleSheet.create({
 		elevation: 5,
 		zIndex: 1000
 	},
-	statusBar: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	iconContainer: {
-		marginRight: 12
-	},
-	icon: {
-		fontSize: 18
-	},
-	textContainer: {
-		flex: 1
-	},
-	title: {
-		color: '#fff',
-		fontSize: 15,
-		fontWeight: '600',
-		marginBottom: 2
-	},
-	subtitle: {
-		color: 'rgba(255,255,255,0.8)',
-		fontSize: 12
-	},
+	statusBar: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+	iconContainer: { marginRight: 12 },
+	icon: { fontSize: 18 },
+	textContainer: { flex: 1 },
+	title: { color: '#fff', fontSize: 15, fontWeight: '600', marginBottom: 2 },
+	subtitle: { color: 'rgba(255,255,255,0.8)', fontSize: 12 },
 	stopButton: {
 		width: 28,
 		height: 28,
@@ -148,9 +147,5 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		marginLeft: 12
 	},
-	stopText: {
-		color: '#fff',
-		fontSize: 14,
-		fontWeight: 'bold'
-	}
+	stopText: { color: '#fff', fontSize: 14, fontWeight: 'bold' }
 });

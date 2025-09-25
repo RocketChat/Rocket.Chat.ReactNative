@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Linking, Image } from 'react-native';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Linking } from 'react-native';
+import { Image as ExpoImage } from 'expo-image';
 import Navigation from '../../lib/navigation/appNavigation';
 import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
 import { sendMessage } from '../../lib/methods/sendMessage';
@@ -23,6 +24,18 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 	const { rid, tmid, provider, coords, googleKey, osmKey } = route.params;
 	const [submitting, setSubmitting] = useState(false);
 
+	// mounted guard
+	const mounted = useRef(true);
+	useEffect(
+		() => () => {
+			mounted.current = false;
+		},
+		[]
+	);
+	const safeSet = (fn: () => void) => {
+		if (mounted.current) fn();
+	};
+
 	const { id, token, username } = useAppSelector(
 		state => ({
 			id: getUserSelector(state).id,
@@ -32,14 +45,21 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 		shallowEqual
 	);
 
-	const mapUrl = useMemo(() => {
+	// Build the static map URL once
+	const mapInfo = useMemo(() => {
 		const opts: any = { size: '640x320', zoom: 15 };
 		if (provider === 'google' && googleKey) opts.googleApiKey = googleKey;
 		if (provider === 'osm' && osmKey) opts.osmApiKey = osmKey;
 		return staticMapUrl(provider, { latitude: coords.latitude, longitude: coords.longitude }, opts);
 	}, [provider, coords.latitude, coords.longitude, googleKey, osmKey]);
 
-	// Add deep link for preview
+	// Prefetch to warm cache (expo-image)
+	useEffect(() => {
+		if (mapInfo?.url) {
+			ExpoImage.prefetch(mapInfo.url).catch(() => {});
+		}
+	}, [mapInfo?.url]);
+
 	const openInMaps = async () => {
 		try {
 			const deep = await mapsDeepLink(provider, coords);
@@ -54,7 +74,7 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 
 	const onShare = async () => {
 		try {
-			setSubmitting(true);
+			safeSet(() => setSubmitting(true));
 
 			const { url } = staticMapUrl(
 				provider,
@@ -62,17 +82,10 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 				{ size: '640x320', zoom: 15, googleApiKey: googleKey, osmApiKey: osmKey }
 			);
 
-			let deep = null;
-			if (provider == 'google') {
-				deep = await mapsDeepLink(provider, coords);
-			} else {
-				deep = url;
-			}
-
+			const deep = provider === 'google' ? await mapsDeepLink(provider, coords) : url;
 			const locationText = `${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`;
 			const providerName = providerLabel(provider);
 
-			// Clean format with embedded link and map image
 			const message = `📍 **Location**
 
 **Coordinates:** ${locationText}
@@ -80,14 +93,12 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 [🗺️ Open in ${providerName}](${deep})`;
 
 			await sendMessage(rid, message, tmid, { id, username }, false);
-
-			// Silently close the modal after successful location sharing
 			Navigation.back();
 		} catch (e: any) {
 			console.error('[LocationPreview] Error sending message:', e);
 			Alert.alert(I18n.t('Oops'), e?.message || I18n.t('Could_not_send_message'));
 		} finally {
-			setSubmitting(false);
+			safeSet(() => setSubmitting(false));
 		}
 	};
 
@@ -100,7 +111,7 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 					<Text style={styles.coordsLine}>
 						{coords.latitude.toFixed(5)}, {coords.longitude.toFixed(5)}
 					</Text>
-					{coords.accuracy && <Text style={styles.accuracyText}>Accuracy: ±{Math.round(coords.accuracy)}m</Text>}
+					{coords.accuracy ? <Text style={styles.accuracyText}>Accuracy: ±{Math.round(coords.accuracy)}m</Text> : null}
 				</View>
 
 				<TouchableOpacity onPress={openInMaps}>
@@ -108,7 +119,16 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 				</TouchableOpacity>
 
 				<View style={styles.mapContainer}>
-					<Image source={{ uri: mapUrl.url }} style={styles.mapImage} resizeMode='cover' />
+					<ExpoImage
+						source={{ uri: mapInfo.url }}
+						style={styles.mapImage}
+						contentFit='cover'
+						// Smooth fade + disk cache avoids Android flicker
+						transition={200}
+						cachePolicy='disk'
+						placeholder={BLURHASH_PLACEHOLDER}
+						onError={e => console.log('[LocationPreview] image error:', e)}
+					/>
 				</View>
 
 				<View style={styles.buttons}>
@@ -125,13 +145,12 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 	);
 }
 
+const BLURHASH_PLACEHOLDER =
+	// a tiny neutral placeholder; you can replace with your own blurhash or a local asset
+	'LKO2?U%2Tw=w]~RBVZRi};RPxuwH';
+
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 16,
-		justifyContent: 'center',
-		backgroundColor: '#f5f5f5'
-	},
+	container: { flex: 1, padding: 16, justifyContent: 'center', backgroundColor: '#f5f5f5' },
 	content: {
 		backgroundColor: '#fff',
 		borderRadius: 12,
@@ -142,47 +161,14 @@ const styles = StyleSheet.create({
 		shadowOffset: { width: 0, height: 4 },
 		elevation: 3
 	},
-	title: {
-		fontSize: 18,
-		fontWeight: '600',
-		textAlign: 'center',
-		marginBottom: 12
-	},
-	infoContainer: {
-		marginBottom: 16,
-		alignItems: 'center'
-	},
-	coordsLine: {
-		fontSize: 14,
-		fontWeight: '500',
-		textAlign: 'center',
-		marginBottom: 4
-	},
-	accuracyText: {
-		fontSize: 12,
-		color: '#666',
-		textAlign: 'center'
-	},
-	mapLinkText: {
-		color: '#1d74f5',
-		fontSize: 16,
-		fontWeight: '600',
-		textAlign: 'center',
-		marginBottom: 16
-	},
-	mapContainer: {
-		borderRadius: 8,
-		overflow: 'hidden',
-		marginBottom: 12
-	},
-	mapImage: {
-		width: '100%',
-		height: 200
-	},
-	buttons: {
-		flexDirection: 'row',
-		gap: 12
-	},
+	title: { fontSize: 18, fontWeight: '600', textAlign: 'center', marginBottom: 12 },
+	infoContainer: { marginBottom: 16, alignItems: 'center' },
+	coordsLine: { fontSize: 14, fontWeight: '500', textAlign: 'center', marginBottom: 4 },
+	accuracyText: { fontSize: 12, color: '#666', textAlign: 'center' },
+	mapLinkText: { color: '#1d74f5', fontSize: 16, fontWeight: '600', textAlign: 'center', marginBottom: 16 },
+	mapContainer: { borderRadius: 8, overflow: 'hidden', marginBottom: 12 },
+	mapImage: { width: '100%', height: 200 },
+	buttons: { flexDirection: 'row', gap: 12 },
 	btn: {
 		flex: 1,
 		paddingVertical: 12,
@@ -192,14 +178,7 @@ const styles = StyleSheet.create({
 		borderColor: '#ccc',
 		backgroundColor: '#fff'
 	},
-	btnPrimary: {
-		backgroundColor: '#1d74f5',
-		borderColor: '#1d74f5'
-	},
-	btnText: {
-		fontWeight: '600'
-	},
-	btnTextPrimary: {
-		color: '#fff'
-	}
+	btnPrimary: { backgroundColor: '#1d74f5', borderColor: '#1d74f5' },
+	btnText: { fontWeight: '600' },
+	btnTextPrimary: { color: '#fff' }
 });

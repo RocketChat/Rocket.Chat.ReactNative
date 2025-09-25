@@ -19,6 +19,16 @@
     <!-- android 13 media permission -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
+    <!-- Location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- If you stream/live share or track in background -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <!-- Optional: only if you truly need background updates on Android 10+ -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <application
         android:name="chat.rocket.reactnative.MainApplication"
         android:allowBackup="false"
@@ -90,9 +100,20 @@
     </application>
 
     <queries>
+        <!-- Allow canOpenURL/openURL for your app deep link -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <data android:mimeType="*/*" />
+            <data android:scheme="rocketchat" />
+        </intent>
+
+        <!-- (Optional) If you also check canOpenURL for maps links -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="geo" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
         </intent>
     </queries>
 </manifest>
