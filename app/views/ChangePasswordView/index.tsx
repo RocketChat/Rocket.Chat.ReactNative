@@ -11,11 +11,11 @@ import { IProfileParams } from '../../definitions/IProfile';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isAndroid, showErrorAlert } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { TwoFactorMethods } from '../../definitions/ITotp';
-import { Services } from '../../lib/services';
+import { saveUserProfile } from '../../lib/services/restApi';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { setUser } from '../../actions/login';
 import { LISTENER } from '../../containers/Toast';
@@ -109,7 +109,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 
 		try {
 			setValue('saving', true);
-			await Services.saveUserProfile({ newPassword, currentPassword: sha256(currentPassword) } as IProfileParams);
+			await saveUserProfile({ newPassword, currentPassword: sha256(currentPassword) } as IProfileParams);
 			dispatch(setUser({ requirePasswordChange: false }));
 			navigation.goBack();
 		} catch (error: any) {
@@ -132,8 +132,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 			const { username, emails } = user;
 			if (fromProfileView) {
 				const params = { currentPassword: sha256(currentPassword), newPassword, username, email: emails?.[0].address || '' };
-
-				const result = await Services.saveUserProfile(params);
+				const result = await saveUserProfile(params);
 
 				if (result) {
 					logEvent(events.PROFILE_SAVE_CHANGES);

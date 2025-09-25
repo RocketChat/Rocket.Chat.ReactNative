@@ -5,7 +5,7 @@ import { Image } from 'expo-image';
 import { dequal } from 'dequal';
 import axios from 'axios';
 
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Touchable from './Touchable';
 import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';

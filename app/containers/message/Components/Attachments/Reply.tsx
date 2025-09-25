@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
-import { themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';

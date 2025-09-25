@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 
 import DirectoryItem from './index';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 
 const _theme = 'light';
 

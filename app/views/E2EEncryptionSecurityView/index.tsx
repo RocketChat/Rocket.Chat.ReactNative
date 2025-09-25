@@ -14,7 +14,7 @@ import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import sharedStyles from '../Styles';
-import { Services } from '../../lib/services';
+import { e2eResetOwnKey } from '../../lib/services/restApi';
 import { SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
 
@@ -52,7 +52,7 @@ const E2EEncryptionSecurityView = () => {
 			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					const res = await Services.e2eResetOwnKey();
+					const res = await e2eResetOwnKey();
 
 					if (res?.success === true) {
 						dispatch(logout());

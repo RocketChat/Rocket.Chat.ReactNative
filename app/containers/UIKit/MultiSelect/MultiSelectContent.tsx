@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import { textInputDebounceTime } from '../../../lib/constants';
+import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { textParser } from '../utils';
 import I18n from '../../../i18n';

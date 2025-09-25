@@ -8,8 +8,8 @@ import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
-import { useAppSelector } from '../../lib/hooks';
-import { useUserPreferences } from '../../lib/methods';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
 	USER_MENTIONS_PREFERENCES_KEY,
 	ROOM_MENTIONS_PREFERENCES_KEY,

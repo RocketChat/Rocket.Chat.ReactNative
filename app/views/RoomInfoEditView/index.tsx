@@ -7,7 +7,8 @@ import { type SetValueConfig } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -28,7 +29,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
 import { getRoomTitle, compareServerVersion, showErrorAlert, isAndroid, random } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import { saveRoomSettings, toggleArchiveRoom } from '../../lib/services/restApi';
 import Button from '../../containers/Button';
 import useRoomSubscription from './hooks/useRoomSubscription';
 import useRoomDeletionActions from './hooks/useRoomDeletionActions';
@@ -189,7 +190,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		try {
-			await Services.saveRoomSettings(room.rid, params);
+			await saveRoomSettings(room.rid, params);
 		} catch (e: any) {
 			if (e.error === 'error-invalid-room-name') {
 				setError('name', { message: e, type: 'validate' });
@@ -237,7 +238,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 					onPress: async () => {
 						try {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
-							await Services.toggleArchiveRoom(rid, t as SubscriptionType, !archived);
+							await toggleArchiveRoom(rid, t as SubscriptionType, !archived);
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);

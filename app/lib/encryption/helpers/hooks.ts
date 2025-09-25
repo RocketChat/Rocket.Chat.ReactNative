@@ -1,5 +1,5 @@
 import { compareServerVersion } from '../../methods/helpers';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { TSubscriptionModel } from '../../../definitions';
 
 const isMissingRoomE2EEKey = ({

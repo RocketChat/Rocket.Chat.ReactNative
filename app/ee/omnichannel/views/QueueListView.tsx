@@ -14,7 +14,7 @@ import * as HeaderButton from '../../../containers/Header/components/HeaderButto
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
-import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants';
+import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants/tablet';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
