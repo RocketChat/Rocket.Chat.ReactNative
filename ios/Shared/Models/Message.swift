@@ -12,5 +12,12 @@ struct Message: Codable {
   let _id: String
   let text: String
   let userId: String
-  let ts: Int64 = Date().currentTimeMillis()
+  let ts: Date
+  
+  init(_id: String, text: String, userId: String) {
+    self._id = _id
+    self.text = text
+    self.userId = userId
+    self.ts = Date()
+  }
 }

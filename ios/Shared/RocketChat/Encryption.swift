@@ -50,7 +50,11 @@ final class Encryption {
     return nil
   }
   
-  private final let encoder = JSONEncoder()
+  private final let encoder: JSONEncoder = {
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .iso8601
+    return encoder
+  }()
   
   init(server: String, rid: String) {
     let storage = Storage()
