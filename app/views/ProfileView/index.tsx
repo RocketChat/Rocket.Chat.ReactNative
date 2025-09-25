@@ -25,7 +25,7 @@ import { compareServerVersion } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { saveUserProfileMethod } from '../../lib/services/restApi';
+import { saveUserProfile } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
@@ -155,6 +155,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		showActionSheet({ children: <DeleteAccountActionSheetContent /> });
 	};
 
+	// TODO: function is too long, split it
 	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
@@ -193,11 +194,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		}
 
 		try {
-			const twoFactorOptions = params.currentPassword
-				? { twoFactorCode: params.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
-				: null;
-
-			const result = await saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+			const result = await saveUserProfile(params, customFields);
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
@@ -213,6 +210,21 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					const user = { ...getValues(), ...params };
 					Object.entries(user).forEach(([key, value]) => setValue(key as any, value));
 				}
+
+				const updatedUser = {
+					...user,
+					...params
+				};
+
+				reset({
+					name: updatedUser.name || '',
+					username: updatedUser.username || '',
+					email: updatedUser.emails?.[0]?.address || updatedUser.email || '',
+					currentPassword: null,
+					bio: updatedUser.bio || '',
+					nickname: updatedUser.nickname || '',
+					saving: false
+				});
 				dispatch(setUser({ ...user, ...params, customFields }));
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 			}
@@ -380,14 +392,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							customFields={customFields}
 							onCustomFieldChange={value => setCustomFields(value)}
 						/>
-						{Accounts_AllowPasswordChange ? (
-							<Button
-								title={I18n.t('Change_my_password')}
-								type='secondary'
-								onPress={navigateToChangePasswordView}
-								testID='profile-view-change-my-password-button'
-							/>
-						) : null}
 					</View>
 
 					<Button
@@ -401,6 +405,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					/>
 
 					<ListSeparator style={{ marginVertical: 12 }} />
+					{Accounts_AllowPasswordChange ? (
+						<Button
+							title={I18n.t('Change_my_password')}
+							type='secondary'
+							onPress={navigateToChangePasswordView}
+							testID='profile-view-change-my-password-button'
+						/>
+					) : null}
 					<Button
 						title={I18n.t('Logout_from_other_logged_in_locations')}
 						type='secondary'

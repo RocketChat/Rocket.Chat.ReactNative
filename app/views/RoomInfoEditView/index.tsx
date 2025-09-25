@@ -3,6 +3,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
+import { type SetValueConfig } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -39,6 +40,10 @@ const MESSAGE_TYPE_VALUES = MessageTypeValues.map(m => ({
 	value: m.value,
 	text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
 }));
+
+const dirtyOptions: SetValueConfig = {
+	shouldDirty: true
+};
 
 const schema = yup.object().shape({
 	name: yup.string().required(I18n.t('Name_required'))
@@ -284,29 +289,29 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const toggleRoomType = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
-		setValue('t', value);
-		setValue('encrypted', value && encrypted);
+		setValue('t', value, dirtyOptions);
+		setValue('encrypted', value && encrypted, dirtyOptions);
 	};
 
 	const toggleReadOnly = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_READ_ONLY);
-		setValue('readOnly', value);
+		setValue('readOnly', value, dirtyOptions);
 	};
 
 	const toggleReactions = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_REACTIONS);
-		setValue('reactWhenReadOnly', value);
+		setValue('reactWhenReadOnly', value, dirtyOptions);
 	};
 
 	const toggleHideSystemMessages = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
-		setValue('enableSysMes', value);
-		setValue('systemMessages', value ? systemMessages : []);
+		setValue('enableSysMes', value, dirtyOptions);
+		setValue('systemMessages', value ? systemMessages : [], dirtyOptions);
 	};
 
 	const toggleEncrypted = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ENCRYPTED);
-		setValue('encrypted', value);
+		setValue('encrypted', value, dirtyOptions);
 	};
 
 	const onResetPress = () => {
@@ -485,6 +490,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 					<Button
 						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						title={I18n.t('RESET')}
+						color={colors.buttonFontSecondary}
 						onPress={onResetPress}
 						disabled={!isDirty}
 						testID='room-info-edit-view-reset'

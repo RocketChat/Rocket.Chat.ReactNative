@@ -72,6 +72,7 @@ const SelectUsers = ({
 				placeholder={{ text: I18n.t('Select_Users') }}
 				context={BlockContext.FORM}
 				multiselect
+				testID='create-discussion-select-users'
 			/>
 		</View>
 	);
