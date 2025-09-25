@@ -8,6 +8,10 @@ runs:
       with:
         python-version: '3.12'
 
+    - name: macOS dependencies fix
+      if: runner.os == 'macOS'
+      run: brew install python-setuptools
+
     - uses: actions/setup-node@v4
       with:
         node-version: 'lts/*'
