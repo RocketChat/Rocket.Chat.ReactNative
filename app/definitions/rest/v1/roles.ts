@@ -1,6 +1,6 @@
 import { IRole } from '../../IRole';
 import { RocketChatRecordDeleted } from '../../IRocketChatRecord';
-import { IUser } from '../../IUser';
+import { IRoleUser, IUser } from '../../IUser';
 
 type RoleCreateProps = Pick<IRole, 'name'> & Partial<Pick<IRole, 'description' | 'scope' | 'mandatory2fa'>>;
 
@@ -71,6 +71,13 @@ export type RolesEndpoints = {
 	'roles.removeUserFromRole': {
 		POST: (props: RoleRemoveUserFromRoleProps) => {
 			role: IRole;
+		};
+	};
+
+	'roles.getUsersInPublicRoles': {
+		GET: () => {
+			users: IRoleUser[];
+			success: boolean;
 		};
 	};
 };
