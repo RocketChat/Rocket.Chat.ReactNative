@@ -1,0 +1,274 @@
+appId: chat.rocket.reactnative
+name: Jump to message
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.account.adminUser}
+      PASSWORD: ${output.account.adminPassword}
+
+# should jump to an old message and load its surroundings
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: 'jumping'
+- extendedWaitUntil:
+    visible:
+      text: '.*300.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*Quote first message.*'
+    timeout: 60000
+- longPressOn:
+    text: '.*Quote first message.*'
+- extendedWaitUntil:
+    visible:
+      text: 'Jump to message'
+    timeout: 60000
+- tapOn:
+    text: 'Jump to message'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-1'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-2'
+    timeout: 60000
+
+# should tap FAB and scroll to bottom
+- extendedWaitUntil:
+    visible:
+      id: 'nav-jump-to-bottom'
+    timeout: 60000
+- tapOn:
+    id: 'nav-jump-to-bottom'
+- extendedWaitUntil:
+    visible:
+      text: .*Go to jumping-thread's thread.*
+    timeout: 60000
+- runFlow:
+    file: './utils/clear-cache.yaml'
+
+# should load messages on scroll
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: 'jumping'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-messages'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*300.*'
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      text: '.*249.*'
+    timeout: 120000
+    direction: UP
+- runFlow:
+    file: './utils/clear-cache.yaml'
+
+# should search for old message and load its surroundings
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: 'jumping'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-search'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-search'
+- extendedWaitUntil:
+    visible:
+      id: 'search-messages-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'search-message-view-input'
+    timeout: 60000
+- tapOn:
+    id: 'search-message-view-input'
+- inputText: '30'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-30'
+    timeout: 60000
+- tapOn:
+    text: '30'
+    index: 1
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-29'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-30'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-31'
+    timeout: 60000
+
+# should load newer and older messages
+- scrollUntilVisible:
+    element:
+      text: 'Load older'
+    direction: UP
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-5'
+    timeout: 60000
+- tapOn:
+    text: 'Load older'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-4'
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: 'message-content-1'
+    direction: UP
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: 'message-content-50'
+    direction: DOWN
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      text: '.*Load newer.*'
+    direction: DOWN
+    timeout: 60000
+- tapOn:
+    text: '.*Load newer.*'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-104'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*Load newer.*'
+    timeout: 60000
+- tapOn:
+    text: '.*Load newer.*'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-154'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*Load newer.*'
+    timeout: 60000
+- tapOn:
+    text: '.*Load newer.*'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-202'
+    timeout: 60000
+- tapOn:
+    id: header-back
+
+# should navigate to a thread from another room
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: 'jumping'
+- extendedWaitUntil:
+    visible:
+      text: .*Go to jumping-thread's thread.*
+    timeout: 60000
+- longPressOn:
+    text: .*Go to jumping-thread's thread.*
+- extendedWaitUntil:
+    visible:
+      text: 'Jump to message'
+    timeout: 60000
+- tapOn:
+    text: 'Jump to message'
+- runFlow:
+    file: './utils/expect-thread-messages.yaml'
+    env:
+      message: Go to jumping-thread's thread
+- tapOn:
+    id: header-back
+
+# should tap on thread message from main room
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-jumping-thread'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*thread message sent to main room.*'
+    timeout: 60000
+- tapOn:
+    text: '.*thread message sent to main room.*'
+- runFlow:
+    file: './utils/expect-thread-messages.yaml'
+    env:
+      message: 'thread message sent to main room'
+- tapOn:
+    id: header-back
+
+# should tap on quote
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-jumping-thread'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*quoted.*'
+    timeout: 60000
+- longPressOn:
+    text: '.*quoted.*'
+- extendedWaitUntil:
+    visible:
+      text: 'Jump to message'
+    timeout: 60000
+- tapOn:
+    text: 'Jump to message'
+- runFlow:
+    file: './utils/expect-thread-messages.yaml'
+    env:
+      message: 'quoted'
+- tapOn:
+    id: 'header-back'
+
+# should jump from search message
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-jumping-thread'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-search'
+- extendedWaitUntil:
+    visible:
+      id: 'search-messages-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'search-message-view-input'
+    timeout: 60000
+- inputText: 'to be searched'
+- extendedWaitUntil:
+    visible:
+      id: 'message-content-to be searched'
+    timeout: 60000
+- tapOn:
+    id: 'message-content-to be searched'
+- runFlow:
+    file: './utils/expect-thread-messages.yaml'
+    env:
+      message: 'to be searched'
