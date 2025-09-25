@@ -213,6 +213,21 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					const user = { ...getValues(), ...params };
 					Object.entries(user).forEach(([key, value]) => setValue(key as any, value));
 				}
+
+				const updatedUser = {
+					...user,
+					...params
+				};
+
+				reset({
+					name: updatedUser.name || '',
+					username: updatedUser.username || '',
+					email: updatedUser.emails?.[0]?.address || updatedUser.email || '',
+					currentPassword: null,
+					bio: updatedUser.bio || '',
+					nickname: updatedUser.nickname || '',
+					saving: false
+				});
 				dispatch(setUser({ ...user, ...params, customFields }));
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 			}
@@ -274,19 +289,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	useFocusEffect(
 		useCallback(() => {
-			if (user) {
-				reset({
-					name: user?.name || '',
-					username: user?.username || '',
-					email: user?.emails?.[0]?.address || '',
-					currentPassword: null,
-					bio: user?.bio || '',
-					nickname: user?.nickname || '',
-					saving: false
-				});
-				setCustomFields(user?.customFields ?? {});
-			}
-		}, [user, reset])
+			reset();
+		}, [])
 	);
 
 	return (
