@@ -32,6 +32,7 @@ const storybookOptions = {
 	onDisabledRemoveStorybook: true
 };
 
-module.exports = withRozenite(
-	withRozeniteExpoAtlasPlugin(withRozeniteReduxDevTools(withStorybook(finalConfig, storybookOptions)))
-);
+module.exports = withRozenite(withStorybook(finalConfig, storybookOptions), {
+	enabled: process.env.WITH_ROZENITE === 'true',
+	enhanceMetroConfig: config => withRozeniteExpoAtlasPlugin(withRozeniteReduxDevTools(config))
+});
