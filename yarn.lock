@@ -2215,7 +2215,7 @@
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.2.tgz#2ae5a9d51cc583bd1f5673b3bb70d6d819682473"
   integrity sha512-KHp2IflsnGywDjBWDkR9iEqiWSpc8GIi0lgTT3mOElT0PP1tG26P4tmFI2YvAdzgq9RGyoHZQEIEdZy6Ec5xCA==
 
-"@babel/runtime@^7.17.8", "@babel/runtime@^7.27.6":
+"@babel/runtime@^7.17.8":
   version "7.27.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.6.tgz#ec4070a04d76bae8ddbb10770ba55714a417b7c6"
   integrity sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==
@@ -5549,63 +5549,71 @@
   resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.31.19.tgz#737103123bc7e635382217eef75965b7e0f44703"
   integrity sha512-8zRKQ5CoC4hIuYHVheO0d7etX9oizmM18fu99r5s/deciL/0MRWocdb4H/QsmbsNrkKCO6Z6wr7f9zzJCNTRHg==
 
-"@rozenite/expo-atlas-plugin@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@rozenite/expo-atlas-plugin/-/expo-atlas-plugin-1.0.0-alpha.8.tgz#46f243254eac48701abe1f4046201b08362c800b"
-  integrity sha512-1RMJsU+Rg7A1WTLKWmF7aCYXrvVm1wezevHiUbOUNERl5HD8/YygDsnPaPtSTaQV1xLYPkLDsYJnILT1GMSopA==
+"@rozenite/expo-atlas-plugin@^1.0.0-alpha.14":
+  version "1.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@rozenite/expo-atlas-plugin/-/expo-atlas-plugin-1.0.0-alpha.14.tgz#15421c540fc27fc84e66ae297df604c913d58d1d"
+  integrity sha512-OcT9TWjsUhIgImliXce9BxipRfokBH6H1dI88GYzQWEOs6sphJz6N2ipFnMpHOJGk5Z1/8FRD/ur1hIm9imLmA==
   dependencies:
-    "@rozenite/plugin-bridge" "1.0.0-alpha.8"
+    "@rozenite/plugin-bridge" "1.0.0-alpha.14"
     connect "^3.7.0"
     expo-atlas "^0.4.0"
 
-"@rozenite/metro@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@rozenite/metro/-/metro-1.0.0-alpha.8.tgz#3903d535c99a5f283340ddb02d3f4bec80ce3aa0"
-  integrity sha512-1pjPa1jh0YUk71Ffm2BVIYN2oAl/2ZSeXhbdBWk3QsdiNs0W5cS/lOizB9CxtXIkl1Q74mxg41TLczvF5/CYMA==
+"@rozenite/metro@^1.0.0-alpha.14":
+  version "1.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@rozenite/metro/-/metro-1.0.0-alpha.14.tgz#4e71f2cb3ba65a0a39f1def14e8a917b98e17e39"
+  integrity sha512-rBLGX8XXTH+w9BiX3n8XHcq6XHz78EG1jVs7KazWiN01B9K/hXEh25zaLr++dby/7SE704S0UT0zB/3lGdm/Ew==
   dependencies:
-    "@rozenite/middleware" "1.0.0-alpha.8"
+    "@rozenite/middleware" "1.0.0-alpha.14"
+    "@rozenite/tools" "1.0.0-alpha.14"
     tslib "^2.3.0"
 
-"@rozenite/middleware@1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@rozenite/middleware/-/middleware-1.0.0-alpha.8.tgz#b2ec5f937230e48772d31af367b3a6dd13b7a1f5"
-  integrity sha512-O6Ly/R4DWKsGW3xtd+tAf5Qr5GdWyvxKP/ukWBp+61iWZYWSPiw4cxDjtgnvVoK+ixVGK9F8xbdLdYeabzXhGw==
+"@rozenite/middleware@1.0.0-alpha.14":
+  version "1.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@rozenite/middleware/-/middleware-1.0.0-alpha.14.tgz#30bc4ba975d818df5b848bfecb8909edf525db0e"
+  integrity sha512-McX8jyNxUpKEZUjiPy+anKY3z5EZ3pYIp9Jrh+ynSgtXujapfum3JiIjfsA0U9niG4mP2zf+B99+qZ4NeCIGPg==
   dependencies:
-    "@rozenite/runtime" "1.0.0-alpha.8"
-    ejs "^3.1.10"
+    "@rozenite/runtime" "1.0.0-alpha.14"
+    "@rozenite/tools" "1.0.0-alpha.14"
     express "^5.1.0"
+    semver "^7.7.2"
     serve-static "^2.2.0"
     tslib "^2.3.0"
 
-"@rozenite/network-activity-plugin@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@rozenite/network-activity-plugin/-/network-activity-plugin-1.0.0-alpha.8.tgz#bbcbc4bbf8780d85aeca4d0ae1da75a93f8608b7"
-  integrity sha512-B4L42Ree9nrSqPehAJqKNTZh37sxNyvn/4JORm/XvgAqzHOyWuZm2M12MFx4C1AJ5r99BFdEEoNdo4vH4oZPHg==
+"@rozenite/network-activity-plugin@^1.0.0-alpha.14":
+  version "1.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@rozenite/network-activity-plugin/-/network-activity-plugin-1.0.0-alpha.14.tgz#241645314df138c4d535423f6cb843f5193cd54f"
+  integrity sha512-JAqI6x2xkv2OfeQPjVF0z4cgtF5g9OvpyQYcPT+tknidWJgs8BPiwJsJKU2M2riZMpihG55gz/MdUEsJcHtzhw==
   dependencies:
-    "@rozenite/plugin-bridge" "1.0.0-alpha.8"
+    "@rozenite/plugin-bridge" "1.0.0-alpha.14"
+    nanoevents "^9.1.0"
 
-"@rozenite/plugin-bridge@1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@rozenite/plugin-bridge/-/plugin-bridge-1.0.0-alpha.8.tgz#0d18b50f332fa371a379a4558e6aa5a5d023459b"
-  integrity sha512-fKhl6Q+IFyNVP/XBuKXLu8zY4GQDuyT4P44mj0X2JpKb31unrM24x7wa7U/PpGAEzZ0jaQKQmjYB9WF733Ld0A==
+"@rozenite/plugin-bridge@1.0.0-alpha.14":
+  version "1.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@rozenite/plugin-bridge/-/plugin-bridge-1.0.0-alpha.14.tgz#8a74367e063b1e059d8d3609675aaf8d57078857"
+  integrity sha512-PQwAiCpDlp4kMovXA3VbI9uBcowKOVenApmPR1xd5akx3mpqNi1nyANuegHU3xkdPVc+8dWBTpcU5wEQyZzqMA==
   dependencies:
     tslib "^2.3.0"
 
-"@rozenite/redux-devtools-plugin@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@rozenite/redux-devtools-plugin/-/redux-devtools-plugin-1.0.0-alpha.8.tgz#c414a8fe30806a985a87de03eb732ab2c90e8b85"
-  integrity sha512-qmq48F95NyCvSaPFMV375G28E13Ibf1Jfeg+2jguor3LftasYXYiNWnCrLB4kWQ6Jd/IriNbercyMu7la656fA==
+"@rozenite/redux-devtools-plugin@^1.0.0-alpha.14":
+  version "1.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@rozenite/redux-devtools-plugin/-/redux-devtools-plugin-1.0.0-alpha.14.tgz#2df81b71d788809b567dd6226d2c6e0a7b1f17d0"
+  integrity sha512-5/ZPyCRgilJv/fMYbp8zwD8MenWLAAGSA904haJ9D3w7zdLvX9H5nR77TmEDEkAHu9f4ifHyHlchDzH2YUv5SA==
   dependencies:
     "@redux-devtools/cli" "^4.0.3"
     "@redux-devtools/remote" "^0.9.5"
-    "@rozenite/plugin-bridge" "1.0.0-alpha.8"
+    "@rozenite/plugin-bridge" "1.0.0-alpha.14"
 
-"@rozenite/runtime@1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@rozenite/runtime/-/runtime-1.0.0-alpha.8.tgz#9688dacc0e2f1129f43b3f5ac95355d5146b3d1d"
-  integrity sha512-f12e4HqOGsC1g6yrZqawXbg7PkvYzIUK4fgZGRmbxKksXnWEKEj0SvYmrN6U+0r+EiTikYFGFe4LwD5q6NETYQ==
+"@rozenite/runtime@1.0.0-alpha.14":
+  version "1.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@rozenite/runtime/-/runtime-1.0.0-alpha.14.tgz#860b13a2b681e10828ec5466f4b8a62724dc9275"
+  integrity sha512-aYWdRN9j1XCMHDmeECBkNbPrplttBmFmkvaWRn9Pns8g2UNGE2rje3zhqXEdqqp60JMd4loNeVnx7LaQFB7BiA==
   dependencies:
     tslib "^2.3.0"
+
+"@rozenite/tools@1.0.0-alpha.14":
+  version "1.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@rozenite/tools/-/tools-1.0.0-alpha.14.tgz#f6de3aac4a3e8d6598364e849de056f33512e798"
+  integrity sha512-8VywO3gub5UhFsPMGFz3hRjA4mVvpoOy5EgYTYMdFmUio/Z1LLuZlogsOWLNvIaDhR+f+Un5zshjS6z0R0J28Q==
 
 "@sideway/address@^4.1.5":
   version "4.1.5"
@@ -7314,7 +7322,7 @@ async-stream-emitter@^7.0.1:
   dependencies:
     stream-demux "^10.0.1"
 
-async@^3.2.3, async@^3.2.6:
+async@^3.2.3:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.6.tgz#1b0728e14929d51b85b449b7f06e27c1145e38ce"
   integrity sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==
@@ -9449,13 +9457,6 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
-ejs@^3.1.10:
-  version "3.1.10"
-  resolved "https://registry.yarnpkg.com/ejs/-/ejs-3.1.10.tgz#69ab8358b14e896f80cc39e62087b88500c3ac3b"
-  integrity sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==
-  dependencies:
-    jake "^10.8.5"
-
 ejson@2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/ejson/-/ejson-2.2.3.tgz#2b18c2d8f5d61a5cfc6e3eab72c3343909e7afd2"
@@ -10631,13 +10632,6 @@ file-uri-to-path@1.0.0:
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
   integrity sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==
 
-filelist@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/filelist/-/filelist-1.0.4.tgz#f78978a1e944775ff9e62e744424f215e58352b5"
-  integrity sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==
-  dependencies:
-    minimatch "^5.0.1"
-
 fill-range@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-7.1.1.tgz#44265d3cac07e3ea7dc247516380643754a05292"
@@ -11445,10 +11439,10 @@ hermes-profile-transformer@^0.0.6:
   dependencies:
     source-map "^0.7.3"
 
-hex-lite@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/hex-lite/-/hex-lite-1.5.0.tgz#482db64f673dcacdb8be93c629a799ce5a76b24d"
-  integrity sha512-bXFMCFoKcksmJ1kDRq6B0+Go5Wgq84Dq/3rX99+0OzBQZKUBEMLguPd1lZSpvmzJACb516n07eyswF4KHAF9cg==
+hex-rgba@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/hex-rgba/-/hex-rgba-1.0.2.tgz#b7cfbd24c6c736277cf88dd6d41b672ea336574c"
+  integrity sha512-MKla68wFGv+i7zU3Q4giWN74f+zWdkuf2Tk21fISV7aw55r8dH/noBbH5JsVlM4Z2WRTYCEmSxsoZ1QR/o68jg==
 
 hoek@3.x.x:
   version "3.0.4"
@@ -12195,15 +12189,6 @@ jackspeak@^3.1.2:
     "@isaacs/cliui" "^8.0.2"
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
-
-jake@^10.8.5:
-  version "10.9.4"
-  resolved "https://registry.yarnpkg.com/jake/-/jake-10.9.4.tgz#d626da108c63d5cfb00ab5c25fadc7e0084af8e6"
-  integrity sha512-wpHYzhxiVQL+IV05BLE2Xn34zW1S223hvjtqk0+gsPrwd/8JNLXJgZZM/iPFsYc1xyphF+6M6EvdE5E9MBGkDA==
-  dependencies:
-    async "^3.2.6"
-    filelist "^1.0.4"
-    picocolors "^1.1.1"
 
 javascript-stringify@^2.1.0:
   version "2.1.0"
@@ -14279,6 +14264,11 @@ nanoclone@^0.2.1:
   resolved "https://registry.yarnpkg.com/nanoclone/-/nanoclone-0.2.1.tgz#dd4090f8f1a110d26bb32c49ed2f5b9235209ed4"
   integrity sha512-wynEP02LmIbLpcYw8uBKpcfF6dmg2vcpKqxeH5UcoKEYdExslsdUA4ugFauuaeYdTB76ez6gJW8XAZ6CgkXYxA==
 
+nanoevents@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-9.1.0.tgz#76c8c86ed54a26131ada5a0a1c5682f48690dbb7"
+  integrity sha512-Jd0fILWG44a9luj8v5kED4WI+zfkkgwKyRQKItTtlPfEsh7Lznfi1kr8/iZ+XAIss4Qq5GqRB0qtWbaz9ceO/A==
+
 nanoid@^3.3.1, nanoid@^3.3.7:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
@@ -15474,6 +15464,11 @@ react-json-tree@^0.20.0:
     "@types/lodash" "^4.17.15"
     react-base16-styling "^0.10.0"
 
+react-native-a11y-order@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-a11y-order/-/react-native-a11y-order-0.4.0.tgz#ba70030b3d7c57377676d605f200e87c9afe9c5a"
+  integrity sha512-qtx+cvHWcCKu2UukjuKLGAwMqTFWQG3LxblR7E2QBOjLlt204kk33vZHotGW+U7jvE+aikL7t/DcNNCwj05Kiw==
+
 react-native-animatable@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
@@ -16607,7 +16602,7 @@ semver@^7.1.3, semver@^7.6.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.1.tgz#abd5098d82b18c6c81f6074ff2647fd3e7220c9f"
   integrity sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==
 
-semver@^7.3.2, semver@^7.6.2, semver@^7.7.1:
+semver@^7.3.2, semver@^7.6.2, semver@^7.7.1, semver@^7.7.2:
   version "7.7.2"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.2.tgz#67d99fdcd35cec21e6f8b87a7fd515a33f982b58"
   integrity sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==
