@@ -36,7 +36,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 		color = colors.fontDisabled;
 	}
 	const height = 48 * fontScale;
-	const accessibilityLabel = item?.accessibilityLabel || `${item.title}. ${item?.subtitle || ''}`;
+	const accessibilityLabel = item?.accessibilityLabel || (item?.subtitle ? `${item.title}. ${item.subtitle}` : item.title);
 
 	return (
 		<View>
