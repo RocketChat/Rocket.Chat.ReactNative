@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../../containers/ActionSheet';
@@ -52,21 +52,18 @@ const ListPicker = ({
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 
-	const OPTIONS: TOPTIONS = useMemo(
-		() => [
-			{
-				label: I18n.t('A11y_appearance_toasts'),
-				value: 'TOAST' as TAlertDisplayType,
-				description: I18n.t('A11y_appearance_toast_dismissed_automatically')
-			},
-			{
-				label: I18n.t('A11y_appearance_dialogs'),
-				value: 'DIALOG' as TAlertDisplayType,
-				description: I18n.t('A11y_appearance_dialog_require_manual_dismissal')
-			}
-		],
-		[I18n.locale]
-	);
+	const OPTIONS: TOPTIONS = [
+		{
+			label: I18n.t('A11y_appearance_toasts'),
+			value: 'TOAST' as TAlertDisplayType,
+			description: I18n.t('A11y_appearance_toast_dismissed_automatically')
+		},
+		{
+			label: I18n.t('A11y_appearance_dialogs'),
+			value: 'DIALOG' as TAlertDisplayType,
+			description: I18n.t('A11y_appearance_dialog_require_manual_dismissal')
+		}
+	];
 
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[0];
 
