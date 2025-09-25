@@ -43,21 +43,10 @@ final class SendMessageRequest: Request {
   let messageType: MessageType?
   let threadIdentifier: String?
   
-  // Regular message constructor
-  init(id: String, roomId: String, text: String, threadIdentifier: String? = nil, messageType: MessageType? = nil) {
+  init(id: String, roomId: String, text: String? = nil, content: MessageBody.MessageContent? = nil, threadIdentifier: String? = nil, messageType: MessageType? = nil) {
     self.id = id
     self.roomId = roomId
     self.text = text
-    self.content = nil
-    self.messageType = messageType
-    self.threadIdentifier = threadIdentifier
-  }
-  
-  // Encrypted message constructor
-  init(id: String, roomId: String, content: MessageBody.MessageContent, threadIdentifier: String? = nil, messageType: MessageType? = nil) {
-    self.id = id
-    self.roomId = roomId
-    self.text = nil
     self.content = content
     self.messageType = messageType
     self.threadIdentifier = threadIdentifier
