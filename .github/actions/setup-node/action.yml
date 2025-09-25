@@ -10,6 +10,7 @@ runs:
 
     - name: macOS dependencies fix
       if: runner.os == 'macOS'
+      shell: bash
       run: brew install python-setuptools
 
     - uses: actions/setup-node@v4
