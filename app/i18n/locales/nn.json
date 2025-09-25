@@ -1,4 +1,9 @@
 {
+  "A11y_appearance_dialog_require_manual_dismissal": "Krev manuell avvising",
+  "A11y_appearance_dialogs": "Dialoger",
+  "A11y_appearance_show_alerts_as": "Vis varsler som",
+  "A11y_appearance_toast_dismissed_automatically": "Lukket automatisk",
+  "A11y_appearance_toasts": "Toasts",
   "accept": "Aksepter",
   "Accessibility": "Tilgjengelighet",
   "Accessibility_and_Appearance": "Tilgjengelighet og utseende",

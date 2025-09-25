@@ -8,11 +8,11 @@ import database from '../../lib/database';
 import log from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../Styles';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../definitions';
-import { sendFileMessage } from '../../lib/methods';
+import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
 const styles = StyleSheet.create({

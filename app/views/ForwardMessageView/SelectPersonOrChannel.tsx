@@ -8,7 +8,7 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
 import { IForwardMessageViewSelectRoom } from './interfaces';
 import { ISearchLocal } from '../../definitions';
-import { localSearchSubscription } from '../../lib/methods';
+import { localSearchSubscription } from '../../lib/methods/search';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 

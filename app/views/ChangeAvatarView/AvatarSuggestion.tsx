@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 
 import { IAvatar } from '../../definitions';
-import { Services } from '../../lib/services';
+import { getAvatarSuggestion } from '../../lib/services/restApi';
 import I18n from '../../i18n';
 import styles from './styles';
 import { useTheme } from '../../theme';
@@ -24,9 +24,9 @@ const AvatarSuggestion = ({
 	const { colors } = useTheme();
 
 	useEffect(() => {
-		const getAvatarSuggestion = async () => {
+		const handleGetAvatarSuggestion = async () => {
 			try {
-				const result = await Services.getAvatarSuggestion();
+				const result = await getAvatarSuggestion();
 				const suggestions = Object.keys(result).map(service => {
 					const { url, blob, contentType } = result[service];
 					return {
@@ -41,7 +41,7 @@ const AvatarSuggestion = ({
 				// do nothing
 			}
 		};
-		getAvatarSuggestion();
+		handleGetAvatarSuggestion();
 	}, []);
 
 	return (

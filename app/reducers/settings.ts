@@ -1,6 +1,6 @@
 import { IActionSettings } from '../actions/settings';
 import { SETTINGS } from '../actions/actionsTypes';
-import { defaultSettings } from '../lib/constants';
+import { defaultSettings } from '../lib/constants/defaultSettings';
 import { IAssetsFavicon512 } from '../definitions/IAssetsFavicon512';
 
 export type TSupportedSettings = keyof typeof defaultSettings;

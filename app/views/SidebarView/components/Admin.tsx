@@ -1,7 +1,8 @@
 import { memo, useMemo } from 'react';
 
 import * as List from '../../../containers/List';
-import { useAppSelector, usePermissions } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 import { useTheme } from '../../../theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 

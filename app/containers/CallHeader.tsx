@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { CustomIcon } from './CustomIcon';

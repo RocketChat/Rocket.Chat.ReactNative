@@ -1,5 +1,10 @@
 {
   "1_person_reacted": "1 persona reaccionó",
+  "A11y_appearance_dialog_require_manual_dismissal": "Requiere cierre manual",
+  "A11y_appearance_dialogs": "Diálogos",
+  "A11y_appearance_show_alerts_as": "Mostrar alertas como",
+  "A11y_appearance_toast_dismissed_automatically": "Se cierra automáticamente",
+  "A11y_appearance_toasts": "Toasts",
   "Accessibility": "Accesibilidad",
   "Accessibility_and_Appearance": "Accesibilidad y apariencia",
   "Accessibility_statement": "Declaración de accesibilidad",
