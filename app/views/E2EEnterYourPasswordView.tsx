@@ -87,6 +87,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 	}, [encryptionFailure, prevEncryptionFailure]);
 
 	const submit = () => {
+		prevEncryptionFailure.current = false;
 		logEvent(events.E2E_ENTER_PW_SUBMIT);
 		dispatch(encryptionDecodeKey(password));
 	};
