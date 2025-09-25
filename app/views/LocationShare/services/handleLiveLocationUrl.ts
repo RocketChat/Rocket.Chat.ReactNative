@@ -1,53 +1,66 @@
-// app/lib/deeplinks/handleLiveLocationUrl.ts
-import { URL } from 'react-native-url-polyfill';
-import { Alert } from 'react-native';
-import { reopenLiveLocationModal, isLiveLocationActive, getCurrentLiveParams } from '../LiveLocationPreviewModal';
-import Navigation from '../../../lib/navigation/appNavigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { isLiveLocationActive, reopenLiveLocationModal, getCurrentLiveParams } from '../LiveLocationPreviewModal';
 
-// Track ended live location sessions
-const endedLiveLocationSessions = new Set<string>();
+const ENDED_KEY = 'live_location_ended_ids_v1';
+let endedIds: Set<string> | null = null;
 
-export function markLiveLocationAsEnded(liveLocationId: string) {
-	endedLiveLocationSessions.add(liveLocationId);
+async function loadEndedSet(): Promise<Set<string>> {
+	if (!endedIds) {
+		try {
+			const raw = await AsyncStorage.getItem(ENDED_KEY);
+			endedIds = new Set(raw ? JSON.parse(raw) : []);
+		} catch {
+			endedIds = new Set();
+		}
+	}
+	return endedIds!;
 }
-
-export function isLiveLocationEnded(liveLocationId: string): boolean {
-	return endedLiveLocationSessions.has(liveLocationId);
-}
-
-export function clearEndedSessions() {
-	endedLiveLocationSessions.clear();
-}
-
-export function handleLiveLocationUrl(url: string) {
+async function saveEndedSet() {
+	if (!endedIds) return;
 	try {
+		await AsyncStorage.setItem(ENDED_KEY, JSON.stringify(Array.from(endedIds)));
+	} catch (e) {
+		console.warn('[handleLiveLocationUrl] persist ended IDs failed', e);
+	}
+}
+
+export async function markLiveLocationAsEnded(id: string) {
+	const set = await loadEndedSet();
+	set.add(id);
+	await saveEndedSet();
+}
+
+export async function isLiveLocationEnded(id: string) {
+	const set = await loadEndedSet();
+	return set.has(id);
+}
+
+export function isLiveMessageLink(url: string) {
+	return /^rocketchat:\/\/live-location/i.test(url);
+}
+
+export async function handleLiveLocationUrl(url: string) {
+	try {
+		if (!isLiveMessageLink(url)) return;
+
 		const u = new URL(url);
-		if (u.protocol !== 'rocketchat:' || u.hostname !== 'live-location') return false;
+		if (u.protocol !== 'rocketchat:' || u.host !== 'live-location') return;
 
-		const liveLocationId = u.searchParams.get('liveLocationId') || '';
-		const action = u.searchParams.get('action') || 'reopen';
-		const provider = u.searchParams.get('provider') || 'google';
+		const liveLocationId = u.searchParams.get('liveLocationId') || undefined;
 
-		// Check if this live location session has ended
-		if (isLiveLocationEnded(liveLocationId)) {
-			Alert.alert('Live Location Ended', 'This live location session has ended and is no longer available.', [{ text: 'OK' }]);
-			return true; // Handle the URL but don't navigate
+		if (liveLocationId && (await isLiveLocationEnded(liveLocationId))) {
+			return;
 		}
 
-		const current = getCurrentLiveParams?.();
-		if (action === 'reopen' && isLiveLocationActive() && current?.liveLocationId === liveLocationId) {
-			reopenLiveLocationModal();
-			return true;
+		if (!isLiveLocationActive()) return;
+
+		const params = getCurrentLiveParams();
+		if (params?.liveLocationId && liveLocationId && params.liveLocationId !== liveLocationId) {
+			return;
 		}
 
-		// Fallback: open viewer for this liveLocationId
-		Navigation.navigate('LiveLocationPreviewModal', {
-			provider,
-			liveLocationId,
-			isTracking: false
-		});
-		return true;
-	} catch {
-		return false;
+		reopenLiveLocationModal();
+	} catch (e) {
+		console.warn('[handleLiveLocationUrl] bad url:', url, e);
 	}
 }
