@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
-import { DisplayMode, SortBy } from '../lib/constants';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -15,9 +15,9 @@ import I18n from '../i18n';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { saveSortPreference } from '../lib/methods';
-import { useAppSelector } from '../lib/hooks';
 import { isIOS } from '../lib/methods/helpers';
+import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const DisplayPrefsView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();

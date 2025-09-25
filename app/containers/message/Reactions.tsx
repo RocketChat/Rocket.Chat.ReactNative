@@ -6,7 +6,7 @@ import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';

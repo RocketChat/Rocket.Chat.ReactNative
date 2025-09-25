@@ -1,7 +1,7 @@
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
-import { themes } from '../../../constants';
+import { themes } from '../../../constants/colors';
 import { TSupportedThemes } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import Header from '../../../../containers/Header';

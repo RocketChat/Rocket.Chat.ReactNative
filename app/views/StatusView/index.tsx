@@ -17,7 +17,7 @@ import { ControlledFormTextInput } from '../../containers/TextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
-import { Services } from '../../lib/services';
+import { setUserStatus } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -158,7 +158,7 @@ const StatusView = (): React.ReactElement => {
 	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
 		sendLoadingEvent({ visible: true });
 		try {
-			await Services.setUserStatus(status, statusText);
+			await setUserStatus(status, statusText);
 			dispatch(setUser({ statusText, status }));
 			logEvent(events.STATUS_CUSTOM);
 			showToast(I18n.t('Status_saved_successfully'));

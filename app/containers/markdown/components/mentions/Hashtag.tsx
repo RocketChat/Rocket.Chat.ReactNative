@@ -5,7 +5,7 @@ import i18n from '../../../../i18n';
 import { themes } from '../../../../lib/constants/colors';
 import { ROOM_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';

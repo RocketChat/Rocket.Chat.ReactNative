@@ -9,7 +9,7 @@ import { getUserSelector } from '../../../selectors/login';
 import styles from '../styles';
 import { DrawerParamList } from '../../../stacks/types';
 import * as List from '../../../containers/List';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
 	const { colors } = useTheme();

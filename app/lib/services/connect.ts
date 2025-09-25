@@ -17,7 +17,7 @@ import { connectRequest, connectSuccess, disconnect as disconnectAction } from '
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
-import { defaultSettings } from '../constants';
+import { defaultSettings } from '../constants/defaultSettings';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { getSettings } from '../methods/getSettings';
 import { onRolesChanged } from '../methods/getRoles';
