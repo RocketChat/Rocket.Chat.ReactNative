@@ -3,6 +3,11 @@ description: Setup node and cache node_modules
 runs:
   using: "composite"
   steps:
+    - name: Setup Python 3.11 (needed for node-gyp)
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
     - uses: actions/setup-node@v4
       with:
         node-version: 'lts/*'
