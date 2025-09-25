@@ -1,0 +1,242 @@
+appId: chat.rocket.reactnative
+name: Ignore User
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+
+---
+- runFlow: '../../helpers/launch-app.yaml'
+
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should go to user info view
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+- runFlow:
+    file: './utils/navigate-to-info-view.yaml'
+
+# should block user
+- extendedWaitUntil:
+    visible:
+      text: 'Block'
+    timeout: 60000
+- tapOn: 'Block'
+- extendedWaitUntil:
+    visible:
+      text: 'Unblock'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      text: 'This room is blocked'
+    timeout: 60000
+
+# should unblock user
+- runFlow:
+    file: './utils/navigate-to-info-view.yaml'
+- extendedWaitUntil:
+    visible:
+      text: 'Unblock'
+    timeout: 60000
+- tapOn: 'Unblock'
+- extendedWaitUntil:
+    visible:
+      text: 'Block'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+
+# should ignore user from message
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'message-01')}
+- evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'message-02')}
+- extendedWaitUntil:
+    visible:
+      text: ${output.otherUser.username}
+      index: 0
+    timeout: 60000
+- tapOn: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      text: 'Ignore'
+      childOf:
+        id: room-info-view-ignore
+    timeout: 60000
+- tapOn: 'Ignore'
+- extendedWaitUntil:
+    visible:
+      text: 'Unignore'
+      childOf:
+        id: room-info-view-ignore
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+
+# should tap to display message
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- extendedWaitUntil:
+    visible:
+      text: .*Message ignored. Tap to display it.*
+      index: 0
+    timeout: 60000
+- tapOn: .*Message ignored. Tap to display it.*
+- extendedWaitUntil:
+    visible:
+      text: ${output.otherUser.username}
+      index: 0
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'message-02'
+      index: 0
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: ${output.otherUser.username}
+      index: 0
+    timeout: 60000
+- tapOn: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      text: 'Unignore'
+      childOf:
+        id: room-info-view-ignore
+    timeout: 60000
+- tapOn: 'Unignore'
+- extendedWaitUntil:
+    visible:
+      text: 'Ignore'
+      childOf:
+        id: room-info-view-ignore
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- extendedWaitUntil:
+    visible:
+      text: 'message-02'
+      index: 0
+    timeout: 60000
+
+# should go to user info view from a DM
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+- runFlow: './utils/navigate-to-info-view.yaml'
+
+# should report a user from a DM
+- extendedWaitUntil:
+    visible:
+      text: 'Report'
+      childOf:
+        id: room-info-view-warning
+    timeout: 60000
+- tapOn: 'Report'
+- extendedWaitUntil:
+    visible:
+      id: 'report-user-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'report-user-view-input'
+    timeout: 60000
+- tapOn:
+    id: 'report-user-view-input'
+- inputText: 'e2e test'
+- extendedWaitUntil:
+    visible:
+      id: 'report-user-view-submit'
+    timeout: 60000
+- hideKeyboard
+- tapOn:
+    id: 'report-user-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.otherUser.username}'
+    timeout: 60000
+
+# should go to user info view from a channel
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- extendedWaitUntil:
+    visible:
+      text: ${output.otherUser.username}
+    timeout: 60000
+- tapOn: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      id: 'room-info-view'
+    timeout: 60000
+
+# should report a user from a channel
+- extendedWaitUntil:
+    visible:
+      text: 'Report'
+      childOf:
+        id: room-info-view-warning
+- tapOn: 'Report'
+- extendedWaitUntil:
+    visible:
+      id: 'report-user-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'report-user-view-input'
+    timeout: 60000
+- tapOn:
+    id: 'report-user-view-input'
+- inputText: 'e2e test'
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: 'report-user-view-submit'
+    timeout: 60000
+- tapOn:
+    id: 'report-user-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
