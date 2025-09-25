@@ -6,6 +6,7 @@ export interface IRoomContext {
 	rid?: string;
 	t?: string;
 	tmid?: string;
+	room: any; // FIXME: type it properly after we migrate RoomView to hooks
 	sharing?: boolean;
 	action?: TMessageAction;
 	isAutocompleteVisible?: boolean;

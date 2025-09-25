@@ -7,7 +7,7 @@ import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import log from '../lib/methods/helpers/log';
 import { TMessageModel } from '../definitions';
-import { resendMessage } from '../lib/methods';
+import { resendMessage } from '../lib/methods/sendMessage';
 
 export interface IMessageErrorActions {
 	showMessageErrorActions: (message: TMessageModel) => void;

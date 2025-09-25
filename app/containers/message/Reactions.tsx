@@ -6,7 +6,7 @@ import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -41,7 +41,7 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
-				<CustomIcon name='reaction-add' size={21} color={themes[theme].badgeBackgroundLevel2} />
+				<CustomIcon name='reaction-add' size={20} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
 		</Touchable>
 	);

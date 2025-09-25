@@ -12,7 +12,8 @@ import {
 	supportedBiometryLabel,
 	handleLocalAuthentication
 } from '../lib/methods/helpers/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes } from '../lib/constants';
+import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
+import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import userPreferences from '../lib/methods/userPreferences';

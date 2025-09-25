@@ -8,7 +8,7 @@ import { Dispatch } from 'redux';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import I18n from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';
@@ -32,7 +32,8 @@ import {
 	TSubscriptionModel,
 	TThreadModel
 } from '../../definitions';
-import { sendFileMessage, sendMessage } from '../../lib/methods';
+import { sendFileMessage } from '../../lib/methods/sendFileMessage';
+import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { appStart } from '../../actions/app';
@@ -366,6 +367,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					value={{
 						rid: room.rid,
 						t: room.t,
+						room,
 						tmid: this.getThreadId(thread),
 						sharing: true,
 						action: route.params?.action,

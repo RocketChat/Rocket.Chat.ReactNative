@@ -1,10 +1,14 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
-import { Alert, Keyboard, ScrollView, Text, View } from 'react-native';
+import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
+import { type SetValueConfig } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -25,7 +29,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
 import { getRoomTitle, compareServerVersion, showErrorAlert, isAndroid, random } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import { saveRoomSettings, toggleArchiveRoom } from '../../lib/services/restApi';
 import Button from '../../containers/Button';
 import useRoomSubscription from './hooks/useRoomSubscription';
 import useRoomDeletionActions from './hooks/useRoomDeletionActions';
@@ -36,6 +40,14 @@ const MESSAGE_TYPE_VALUES = MessageTypeValues.map(m => ({
 	value: m.value,
 	text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
 }));
+
+const dirtyOptions: SetValueConfig = {
+	shouldDirty: true
+};
+
+const schema = yup.object().shape({
+	name: yup.string().required(I18n.t('Name_required'))
+});
 
 const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const { colors } = useTheme();
@@ -68,7 +80,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			enableSysMes: false,
 			encrypted: false,
 			archived: false
-		}
+		},
+		mode: 'onChange',
+		resolver: yupResolver(schema)
 	});
 
 	const initializeRoomState = (room: ISubscription) => {
@@ -176,11 +190,21 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		try {
-			await Services.saveRoomSettings(room.rid, params);
+			await saveRoomSettings(room.rid, params);
 		} catch (e: any) {
 			if (e.error === 'error-invalid-room-name') {
 				setError('name', { message: e, type: 'validate' });
+				setFocus('name');
 			}
+
+			if (e.error === 'error-duplicate-channel-name') {
+				setError('name', { message: I18n.t('Channel_name_already_taken'), type: 'validate' });
+				setFocus('name');
+			}
+
+			const a11yAnnouncement = e.error === 'error-duplicate-channel-name' ? I18n.t('Channel_name_already_taken') : e.reason;
+			AccessibilityInfo.announceForAccessibility(a11yAnnouncement);
+
 			error = true;
 			log(e);
 		}
@@ -214,7 +238,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 					onPress: async () => {
 						try {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
-							await Services.toggleArchiveRoom(rid, t as SubscriptionType, !archived);
+							await toggleArchiveRoom(rid, t as SubscriptionType, !archived);
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);
@@ -265,29 +289,29 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const toggleRoomType = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
-		setValue('t', value);
-		setValue('encrypted', value && encrypted);
+		setValue('t', value, dirtyOptions);
+		setValue('encrypted', value && encrypted, dirtyOptions);
 	};
 
 	const toggleReadOnly = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_READ_ONLY);
-		setValue('readOnly', value);
+		setValue('readOnly', value, dirtyOptions);
 	};
 
 	const toggleReactions = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_REACTIONS);
-		setValue('reactWhenReadOnly', value);
+		setValue('reactWhenReadOnly', value, dirtyOptions);
 	};
 
 	const toggleHideSystemMessages = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
-		setValue('enableSysMes', value);
-		setValue('systemMessages', value ? systemMessages : []);
+		setValue('enableSysMes', value, dirtyOptions);
+		setValue('systemMessages', value ? systemMessages : [], dirtyOptions);
 	};
 
 	const toggleEncrypted = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ENCRYPTED);
-		setValue('encrypted', value);
+		setValue('encrypted', value, dirtyOptions);
 	};
 
 	const onResetPress = () => {
@@ -466,6 +490,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 					<Button
 						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						title={I18n.t('RESET')}
+						color={colors.buttonFontSecondary}
 						onPress={onResetPress}
 						disabled={!isDirty}
 						testID='room-info-edit-view-reset'

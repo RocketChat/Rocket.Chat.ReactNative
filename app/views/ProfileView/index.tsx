@@ -11,7 +11,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
 import { useActionSheet } from '../../containers/ActionSheet';
-import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import Button from '../../containers/Button';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
@@ -22,11 +21,11 @@ import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
-import { compareServerVersion, isAndroid } from '../../lib/methods/helpers';
+import { compareServerVersion } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { Services } from '../../lib/services';
+import { saveUserProfile } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
@@ -34,14 +33,13 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
-import PasswordPolicies from '../../containers/PasswordPolicies';
-import handleError from './methods/handleError';
+import handleSaveUserProfileError from '../../lib/methods/helpers/handleSaveUserProfileError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
-import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
+import ConfirmEmailChangeActionSheetContent from './components/ConfirmEmailChangeActionSheetContent';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -92,14 +90,13 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		reset,
 		setError,
 		watch,
-		formState: { isDirty, dirtyFields, errors }
+		formState: { isDirty, errors }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
 			name: user?.name as string,
 			username: user?.username,
 			email: user?.emails ? user?.emails[0].address : null,
-			newPassword: null,
 			currentPassword: null,
 			bio: user?.bio,
 			nickname: user?.nickname,
@@ -108,8 +105,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		resolver: yupResolver(validationSchema)
 	});
 	const inputValues = watch();
-	const newPassword = inputValues.newPassword || '';
-	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
@@ -144,13 +139,15 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	const enableSaveChangesButton = () => {
 		const isFormInfoValid = validateFormInfo();
-		const { newPassword: isNewPasswordDirty } = dirtyFields;
-		const passwordValid = isNewPasswordDirty && newPassword.length > 0 ? isPasswordValid() : true;
-		return isFormInfoValid && isDirty && passwordValid;
+		return isFormInfoValid && isDirty;
 	};
 
 	const handleEditAvatar = () => {
 		navigation.navigate('ChangeAvatarView', { context: 'profile' });
+	};
+
+	const navigateToChangePasswordView = () => {
+		navigation.navigate('ChangePasswordView');
 	};
 
 	const deleteOwnAccount = () => {
@@ -158,6 +155,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		showActionSheet({ children: <DeleteAccountActionSheetContent /> });
 	};
 
+	// TODO: function is too long, split it
 	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
@@ -167,7 +165,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 		setValue('saving', true);
 
-		const { name, username, email, newPassword, currentPassword, bio, nickname } = getValues();
+		const { name, username, email, currentPassword, bio, nickname } = getValues();
 		const params = {} as IProfileParams;
 
 		if (user.name !== name) params.realname = name;
@@ -175,26 +173,20 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		if (user.emails?.[0].address !== email) params.email = email;
 		if (user.bio !== bio) params.bio = bio;
 		if (user.nickname !== nickname) params.nickname = nickname;
-		if (newPassword) params.newPassword = newPassword;
 		if (currentPassword) params.currentPassword = sha256(currentPassword);
 
-		const requirePassword = !!params.email || newPassword;
+		const requirePassword = !!params.email;
 
 		if (requirePassword && !params.currentPassword) {
 			setValue('saving', false);
 			showActionSheet({
 				children: (
-					<ActionSheetContentWithInputAndSubmit
-						title={I18n.t('Please_enter_your_password')}
-						description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-						testID='profile-view-enter-password-sheet'
-						placeholder={I18n.t('Password')}
+					<ConfirmEmailChangeActionSheetContent
 						onSubmit={p => {
 							hideActionSheet();
 							setValue('currentPassword', p as any);
 							submit();
 						}}
-						onCancel={hideActionSheet}
 					/>
 				)
 			});
@@ -202,11 +194,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		}
 
 		try {
-			const twoFactorOptions = params.currentPassword
-				? { twoFactorCode: params.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
-				: null;
-
-			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+			const result = await saveUserProfile(params, customFields);
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
@@ -222,6 +210,21 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					const user = { ...getValues(), ...params };
 					Object.entries(user).forEach(([key, value]) => setValue(key as any, value));
 				}
+
+				const updatedUser = {
+					...user,
+					...params
+				};
+
+				reset({
+					name: updatedUser.name || '',
+					username: updatedUser.username || '',
+					email: updatedUser.emails?.[0]?.address || updatedUser.email || '',
+					currentPassword: null,
+					bio: updatedUser.bio || '',
+					nickname: updatedUser.nickname || '',
+					saving: false
+				});
 				dispatch(setUser({ ...user, ...params, customFields }));
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 			}
@@ -251,7 +254,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setValue('saving', false);
 			setValue('currentPassword', null);
 			setTwoFactorCode(null);
-			handleError(e, 'saving_profile');
+			handleSaveUserProfileError(e, 'saving_profile');
 		}
 	};
 
@@ -377,36 +380,18 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 								inputStyle={styles.inputBio}
 								multiline
 								maxLength={MAX_BIO_LENGTH}
-								onSubmitEditing={() => {
-									setFocus('newPassword');
-								}}
+								onSubmitEditing={focusOnCustomFields}
 								testID='profile-view-bio'
 								containerStyle={styles.inputContainer}
 							/>
 						) : null}
-						<ControlledFormTextInput
-							name='newPassword'
-							control={control}
-							editable={Accounts_AllowPasswordChange}
-							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							label={I18n.t('New_Password')}
-							placeholder={I18n.t('New_Password')}
-							onSubmitEditing={focusOnCustomFields}
-							textContentType={isAndroid ? 'newPassword' : undefined}
-							autoComplete={isAndroid ? 'password-new' : undefined}
-							secureTextEntry
-							containerStyle={styles.inputContainer}
-							testID='profile-view-new-password'
-						/>
+
 						<CustomFields
 							customFieldsRef={customFieldsRef}
 							Accounts_CustomFields={Accounts_CustomFields}
 							customFields={customFields}
 							onCustomFieldChange={value => setCustomFields(value)}
 						/>
-						{passwordPolicies && newPassword?.length > 0 ? (
-							<PasswordPolicies isDirty={isDirty} password={newPassword} policies={passwordPolicies} />
-						) : null}
 					</View>
 
 					<Button
@@ -420,6 +405,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					/>
 
 					<ListSeparator style={{ marginVertical: 12 }} />
+					{Accounts_AllowPasswordChange ? (
+						<Button
+							title={I18n.t('Change_my_password')}
+							type='secondary'
+							onPress={navigateToChangePasswordView}
+							testID='profile-view-change-my-password-button'
+						/>
+					) : null}
 					<Button
 						title={I18n.t('Logout_from_other_logged_in_locations')}
 						type='secondary'
