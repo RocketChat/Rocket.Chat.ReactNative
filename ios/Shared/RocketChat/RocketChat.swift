@@ -45,8 +45,7 @@ final class RocketChat {
       let encryptedMessage = encryptMessage(rid: rid, id: id, message: message)
       let content = MessageBody.MessageContent(algorithm: "rc.v1.aes-sha2", ciphertext: encryptedMessage)
       
-      // Send both msg and content for backward compatibility (like TypeScript implementation)
-      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: encryptedMessage, content: content, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: "", content: content, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
         switch response {
         case .resource(let response):
           completion(response)
