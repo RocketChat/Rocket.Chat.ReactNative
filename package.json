@@ -60,6 +60,7 @@
 		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto",
 		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
 		"@rocket.chat/ui-kit": "0.31.19",
+		"@rozenite/react-navigation-plugin": "^1.0.0-alpha.14",
 		"bytebuffer": "5.0.1",
 		"color2k": "1.2.4",
 		"dequal": "2.0.3",

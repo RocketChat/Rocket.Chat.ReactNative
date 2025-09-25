@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 import { useNetworkActivityDevTools } from '@rozenite/network-activity-plugin';
+import { useReactNavigationDevTools } from '@rozenite/react-navigation-plugin';
 
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
@@ -36,6 +37,8 @@ const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
 	useNetworkActivityDevTools();
+	useReactNavigationDevTools({ ref: Navigation.navigationRef });
+
 	useEffect(() => {
 		if (root) {
 			const state = Navigation.navigationRef.current?.getRootState();
