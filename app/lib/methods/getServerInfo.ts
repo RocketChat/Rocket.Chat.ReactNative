@@ -6,7 +6,7 @@ import { TCloudInfo, IServerInfo, ISupportedVersions, ISupportedVersionsData, IA
 import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
 import I18n from '../../i18n';
-import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
+import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants/supportedVersions';
 import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';

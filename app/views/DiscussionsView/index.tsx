@@ -3,7 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import { textInputDebounceTime } from '../../lib/constants';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { IMessageFromServer, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -17,8 +17,8 @@ import BackgroundContainer from '../../containers/BackgroundContainer';
 import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';
 import Item from './Item';
-import { Services } from '../../lib/services';
-import { useAppSelector } from '../../lib/hooks';
+import { getDiscussions } from '../../lib/services/restApi';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;
@@ -56,7 +56,7 @@ const DiscussionsView = () => {
 
 		setLoading(true);
 		try {
-			const result = await Services.getDiscussions({
+			const result = await getDiscussions({
 				roomId: rid,
 				offset: offset.current,
 				count: API_FETCH_COUNT,

@@ -2,7 +2,7 @@ import { IPreferences } from '../definitions';
 import { setAllPreferences, setPreference } from '../actions/sortPreferences';
 import { mockedStore } from './mockedStore';
 import { initialState } from './sortPreferences';
-import { DisplayMode, SortBy } from '../lib/constants';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 
 describe('test sortPreferences reducer', () => {
 	it('should return initial state', () => {

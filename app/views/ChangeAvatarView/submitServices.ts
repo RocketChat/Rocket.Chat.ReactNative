@@ -1,11 +1,11 @@
-import { Services } from '../../lib/services';
+import { resetAvatar, setAvatarFromService, saveRoomSettings } from '../../lib/services/restApi';
 import log from '../../lib/methods/helpers/log';
 import { IAvatar } from '../../definitions';
 import { handleError } from './submitHelpers';
 
 export const changeRoomsAvatar = async (rid: string, roomAvatar: string | null) => {
 	try {
-		await Services.saveRoomSettings(rid, { roomAvatar });
+		await saveRoomSettings(rid, { roomAvatar });
 	} catch (e) {
 		log(e);
 		return handleError(e, 'changing_avatar');
@@ -14,7 +14,7 @@ export const changeRoomsAvatar = async (rid: string, roomAvatar: string | null) 
 
 export const changeUserAvatar = async (avatarUpload: IAvatar) => {
 	try {
-		await Services.setAvatarFromService(avatarUpload);
+		await setAvatarFromService(avatarUpload);
 	} catch (e) {
 		return handleError(e, 'changing_avatar');
 	}
@@ -22,7 +22,7 @@ export const changeUserAvatar = async (avatarUpload: IAvatar) => {
 
 export const resetUserAvatar = async (userId: string) => {
 	try {
-		await Services.resetAvatar(userId);
+		await resetAvatar(userId);
 	} catch (e) {
 		return handleError(e, 'changing_avatar');
 	}

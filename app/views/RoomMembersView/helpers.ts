@@ -9,9 +9,19 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import log from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
-import { Services } from '../../lib/services';
+import {
+	toggleRoomOwner,
+	toggleRoomLeader,
+	toggleRoomModerator,
+	removeUserFromRoom,
+	toggleMuteUserInRoom,
+	getRoomRoles,
+	removeTeamMember,
+	createDirectMessage,
+	teamListRoomsOfUser
+} from '../../lib/services/restApi';
 import database from '../../lib/database';
-import { RoomTypes } from '../../lib/methods';
+import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
@@ -28,7 +38,7 @@ export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IG
 export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, updateState: any): Promise<void> => {
 	try {
 		const type = roomType;
-		const result = await Services.getRoomRoles(rid, type);
+		const result = await getRoomRoles(rid, type);
 		if (result?.success) {
 			updateState({ roomRoles: result.roles });
 		}
@@ -39,7 +49,7 @@ export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, up
 
 export const handleMute = async (user: TUserModel, rid: string) => {
 	try {
-		await Services.toggleMuteUserInRoom(rid, user?.username, !user.muted);
+		await toggleMuteUserInRoom(rid, user?.username, !user.muted);
 		EventEmitter.emit(LISTENER, {
 			message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') })
 		});
@@ -56,7 +66,7 @@ export const handleModerator = async (
 	callback: () => Promise<void>
 ): Promise<void> => {
 	try {
-		await Services.toggleRoomModerator({
+		await toggleRoomModerator({
 			roomId: room.rid,
 			t: room.t,
 			userId: selectedUser._id,
@@ -86,7 +96,7 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 			const [room] = query;
 			handleGoRoom(room, isMasterDetail);
 		} else {
-			const result = await Services.createDirectMessage(item.username);
+			const result = await createDirectMessage(item.username);
 			if (result.success) {
 				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT }, isMasterDetail);
 			}
@@ -105,7 +115,7 @@ const removeFromTeam = async (
 ) => {
 	try {
 		const userId = selectedUser._id;
-		const result = await Services.removeTeamMember({
+		const result = await removeTeamMember({
 			teamId: room.teamId,
 			userId,
 			...(selected && { rooms: selected })
@@ -135,7 +145,7 @@ export const handleRemoveFromTeam = async (
 	members: TUserModel[]
 ): Promise<void> => {
 	try {
-		const result = await Services.teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
+		const result = await teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
 
 		if (result.success) {
 			if (result.rooms?.length) {
@@ -177,7 +187,7 @@ export const handleLeader = async (
 	callback: () => Promise<void>
 ): Promise<void> => {
 	try {
-		await Services.toggleRoomLeader({
+		await toggleRoomLeader({
 			roomId: room.rid,
 			t: room.t,
 			userId: selectedUser._id,
@@ -205,7 +215,7 @@ export const handleRemoveUserFromRoom = async (
 ): Promise<void> => {
 	try {
 		const userId = selectedUser._id;
-		await Services.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
+		await removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
 		const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 		EventEmitter.emit(LISTENER, { message });
 		callback();
@@ -229,7 +239,7 @@ export const handleOwner = async (
 	callback: Function
 ): Promise<void> => {
 	try {
-		await Services.toggleRoomOwner({
+		await toggleRoomOwner({
 			roomId: room.rid,
 			t: room.t,
 			userId: selectedUser._id,
