@@ -7,7 +7,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { sha256 } from 'js-sha256';
 
-import { IProfileParams } from '../../definitions/IProfile';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
@@ -15,7 +14,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isAndroid, showErrorAlert } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { TwoFactorMethods } from '../../definitions/ITotp';
-import { saveUserProfile } from '../../lib/services/restApi';
+import { saveUserProfile, setPassword } from '../../lib/services/restApi';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { setUser } from '../../actions/login';
 import { LISTENER } from '../../containers/Toast';
@@ -105,11 +104,11 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 	};
 
 	const changePassword = async () => {
-		const { newPassword, currentPassword } = inputValues;
+		const { newPassword } = inputValues;
 
 		try {
 			setValue('saving', true);
-			await saveUserProfile({ newPassword, currentPassword: sha256(currentPassword) } as IProfileParams);
+			await setPassword(newPassword);
 			dispatch(setUser({ requirePasswordChange: false }));
 			navigation.goBack();
 		} catch (error: any) {
@@ -198,20 +197,22 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 					<Text style={{ ...styles.createNewPasswordTitle, color: colors.fontTitlesLabels }}>Create new password</Text>
 
 					<View style={{ gap: 12 }}>
-						<ControlledFormTextInput
-							name='currentPassword'
-							control={control}
-							editable={Accounts_AllowPasswordChange}
-							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							label={I18n.t('Current_password')}
-							textContentType={isAndroid ? 'password' : undefined}
-							autoComplete={isAndroid ? 'password' : undefined}
-							secureTextEntry
-							required
-							containerStyle={styles.inputContainer}
-							testID='change-password-view-current-password'
-							error={errors.currentPassword?.message}
-						/>
+						{fromProfileView ? (
+							<ControlledFormTextInput
+								name='currentPassword'
+								control={control}
+								editable={Accounts_AllowPasswordChange}
+								inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
+								label={I18n.t('Current_password')}
+								textContentType={isAndroid ? 'password' : undefined}
+								autoComplete={isAndroid ? 'password' : undefined}
+								secureTextEntry
+								required
+								containerStyle={styles.inputContainer}
+								testID='change-password-view-current-password'
+								error={errors.currentPassword?.message}
+							/>
+						) : null}
 
 						<ControlledFormTextInput
 							name='newPassword'
