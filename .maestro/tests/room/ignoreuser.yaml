@@ -192,6 +192,8 @@ tags:
 - hideKeyboard
 - tapOn:
     id: 'report-user-view-submit'
+    waitToSettleTimeoutMs: 500
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.otherUser.username}'
@@ -238,6 +240,8 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'report-user-view-submit'
+    waitToSettleTimeoutMs: 500
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
