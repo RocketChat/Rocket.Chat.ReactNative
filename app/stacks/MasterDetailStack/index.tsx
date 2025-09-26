@@ -59,6 +59,7 @@ import CreateDiscussionView from '../../views/CreateDiscussionView';
 import E2ESaveYourPasswordView from '../../views/E2ESaveYourPasswordView';
 import E2EHowItWorksView from '../../views/E2EHowItWorksView';
 import E2EEnterYourPasswordView from '../../views/E2EEnterYourPasswordView';
+import E2EResetYourPasswordView from '../../views/E2EResetYourPasswordView';
 import ShareView from '../../views/ShareView';
 import QueueListView from '../../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../../views/AddChannelTeamView';
@@ -186,6 +187,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='E2ESaveYourPasswordView' component={E2ESaveYourPasswordView} />
 				<ModalStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
 				<ModalStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
+				<ModalStack.Screen name='E2EResetYourPasswordView' component={E2EResetYourPasswordView} />
 				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 				<ModalStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
