@@ -629,6 +629,16 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
+export const setPassword = (newPassword: string) => {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.10.0')) {
+		return saveUserProfile({ newPassword } as IProfileParams);
+	}
+
+	return sdk.methodCall('setUserPassword', newPassword);
+};
+
 export const saveUserProfile = (
 	data: IProfileParams | Pick<IProfileParams, 'username' | 'name'>,
 	customFields?: { [key: string | number]: string }
