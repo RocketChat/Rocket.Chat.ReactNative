@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
-import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods';
+import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
 import { IApplicationState } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
 
@@ -258,7 +258,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 
 		return (
 			<KeyboardView>
-				<View style={styles.content}>
+				<ScrollView style={styles.content}>
 					{React.createElement(
 						modalBlockWithContext({
 							action: this.action,
@@ -272,7 +272,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 							values
 						}
 					)}
-				</View>
+				</ScrollView>
 				<LoadingIndicator loading={loading} />
 			</KeyboardView>
 		);

@@ -11,7 +11,7 @@ import {
 	IMAGE_PREFERENCE_DOWNLOAD,
 	MediaDownloadOption,
 	VIDEO_PREFERENCE_DOWNLOAD
-} from '../../lib/constants';
+} from '../../lib/constants/mediaAutoDownload';
 import i18n from '../../i18n';
 import { SettingsStackParamList } from '../../stacks/types';
 

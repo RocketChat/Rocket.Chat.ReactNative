@@ -9,7 +9,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { ChatsStackParamList, DrawerParamList, NewMessageStackParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
-import { usePermissions } from '../lib/hooks';
+import { usePermissions } from '../lib/hooks/usePermissions';
 import { compareServerVersion } from '../lib/methods/helpers';
 import { TSupportedPermissions } from '../reducers/permissions';
 

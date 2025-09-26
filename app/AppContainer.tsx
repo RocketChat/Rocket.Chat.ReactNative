@@ -17,7 +17,7 @@ import MasterDetailStack from './stacks/MasterDetailStack';
 import ShareExtensionStack from './stacks/ShareExtensionStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
-import { themes } from './lib/constants';
+import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 
 const createStackNavigator = createNativeStackNavigator;

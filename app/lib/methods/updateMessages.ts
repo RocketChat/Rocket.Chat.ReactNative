@@ -1,7 +1,7 @@
 import { Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { MESSAGE_TYPE_ANY_LOAD } from '../constants';
+import { MESSAGE_TYPE_ANY_LOAD } from '../constants/messageTypeLoad';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
@@ -146,6 +146,10 @@ export default async function updateMessages({
 						}
 						if (newMessage && !newMessage?.md) {
 							newMessage.md = undefined;
+						}
+						if (!m?.unread && newMessage?.unread) {
+							newMessage.unread = false;
+							m.unread = false;
 						}
 						Object.assign(m, newMessage);
 

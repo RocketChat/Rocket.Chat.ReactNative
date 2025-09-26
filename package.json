@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.64.0",
+	"version": "4.65.0",
 	"private": true,
 	"packageManager": "yarn@1.22.22",
 	"scripts": {
@@ -32,11 +32,11 @@
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
 	},
 	"dependencies": {
-		"@bugsnag/react-native": "^8.4.0",
+		"@bugsnag/react-native": "8.4.0",
 		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
 		"@hookform/resolvers": "^2.9.10",
 		"@notifee/react-native": "7.8.2",
-		"@nozbe/watermelondb": "^0.28.0-2",
+		"@nozbe/watermelondb": "^0.28.0",
 		"@react-native-async-storage/async-storage": "^1.22.3",
 		"@react-native-camera-roll/camera-roll": "^7.10.0",
 		"@react-native-clipboard/clipboard": "^1.13.2",
@@ -57,6 +57,7 @@
 		"@react-navigation/native": "^7.1.16",
 		"@react-navigation/native-stack": "^7.3.23",
 		"@rocket.chat/message-parser": "^0.31.31",
+		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto",
 		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
 		"@rocket.chat/ui-kit": "0.31.19",
 		"bytebuffer": "5.0.1",
@@ -123,7 +124,6 @@
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "^5.4.0",
 		"react-native-screens": "^4.13.1",
-		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto",
 		"react-native-skeleton-placeholder": "5.2.4",
 		"react-native-slowlog": "1.0.2",
 		"react-native-svg": "^15.12.1",
@@ -220,5 +220,13 @@
 	"snyk": true,
 	"engines": {
 		"node": ">=18"
+	},
+	"codegenConfig": {
+		"name": "SSLPinning",
+		"type": "modules",
+		"jsSrcsDir": "./app/lib/native",
+		"android": {
+			"javaPackageName": "chat.rocket.reactnative.networking"
+		}
 	}
 }

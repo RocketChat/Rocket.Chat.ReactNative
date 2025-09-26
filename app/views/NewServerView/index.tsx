@@ -16,13 +16,13 @@ import { isAndroid, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';
 import { getServerById } from '../../lib/database/services/Server';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
+import CertificatePicker from './components/CertificatePicker';
 import useConnectServer from './hooks/useConnectServer';
 import { INewServerViewProps } from './definitions';
 import completeUrl from './utils/completeUrl';
-import CertificatePicker from './components/CertificatePicker';
 import styles from './styles';
 
 const NewServerView = ({ navigation }: INewServerViewProps) => {
@@ -46,7 +46,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const workspaceUrl = watch('workspaceUrl');
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
-	const { certificate, chooseCertificate, removeCertificate } = useCertificate();
+	const { certificate, chooseCertificate, removeCertificate, autocompleteCertificate } = useCertificate();
 	const { submit } = useConnectServer({ workspaceUrl, certificate, previousServer });
 	const phoneMarginTop = previousServer ? 32 : 84;
 	const marginTop = isTablet ? 0 : phoneMarginTop;
@@ -56,10 +56,12 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		setValue('workspaceUrl', text);
 		queryServerHistory(text);
 		clearErrors();
+		autocompleteCertificate(completeUrl(text));
 	};
 
 	const onPressServerHistory = (serverHistory: TServerHistoryModel) => {
 		setValue('workspaceUrl', serverHistory.url);
+		autocompleteCertificate(serverHistory.url);
 		submit({ fromServerHistory: true, username: serverHistory?.username, serverUrl: serverHistory?.url });
 	};
 
@@ -185,9 +187,9 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 			</FormContainerInner>
 			<CertificatePicker
 				certificate={certificate}
-				chooseCertificate={chooseCertificate}
+				chooseCertificate={() => chooseCertificate(completeUrl(workspaceUrl))}
 				connecting={connecting}
-				handleRemove={removeCertificate}
+				handleRemove={() => removeCertificate(completeUrl(workspaceUrl))}
 				previousServer={previousServer}
 				showBottomInfo
 			/>
