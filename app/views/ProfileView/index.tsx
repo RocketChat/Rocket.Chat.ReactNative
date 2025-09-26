@@ -168,7 +168,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		const { name, username, email, currentPassword, bio, nickname } = getValues();
 		const params = {} as IProfileParams;
 
-		if (user.name !== name) params.realname = name;
+		if (user.name !== name) params.name = name;
 		if (user.username !== username) params.username = username;
 		if (user.emails?.[0].address !== email) params.email = email;
 		if (user.bio !== bio) params.bio = bio;
@@ -198,10 +198,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
-				if ('realname' in params) {
-					params.name = params.realname;
-					delete params.realname;
-				}
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
 					setCustomFields(customFields);
