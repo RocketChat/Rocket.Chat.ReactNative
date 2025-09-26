@@ -1,5 +1,7 @@
 appId: chat.rocket.reactnative
 name: Invalid Workspace
+tags:
+  - test-2
 
 ---
 - runFlow: ../../../helpers/launch-app.yaml
