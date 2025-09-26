@@ -198,22 +198,20 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 					<Text style={{ ...styles.createNewPasswordTitle, color: colors.fontTitlesLabels }}>Create new password</Text>
 
 					<View style={{ gap: 12 }}>
-						{fromProfileView ? (
-							<ControlledFormTextInput
-								name='currentPassword'
-								control={control}
-								editable={Accounts_AllowPasswordChange}
-								inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-								label={I18n.t('Current_password')}
-								textContentType={isAndroid ? 'password' : undefined}
-								autoComplete={isAndroid ? 'password' : undefined}
-								secureTextEntry
-								required
-								containerStyle={styles.inputContainer}
-								testID='change-password-view-current-password'
-								error={errors.currentPassword?.message}
-							/>
-						) : null}
+						<ControlledFormTextInput
+							name='currentPassword'
+							control={control}
+							editable={Accounts_AllowPasswordChange}
+							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
+							label={I18n.t('Current_password')}
+							textContentType={isAndroid ? 'password' : undefined}
+							autoComplete={isAndroid ? 'password' : undefined}
+							secureTextEntry
+							required
+							containerStyle={styles.inputContainer}
+							testID='change-password-view-current-password'
+							error={errors.currentPassword?.message}
+						/>
 
 						<ControlledFormTextInput
 							name='newPassword'
