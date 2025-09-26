@@ -32,11 +32,6 @@ export type UsersEndpoints = {
 			success: boolean;
 		};
 	};
-	'users.setPassword': {
-		POST: (params: { password: string }) => {
-			success: boolean;
-		};
-	};
 	'users.register': {
 		POST: (params: { name: string; email: string; username: string; pass: string }) => { user: IUserRegistered };
 	};
