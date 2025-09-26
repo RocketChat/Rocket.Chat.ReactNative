@@ -53,6 +53,7 @@ jobs:
           SHARD=${{ inputs.shard }}
           echo "Running shard: \$SHARD"
 
+          adb shell settings put system show_touches 1
           adb install app-experimental-release.apk
           adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
           sleep 10
