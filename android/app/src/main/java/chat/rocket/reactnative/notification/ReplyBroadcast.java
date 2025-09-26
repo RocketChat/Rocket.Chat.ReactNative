@@ -122,7 +122,9 @@ public class ReplyBroadcast extends BroadcastReceiver {
         
         if (encryptedMessage != message) {
             Map contentMap = new HashMap();
-            contentMap.put("algorithm", "rc.v1.aes-sha2");
+            // Determine algorithm based on encrypted message format
+            String algorithm = encryptedMessage.startsWith("{") ? "rc.v2.aes-sha2" : "rc.v1.aes-sha2";
+            contentMap.put("algorithm", algorithm);
             contentMap.put("ciphertext", encryptedMessage);
             msgMap.put("content", contentMap);
             msgMap.put("t", "e2e");

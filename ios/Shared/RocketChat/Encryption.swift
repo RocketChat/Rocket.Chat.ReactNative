@@ -50,11 +50,7 @@ final class Encryption {
     return nil
   }
   
-  private final let encoder: JSONEncoder = {
-    let encoder = JSONEncoder()
-    encoder.dateEncodingStrategy = .iso8601
-    return encoder
-  }()
+  private final let encoder = JSONEncoder()
   
   init(server: String, rid: String) {
     let storage = Storage()
@@ -105,7 +101,7 @@ final class Encryption {
       // V2 format: JSON structure
       guard let data = payload.data(using: .utf8),
             let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-            let keyId = json["key_id"] as? String,
+            let keyId = json["kid"] as? String,
             let ivString = json["iv"] as? String,
             let ciphertext = json["ciphertext"] as? String,
             let ivData = Data(base64Encoded: ivString) else {
@@ -242,7 +238,7 @@ final class Encryption {
       
       // Return JSON structure for v2
       let jsonObject: [String: Any] = [
-        "key_id": keyId,
+        "kid": keyId,
         "iv": iv.base64EncodedString(),
         "ciphertext": encryptedBase64
       ]

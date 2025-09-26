@@ -94,10 +94,12 @@ class ParsedMessage {
 class RoomKeyResult {
     String decryptedKey;
     String version;
+    String keyId;
     
-    RoomKeyResult(String decryptedKey, String version) {
+    RoomKeyResult(String decryptedKey, String version, String keyId) {
         this.decryptedKey = decryptedKey;
         this.version = version;
+        this.keyId = keyId;
     }
 }
 
@@ -129,9 +131,9 @@ class Encryption {
 
     private ParsedMessage parseMessage(String payload) {
         if (payload.startsWith("{")) {
-            // V2 format: JSON with key_id, iv, ciphertext
+            // V2 format: JSON with kid, iv, ciphertext
             JsonObject parsed = gson.fromJson(payload, JsonObject.class);
-            String keyId = parsed.get("key_id").getAsString();
+            String keyId = parsed.get("kid").getAsString();
             String ivBase64 = parsed.get("iv").getAsString();
             String ciphertext = parsed.get("ciphertext").getAsString();
             
@@ -256,14 +258,14 @@ class Encryption {
             String k = sessionKeyExported.get("k").getAsString();
             byte[] decoded = Base64.decode(k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
             String decryptedKey = CryptoUtils.INSTANCE.bytesToHex(decoded);
-            return new RoomKeyResult(decryptedKey, "v2");
+            return new RoomKeyResult(decryptedKey, "v2", keyId);
         } else {
             // V1 format
             keyId = keyIdPrefix;
             String k = sessionKey.get("k").getAsString();
             byte[] decoded = Base64.decode(k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
             String decryptedKey = CryptoUtils.INSTANCE.bytesToHex(decoded);
-            return new RoomKeyResult(decryptedKey, "v1");
+            return new RoomKeyResult(decryptedKey, "v1", keyId);
         }
     }
 
@@ -308,7 +310,7 @@ class Encryption {
             }
             String e2eKey = roomKeyResult.decryptedKey;
 
-            if (ejson.content != null && "rc.v1.aes-sha2".equals(ejson.content.algorithm)) {
+            if (ejson.content != null && ("rc.v1.aes-sha2".equals(ejson.content.algorithm) || "rc.v2.aes-sha2".equals(ejson.content.algorithm))) {
                 String message = ejson.content.ciphertext;
                 String decryptedText = decryptText(message, e2eKey);
                 DecryptedContent m = gson.fromJson(decryptedText, DecryptedContent.class);
@@ -355,6 +357,8 @@ class Encryption {
             byte[] bytes;
             String encryptedData;
             
+            String keyId = roomKeyResult.keyId;
+            
             if ("v2".equals(version)) {
                 // V2 format: Use AES-GCM with 12-byte IV
                 bytes = new byte[12];
@@ -367,7 +371,7 @@ class Encryption {
                 
                 // Return JSON structure
                 JsonObject encryptedJson = new JsonObject();
-                encryptedJson.addProperty("key_id", keyId);
+                encryptedJson.addProperty("kid", keyId);
                 encryptedJson.addProperty("iv", Base64.encodeToString(bytes, Base64.NO_WRAP));
                 encryptedJson.addProperty("ciphertext", encryptedData);
                 return gson.toJson(encryptedJson);

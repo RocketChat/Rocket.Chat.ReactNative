@@ -90,6 +90,11 @@ export default class EncryptionRoom {
 		this.subscription = null;
 	}
 
+	// Helper method to get the correct algorithm based on version
+	private getAlgorithm(): 'rc.v1.aes-sha2' | 'rc.v2.aes-sha2' {
+		return this.version === 'v2' ? 'rc.v2.aes-sha2' : 'rc.v1.aes-sha2';
+	}
+
 	// Initialize the E2E room
 	handshake = async () => {
 		// If it's already ready we don't need to handshake again
@@ -442,7 +447,7 @@ export default class EncryptionRoom {
 			const vector = b64ToBuffer(vectorBase64);
 			const data = await aesGcmEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector));
 			return EJSON.stringify({
-				key_id: this.keyID,
+				kid: this.keyID,
 				iv: vectorBase64,
 				ciphertext: data
 			});
@@ -477,7 +482,7 @@ export default class EncryptionRoom {
 				msg,
 				e2eMentions: getE2EEMentions(message.msg),
 				content: {
-					algorithm: 'rc.v1.aes-sha2' as const,
+					algorithm: this.getAlgorithm(),
 					ciphertext: msg
 				}
 			};
@@ -593,7 +598,7 @@ export default class EncryptionRoom {
 			});
 
 			return {
-				algorithm: 'rc.v1.aes-sha2',
+				algorithm: this.getAlgorithm(),
 				ciphertext: await Encryption.encryptText(rid, data)
 			};
 		};
@@ -612,7 +617,7 @@ export default class EncryptionRoom {
 		};
 
 		const fileContent = {
-			algorithm: 'rc.v1.aes-sha2' as const,
+			algorithm: this.getAlgorithm(),
 			ciphertext: await Encryption.encryptText(rid, EJSON.stringify(fileContentData))
 		};
 
@@ -639,7 +644,7 @@ export default class EncryptionRoom {
 	};
 
 	decryptFileContent = async (data: IServerAttachment) => {
-		if (data.content?.algorithm === 'rc.v1.aes-sha2') {
+		if (data.content?.algorithm === 'rc.v1.aes-sha2' || data.content?.algorithm === 'rc.v2.aes-sha2') {
 			const content = await this.decryptContent(data.content.ciphertext);
 			Object.assign(data, content);
 		}
@@ -648,14 +653,14 @@ export default class EncryptionRoom {
 
 	parse = (payload: string) => {
 		if (payload.startsWith('{')) {
-			const { key_id, iv, ciphertext } = EJSON.parse(payload);
-			return { key_id, iv: b64ToBuffer(iv), ciphertext };
+			const { kid, iv, ciphertext } = EJSON.parse(payload);
+			return { kid, iv: b64ToBuffer(iv), ciphertext };
 		}
 
-		const keyID = payload.slice(0, 12);
+		const kid = payload.slice(0, 12);
 		const contentBuffer = b64ToBuffer(payload.slice(12) as string);
 		const [iv, ciphertext] = splitVectorData(contentBuffer);
-		return { key_id: keyID, iv, ciphertext: bufferToB64(ciphertext) };
+		return { kid, iv, ciphertext: bufferToB64(ciphertext) };
 	};
 
 	doDecrypt = async (ciphertext: string, key: ArrayBuffer, iv: ArrayBuffer, version: TVersion) => {
@@ -679,17 +684,17 @@ export default class EncryptionRoom {
 				return null;
 			}
 
-			const { key_id, iv, ciphertext } = this.parse(contentBase64);
+			const { kid, iv, ciphertext } = this.parse(contentBase64);
 
-			if (key_id !== this.keyID) {
-				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === key_id);
+			if (kid !== this.keyID) {
+				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === kid);
 				if (oldRoomKey?.E2EKey && Encryption.privateKey) {
 					const { roomKey, version } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
 					return this.doDecrypt(ciphertext, roomKey, iv, version);
 				}
 				if (!oldRoomKey) {
 					// TODO: needs testing, but it makes sense
-					this.requestRoomKey(key_id);
+					this.requestRoomKey(kid);
 				}
 				return null;
 			}
@@ -724,7 +729,7 @@ export default class EncryptionRoom {
 				// 	message.tmsg = await this.decryptText(tmsg);
 				// }
 
-				if (message.content?.algorithm === 'rc.v1.aes-sha2') {
+				if (message.content?.algorithm === 'rc.v1.aes-sha2' || message.content?.algorithm === 'rc.v2.aes-sha2') {
 					const content = await this.decryptContent(message.content.ciphertext);
 					message = {
 						...message,

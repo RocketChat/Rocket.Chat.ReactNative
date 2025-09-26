@@ -81,7 +81,7 @@ interface IMessageFile {
 }
 
 export type IMessageE2EEContent = {
-	algorithm: 'rc.v1.aes-sha2';
+	algorithm: 'rc.v1.aes-sha2' | 'rc.v2.aes-sha2';
 	ciphertext: string; // Encrypted subset JSON of IMessage
 };
 
