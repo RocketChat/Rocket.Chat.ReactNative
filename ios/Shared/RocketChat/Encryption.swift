@@ -50,7 +50,11 @@ final class Encryption {
     return nil
   }
   
-  private final let encoder = JSONEncoder()
+  private final let encoder: JSONEncoder = {
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .iso8601
+    return encoder
+  }()
   
   init(server: String, rid: String) {
     let storage = Storage()
@@ -180,15 +184,20 @@ final class Encryption {
       return nil
     }
     
-    let ivHex = CryptoUtils.bytes(toHex: parsed.iv)
+    return decryptWithParsedData(keyId: parsed.keyId, iv: parsed.iv, ciphertext: parsed.ciphertext, isV2: parsed.isV2, roomKey: roomKey)
+  }
+  
+  // Helper method to decrypt with already parsed components
+  private func decryptWithParsedData(keyId: String, iv: Data, ciphertext: String, isV2: Bool, roomKey: String) -> String? {
+    let ivHex = CryptoUtils.bytes(toHex: iv)
     let decryptedBase64: String?
     
-    if parsed.isV2 {
+    if isV2 {
       // Use AES-GCM decryption for v2
-      decryptedBase64 = AESCrypto.decryptGcmBase64(parsed.ciphertext, keyHex: roomKey, ivHex: ivHex)
+      decryptedBase64 = AESCrypto.decryptGcmBase64(ciphertext, keyHex: roomKey, ivHex: ivHex)
     } else {
       // Use AES-CBC decryption for v1 (existing logic)
-      decryptedBase64 = AESCrypto.decryptBase64(parsed.ciphertext, keyHex: roomKey, ivHex: ivHex)
+      decryptedBase64 = AESCrypto.decryptBase64(ciphertext, keyHex: roomKey, ivHex: ivHex)
     }
     
     guard let decryptedBase64 = decryptedBase64,
@@ -208,39 +217,96 @@ final class Encryption {
     return nil
   }
   
-  func encryptMessage(id: String, message: String) -> String {
+  // Direct decryption method for content structure
+  func decryptContent(algorithm: String, kid: String, iv: String, ciphertext: String) -> String? {
+    guard let roomKey = self.roomKey,
+          let ivData = Data(base64Encoded: iv) else {
+      return nil
+    }
+    
+    let isV2 = algorithm == "rc.v2.aes-sha2"
+    return decryptWithParsedData(keyId: kid, iv: ivData, ciphertext: ciphertext, isV2: isV2, roomKey: roomKey)
+  }
+  
+  // Content structure similar to TypeScript
+  struct EncryptionContent {
+    let algorithm: String
+    let ciphertext: String
+    let kid: String?
+    let iv: String?
+  }
+  
+  func encryptMessageContent(id: String, message: String) -> EncryptionContent? {
     guard let userId = credentials?.userId, 
           let roomKey = roomKey,
           let keyId = keyId,
           let version = version else {
-      return message
+      return nil
     }
     
     let m = Message(_id: id, text: message, userId: userId)
     guard let cypherData = try? encoder.encode(m) else {
-      return message
+      return nil
     }
     
     let cypherBase64 = cypherData.base64EncodedString()
     
     if version == "v2" {
-      // V2 format: Use AES-GCM with 12-byte IV and return JSON structure
+      // V2 format: Use AES-GCM with 12-byte IV
       guard let randomBytesHex = RandomUtils.generateRandomKeyHex(12),
             let iv = Data(hexString: randomBytesHex) else {
-        return message
+        return nil
       }
       
       let ivHex = CryptoUtils.bytes(toHex: iv)
       
       guard let encryptedBase64 = AESCrypto.encryptGcmBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex) else {
-        return message
+        return nil
       }
       
-      // Return JSON structure for v2
+      return EncryptionContent(
+        algorithm: "rc.v2.aes-sha2",
+        ciphertext: encryptedBase64,
+        kid: keyId,
+        iv: iv.base64EncodedString()
+      )
+    } else {
+      // V1 format: Use AES-CBC with 16-byte IV
+      guard let randomBytesHex = RandomUtils.generateRandomKeyHex(UInt(kCCBlockSizeAES128)),
+            let iv = Data(hexString: randomBytesHex) else {
+        return nil
+      }
+      
+      let ivHex = CryptoUtils.bytes(toHex: iv)
+      
+      guard let encryptedBase64 = AESCrypto.encryptBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex),
+            let encryptedData = Data(base64Encoded: encryptedBase64) else {
+        return nil
+      }
+      
+      let joined = Data.join(vector: iv, data: encryptedData)
+      let fullCiphertext = keyId + joined.base64EncodedString()
+      
+      return EncryptionContent(
+        algorithm: "rc.v1.aes-sha2",
+        ciphertext: fullCiphertext,
+        kid: nil,
+        iv: nil
+      )
+    }
+  }
+  
+  func encryptMessage(id: String, message: String) -> String {
+    guard let content = encryptMessageContent(id: id, message: message) else {
+      return message
+    }
+    
+    // For backward compatibility, return the appropriate format for msg field
+    if content.algorithm == "rc.v2.aes-sha2" {
       let jsonObject: [String: Any] = [
-        "kid": keyId,
-        "iv": iv.base64EncodedString(),
-        "ciphertext": encryptedBase64
+        "kid": content.kid!,
+        "iv": content.iv!,
+        "ciphertext": content.ciphertext
       ]
       
       guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject, options: []),
@@ -250,21 +316,7 @@ final class Encryption {
       
       return jsonString
     } else {
-      // V1 format: Use AES-CBC with 16-byte IV (existing logic)
-      guard let randomBytesHex = RandomUtils.generateRandomKeyHex(UInt(kCCBlockSizeAES128)),
-            let iv = Data(hexString: randomBytesHex) else {
-        return message
-      }
-      
-      let ivHex = CryptoUtils.bytes(toHex: iv)
-      
-      guard let encryptedBase64 = AESCrypto.encryptBase64(cypherBase64, keyHex: roomKey, ivHex: ivHex),
-            let encryptedData = Data(base64Encoded: encryptedBase64) else {
-        return message
-      }
-      
-      let joined = Data.join(vector: iv, data: encryptedData)
-      return keyId + joined.base64EncodedString()
+      return content.ciphertext
     }
   }
 }

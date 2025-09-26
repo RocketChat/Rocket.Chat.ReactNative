@@ -124,5 +124,7 @@ public class Ejson {
     public static class Content {
         String ciphertext;
         String algorithm;
+        String kid;
+        String iv;
     }
 }

@@ -42,12 +42,43 @@ final class RocketChat {
     let encrypted = Database(server: server).readRoomEncrypted(for: rid)
     
     if encrypted {
-      let encryptedMessage = encryptMessage(rid: rid, id: id, message: message)
-      // Determine algorithm based on encrypted message format
-      let algorithm = encryptedMessage.starts(with: "{") ? "rc.v2.aes-sha2" : "rc.v1.aes-sha2"
-      let content = MessageBody.MessageContent(algorithm: algorithm, ciphertext: encryptedMessage)
+      let encryption = Encryption(server: server, rid: rid)
+      guard let content = encryption.encryptMessageContent(id: id, message: message) else {
+        // Fallback to unencrypted if encryption fails
+        api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: message, threadIdentifier: threadIdentifier, messageType: nil)) { response in
+          switch response {
+          case .resource(let response):
+            completion(response)
+          case .error:
+            completion(nil)
+            break
+          }
+        }
+        return
+      }
       
-      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: encryptedMessage, content: content, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
+      // Create content structure similar to TypeScript
+      let messageContent: MessageBody.MessageContent
+      if content.algorithm == "rc.v2.aes-sha2" {
+        messageContent = MessageBody.MessageContent(
+          algorithm: content.algorithm,
+          ciphertext: content.ciphertext,
+          kid: content.kid,
+          iv: content.iv
+        )
+      } else {
+        messageContent = MessageBody.MessageContent(
+          algorithm: content.algorithm,
+          ciphertext: content.ciphertext
+        )
+      }
+      
+      // For backward compatibility, also set msg field
+      let msg = content.algorithm == "rc.v2.aes-sha2" 
+        ? encryption.encryptMessage(id: id, message: message) // JSON string for v2
+        : content.ciphertext // Direct ciphertext for v1
+      
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, content: messageContent, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
         switch response {
         case .resource(let response):
           completion(response)
@@ -75,6 +106,13 @@ final class RocketChat {
     encryptionQueue.sync {
       let encryption = Encryption(server: server, rid: rid)
       return encryption.decryptMessage(message: message)
+    }
+  }
+  
+  func decryptContent(rid: String, algorithm: String, kid: String, iv: String, ciphertext: String) -> String? {
+    encryptionQueue.sync {
+      let encryption = Encryption(server: server, rid: rid)
+      return encryption.decryptContent(algorithm: algorithm, kid: kid, iv: iv, ciphertext: ciphertext)
     }
   }
   

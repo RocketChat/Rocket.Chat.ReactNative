@@ -23,6 +23,15 @@ struct MessageBody: Codable {
   struct MessageContent: Codable {
     let algorithm: String
     let ciphertext: String
+    let kid: String?
+    let iv: String?
+    
+    init(algorithm: String, ciphertext: String, kid: String? = nil, iv: String? = nil) {
+      self.algorithm = algorithm
+      self.ciphertext = ciphertext
+      self.kid = kid
+      self.iv = iv
+    }
   }
 }
 
