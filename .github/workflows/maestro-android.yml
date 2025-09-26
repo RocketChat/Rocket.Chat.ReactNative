@@ -69,6 +69,7 @@ jobs:
 
       - name: Start Android Emulator and Run Maestro Tests
         uses: reactivecircus/android-emulator-runner@v2
+        timeout-minutes: 40
         with:
           api-level: 34
           disk-size: 4096M
