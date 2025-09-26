@@ -95,6 +95,11 @@ export default class EncryptionRoom {
 		return this.version === 'v2' ? 'rc.v2.aes-sha2' : 'rc.v1.aes-sha2';
 	}
 
+	// Helper function for encryption of content - matches web implementation
+	private encryptMessageContent(contentToBeEncrypted: { _id: string; text: string; userId: string; ts: Date }) {
+		return this.encryptText(EJSON.stringify(contentToBeEncrypted));
+	}
+
 	// Initialize the E2E room
 	handshake = async () => {
 		// If it's already ready we don't need to handshake again
@@ -439,24 +444,33 @@ export default class EncryptionRoom {
 		return usersWithKeys;
 	}
 
-	// Encrypt text
-	encryptText = async (text: string | ArrayBuffer) => {
+	// Encrypt text - returns structured object with algorithm
+	encryptText = async (
+		text: string | ArrayBuffer
+	): Promise<
+		| { algorithm: 'rc.v2.aes-sha2'; kid: string; iv: string; ciphertext: string }
+		| { algorithm: 'rc.v1.aes-sha2'; ciphertext: string }
+	> => {
 		text = utf8ToBuffer(text as string);
 		if (this.version === 'v2') {
 			const vectorBase64 = await randomBytes(12);
 			const vector = b64ToBuffer(vectorBase64);
 			const data = await aesGcmEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector));
-			return EJSON.stringify({
+			return {
+				algorithm: 'rc.v2.aes-sha2' as const,
 				kid: this.keyID,
 				iv: vectorBase64,
 				ciphertext: data
-			});
+			};
 		}
 
 		const vectorBase64 = await randomBytes(16);
 		const vector = b64ToBuffer(vectorBase64);
 		const data = b64ToBuffer(await aesEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector)));
-		return this.keyID + bufferToB64(joinVectorData(vector, data));
+		return {
+			algorithm: 'rc.v1.aes-sha2' as const,
+			ciphertext: this.keyID + bufferToB64(joinVectorData(vector, data))
+		};
 	};
 
 	// Encrypt messages
@@ -466,14 +480,18 @@ export default class EncryptionRoom {
 		}
 
 		try {
-			const msg = await this.encryptText(
-				EJSON.stringify({
-					_id: message._id,
-					text: message.msg,
-					userId: this.userId,
-					ts: new Date()
-				})
-			);
+			const content = await this.encryptMessageContent({
+				_id: message._id,
+				text: message.msg || '',
+				userId: this.userId,
+				ts: new Date()
+			});
+
+			// For backward compatibility, also set msg field
+			const msg =
+				content.algorithm === 'rc.v2.aes-sha2'
+					? EJSON.stringify({ kid: content.kid, iv: content.iv, ciphertext: content.ciphertext })
+					: content.ciphertext;
 
 			return {
 				...message,
@@ -481,10 +499,7 @@ export default class EncryptionRoom {
 				e2e: E2E_STATUS.PENDING,
 				msg,
 				e2eMentions: getE2EEMentions(message.msg),
-				content: {
-					algorithm: this.getAlgorithm(),
-					ciphertext: msg
-				}
+				content
 			};
 		} catch (e) {
 			console.error(e);
@@ -504,7 +519,11 @@ export default class EncryptionRoom {
 			let description = '';
 
 			if (message.description) {
-				description = await this.encryptText(EJSON.stringify({ text: message.description }));
+				const encryptedResult = await this.encryptText(EJSON.stringify({ text: message.description }));
+				description =
+					encryptedResult.algorithm === 'rc.v1.aes-sha2'
+						? encryptedResult.ciphertext
+						: EJSON.stringify({ kid: encryptedResult.kid, iv: encryptedResult.iv, ciphertext: encryptedResult.ciphertext });
 			}
 
 			return {
@@ -597,10 +616,9 @@ export default class EncryptionRoom {
 				file: files[0]
 			});
 
-			return {
-				algorithm: this.getAlgorithm(),
-				ciphertext: await Encryption.encryptText(rid, data)
-			};
+			const encryptedResult = await this.encryptText(data);
+			// Return the result directly as it already contains the algorithm
+			return encryptedResult;
 		};
 
 		const fileContentData = {
@@ -616,10 +634,8 @@ export default class EncryptionRoom {
 			}
 		};
 
-		const fileContent = {
-			algorithm: this.getAlgorithm(),
-			ciphertext: await Encryption.encryptText(rid, EJSON.stringify(fileContentData))
-		};
+		const fileContent = await this.encryptText(EJSON.stringify(fileContentData));
+		// Return the result directly as it already contains the algorithm
 
 		return {
 			file: {
@@ -634,31 +650,53 @@ export default class EncryptionRoom {
 	};
 
 	// Decrypt text
-	decryptText = async (msg: string | ArrayBuffer) => {
+	decryptText = async (msg: string) => {
 		if (!msg) {
 			return null;
 		}
 
-		const m = await this.decryptContent(msg as string);
+		const { kid, iv, ciphertext } = this.parse(msg);
+
+		if (kid !== this.keyID) {
+			const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === kid);
+			if (oldRoomKey?.E2EKey && Encryption.privateKey) {
+				const { roomKey, version } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
+				const m = await this.doDecrypt(ciphertext, roomKey, iv, version);
+				return m.text;
+			}
+			if (!oldRoomKey) {
+				this.requestRoomKey(kid);
+			}
+			return null;
+		}
+
+		const m = await this.doDecrypt(ciphertext, this.roomKey, iv, this.version);
 		return m.text;
 	};
 
 	decryptFileContent = async (data: IServerAttachment) => {
 		if (data.content?.algorithm === 'rc.v1.aes-sha2' || data.content?.algorithm === 'rc.v2.aes-sha2') {
-			const content = await this.decryptContent(data.content.ciphertext);
+			const content = await this.decryptContent(data.content);
 			Object.assign(data, content);
 		}
 		return data;
 	};
 
-	parse = (payload: string) => {
-		if (payload.startsWith('{')) {
-			const { kid, iv, ciphertext } = EJSON.parse(payload);
-			return { kid, iv: b64ToBuffer(iv), ciphertext };
+	parse = (
+		payload: string | IMessage['content']
+	): {
+		kid: string;
+		iv: ArrayBuffer;
+		ciphertext: string;
+	} => {
+		// v2: {"kid":"...", "iv": "...", "ciphertext":"..."}
+		if (typeof payload !== 'string' && payload?.algorithm === 'rc.v2.aes-sha2') {
+			return { kid: payload.kid, iv: b64ToBuffer(payload.iv), ciphertext: payload.ciphertext };
 		}
-
-		const kid = payload.slice(0, 12);
-		const contentBuffer = b64ToBuffer(payload.slice(12) as string);
+		// v1: kid + base64(vector + ciphertext)
+		const message = typeof payload === 'string' ? payload : payload?.ciphertext || '';
+		const kid = message.slice(0, 12);
+		const contentBuffer = b64ToBuffer(message.slice(12) as string);
 		const [iv, ciphertext] = splitVectorData(contentBuffer);
 		return { kid, iv, ciphertext: bufferToB64(ciphertext) };
 	};
@@ -678,13 +716,13 @@ export default class EncryptionRoom {
 		return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
 	};
 
-	decryptContent = async (contentBase64: string) => {
+	decryptContent = async (content: IMessage['content']) => {
 		try {
-			if (!contentBase64) {
+			if (!content) {
 				return null;
 			}
 
-			const { kid, iv, ciphertext } = this.parse(contentBase64);
+			const { kid, iv, ciphertext } = this.parse(content);
 
 			if (kid !== this.keyID) {
 				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === kid);
@@ -730,7 +768,7 @@ export default class EncryptionRoom {
 				// }
 
 				if (message.content?.algorithm === 'rc.v1.aes-sha2' || message.content?.algorithm === 'rc.v2.aes-sha2') {
-					const content = await this.decryptContent(message.content.ciphertext);
+					const content = await this.decryptContent(message.content);
 					message = {
 						...message,
 						...content,
