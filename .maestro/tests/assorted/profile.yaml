@@ -73,8 +73,10 @@ tags:
     enabled: false
 
 # should have new password
-- assertVisible:
-    id: 'profile-view-change-my-password-button'
+- scrollUntilVisible:
+    element:
+      id: 'profile-view-change-my-password-button'
+    timeout: 60000
 
 # swipe back to top
 - swipe:
