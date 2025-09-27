@@ -28,6 +28,8 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'settings-view-clear-cache'
+    waitToSettleTimeoutMs: 500
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: '.*This will clear all your offline data.*'
