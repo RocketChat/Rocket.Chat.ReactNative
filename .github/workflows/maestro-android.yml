@@ -61,7 +61,7 @@ jobs:
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
       
           echo "Starting screen recording..."
-          adb shell screenrecord --time-limit 1800 /sdcard/test_run.mp4 > /dev/null 2>&1 &
+          adb shell screenrecord /sdcard/test_run.mp4 > /dev/null 2>&1 &
           RECORD_PID=\$!
       
           maestro test .maestro --exclude-tags=util --include-tags=test-\$SHARD --format junit --output maestro-report.xml
