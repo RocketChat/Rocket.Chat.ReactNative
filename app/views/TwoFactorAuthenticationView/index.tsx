@@ -23,13 +23,13 @@ function TotpView() {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'TotpView'>>();
 	const user = useAppSelector(state => getUserSelector(state));
 	const { colors } = useTheme();
-    const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const [state, setState] = useState<State>({
 		secret: '',
 		url: ''
 	});
-    const isEmailNotVerified = (user.emails || []).filter(email => !email.verified).length > 0;
-    
+	const isEmailNotVerified = (user.emails || []).filter(email => !email.verified).length > 0;
+
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('TOTP_Setup_Title')
@@ -66,17 +66,15 @@ function TotpView() {
 		);
 	}
 
-    if(isEmailNotVerified) {
-        return (
-            <SafeAreaView>
-                <View style={[styles.container, { backgroundColor: colors.surfaceRoom, justifyContent: 'center' }]}>
-                    <Text style={[styles.infoText, { color: colors.fontDefault }]}>
-                        {I18n.t('TOTP_email_not_verified')}
-                    </Text>
-                </View>
-            </SafeAreaView>
-        );
-    }
+	if (isEmailNotVerified) {
+		return (
+			<SafeAreaView>
+				<View style={[styles.container, { backgroundColor: colors.surfaceRoom, justifyContent: 'center' }]}>
+					<Text style={[styles.infoText, { color: colors.fontDefault }]}>{I18n.t('TOTP_email_not_verified')}</Text>
+				</View>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<SafeAreaView>

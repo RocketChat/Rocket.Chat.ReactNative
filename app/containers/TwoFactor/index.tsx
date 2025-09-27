@@ -91,7 +91,7 @@ const TwoFactor = React.memo(() => {
 
 	const sendEmail = async () => {
 		try {
-            console.log('params', params);
+			console.log('params', params);
 			if (params?.user) {
 				clearErrors();
 				const response = await sendEmailCode(params?.user);

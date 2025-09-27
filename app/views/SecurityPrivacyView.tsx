@@ -33,7 +33,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	const e2eEnabled = useAppSelector(state => state.settings.E2E_Enable);
 	const user = useAppSelector(state => getUserSelector(state));
@@ -58,33 +58,33 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		toggleAnalyticsEventsReport(value);
 	};
 
-    const toggleEmail2fa = async (value: boolean) => {
-        if(!value){
-            try {
-                const res = await disableEmail2fa();
-                if(res.success){
-                    showToast('Email 2FA disabled successfully');
+	const toggleEmail2fa = async (value: boolean) => {
+		if (!value) {
+			try {
+				const res = await disableEmail2fa();
+				if (res.success) {
+					showToast('Email 2FA disabled successfully');
 
-                    const updatedMe = await getMe();
-                    dispatch(setUser(updatedMe));
-                }
-            } catch (error) {
-                console.log('error', error);
-            }
-        }else{
-            try {
-                const res = await enableEmail2fa();
-                if(res.success){
-                    showToast('Email 2FA enabled successfully');
+					const updatedMe = await getMe();
+					dispatch(setUser(updatedMe));
+				}
+			} catch (error) {
+				console.log('error', error);
+			}
+		} else {
+			try {
+				const res = await enableEmail2fa();
+				if (res.success) {
+					showToast('Email 2FA enabled successfully');
 
-                    const updatedMe = await getMe();
-                    dispatch(setUser(updatedMe));
-                }
-            } catch (error) {
-                console.log('error', error);
-            }
-        }
-    };
+					const updatedMe = await getMe();
+					dispatch(setUser(updatedMe));
+				}
+			} catch (error) {
+				console.log('error', error);
+			}
+		}
+	};
 
 	const navigateToScreen = (screen: 'E2EEncryptionSecurityView' | 'ScreenLockConfigView' | 'TotpView') => {
 		// @ts-ignore

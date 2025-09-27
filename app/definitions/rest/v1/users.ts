@@ -64,7 +64,7 @@ export type UsersEndpoints = {
 	'users.deleteOwnAccount': {
 		POST: (params: { password: string; confirmRelinquish: boolean }) => { success: boolean };
 	};
-    'users.2fa.disableEmail': {
-        POST: (params: { emailOrUsername: string }) => IUserTwoFactorDisable;
-    }
+	'users.2fa.disableEmail': {
+		POST: (params: { emailOrUsername: string }) => IUserTwoFactorDisable;
+	};
 };
