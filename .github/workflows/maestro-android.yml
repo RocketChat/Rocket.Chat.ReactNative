@@ -115,6 +115,7 @@ jobs:
           retention-days: 7
       
       - name: Upload Screen Recording
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: maestro-video-${{ inputs.shard }}
