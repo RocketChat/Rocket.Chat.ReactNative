@@ -8,7 +8,7 @@ import { SettingsStackParamList } from '../../stacks/types';
 
 import I18n from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import { requestUserTotp } from '../../lib/services/restApi';
 import { useTheme } from '../../theme';
