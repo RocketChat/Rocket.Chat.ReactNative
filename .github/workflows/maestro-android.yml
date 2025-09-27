@@ -52,17 +52,32 @@ jobs:
           #!/bin/bash
           SHARD=${{ inputs.shard }}
           echo "Running shard: \$SHARD"
-
+      
           adb shell settings put system show_touches 1
           adb install app-experimental-release.apk
           adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
           sleep 10
           adb shell am force-stop chat.rocket.reactnative
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-
+      
+          echo "Starting screen recording..."
+          adb shell screenrecord /sdcard/test_run.mp4 > /dev/null 2>&1 &
+          RECORD_PID=\$!
+      
           maestro test .maestro --exclude-tags=util --include-tags=test-\$SHARD --format junit --output maestro-report.xml
+          TEST_EXIT_CODE=\$?
+      
+          echo "Stopping screen recording..."
+          kill -INT \$RECORD_PID || true
+          sleep 2
+      
+          echo "Pulling video from device..."
+          adb pull /sdcard/test_run.mp4 test_run_\$SHARD.mp4 || true
+          adb shell rm /sdcard/test_run.mp4 || true
+      
+          exit \$TEST_EXIT_CODE
           EOF
-
+      
           chmod +x run-maestro.sh
         env:
           SHARD: ${{ inputs.shard }}
@@ -97,4 +112,11 @@ jobs:
         with:
           name: Android Maestro Logs - Shard ${{ inputs.shard }}
           path: ~/.maestro/tests/
+          retention-days: 7
+      
+      - name: Upload Screen Recording
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-video-${{ inputs.shard }}
+          path: test_run_${{ inputs.shard }}.mp4
           retention-days: 7
