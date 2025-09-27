@@ -149,7 +149,11 @@ export interface IUser extends IRocketChatRecord, ILoggedUser {
 	ldap?: boolean;
 	muted?: boolean;
 }
-
+export interface IRoleUser {
+	_id: string;
+	username: string;
+	roles: string[];
+}
 export interface IRegisterUser extends IUser {
 	username: string;
 	name: string;

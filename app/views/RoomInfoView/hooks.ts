@@ -1,6 +1,6 @@
 import { ISubscription } from '../../definitions';
 import { hasE2EEWarning } from '../../lib/encryption/utils';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 export const useE2EEWarning = (room?: ISubscription): boolean => {
 	const encryptionEnabled = useAppSelector(state => state.encryption.enabled);

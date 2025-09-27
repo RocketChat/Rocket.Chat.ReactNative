@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
 		minHeight: 54,
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		flexDirection: 'row',
-		maxHeight: 80
+		flexDirection: 'row'
 	},
 	switchTextContainer: {
 		flex: 1,

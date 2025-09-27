@@ -3,7 +3,9 @@ import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageComponent from './Message';
-import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
+import { E2E_MESSAGE_TYPE } from '../../lib/constants/keys';
+import { messagesStatus } from '../../lib/constants/messagesStatus';
+import { themes } from '../../lib/constants/colors';
 import MessageSeparator from '../MessageSeparator';
 import {
 	BASE_ROW_HEIGHT,
@@ -1983,5 +1985,35 @@ export const LongNameUserLargeFont = () => (
 			isReadReceiptEnabled
 			read
 		/>
+	</>
+);
+
+const collapsedAttachments = {
+	collapsed: true,
+	title: 'Title collapsed',
+	fields: [
+		{
+			title: 'Field 1',
+			value: 'Value 1'
+		},
+		{
+			title: 'Field 2',
+			value: 'Value 2'
+		}
+	]
+};
+export const CollapsedAttachments = () => (
+	<>
+		<Message msg='Message' attachments={[collapsedAttachments]} />
+		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
+		<Message msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
+	</>
+);
+
+export const CollapsedAttachmentsLargeFont = () => (
+	<>
+		<MessageLargeFont msg='Message' attachments={[collapsedAttachments]} />
+		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
+		<MessageLargeFont msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
 	</>
 );

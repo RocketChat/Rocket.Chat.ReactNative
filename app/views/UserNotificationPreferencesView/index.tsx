@@ -9,13 +9,13 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
 import { INotificationPreferences } from '../../definitions';
-import { Services } from '../../lib/services';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { useUserPreferences } from '../../lib/methods';
-import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { getUserPreferences, setUserPreferences } from '../../lib/services/restApi';
+import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import Switch from '../../containers/Switch';
 
 type TNavigation = CompositeNavigationProp<
@@ -43,7 +43,7 @@ const UserNotificationPreferencesView = () => {
 	useEffect(() => {
 		async function getPreferences() {
 			try {
-				const result = await Services.getUserPreferences(userId);
+				const result = await getUserPreferences(userId);
 				if (result.success) {
 					setLoading(false);
 					setPreferences(result.preferences);
@@ -60,7 +60,7 @@ const UserNotificationPreferencesView = () => {
 		const previousPreferences = preferences;
 		try {
 			setPreferences({ ...previousPreferences, ...param });
-			const result = await Services.setUserPreferences(userId, param);
+			const result = await setUserPreferences(userId, param);
 			if (!result.success) {
 				setPreferences(previousPreferences);
 			}

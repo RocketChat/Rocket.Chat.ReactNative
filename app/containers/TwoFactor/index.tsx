@@ -17,7 +17,7 @@ import sharedStyles from '../../views/Styles';
 import styles from './styles';
 import { ICredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import log from '../../lib/methods/helpers/log';
@@ -75,6 +75,7 @@ const TwoFactor = React.memo(() => {
 		control,
 		setValue,
 		getValues,
+		clearErrors,
 		formState: { errors },
 		setError
 	} = useForm({
@@ -92,8 +93,9 @@ const TwoFactor = React.memo(() => {
 		try {
             console.log('params', params);
 			if (params?.user) {
+				clearErrors();
 				const response = await sendEmailCode(params?.user);
-                console.log('response', response);
+
 				if (response.success) {
 					showToast(I18n.t('Two_Factor_Success_message'));
 				}
@@ -144,6 +146,7 @@ const TwoFactor = React.memo(() => {
 				submit(code);
 			}
 		}
+		clearErrors();
 		setData({});
 	};
 

@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import { IUser } from '../../../../definitions';
 import { VideoConferenceType } from '../../../../definitions/IVideoConference';
 import i18n from '../../../../i18n';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { useVideoConf } from '../../../../lib/hooks/useVideoConf';
 import { CallParticipants, TCallUsers } from './CallParticipants';
 import useStyle from './styles';

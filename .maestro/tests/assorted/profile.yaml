@@ -59,10 +59,6 @@ onFlowComplete:
 - assertVisible:
     id: 'profile-view-email'
 
-# should have new password
-- assertVisible:
-    id: 'profile-view-change-my-password-button'
-
 # should have submit button
 - scrollUntilVisible:
     element:
@@ -73,6 +69,10 @@ onFlowComplete:
 - assertVisible:
     id: 'profile-view-submit'
     enabled: false
+
+# should have new password
+- assertVisible:
+    id: 'profile-view-change-my-password-button'
 
 # swipe back to top
 - swipe:

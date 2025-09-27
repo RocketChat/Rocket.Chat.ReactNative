@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { appStart } from '../../actions/app';
 import { setUser } from '../../actions/login';
 import * as List from '../../containers/List';
@@ -17,7 +17,7 @@ import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
+import { saveUserPreferences } from '../../lib/services/restApi';
 import LanguageItem from './LanguageItem';
 
 const LanguageView = () => {
@@ -66,7 +66,7 @@ const LanguageView = () => {
 		}
 
 		try {
-			await Services.saveUserPreferences(params);
+			await saveUserPreferences(params);
 			dispatch(setUser({ language: params.language }));
 
 			const serversDB = database.servers;
