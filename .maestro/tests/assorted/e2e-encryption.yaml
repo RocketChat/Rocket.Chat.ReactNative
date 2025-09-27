@@ -5,7 +5,7 @@ onFlowStart:
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
-  - test-5
+  - test-9
 
 ---
 - evalScript: ${output.room = 'encrypted' + output.random()}

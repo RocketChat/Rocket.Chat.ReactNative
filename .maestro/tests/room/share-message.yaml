@@ -3,7 +3,7 @@ name: Share Message
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 tags:
-  - test-9
+  - test-12
 
 ---
 - runFlow: '../../helpers/launch-app.yaml'

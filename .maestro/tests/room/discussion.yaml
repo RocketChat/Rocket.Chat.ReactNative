@@ -5,7 +5,7 @@ onFlowStart:
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
-  - test-7
+  - test-10
 
 ---
 - runFlow: '../../helpers/launch-app.yaml'

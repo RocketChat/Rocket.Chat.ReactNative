@@ -3,7 +3,7 @@ name: Valid Workspace
 onFlowStart:
   - runFlow: '../../../helpers/setup.yaml'
 tags:
-  - test-2
+  - test-3
 
 ---
 - runFlow: ../../../helpers/launch-app.yaml
