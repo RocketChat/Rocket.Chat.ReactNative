@@ -145,7 +145,7 @@ final class Encryption {
       return nil
     }
     
-    let keyIdPrefix = parsed.prefix
+    keyId = parsed.prefix
     
     // Decrypt the session key
     guard let decryptedMessage = RSACrypto.decrypt(parsed.data.base64EncodedString(), privateKeyPem: userKey),
@@ -155,11 +155,9 @@ final class Encryption {
     }
     
     // Determine format and extract key information
-    if let kid = sessionKey["kid"] as? String,
-       let sessionKeyExported = sessionKey["sessionKeyExported"] as? [String: Any],
-       let k = sessionKeyExported["k"] as? String {
+    if let k = sessionKey["k"] as? String,
+      let alg = sessionKey["alg"] as? String, alg == "A256GCM" {
       // V2 format
-      keyId = kid
       guard let base64Encoded = k.toData() else {
         return nil
       }
@@ -167,7 +165,6 @@ final class Encryption {
       return RoomKeyResult(decryptedKey: decryptedKey, version: "v2")
     } else if let k = sessionKey["k"] as? String {
       // V1 format
-      keyId = keyIdPrefix
       guard let base64Encoded = k.toData() else {
         return nil
       }
@@ -210,14 +207,13 @@ final class Encryption {
       return decryptedContent.msg
     }
     // If decoding as DecryptedContent fails, try decoding as Message
-    else if let messageContent = try? JSONDecoder().decode(Message.self, from: decryptedData) {
+    else if let messageContent = try? JSONDecoder().decode(OldMessage.self, from: decryptedData) {
       return messageContent.text
     }
     
     return nil
   }
   
-  // Direct decryption method for content structure
   func decryptContent(algorithm: String, kid: String, iv: String, ciphertext: String) -> String? {
     guard let roomKey = self.roomKey,
           let ivData = Data(base64Encoded: iv) else {
@@ -228,23 +224,14 @@ final class Encryption {
     return decryptWithParsedData(keyId: kid, iv: ivData, ciphertext: ciphertext, isV2: isV2, roomKey: roomKey)
   }
   
-  // Content structure similar to TypeScript
-  struct EncryptionContent {
-    let algorithm: String
-    let ciphertext: String
-    let kid: String?
-    let iv: String?
-  }
-  
-  func encryptMessageContent(id: String, message: String) -> EncryptionContent? {
-    guard let userId = credentials?.userId, 
-          let roomKey = roomKey,
+  func encryptMessageContent(_ message: String) -> EncryptedContent? {
+    guard let roomKey = roomKey,
           let keyId = keyId,
           let version = version else {
       return nil
     }
     
-    let m = Message(_id: id, text: message, userId: userId)
+    let m = Message(msg: message)
     guard let cypherData = try? encoder.encode(m) else {
       return nil
     }
@@ -264,7 +251,7 @@ final class Encryption {
         return nil
       }
       
-      return EncryptionContent(
+      return EncryptedContent(
         algorithm: "rc.v2.aes-sha2",
         ciphertext: encryptedBase64,
         kid: keyId,
@@ -287,36 +274,12 @@ final class Encryption {
       let joined = Data.join(vector: iv, data: encryptedData)
       let fullCiphertext = keyId + joined.base64EncodedString()
       
-      return EncryptionContent(
+      return EncryptedContent(
         algorithm: "rc.v1.aes-sha2",
         ciphertext: fullCiphertext,
         kid: nil,
         iv: nil
       )
-    }
-  }
-  
-  func encryptMessage(id: String, message: String) -> String {
-    guard let content = encryptMessageContent(id: id, message: message) else {
-      return message
-    }
-    
-    // For backward compatibility, return the appropriate format for msg field
-    if content.algorithm == "rc.v2.aes-sha2" {
-      let jsonObject: [String: Any] = [
-        "kid": content.kid!,
-        "iv": content.iv!,
-        "ciphertext": content.ciphertext
-      ]
-      
-      guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject, options: []),
-            let jsonString = String(data: jsonData, encoding: .utf8) else {
-        return message
-      }
-      
-      return jsonString
-    } else {
-      return content.ciphertext
     }
   }
 }

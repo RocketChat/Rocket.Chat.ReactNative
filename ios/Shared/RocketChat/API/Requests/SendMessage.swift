@@ -14,7 +14,7 @@ struct MessageBody: Codable {
   struct Message: Codable {
     let _id: String
     let msg: String?
-    let content: MessageContent?
+    let content: EncryptedContent?
     let rid: String
     let tmid: String?
     let t: MessageType?
@@ -48,11 +48,11 @@ final class SendMessageRequest: Request {
   let id: String
   let roomId: String
   let text: String?
-  let content: MessageBody.MessageContent?
+  let content: EncryptedContent?
   let messageType: MessageType?
   let threadIdentifier: String?
   
-  init(id: String, roomId: String, text: String? = nil, content: MessageBody.MessageContent? = nil, threadIdentifier: String? = nil, messageType: MessageType? = nil) {
+  init(id: String, roomId: String, text: String? = nil, content: EncryptedContent? = nil, threadIdentifier: String? = nil, messageType: MessageType? = nil) {
     self.id = id
     self.roomId = roomId
     self.text = text

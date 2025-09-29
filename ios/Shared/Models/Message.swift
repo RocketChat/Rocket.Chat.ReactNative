@@ -9,6 +9,13 @@
 import Foundation
 
 struct Message: Codable {
+//  let _id: String
+  let msg: String
+//  let userId: String
+//  let ts: Int64 = Date().currentTimeMillis()
+}
+
+struct OldMessage: Codable {
   let _id: String
   let text: String
   let userId: String

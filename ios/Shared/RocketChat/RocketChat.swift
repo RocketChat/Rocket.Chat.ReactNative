@@ -43,42 +43,14 @@ final class RocketChat {
     
     if encrypted {
       let encryption = Encryption(server: server, rid: rid)
-      guard let content = encryption.encryptMessageContent(id: id, message: message) else {
-        // Fallback to unencrypted if encryption fails
-        api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: message, threadIdentifier: threadIdentifier, messageType: nil)) { response in
-          switch response {
-          case .resource(let response):
-            completion(response)
-          case .error:
-            completion(nil)
-            break
-          }
-        }
+      guard let content = encryption.encryptMessageContent(message) else {
         return
       }
       
-      // Create content structure similar to TypeScript
-      let messageContent: MessageBody.MessageContent
-      if content.algorithm == "rc.v2.aes-sha2" {
-        messageContent = MessageBody.MessageContent(
-          algorithm: content.algorithm,
-          ciphertext: content.ciphertext,
-          kid: content.kid,
-          iv: content.iv
-        )
-      } else {
-        messageContent = MessageBody.MessageContent(
-          algorithm: content.algorithm,
-          ciphertext: content.ciphertext
-        )
-      }
-      
       // For backward compatibility, also set msg field
-      let msg = content.algorithm == "rc.v2.aes-sha2" 
-        ? encryption.encryptMessage(id: id, message: message) // JSON string for v2
-        : content.ciphertext // Direct ciphertext for v1
+      let msg = content.algorithm == "rc.v2.aes-sha2" ? "" : content.ciphertext
       
-      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, content: messageContent, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, content: content, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
         switch response {
         case .resource(let response):
           completion(response)
@@ -115,12 +87,4 @@ final class RocketChat {
       return encryption.decryptContent(algorithm: algorithm, kid: kid, iv: iv, ciphertext: ciphertext)
     }
   }
-  
-  func encryptMessage(rid: String, id: String, message: String) -> String {
-    encryptionQueue.sync {
-      let encryption = Encryption(server: server, rid: rid)
-      return encryption.encryptMessage(id: id, message: message)
-    }
-  }
-  
 }
