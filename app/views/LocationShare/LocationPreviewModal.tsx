@@ -73,14 +73,7 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 		try {
 			safeSet(() => setSubmitting(true));
 
-			const { url } = staticMapUrl(
-				provider,
-				{ latitude: coords.latitude, longitude: coords.longitude },
-				{ size: '640x320', zoom: 15, googleApiKey: googleKey, osmApiKey: osmKey }
-			);
-
 			const deep = await mapsDeepLink(provider, coords);
-			const locationText = `${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`;
 			const providerName = providerLabel(provider);
 
 			const message = `📍 **Location**

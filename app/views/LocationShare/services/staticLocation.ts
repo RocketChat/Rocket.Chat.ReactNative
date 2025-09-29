@@ -40,10 +40,10 @@ export async function getCurrentPositionOnce(): Promise<Coords> {
 			// Use fresh location if cached fails
 		}
 
-		// Get fresh position
+		// Get fresh position with balanced accuracy for battery optimization
 		const loc = await withTimeout(
 			Location.getCurrentPositionAsync({
-				accuracy: Location.Accuracy.High
+				accuracy: Location.Accuracy.Balanced // Lower accuracy for better battery life
 			}),
 			LOCATION_TIMEOUT_MS
 		);

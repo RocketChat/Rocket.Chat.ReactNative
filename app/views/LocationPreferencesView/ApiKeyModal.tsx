@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Modal, TextInput, TouchableOpacity } from 'react-native';
+
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import sharedStyles from '../Styles';

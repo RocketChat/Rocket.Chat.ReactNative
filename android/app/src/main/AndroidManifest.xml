@@ -100,20 +100,9 @@
     </application>
 
     <queries>
-        <!-- Allow canOpenURL/openURL for your app deep link -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="rocketchat" />
-        </intent>
-
-        <!-- (Optional) If you also check canOpenURL for maps links -->
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="geo" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="https" />
+            <data android:mimeType="*/*" />
         </intent>
     </queries>
 </manifest>

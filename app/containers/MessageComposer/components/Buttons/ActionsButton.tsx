@@ -131,6 +131,11 @@ export const ActionsButton = () => {
 				if (fine !== PermissionsAndroid.RESULTS.GRANTED && coarse !== PermissionsAndroid.RESULTS.GRANTED) {
 					throw new Error(I18n.t('Permission_denied'));
 				}
+			} else {
+				const { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== 'granted') {
+					throw new Error(I18n.t('Location_permission_required'));
+				}
 			}
 
 			const params = {
