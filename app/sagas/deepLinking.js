@@ -19,7 +19,8 @@ import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
-import { loginOAuthOrSso, notifyUser } from '../lib/services/restApi';
+import { loginOAuthOrSso } from '../lib/services/connect';
+import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation from '../lib/navigation/appNavigation';
 
@@ -96,6 +97,7 @@ const fallbackNavigation = function* fallbackNavigation() {
 
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
+	console.log('here', credentialSecret, credentialToken);
 	try {
 		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
 	} catch (e) {
