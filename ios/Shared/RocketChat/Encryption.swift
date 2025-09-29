@@ -25,13 +25,13 @@ struct ParsedMessage {
 
 struct RoomKeyResult {
   let decryptedKey: String
-  let version: String
+  let algorithm: String
 }
 
 final class Encryption {
   final var roomKey: String? = nil
   final var keyId: String? = nil
-  final var version: String? = nil
+  final var algorithm: String? = nil
   
   private let privateKey: String?
   private let credentials: Credentials?
@@ -66,7 +66,7 @@ final class Encryption {
     if let E2EKey = Database(server: server).readRoomEncryptionKey(for: rid) {
       if let result = decryptRoomKey(E2EKey: E2EKey) {
         self.roomKey = result.decryptedKey
-        self.version = result.version
+        self.algorithm = result.algorithm
       }
     }
   }
@@ -159,14 +159,14 @@ final class Encryption {
         return nil
       }
       let decryptedKey = CryptoUtils.bytes(toHex: base64Encoded)
-      return RoomKeyResult(decryptedKey: decryptedKey, version: "v2")
+      return RoomKeyResult(decryptedKey: decryptedKey, algorithm: "rc.v2.aes-sha2")
     } else if let k = sessionKey["k"] as? String {
       // V1 format
       guard let base64Encoded = k.toData() else {
         return nil
       }
       let decryptedKey = CryptoUtils.bytes(toHex: base64Encoded)
-      return RoomKeyResult(decryptedKey: decryptedKey, version: "v1")
+      return RoomKeyResult(decryptedKey: decryptedKey, algorithm: "rc.v1.aes-sha2")
     }
     
     return nil
@@ -212,7 +212,7 @@ final class Encryption {
   func encryptContent(_ message: String) -> EncryptedContent? {
     guard let roomKey = roomKey,
           let keyId = keyId,
-          let version = version else {
+          let algorithm = algorithm else {
       return nil
     }
     
@@ -223,7 +223,7 @@ final class Encryption {
     
     let cypherBase64 = cypherData.base64EncodedString()
     
-    if version == "v2" {
+    if algorithm == "rc.v2.aes-sha2" {
       // V2 format: Use AES-GCM with 12-byte IV
       guard let randomBytesHex = RandomUtils.generateRandomKeyHex(12),
             let iv = Data(hexString: randomBytesHex) else {
@@ -237,7 +237,7 @@ final class Encryption {
       }
       
       return EncryptedContent(
-        algorithm: "rc.v2.aes-sha2",
+        algorithm: algorithm,
         ciphertext: encryptedBase64,
         kid: keyId,
         iv: iv.base64EncodedString()
@@ -260,7 +260,7 @@ final class Encryption {
       let fullCiphertext = keyId + joined.base64EncodedString()
       
       return EncryptedContent(
-        algorithm: "rc.v1.aes-sha2",
+        algorithm: algorithm,
         ciphertext: fullCiphertext,
         kid: nil,
         iv: nil
