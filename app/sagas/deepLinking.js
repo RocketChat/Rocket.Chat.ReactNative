@@ -97,7 +97,6 @@ const fallbackNavigation = function* fallbackNavigation() {
 
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
-	console.log('here', credentialSecret, credentialToken);
 	try {
 		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
 	} catch (e) {
