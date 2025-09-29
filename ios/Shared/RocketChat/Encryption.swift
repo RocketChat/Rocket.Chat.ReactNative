@@ -12,20 +12,20 @@ import MobileCrypto
 
 // MARK: - Helper Structs
 struct PrefixedData {
-    let prefix: String
-    let data: Data
+  let prefix: String
+  let data: Data
 }
 
 struct ParsedMessage {
-    let keyId: String
-    let iv: Data
-    let ciphertext: String
-    let isV2: Bool
+  let keyId: String
+  let iv: Data
+  let ciphertext: String
+  let algorithm: String
 }
 
 struct RoomKeyResult {
-    let decryptedKey: String
-    let version: String
+  let decryptedKey: String
+  let version: String
 }
 
 final class Encryption {
@@ -100,38 +100,35 @@ final class Encryption {
     return prefix + base64Data
   }
   
-  private func parseMessage(_ payload: String) -> ParsedMessage? {
-    if payload.hasPrefix("{") {
-      // V2 format: JSON structure
-      guard let data = payload.data(using: .utf8),
-            let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-            let keyId = json["kid"] as? String,
-            let ivString = json["iv"] as? String,
-            let ciphertext = json["ciphertext"] as? String,
+  private func parseMessage(content: EncryptedContent) -> ParsedMessage? {
+    if content.algorithm == "rc.v2.aes-sha2" {
+      guard let ciphertext = content.ciphertext as String?,
+            let keyId = content.kid,
+            let ivString = content.iv,
             let ivData = Data(base64Encoded: ivString) else {
         return nil
       }
       
-      return ParsedMessage(keyId: keyId, iv: ivData, ciphertext: ciphertext, isV2: true)
+      return ParsedMessage(keyId: keyId, iv: ivData, ciphertext: ciphertext, algorithm: "rc.v2.aes-sha2")
     } else {
       // V1 format: keyId + base64(iv + data)
-      guard payload.count > 12 else {
+      guard let ciphertext = content.ciphertext as String?, content.ciphertext.count > 12 else {
         return nil
       }
       
-      let index = payload.index(payload.startIndex, offsetBy: 12)
-      let keyId = String(payload[..<index])
-      let msg = String(payload[index...])
+      let index = ciphertext.index(ciphertext.startIndex, offsetBy: 12)
+      let keyId = String(ciphertext[..<index])
+      let msg = String(ciphertext[index...])
       
       guard let data = msg.toData(), data.count > kCCBlockSizeAES128 else {
         return nil
       }
       
       let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
-      let cypherData = data.subdata(in: kCCBlockSizeAES128..<data.count)
-      let ciphertext = cypherData.base64EncodedString()
+      let ciphertextData = data.subdata(in: kCCBlockSizeAES128..<data.count)
+      let ciphertextWithoutPrefix = ciphertextData.base64EncodedString()
       
-      return ParsedMessage(keyId: keyId, iv: iv, ciphertext: ciphertext, isV2: false)
+      return ParsedMessage(keyId: keyId, iv: iv, ciphertext: ciphertextWithoutPrefix, algorithm: "rc.v1.aes-sha2")
     }
   }
   
@@ -174,26 +171,24 @@ final class Encryption {
     
     return nil
   }
-  
-  func decryptMessage(message: String) -> String? {
+    
+  func decryptContent(content: EncryptedContent) -> String? {
     guard let roomKey = self.roomKey,
-          let parsed = parseMessage(message) else {
+          let parsed = parseMessage(content: content),
+          let kid = parsed.keyId as String?,
+          let ivData = parsed.iv as Data?,
+          let ciphertext = parsed.ciphertext as String? else {
       return nil
     }
     
-    return decryptWithParsedData(keyId: parsed.keyId, iv: parsed.iv, ciphertext: parsed.ciphertext, isV2: parsed.isV2, roomKey: roomKey)
-  }
-  
-  // Helper method to decrypt with already parsed components
-  private func decryptWithParsedData(keyId: String, iv: Data, ciphertext: String, isV2: Bool, roomKey: String) -> String? {
-    let ivHex = CryptoUtils.bytes(toHex: iv)
+    let ivHex = CryptoUtils.bytes(toHex: ivData)
     let decryptedBase64: String?
     
-    if isV2 {
-      // Use AES-GCM decryption for v2
+    if parsed.algorithm == "rc.v2.aes-sha2" {
+      // Use AES-GCM decryption
       decryptedBase64 = AESCrypto.decryptGcmBase64(ciphertext, keyHex: roomKey, ivHex: ivHex)
     } else {
-      // Use AES-CBC decryption for v1 (existing logic)
+      // Use AES-CBC decryption
       decryptedBase64 = AESCrypto.decryptBase64(ciphertext, keyHex: roomKey, ivHex: ivHex)
     }
     
@@ -206,25 +201,15 @@ final class Encryption {
     if let decryptedContent = try? JSONDecoder().decode(DecryptedContent.self, from: decryptedData) {
       return decryptedContent.msg
     }
-    // If decoding as DecryptedContent fails, try decoding as Message
-    else if let messageContent = try? JSONDecoder().decode(OldMessage.self, from: decryptedData) {
+    // If decoding as DecryptedContent fails, try decoding as FallbackMessage
+    else if let messageContent = try? JSONDecoder().decode(FallbackMessage.self, from: decryptedData) {
       return messageContent.text
     }
     
     return nil
   }
   
-  func decryptContent(algorithm: String, kid: String, iv: String, ciphertext: String) -> String? {
-    guard let roomKey = self.roomKey,
-          let ivData = Data(base64Encoded: iv) else {
-      return nil
-    }
-    
-    let isV2 = algorithm == "rc.v2.aes-sha2"
-    return decryptWithParsedData(keyId: kid, iv: ivData, ciphertext: ciphertext, isV2: isV2, roomKey: roomKey)
-  }
-  
-  func encryptMessageContent(_ message: String) -> EncryptedContent? {
+  func encryptContent(_ message: String) -> EncryptedContent? {
     guard let roomKey = roomKey,
           let keyId = keyId,
           let version = version else {

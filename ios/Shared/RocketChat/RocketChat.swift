@@ -43,7 +43,7 @@ final class RocketChat {
     
     if encrypted {
       let encryption = Encryption(server: server, rid: rid)
-      guard let content = encryption.encryptMessageContent(message) else {
+      guard let content = encryption.encryptContent(message) else {
         return
       }
       
@@ -74,17 +74,10 @@ final class RocketChat {
     }
   }
   
-  func decryptMessage(rid: String, message: String) -> String? {
+  func decryptContent(rid: String, content: EncryptedContent) -> String? {
     encryptionQueue.sync {
       let encryption = Encryption(server: server, rid: rid)
-      return encryption.decryptMessage(message: message)
-    }
-  }
-  
-  func decryptContent(rid: String, algorithm: String, kid: String, iv: String, ciphertext: String) -> String? {
-    encryptionQueue.sync {
-      let encryption = Encryption(server: server, rid: rid)
-      return encryption.decryptContent(algorithm: algorithm, kid: kid, iv: iv, ciphertext: ciphertext)
+      return encryption.decryptContent(content: content)
     }
   }
 }

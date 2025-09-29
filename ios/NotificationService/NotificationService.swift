@@ -53,17 +53,10 @@ class NotificationService: UNNotificationServiceExtension {
                 let decryptedMessage: String?
                 
                 if let content = payload.content, (content.algorithm == "rc.v1.aes-sha2" || content.algorithm == "rc.v2.aes-sha2") {
-                    // Use direct decryption for content structure
-                    if content.algorithm == "rc.v2.aes-sha2", let kid = content.kid, let iv = content.iv {
-                        // V2 format: decrypt directly with parsed components
-                        decryptedMessage = rocketchat?.decryptContent(rid: rid, algorithm: content.algorithm, kid: kid, iv: iv, ciphertext: content.ciphertext)
-                    } else {
-                        // V1 format: content.ciphertext contains the full encrypted message
-                        decryptedMessage = rocketchat?.decryptMessage(rid: rid, message: content.ciphertext)
-                    }
+                    decryptedMessage = rocketchat?.decryptContent(rid: rid, content: content)
                 } else if let msg = payload.msg, !msg.isEmpty {
                     // Fallback to msg field
-                    decryptedMessage = rocketchat?.decryptMessage(rid: rid, message: msg)
+                    decryptedMessage = rocketchat?.decryptContent(rid: rid, content: EncryptedContent(algorithm: "rc.v1.aes-sha2", ciphertext: msg, kid: nil, iv: nil))
                 } else {
                     decryptedMessage = nil
                 }
