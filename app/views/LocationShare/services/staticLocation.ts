@@ -23,9 +23,7 @@ function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
 
 export async function getCurrentPositionOnce(): Promise<Coords> {
 	try {
-		// Skip Expo permission request since it's handled manually in ActionsButton.tsx
-
-		// 1) Fast path: last known (if fresh enough)
+		// Try cached location first
 		try {
 			const last = await Location.getLastKnownPositionAsync({ maxAge: LAST_KNOWN_MAX_AGE_MS });
 
@@ -39,10 +37,10 @@ export async function getCurrentPositionOnce(): Promise<Coords> {
 				};
 			}
 		} catch (e) {
-			// ignore and fall through to fresh fetch
+			// Use fresh location if cached fails
 		}
 
-		// 2) Fresh position, with our own timeout wrapper
+		// Get fresh position
 		const loc = await withTimeout(
 			Location.getCurrentPositionAsync({
 				accuracy: Location.Accuracy.High

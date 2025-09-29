@@ -20,7 +20,7 @@ async function saveEndedSet() {
 	try {
 		await AsyncStorage.setItem(ENDED_KEY, JSON.stringify(Array.from(endedIds)));
 	} catch (e) {
-		console.warn('[handleLiveLocationUrl] persist ended IDs failed', e);
+		// Failed to persist ended IDs
 	}
 }
 
@@ -61,6 +61,6 @@ export async function handleLiveLocationUrl(url: string) {
 
 		reopenLiveLocationModal();
 	} catch (e) {
-		console.warn('[handleLiveLocationUrl] bad url:', url, e);
+		// Invalid URL format
 	}
 }
