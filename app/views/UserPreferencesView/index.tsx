@@ -80,6 +80,13 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						testID='preferences-view-notifications'
 					/>
 					<List.Separator />
+					<List.Item
+						title='Location_Preferences'
+						onPress={() => navigateToScreen('LocationPreferencesView')}
+						showActionIndicator
+						testID='preferences-view-location'
+					/>
+					<List.Separator />
 				</List.Section>
 				{compareServerVersion(serverVersion, 'lowerThan', '5.0.0') ? (
 					<List.Section>

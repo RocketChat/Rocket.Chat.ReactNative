@@ -66,7 +66,8 @@ export class LiveLocationTracker {
 				distanceInterval: 0 // set to e.g. 5 to throttle by meters
 			},
 			pos => {
-				this.emit({
+				// Update coordinates but don't emit - let setInterval control timing
+				this.currentState = {
 					coords: {
 						latitude: pos.coords.latitude,
 						longitude: pos.coords.longitude,
@@ -74,7 +75,7 @@ export class LiveLocationTracker {
 					},
 					timestamp: Date.now(),
 					isActive: true
-				});
+				};
 			}
 		);
 
@@ -106,7 +107,7 @@ export class LiveLocationTracker {
 				timestamp: Date.now()
 			});
 		}
-		// console.log('[LiveLocationTracker] Tracking stopped');
+
 	}
 
 	getCurrentState(): LiveLocationState | null {

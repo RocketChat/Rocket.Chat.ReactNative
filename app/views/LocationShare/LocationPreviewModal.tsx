@@ -45,7 +45,6 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 		shallowEqual
 	);
 
-	// Build the static map URL once
 	const mapInfo = useMemo(() => {
 		const opts: any = { size: '640x320', zoom: 15 };
 		if (provider === 'google' && googleKey) opts.googleApiKey = googleKey;
@@ -53,7 +52,6 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 		return staticMapUrl(provider, { latitude: coords.latitude, longitude: coords.longitude }, opts);
 	}, [provider, coords.latitude, coords.longitude, googleKey, osmKey]);
 
-	// Prefetch to warm cache (expo-image)
 	useEffect(() => {
 		if (mapInfo?.url) {
 			ExpoImage.prefetch(mapInfo.url).catch(() => {});
@@ -65,7 +63,6 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 			const deep = await mapsDeepLink(provider, coords);
 			await Linking.openURL(deep);
 		} catch (error) {
-			console.error('Failed to open maps:', error);
 			Alert.alert('Error', 'Could not open maps application');
 		}
 	};
@@ -82,20 +79,17 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 				{ size: '640x320', zoom: 15, googleApiKey: googleKey, osmApiKey: osmKey }
 			);
 
-			const deep = provider === 'google' ? await mapsDeepLink(provider, coords) : url;
+			const deep = await mapsDeepLink(provider, coords);
 			const locationText = `${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`;
 			const providerName = providerLabel(provider);
 
 			const message = `📍 **Location**
-
-**Coordinates:** ${locationText}
 
 [🗺️ Open in ${providerName}](${deep})`;
 
 			await sendMessage(rid, message, tmid, { id, username }, false);
 			Navigation.back();
 		} catch (e: any) {
-			console.error('[LocationPreview] Error sending message:', e);
 			Alert.alert(I18n.t('Oops'), e?.message || I18n.t('Could_not_send_message'));
 		} finally {
 			safeSet(() => setSubmitting(false));
@@ -127,7 +121,9 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 						transition={200}
 						cachePolicy='disk'
 						placeholder={BLURHASH_PLACEHOLDER}
-						onError={e => console.log('[LocationPreview] image error:', e)}
+						onError={() => {
+							// Image failed to load
+						}}
 					/>
 				</View>
 
@@ -145,9 +141,7 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 	);
 }
 
-const BLURHASH_PLACEHOLDER =
-	// a tiny neutral placeholder; you can replace with your own blurhash or a local asset
-	'LKO2?U%2Tw=w]~RBVZRi};RPxuwH';
+const BLURHASH_PLACEHOLDER = 'LKO2?U%2Tw=w]~RBVZRi};RPxuwH';
 
 const styles = StyleSheet.create({
 	container: { flex: 1, padding: 16, justifyContent: 'center', backgroundColor: '#f5f5f5' },

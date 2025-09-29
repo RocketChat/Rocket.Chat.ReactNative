@@ -76,6 +76,7 @@ import SelectListView from '../views/SelectListView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import LegalView from '../views/LegalView';
+import LocationPreferencesView from '../views/LocationPreferencesView';
 import LocationPreviewModal from '../views/LocationShare/LocationPreviewModal';
 import LiveLocationPreviewModal from '../views/LocationShare/LiveLocationPreviewModal';
 import {
@@ -168,6 +169,7 @@ const ProfileStackNavigator = () => {
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} />
 			<ProfileStack.Screen name='ChangePasswordView' component={ChangePasswordView} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
+			<ProfileStack.Screen name='LocationPreferencesView' component={LocationPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			<ProfileStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />

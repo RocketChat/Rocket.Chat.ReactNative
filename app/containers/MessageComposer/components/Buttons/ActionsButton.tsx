@@ -10,9 +10,17 @@ import { useAppSelector, usePermissions } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { Platform, PermissionsAndroid, InteractionManager } from 'react-native';
+import * as Location from 'expo-location';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { getCurrentPositionOnce } from '../../../../views/LocationShare/services/staticLocation';
 import { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
+import { useUserPreferences } from '../../../../lib/methods';
+import {
+	MAP_PROVIDER_PREFERENCE_KEY,
+	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
+	OSM_API_KEY_PREFERENCE_KEY,
+	MAP_PROVIDER_DEFAULT
+} from '../../../../lib/constants';
 
 export const ActionsButton = () => {
 	const { rid, tmid, t } = useRoomContext();
@@ -26,6 +34,11 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const userId = useAppSelector(state => state.login.user.id);
+
+	const [mapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
+	const [googleApiKey] = useUserPreferences<string>(`${GOOGLE_MAPS_API_KEY_PREFERENCE_KEY}_${userId}`, '');
+	const [osmApiKey] = useUserPreferences<string>(`${OSM_API_KEY_PREFERENCE_KEY}_${userId}`, '');
 
 	// --- Sheet transition helpers ---
 	const sheetBusyRef = React.useRef(false);
@@ -58,48 +71,45 @@ export const ActionsButton = () => {
 	};
 
 	const openCurrentPreview = async (provider: MapProviderName) => {
-		console.log('openCurrentPreview called with provider:', provider);
-
 		try {
 			if (!rid) {
-				console.log('Error: rid is missing');
 				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
 				return;
 			}
 
-			console.log('rid exists:', rid);
+			if (Platform.OS === 'android') {
+				const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+				if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+					showErrorAlert(I18n.t('Location_permission_required'), I18n.t('Oops'));
+					return;
+				}
+			} else {
+				const { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== 'granted') {
+					showErrorAlert(I18n.t('Location_permission_required'), I18n.t('Oops'));
+					return;
+				}
+			}
 
-			// Remove the manual Android permission check since getCurrentPositionOnce() handles it
-			console.log('Getting current position...');
 			const coords = await getCurrentPositionOnce();
-			console.log('Got coordinates:', coords);
 
 			const params = {
 				rid,
 				tmid,
 				provider,
 				coords,
-				googleKey: provider === 'google' ? 'AIzaSyBeNJSMCi8kD4c6SOvZ4vxHnWYp2yzDbmg' : undefined,
-				osmKey: provider === 'osm' ? 'pk.898e468814facdcffda869b42260a2f0' : undefined
+				googleKey: provider === 'google' ? googleApiKey : undefined,
+				osmKey: provider === 'osm' ? osmApiKey : undefined
 			};
 
-			console.log('Navigation params:', params);
-			console.log('isMasterDetail:', isMasterDetail);
-
-			// Defer navigation until after animations are done
 			InteractionManager.runAfterInteractions(() => {
-				console.log('Starting navigation...');
 				if (isMasterDetail) {
-					// @ts-ignore
 					Navigation.navigate('ModalStackNavigator', { screen: 'LocationPreviewModal', params });
 				} else {
-					// @ts-ignore
 					Navigation.navigate('LocationPreviewModal', params);
 				}
-				console.log('Navigation called');
 			});
 		} catch (e: any) {
-			console.error('openCurrentPreview error:', e);
 			showErrorAlert(e?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
 		}
 	};
@@ -127,8 +137,8 @@ export const ActionsButton = () => {
 				rid,
 				tmid,
 				provider,
-				googleKey: provider === 'google' ? 'AIzaSyBeNJSMCi8kD4c6SOvZ4vxHnWYp2yzDbmg' : undefined,
-				osmKey: provider === 'osm' ? 'pk.898e468814facdcffda869b42260a2f0' : undefined
+				googleKey: provider === 'google' ? googleApiKey : undefined,
+				osmKey: provider === 'osm' ? osmApiKey : undefined
 			};
 
 			// Defer navigation until after sheets/animations are done
@@ -243,22 +253,18 @@ export const ActionsButton = () => {
 			title: I18n.t('Share_Location'),
 			icon: 'pin-map',
 			onPress: () => {
-				const providerOptions: TActionSheetOptionsItem[] = [
-					{
-						title: 'OpenStreetMap',
-						icon: 'pin-map',
-						onPress: () => openSheetSafely(() => openModeSheetForProvider('osm'))
-					},
-					{
-						title: 'Google Maps',
-						icon: 'pin-map',
-						onPress: () => openSheetSafely(() => openModeSheetForProvider('google'))
-					}
-				];
+				// Check if the user has configured API keys for their preferred provider
+				const needsApiKey = (mapProvider === 'google' && !googleApiKey) || (mapProvider === 'osm' && !osmApiKey);
+				
+				if (needsApiKey) {
+					showErrorAlert(
+						I18n.t('API_key_required', { provider: mapProvider === 'google' ? 'Google Maps' : 'OpenStreetMap' }),
+						I18n.t('Please_configure_API_key_in_settings')
+					);
+					return;
+				}
 
-				openSheetSafely(() => {
-					showActionSheet({ options: providerOptions });
-				});
+				openSheetSafely(() => openModeSheetForProvider(mapProvider));
 			}
 		});
 
