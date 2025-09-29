@@ -107,7 +107,6 @@ export class LiveLocationTracker {
 				timestamp: Date.now()
 			});
 		}
-
 	}
 
 	getCurrentState(): LiveLocationState | null {

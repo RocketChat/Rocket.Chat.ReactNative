@@ -34,9 +34,7 @@ interface IListPickerProps {
 const ListPicker = ({ title, value, onChangeValue, testID }: IListPickerProps) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const [option, setOption] = useState(
-		value ? OPTIONS.find(option => option.value === value) : OPTIONS[0]
-	);
+	const [option, setOption] = useState(value ? OPTIONS.find(option => option.value === value) : OPTIONS[0]);
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS.map(i => ({

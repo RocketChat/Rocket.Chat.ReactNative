@@ -146,7 +146,6 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 				Alert.alert(I18n.t('Error'), error.message || I18n.t('Could_not_get_location'));
 			});
 		}
-
 	}, [provider, googleKey, osmKey, isTracking]);
 
 	const openInMaps = async () => {
@@ -278,7 +277,12 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 
 				{/* Status indicator */}
 				<View style={styles.statusContainer}>
-					<View style={[styles.statusDot, { backgroundColor: (isShared || isTracking) && locationState?.isActive ? '#27ae60' : '#e74c3c' }]} />
+					<View
+						style={[
+							styles.statusDot,
+							{ backgroundColor: (isShared || isTracking) && locationState?.isActive ? '#27ae60' : '#e74c3c' }
+						]}
+					/>
 					<Text style={styles.statusText}>
 						{(isShared || isTracking) && locationState?.isActive ? 'Live Location Active' : 'Live Location Inactive'}
 					</Text>
@@ -319,15 +323,12 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					) : (
 						<View style={styles.mapPlaceholder}>
 							<ActivityIndicator size='large' />
-							<Text style={styles.loadingText}>
-								Loading live location...
-							</Text>
+							<Text style={styles.loadingText}>Loading live location...</Text>
 						</View>
 					)}
 				</View>
 
 				{(isShared || isTracking) && <Text style={styles.liveIndicator}>🔴 Updates every 10 seconds</Text>}
-
 
 				{/* Buttons */}
 				<View style={styles.buttons}>
@@ -343,8 +344,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 							<TouchableOpacity
 								disabled={submitting || !locationState?.coords}
 								onPress={onShare}
-								style={[styles.btn, styles.btnPrimary, !locationState?.coords && styles.btnDisabled]}
-								>
+								style={[styles.btn, styles.btnPrimary, !locationState?.coords && styles.btnDisabled]}>
 								{submitting ? (
 									<ActivityIndicator color='#fff' />
 								) : (

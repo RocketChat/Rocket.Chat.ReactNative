@@ -255,7 +255,7 @@ export const ActionsButton = () => {
 			onPress: () => {
 				// Check if the user has configured API keys for their preferred provider
 				const needsApiKey = (mapProvider === 'google' && !googleApiKey) || (mapProvider === 'osm' && !osmApiKey);
-				
+
 				if (needsApiKey) {
 					showErrorAlert(
 						I18n.t('API_key_required', { provider: mapProvider === 'google' ? 'Google Maps' : 'OpenStreetMap' }),
