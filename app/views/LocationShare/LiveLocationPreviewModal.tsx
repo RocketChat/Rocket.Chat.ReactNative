@@ -80,14 +80,15 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 
 	// Guard against state updates after unmount
 	const mounted = useRef(true);
-	useEffect(() => {
-		return () => {
+	useEffect(
+		() => () => {
 			mounted.current = false;
 			if (globalLocationUpdateCallback === handleLocationUpdate) {
 				globalLocationUpdateCallback = null;
 			}
-		};
-	}, []);
+		},
+		[]
+	);
 	const safeSet = (fn: () => void) => {
 		if (mounted.current) fn();
 	};
@@ -111,7 +112,10 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		safeSet(() => setLocationState(state));
 
 		if (state.coords) {
-			const opts: any = { size: '640x320', zoom: 15 };
+			const opts: { size: `${number}x${number}`; zoom: number; googleApiKey?: string; osmApiKey?: string } = {
+				size: '640x320',
+				zoom: 15
+			};
 			if (provider === 'google' && googleKey) opts.googleApiKey = googleKey;
 			if (provider === 'osm' && osmKey) opts.osmApiKey = osmKey;
 
@@ -229,9 +233,10 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			trackerRef.current.stopTracking();
 			if (idToStop) {
 				try {
-					markLiveLocationAsEnded(idToStop);
+					await markLiveLocationAsEnded(idToStop);
 				} catch (e) {
-					// Failed to mark live location as ended
+					// best-effort; ignore but keep ESLint happy
+					void e;
 				}
 			}
 			emitStatusChange(false);
@@ -255,7 +260,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	};
 
 	const formatTimestamp = (timestamp: number) => new Date(timestamp).toLocaleTimeString();
-	const isOwner = () => (isTracking ? true : currentOwnerName && username ? currentOwnerName === username : !!isShared);
+	const isOwner = () => isTracking || (currentOwnerName && username ? currentOwnerName === username : Boolean(isShared));
 
 	return (
 		<View style={styles.container}>
@@ -316,7 +321,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 							transition={200}
 							cachePolicy='disk'
 							placeholder={BLURHASH_PLACEHOLDER}
-							onError={(e: ImageErrorEventData) => {
+							onError={(_e: ImageErrorEventData) => {
 								// Map image failed to load
 							}}
 						/>
@@ -386,7 +391,7 @@ export async function stopGlobalLiveLocation() {
 
 		if (params?.liveLocationId) {
 			try {
-				markLiveLocationAsEnded(params.liveLocationId);
+				await markLiveLocationAsEnded(params.liveLocationId);
 			} catch {}
 		}
 

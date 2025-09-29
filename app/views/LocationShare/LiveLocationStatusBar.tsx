@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated, InteractionManager, Linking } from 'react-native';
+import {
+	View,
+	Text,
+	TouchableOpacity,
+	StyleSheet,
+	Animated,
+	InteractionManager,
+	Linking,
+	Platform,
+	StatusBar
+} from 'react-native';
 import {
 	reopenLiveLocationModal,
 	stopGlobalLiveLocation,

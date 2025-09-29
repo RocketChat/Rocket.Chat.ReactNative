@@ -308,6 +308,9 @@ export type InsideStackParamList = {
 		provider: 'osm' | 'google';
 		googleKey?: string;
 		osmKey?: string;
+		liveLocationId?: string;
+		ownerName?: string;
+		isTracking?: boolean;
 	};
 };
 

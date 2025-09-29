@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
@@ -35,6 +35,11 @@ const ListPicker = ({ title, value, onChangeValue, testID }: IListPickerProps) =
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const [option, setOption] = useState(value ? OPTIONS.find(option => option.value === value) : OPTIONS[0]);
+
+	useEffect(() => {
+		const next = OPTIONS.find(item => item.value === value) || OPTIONS[0];
+		setOption(next);
+	}, [value]);
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS.map(i => ({

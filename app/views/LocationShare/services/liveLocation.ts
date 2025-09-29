@@ -13,7 +13,7 @@ export type LiveLocationState = {
 
 export class LiveLocationTracker {
 	private watchSub: Location.LocationSubscription | null = null;
-	private tickInterval: NodeJS.Timeout | null = null;
+	private tickInterval: ReturnType<typeof setInterval> | null = null;
 	private onLocationUpdate: ((state: LiveLocationState) => void) | null = null;
 	private currentState: LiveLocationState | null = null;
 
@@ -43,9 +43,9 @@ export class LiveLocationTracker {
 			throw new Error('Location services are turned off');
 		}
 
-		// 3) Initial position (so UI renders immediately)
+		// 3) Initial position with balanced accuracy for battery optimization
 		const first = await Location.getCurrentPositionAsync({
-			accuracy: Location.Accuracy.High,
+			accuracy: Location.Accuracy.Balanced, // Better battery life
 			mayShowUserSettingsDialog: true
 		});
 		this.emit({
@@ -58,12 +58,12 @@ export class LiveLocationTracker {
 			isActive: true
 		});
 
-		// 4) Subscribe to updates (~every 10s or when moving)
+		// 4) Subscribe to updates with battery-optimized settings
 		this.watchSub = await Location.watchPositionAsync(
 			{
-				accuracy: Location.Accuracy.High,
-				timeInterval: 10_000, // ms
-				distanceInterval: 0 // set to e.g. 5 to throttle by meters
+				accuracy: Location.Accuracy.Balanced, // Better battery life than High
+				timeInterval: 10_000, // ms - minimum time between updates
+				distanceInterval: 5 // Only update if moved at least 5 meters
 			},
 			pos => {
 				// Update coordinates but don't emit - let setInterval control timing
@@ -103,8 +103,8 @@ export class LiveLocationTracker {
 		if (this.currentState) {
 			this.emit({
 				...this.currentState,
-				isActive: false,
-				timestamp: Date.now()
+				isActive: false
+				// Keep the original timestamp from when location was last received
 			});
 		}
 	}
