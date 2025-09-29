@@ -13,14 +13,7 @@ interface ApiKeyModalProps {
 	onCancel: () => void;
 }
 
-const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
-	visible,
-	title,
-	placeholder,
-	initialValue,
-	onSave,
-	onCancel
-}) => {
+const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ visible, title, placeholder, initialValue, onSave, onCancel }) => {
 	const { colors } = useTheme();
 	const [value, setValue] = useState(initialValue);
 
@@ -33,18 +26,11 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
 	};
 
 	return (
-		<Modal
-			visible={visible}
-			transparent
-			animationType="fade"
-			onRequestClose={onCancel}
-		>
+		<Modal visible={visible} transparent animationType='fade' onRequestClose={onCancel}>
 			<View style={styles.overlay}>
 				<View style={[styles.modal, { backgroundColor: colors.surfaceLight }]}>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>
-						{title}
-					</Text>
-					
+					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>
+
 					<TextInput
 						style={[
 							styles.input,
@@ -60,27 +46,21 @@ const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
 						placeholderTextColor={colors.fontHint}
 						secureTextEntry
 						autoFocus
-						autoCapitalize="none"
+						autoCapitalize='none'
 						autoCorrect={false}
 					/>
 
 					<View style={styles.buttonContainer}>
 						<TouchableOpacity
 							style={[styles.button, styles.cancelButton, { borderColor: colors.strokeLight }]}
-							onPress={onCancel}
-						>
-							<Text style={[styles.buttonText, { color: colors.fontDefault }]}>
-								{I18n.t('Cancel')}
-							</Text>
+							onPress={onCancel}>
+							<Text style={[styles.buttonText, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity
 							style={[styles.button, styles.saveButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
-							onPress={handleSave}
-						>
-							<Text style={[styles.buttonText, { color: colors.fontWhite }]}>
-								{I18n.t('Save')}
-							</Text>
+							onPress={handleSave}>
+							<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{I18n.t('Save')}</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

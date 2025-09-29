@@ -31,7 +31,10 @@ const LocationPreferencesView = () => {
 	const { colors } = useTheme();
 	const userId = useAppSelector(state => state.login.user.id);
 
-	const [mapProvider, setMapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
+	const [mapProvider, setMapProvider] = useUserPreferences<MapProviderName>(
+		`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`,
+		MAP_PROVIDER_DEFAULT
+	);
 	const [googleApiKey, setGoogleApiKey] = useUserPreferences<string>(`${GOOGLE_MAPS_API_KEY_PREFERENCE_KEY}_${userId}`, '');
 	const [osmApiKey, setOsmApiKey] = useUserPreferences<string>(`${OSM_API_KEY_PREFERENCE_KEY}_${userId}`, '');
 
@@ -72,11 +75,7 @@ const LocationPreferencesView = () => {
 				{/* Pass translation KEYS to List components (they call I18n.t internally) */}
 				<List.Section title='Map_Provider'>
 					<List.Separator />
-					<ListPicker
-						title='Default_Map_Provider'
-						value={mapProvider}
-						onChangeValue={onProviderChange}
-					/>
+					<ListPicker title='Default_Map_Provider' value={mapProvider} onChangeValue={onProviderChange} />
 					<List.Separator />
 					<List.Info info='Map_Provider_Info' />
 				</List.Section>
