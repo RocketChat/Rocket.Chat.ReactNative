@@ -137,7 +137,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
             
             // For backward compatibility, also set msg field
             String msg = "rc.v2.aes-sha2".equals(content.algorithm) 
-                ? Encryption.shared.encryptMessage(message, id, ejson) // JSON string for v2
+                ? "" // Empty for v2
                 : content.ciphertext; // Direct ciphertext for v1
             msgMap.put("msg", msg);
         } else {

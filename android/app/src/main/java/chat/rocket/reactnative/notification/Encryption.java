@@ -21,15 +21,18 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 
 class Message {
+    String msg;
+
+    Message(String msg) {
+        this.msg = msg;
+    }
+}
+
+class FallbackMessage {
     String _id;
     String userId;
     String text;
-
-    Message(String id, String userId, String text) {
-        this._id = id;
-        this.userId = userId;
-        this.text = text;
-    }
+    long ts;
 }
 
 class DecryptedContent {
@@ -81,25 +84,23 @@ class ParsedMessage {
     String keyId;
     byte[] iv;
     String ciphertext;
-    boolean isV2;
+    String algorithm;
     
-    ParsedMessage(String keyId, byte[] iv, String ciphertext, boolean isV2) {
+    ParsedMessage(String keyId, byte[] iv, String ciphertext, String algorithm) {
         this.keyId = keyId;
         this.iv = iv;
         this.ciphertext = ciphertext;
-        this.isV2 = isV2;
+        this.algorithm = algorithm;
     }
 }
 
 class RoomKeyResult {
     String decryptedKey;
-    String version;
-    String keyId;
+    String algorithm;
     
-    RoomKeyResult(String decryptedKey, String version, String keyId) {
+    RoomKeyResult(String decryptedKey, String algorithm) {
         this.decryptedKey = decryptedKey;
-        this.version = version;
-        this.keyId = keyId;
+        this.algorithm = algorithm;
     }
 }
 
@@ -127,6 +128,7 @@ class Encryption {
     
     private Gson gson = new Gson();
     private String keyId;
+    private String algorithm;
 
     public static Encryption shared = new Encryption();
     private ReactApplicationContext reactContext;
@@ -150,29 +152,24 @@ class Encryption {
         return new PrefixedData(prefix, data);
     }
 
-    private ParsedMessage parseMessage(String payload) {
-        if (payload.startsWith("{")) {
-            // V2 format: JSON with kid, iv, ciphertext
-            JsonObject parsed = gson.fromJson(payload, JsonObject.class);
-            String keyId = parsed.get("kid").getAsString();
-            String ivBase64 = parsed.get("iv").getAsString();
-            String ciphertext = parsed.get("ciphertext").getAsString();
-            
-            byte[] iv = Base64.decode(ivBase64, Base64.NO_WRAP);
-            
-            return new ParsedMessage(keyId, iv, ciphertext, true);
+    private ParsedMessage parseMessage(Ejson.Content content) {
+        if ("rc.v2.aes-sha2".equals(content.algorithm)) {
+            // V2 format: Extract kid, iv, ciphertext from content
+            byte[] iv = Base64.decode(content.iv, Base64.NO_WRAP);
+            return new ParsedMessage(content.kid, iv, content.ciphertext, "rc.v2.aes-sha2");
         } else {
-            // V1 format: keyID + base64(iv + ciphertext)
-            String keyId = payload.substring(0, 12);
-            String contentBase64 = payload.substring(12);
+            // V1 format: keyID + base64(iv + ciphertext) embedded in ciphertext
+            String ciphertext = content.ciphertext;
+            String keyId = ciphertext.substring(0, 12);
+            String contentBase64 = ciphertext.substring(12);
             byte[] contentBuffer = Base64.decode(contentBase64, Base64.NO_WRAP);
             
             // Split IV (first 16 bytes) and ciphertext (rest)
             byte[] iv = Arrays.copyOfRange(contentBuffer, 0, 16);
             byte[] ciphertextBytes = Arrays.copyOfRange(contentBuffer, 16, contentBuffer.length);
-            String ciphertext = Base64.encodeToString(ciphertextBytes, Base64.NO_WRAP);
+            String ciphertextWithoutPrefix = Base64.encodeToString(ciphertextBytes, Base64.NO_WRAP);
             
-            return new ParsedMessage(keyId, iv, ciphertext, false);
+            return new ParsedMessage(keyId, iv, ciphertextWithoutPrefix, "rc.v1.aes-sha2");
         }
     }
 
@@ -258,7 +255,7 @@ class Encryption {
     public RoomKeyResult decryptRoomKey(final String e2eKey, final Ejson ejson) throws Exception {
         // Parse using prefixed base64
         PrefixedData parsed = decodePrefixedBase64(e2eKey);
-        String keyIdPrefix = parsed.prefix;
+        keyId = parsed.prefix;
         
         // Decrypt the session key
         String userKey = readUserKey(ejson);
@@ -269,60 +266,48 @@ class Encryption {
         String base64EncryptedData = Base64.encodeToString(parsed.data, Base64.NO_WRAP);
         String decrypted = RSACrypto.INSTANCE.decrypt(base64EncryptedData, userKey);
         
-        // Parse to determine v1 vs v2 format
+        // Parse sessionKey to determine v1 vs v2 from "alg" field
         JsonObject sessionKey = gson.fromJson(decrypted, JsonObject.class);
+        String k = sessionKey.get("k").getAsString();
+        byte[] decoded = Base64.decode(k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
+        String decryptedKey = CryptoUtils.INSTANCE.bytesToHex(decoded);
         
-        if (sessionKey.has("kid") && sessionKey.has("sessionKeyExported")) {
-            // V2 format
-            keyId = sessionKey.get("kid").getAsString();
-            JsonObject sessionKeyExported = sessionKey.getAsJsonObject("sessionKeyExported");
-            String k = sessionKeyExported.get("k").getAsString();
-            byte[] decoded = Base64.decode(k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
-            String decryptedKey = CryptoUtils.INSTANCE.bytesToHex(decoded);
-            return new RoomKeyResult(decryptedKey, "v2", keyId);
+        // Determine format from "alg" field
+        if (sessionKey.has("alg") && "A256GCM".equals(sessionKey.get("alg").getAsString())) {
+            algorithm = "rc.v2.aes-sha2";
+            return new RoomKeyResult(decryptedKey, "rc.v2.aes-sha2");
         } else {
-            // V1 format
-            keyId = keyIdPrefix;
-            String k = sessionKey.get("k").getAsString();
-            byte[] decoded = Base64.decode(k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
-            String decryptedKey = CryptoUtils.INSTANCE.bytesToHex(decoded);
-            return new RoomKeyResult(decryptedKey, "v1", keyId);
+            algorithm = "rc.v1.aes-sha2";
+            return new RoomKeyResult(decryptedKey, "rc.v1.aes-sha2");
         }
     }
 
-    private String decryptText(String text, String e2eKey) throws Exception {
-        ParsedMessage parsed = parseMessage(text);
-        return decryptWithParsedData(parsed.ciphertext, e2eKey, parsed.iv, parsed.isV2);
-    }
-    
-    // Helper method to decrypt with already parsed components
-    private String decryptWithParsedData(String ciphertext, String e2eKey, byte[] iv, boolean isV2) throws Exception {
+    private String decryptContent(Ejson.Content content, String e2eKey) throws Exception {
+        ParsedMessage parsed = parseMessage(content);
+        
+        String ivHex = CryptoUtils.INSTANCE.bytesToHex(parsed.iv);
         String decrypted;
-        if (isV2) {
-            // Use AES-GCM decryption for v2
-            decrypted = AESCrypto.INSTANCE.decryptGcmBase64(
-                ciphertext, 
-                e2eKey, 
-                CryptoUtils.INSTANCE.bytesToHex(iv)
-            );
+        
+        if ("rc.v2.aes-sha2".equals(parsed.algorithm)) {
+            // Use AES-GCM decryption
+            decrypted = AESCrypto.INSTANCE.decryptGcmBase64(parsed.ciphertext, e2eKey, ivHex);
         } else {
-            // Use AES-CBC decryption for v1 (existing logic)
-            decrypted = AESCrypto.INSTANCE.decryptBase64(
-                ciphertext, 
-                e2eKey, 
-                CryptoUtils.INSTANCE.bytesToHex(iv)
-            );
+            // Use AES-CBC decryption
+            decrypted = AESCrypto.INSTANCE.decryptBase64(parsed.ciphertext, e2eKey, ivHex);
         }
         
         byte[] data = Base64.decode(decrypted, Base64.NO_WRAP);
-        return new String(data, "UTF-8");
-    }
-    
-    // Direct decryption method for content structure
-    private String decryptContent(String algorithm, String kid, String iv, String ciphertext, String e2eKey) throws Exception {
-        boolean isV2 = "rc.v2.aes-sha2".equals(algorithm);
-        byte[] ivBytes = Base64.decode(iv, Base64.NO_WRAP);
-        return decryptWithParsedData(ciphertext, e2eKey, ivBytes, isV2);
+        String decryptedText = new String(data, "UTF-8");
+        
+        // Try to parse as DecryptedContent first
+        try {
+            DecryptedContent m = gson.fromJson(decryptedText, DecryptedContent.class);
+            return m.msg != null ? m.msg : m.text;
+        } catch (Exception e) {
+            // Fallback to FallbackMessage format
+            FallbackMessage m = gson.fromJson(decryptedText, FallbackMessage.class);
+            return m.text;
+        }
     }
 
     public String decryptMessage(final Ejson ejson, final ReactApplicationContext reactContext) {
@@ -342,22 +327,15 @@ class Encryption {
             }
             String e2eKey = roomKeyResult.decryptedKey;
 
-            if (ejson.content != null) {
-                String decryptedText;
-                if ("rc.v2.aes-sha2".equals(ejson.content.algorithm)) {
-                    // V2 format: decrypt directly with parsed components
-                    decryptedText = decryptContent(ejson.content.algorithm, ejson.content.kid, ejson.content.iv, ejson.content.ciphertext, e2eKey);
-                } else {
-                    // V1 format: content.ciphertext contains the full encrypted message
-                    decryptedText = decryptText(ejson.content.ciphertext, e2eKey);
-                }
-                DecryptedContent m = gson.fromJson(decryptedText, DecryptedContent.class);
-                return m.msg != null ? m.msg : m.text;
+            if (ejson.content != null && (ejson.content.algorithm != null)) {
+                return decryptContent(ejson.content, e2eKey);
             } else if (ejson.msg != null && !ejson.msg.isEmpty()) {
-                String message = ejson.msg;
-                String decryptedText = decryptText(message, e2eKey);
-                Message m = gson.fromJson(decryptedText, Message.class);
-                return m.text;
+                Ejson.Content fallbackContent = new Ejson.Content();
+                fallbackContent.algorithm = "rc.v1.aes-sha2";
+                fallbackContent.ciphertext = ejson.msg;
+                fallbackContent.kid = null;
+                fallbackContent.iv = null;
+                return decryptContent(fallbackContent, e2eKey);
             } else {
                 return null;
             }
@@ -369,7 +347,6 @@ class Encryption {
         return null;
     }
 
-    // Content structure similar to TypeScript
     public EncryptionContent encryptMessageContent(final String message, final String id, final Ejson ejson) {
         try {
             AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
@@ -387,18 +364,15 @@ class Encryption {
                 return null;
             }
             String e2eKey = roomKeyResult.decryptedKey;
-            String version = roomKeyResult.version;
 
-            Message m = new Message(id, ejson.userId(), message);
+            Message m = new Message(message);
             String cypher = gson.toJson(m);
 
             SecureRandom random = new SecureRandom();
             byte[] bytes;
             String encryptedData;
             
-            String keyId = roomKeyResult.keyId;
-            
-            if ("v2".equals(version)) {
+            if ("rc.v2.aes-sha2".equals(algorithm)) {
                 // V2 format: Use AES-GCM with 12-byte IV
                 bytes = new byte[12];
                 random.nextBytes(bytes);
@@ -409,7 +383,7 @@ class Encryption {
                 );
                 
                 return new EncryptionContent(
-                    "rc.v2.aes-sha2",
+                    algorithm,
                     encryptedData,
                     keyId,
                     Base64.encodeToString(bytes, Base64.NO_WRAP)
@@ -427,31 +401,13 @@ class Encryption {
                 
                 // Return full ciphertext for v1
                 String fullCiphertext = keyId + Base64.encodeToString(concat(bytes, data), Base64.NO_WRAP);
-                return new EncryptionContent("rc.v1.aes-sha2", fullCiphertext);
+                return new EncryptionContent(algorithm, fullCiphertext);
             }
         } catch (Exception e) {
             Log.e("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
 
         return null;
-    }
-
-    public String encryptMessage(final String message, final String id, final Ejson ejson) {
-        EncryptionContent content = encryptMessageContent(message, id, ejson);
-        if (content == null) {
-            return message;
-        }
-        
-        // For backward compatibility, return the appropriate format for msg field
-        if ("rc.v2.aes-sha2".equals(content.algorithm)) {
-            JsonObject encryptedJson = new JsonObject();
-            encryptedJson.addProperty("kid", content.kid);
-            encryptedJson.addProperty("iv", content.iv);
-            encryptedJson.addProperty("ciphertext", content.ciphertext);
-            return gson.toJson(encryptedJson);
-        } else {
-            return content.ciphertext;
-        }
     }
 
     static byte[] concat(byte[]... arrays) {

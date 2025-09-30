@@ -35,6 +35,7 @@ public class Ejson {
     Sender sender;
     String messageId;
     String notificationType;
+    String messageType;
     String senderName;
     String msg;
 
