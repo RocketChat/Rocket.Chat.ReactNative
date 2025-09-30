@@ -9,10 +9,7 @@ on:
 
 jobs:
   android-test:
-    name: >
-      ${{ inputs.shard == '1' && 'Onboarding Test' ||
-          inputs.shard == '2' && 'Team Test' ||
-          'All Tests' }}
+    name: 'Android Tests'
     runs-on: ubuntu-latest
 
     steps:
