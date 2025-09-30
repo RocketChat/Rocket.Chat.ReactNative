@@ -136,11 +136,11 @@ export default class RoomSubscription {
 			const [name, activities] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (!activities || !activities?.length) {
-					reduxStore.dispatch(removeUserTyping(name));
-				}
 				if (activities?.includes('user-typing')) {
 					reduxStore.dispatch(addUserTyping(name));
+				}
+				if (!activities?.length) {
+					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}
 		} else if (ev === 'deleteMessage') {
