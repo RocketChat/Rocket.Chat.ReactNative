@@ -105,8 +105,6 @@ export default class RoomSubscription {
 
 	handleNotifyRoomReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
-		console.log('here', ev);
-
 		if (this.rid !== _rid) {
 			return;
 		}
