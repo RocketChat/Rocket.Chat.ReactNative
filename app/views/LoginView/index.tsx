@@ -11,7 +11,7 @@ import UserForm from './UserForm';
 
 const LoginView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
-
+	console.log('test');
 	const {
 		params: { title }
 	} = useRoute<RouteProp<OutsideParamList, 'LoginView'>>();
