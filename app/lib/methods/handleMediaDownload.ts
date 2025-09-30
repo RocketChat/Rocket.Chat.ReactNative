@@ -13,7 +13,6 @@ import { getMessageById } from '../database/services/Message';
 import { getThreadMessageById } from '../database/services/ThreadMessage';
 import database from '../database';
 import { getThreadById } from '../database/services/Thread';
-import { headers } from './helpers/fetch';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
@@ -272,9 +271,7 @@ export function downloadMediaFile({
 				return reject();
 			}
 			downloadKey = mediaDownloadKey(downloadUrl);
-			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path, {
-				headers: headers as Record<string, string>
-			});
+			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
 
 			if (!result) {

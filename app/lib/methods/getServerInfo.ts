@@ -1,3 +1,4 @@
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 import moment from 'moment';
 
@@ -11,7 +12,6 @@ import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import { getUserSelector } from '../../selectors/login';
-import fetch from './helpers/fetch';
 
 interface IServerInfoFailure {
 	success: false;
@@ -52,6 +52,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 		const response = await fetch(`${server}/api/info`, {
 			method: 'GET',
 			headers: {
+				...RocketChatSettings.customHeaders,
 				'Content-Type': 'application/json',
 				'X-Auth-Token': user?.token,
 				'X-User-Id': user?.id
