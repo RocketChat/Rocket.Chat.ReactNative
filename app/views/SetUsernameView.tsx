@@ -19,8 +19,8 @@ import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
-import { Services } from '../lib/services';
-import { useAppSelector } from '../lib/hooks';
+import { getUsernameSuggestion, saveUserProfile } from '../lib/services/restApi';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -62,7 +62,7 @@ const SetUsernameView = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const suggestion = await Services.getUsernameSuggestion();
+			const suggestion = await getUsernameSuggestion();
 			if (suggestion.success) {
 				setValue('username', suggestion.result, { shouldValidate: true });
 			}
@@ -82,7 +82,7 @@ const SetUsernameView = () => {
 		}
 		setLoading(true);
 		try {
-			await Services.saveUserProfile({ username, name });
+			await saveUserProfile({ username, name });
 			dispatch(loginRequest({ resume: user.token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));

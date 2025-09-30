@@ -240,6 +240,9 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private String extractMessage(String message, Ejson ejson) {
+        if (message == null) {
+            return "";
+        }
         if (ejson != null && ejson.type != null && !ejson.type.equals("d")) {
             int pos = message.indexOf(":");
             int start = pos == -1 ? 0 : pos + 2;

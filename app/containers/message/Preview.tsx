@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Message from './index';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import { TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 

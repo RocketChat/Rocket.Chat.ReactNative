@@ -1,6 +1,7 @@
 import { shallowEqual } from 'react-redux';
 
-import { getPermissionsSelector, useAppSelector, usePermissions } from '../../../lib/hooks';
+import { usePermissions, getPermissionsSelector } from '../../../lib/hooks/usePermissions';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 export const useCanUploadFile = (rid?: string): boolean => {
 	const [uploadPermissionRedux] = useAppSelector(state => getPermissionsSelector(state, ['mobile-upload-file']), shallowEqual);
