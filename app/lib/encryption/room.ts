@@ -118,14 +118,21 @@ export default class EncryptionRoom {
 			}
 		}
 
-		// Redundancy check to avoid multiple handshakes, because of the async sub fetch
+		// Redundant check to avoid multiple handshakes, because of the async sub fetch
 		if (this.establishing) {
 			return this.readyPromise;
 		}
 
+		// Check if we have the user's private key to decrypt room keys
+		if (!Encryption.privateKey) {
+			// User hasn't entered E2E password yet
+			// Room will remain not ready until password is entered
+			return;
+		}
+
 		// Similar to Encryption.evaluateSuggestedKey
 		const { E2EKey, e2eKeyId, E2ESuggestedKey } = this.subscription;
-		if (E2ESuggestedKey && Encryption.privateKey) {
+		if (E2ESuggestedKey) {
 			try {
 				try {
 					this.establishing = true;
@@ -149,26 +156,40 @@ export default class EncryptionRoom {
 		}
 
 		// If this room has a E2EKey, we import it
-		if (E2EKey && Encryption.privateKey) {
-			this.establishing = true;
-			const { keyID, roomKey, sessionKeyExportedString, version } = await this.importRoomKey(E2EKey, Encryption.privateKey);
-			this.keyID = keyID;
-			this.roomKey = roomKey;
-			this.sessionKeyExportedString = sessionKeyExportedString;
-			this.version = version;
-			this.readyPromise.resolve();
-			return;
+		if (E2EKey) {
+			try {
+				this.establishing = true;
+				const { keyID, roomKey, sessionKeyExportedString, version } = await this.importRoomKey(E2EKey, Encryption.privateKey);
+				this.keyID = keyID;
+				this.roomKey = roomKey;
+				this.sessionKeyExportedString = sessionKeyExportedString;
+				this.version = version;
+				this.readyPromise.resolve();
+				return;
+			} catch (error) {
+				this.establishing = false;
+				log(error);
+				// Fall through to try other options
+			}
 		}
 
 		// If it doesn't have a e2eKeyId, we need to create keys to the room
 		if (!e2eKeyId) {
-			this.establishing = true;
-			await this.createRoomKey();
-			this.readyPromise.resolve();
-			return;
+			try {
+				this.establishing = true;
+				await this.createRoomKey();
+				this.readyPromise.resolve();
+				return;
+			} catch (error) {
+				this.establishing = false;
+				log(error);
+				// Cannot create room key, room will remain not ready
+			}
 		}
 
 		// Request a E2EKey for this room to other users
+		// Room will remain not ready until the key is received via subscription update
+		// When E2EKey arrives, next handshake() call will succeed
 		this.requestRoomKey(e2eKeyId);
 	};
 
