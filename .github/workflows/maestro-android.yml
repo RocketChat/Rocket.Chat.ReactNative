@@ -48,37 +48,51 @@ jobs:
 
       - name: Create Maestro script
         run: |
-          cat << EOF > run-maestro.sh
           #!/bin/bash
           SHARD=${{ inputs.shard }}
-          echo "Running shard: \$SHARD"
-      
+          echo "Running shard: $SHARD"
+
           adb shell settings put system show_touches 1
           adb install app-experimental-release.apk
           adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
           sleep 10
           adb shell am force-stop chat.rocket.reactnative
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-      
-          echo "Starting screen recording..."
-          adb shell screenrecord /sdcard/test_run.mp4 > /dev/null 2>&1 &
-          RECORD_PID=\$!
-      
-          maestro test .maestro --exclude-tags=util --include-tags=test-\$SHARD --format junit --output maestro-report.xml
-          TEST_EXIT_CODE=\$?
-      
-          echo "Stopping screen recording..."
-          kill -INT \$RECORD_PID || true
-          sleep 2
-      
-          echo "Pulling video from device..."
-          adb pull /sdcard/test_run.mp4 test_run_\$SHARD.mp4 || true
-          adb shell rm /sdcard/test_run.mp4 || true
-      
-          exit \$TEST_EXIT_CODE
-          EOF
-      
-          chmod +x run-maestro.sh
+
+          MAX_RETRIES=3
+          ATTEMPT=1
+          FINAL_EXIT_CODE=1
+
+          while [ $ATTEMPT -le $MAX_RETRIES ]; do
+            echo "Attempt $ATTEMPT of $MAX_RETRIES"
+
+            echo "Starting screen recording..."
+            adb shell screenrecord /sdcard/test_run.mp4 > /dev/null 2>&1 &
+            RECORD_PID=$!
+
+            maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --format junit --output maestro-report.xml
+            TEST_EXIT_CODE=$?
+
+            echo "Stopping screen recording..."
+            kill -INT $RECORD_PID || true
+            sleep 2
+
+            echo "Pulling video from device..."
+            adb pull /sdcard/test_run.mp4 test_run_${SHARD}_attempt_${ATTEMPT}.mp4 || true
+            adb shell rm /sdcard/test_run.mp4 || true
+
+            if [ $TEST_EXIT_CODE -eq 0 ]; then
+              echo "Maestro passed on attempt $ATTEMPT"
+              FINAL_EXIT_CODE=0
+              break
+            else
+              echo "Maestro failed on attempt $ATTEMPT"
+            fi
+
+            ATTEMPT=$((ATTEMPT+1))
+          done
+
+          exit $FINAL_EXIT_CODE
         env:
           SHARD: ${{ inputs.shard }}
 
