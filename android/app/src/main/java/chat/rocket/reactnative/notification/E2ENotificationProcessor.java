@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Thread-safe and handles timeout scenarios gracefully.
  */
 public class E2ENotificationProcessor {
-    private static final String TAG = "E2ENotificationProcessor";
+    private static final String TAG = "RocketChat.E2E.Async";
     
     // Configuration constants
     private static final int POLLING_INTERVAL_MS = 100;  // Check every 100ms
@@ -70,8 +70,6 @@ public class E2ENotificationProcessor {
      * @param notId The notification ID
      */
     public void processAsync(final Bundle bundle, final Ejson ejson, final String notId) {
-        Log.d(TAG, "Starting async E2E notification processing for notId=" + notId);
-        
         final AtomicInteger attempts = new AtomicInteger(0);
         
         final Runnable pollForContextRunnable = new Runnable() {
@@ -82,12 +80,11 @@ public class E2ENotificationProcessor {
                 
                 if (reactContext != null) {
                     // Context is available - decrypt in background thread
-                    Log.d(TAG, "React context available after " + currentAttempt + " attempts, decrypting notification");
+                    Log.i(TAG, "React context available after " + currentAttempt + " attempts");
                     decryptAndNotify(reactContext, bundle, ejson, notId);
                     
                 } else if (currentAttempt < MAX_ATTEMPTS) {
                     // Context not ready - poll again
-                    Log.v(TAG, "Waiting for React context, attempt " + currentAttempt + "/" + MAX_ATTEMPTS);
                     mainHandler.postDelayed(this, POLLING_INTERVAL_MS);
                     
                 } else {
@@ -112,11 +109,9 @@ public class E2ENotificationProcessor {
         // Decrypt in background thread to avoid blocking
         new Thread(() -> {
             try {
-                Log.d(TAG, "Attempting to decrypt E2E message");
                 String decrypted = Encryption.shared.decryptMessage(ejson, reactContext);
                 
                 if (decrypted != null) {
-                    Log.d(TAG, "Successfully decrypted E2E message");
                     bundle.putString("message", decrypted);
                     
                     // Call directly on background thread - notification building needs background thread for image loading

@@ -131,6 +131,8 @@ class Encryption {
     private String keyId;
     private String algorithm;
 
+    private static final String TAG = "RocketChat.E2E";
+    
     public static Encryption shared = new Encryption();
     private ReactApplicationContext reactContext;
 
@@ -312,62 +314,58 @@ class Encryption {
     }
 
     public String decryptMessage(final Ejson ejson, final Context context) {
-        Log.d("[ROCKETCHAT][E2E]", "decryptMessage() called, context=" + (context != null ? context.getClass().getSimpleName() : "null"));
         try {
-            // Try to get ReactApplicationContext for compatibility
+            // Get ReactApplicationContext for MMKV access
             if (context instanceof ReactApplicationContext) {
                 this.reactContext = (ReactApplicationContext) context;
-                Log.d("[ROCKETCHAT][E2E]", "Using provided ReactApplicationContext");
             } else {
                 AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
                 if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
                     this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
-                    Log.d("[ROCKETCHAT][E2E]", "Got ReactApplicationContext from AppLifecycleFacade");
                 }
             }
 
-            if (context == null) {
-                Log.e("[ROCKETCHAT][E2E]", "No context available for database access");
+            if (this.reactContext == null) {
+                Log.e(TAG, "Cannot decrypt: ReactApplicationContext not available");
                 return null;
             }
             
-            Log.d("[ROCKETCHAT][E2E]", "Reading room from database...");
-            Room room = readRoom(ejson, context);
+            Room room = readRoom(ejson, this.reactContext);
             if (room == null || room.e2eKey == null) {
-                Log.w("[ROCKETCHAT][E2E]", "Room not found or no e2eKey: room=" + (room != null ? "exists" : "null"));
+                Log.w(TAG, "Cannot decrypt: room or e2eKey not found");
                 return null;
             }
-            Log.d("[ROCKETCHAT][E2E]", "Room found, decrypting room key...");
             
             RoomKeyResult roomKeyResult = decryptRoomKey(room.e2eKey, ejson);
             if (roomKeyResult == null || roomKeyResult.decryptedKey == null) {
-                Log.w("[ROCKETCHAT][E2E]", "Failed to decrypt room key");
+                Log.w(TAG, "Cannot decrypt: room key decryption failed");
                 return null;
             }
-            Log.d("[ROCKETCHAT][E2E]", "Room key decrypted successfully");
+            
             String e2eKey = roomKeyResult.decryptedKey;
-
-            if (ejson.content != null && (ejson.content.algorithm != null)) {
-                Log.d("[ROCKETCHAT][E2E]", "Decrypting content with algorithm: " + ejson.content.algorithm);
+            
+            // Try v2 format (content field) first
+            if (ejson.content != null && ejson.content.algorithm != null) {
                 return decryptContent(ejson.content, e2eKey);
-            } else if (ejson.msg != null && !ejson.msg.isEmpty()) {
-                Log.d("[ROCKETCHAT][E2E]", "Using fallback v1 decryption for msg field");
+            }
+            
+            // Fallback to v1 format (msg field)
+            if (ejson.msg != null && !ejson.msg.isEmpty()) {
                 Ejson.Content fallbackContent = new Ejson.Content();
                 fallbackContent.algorithm = "rc.v1.aes-sha2";
                 fallbackContent.ciphertext = ejson.msg;
                 fallbackContent.kid = null;
                 fallbackContent.iv = null;
                 return decryptContent(fallbackContent, e2eKey);
-            } else {
-                Log.w("[ROCKETCHAT][E2E]", "No content or msg field to decrypt");
-                return null;
             }
+            
+            Log.w(TAG, "Cannot decrypt: no content or msg field found");
+            return null;
 
         } catch (Exception e) {
-            Log.e("[ROCKETCHAT][E2E]", "Exception during decryptMessage: " + e.getMessage(), e);
+            Log.e(TAG, "Decryption failed", e);
+            return null;
         }
-
-        return null;
     }
 
     public EncryptionContent encryptMessageContent(final String message, final String id, final Ejson ejson) {

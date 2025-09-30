@@ -47,7 +47,7 @@ import chat.rocket.reactnative.R;
  * For E2E notifications, waits for React Native initialization before decrypting and displaying.
  */
 public class CustomPushNotification extends PushNotification {
-    private static final String TAG = "CustomPushNotification";
+    private static final String TAG = "RocketChat.Push";
     
     // Shared state
     public static ReactApplicationContext reactApplicationContext;
@@ -72,7 +72,6 @@ public class CustomPushNotification extends PushNotification {
      * Called from MainApplication when React context is ready.
      */
     public static void setReactContext(ReactApplicationContext context) {
-        Log.d(TAG, "setReactContext() called, context=" + (context != null ? "valid" : "null"));
         reactApplicationContext = context;
     }
 
@@ -82,7 +81,6 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
-        Log.d(TAG, "onReceived() called");
         
         // Load notification data from server if needed
         Bundle received = mNotificationProps.asBundle();
@@ -126,30 +124,25 @@ public class CustomPushNotification extends PushNotification {
      * Handles E2E encrypted notifications by delegating to the async processor.
      */
     private void handleE2ENotification(Bundle bundle, Ejson ejson, String notId) {
-        Log.d(TAG, "E2E message detected");
-        
         // Check if React context is immediately available
         if (reactApplicationContext != null) {
             // Fast path: decrypt immediately
-            Log.d(TAG, "React context available, decrypting immediately");
             String decrypted = Encryption.shared.decryptMessage(ejson, reactApplicationContext);
             
             if (decrypted != null) {
-                Log.d(TAG, "Decryption successful");
                 bundle.putString("message", decrypted);
                 mNotificationProps = createProps(bundle);
                 bundle = mNotificationProps.asBundle();
                 ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
                 showNotification(bundle, ejson, notId);
             } else {
-                Log.w(TAG, "Decryption failed, not showing notification");
-                // Don't show notification with encrypted text
+                Log.w(TAG, "E2E decryption failed for notification");
             }
             return;
         }
         
         // Slow path: wait for React context asynchronously
-        Log.w(TAG, "React context not available yet, processing asynchronously");
+        Log.i(TAG, "Waiting for React context to decrypt E2E notification");
         
         E2ENotificationProcessor processor = new E2ENotificationProcessor(
             // Context provider
@@ -159,7 +152,6 @@ public class CustomPushNotification extends PushNotification {
             new E2ENotificationProcessor.NotificationCallback() {
                 @Override
                 public void onDecryptionComplete(Bundle decryptedBundle, Ejson decryptedEjson, String notificationId) {
-                    Log.d(TAG, "Async decryption complete, showing notification");
                     // Update props and show notification
                     mNotificationProps = createProps(decryptedBundle);
                     Bundle finalBundle = mNotificationProps.asBundle();
@@ -169,14 +161,12 @@ public class CustomPushNotification extends PushNotification {
                 
                 @Override
                 public void onDecryptionFailed(Bundle originalBundle, Ejson originalEjson, String notificationId) {
-                    Log.w(TAG, "Async decryption failed, not showing notification");
-                    // Don't show notification with encrypted text
+                    Log.w(TAG, "E2E decryption failed for notification");
                 }
                 
                 @Override
                 public void onTimeout(Bundle originalBundle, Ejson originalEjson, String notificationId) {
-                    Log.w(TAG, "Timeout waiting for React context, not showing notification");
-                    // Don't show notification with encrypted text
+                    Log.w(TAG, "Timeout waiting for React context for E2E notification");
                 }
             }
         );
