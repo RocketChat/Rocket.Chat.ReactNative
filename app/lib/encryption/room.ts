@@ -203,7 +203,7 @@ export default class EncryptionRoom {
 			const [kid, encryptedData] = decodePrefixedBase64(E2EKey);
 
 			// Decrypt the session key
-			const decryptedKey = await rsaDecrypt(bufferToB64(encryptedData.buffer), privateKey);
+			const decryptedKey = await rsaDecrypt(bufferToB64(encryptedData), privateKey);
 			const sessionKeyExportedString = toString(decryptedKey);
 
 			const keyID = kid;
@@ -352,12 +352,8 @@ export default class EncryptionRoom {
 		try {
 			const userKey = await rsaImportKey(EJSON.parse(publicKey));
 			const encryptedUserKey = await rsaEncrypt(this.sessionKeyExportedString as string, userKey);
-
-			// Convert base64 string to Uint8Array for prefixed encoding
 			const encryptedBuffer = b64ToBuffer(encryptedUserKey as string);
-
-			// Use prefixed base64 encoding with keyID as prefix (like web)
-			return encodePrefixedBase64(this.keyID, new Uint8Array(encryptedBuffer));
+			return encodePrefixedBase64(this.keyID, encryptedBuffer);
 		} catch (e) {
 			log(e);
 		}

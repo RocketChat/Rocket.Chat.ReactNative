@@ -197,7 +197,7 @@ const DECODED_LENGTH = 256;
 // ((4 * 256 / 3) + 3) & ~3 = 344
 const ENCODED_LENGTH = 344;
 
-export const decodePrefixedBase64 = (input: string): [prefix: string, data: Uint8Array] => {
+export const decodePrefixedBase64 = (input: string): [prefix: string, data: ArrayBuffer] => {
 	// 1. Validate the input string length
 	if (input.length < ENCODED_LENGTH) {
 		throw new RangeError('Invalid input length.');
@@ -215,17 +215,17 @@ export const decodePrefixedBase64 = (input: string): [prefix: string, data: Uint
 		throw new RangeError('Decoded data length is too short.');
 	}
 
-	return [prefix, new Uint8Array(bytes)];
+	return [prefix, bytes];
 };
 
-export const encodePrefixedBase64 = (prefix: string, data: Uint8Array): string => {
+export const encodePrefixedBase64 = (prefix: string, data: ArrayBuffer): string => {
 	// 1. Validate the input data length
-	if (data.length !== DECODED_LENGTH) {
-		throw new RangeError(`Input data length is ${data.length}, but expected ${DECODED_LENGTH} bytes.`);
+	if (data.byteLength !== DECODED_LENGTH) {
+		throw new RangeError(`Input data length is ${data.byteLength}, but expected ${DECODED_LENGTH} bytes.`);
 	}
 
 	// 2. Convert the byte array to base64
-	const base64Data = bufferToB64(data.buffer);
+	const base64Data = bufferToB64(data);
 
 	if (base64Data.length !== ENCODED_LENGTH) {
 		// This is a sanity check in case something went wrong during encoding.
