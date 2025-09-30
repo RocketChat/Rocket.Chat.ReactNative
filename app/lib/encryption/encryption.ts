@@ -581,18 +581,6 @@ class Encryption {
 			};
 		}
 
-		// If the client is not ready
-		if (!this.ready) {
-			try {
-				// Wait for ready status
-				await this.establishing;
-			} catch {
-				// If it can't be initialized (missing password)
-				// return the encrypted message
-				return subscription;
-			}
-		}
-
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
@@ -668,12 +656,6 @@ class Encryption {
 				return message;
 			}
 
-			// If the client is not ready
-			if (!this.ready) {
-				// Wait for ready status
-				await this.establishing;
-			}
-
 			const roomE2E = await this.getRoomInstance(rid);
 			if (!roomE2E || !roomE2E?.hasSessionKey()) {
 				return;
@@ -695,18 +677,6 @@ class Encryption {
 		// Prevent create a new instance if this room was encrypted sometime ago
 		if (t !== E2E_MESSAGE_TYPE || e2e === E2E_STATUS.DONE) {
 			return message;
-		}
-
-		// If the client is not ready
-		if (!this.ready) {
-			try {
-				// Wait for ready status
-				await this.establishing;
-			} catch {
-				// If it can't be initialized (missing password)
-				// return the encrypted message
-				return message;
-			}
 		}
 
 		const { rid } = message;
@@ -736,12 +706,6 @@ class Encryption {
 		if (!subscription.encrypted || (E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)) {
 			// Send a non encrypted message
 			return { file };
-		}
-
-		// If the client is not ready
-		if (!this.ready) {
-			// Wait for ready status
-			await this.establishing;
 		}
 
 		const roomE2E = await this.getRoomInstance(rid);
