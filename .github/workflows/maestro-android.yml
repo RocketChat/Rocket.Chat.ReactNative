@@ -48,6 +48,7 @@ jobs:
 
       - name: Create Maestro script
         run: |
+          cat << 'EOF' > run-maestro.sh
           #!/bin/bash
           SHARD=${{ inputs.shard }}
           echo "Running shard: $SHARD"
@@ -93,6 +94,9 @@ jobs:
           done
 
           exit $FINAL_EXIT_CODE
+          EOF
+
+          chmod +x run-maestro.sh
         env:
           SHARD: ${{ inputs.shard }}
 
