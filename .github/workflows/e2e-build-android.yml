@@ -73,7 +73,6 @@ jobs:
           echo -e "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> ./gradle.properties
           echo -e "android.useAndroidX=true" >> ./gradle.properties
           echo -e "android.enableJetifier=true" >> ./gradle.properties
-
           echo -e "reactNativeArchitectures=x86_64" >> ./gradle.properties
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
           echo -e "newArchEnabled=true" >> ./gradle.properties
