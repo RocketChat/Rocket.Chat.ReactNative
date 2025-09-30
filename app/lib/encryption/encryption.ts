@@ -555,9 +555,30 @@ class Encryption {
 		const { lastMessage } = subscription;
 		const { t, e2e } = lastMessage;
 
-		// If it's not a encrypted message or was decrypted before
-		if (t !== E2E_MESSAGE_TYPE || e2e === E2E_STATUS.DONE) {
+		// If it's not an encrypted message
+		if (t !== E2E_MESSAGE_TYPE) {
 			return subscription;
+		}
+
+		// If already marked as decrypted in the incoming data
+		if (e2e === E2E_STATUS.DONE) {
+			return subscription;
+		}
+
+		const { rid } = subscription;
+		if (!rid) {
+			return subscription;
+		}
+
+		// Check database FIRST to see if this message is already decrypted
+		// This avoids unnecessary re-decryption when subscription updates (unread count, etc.)
+		const subRecord = await getSubscriptionByRoomId(rid);
+		if (subRecord?.lastMessage?.ts === lastMessage.ts && subRecord?.lastMessage?.e2e === E2E_STATUS.DONE) {
+			// Same message already decrypted in DB, return subscription with DB's decrypted version
+			return {
+				...subscription,
+				lastMessage: subRecord?.lastMessage
+			};
 		}
 
 		// If the client is not ready
@@ -571,12 +592,6 @@ class Encryption {
 				return subscription;
 			}
 		}
-
-		const { rid } = subscription;
-		if (!rid) {
-			return subscription;
-		}
-		const subRecord = await getSubscriptionByRoomId(rid);
 
 		try {
 			const db = database.active;
