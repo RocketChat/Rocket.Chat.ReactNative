@@ -105,6 +105,8 @@ export default class RoomSubscription {
 
 	handleNotifyRoomReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
+		console.log('here', ev);
+
 		if (this.rid !== _rid) {
 			return;
 		}
@@ -134,11 +136,11 @@ export default class RoomSubscription {
 			const [name, activities] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (activities.includes('user-typing')) {
-					reduxStore.dispatch(addUserTyping(name));
-				}
-				if (!activities.length) {
+				if (!activities || !activities?.length) {
 					reduxStore.dispatch(removeUserTyping(name));
+				}
+				if (activities?.includes('user-typing')) {
+					reduxStore.dispatch(addUserTyping(name));
 				}
 			}
 		} else if (ev === 'deleteMessage') {
