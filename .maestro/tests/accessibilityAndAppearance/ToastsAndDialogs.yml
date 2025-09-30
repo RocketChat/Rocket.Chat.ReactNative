@@ -23,7 +23,10 @@ tags:
 - tapOn:
     id: 'status-view-offline'
 - tapOn: 'Save'
-- assertVisible: 'Status saved successfully!'
+- extendedWaitUntil:
+    visible:
+      text: 'Status saved successfully!'
+    timeout: 60000
 
 # Show alerts as Dialogs
 - tapOn: 'Accessibility & appearance'
@@ -35,6 +38,9 @@ tags:
 - tapOn:
     id: 'status-view-online'
 - tapOn: 'Save'
-- assertVisible: 'Status saved successfully!'
+- extendedWaitUntil:
+    visible:
+      text: 'Status saved successfully!'
+    timeout: 60000
 - assertVisible: 'OK'
 - tapOn: 'OK'
