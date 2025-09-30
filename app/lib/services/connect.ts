@@ -26,7 +26,6 @@ import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../met
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
-import fetch from '../methods/helpers/fetch';
 
 interface IServices {
 	[index: string]: string | boolean;

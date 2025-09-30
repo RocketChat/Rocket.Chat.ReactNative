@@ -11,7 +11,6 @@ import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import { getUserSelector } from '../../selectors/login';
-import fetch from './helpers/fetch';
 
 interface IServerInfoFailure {
 	success: false;
