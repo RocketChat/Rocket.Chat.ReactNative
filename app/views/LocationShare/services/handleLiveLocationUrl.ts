@@ -24,7 +24,7 @@ async function saveEndedSet() {
 	try {
 		await AsyncStorage.setItem(ENDED_KEY, JSON.stringify(Array.from(endedIds)));
 	} catch (e) {
-		// Failed to persist ended IDs
+		
 	}
 }
 
