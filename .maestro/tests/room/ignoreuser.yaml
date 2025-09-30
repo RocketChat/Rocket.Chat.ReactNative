@@ -192,7 +192,6 @@ tags:
 - hideKeyboard
 - tapOn:
     id: 'report-user-view-submit'
-    waitToSettleTimeoutMs: 500
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -240,7 +239,6 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'report-user-view-submit'
-    waitToSettleTimeoutMs: 500
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:

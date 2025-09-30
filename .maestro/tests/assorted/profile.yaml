@@ -202,7 +202,6 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'change-password-view-set-new-password-button'
-    waitToSettleTimeoutMs: 500
     retryTapIfNoChange: true
 - runFlow:
     when:

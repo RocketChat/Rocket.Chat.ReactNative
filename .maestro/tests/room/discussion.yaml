@@ -190,7 +190,6 @@ tags:
     timeout: 60000
 - tapOn:
     id: create-discussion-submit
-    waitToSettleTimeoutMs: 500
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -206,7 +205,6 @@ tags:
     id: room-header
 - tapOn:
     id: room-header
-    waitToSettleTimeoutMs: 500
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
