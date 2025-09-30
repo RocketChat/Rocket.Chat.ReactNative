@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Linking } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
+
 import Navigation from '../../lib/navigation/appNavigation';
 import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
 import { sendMessage } from '../../lib/methods/sendMessage';
