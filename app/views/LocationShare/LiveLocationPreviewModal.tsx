@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, Linking, InteractionManager } from 'react-native';
 import { Image as ExpoImage, type ImageErrorEventData } from 'expo-image';
 import I18n from '../../i18n';
-import Navigation from '../../lib/navigation/appNavigation';
 
+import Navigation from '../../lib/navigation/appNavigation';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
 import {
