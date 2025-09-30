@@ -5,7 +5,7 @@ import ejson from 'ejson';
 
 import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
 import i18n from '../../../i18n';
-import { colors } from '../../constants';
+import { colors } from '../../constants/colors';
 import { store } from '../../store/auxStore';
 
 const VIDEO_CONF_CHANNEL = 'video-conf-call';

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UseFormSetValue } from 'react-hook-form';
 
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { SwitchItem } from './SwitchItem';
 import { SwitchItemType } from './SwitchItemType';

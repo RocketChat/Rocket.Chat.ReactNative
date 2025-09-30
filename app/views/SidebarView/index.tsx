@@ -7,7 +7,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
 import SupportedVersionsWarnItem from './components/SupportedVersionsWarnItem';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import CustomStatus from './components/CustomStatus';
 import Stacks from './components/Stacks';
 import Admin from './components/Admin';

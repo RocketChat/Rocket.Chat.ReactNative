@@ -8,9 +8,9 @@ import { setLoading } from '../../../actions/selectedUsers';
 import * as List from '../../../containers/List';
 import { TSubscriptionModel } from '../../../definitions';
 import i18n from '../../../i18n';
-import { usePermissions } from '../../../lib/hooks';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { Services } from '../../../lib/services';
+import { addUsersToRoom } from '../../../lib/services/restApi';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../../stacks/types';
 
@@ -55,7 +55,7 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 	const addUser = async () => {
 		try {
 			dispatch(setLoading(true));
-			await Services.addUsersToRoom(rid);
+			await addUsersToRoom(rid);
 			pop();
 		} catch (e) {
 			log(e);

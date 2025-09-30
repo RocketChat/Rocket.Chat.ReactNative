@@ -6,7 +6,7 @@ import Touchable from 'react-native-platform-touchable';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { PasscodeEnter } from '../containers/Passcode';
-import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
+import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants/localAuthentication';
 import { CustomIcon } from '../containers/CustomIcon';
 import { hasNotch } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';

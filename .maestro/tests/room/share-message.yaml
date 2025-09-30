@@ -1,0 +1,108 @@
+appId: chat.rocket.reactnative
+name: Share Message
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+
+---
+- runFlow: '../../helpers/launch-app.yaml'
+
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# Start a DM with other user
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'Hello user'
+- runFlow: '../../helpers/go-back.yaml'
+
+# should navigate to room and send a message
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'Hello room'
+
+# should open the action sheet and tap Forward
+- extendedWaitUntil:
+    visible:
+      text: 'Hello room'
+      index: 0
+    timeout: 60000
+- longPressOn: 'Hello room'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Forward'
+    timeout: 60000
+- tapOn: 'Forward'
+
+# should forward the message
+- extendedWaitUntil:
+    visible:
+      id: 'forward-message-view'
+    timeout: 60000
+- tapOn: 'Select'
+- extendedWaitUntil:
+    visible:
+      id: 'multi-select-search'
+    timeout: 60000
+- tapOn:
+    id: 'multi-select-search'
+- inputText: ${output.otherUser.username}
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: multi-select-item-${output.otherUser.username.toLowerCase()}
+    timeout: 60000
+- tapOn:
+    id: multi-select-item-${output.otherUser.username.toLowerCase()}
+- swipe:
+    id: 'action-sheet-handle'
+    direction: DOWN
+- extendedWaitUntil:
+    notVisible:
+      id: 'multi-select-search'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'forward-message-view-send'
+    timeout: 60000
+- tapOn:
+    id: 'forward-message-view-send'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+
+# should go to otherUser DM and verify if exist both messages
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      text: 'Hello user'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Hello room'
+    timeout: 60000
