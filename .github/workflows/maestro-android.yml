@@ -133,5 +133,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: maestro-video-${{ inputs.shard }}
-          path: test_run_${{ inputs.shard }}.mp4
+          path: test_run_${{ inputs.shard }}_attempt_*.mp4
           retention-days: 7
