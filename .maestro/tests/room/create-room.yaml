@@ -8,6 +8,7 @@ tags:
   - test-10
 
 ---
+- evalScript: ${output.user = output.utils.createUser()}
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
