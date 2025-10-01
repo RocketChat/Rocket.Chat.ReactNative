@@ -4,6 +4,8 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-10
 
 ---
 - runFlow: '../../helpers/launch-app.yaml'
@@ -188,6 +190,7 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: create-discussion-submit
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view'
@@ -202,6 +205,7 @@ onFlowComplete:
     id: room-header
 - tapOn:
     id: room-header
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
