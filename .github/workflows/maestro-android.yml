@@ -134,6 +134,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: maestro-screenshots-${{ inputs.shard }} 
-          path: .maestro/tests/**/*.png
+          path: ~/.maestro/tests/**/*.png
           retention-days: 7
         
