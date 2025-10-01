@@ -9,12 +9,11 @@ tags:
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
-- runFlow: ../../helpers/launch-app.yaml
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.user.username}
-      PASSWORD: ${output.user.password}
+      username: ${output.user.username}
+      password: ${output.user.password}
 
 # should have rooms list screen
 - extendedWaitUntil:

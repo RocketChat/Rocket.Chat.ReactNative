@@ -4,8 +4,10 @@ tags:
   - 'util'
 
 ---
-- evalScript: ${output.login = output.utils.login(env.username, env.password)}
+- runFlow: 'launch-app.yaml'
+- stopApp: chat.rocket.reactnative
+- evalScript: ${output.login = output.utils.login(username, password)}
 - runFlow:
     file: 'open-deeplink.yaml'
     env:
-      link: ${output.utils.getDeepLink('auth', env.server || output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken)}
+      link: ${output.utils.getDeepLink('auth', server || output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken)}

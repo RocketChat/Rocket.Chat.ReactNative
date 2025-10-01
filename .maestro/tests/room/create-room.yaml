@@ -8,8 +8,11 @@ tags:
   - test-10
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-- runFlow: '../../helpers/login.yaml'
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      username: ${output.user.username}
+      password: ${output.user.password}
 
 - extendedWaitUntil:
     visible:

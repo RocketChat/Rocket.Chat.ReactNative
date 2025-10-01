@@ -15,12 +15,11 @@ tags:
 - evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, 'join-from-directory', output.thread)}
 - evalScript: ${output.threadReply = output.utils.sendMessage(output.user.username, output.user.password, output.result.message.rid, 'insidethread', output.result.message._id)}
 
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.user.username}
-      PASSWORD: ${output.user.password}
+      username: ${output.user.username}
+      password: ${output.user.password}
 
 # should tap directory
 - extendedWaitUntil:

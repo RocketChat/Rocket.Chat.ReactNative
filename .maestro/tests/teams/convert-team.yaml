@@ -8,11 +8,16 @@ tags:
   - test-4
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/login.yaml
+- evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.toBeConverted = 'to-be-converted-' + output.random()}
 - evalScript: ${output.toBeMoved = 'to-be-moved-' + output.random()}
 - evalScript: ${output.publicChannelToBeConverted = 'channel-public-to-be-converted-' + output.random()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      username: ${output.user.username}
+      password: ${output.user.password}
 
 # should convert public channel to a team
 - runFlow:

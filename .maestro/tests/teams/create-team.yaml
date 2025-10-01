@@ -8,9 +8,14 @@ tags:
   - test-4
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/login.yaml
+- evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.teamname = output.randomTeamName()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      username: ${output.user.username}
+      password: ${output.user.password}
 
 - assertVisible:
     id: 'rooms-list-view-create-channel'

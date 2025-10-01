@@ -14,10 +14,10 @@ tags:
 - evalScript: ${output.otherUser = output.utils.createUser()}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.user.username}
-      PASSWORD: ${output.user.password}
+      username: ${output.user.username}
+      password: ${output.user.password}
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'

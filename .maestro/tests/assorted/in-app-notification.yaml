@@ -14,12 +14,11 @@ tags:
 - evalScript: ${output.result = output.utils.createDM(output.receiver.username, output.receiver.password, output.sender.username)}
 - evalScript: ${output.dmCreatedRid = output.result.room.rid}
 
-- runFlow: ../../helpers/launch-app.yaml
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.receiver.username}
-      PASSWORD: ${output.receiver.password}
+      username: ${output.receiver.username}
+      password: ${output.receiver.password}
 
 # receive in RoomsListView
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, output.dmCreatedRid, 'Message in DM')}

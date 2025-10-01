@@ -8,12 +8,11 @@ tags:
   - test-11
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.account.adminUser}
-      PASSWORD: ${output.account.adminPassword}
+      username: ${output.account.adminUser}
+      password: ${output.account.adminPassword}
 
 # should jump to an old message and load its surroundings
 - runFlow:

@@ -13,22 +13,20 @@ tags:
 - evalScript: ${output.userB = output.utils.createUser()}
 
 # login as User B and change E2E password
-- runFlow: ../../helpers/launch-app.yaml
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userB.username}
-      PASSWORD: ${output.userB.password}
+      username: ${output.userB.username}
+      password: ${output.userB.password}
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/change-e2ee-key.yaml'
 
 # login as User A and change E2E password
-- runFlow: ../../helpers/launch-app.yaml
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userA.username}
-      PASSWORD: ${output.userA.password}
+      username: ${output.userA.username}
+      password: ${output.userA.password}
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/change-e2ee-key.yaml'
 
@@ -146,12 +144,11 @@ tags:
 
 # If session is not encrypted, it shouldnt trigger read messages
 # should login as UserB, dont set e2ee password and dont read messages
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userB.username}
-      PASSWORD: ${output.userB.password}
+      username: ${output.userB.username}
+      password: ${output.userB.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -162,12 +159,11 @@ tags:
     timeout: 60000
 
 # should login as UserA and check message is not read
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userA.username}
-      PASSWORD: ${output.userA.password}
+      username: ${output.userA.username}
+      password: ${output.userA.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -179,12 +175,11 @@ tags:
     timeout: 60000
 
 # should login as UserB, set e2ee password and read messages
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userB.username}
-      PASSWORD: ${output.userB.password}
+      username: ${output.userB.username}
+      password: ${output.userB.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -212,12 +207,11 @@ tags:
       message: 'm3'
 
 # should login as UserA and check message is read
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userA.username}
-      PASSWORD: ${output.userA.password}
+      username: ${output.userA.username}
+      password: ${output.userA.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -241,22 +235,20 @@ tags:
     timeout: 60000
 
 # Login as UserA, reset user e2ee key, reset room E2EE key and send a message
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userA.username}
-      PASSWORD: ${output.userA.password}
+      username: ${output.userA.username}
+      password: ${output.userA.password}
 
 # should reset user E2EE key, login again and recreate keys
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/reset-e2ee-key.yaml'
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userA.username}
-      PASSWORD: ${output.userA.password}
+      username: ${output.userA.username}
+      password: ${output.userA.password}
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/change-e2ee-key.yaml'
 
@@ -312,12 +304,11 @@ tags:
       message: 'm4'
 
 # Login as UserB, accept new room key, send a message and read everything
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.userB.username}
-      PASSWORD: ${output.userB.password}
+      username: ${output.userB.username}
+      password: ${output.userB.password}
 
 # should send message and be able to read it
 - runFlow:

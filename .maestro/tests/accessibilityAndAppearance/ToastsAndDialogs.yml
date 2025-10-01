@@ -8,8 +8,12 @@ tags:
   - test-13
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/login.yaml
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      username: ${output.user.username}
+      password: ${output.user.password}
 
 # Show alerts as Toasts
 - tapOn: 'Menu'

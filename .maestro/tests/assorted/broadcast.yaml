@@ -107,12 +107,11 @@ tags:
       message: 'message'
 
 # should login as user without write message authorization and enter room
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
-      USERNAME: ${output.otherUser.username}
-      PASSWORD: ${output.otherUser.password}
+      username: ${output.otherUser.username}
+      password: ${output.otherUser.password}
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
