@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInputProps } from 'react-native';
 
-import { textInputDebounceTime } from '../lib/constants';
+import { textInputDebounceTime } from '../lib/constants/debounceConfig';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';

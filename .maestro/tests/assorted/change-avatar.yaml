@@ -4,6 +4,8 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-5
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}

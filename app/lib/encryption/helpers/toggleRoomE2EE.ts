@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 
-import { Services } from '../../services';
+import { saveRoomSettings } from '../../services/restApi';
 import database from '../../database';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import log from '../../methods/helpers/log';
@@ -58,7 +58,7 @@ export const toggleRoomE2EE = async (rid: string): Promise<void> => {
 					try {
 						try {
 							// Send new room setting value to server
-							const { result } = await Services.saveRoomSettings(rid, { encrypted: newValue });
+							const { result } = await saveRoomSettings(rid, { encrypted: newValue });
 							// If it was saved successfully
 							if (result) {
 								return;

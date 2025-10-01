@@ -4,6 +4,8 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-7
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
@@ -102,17 +104,9 @@ onFlowComplete:
     id: 'directory-view-search'
 - inputText: ${output.otherUser.username}
 
-# This is to handle debouncing on search (iOS only)
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - eraseText: 1
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - inputText: ${output.otherUser.username.slice(-1)}
+# This is to handle debouncing on search
+- eraseText: 1
+- inputText: ${output.otherUser.username.slice(-1)}
 
 - extendedWaitUntil:
     visible:

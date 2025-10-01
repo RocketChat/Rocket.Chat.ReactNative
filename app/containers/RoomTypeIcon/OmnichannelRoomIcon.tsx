@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Image, type ImageStyle } from 'expo-image';
 
 import { OmnichannelSourceType, IOmnichannelSource, TUserStatus } from '../../definitions';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
 

@@ -5,6 +5,7 @@ import {
 	INotificationPreferences,
 	IPreviewItem,
 	IProfileParams,
+	IRoleUser,
 	IRoom,
 	IRoomNotifications,
 	IServerRoom,
@@ -628,6 +629,16 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
+export const setPassword = (newPassword: string) => {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.10.0')) {
+		return saveUserProfile({ newPassword } as IProfileParams);
+	}
+
+	return sdk.methodCall('setUserPassword', newPassword);
+};
+
 export const saveUserProfile = (
 	data: IProfileParams | Pick<IProfileParams, 'username' | 'name'>,
 	customFields?: { [key: string | number]: string }
@@ -1069,15 +1080,6 @@ export const videoConferenceStart = (roomId: string) => sdk.post('video-conferen
 
 export const videoConferenceCancel = (callId: string) => sdk.post('video-conference.cancel', { callId });
 
-export const saveUserProfileMethod = (
-	params: IProfileParams,
-	customFields = {},
-	twoFactorOptions: {
-		twoFactorCode: string;
-		twoFactorMethod: string;
-	} | null
-) => sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
-
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0
 	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });
@@ -1087,9 +1089,19 @@ export const postMessage = (roomId: string, text: string) => sdk.post('chat.post
 export const notifyUser = (type: string, params: Record<string, any>): Promise<boolean> =>
 	sdk.methodCall('stream-notify-user', type, params);
 
-export const getUsersRoles = (): Promise<boolean> => sdk.methodCall('getUserRoles');
+export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.10.0')) {
+		// RC 7.10.0
+		const response = await sdk.get('roles.getUsersInPublicRoles');
+		if (response.success) {
+			return response.users;
+		}
+		return false;
+	}
+	// https://github.com/RocketChat/Rocket.Chat/blob/7787147da2be90f5f4d137ba477e708083dcf814/apps/meteor/app/lib/server/methods/getUserRoles.ts#L20
+	return sdk.methodCall('getUserRoles');
+};
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
-
-export const setUserPassword = (password: string) => sdk.methodCall('setUserPassword', password);

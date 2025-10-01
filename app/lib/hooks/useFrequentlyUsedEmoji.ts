@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
 import { IEmoji } from '../../definitions';
-import { DEFAULT_EMOJIS } from '../constants';
+import { DEFAULT_EMOJIS } from '../constants/emojis';
 
 export const useFrequentlyUsedEmoji = (
 	withDefaultEmojis = false

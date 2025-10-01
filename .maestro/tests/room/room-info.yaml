@@ -3,7 +3,9 @@ name: Room Info
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
+  - evalScript: ${output.utils.deleteCreatedUsers()
+tags:
+  - test-12
 
 ---
 - runFlow: '../../helpers/launch-app.yaml'

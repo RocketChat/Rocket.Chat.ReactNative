@@ -4,7 +4,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
-import { textInputDebounceTime } from '../../../lib/constants';
+import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
@@ -31,7 +31,8 @@ import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods/actions';
 import { executeCommandPreview } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
-import { useAppSelector, usePrevious } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 

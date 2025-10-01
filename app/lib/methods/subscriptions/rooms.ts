@@ -30,7 +30,7 @@ import sdk from '../../services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
-import { E2E_MESSAGE_TYPE } from '../../constants';
+import { E2E_MESSAGE_TYPE } from '../../constants/keys';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
