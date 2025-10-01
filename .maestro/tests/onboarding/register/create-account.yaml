@@ -3,6 +3,8 @@ name: Create Account
 onFlowStart:
   - runFlow: '../../../helpers/setup.yaml'
   - evalScript: ${output.user = output.randomUser()}
+tags:
+  - test-2
 
 ---
 - runFlow: ../../../helpers/launch-app.yaml
