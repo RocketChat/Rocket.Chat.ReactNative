@@ -2,6 +2,10 @@ name: Maestro Tests on iOS
 
 on:
   workflow_call:
+    inputs:
+      shard:
+        required: true
+        type: string
 
 jobs:
   ios-test:
@@ -87,7 +91,9 @@ jobs:
       - name: Run Tests
         run: |
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-          maestro test .maestro --format junit --output maestro-report.xml
+          maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --format junit --output maestro-report.xml
+        env:
+          SHARD: ${{ inputs.shard }}
 
       - name: Upload Test Report
         if: always()
