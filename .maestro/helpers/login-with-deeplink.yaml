@@ -1,0 +1,10 @@
+appId: chat.rocket.reactnative
+name: Login with Deeplink
+tags:
+  - 'util'
+
+---
+- runFlow:
+    file: 'open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', env.server, 'userId=', env.userId, '&token=', env.authToken)}
