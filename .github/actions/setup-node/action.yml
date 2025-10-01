@@ -8,7 +8,7 @@ runs:
       with:
         python-version: '3.12'
 
-    - name: macOS dependencies fix
+    - name: Install python dependencies
       shell: bash
       run: pip install setuptools
 
