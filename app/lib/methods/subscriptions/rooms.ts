@@ -403,7 +403,7 @@ export default function subscribeRooms() {
 
 				// If it's from a encrypted room
 				if (message?.t === E2E_MESSAGE_TYPE) {
-					if (message.msg) {
+					if (message.msg || message.content) {
 						// Decrypt this message content
 						const { msg } = await Encryption.decryptMessage({ ...message, rid });
 						// If it's a direct the content is the message decrypted
