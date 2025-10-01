@@ -9,7 +9,6 @@ runs:
         python-version: '3.12'
 
     - name: macOS dependencies fix
-      if: runner.os == 'macOS'
       shell: bash
       run: pip install setuptools
 
