@@ -4,7 +4,8 @@ tags:
   - 'util'
 
 ---
+- evalScript: ${output.login = output.utils.login(env.username, env.password)}
 - runFlow:
     file: 'open-deeplink.yaml'
     env:
-      link: ${output.utils.getDeepLink('auth', env.server, 'userId=', env.userId, '&token=', env.authToken)}
+      link: ${output.utils.getDeepLink('auth', env.server || output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken)}
