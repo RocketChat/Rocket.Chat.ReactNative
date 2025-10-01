@@ -4,6 +4,8 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-8
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
@@ -71,8 +73,10 @@ onFlowComplete:
     enabled: false
 
 # should have new password
-- assertVisible:
-    id: 'profile-view-change-my-password-button'
+- scrollUntilVisible:
+    element:
+      id: 'profile-view-change-my-password-button'
+    timeout: 60000
 
 # swipe back to top
 - swipe:
@@ -152,6 +156,8 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: 'profile-view-submit'
+- waitForAnimationToEnd:
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'profile-view-enter-password-sheet-input'
@@ -196,6 +202,7 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: 'change-password-view-set-new-password-button'
+    retryTapIfNoChange: true
 - runFlow:
     when:
       visible:
