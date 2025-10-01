@@ -241,7 +241,7 @@ export default class EncryptionRoom {
 				key_ops: ['encrypt', 'decrypt']
 			};
 			this.keyID = await randomUuid();
-			this.sessionKeyExportedString = EJSON.stringify({ sessionKeyExported, kid: this.keyID });
+			this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
 			return;
 		}
 
