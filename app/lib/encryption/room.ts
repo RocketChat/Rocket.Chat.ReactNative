@@ -144,12 +144,12 @@ export default class EncryptionRoom {
 					this.roomKey = roomKey;
 					this.sessionKeyExportedString = sessionKeyExportedString;
 					this.version = version;
+					await e2eAcceptSuggestedGroupKey(this.roomId);
+					this.readyPromise.resolve();
+					return;
 				} catch (error) {
 					await e2eRejectSuggestedGroupKey(this.roomId);
 				}
-				await e2eAcceptSuggestedGroupKey(this.roomId);
-				this.readyPromise.resolve();
-				return;
 			} catch (e) {
 				log(e);
 			}
