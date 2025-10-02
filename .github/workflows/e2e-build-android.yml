@@ -28,21 +28,25 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
-      - name: Setup E2E Account
-        uses: ./.github/actions/e2e-account
-        with:
-          E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
-
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:
           path: |
-            ~/.gradle/caches/modules-2
-            ~/.gradle/caches/transforms-*
-            ~/.gradle/caches/build-cache-*
-          key: gradle-transforms-v1-${{ runner.os }}-${{ hashFiles('**/*.gradle*', 'gradle-wrapper.properties') }}
+            ~/.gradle
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            gradle-transforms-v1-${{ runner.os }}-
+            gradle-${{ runner.os }}-
+
+      - name: Cache Android build
+        uses: actions/cache@v4
+        with:
+          path: |
+            android/.gradle
+            android/app/build
+            android/app/.cxx
+          key: android-build-${{ runner.os }}-${{ hashFiles('package.json', '**/*.gradle*', 'android/gradle.properties', 'android/settings.gradle') }}
+          restore-keys: |
+            android-build-${{ runner.os }}-
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -57,7 +61,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: wrapper
-          cache-disabled: true
 
       - name: Decode Keystore
         run: |
@@ -70,7 +73,7 @@ jobs:
           echo -e "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> ./gradle.properties
           echo -e "android.useAndroidX=true" >> ./gradle.properties
           echo -e "android.enableJetifier=true" >> ./gradle.properties
-          echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
+          echo -e "reactNativeArchitectures=x86_64" >> ./gradle.properties
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
           echo -e "newArchEnabled=true" >> ./gradle.properties
           echo -e "hermesEnabled=true" >> ./gradle.properties

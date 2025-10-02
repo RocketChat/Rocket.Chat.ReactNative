@@ -2,6 +2,8 @@ appId: chat.rocket.reactnative
 name: Ignore User
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
+tags:
+  - test-11
 
 ---
 - runFlow: '../../helpers/launch-app.yaml'
@@ -190,6 +192,7 @@ onFlowStart:
 - hideKeyboard
 - tapOn:
     id: 'report-user-view-submit'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.otherUser.username}'
@@ -236,6 +239,7 @@ onFlowStart:
     timeout: 60000
 - tapOn:
     id: 'report-user-view-submit'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
