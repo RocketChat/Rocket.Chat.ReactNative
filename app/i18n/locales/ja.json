@@ -175,6 +175,7 @@
   "End_to_end_encrypted_room": "暗号化されたエンドツーエンドのルーム",
   "Enter_E2EE_Password": "E2EEパスワードを入力",
   "Enter_E2EE_Password_description": "暗号化されたチャンネルとダイレクトメッセージにアクセスするには、暗号化パスワードを入力してください。これはサーバーに保存されないため、すべてのデバイスで使用する必要があります。",
+  "Enter_manually": "手動で入力",
   "Error_incorrect_password": "パスワードが違います。",
   "Error_prefix": "エラー: {{message}}",
   "Error_uploading": "アップロードエラー",
@@ -219,6 +220,7 @@
   "Full_name": "フルネーム",
   "Full_table": "クリックしてテーブル全体を見る",
   "Generate_New_Link": "新しいリンクを生成",
+  "Generate_new_password": "新しいパスワードを生成",
   "Get_help": "ヘルプを得る",
   "Glossary_of_simplified_terms": "簡易用語集",
   "Has_left_the_team": "チームを退出しました",
@@ -538,7 +540,5 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
-  "Generate_new_password": "新しいパスワードを生成",
-  "Enter_manually": "手動で入力"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
 }

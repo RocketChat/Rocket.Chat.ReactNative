@@ -224,6 +224,7 @@
   "End_to_end_encrypted_room": "Salon crypté de bout en bout",
   "Enter_E2EE_Password": "Entrez le mot de passe E2EE",
   "Enter_E2EE_Password_description": "Pour accéder à vos canaux cryptés et à vos messages directs, entrez votre mot de passe de cryptage. Celui-ci n'est pas stocké sur le serveur, vous devrez donc l'utiliser sur chaque appareil.",
+  "Enter_manually": "Saisir manuellement",
   "Error_Download_file": "Erreur lors du téléchargement du fichier",
   "Error_incorrect_password": "Mot de passe incorrect",
   "Error_prefix": "Erreur : {{message}}",
@@ -272,6 +273,7 @@
   "Full_name": "Nom complet",
   "Full_table": "Cliquez pour voir le tableau complet",
   "Generate_New_Link": "Générer un nouveau lien",
+  "Generate_new_password": "Générer un nouveau mot de passe",
   "Get_help": "Obtenez de l'aide",
   "Get_link": "Obtenir le lien",
   "Glossary_of_simplified_terms": "Glossaire des termes simplifiés",
@@ -765,7 +767,5 @@
   "Your_invite_link_will_never_expire": "Votre lien d'invitation n'expirera jamais.",
   "Your_password_is": "Votre mot de passe est",
   "Your_Password_Must_Have": "Votre mot de passe doit avoir:",
-  "Your_workspace": "Votre espace de travail",
-  "Generate_new_password": "Générer un nouveau mot de passe",
-  "Enter_manually": "Saisir manuellement"
+  "Your_workspace": "Votre espace de travail"
 }

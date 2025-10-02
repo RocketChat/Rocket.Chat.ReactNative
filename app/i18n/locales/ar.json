@@ -176,6 +176,7 @@
   "End_to_end_encrypted_room": "غرفة مشفرة بين الطرفيات",
   "Enter_E2EE_Password": "أدخل كلمة المرور E2EE",
   "Enter_E2EE_Password_description": "للوصول إلى قنواتك المشفرة والرسائل المباشرة، أدخل كلمة المرور الخاصة بالتشفير. هذا لا يتم تخزينه على الخادم، لذا ستحتاج إلى استخدامه على كل جهاز.",
+  "Enter_manually": "أدخل يدويًا",
   "Error_incorrect_password": "كلمة المرور غير صحيحة",
   "Error_prefix": "خطأ: {{message}}",
   "Error_uploading": "خطأ في الرفع",
@@ -219,6 +220,7 @@
   "Full_name": "الاسم الكامل",
   "Full_table": "انقر لرؤية الجدول كاملاً",
   "Generate_New_Link": "إنشاء رابط جديد",
+  "Generate_new_password": "إنشاء كلمة مرور جديدة",
   "Get_help": "احصل على المساعدة",
   "Glossary_of_simplified_terms": "مسرد المصطلحات المبسطة",
   "Help": "مساعدة",
@@ -619,7 +621,5 @@
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
   "Your_Password_Must_Have": "يجب أن تحتوي كلمة المرور الخاصة بك على:",
-  "Your_workspace": "مساحة عملك",
-  "Generate_new_password": "إنشاء كلمة مرور جديدة",
-  "Enter_manually": "أدخل يدويًا"
+  "Your_workspace": "مساحة عملك"
 }

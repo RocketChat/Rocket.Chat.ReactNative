@@ -171,6 +171,7 @@
   "End_to_end_encrypted_room": "Sala encriptada de ponta a ponta",
   "Enter_E2EE_Password": "Digite a senha E2EE",
   "Enter_E2EE_Password_description": "Para aceder aos seus canais encriptados e mensagens diretas, introduza a sua palavra-passe de encriptação. Isto não é armazenado no servidor, pelo que terá de o utilizar em cada dispositivo.",
+  "Enter_manually": "Inserir manualmente",
   "Error_incorrect_password": "Palavra-passe incorreta",
   "Error_prefix": "Erro: {{message}}",
   "Error_uploading": "Erro ao fazer o envio",
@@ -214,6 +215,7 @@
   "Full_name": "Nome completo",
   "Full_table": "Clique para ver a tabela completa",
   "Generate_New_Link": "Gerar Novo Link",
+  "Generate_new_password": "Gerar nova palavra-passe",
   "Get_help": "Obter ajuda",
   "Get_link": "Obter Ligação",
   "Glossary_of_simplified_terms": "Glossário de termos simplificados",
@@ -499,7 +501,5 @@
   "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
-  "Your_Password_Must_Have": "Sua senha deve ter:",
-  "Generate_new_password": "Gerar nova palavra-passe",
-  "Enter_manually": "Inserir manualmente"
+  "Your_Password_Must_Have": "Sua senha deve ter:"
 }

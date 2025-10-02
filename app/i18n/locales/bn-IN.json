@@ -278,6 +278,7 @@
   "End_to_end_encrypted_room": "শেষ হতে শেষ এনক্রিপ্টেড রুম",
   "Enter_E2EE_Password": "E2EE পাসওয়ার্ড দিন",
   "Enter_E2EE_Password_description": "আপনার এনক্রিপ্টেড চ্যানেলগুলি এবং সরাসরি বার্তাগুলি অ্যাক্সেস করতে, আপনার এনক্রিপশন পাসওয়ার্ড লিখুন। এটি সার্ভারে সংরক্ষিত হয় না, তাই আপনাকে প্রতিটি ডিভাইসে এটি ব্যবহার করতে হবে।",
+  "Enter_manually": "ম্যানুয়ালি লিখুন",
   "Error_Download_file": "ফাইল ডাউনলোড করতে ত্রুটি",
   "Error_incorrect_password": "ভুল পাসওয়ার্ড",
   "Error_prefix": "ত্রুটি: {{message}}",
@@ -329,6 +330,7 @@
   "Full_name": "সম্পূর্ণ নাম",
   "Full_table": "পুরো টেবিল দেখতে ক্লিক করুন",
   "Generate_New_Link": "নতুন লিঙ্ক তৈরি করুন",
+  "Generate_new_password": "নতুন পাসওয়ার্ড তৈরি করুন",
   "Get_help": "সাহায্য পান",
   "Get_link": "লিঙ্ক পান",
   "Glossary_of_simplified_terms": "সরলীকৃত শর্তগুলির গ্লোসারি",
@@ -882,7 +884,5 @@
   "Your_invite_link_will_never_expire": "আপনার আমন্ত্রণ লিঙ্কটি কখনও মেয়াদ শেষ হবে না।",
   "Your_password_is": "আপনার পাসওয়ার্ড হল",
   "Your_Password_Must_Have": "আপনার পাসওয়ার্ড থাকতে হবে:",
-  "Your_workspace": "আপনার ওয়ার্কস্পেস",
-  "Generate_new_password": "নতুন পাসওয়ার্ড তৈরি করুন",
-  "Enter_manually": "ম্যানুয়ালি লিখুন"
+  "Your_workspace": "আপনার ওয়ার্কস্পেস"
 }

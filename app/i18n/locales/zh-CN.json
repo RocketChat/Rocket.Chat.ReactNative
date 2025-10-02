@@ -185,6 +185,7 @@
   "End_to_end_encrypted_room": "E2E 加密聊天室",
   "Enter_E2EE_Password": "输入 E2EE 密码",
   "Enter_E2EE_Password_description": "要访问您的加密频道和直接消息，请输入您的加密密码。这不会存储在服务器上，因此您需要在每个设备上使用它。",
+  "Enter_manually": "手动输入",
   "Error_incorrect_password": "密码错误",
   "Error_prefix": "错误：{{message}}",
   "Error_uploading": "错误上传",
@@ -228,6 +229,7 @@
   "Full_name": "全名",
   "Full_table": "点击以查看完整表格",
   "Generate_New_Link": "产生新的链接",
+  "Generate_new_password": "生成新密码",
   "Get_help": "获取帮助",
   "Glossary_of_simplified_terms": "简化术语词汇表",
   "Help": "帮助",
@@ -611,7 +613,5 @@
   "Your_invite_link_will_never_expire": "您的邀请链接永久有效。",
   "Your_password_is": "您的密码",
   "Your_Password_Must_Have": "您的密码必须具有：",
-  "Your_workspace": "您的工作区",
-  "Generate_new_password": "生成新密码",
-  "Enter_manually": "手动输入"
+  "Your_workspace": "您的工作区"
 }
