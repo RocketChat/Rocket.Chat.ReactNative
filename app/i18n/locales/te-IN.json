@@ -881,5 +881,7 @@
   "Your_invite_link_will_never_expire": "మీ ఆహ్వాన లింక్ ఎప్పుడూ కనబడదు.",
   "Your_password_is": "మీ సంకేతపదం",
   "Your_Password_Must_Have": "మీ పాస్‌వర్డ్ తప్పనిసరిగా ఉండాలి:",
-  "Your_workspace": "మీ వర్క్‌స్పేస్"
+  "Your_workspace": "మీ వర్క్‌స్పేస్",
+  "Generate_new_password": "కొత్త పాస్‌వర్డ్ రూపొందించండి",
+  "Enter_manually": "మాన్యువల్‌గా నమోదు చేయండి"
 }

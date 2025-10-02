@@ -872,5 +872,7 @@
   "Your_invite_link_will_never_expire": "Ihr Einladungs-Link wird niemals ablaufen.",
   "Your_password_is": "Ihr Passwort lautet",
   "Your_Password_Must_Have": "Ihr Passwort muss:",
-  "Your_workspace": "Ihr Arbeitsbereich"
+  "Your_workspace": "Ihr Arbeitsbereich",
+  "Generate_new_password": "Neues Passwort generieren",
+  "Enter_manually": "Manuell eingeben"
 }

@@ -844,5 +844,7 @@
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
   "Your_Password_Must_Have": "Salasanasi on oltava:",
-  "Your_workspace": "Työtilasi"
+  "Your_workspace": "Työtilasi",
+  "Generate_new_password": "Luo uusi salasana",
+  "Enter_manually": "Syötä manuaalisesti"
 }

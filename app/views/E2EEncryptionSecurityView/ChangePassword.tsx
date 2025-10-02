@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
-import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { useTheme } from '../../theme';
-import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { FormTextInput } from '../../containers/TextInput';
@@ -12,38 +11,26 @@ import { Encryption } from '../../lib/encryption';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
-import { useDebounce } from '../../lib/methods/helpers';
-import sharedStyles from '../Styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-
-const styles = StyleSheet.create({
-	title: {
-		fontSize: 16,
-		...sharedStyles.textMedium
-	},
-	description: {
-		fontSize: 14,
-		paddingVertical: 12,
-		...sharedStyles.textRegular
-	},
-	changePasswordButton: {
-		marginBottom: 4
-	},
-	separator: {
-		marginBottom: 16
-	}
-});
+import { styles } from './styles';
+import { generatePassphrase } from '../../lib/encryption/utils';
+import * as List from '../../containers/List';
+import PasswordPolicies from '../../containers/PasswordPolicies';
+import { E2E_PASSWORD_POLICIES, validateE2EPassword } from './utils';
 
 const ChangePassword = () => {
 	const [newPassword, setNewPassword] = useState('');
+	const [manualPasswordEnabled, setManualPasswordEnabled] = useState(false);
 	const { colors } = useTheme();
 	const { encryptionEnabled, server } = useAppSelector(state => ({
 		encryptionEnabled: state.encryption.enabled,
 		server: state.server.server
 	}));
-	const newPasswordInputRef = useRef<RNTextInput | null>(null);
+	const newPasswordInputRef = useRef<TextInput | null>(null);
 
-	const onChangePasswordText = useDebounce((text: string) => setNewPassword(text), textInputDebounceTime);
+	const onChangePasswordText = (text: string) => setNewPassword(text);
+
+	const isPasswordValid = manualPasswordEnabled ? validateE2EPassword(newPassword) : !!newPassword.trim();
 
 	const changePassword = () => {
 		if (!newPassword.trim()) {
@@ -68,36 +55,80 @@ const ChangePassword = () => {
 		});
 	};
 
+	const enterManually = () => {
+		setManualPasswordEnabled(true);
+		setNewPassword('');
+		setTimeout(() => {
+			newPasswordInputRef?.current?.focus();
+		}, 100);
+	};
+
+	const generateNewPassword = async () => {
+		setManualPasswordEnabled(false);
+		const password = await generatePassphrase();
+		setNewPassword(password);
+	};
+
+	const copy = () => {
+		logEvent(events.E2E_SEC_COPY_PASSWORD);
+		if (newPassword) {
+			Clipboard.setString(newPassword);
+			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		}
+	};
+
 	if (!encryptionEnabled) {
 		return null;
 	}
 
 	return (
-		<>
-			<List.Section>
-				<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
-				<Text style={[styles.description, { color: colors.fontDefault }]}>
-					{I18n.t('E2E_encryption_change_password_description')}
-				</Text>
-				<FormTextInput
-					inputRef={newPasswordInputRef}
-					placeholder={I18n.t('New_Password')}
-					returnKeyType='send'
-					secureTextEntry
-					onSubmitEditing={changePassword}
-					testID='e2e-encryption-security-view-password'
-					onChangeText={onChangePasswordText}
+		<View style={{ gap: 8 }}>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
+			<Text style={[styles.description, { color: colors.fontDefault }]}>
+				{I18n.t('E2E_encryption_change_password_description')}
+			</Text>
+			<FormTextInput
+				inputRef={newPasswordInputRef}
+				placeholder={I18n.t('New_Password')}
+				returnKeyType='send'
+				onSubmitEditing={changePassword}
+				testID='e2e-encryption-security-view-password'
+				onChangeText={onChangePasswordText}
+				value={newPassword}
+				editable={manualPasswordEnabled}
+				multiline={!manualPasswordEnabled}
+				secureTextEntry={manualPasswordEnabled}
+			/>
+			{manualPasswordEnabled ? (
+				<PasswordPolicies isDirty={!!newPassword} password={newPassword} policies={E2E_PASSWORD_POLICIES} />
+			) : null}
+			<View style={{ gap: 4 }}>
+				{!manualPasswordEnabled && newPassword ? (
+					<Button onPress={copy} title={I18n.t('Copy')} type='secondary' fontSize={12} small />
+				) : null}
+				<Button
+					onPress={enterManually}
+					title={I18n.t('Enter_manually')}
+					style={styles.changePasswordButton}
+					testID='e2e-encryption-security-view-change-password'
+					type='secondary'
+				/>
+				<Button
+					onPress={generateNewPassword}
+					title={I18n.t('Generate_new_password')}
+					style={styles.changePasswordButton}
+					testID='e2e-encryption-security-view-change-password'
 				/>
 				<Button
 					onPress={changePassword}
 					title={I18n.t('Save_Changes')}
-					disabled={!newPassword.trim()}
+					disabled={!isPasswordValid}
 					style={styles.changePasswordButton}
 					testID='e2e-encryption-security-view-change-password'
 				/>
-			</List.Section>
+			</View>
 			<List.Separator style={styles.separator} />
-		</>
+		</View>
 	);
 };
 

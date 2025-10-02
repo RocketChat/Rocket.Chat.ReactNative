@@ -640,5 +640,7 @@
   "Your_invite_link_will_never_expire": "您的邀請連結永久有效。",
   "Your_password_is": "您的密碼",
   "Your_Password_Must_Have": "您的密碼必須具有：",
-  "Your_workspace": "您的工作區"
+  "Your_workspace": "您的工作區",
+  "Generate_new_password": "生成新密碼",
+  "Enter_manually": "手動輸入"
 }

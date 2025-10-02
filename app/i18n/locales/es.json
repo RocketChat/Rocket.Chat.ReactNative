@@ -436,5 +436,7 @@
   "you_were_mentioned": "has sido mencionado",
   "You_will_not_be_able_to_recover_this_message": "¡No podrás recuperar este mensaje!",
   "Your_certificate": "Tu certificado",
-  "Your_Password_Must_Have": "Su contraseña debe tener:"
+  "Your_Password_Must_Have": "Su contraseña debe tener:",
+  "Generate_new_password": "Generar nueva contraseña",
+  "Enter_manually": "Ingresar manualmente"
 }

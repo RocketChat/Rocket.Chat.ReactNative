@@ -619,5 +619,7 @@
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
   "Your_Password_Must_Have": "يجب أن تحتوي كلمة المرور الخاصة بك على:",
-  "Your_workspace": "مساحة عملك"
+  "Your_workspace": "مساحة عملك",
+  "Generate_new_password": "إنشاء كلمة مرور جديدة",
+  "Enter_manually": "أدخل يدويًا"
 }

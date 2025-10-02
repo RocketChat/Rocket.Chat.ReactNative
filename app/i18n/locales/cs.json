@@ -957,5 +957,7 @@
   "Your_password_is": "Vaše heslo je",
   "Your_Password_Must_Have": "Vaše heslo musí mít:",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor"
+  "Your_workspace": "Váš pracovní prostor",
+  "Generate_new_password": "Vygenerovat nové heslo",
+  "Enter_manually": "Zadat ručně"
 }

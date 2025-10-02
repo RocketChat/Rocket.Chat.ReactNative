@@ -384,5 +384,7 @@
   "You_will_not_be_able_to_recover_this_message": "Du vil ikke kunne gjenopprette denne meldingen!",
   "Your_invite_link_will_expire_after__usesLeft__uses": "Invitasjonslenken din utløper etter {{usesLeft}} anvendelser.",
   "Your_invite_link_will_expire_on__date__": "Invitasjonslenken din utløper {{date}}.",
-  "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Invitasjonskoblingen din utløper {{date}} eller etter  {{usesLeft}} anvendelser."
+  "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Invitasjonskoblingen din utløper {{date}} eller etter  {{usesLeft}} anvendelser.",
+  "Generate_new_password": "Generer nytt passord",
+  "Enter_manually": "Skriv inn manuelt"
 }

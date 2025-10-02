@@ -812,5 +812,7 @@
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
   "Your_Password_Must_Have": "Ваш пароль должен иметь:",
-  "Your_workspace": "Ваш сервер"
+  "Your_workspace": "Ваш сервер",
+  "Generate_new_password": "Создать новый пароль",
+  "Enter_manually": "Ввести вручную"
 }

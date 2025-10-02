@@ -882,5 +882,7 @@
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
   "Your_Password_Must_Have": "आपका पासवर्ड होना चाहिए:",
-  "Your_workspace": "आपका कार्यस्थान"
+  "Your_workspace": "आपका कार्यस्थान",
+  "Generate_new_password": "नया पासवर्ड बनाएँ",
+  "Enter_manually": "मैन्युअल रूप से दर्ज करें"
 }
