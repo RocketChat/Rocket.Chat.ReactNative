@@ -5,8 +5,8 @@ import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
-import { setUserStatus } from '../lib/services/restApi';
-import { checkAndReopen, setUserPresenceOnline, setUserPresenceAway } from '../lib/services/connect';
+import { checkAndReopen } from '../lib/services/connect';
+import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
