@@ -37,7 +37,7 @@ export default async function updateMessages({
 	const db = database.active;
 	return db.write(async () => {
 		// Decrypt these messages
-		update = await Encryption.decryptMessages(update);
+		update = (await Encryption.decryptMessages(update)) as IMessage[];
 
 		const messagesIds: string[] = [...update.map(m => m._id as string), ...remove.map(m => m._id as string)];
 		const msgCollection = db.get('messages');

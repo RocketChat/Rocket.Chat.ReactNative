@@ -964,9 +964,12 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 }
 
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
-	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
+	const result = await Encryption.encryptMessage(message as IMessage);
+	if (!result) {
+		throw new Error('Failed to encrypt message');
+	}
 	// RC 0.49.0
-	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+	return sdk.post('chat.update', { roomId: result.rid, msgId: message.id, text: result.msg || '' });
 };
 
 export const registerPushToken = () =>

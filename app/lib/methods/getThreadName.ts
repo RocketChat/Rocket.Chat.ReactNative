@@ -27,9 +27,9 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 				});
 			}
 		} else {
-			let thread = await getSingleMessage(tmid);
-			thread = await Encryption.decryptMessage(thread);
-			tmsg = buildThreadName(thread);
+			const thread = await getSingleMessage(tmid);
+			const decryptedThread = await Encryption.decryptMessage(thread);
+			tmsg = buildThreadName(decryptedThread as IMessage);
 			// check it again to avoid race condition
 			threadRecord = await getThreadById(tmid);
 			if (!threadRecord) {
@@ -38,7 +38,7 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 						threadCollection?.prepareCreate((t: TThreadModel) => {
 							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
 							if (t.subscription) t.subscription.id = rid;
-							Object.assign(t, thread);
+							Object.assign(t, { ...thread, ...decryptedThread });
 						}),
 						messageRecord?.prepareUpdate(m => {
 							m.tmsg = tmsg;

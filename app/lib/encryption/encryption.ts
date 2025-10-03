@@ -50,7 +50,7 @@ import {
 } from '../services/restApi';
 import { store } from '../store/auxStore';
 import { MAX_CONCURRENT_QUEUE } from './constants';
-import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import { IDecryptionFileQueue, TDecryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
 import {
@@ -72,24 +72,7 @@ class Encryption {
 	publicKey: string | null;
 	readyPromise: Deferred;
 	userId: string | null;
-	roomInstances: {
-		[rid: string]: {
-			ready: boolean;
-			provideKeyToUser: Function;
-			handshake: Function;
-			decrypt: Function;
-			decryptFileContent: Function;
-			encrypt: Function;
-			encryptText: Function;
-			encryptFile: TEncryptFile;
-			encryptUpload: Function;
-			importRoomKey: Function;
-			resetRoomKey: Function;
-			hasSessionKey: () => boolean;
-			encryptGroupKeyForParticipantsWaitingForTheKeys: (params: any) => Promise<any>;
-			decryptSubscription: Function;
-		};
-	};
+	roomInstances: Record<string, EncryptionRoom>;
 	decryptionFileQueue: IDecryptionFileQueue[];
 	decryptionFileQueueActiveCount: number;
 	keyDistributionInterval: ReturnType<typeof setInterval> | null;
@@ -378,7 +361,7 @@ class Encryption {
 			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
 					const { t, msg, tmsg, attachments, content } = message;
-					let newMessage: TMessageModel = {} as TMessageModel;
+					let newMessage: Partial<TMessageModel> = {};
 					if (message.subscription) {
 						const { id: rid } = message.subscription;
 						// WM Object -> Plain Object

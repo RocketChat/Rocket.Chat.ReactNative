@@ -476,7 +476,7 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt messages
-	encrypt = async (message: IMessage) => {
+	encrypt = async (message: IMessage): Promise<IMessage> => {
 		if (!this.ready) {
 			return message;
 		}
@@ -706,7 +706,7 @@ export default class EncryptionRoom {
 	};
 
 	// Decrypt messages
-	decrypt = async (message: IMessage) => {
+	decrypt = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments' | 'content'>) => {
 		if (!this.ready) {
 			return message;
 		}
@@ -729,12 +729,12 @@ export default class EncryptionRoom {
 					message.msg = content.text;
 				}
 
-				const decryptedMessage: IMessage = {
+				const decryptedMessage = {
 					...message,
 					e2e: 'done'
 				};
 
-				const decryptedMessageWithQuote = await this.decryptQuoteAttachment(decryptedMessage);
+				const decryptedMessageWithQuote = await this.decryptQuoteAttachment(decryptedMessage as IMessage);
 				return decryptedMessageWithQuote;
 			}
 		} catch {
@@ -770,14 +770,14 @@ export default class EncryptionRoom {
 				}
 				const decryptedQuoteMessage = await this.decrypt(mapMessageFromAPI(quotedMessageObject));
 				message.attachments = message.attachments || [];
-				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);
+				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage as IMessage, url);
 				return message.attachments.push(quoteAttachment);
 			})
 		);
 		return message;
 	}
 
-	decryptSubscription = async (subscription: ISubscription) => {
+	decryptSubscription = async (subscription: Partial<ISubscription>) => {
 		if (!this.ready) {
 			return subscription;
 		}
@@ -818,7 +818,9 @@ export default class EncryptionRoom {
 			};
 		}
 
-		const decryptedMessage = await this.decrypt(lastMessage as IMessage);
+		const decryptedMessage = await this.decrypt(
+			lastMessage as Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments' | 'content'>
+		);
 		return {
 			...subscription,
 			lastMessage: decryptedMessage
