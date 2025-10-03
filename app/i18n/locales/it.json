@@ -200,6 +200,7 @@
   "End_to_end_encrypted_room": "Stanza crittografata end to end",
   "Enter_E2EE_Password": "Inserisci la password E2EE",
   "Enter_E2EE_Password_description": "Per accedere ai tuoi canali criptati e ai messaggi diretti, inserisci la tua password di crittografia. Questa non viene memorizzata sul server, quindi dovrai usarla su ogni dispositivo.",
+  "Enter_manually": "Inserisci manualmente",
   "Error_incorrect_password": "Password errata",
   "Error_prefix": "Errore: {{message}}",
   "Error_uploading": "Errore nel caricamento di",
@@ -245,6 +246,7 @@
   "Full_name": "Nome completo",
   "Full_table": "Clicca per la tabella completa",
   "Generate_New_Link": "Genera nuovo link",
+  "Generate_new_password": "Genera nuova password",
   "Get_help": "Ottieni aiuto",
   "Get_link": "Ottieni link",
   "Glossary_of_simplified_terms": "Glossario dei termini semplificati",
@@ -668,7 +670,5 @@
   "Your_invite_link_will_never_expire": "Il tuo link di invito non scadrà mai.",
   "Your_password_is": "La tua password è",
   "Your_Password_Must_Have": "La tua password deve avere:",
-  "Your_workspace": "Il tuo workspace",
-  "Generate_new_password": "Genera nuova password",
-  "Enter_manually": "Inserisci manualmente"
+  "Your_workspace": "Il tuo workspace"
 }

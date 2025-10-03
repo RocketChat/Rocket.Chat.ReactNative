@@ -257,6 +257,7 @@
   "End_to_end_encrypted_room": "Täysin salattu huone",
   "Enter_E2EE_Password": "Anna E2EE-salasana",
   "Enter_E2EE_Password_description": "Päästäksesi käsiksi salattuihin kanaviisi ja suoriin viesteihisi, syötä salaus salasanasi. Tätä ei tallenneta palvelimelle, joten sinun on käytettävä sitä jokaisella laitteella.",
+  "Enter_manually": "Syötä manuaalisesti",
   "Error_Download_file": "Virhe ladattaessa tiedostoa",
   "Error_incorrect_password": "Virheellinen salasana",
   "Error_prefix": "Virhe: {{message}}",
@@ -307,6 +308,7 @@
   "Full_name": "Koko nimi",
   "Full_table": "Näytä koko taulukko napsauttamalla",
   "Generate_New_Link": "Luo uusi linkki",
+  "Generate_new_password": "Luo uusi salasana",
   "Get_help": "Hae apua",
   "Get_link": "Hanki linkki",
   "Glossary_of_simplified_terms": "Yksinkertaistetut termit -sanasto",
@@ -844,7 +846,5 @@
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
   "Your_Password_Must_Have": "Salasanasi on oltava:",
-  "Your_workspace": "Työtilasi",
-  "Generate_new_password": "Luo uusi salasana",
-  "Enter_manually": "Syötä manuaalisesti"
+  "Your_workspace": "Työtilasi"
 }

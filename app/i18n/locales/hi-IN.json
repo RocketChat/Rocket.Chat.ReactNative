@@ -278,6 +278,7 @@
   "End_to_end_encrypted_room": "इंड-टू-इंड एन्क्रिप्टेड कमरा",
   "Enter_E2EE_Password": "E2EE पासवर्ड डालें",
   "Enter_E2EE_Password_description": "अपने एन्क्रिप्टेड चैनल्स और डायरेक्ट मैसेजेस तक पहुँचने के लिए, अपना एन्क्रिप्शन पासवर्ड दर्ज करें। यह सर्वर पर संग्रहीत नहीं होता है, इसलिए आपको इसे हर डिवाइस पर उपयोग करना होगा।",
+  "Enter_manually": "मैन्युअल रूप से दर्ज करें",
   "Error_Download_file": "फ़ाइल डाउनलोड करते समय त्रुटि",
   "Error_incorrect_password": "गलत पासवर्ड",
   "Error_prefix": "त्रुटि: {{संदेश}}",
@@ -329,6 +330,7 @@
   "Full_name": "पूरा नाम",
   "Full_table": "पूर्ण तालिका देखने के लिए क्लिक करें",
   "Generate_New_Link": "नई लिंक बनाएं",
+  "Generate_new_password": "नया पासवर्ड बनाएँ",
   "Get_help": "सहायता प्राप्त करें",
   "Get_link": "लिंक प्राप्त करें",
   "Glossary_of_simplified_terms": "सरल शब्दावली",
@@ -882,7 +884,5 @@
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
   "Your_Password_Must_Have": "आपका पासवर्ड होना चाहिए:",
-  "Your_workspace": "आपका कार्यस्थान",
-  "Generate_new_password": "नया पासवर्ड बनाएँ",
-  "Enter_manually": "मैन्युअल रूप से दर्ज करें"
+  "Your_workspace": "आपका कार्यस्थान"
 }

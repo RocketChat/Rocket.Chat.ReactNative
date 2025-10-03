@@ -278,6 +278,7 @@
   "End_to_end_encrypted_room": "Végponttól végpontig titkosított szoba",
   "Enter_E2EE_Password": "Adja meg az E2EE jelszót",
   "Enter_E2EE_Password_description": "Az titkosított csatornákhoz és közvetlen üzenetekhez való hozzáféréshez írja be a titkosítási jelszavát. Ez nincs tárolva a szerveren, így minden eszközön használnia kell.",
+  "Enter_manually": "Kézi bevitel",
   "Error_Download_file": "Hiba a fájl letöltése közben",
   "Error_incorrect_password": "Helytelen jelszó",
   "Error_prefix": "Hiba: {{üzenet}}",
@@ -329,6 +330,7 @@
   "Full_name": "Teljes név",
   "Full_table": "Kattintson a teljes táblázat megtekintéséhez",
   "Generate_New_Link": "Új hivatkozás létrehozása",
+  "Generate_new_password": "Új jelszó generálása",
   "Get_help": "Kérjen segítséget",
   "Get_link": "Hivatkozás lekérése",
   "Glossary_of_simplified_terms": "Egyszerűsített kifejezések szótára",
@@ -885,7 +887,5 @@
   "Your_invite_link_will_never_expire": "A meghívási hivatkozása sosem jár le.",
   "Your_password_is": "A jelszava a következő",
   "Your_Password_Must_Have": "A jelszavának rendelkeznie kell:",
-  "Your_workspace": "Az Ön munkaterülete",
-  "Generate_new_password": "Új jelszó generálása",
-  "Enter_manually": "Kézi bevitel"
+  "Your_workspace": "Az Ön munkaterülete"
 }

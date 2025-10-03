@@ -257,6 +257,7 @@
   "End_to_end_encrypted_room": "End-to-end-krypterat rum",
   "Enter_E2EE_Password": "Ange E2EE-lösenord",
   "Enter_E2EE_Password_description": "För att komma åt dina krypterade kanaler och direkta meddelanden, ange ditt krypteringslösenord. Detta lagras inte på servern, så du måste använda det på varje enhet.",
+  "Enter_manually": "Ange manuellt",
   "Error_Download_file": "Fel vid nedladdning av fil",
   "Error_incorrect_password": "Felaktigt lösenord",
   "Error_prefix": "Fel: {{message}}",
@@ -306,6 +307,7 @@
   "Full_name": "Fullständigt namn",
   "Full_table": "Klicka för att visa hela tabellen",
   "Generate_New_Link": "Generera ny länk",
+  "Generate_new_password": "Generera nytt lösenord",
   "Get_help": "Få hjälp",
   "Get_link": "Hämta länk",
   "Glossary_of_simplified_terms": "Ordlista över förenklade termer",
@@ -842,7 +844,5 @@
   "Your_invite_link_will_never_expire": "Inbjudningslänken upphör aldrig att gälla.",
   "Your_password_is": "Ditt lösenord är",
   "Your_Password_Must_Have": "Ditt lösenord måste ha:",
-  "Your_workspace": "Din arbetsyta",
-  "Generate_new_password": "Generera nytt lösenord",
-  "Enter_manually": "Ange manuellt"
+  "Your_workspace": "Din arbetsyta"
 }
