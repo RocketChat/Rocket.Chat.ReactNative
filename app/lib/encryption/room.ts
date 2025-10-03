@@ -694,10 +694,6 @@ export default class EncryptionRoom {
 					const { roomKey, version } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
 					return this.doDecrypt(ciphertext, roomKey, iv, version);
 				}
-				if (!oldRoomKey) {
-					// TODO: needs testing, but it makes sense
-					this.requestRoomKey(kid);
-				}
 				return null;
 			}
 
