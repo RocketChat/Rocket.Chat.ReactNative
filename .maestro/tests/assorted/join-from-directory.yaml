@@ -102,10 +102,7 @@ tags:
 - tapOn:
     id: 'directory-view-search'
 - inputText: ${output.otherUser.username}
-
-# This is to handle debouncing on search
-- eraseText: 1
-- inputText: ${output.otherUser.username.slice(-1)}
+- pressKey: Enter
 
 - extendedWaitUntil:
     visible:
