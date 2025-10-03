@@ -632,14 +632,6 @@ class Encryption {
 		};
 	};
 
-	encryptText = async (rid: string, text: string) => {
-		const roomE2E = await this.getRoomInstance(rid);
-		if (!roomE2E || !roomE2E?.hasSessionKey()) {
-			return;
-		}
-		return roomE2E.encryptText(text);
-	};
-
 	// Encrypt a message
 	encryptMessage = async (message: IMessage) => {
 		const { rid } = message;
