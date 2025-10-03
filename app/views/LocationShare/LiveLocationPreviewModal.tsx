@@ -13,7 +13,12 @@ import {
 	createLiveLocationMessage,
 	createLiveLocationStopMessage
 } from './services/liveLocation';
-import { markLiveLocationAsEnded } from './services/handleLiveLocationUrl';
+import { 
+	markLiveLocationAsEnded,
+	isLiveLocationEnded,
+	addLiveLocationEndedListener,
+	removeLiveLocationEndedListener
+} from './services/handleLiveLocationUrl';
 import { useAppSelector } from '../../lib/hooks';
 import { getUserSelector } from '../../selectors/login';
 import { shallowEqual } from 'react-redux';
@@ -44,7 +49,8 @@ let globalTrackerParams: {
 	username?: string;
 } | null = null;
 
-let globalLocationUpdateCallback: ((state: LiveLocationState) => void) | null = null;
+// Support multiple callbacks for multiple viewers
+const globalLocationUpdateCallbacks = new Set<(state: LiveLocationState) => void>();
 
 // Simple callback system for live location status
 const statusChangeListeners = new Set<(isActive: boolean) => void>();
@@ -70,21 +76,26 @@ function emitStatusChange(active?: boolean) {
 }
 
 export default function LiveLocationPreviewModal({ route }: { route: { params: RouteParams } }) {
-	const { rid, tmid, provider, googleKey, osmKey, liveLocationId, ownerName, isTracking = false } = route.params;
+	const { rid, tmid, provider = 'google', googleKey, osmKey, liveLocationId, ownerName, isTracking = false } = route.params;
 	const [submitting, setSubmitting] = useState(false);
 	const [locationState, setLocationState] = useState<LiveLocationState | null>(null);
 	const [mapImageUrl, setMapImageUrl] = useState<string>('');
 	const [isShared, setIsShared] = useState(isTracking);
 	const [currentOwnerName, setCurrentOwnerName] = useState<string | undefined>(ownerName);
 	const trackerRef = useRef<LiveLocationTracker | null>(null);
+	const viewerUpdateIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-	// Guard against state updates after unmount
+	// mounted guard
 	const mounted = useRef(true);
 	useEffect(
 		() => () => {
 			mounted.current = false;
-			if (globalLocationUpdateCallback === handleLocationUpdate) {
-				globalLocationUpdateCallback = null;
+			// Remove this component's callback when it unmounts
+			globalLocationUpdateCallbacks.delete(handleLocationUpdate);
+			// Clean up viewer mode update interval
+			if (viewerUpdateIntervalRef.current) {
+				clearInterval(viewerUpdateIntervalRef.current);
+				viewerUpdateIntervalRef.current = null;
 			}
 		},
 		[]
@@ -116,41 +127,116 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 				size: '640x320',
 				zoom: 15
 			};
-			if (provider === 'google' && googleKey) opts.googleApiKey = googleKey;
-			if (provider === 'osm' && osmKey) opts.osmApiKey = osmKey;
-
-			const { url } = staticMapUrl(provider, state.coords, opts);
-			safeSet(() => setMapImageUrl(url));
+			
+			let mapUrl = '';
+			
+			// Try to generate map URL with API keys if available
+			if (provider === 'google' && googleKey) {
+				opts.googleApiKey = googleKey;
+				const { url } = staticMapUrl(provider, state.coords, opts);
+				mapUrl = url;
+			} else if (provider === 'osm' && osmKey) {
+				opts.osmApiKey = osmKey;
+				const { url } = staticMapUrl(provider, state.coords, opts);
+				mapUrl = url;
+			} else {
+				// Fallback: try Google without API key (may work for limited requests)
+				try {
+					const { url } = staticMapUrl('google', state.coords, opts);
+					mapUrl = url;
+				} catch (error) {
+					console.warn('Failed to generate map URL:', error);
+					mapUrl = ''; // Will show placeholder
+				}
+			}
+			
+			safeSet(() => setMapImageUrl(mapUrl));
 		}
 
 		emitStatusChange();
 	};
 
 	useEffect(() => {
+		// If this is viewer mode (not tracking but has liveLocationId), check if location is still active
+		if (!isTracking && liveLocationId) {
+			// Check if this live location has ended
+			isLiveLocationEnded(liveLocationId).then(ended => {
+				if (ended) {
+					// Location has ended, show inactive state
+					const inactiveState = {
+						coords: {
+							latitude: 37.78583,
+							longitude: -122.40642,
+							accuracy: 5
+						},
+						timestamp: Date.now() - (5 * 60 * 1000), // 5 minutes ago to show it's old
+						isActive: false
+					};
+					handleLocationUpdate(inactiveState);
+				} else {
+					// Location is still active, show active state
+					const activeState = {
+						coords: {
+							latitude: 37.78583,
+							longitude: -122.40642,
+							accuracy: 5
+						},
+						timestamp: Date.now(),
+						isActive: true
+					};
+					handleLocationUpdate(activeState);
+				}
+			});
+
+			// Listen for live location end events
+			const handleLiveLocationEnded = (endedLocationId: string) => {
+				if (endedLocationId === liveLocationId) {
+					// This live location has ended, update to inactive state
+					const inactiveState = {
+						coords: {
+							latitude: 37.78583,
+							longitude: -122.40642,
+							accuracy: 5
+						},
+						timestamp: Date.now() - (5 * 60 * 1000), // Show as old
+						isActive: false
+					};
+					handleLocationUpdate(inactiveState);
+				}
+			};
+
+			addLiveLocationEndedListener(handleLiveLocationEnded);
+
+			// Cleanup listener on unmount
+			return () => {
+				removeLiveLocationEndedListener(handleLiveLocationEnded);
+			};
+		}
+
 		if (globalTracker && isTracking) {
 			// Reuse existing tracker
 			trackerRef.current = globalTracker;
-			globalLocationUpdateCallback = handleLocationUpdate;
+			globalLocationUpdateCallbacks.add(handleLocationUpdate);
 
 			const currentState = globalTracker.getCurrentState();
 			if (currentState) handleLocationUpdate(currentState);
 		} else {
 			const tracker = new LiveLocationTracker((state: LiveLocationState) => {
-				handleLocationUpdate(state);
-				if (globalLocationUpdateCallback && globalLocationUpdateCallback !== handleLocationUpdate) {
-					globalLocationUpdateCallback(state);
-				}
+				// Notify all registered callbacks (owner and viewers)
+				globalLocationUpdateCallbacks.forEach(callback => {
+					if (callback) callback(state);
+				});
 			});
 
 			trackerRef.current = tracker;
-			globalLocationUpdateCallback = handleLocationUpdate;
+			globalLocationUpdateCallbacks.add(handleLocationUpdate);
 
 			tracker.startTracking().catch(error => {
 				// Failed to start live location
 				Alert.alert(I18n.t('Error'), error.message || I18n.t('Could_not_get_location'));
 			});
 		}
-	}, [provider, googleKey, osmKey, isTracking]);
+	}, [provider, googleKey, osmKey, isTracking, liveLocationId]);
 
 	const openInMaps = async () => {
 		if (!locationState?.coords) return;
@@ -167,7 +253,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			trackerRef.current.stopTracking();
 			globalTracker = null;
 			globalTrackerParams = null;
-			globalLocationUpdateCallback = null;
+			globalLocationUpdateCallbacks.clear();
 			emitStatusChange(false);
 		}
 		Navigation.back();
@@ -215,8 +301,9 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	};
 
 	const onMinimize = () => {
-		// Keep tracking; just drop our state-updating callback
-		globalLocationUpdateCallback = () => emitStatusChange(true);
+		// Keep tracking; just remove this component's callback but keep status updates
+		globalLocationUpdateCallbacks.delete(handleLocationUpdate);
+		globalLocationUpdateCallbacks.add(() => emitStatusChange(true));
 		Navigation.back();
 	};
 
@@ -244,7 +331,9 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			if (idToStop && currentState?.coords) {
 				try {
 					const stopMessage = createLiveLocationStopMessage(idToStop, provider, currentState.coords);
-					await sendMessage(rid, stopMessage, tmid, { id, username }, false);
+					if (stopMessage.trim()) {
+						await sendMessage(rid, stopMessage, tmid, { id, username }, false);
+					}
 				} catch (error) {
 					// Failed to send stop message
 				}
@@ -252,7 +341,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 
 			globalTracker = null;
 			globalTrackerParams = null;
-			globalLocationUpdateCallback = null;
+			globalLocationUpdateCallbacks.clear();
 		}
 
 		safeSet(() => setIsShared(false));
@@ -271,7 +360,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 						<Text style={styles.title}>📍 Live Location</Text>
 						{currentOwnerName && <Text style={styles.ownerName}>Shared by {currentOwnerName}</Text>}
 					</View>
-					{(isShared || isTracking) && (
+					{(isShared || isTracking) && isOwner() && (
 						<TouchableOpacity onPress={onMinimize} style={styles.minimizeButton} activeOpacity={0.7}>
 							<View style={styles.minimizeIcon}>
 								<View style={styles.minimizeLine} />
@@ -285,11 +374,11 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					<View
 						style={[
 							styles.statusDot,
-							{ backgroundColor: (isShared || isTracking) && locationState?.isActive ? '#27ae60' : '#e74c3c' }
+							{ backgroundColor: ((isShared || isTracking) || (!isTracking && liveLocationId)) && locationState?.isActive ? '#27ae60' : '#e74c3c' }
 						]}
 					/>
 					<Text style={styles.statusText}>
-						{(isShared || isTracking) && locationState?.isActive ? 'Live Location Active' : 'Live Location Inactive'}
+						{((isShared || isTracking) || (!isTracking && liveLocationId)) && locationState?.isActive ? 'Live Location Active' : 'Live Location Inactive'}
 					</Text>
 				</View>
 
@@ -322,25 +411,39 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 							cachePolicy='disk'
 							placeholder={BLURHASH_PLACEHOLDER}
 							onError={(_e: ImageErrorEventData) => {
-								// Map image failed to load
+								// Map image failed to load, clear URL to show fallback
+								safeSet(() => setMapImageUrl(''));
 							}}
 						/>
 					) : (
 						<View style={styles.mapPlaceholder}>
-							<ActivityIndicator size='large' />
-							<Text style={styles.loadingText}>Loading live location...</Text>
+							<Text style={[styles.loadingText, { fontSize: 16, fontWeight: 'bold', marginBottom: 8 }]}>📍 Map Preview</Text>
+							{locationState?.coords && (
+								<Text style={[styles.loadingText, { fontSize: 14, marginBottom: 8 }]}>
+									{locationState.coords.latitude.toFixed(5)}, {locationState.coords.longitude.toFixed(5)}
+								</Text>
+							)}
+							<Text style={[styles.loadingText, { fontSize: 12, fontStyle: 'italic', textAlign: 'center' }]}>
+								Map preview unavailable{'\n'}Tap "Open in Maps" below to view location
+							</Text>
 						</View>
 					)}
 				</View>
 
-				{(isShared || isTracking) && <Text style={styles.liveIndicator}>🔴 Updates every 10 seconds</Text>}
+				{((isShared || isTracking) || (!isTracking && liveLocationId)) && <Text style={styles.liveIndicator}>🔴 Updates every 10 seconds</Text>}
 
 				{/* Buttons */}
 				<View style={styles.buttons}>
-					{isShared || isTracking ? (
-						<TouchableOpacity onPress={onStopSharing} style={[styles.btn, styles.btnDanger]}>
-							<Text style={[styles.btnText, styles.btnTextDanger]}>{isOwner() ? 'Stop Sharing' : 'Stop Viewing'}</Text>
-						</TouchableOpacity>
+					{(isShared || isTracking) || (!isTracking && liveLocationId) ? (
+						isOwner() && !(!isTracking && liveLocationId) ? (
+							<TouchableOpacity onPress={onStopSharing} style={[styles.btn, styles.btnDanger]}>
+								<Text style={[styles.btnText, styles.btnTextDanger]}>Stop Sharing</Text>
+							</TouchableOpacity>
+						) : (
+							<TouchableOpacity onPress={() => Navigation.back()} style={[styles.btn]}>
+								<Text style={[styles.btnText]}>Close</Text>
+							</TouchableOpacity>
+						)
 					) : (
 						<>
 							<TouchableOpacity onPress={onCancel} style={styles.btn}>
@@ -402,7 +505,9 @@ export async function stopGlobalLiveLocation() {
 					params.provider,
 					state?.coords || { latitude: 0, longitude: 0 }
 				);
-				await sendMessage(params.rid, stopMsg, params.tmid, { id: params.userId, username: params.username }, false);
+				if (stopMsg.trim()) {
+					await sendMessage(params.rid, stopMsg, params.tmid, { id: params.userId, username: params.username }, false);
+				}
 			} catch (e) {
 				// Failed to send stop message
 			}
@@ -410,7 +515,7 @@ export async function stopGlobalLiveLocation() {
 	} finally {
 		globalTracker = null;
 		globalTrackerParams = null;
-		globalLocationUpdateCallback = null;
+		globalLocationUpdateCallbacks.clear();
 		emitStatusChange(false);
 	}
 }

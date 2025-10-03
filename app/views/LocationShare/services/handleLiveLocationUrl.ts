@@ -8,6 +8,27 @@ import { isLiveLocationActive, reopenLiveLocationModal, getCurrentLiveParams } f
 const ENDED_KEY = 'live_location_ended_ids_v1';
 let endedIds: Set<string> | null = null;
 
+// Listener system for when live locations are ended
+const endedListeners = new Set<(liveLocationId: string) => void>();
+
+export function addLiveLocationEndedListener(listener: (liveLocationId: string) => void) {
+	endedListeners.add(listener);
+}
+
+export function removeLiveLocationEndedListener(listener: (liveLocationId: string) => void) {
+	endedListeners.delete(listener);
+}
+
+function notifyLiveLocationEnded(liveLocationId: string) {
+	endedListeners.forEach(listener => {
+		try {
+			listener(liveLocationId);
+		} catch (e) {
+			// Error in listener
+		}
+	});
+}
+
 async function loadEndedSet(): Promise<Set<string>> {
 	if (!endedIds) {
 		try {
@@ -30,8 +51,12 @@ async function saveEndedSet() {
 
 export async function markLiveLocationAsEnded(id: string) {
 	const set = await loadEndedSet();
-	set.add(id);
-	await saveEndedSet();
+	if (!set.has(id)) {
+		set.add(id);
+		await saveEndedSet();
+		// Notify listeners that this live location has ended
+		notifyLiveLocationEnded(id);
+	}
 }
 
 export async function isLiveLocationEnded(id: string) {

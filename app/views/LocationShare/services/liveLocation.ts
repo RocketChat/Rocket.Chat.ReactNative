@@ -141,9 +141,9 @@ export function createLiveLocationMessage(
 }
 
 export function createLiveLocationStopMessage(
-	_liveLocationId: string,
+	liveLocationId: string,
 	_provider: MapProviderName,
 	_lastCoords: { latitude: number; longitude: number }
 ): string {
-	return `📍 **Live Location Ended**`;
+	return `📍 **Live Location Ended** (ID: ${liveLocationId})`;
 }
