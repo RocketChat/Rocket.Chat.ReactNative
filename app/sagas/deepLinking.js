@@ -206,7 +206,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield take(types.SERVER.SELECT_SUCCESS);
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
-            yield put(appReady({}));
+			yield put(appReady({}));
 			yield navigate({ params });
 		} else {
 			yield handleInviteLink({ params, requireLogin: true });
