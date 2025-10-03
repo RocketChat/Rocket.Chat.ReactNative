@@ -221,20 +221,17 @@ class Encryption {
 
 	// Encode a private key before send it to the server
 	encodePrivateKey = async (privateKey: string, password: string, userId: string) => {
+		// TODO: get the appropriate server version
 		const { version } = store.getState().server;
-		const keyBase64 = await this.generateMasterKey(
-			password,
-			userId,
-			compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0') ? 100000 : 1000
-		);
+		const isV2 = compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0');
 
-		const ivB64 = compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0') ? await randomBytes(12) : await randomBytes(16);
+		const keyBase64 = await this.generateMasterKey(password, userId, isV2 ? 100000 : 1000);
+		const ivB64 = isV2 ? await randomBytes(12) : await randomBytes(16);
 		const ivArrayBuffer = b64ToBuffer(ivB64);
 		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
 		const ivHex = bufferToHex(ivArrayBuffer);
 
-		// v2
-		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0')) {
+		if (isV2) {
 			const ciphertextB64 = await aesGcmEncrypt(bufferToB64(utf8ToBuffer(privateKey)), keyHex, ivHex);
 			return EJSON.stringify({ iv: ivB64, ciphertext: ciphertextB64, salt: userId, iterations: 100000 });
 		}

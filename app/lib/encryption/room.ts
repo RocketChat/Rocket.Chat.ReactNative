@@ -65,7 +65,7 @@ import { getMessageById } from '../database/services/Message';
 import { TEncryptFileResult, TGetContent } from './definitions';
 import { store } from '../store/auxStore';
 
-type TVersion = 'v1' | 'v2' | '';
+type TAlgorithm = 'A128CBC' | 'A256GCM' | '';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -75,7 +75,7 @@ export default class EncryptionRoom {
 	readyPromise: Deferred;
 	sessionKeyExportedString: string;
 	keyID: string;
-	version: TVersion;
+	algorithm: TAlgorithm;
 	roomKey: ArrayBuffer;
 	subscription: TSubscriptionModel | null;
 
@@ -85,7 +85,7 @@ export default class EncryptionRoom {
 		this.userId = userId;
 		this.establishing = false;
 		this.keyID = '';
-		this.version = '';
+		this.algorithm = '';
 		this.sessionKeyExportedString = '';
 		this.roomKey = new ArrayBuffer(0);
 		this.readyPromise = new Deferred();
@@ -136,14 +136,14 @@ export default class EncryptionRoom {
 			try {
 				try {
 					this.establishing = true;
-					const { keyID, roomKey, sessionKeyExportedString, version } = await this.importRoomKey(
+					const { keyID, roomKey, sessionKeyExportedString, algorithm } = await this.importRoomKey(
 						E2ESuggestedKey,
 						Encryption.privateKey
 					);
 					this.keyID = keyID;
 					this.roomKey = roomKey;
 					this.sessionKeyExportedString = sessionKeyExportedString;
-					this.version = version;
+					this.algorithm = algorithm;
 					await e2eAcceptSuggestedGroupKey(this.roomId);
 					this.readyPromise.resolve();
 					return;
@@ -159,11 +159,11 @@ export default class EncryptionRoom {
 		if (E2EKey) {
 			try {
 				this.establishing = true;
-				const { keyID, roomKey, sessionKeyExportedString, version } = await this.importRoomKey(E2EKey, Encryption.privateKey);
+				const { keyID, roomKey, sessionKeyExportedString, algorithm } = await this.importRoomKey(E2EKey, Encryption.privateKey);
 				this.keyID = keyID;
 				this.roomKey = roomKey;
 				this.sessionKeyExportedString = sessionKeyExportedString;
-				this.version = version;
+				this.algorithm = algorithm;
 				this.readyPromise.resolve();
 				return;
 			} catch (error) {
@@ -197,7 +197,7 @@ export default class EncryptionRoom {
 	importRoomKey = async (
 		E2EKey: string,
 		privateKey: string
-	): Promise<{ sessionKeyExportedString: string; roomKey: ArrayBuffer; keyID: string; version: TVersion }> => {
+	): Promise<{ sessionKeyExportedString: string; roomKey: ArrayBuffer; keyID: string; algorithm: TAlgorithm }> => {
 		try {
 			// Parse the encrypted key using prefixed base64
 			const [kid, encryptedData] = decodePrefixedBase64(E2EKey);
@@ -214,7 +214,7 @@ export default class EncryptionRoom {
 				sessionKeyExportedString,
 				roomKey,
 				keyID,
-				version: parsedKey.alg === 'A256GCM' ? 'v2' : 'v1'
+				algorithm: parsedKey.alg
 			};
 		} catch (e: any) {
 			throw new Error(e);
@@ -242,7 +242,7 @@ export default class EncryptionRoom {
 			};
 			this.keyID = await randomUuid();
 			this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
-			this.version = 'v2';
+			this.algorithm = 'A256GCM';
 			return;
 		}
 
@@ -262,7 +262,7 @@ export default class EncryptionRoom {
 		};
 
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
-		this.version = 'v1';
+		this.algorithm = 'A128CBC';
 
 		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
 			this.keyID = (await sha256(this.sessionKeyExportedString as string)).slice(0, 12);
@@ -453,7 +453,7 @@ export default class EncryptionRoom {
 		| { algorithm: 'rc.v1.aes-sha2'; ciphertext: string }
 	> => {
 		const textBuffer = utf8ToBuffer(text);
-		if (this.version === 'v2') {
+		if (this.algorithm === 'A256GCM') {
 			const vectorBase64 = await randomBytes(12);
 			const vector = b64ToBuffer(vectorBase64);
 			const data = await aesGcmEncrypt(bufferToB64(textBuffer), bufferToHex(this.roomKey), bufferToHex(vector));
@@ -665,11 +665,11 @@ export default class EncryptionRoom {
 		return { kid, iv, ciphertext: bufferToB64(ciphertext) };
 	};
 
-	doDecrypt = async (ciphertext: string, key: ArrayBuffer, iv: ArrayBuffer, version: TVersion) => {
+	doDecrypt = async (ciphertext: string, key: ArrayBuffer, iv: ArrayBuffer, algorithm: TAlgorithm) => {
 		const keyHex = bufferToHex(key);
 		const ivHex = bufferToHex(iv);
 		let decrypted;
-		if (version === 'v2') {
+		if (algorithm === 'A256GCM') {
 			decrypted = await aesGcmDecrypt(ciphertext, keyHex, ivHex);
 		} else {
 			decrypted = await aesDecrypt(ciphertext, keyHex, ivHex);
@@ -691,13 +691,13 @@ export default class EncryptionRoom {
 			if (kid !== this.keyID) {
 				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === kid);
 				if (oldRoomKey?.E2EKey && Encryption.privateKey) {
-					const { roomKey, version } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
-					return this.doDecrypt(ciphertext, roomKey, iv, version);
+					const { roomKey, algorithm } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
+					return this.doDecrypt(ciphertext, roomKey, iv, algorithm);
 				}
 				return null;
 			}
 
-			return this.doDecrypt(ciphertext, this.roomKey, iv, this.version);
+			return this.doDecrypt(ciphertext, this.roomKey, iv, this.algorithm);
 		} catch (error) {
 			console.error(error);
 			return null;
