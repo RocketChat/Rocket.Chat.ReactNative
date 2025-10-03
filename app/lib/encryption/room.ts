@@ -242,6 +242,7 @@ export default class EncryptionRoom {
 			};
 			this.keyID = await randomUuid();
 			this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
+			this.version = 'v2';
 			return;
 		}
 
@@ -261,6 +262,7 @@ export default class EncryptionRoom {
 		};
 
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
+		this.version = 'v1';
 
 		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
 			this.keyID = (await sha256(this.sessionKeyExportedString as string)).slice(0, 12);
@@ -506,7 +508,7 @@ export default class EncryptionRoom {
 			let description = '';
 
 			if (message.description) {
-				const encryptedResult = await this.encryptText(EJSON.stringify({ text: message.description }));
+				const encryptedResult = await this.encryptText(EJSON.stringify({ msg: message.description }));
 				description =
 					encryptedResult.algorithm === 'rc.v1.aes-sha2'
 						? encryptedResult.ciphertext
