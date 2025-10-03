@@ -22,7 +22,8 @@ import {
 	IUpload,
 	TSendFileMessageFileInfo,
 	IServerAttachment,
-	TSubscriptionModel
+	TSubscriptionModel,
+	ISubscription
 } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { compareServerVersion, debounce } from '../methods/helpers';
@@ -775,4 +776,52 @@ export default class EncryptionRoom {
 		);
 		return message;
 	}
+
+	decryptSubscription = async (subscription: ISubscription) => {
+		if (!this.ready) {
+			return subscription;
+		}
+
+		// If the subscription doesn't have a lastMessage just return
+		const { lastMessage } = subscription;
+		if (!lastMessage) {
+			return subscription;
+		}
+
+		const { t, e2e } = lastMessage;
+
+		// If it's not an encrypted message
+		if (t !== E2E_MESSAGE_TYPE) {
+			return subscription;
+		}
+
+		// If already marked as decrypted in the incoming data
+		if (e2e === E2E_STATUS.DONE) {
+			return subscription;
+		}
+
+		const { rid } = subscription;
+		if (!rid) {
+			return subscription;
+		}
+
+		if (
+			this.subscription?.lastMessage?._updatedAt &&
+			lastMessage._updatedAt &&
+			new Date(this.subscription.lastMessage._updatedAt).getTime() === new Date(lastMessage._updatedAt).getTime() &&
+			this.subscription?.lastMessage?.e2e === E2E_STATUS.DONE
+		) {
+			// Same message already decrypted in DB, return subscription with DB's decrypted version
+			return {
+				...subscription,
+				lastMessage: this.subscription?.lastMessage
+			};
+		}
+
+		const decryptedMessage = await this.decrypt(lastMessage as IMessage);
+		return {
+			...subscription,
+			lastMessage: decryptedMessage
+		};
+	};
 }

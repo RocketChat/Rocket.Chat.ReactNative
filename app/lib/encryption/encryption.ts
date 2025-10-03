@@ -1,5 +1,4 @@
 import { Model, Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system';
 import {
@@ -88,6 +87,7 @@ class Encryption {
 			resetRoomKey: Function;
 			hasSessionKey: () => boolean;
 			encryptGroupKeyForParticipantsWaitingForTheKeys: (params: any) => Promise<any>;
+			decryptSubscription: Function;
 		};
 	};
 	decryptionFileQueue: IDecryptionFileQueue[];
@@ -421,13 +421,16 @@ class Encryption {
 			// Find all rooms that can have a lastMessage encrypted
 			// If we select only encrypted rooms we can miss some room that changed their encrypted status
 			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null)), Q.where('encrypted', true)).fetch();
+
+			/**
+			 * Filter out subscriptions that already have their lastMessage decrypted.
+			 * We fetch updated subscriptions from server and decrypt them later.
+			 */
+			const subsEncryptedToDecrypt = subsEncrypted.filter(sub => sub.lastMessage?.e2e !== E2E_STATUS.DONE);
+
 			const preparedSubscriptions: (Model | null)[] = await Promise.all(
-				subsEncrypted.map(async (sub: TSubscriptionModel) => {
-					const { rid, lastMessage } = sub;
-					if (lastMessage?.e2e === 'done') {
-						return null;
-					}
-					const newSub = await this.decryptSubscription({ rid, lastMessage });
+				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => {
+					const newSub = await this.decryptSubscription(sub);
 					try {
 						return sub.prepareUpdate(
 							protectedFunction((m: TSubscriptionModel) => {
@@ -544,89 +547,12 @@ class Encryption {
 
 	// Decrypt a subscription lastMessage
 	decryptSubscription = async (subscription: Partial<ISubscription>) => {
-		// If the subscription doesn't have a lastMessage just return
-		if (!subscription?.lastMessage) {
-			return subscription;
-		}
-
-		const { lastMessage } = subscription;
-		const { t, e2e } = lastMessage;
-
-		// If it's not an encrypted message
-		if (t !== E2E_MESSAGE_TYPE) {
-			return subscription;
-		}
-
-		// If already marked as decrypted in the incoming data
-		if (e2e === E2E_STATUS.DONE) {
-			return subscription;
-		}
-
 		const { rid } = subscription;
-		if (!rid) {
-			return subscription;
-		}
-
-		// Check database FIRST to see if this message is already decrypted
-		// This avoids unnecessary re-decryption when subscription updates (unread count, etc.)
-		const subRecord = await getSubscriptionByRoomId(rid);
-		if (subRecord?.lastMessage?.ts === lastMessage.ts && subRecord?.lastMessage?.e2e === E2E_STATUS.DONE) {
-			// Same message already decrypted in DB, return subscription with DB's decrypted version
-			return {
-				...subscription,
-				lastMessage: subRecord?.lastMessage
-			};
-		}
-
-		try {
-			const db = database.active;
-			const subCollection = db.get('subscriptions');
-			const batch: Model[] = [];
-			// If the subscription doesn't exists yet
-			if (!subRecord) {
-				// Let's create the subscription with the data received
-				batch.push(
-					subCollection.prepareCreate((s: TSubscriptionModel) => {
-						s._raw = sanitizedRaw({ id: rid }, subCollection.schema);
-						Object.assign(s, subscription);
-					})
-				);
-				// If the subscription already exists but doesn't have the E2EKey yet
-			} else if (!subRecord.E2EKey && subscription.E2EKey) {
-				try {
-					// Let's update the subscription with the received E2EKey
-					batch.push(
-						subRecord.prepareUpdate((s: TSubscriptionModel) => {
-							s.E2EKey = subscription.E2EKey;
-						})
-					);
-				} catch (e) {
-					log(e);
-				}
-			}
-
-			// If batch has some operation
-			if (batch.length) {
-				await db.write(async () => {
-					await db.batch(batch);
-				});
-			}
-		} catch {
-			// Abort the decryption process
-			// Return as received
-			return subscription;
-		}
-
-		// Get a instance using the subscription
 		const roomE2E = await this.getRoomInstance(rid as string);
-		if (!roomE2E) {
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
 			return;
 		}
-		const decryptedMessage = await roomE2E.decrypt(lastMessage);
-		return {
-			...subscription,
-			lastMessage: decryptedMessage
-		};
+		return roomE2E.decryptSubscription(subscription);
 	};
 
 	// Encrypt a message
