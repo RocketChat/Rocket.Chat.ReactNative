@@ -11,3 +11,8 @@ tags:
     file: 'open-deeplink.yaml'
     env:
       link: ${output.utils.getDeepLink('auth', server || output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken)}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+    
