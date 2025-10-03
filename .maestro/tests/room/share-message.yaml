@@ -61,7 +61,8 @@ tags:
     visible:
       id: 'forward-message-view'
     timeout: 60000
-- tapOn: 'Select'
+- tapOn:
+    id: 'select-person-or-channel'
 - extendedWaitUntil:
     visible:
       id: 'multi-select-search'
@@ -77,7 +78,8 @@ tags:
 - tapOn:
     id: multi-select-item-${output.otherUser.username.toLowerCase()}
 - swipe:
-    id: 'action-sheet-handle'
+    from:
+      id: 'action-sheet-handle'
     direction: DOWN
 - extendedWaitUntil:
     notVisible:
@@ -102,9 +104,9 @@ tags:
       ROOM: ${output.otherUser.username}
 - extendedWaitUntil:
     visible:
-      text: 'Hello user'
+      text: '.*Hello user.*'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'Hello room'
+      text: '.*Hello room.*'
     timeout: 60000
