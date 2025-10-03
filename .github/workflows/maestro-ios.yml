@@ -99,12 +99,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Test Report
+          name: Test Report - Shard ${{ inputs.shard }}
           path: maestro-report.xml
 
       - name: Upload Maestro Logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: iOS Maestro Logs
+          name: iOS Maestro Logs - Shard ${{ inputs.shard }}
           path: ~/.maestro/tests/
