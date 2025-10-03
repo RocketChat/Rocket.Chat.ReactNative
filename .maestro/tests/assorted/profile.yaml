@@ -147,12 +147,10 @@ tags:
     env:
       id: 'profile-view-email'
 - inputText: mobile+profileChangesNew${output.random()}@rocket.chat
-- tapOn:
-    text: '.*Email.*'
-    index: 0
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
+    centerElement: true
     timeout: 60000
 - tapOn:
     id: 'profile-view-submit'
