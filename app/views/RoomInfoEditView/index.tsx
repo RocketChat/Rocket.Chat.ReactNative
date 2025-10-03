@@ -358,7 +358,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 								setFocus('topic');
 							}}
 							testID='room-info-edit-view-name'
-                            importantForAutofill='no'
 							required
 						/>
 						<ControlledFormTextInput

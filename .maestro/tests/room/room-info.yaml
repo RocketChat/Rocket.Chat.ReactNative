@@ -152,35 +152,30 @@ tags:
     id: room-info-edit-view-name
 - eraseText
 - inputText: abc
-- scrollUntilVisible:
-    element:
-      id: 'room-info-edit-view-topic'
-    timeout: 60000
+- pressKey: Enter
+- assertVisible:
+    id: 'room-info-edit-view-topic'
 - tapOn:
     id: 'room-info-edit-view-topic'
 - inputText: abc
-- scrollUntilVisible:
-    element:
-      id: 'room-info-edit-view-announcement'
-    timeout: 60000
+- pressKey: Enter
+- assertVisible:
+    id: 'room-info-edit-view-announcement'
 - tapOn:
     id: 'room-info-edit-view-announcement'
 - inputText: abc
-- scrollUntilVisible:
-    element:
-      id: 'room-info-edit-view-description'
-    timeout: 60000
+- pressKey: Enter
+- assertVisible:
+    id: 'room-info-edit-view-description'
 - tapOn:
     id: 'room-info-edit-view-description'
 - inputText: abc
-- scrollUntilVisible:
-    element:
-      id: 'room-info-edit-view-password'
-    timeout: 60000
+- pressKey: Enter
+- assertVisible:
+    id: 'room-info-edit-view-password'
 - tapOn:
     id: 'room-info-edit-view-password'
 - inputText: abc
-- pressKey: Enter
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-t'
@@ -190,12 +185,14 @@ tags:
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-ro'
+    centerElement: true
     timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-ro'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-react-when-ro'
+    direction: UP
     timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-react-when-ro'
@@ -208,7 +205,7 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: 'room-info-edit-view-name'
+      text: '.*${output.room.name}.*'
     direction: UP
     timeout: 60000
 - assertVisible:
