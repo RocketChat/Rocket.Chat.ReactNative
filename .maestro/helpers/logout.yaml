@@ -43,6 +43,15 @@ tags:
 - tapOn:
     id: 'settings-logout'
 
+- extendedWaitUntil:
+    visible:
+      text: '.*You will be logged out of this application.*'
+    timeout: 60000
+
+- assertVisible:
+    text: Logout
+    index: 0
+
 - runFlow:
     when:
       platform: Android
@@ -60,10 +69,9 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          text: Logout
-          index: 1
+        point: '65%,56%'
 
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 60000
+    timeout: 5000
