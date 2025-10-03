@@ -64,6 +64,7 @@
 		"color2k": "1.2.4",
 		"dequal": "2.0.3",
 		"ejson": "2.2.3",
+		"eslint-import-resolver-typescript": "^4.4.4",
 		"expo": "53",
 		"expo-apple-authentication": "7.2.3",
 		"expo-av": "15.1.3",
