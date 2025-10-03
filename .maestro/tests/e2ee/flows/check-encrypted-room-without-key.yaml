@@ -1,0 +1,19 @@
+appId: chat.rocket.reactnative
+name: Check Encrypted Room Without Key
+tags:
+  - 'flow'
+---
+- runFlow: '../../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../../helpers/login.yaml'
+    env:
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+- runFlow:
+    file: '../../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-encrypted-room'
+    timeout: 60000

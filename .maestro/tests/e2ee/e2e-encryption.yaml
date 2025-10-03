@@ -1,0 +1,103 @@
+appId: chat.rocket.reactnative
+name: E2E Encryption
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+
+---
+- evalScript: ${output.room = 'encrypted' + output.random()}
+- evalScript: ${output.userA = output.utils.createUser()}
+- evalScript: ${output.userB = output.utils.createUser()}
+- runFlow:
+    label: 'Setup UserB'
+    file: './flows/setup-user.yaml'
+    env:
+      USERNAME: ${output.userB.username} # UserB
+      PASSWORD: ${output.userB.password}
+- runFlow:
+    label: 'Setup UserA'
+    file: './flows/setup-user.yaml'
+    env:
+      USERNAME: ${output.userA.username} # UserA
+      PASSWORD: ${output.userA.password}
+
+# should create encrypted room (UserA creates and adds UserB)
+- runFlow:
+    label: 'Create E2EE Room'
+    file: './flows/create-e2ee-room.yaml'
+    env:
+      USER_TO_ADD: ${output.userB.username}
+      ROOM: ${output.room}
+
+# should send message and be able to read it
+- runFlow:
+    label: 'Send and Verify Message'
+    file: './flows/send-and-verify-message.yaml'
+
+# should quote a message and be able to read both (UserA still logged in)
+- runFlow:
+    label: 'Quote Message'
+    file: './flows/quote-message.yaml'
+    env:
+      MESSAGE_AUTHOR: ${output.userA.username}
+
+# If session is not encrypted, it shouldnt trigger read messages
+# should login as UserB, dont set e2ee password and dont read messages
+- runFlow:
+    label: 'Check Encrypted Room Without Key'
+    file: './flows/check-encrypted-room-without-key.yaml'
+    env:
+      USERNAME: ${output.userB.username} # UserB
+      PASSWORD: ${output.userB.password}
+      ROOM: ${output.room}
+
+# should login as UserA and check message is not read
+- runFlow:
+    label: 'Verify Message Unread'
+    file: './flows/verify-message-unread.yaml'
+    env:
+      USERNAME: ${output.userA.username} # UserA
+      PASSWORD: ${output.userA.password}
+      ROOM: ${output.room}
+
+# should login as UserB, set e2ee password and read messages
+- runFlow:
+    label: 'Enter Key, Read Messages and Send a New Message'
+    file: './flows/enter-key-read-and-send.yaml'
+    env:
+      USERNAME: ${output.userB.username} # UserB
+      PASSWORD: ${output.userB.password}
+      ROOM: ${output.room}
+
+# should login as UserA and check message is read
+- runFlow:
+    label: 'Verify Messages Read'
+    file: './flows/verify-messages-read.yaml'
+    env:
+      USERNAME: ${output.userA.username} # UserA
+      PASSWORD: ${output.userA.password}
+      ROOM: ${output.room}
+
+# Login as UserA, reset user e2ee key, reset room E2EE key and send a message
+- runFlow:
+    label: 'Reset Keys and Send Message'
+    file: './flows/reset-keys-and-send.yaml'
+    env:
+      USERNAME: ${output.userA.username} # UserA
+      PASSWORD: ${output.userA.password}
+      ROOM: ${output.room}
+
+# Login as UserB, accept new room key, send a message and read everything
+- runFlow:
+    label: 'Accept New Key and Verify Messages'
+    file: './flows/accept-new-key-and-verify.yaml'
+    env:
+      USERNAME: ${output.userB.username} # UserB
+      PASSWORD: ${output.userB.password}
+      ROOM: ${output.room}
+
+# should send a message, edit it and be able to read it (UserB still logged in)
+- runFlow:
+    label: 'Edit Message and Verify'
+    file: './flows/edit-message-and-verify.yaml'
