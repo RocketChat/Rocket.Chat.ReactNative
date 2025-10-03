@@ -69,7 +69,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-        point: '65%,56%'
+          point: '65%,56%'
 
 - extendedWaitUntil:
     visible:
