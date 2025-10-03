@@ -167,7 +167,7 @@ tags:
     timeout: 5000
 - extendedWaitUntil:
     visible:
-      id: 'message-preview-sendToChannel'
+      text: '.*sendToChannel.*'
     timeout: 5000
 
 # should navigate to thread from thread name
