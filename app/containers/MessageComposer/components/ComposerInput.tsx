@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
+import { TextInput, StyleSheet, TextInputProps, InteractionManager, Keyboard } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
@@ -59,6 +59,7 @@ export const ComposerInput = memo(
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
+		const isKeyboardVisible = Keyboard.isVisible();
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -202,10 +203,14 @@ export const ComposerInput = memo(
 			setFocused(true);
 		};
 
-		const onBlur: TextInputProps['onBlur'] = () => {
+		const onBlur = () => {
 			setFocused(false);
 			stopAutocomplete();
 		};
+
+		useEffect(() => {
+			onBlur();
+		}, [isKeyboardVisible]);
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
 			if (item.type === 'loading') {
@@ -364,7 +369,6 @@ export const ComposerInput = memo(
 				onTouchStart={onTouchStart}
 				onSelectionChange={onSelectionChange}
 				onFocus={onFocus}
-				onBlur={onBlur}
 				underlineColorAndroid='transparent'
 				defaultValue=''
 				multiline
