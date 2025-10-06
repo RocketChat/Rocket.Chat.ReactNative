@@ -1,8 +1,8 @@
-import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, TextInputProps, InteractionManager, Keyboard } from 'react-native';
+import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
-import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
@@ -15,7 +15,7 @@ import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { parseJson } from '../../../lib/methods/helpers/parseJson';
 import { getRoomTitle } from '../../../lib/methods/helpers/helpers';
-import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
+import { isIOS, isTablet } from '../../../lib/methods/helpers/deviceInfo';
 import {
 	MAX_HEIGHT,
 	MIN_HEIGHT,
@@ -50,6 +50,7 @@ export const ComposerInput = memo(
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const iOSBackSwipe = useRef<boolean>(false);
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (room && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
@@ -60,7 +61,6 @@ export const ComposerInput = memo(
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
-		const isKeyboardVisible = Keyboard.isVisible();
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -204,16 +204,12 @@ export const ComposerInput = memo(
 			setFocused(true);
 		};
 
-		const onBlur = () => {
-			setFocused(false);
-			stopAutocomplete();
-		};
-
-		useEffect(() => {
-			if (!isKeyboardVisible) {
-				onBlur();
+		const onBlur: TextInputProps['onBlur'] = () => {
+			if (!iOSBackSwipe.current) {
+				setFocused(false);
+				stopAutocomplete();
 			}
-		}, [isKeyboardVisible]);
+		};
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
 			if (item.type === 'loading') {
@@ -359,6 +355,22 @@ export const ComposerInput = memo(
 			dispatch(userTyping(rid, isTyping));
 		};
 
+		const navigation = useNavigation();
+
+		useEffect(() => {
+			if (isIOS) {
+				const startListener = navigation.addListener('transitionStart' as any, e => {
+					if (e?.data?.closing) {
+						iOSBackSwipe.current = true;
+					}
+				});
+
+				return () => {
+					startListener();
+				};
+			}
+		}, [navigation]);
+
 		return (
 			<TextInput
 				style={[styles.textInput, { color: colors.fontDefault }]}
@@ -367,6 +379,7 @@ export const ComposerInput = memo(
 				ref={component => {
 					inputRef.current = component;
 				}}
+				onBlur={onBlur}
 				blurOnSubmit={false}
 				onChangeText={onChangeText}
 				onTouchStart={onTouchStart}
