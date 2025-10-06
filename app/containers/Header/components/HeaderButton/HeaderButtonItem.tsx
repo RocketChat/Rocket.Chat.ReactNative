@@ -55,18 +55,13 @@ const Item = memo(
 	}: IHeaderButtonItem): React.ReactElement => {
 		const { colors } = useTheme();
 		return (
-			<BorderlessButton
-				onPress={onPress}
-				testID={testID}
-				hitSlop={BUTTON_HIT_SLOP}
-				enabled={!disabled}
-				style={[
-					styles.container,
-					{
+			<BorderlessButton onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} enabled={!disabled} style={styles.container}>
+				<View
+					accessible
+					accessibilityLabel={accessibilityLabel}
+					style={{
 						opacity: disabled ? 0.5 : 1
-					}
-				]}>
-				<View accessible accessibilityLabel={accessibilityLabel}>
+					}}>
 					{iconName ? (
 						<CustomIcon name={iconName} size={24} color={color} {...props} />
 					) : (
