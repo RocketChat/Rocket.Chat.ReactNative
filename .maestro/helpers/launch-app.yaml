@@ -12,10 +12,14 @@ tags:
           permissions:
             all: allow
       - waitForAnimationToEnd:
-          timeout: 60000
+          timeout: 30000
       - runFlow:
           when:
             visible: '.*Pixel Launcher.*'
+            platform: 'Android'
           commands:
             - tapOn: 'Close App'
-      - assertVisible: 'Add workspace'
+      - extendedWaitUntil:
+          visible:
+            text: 'Add workspace'
+          timeout: 30000

@@ -10,10 +10,10 @@ tags:
     text: Connect
     waitToSettleTimeoutMs: 1000
 - extendedWaitUntil:
-    timeout: 60000
+    timeout: 30000
     visible: Login
 - tapOn: Login
 - extendedWaitUntil:
     visible:
       id: 'login-view'
-    timeout: 60000
+    timeout: 30000

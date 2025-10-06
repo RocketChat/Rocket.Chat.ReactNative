@@ -23,12 +23,13 @@ onFlowStart:
 - tapOn:
     id: login-view-password
 - inputText: ${PASSWORD || output.createdUser.password}
-- tapOn:
-    text: Login
-    index: 0
+- scrollUntilVisible:
+    element:
+      id: login-view-submit
+    centerElement: true
 - tapOn:
     id: login-view-submit
 - extendedWaitUntil:
     visible:
       id: rooms-list-view
-    timeout: 60000
+    timeout: 30000
