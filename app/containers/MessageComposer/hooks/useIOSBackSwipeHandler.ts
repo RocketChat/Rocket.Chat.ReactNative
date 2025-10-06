@@ -18,10 +18,8 @@ const useIOSBackSwipeHandler = () => {
 			}
 		});
 
-		const transitionEndListener = navigation.addListener('transitionEnd' as any, e => {
-			if (e?.data?.closing) {
-				iOSBackSwipe.current = false;
-			}
+		const transitionEndListener = navigation.addListener('transitionEnd' as any, () => {
+			iOSBackSwipe.current = false;
 		});
 
 		return () => {
