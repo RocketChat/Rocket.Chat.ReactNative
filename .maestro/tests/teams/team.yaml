@@ -17,8 +17,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.firstUser.username}
-      password: ${output.firstUser.password}
+      USERNAME: ${output.firstUser.username}
+      PASSWORD: ${output.firstUser.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:

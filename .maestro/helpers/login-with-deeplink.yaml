@@ -6,7 +6,7 @@ tags:
 ---
 - runFlow: 'launch-app.yaml'
 - stopApp: chat.rocket.reactnative
-- evalScript: ${output.login = output.utils.login(username, password)}
+- evalScript: ${output.login = output.utils.login(USERNAME, PASSWORD)}
 - runFlow:
     file: 'open-deeplink.yaml'
     env:

@@ -17,8 +17,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.receiver.username}
-      password: ${output.receiver.password}
+      USERNAME: ${output.receiver.username}
+      PASSWORD: ${output.receiver.password}
 
 # receive in RoomsListView
 - evalScript: ${output.utils.sendMessage(output.sender.username, output.sender.password, output.dmCreatedRid, 'Message in DM')}

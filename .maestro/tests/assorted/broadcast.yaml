@@ -15,8 +15,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.user.username}
-      password: ${output.user.password}
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
 
 # should create broadcast room
 - extendedWaitUntil:
@@ -110,8 +110,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.otherUser.username}
-      password: ${output.otherUser.password}
+      USERNAME: ${output.otherUser.username}
+      PASSWORD: ${output.otherUser.password}
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:

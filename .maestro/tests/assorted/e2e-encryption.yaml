@@ -16,8 +16,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userB.username}
-      password: ${output.userB.password}
+      USERNAME: ${output.userB.username}
+      PASSWORD: ${output.userB.password}
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/change-e2ee-key.yaml'
 
@@ -25,8 +25,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userA.username}
-      password: ${output.userA.password}
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/change-e2ee-key.yaml'
 
@@ -147,8 +147,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userB.username}
-      password: ${output.userB.password}
+      USERNAME: ${output.userB.username}
+      PASSWORD: ${output.userB.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -162,8 +162,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userA.username}
-      password: ${output.userA.password}
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -178,8 +178,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userB.username}
-      password: ${output.userB.password}
+      USERNAME: ${output.userB.username}
+      PASSWORD: ${output.userB.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -210,8 +210,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userA.username}
-      password: ${output.userA.password}
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -238,8 +238,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userA.username}
-      password: ${output.userA.password}
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
 
 # should reset user E2EE key, login again and recreate keys
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
@@ -247,8 +247,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userA.username}
-      password: ${output.userA.password}
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/change-e2ee-key.yaml'
 
@@ -307,8 +307,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.userB.username}
-      password: ${output.userB.password}
+      USERNAME: ${output.userB.username}
+      PASSWORD: ${output.userB.password}
 
 # should send message and be able to read it
 - runFlow:

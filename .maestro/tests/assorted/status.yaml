@@ -12,8 +12,8 @@ tags:
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
-      username: ${output.user.username}
-      password: ${output.user.password}
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
