@@ -120,6 +120,14 @@ jobs:
           name: Android Test Report - Shard ${{ inputs.shard }}
           path: maestro-report.xml
           retention-days: 7
+
+      - name: Upload Mestro Folder
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Mestro - Shard ${{ inputs.shard }}
+          path: '~/.maestro'
+          retention-days: 7
       
       - name: Upload Screen Recording
         if: always()
