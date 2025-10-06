@@ -2017,3 +2017,17 @@ export const CollapsedAttachmentsLargeFont = () => (
 		<MessageLargeFont msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
 	</>
 );
+
+const attachmentWithTextAndLink = [
+	{
+		title: 'Rocket.Chat',
+		title_link: 'https://rocket.chat',
+		text: 'Rocket.Chat, the best open source chat',
+		image_url: 'https://rc.jena.de/images/integration-attachment-example.png',
+		color: '#764FA5'
+	}
+];
+
+export const AttachmentWithTextAndLink = () => <Message attachments={attachmentWithTextAndLink} />;
+
+export const AttachmentWithTextAndLinkLargeFont = () => <MessageLargeFont attachments={attachmentWithTextAndLink} />;
