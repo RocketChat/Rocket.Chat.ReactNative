@@ -45,12 +45,12 @@ tags:
     id: 'create-channel-name'
 - inputText: ${ROOM}
 - hideKeyboard
-# - extendedWaitUntil:
-#     visible:
-#       id: 'create-channel-encrypted'
-#     timeout: 60000
-# - tapOn:
-#     id: 'create-channel-encrypted'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-encrypted'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-encrypted'
 - tapOn:
     id: 'create-channel-submit'
 - extendedWaitUntil:
