@@ -6,7 +6,7 @@ import { isIOS } from '../../../lib/methods/helpers';
 
 const useIOSBackSwipeHandler = () => {
 	const navigation = useNavigation();
-	const iOSBackSwipe = useRef(false);
+	const iOSBackSwipe = useRef<boolean>(false);
 
 	useEffect(() => {
 		if (!isIOS) return;
@@ -14,16 +14,19 @@ const useIOSBackSwipeHandler = () => {
 		const transitionStartListener = navigation.addListener('transitionStart' as any, e => {
 			if (e?.data?.closing) {
 				iOSBackSwipe.current = true;
+				Keyboard.dismiss();
 			}
 		});
 
-		const blurListener = navigation.addListener('blur', () => {
-			Keyboard.dismiss();
+		const transitionEndListener = navigation.addListener('transitionEnd' as any, e => {
+			if (e?.data?.closing) {
+				iOSBackSwipe.current = false;
+			}
 		});
 
 		return () => {
 			transitionStartListener();
-			blurListener();
+			transitionEndListener();
 		};
 	}, []);
 
