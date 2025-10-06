@@ -703,7 +703,7 @@ export default class EncryptionRoom {
 	};
 
 	// Decrypt messages
-	decrypt = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments' | 'content'>) => {
+	decrypt = async (message: IMessage) => {
 		if (!this.ready) {
 			return message;
 		}
@@ -815,9 +815,7 @@ export default class EncryptionRoom {
 			};
 		}
 
-		const decryptedMessage = await this.decrypt(
-			lastMessage as Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments' | 'content'>
-		);
+		const decryptedMessage = await this.decrypt(lastMessage as IMessage);
 		return {
 			...subscription,
 			lastMessage: decryptedMessage

@@ -372,7 +372,7 @@ class Encryption {
 							tmsg,
 							attachments,
 							content
-						});
+						} as IMessage);
 					}
 
 					try {
@@ -417,7 +417,9 @@ class Encryption {
 					try {
 						return sub.prepareUpdate(
 							protectedFunction((m: TSubscriptionModel) => {
-								Object.assign(m, newSub);
+								if (newSub?.lastMessage) {
+									m.lastMessage = newSub.lastMessage;
+								}
 							})
 						);
 					} catch {
@@ -569,7 +571,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments' | 'content'>) => {
+	decryptMessage = async (message: IMessage) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
