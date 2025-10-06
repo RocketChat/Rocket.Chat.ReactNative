@@ -3,7 +3,14 @@ module.exports = {
 		'import/resolver': {
 			node: {
 				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js', '.native.js', '.ios.tsx', '.android.tsx']
+			},
+			typescript: {
+				alwaysTryTypes: true,
+				project: './tsconfig.json'
 			}
+		},
+		'import/parsers': {
+			'@typescript-eslint/parser': ['.ts', '.tsx']
 		}
 	},
 	parser: '@babel/eslint-parser',
@@ -29,6 +36,8 @@ module.exports = {
 		'jest/globals': true
 	},
 	rules: {
+		'import/named': 'error',
+		'import/no-unresolved': 'error',
 		'import/extensions': [
 			'error',
 			'ignorePackages',
