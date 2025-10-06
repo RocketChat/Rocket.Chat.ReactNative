@@ -209,7 +209,9 @@ export const ComposerInput = memo(
 		};
 
 		useEffect(() => {
-			onBlur();
+			if (!isKeyboardVisible) {
+				onBlur();
+			}
 		}, [isKeyboardVisible]);
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
