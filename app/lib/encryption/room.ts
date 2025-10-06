@@ -299,7 +299,6 @@ export default class EncryptionRoom {
 	// can send the encryption key at the moment.
 	// Each time you see a encrypted message of a room that you don't have a key
 	// this will be called again and run once in 5 seconds
-	// TODO: remove debounce? It should be async, right?
 	requestRoomKey = debounce(
 		async (e2eKeyId: string) => {
 			try {
@@ -492,8 +491,8 @@ export default class EncryptionRoom {
 				content
 			};
 		} catch (e) {
-			console.error(e);
 			// Do nothing
+			console.error(e);
 		}
 
 		return message;
@@ -607,7 +606,6 @@ export default class EncryptionRoom {
 			});
 
 			const encryptedResult = await this.encryptText(data);
-			// Return the result directly as it already contains the algorithm
 			return encryptedResult;
 		};
 
@@ -625,7 +623,6 @@ export default class EncryptionRoom {
 		};
 
 		const fileContent = await this.encryptText(EJSON.stringify(fileContentData));
-		// Return the result directly as it already contains the algorithm
 
 		return {
 			file: {
