@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
+import { TextInput, StyleSheet, TextInputProps, InteractionManager, Keyboard } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
@@ -365,8 +365,13 @@ export const ComposerInput = memo(
 					}
 				});
 
+				const newListener = navigation.addListener('blur', () => {
+					Keyboard.dismiss();
+				});
+
 				return () => {
 					startListener();
+					newListener();
 				};
 			}
 		}, [navigation]);
