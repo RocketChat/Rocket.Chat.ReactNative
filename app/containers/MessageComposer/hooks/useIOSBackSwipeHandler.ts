@@ -14,8 +14,8 @@ const useIOSBackSwipeHandler = () => {
 		const transitionStartListener = navigation.addListener('transitionStart' as any, e => {
 			if (e?.data?.closing) {
 				iOSBackSwipe.current = true;
-				Keyboard.dismiss();
 			}
+			Keyboard.dismiss();
 		});
 
 		const transitionEndListener = navigation.addListener('transitionEnd' as any, () => {
