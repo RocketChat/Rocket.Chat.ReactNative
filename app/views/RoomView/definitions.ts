@@ -62,4 +62,6 @@ export interface IRoomViewState {
 	action: TMessageAction;
 	selectedMessages: string[];
 	isAutocompleteVisible: boolean;
+	showMissingE2EEKey: boolean;
+	showE2EEDisabledRoom: boolean;
 }
