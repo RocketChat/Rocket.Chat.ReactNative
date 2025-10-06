@@ -366,12 +366,12 @@ export const ComposerInput = memo(
 				ref={component => {
 					inputRef.current = component;
 				}}
-				onBlur={onBlur}
 				blurOnSubmit={false}
 				onChangeText={onChangeText}
 				onTouchStart={onTouchStart}
 				onSelectionChange={onSelectionChange}
 				onFocus={onFocus}
+				onBlur={onBlur}
 				underlineColorAndroid='transparent'
 				defaultValue=''
 				multiline
