@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
 import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -51,7 +51,6 @@ export const ComposerInput = memo(
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-		const iOSBackSwipe = useRef<boolean>(false);
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (room && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
@@ -68,7 +67,7 @@ export const ComposerInput = memo(
 		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
 
 		// workaround to handle issues with iOS back swipe navigation
-		useIOSBackSwipeHandler();
+		const { iOSBackSwipe } = useIOSBackSwipeHandler();
 
 		// Draft/Canned Responses
 		useEffect(() => {

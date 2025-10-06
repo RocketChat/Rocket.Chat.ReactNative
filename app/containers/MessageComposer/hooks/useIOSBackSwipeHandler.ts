@@ -27,7 +27,7 @@ const useIOSBackSwipeHandler = () => {
 		};
 	}, []);
 
-	return iOSBackSwipe;
+	return { iOSBackSwipe };
 };
 
 export default useIOSBackSwipeHandler;
