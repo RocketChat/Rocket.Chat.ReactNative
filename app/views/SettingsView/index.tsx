@@ -16,9 +16,9 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { LISTENER } from '../../containers/Toast';
 import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
-import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
-import { useAppSelector } from '../../lib/hooks';
-import { clearCache } from '../../lib/methods';
+import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants/links';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { clearCache } from '../../lib/methods/clearCache';
 import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
 import { getDeviceModel, getReadableVersion, isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -26,9 +26,9 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
-import { Services } from '../../lib/services';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
+import { disconnect } from '../../lib/services/connect';
 import SidebarView from '../SidebarView';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
@@ -72,7 +72,7 @@ const SettingsView = (): React.ReactElement => {
 				await clearCache({ server });
 				await Image.clearMemoryCache();
 				await Image.clearDiskCache();
-				Services.disconnect();
+				disconnect();
 				dispatch(selectServerRequest(server, version, true));
 			}
 		});

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import UnreadBadge from '.';
 import { ThemeContext, TSupportedThemes } from '../../theme';
 

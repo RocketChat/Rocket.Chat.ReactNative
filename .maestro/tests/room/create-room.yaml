@@ -4,10 +4,12 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-10
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/login.yaml
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow: '../../helpers/login.yaml'
 
 - extendedWaitUntil:
     visible:

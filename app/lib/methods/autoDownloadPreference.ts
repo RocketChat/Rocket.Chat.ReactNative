@@ -5,7 +5,7 @@ import {
 	AUDIO_PREFERENCE_DOWNLOAD,
 	VIDEO_PREFERENCE_DOWNLOAD,
 	MediaDownloadOption
-} from '../constants';
+} from '../constants/mediaAutoDownload';
 import userPreferences from './userPreferences';
 import { store } from '../store/auxStore';
 

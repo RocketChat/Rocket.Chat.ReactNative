@@ -7,7 +7,8 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 import { sendLoadingEvent } from '../../containers/Loading';
 import { createChannelRequest } from '../../actions/createChannel';
 import { removeUser as removeUserAction } from '../../actions/selectedUsers';
