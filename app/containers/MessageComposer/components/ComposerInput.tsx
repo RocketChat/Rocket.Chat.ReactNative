@@ -1,8 +1,8 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import { TextInput, StyleSheet, TextInputProps, InteractionManager, Keyboard } from 'react-native';
+import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
-import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
@@ -15,7 +15,7 @@ import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
 import { parseJson } from '../../../lib/methods/helpers/parseJson';
 import { getRoomTitle } from '../../../lib/methods/helpers/helpers';
-import { isIOS, isTablet } from '../../../lib/methods/helpers/deviceInfo';
+import { isTablet } from '../../../lib/methods/helpers/deviceInfo';
 import {
 	MAX_HEIGHT,
 	MIN_HEIGHT,
@@ -35,6 +35,7 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
+import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -65,6 +66,9 @@ export const ComposerInput = memo(
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
 		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
+
+		// workaround to handle issues with iOS back swipe navigation
+		useIOSBackSwipeHandler();
 
 		// Draft/Canned Responses
 		useEffect(() => {
@@ -354,27 +358,6 @@ export const ComposerInput = memo(
 			if (sharing || !rid) return;
 			dispatch(userTyping(rid, isTyping));
 		};
-
-		const navigation = useNavigation();
-
-		useEffect(() => {
-			if (isIOS) {
-				const startListener = navigation.addListener('transitionStart' as any, e => {
-					if (e?.data?.closing) {
-						iOSBackSwipe.current = true;
-					}
-				});
-
-				const newListener = navigation.addListener('blur', () => {
-					Keyboard.dismiss();
-				});
-
-				return () => {
-					startListener();
-					newListener();
-				};
-			}
-		}, [navigation]);
 
 		return (
 			<TextInput
