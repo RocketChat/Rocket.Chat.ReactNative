@@ -22,9 +22,11 @@ tags:
     commands:
       - extendedWaitUntil:
           visible:
-            text: '.*notification.*'
+            text: '.*Allow.*'
           timeout: 30000
       - tapOn:
+          text: '.*Allow.*'
+      - assertNotVisible:
           text: '.*Allow.*'
 - extendedWaitUntil:
     visible:
