@@ -8,14 +8,13 @@ workflows:
       vars:
         GRADLE_OPTS: "-Xmx6144m -Dorg.gradle.jvmargs='-Xmx6144m -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8'"
     scripts:
+      - name: Install dependencies
+        script: |
+          npm install --legacy-peer-deps
       - name: Clean Gradle cache
         script: |
           cd android
           ./gradlew clean
-      - name: Install dependencies
-        script: |
-          cd ..
-          npm install --legacy-peer-deps
       - name: Build APK
         script: |
           cd android
