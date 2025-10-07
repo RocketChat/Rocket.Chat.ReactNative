@@ -21,3 +21,5 @@ workflows:
           ./gradlew assembleDebug --no-daemon --stacktrace --warning-mode all
     artifacts:
       - android/app/build/outputs/apk/debug/*.apk
+      - android/app/build/outputs/apk/experimental/debug/*.apk
+      - android/app/build/outputs/**/*.apk
