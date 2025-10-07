@@ -26,7 +26,7 @@ const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 const amp = '&';
 
 const getDeepLink = (method: string, server: string, params?: string) => {
-	const deeplink = `rocketchat://${method}?host=${server.replace(/^(http:\/\/|https:\/\/)/, '')}${amp}${params}`;
+	const deeplink = `andishe2://${method}?host=${server.replace(/^(http:\/\/|https:\/\/)/, '')}${amp}${params}`;
 	console.log(`Deeplinking to: ${deeplink}`);
 	return deeplink;
 };
@@ -274,7 +274,7 @@ describe('Deep linking', () => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
 				newInstance: true,
-				url: `rocketchat://shareextension?text=${message}`
+				url: `andishe2://shareextension?text=${message}`
 			});
 			await waitFor(element(by.id('share-list-view')))
 				.toBeVisible()
@@ -299,7 +299,7 @@ describe('Deep linking', () => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
 				newInstance: true,
-				url: `rocketchat://shareextension?text=${message}`
+				url: `andishe2://shareextension?text=${message}`
 			});
 			await waitFor(element(by.id('share-list-view')))
 				.toBeVisible()
@@ -327,7 +327,7 @@ describe('Deep linking', () => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
 				delete: true,
-				url: `rocketchat://shareextension?text=whatever`
+				url: `andishe2://shareextension?text=whatever`
 			});
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()

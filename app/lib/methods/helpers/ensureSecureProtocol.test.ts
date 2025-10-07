@@ -18,7 +18,7 @@ describe('Add the protocol https at the begin of the URL', () => {
 		expect(ensureSecureProtocol(linkWithDoubleSlashAtBegin)).toBe('https://www.google.com');
 	});
 	it('return the link as original when sent with rocketchat protocol', () => {
-		const linkRocketChat = 'rocketchat://www.google.com';
+		const linkRocketChat = 'andishe2://www.google.com';
 		expect(ensureSecureProtocol(linkRocketChat)).toBe(linkRocketChat);
 	});
 	it('return the link as original when sent with ftp protocol', () => {

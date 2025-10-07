@@ -151,7 +151,7 @@ const getOAuthState = (loginStyle: TLoginStyle = 'popup') => {
 	if (loginStyle === 'redirect') {
 		obj = {
 			...obj,
-			redirectUrl: 'rocketchat://auth'
+			redirectUrl: 'andishe2://auth'
 		};
 	}
 	return Base64.encodeURI(JSON.stringify(obj));
