@@ -1,0 +1,61 @@
+name: Build Andishe2 APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: Build Android (Andishe2)
+    runs-on: ubuntu-latest
+
+    steps:
+      # --- آماده‌سازی محیط ---
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          build-tools: "34.0.0"
+          ndk: "25.2.9519653"
+
+      # --- نصب وابستگی‌ها ---
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install project dependencies
+        run: yarn install --frozen-lockfile
+
+      # --- تنظیمات سفارشی اپ ---
+      - name: Apply custom configuration
+        run: |
+          echo "⚙️ تغییر نام و تنظیم سرور andishe2 ..."
+          sed -i 's|https://open.rocket.chat|https://edu97.ir|g' app/constants/servers.js || true
+          sed -i 's|Rocket.Chat|Andishe2 Chat|g' android/app/src/main/res/values/strings.xml || true
+
+      # --- Build پروژه ---
+      - name: Build Android release
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew clean
+          ./gradlew assembleRelease --no-daemon
+
+      # --- خروجی APK ---
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: andishe2-app-release
+          path: android/app/build/outputs/apk/release/app-release.apk
