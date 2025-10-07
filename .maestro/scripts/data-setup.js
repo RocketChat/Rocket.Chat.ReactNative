@@ -32,8 +32,6 @@ const login = (username, password) => {
         })
     });
 
-    console.log('admin', response.body)
-
     const { authToken, userId } = json(response.body)?.data;
 
     headers = { 'X-User-Id': userId, 'X-Auth-Token': authToken }
@@ -59,7 +57,6 @@ const createUser = (customProps) => {
             ...(customProps || {})
         })
     });
-    console.log(api.body); 
 
     data.accounts.push({
         username: user.username,
@@ -195,7 +192,6 @@ const createDM = (username, password, otherUsername) => {
         })
     });
 
-    console.log(JSON.stringify(json(result.body), null, 2));
     return json(result.body);
 }
 
