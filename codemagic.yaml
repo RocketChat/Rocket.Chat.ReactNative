@@ -6,7 +6,7 @@ workflows:
       node: 18
       java: 17
       vars:
-        GRADLE_OPTS: "-Xmx4096m"
+        GRADLE_OPTS: '-Xmx4096m'
     scripts:
       - name: Install dependencies
         script: |
