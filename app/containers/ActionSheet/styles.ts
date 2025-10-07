@@ -21,7 +21,7 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		lineHeight: 26,
+		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
 	subtitle: {
