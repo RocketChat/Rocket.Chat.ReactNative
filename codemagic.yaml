@@ -5,6 +5,8 @@ workflows:
     environment:
       node: 18
       java: 17
+      vars:
+        GRADLE_OPTS: "-Xmx4096m"
     scripts:
       - name: Install dependencies
         script: |
@@ -12,6 +14,6 @@ workflows:
       - name: Build APK
         script: |
           cd android
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
     artifacts:
       - android/app/build/outputs/apk/debug/*.apk
