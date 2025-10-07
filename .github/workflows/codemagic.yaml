@@ -1,0 +1,15 @@
+workflows:
+  build_apk:
+    name: Build React Native APK
+    environment:
+      node: 18
+      java: 17
+    scripts:
+      - name: Install deps
+        script: npm install
+      - name: Build APK
+        script: |
+          cd android
+          ./gradlew assembleRelease
+    artifacts:
+      - android/app/build/outputs/**/*.apk
