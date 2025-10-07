@@ -20,8 +20,8 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	title: {
-		fontSize: 18,
-		lineHeight: 26,
+		fontSize: 16,
+		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
 	subtitle: {
