@@ -57,7 +57,7 @@ const createUser = (customProps) => {
             ...(customProps || {})
         })
     });
-    console.log(api.body);
+    console.log(api.body); 
 
     data.accounts.push({
         username: user.username,
