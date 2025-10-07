@@ -1,11 +1,11 @@
 {
-  "Settings": "تنظیمات",
-  "Login": "جهت ورود کلیک کنید",
-  "Username_or_email": "کد ملی دانش آموز",
-  "Password": "کد ملی دانش آموز را مجدداً وارد کنید",
-  "Language": "زبان",
   "Default_browser": "تنظیمات مرورگر",
+  "Language": "زبان",
+  "Login": "جهت ورود کلیک کنید",
   "Media_auto_download": "دانلود خودکار رسانه",
+  "Oops": "خطا",
+  "Password": "کد ملی دانش آموز را مجدداً وارد کنید",
   "Security_and_privacy": "تنظیمات امنیتی",
-  "Oops": "خطا"
+  "Settings": "تنظیمات",
+  "Username_or_email": "کد ملی دانش آموز"
 }
