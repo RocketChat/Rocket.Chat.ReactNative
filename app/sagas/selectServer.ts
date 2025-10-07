@@ -43,6 +43,7 @@ import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
+import { DEFAULT_SERVER_URL } from '../config/appConfig';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -222,42 +223,43 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
-	try {
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
-		}
-		const serverInfo = yield* getServerInfoSaga({ server });
-		const serversDB = database.servers;
-		const serversHistoryCollection = serversDB.get('servers_history');
+const handleServerRequest = function* handleServerRequest({ username, fromServerHistory }: IServerRequestAction) {
+        try {
+                const targetServer = DEFAULT_SERVER_URL;
+                const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${targetServer}`);
+                if (certificate) {
+                        SSLPinning?.setCertificate(certificate, targetServer);
+                }
+                const serverInfo = yield* getServerInfoSaga({ server: targetServer });
+                const serversDB = database.servers;
+                const serversHistoryCollection = serversDB.get('servers_history');
 
-		if (serverInfo) {
-			yield getLoginServices(server);
-			yield getLoginSettings({ server, serverVersion: serverInfo.version });
-			Navigation.navigate('WorkspaceView');
+                if (serverInfo) {
+                        yield getLoginServices(targetServer);
+                        yield getLoginSettings({ server: targetServer, serverVersion: serverInfo.version });
+                        Navigation.navigate('WorkspaceView');
 
-			const Accounts_iframe_enabled = yield* appSelector(state => state.settings.Accounts_iframe_enabled);
-			if (fromServerHistory && !Accounts_iframe_enabled) {
-				Navigation.navigate('LoginView', { username });
+                        const Accounts_iframe_enabled = yield* appSelector(state => state.settings.Accounts_iframe_enabled);
+                        if (fromServerHistory && !Accounts_iframe_enabled) {
+                                Navigation.navigate('LoginView', { username });
 			}
 
 			yield serversDB.write(async () => {
 				try {
-					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
-					if (!serversHistory?.length) {
-						await serversHistoryCollection.create(s => {
-							s.url = server;
-						});
-					}
-				} catch (e) {
-					log(e);
-				}
-			});
-			yield put(selectServerRequest(server, serverInfo.version, false));
-		}
-	} catch (e) {
-		yield put(serverFailure());
+                                        const serversHistory = await serversHistoryCollection.query(Q.where('url', targetServer)).fetch();
+                                        if (!serversHistory?.length) {
+                                                await serversHistoryCollection.create(s => {
+                                                        s.url = targetServer;
+                                                });
+                                        }
+                                } catch (e) {
+                                        log(e);
+                                }
+                        });
+                        yield put(selectServerRequest(targetServer, serverInfo.version, false));
+                }
+        } catch (e) {
+                yield put(serverFailure());
 		log(e);
 	}
 };

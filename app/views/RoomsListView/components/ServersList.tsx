@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { FlatList, Linking, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
 import { Subscription } from 'rxjs';
@@ -7,21 +7,19 @@ import { Subscription } from 'rxjs';
 import { appStart } from '../../../actions/app';
 import { selectServerRequest, serverInitAdd } from '../../../actions/server';
 import { hideActionSheetRef } from '../../../containers/ActionSheet';
-import Button from '../../../containers/Button';
 import * as List from '../../../containers/List';
 import ServerItem from '../../../containers/ServerItem';
-import { RootEnum, TServerModel } from '../../../definitions';
+import { RootEnum } from '../../../definitions';
 import I18n from '../../../i18n';
 import { TOKEN_KEY } from '../../../lib/constants/keys';
 import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { removeServer } from '../../../lib/methods/logout';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import { showConfirmationAlert } from '../../../lib/methods/helpers/info';
 import { localAuthenticate } from '../../../lib/methods/helpers/localAuthentication';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import UserPreferences from '../../../lib/methods/userPreferences';
+import { DEFAULT_SERVER_URL } from '../../../config/appConfig';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 
@@ -30,7 +28,7 @@ const MAX_ROWS = 4.5;
 
 const ServersList = () => {
 	const subscription = useRef<Subscription | null>(null);
-	const [servers, setServers] = useState<TServerModel[]>([]);
+        const [servers, setServers] = useState<Array<{ id: string; iconURL: string; name: string; version: string }>>([]);
 	const dispatch = useDispatch();
 	const server = useAppSelector(state => state.server.server);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -42,9 +40,27 @@ const ServersList = () => {
 			const serversDB = database.servers;
 			const observable = await serversDB.get('servers').query().observeWithColumns(['name']);
 
-			subscription.current = observable.subscribe(data => {
-				setServers(data);
-			});
+                        subscription.current = observable.subscribe(data => {
+                                const mappedServers = data
+                                        .map(serverModel => ({
+                                                id: serverModel.id,
+                                                iconURL: serverModel.iconURL,
+                                                name: serverModel.name,
+                                                version: serverModel.version
+                                        }))
+                                        .filter(serverModel => serverModel.id === DEFAULT_SERVER_URL);
+
+                                if (mappedServers.length === 0) {
+                                        mappedServers.push({
+                                                id: DEFAULT_SERVER_URL,
+                                                iconURL: '',
+                                                name: DEFAULT_SERVER_URL,
+                                                version: ''
+                                        });
+                                }
+
+                                setServers(mappedServers);
+                        });
 		};
 		init();
 
@@ -59,31 +75,14 @@ const ServersList = () => {
 		hideActionSheetRef();
 	};
 
-	const createWorkspace = async () => {
-		logEvent(events.RL_CREATE_NEW_WORKSPACE);
-		try {
-			await Linking.openURL('https://cloud.rocket.chat/trial');
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const navToNewServer = (previousServer: string) => {
-		batch(() => {
-			dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+        const navToNewServer = (previousServer: string) => {
+                batch(() => {
+                        dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			dispatch(serverInitAdd(previousServer));
 		});
 	};
 
-	const addServer = () => {
-		logEvent(events.RL_ADD_SERVER);
-		close();
-		setTimeout(() => {
-			navToNewServer(server);
-		}, 300);
-	};
-
-	const select = async (serverParam: string, version: string) => {
+        const select = async (serverParam: string, version: string) => {
 		close();
 		if (server !== serverParam) {
 			logEvent(events.RL_CHANGE_SERVER);
@@ -104,28 +103,13 @@ const ServersList = () => {
 		}
 	};
 
-	const remove = (server: string) =>
-		showConfirmationAlert({
-			message: I18n.t('This_will_remove_all_data_from_this_server'),
-			confirmationText: I18n.t('Delete'),
-			onPress: async () => {
-				close();
-				try {
-					await removeServer({ server });
-				} catch {
-					// do nothing
-				}
-			}
-		});
-
-	const renderItem = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => (
-		<ServerItem
-			item={item}
-			onPress={() => select(item.id, item.version)}
-			onLongPress={() => item.id === server || remove(item.id)}
-			hasCheck={item.id === server}
-		/>
-	);
+        const renderItem = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => (
+                <ServerItem
+                        item={item}
+                        onPress={() => select(item.id, item.version)}
+                        hasCheck={item.id === server}
+                />
+        );
 
 	return (
 		<View
@@ -137,9 +121,6 @@ const ServersList = () => {
 			testID='rooms-list-header-servers-list'>
 			<View style={[styles.serversListContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>
 				<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Server')}</Text>
-				<TouchableOpacity onPress={addServer} testID='rooms-list-header-server-add'>
-					<Text style={[styles.serverHeaderAdd, { color: colors.fontInfo }]}>{I18n.t('Add_Server')}</Text>
-				</TouchableOpacity>
 			</View>
 			<FlatList
 				style={{ maxHeight: MAX_ROWS * ROW_HEIGHT }}
@@ -148,17 +129,6 @@ const ServersList = () => {
 				renderItem={renderItem}
 				ItemSeparatorComponent={List.Separator}
 				keyboardShouldPersistTaps='always'
-			/>
-			<List.Separator />
-			<Button
-				title={I18n.t('Create_a_new_workspace')}
-				type='secondary'
-				onPress={createWorkspace}
-				testID='rooms-list-header-create-workspace-button'
-				style={styles.buttonCreateWorkspace}
-				color={colors.badgeBackgroundLevel2}
-				backgroundColor={colors.surfaceRoom}
-				styleText={[styles.serverHeaderAdd, { textAlign: 'center', color: colors.fontInfo }]}
 			/>
 		</View>
 	);

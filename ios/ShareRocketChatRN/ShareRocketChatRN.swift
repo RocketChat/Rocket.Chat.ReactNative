@@ -10,7 +10,7 @@ import UIKit
 import MobileCoreServices
 
 class ShareRocketChatRN: UIViewController {
-    let appScheme = "rocketchat"
+    let appScheme = "andishe2"
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

@@ -19,6 +19,7 @@ import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import styles from './styles';
 import { handleLoginErrors } from './handleLoginErrors';
+import { REGISTRATION_DISABLED_MESSAGE } from '../../config/appConfig';
 
 interface ISubmit {
 	user: string;
@@ -48,45 +49,34 @@ const UserForm = () => {
 		setFocus
 	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema), defaultValues: { user: username || '' } });
 
-	const {
-		Accounts_EmailOrUsernamePlaceholder,
-		Accounts_PasswordPlaceholder,
-		Accounts_PasswordReset,
-		Accounts_RegistrationForm_LinkReplacementText,
-		isFetching,
-		Accounts_RegistrationForm,
-		inviteLinkToken,
-		error,
-		failure
-	} = useAppSelector(state => ({
-		Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm as string,
-		Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText as string,
-		isFetching: state.login.isFetching,
-		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
-		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
-		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
-		inviteLinkToken: state.inviteLinks.token,
-		failure: state.login.failure,
-		error: state.login.error && state.login.error.data
-	}));
+        const {
+                Accounts_EmailOrUsernamePlaceholder,
+                Accounts_PasswordPlaceholder,
+                Accounts_PasswordReset,
+                isFetching,
+                error,
+                failure
+        } = useAppSelector(state => ({
+                isFetching: state.login.isFetching,
+                Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
+                Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
+                Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
+                failure: state.login.failure,
+                error: state.login.error && state.login.error.data
+        }));
+        useEffect(() => {
+                if (failure) {
+                        if (error?.error === 'error-invalid-email') {
+                                const user = getValues('user');
+                                navigation.navigate('SendEmailConfirmationView', { user });
+                        } else {
+                                Alert.alert(I18n.t('Oops'), handleLoginErrors(error?.error));
+                        }
+                }
+        }, [error?.error, failure, getValues, navigation]);
 
-	useEffect(() => {
-		if (failure) {
-			if (error?.error === 'error-invalid-email') {
-				const user = getValues('user');
-				navigation.navigate('SendEmailConfirmationView', { user });
-			} else {
-				Alert.alert(I18n.t('Oops'), handleLoginErrors(error?.error));
-			}
-		}
-	}, [error?.error, failure, getValues, navigation]);
 
-	const showRegistrationButton =
-		Accounts_RegistrationForm === 'Public' || (Accounts_RegistrationForm === 'Secret URL' && inviteLinkToken?.length);
 
-	const register = () => {
-		navigation.navigate('RegisterView', { title: workspaceDomain });
-	};
 
 	const forgotPassword = () => {
 		navigation.navigate('ForgotPasswordView', { title: workspaceDomain });
@@ -149,18 +139,7 @@ const UserForm = () => {
 						/>
 					</View>
 				)}
-				{showRegistrationButton ? (
-					<View style={styles.bottomContainerGroup}>
-						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
-							{I18n.t('You_dont_have_account')}
-						</Text>
-						<Button title={I18n.t('Create_account')} onPress={register} type='secondary' testID='login-view-register' />
-					</View>
-				) : (
-					<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
-						{Accounts_RegistrationForm_LinkReplacementText}
-					</Text>
-				)}
+				<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>{REGISTRATION_DISABLED_MESSAGE}</Text>
 				<UGCRules />
 			</View>
 		</>

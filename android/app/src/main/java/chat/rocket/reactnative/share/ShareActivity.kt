@@ -11,7 +11,7 @@ import java.util.*
 
 class ShareActivity : AppCompatActivity() {
 
-    private val appScheme = "rocketchat"
+    private val appScheme = "andishe2"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
