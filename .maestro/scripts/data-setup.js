@@ -44,7 +44,7 @@ const createUser = (customProps) => {
 
     login(output.account.adminUser, output.account.adminPassword);
 
-    const api = http.post(`${data.server}/api/v1/users.create`, {
+    http.post(`${data.server}/api/v1/users.create`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
