@@ -9,17 +9,14 @@ import { useForm } from 'react-hook-form';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
-import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import I18n from '../../i18n';
 import { OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import styles from './styles';
 import { handleLoginErrors } from './handleLoginErrors';
-import { REGISTRATION_DISABLED_MESSAGE } from '../../config/appConfig';
 
 interface ISubmit {
 	user: string;
@@ -32,10 +29,9 @@ const schema = yup.object().shape({
 });
 
 const UserForm = () => {
-	const { colors } = useTheme();
-	const dispatch = useDispatch();
-	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
-	const workspaceDomain = useWorkspaceDomain();
+        const { colors } = useTheme();
+        const dispatch = useDispatch();
+        const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
 
 	const {
 		params: { username }
@@ -51,19 +47,17 @@ const UserForm = () => {
 
 	const {
 		Accounts_EmailOrUsernamePlaceholder,
-		Accounts_PasswordPlaceholder,
-		Accounts_PasswordReset,
-		isFetching,
-		error,
-		failure
-	} = useAppSelector(state => ({
-		isFetching: state.login.isFetching,
-		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
-		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
-		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
-		failure: state.login.failure,
-		error: state.login.error && state.login.error.data
-	}));
+                Accounts_PasswordPlaceholder,
+                isFetching,
+                error,
+                failure
+        } = useAppSelector(state => ({
+                isFetching: state.login.isFetching,
+                Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
+                Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
+                failure: state.login.failure,
+                error: state.login.error && state.login.error.data
+        }));
 	useEffect(() => {
 		if (failure) {
 			if (error?.error === 'error-invalid-email') {
@@ -75,11 +69,7 @@ const UserForm = () => {
 		}
 	}, [error?.error, failure, getValues, navigation]);
 
-	const forgotPassword = () => {
-		navigation.navigate('ForgotPasswordView', { title: workspaceDomain });
-	};
-
-	const submit = ({ password, user }: ISubmit) => {
+        const submit = ({ password, user }: ISubmit) => {
 		if (!isValid) {
 			return;
 		}
@@ -95,10 +85,10 @@ const UserForm = () => {
 					name='user'
 					control={control}
 					label={I18n.t('Username_or_email')}
-					placeholder={Accounts_EmailOrUsernamePlaceholder}
-					keyboardType='email-address'
-					returnKeyType='next'
-					onSubmitEditing={() => setFocus('password')}
+                                        placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
+                                        keyboardType='number-pad'
+                                        returnKeyType='next'
+                                        onSubmitEditing={() => setFocus('password')}
 					testID='login-view-email'
 					textContentType='username'
 					autoComplete='username'
@@ -107,11 +97,12 @@ const UserForm = () => {
 					name='password'
 					control={control}
 					label={I18n.t('Password')}
-					placeholder={Accounts_PasswordPlaceholder}
-					returnKeyType='send'
-					secureTextEntry
-					onSubmitEditing={handleSubmit(submit)}
-					testID='login-view-password'
+                                        placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
+                                        returnKeyType='send'
+                                        secureTextEntry
+                                        keyboardType='number-pad'
+                                        onSubmitEditing={handleSubmit(submit)}
+                                        testID='login-view-password'
 					textContentType='password'
 					autoComplete='password'
 					importantForAutofill='yes'
@@ -124,21 +115,7 @@ const UserForm = () => {
 					disabled={!isValid}
 				/>
 			</View>
-			<View style={styles.bottomContainer}>
-				{Accounts_PasswordReset && (
-					<View style={styles.bottomContainerGroup}>
-						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Forgot_password')}</Text>
-						<Button
-							title={I18n.t('Reset_password')}
-							type='secondary'
-							onPress={forgotPassword}
-							testID='login-view-forgot-password'
-						/>
-					</View>
-				)}
-				<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>{REGISTRATION_DISABLED_MESSAGE}</Text>
-				<UGCRules />
-			</View>
+                        
 		</>
 	);
 };

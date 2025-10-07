@@ -1,31 +1,26 @@
 import React, { useLayoutEffect } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
 import { OutsideParamList } from '../../stacks/types';
 import UserForm from './UserForm';
 
 const LoginView = () => {
-	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
+        const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
 
-	const {
-		params: { title }
-	} = useRoute<RouteProp<OutsideParamList, 'LoginView'>>();
+        const { Accounts_ShowFormLogin } = useAppSelector(state => ({
+                Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin as boolean
+        }));
 
-	const { Accounts_ShowFormLogin } = useAppSelector(state => ({
-		Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin as boolean
-	}));
-
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			title: title ?? 'Rocket.Chat',
-			headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
-		});
-	}, [navigation, title]);
+        useLayoutEffect(() => {
+                navigation.setOptions({
+                        title: 'دبستان اندیشه حسینی',
+                        headerRight: undefined
+                });
+        }, [navigation]);
 
 	return (
 		<FormContainer testID='login-view'>

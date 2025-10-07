@@ -38,11 +38,11 @@ const ForgotPasswordView = (): React.ReactElement => {
 	const { params } = useRoute<RouteProp<OutsideParamList, 'ForgotPasswordView'>>();
 	const { colors } = useTheme();
 
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			title: params?.title ?? 'Rocket.Chat'
-		});
-	}, [navigation, params?.title]);
+        useLayoutEffect(() => {
+                navigation.setOptions({
+                        title: params?.title ?? 'دبستان اندیشه حسینی'
+                });
+        }, [navigation, params?.title]);
 
 	const resetPassword = async ({ email }: ISubmit) => {
 		if (!isValid) {

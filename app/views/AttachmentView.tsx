@@ -174,8 +174,8 @@ const AttachmentView = (): React.ReactElement => {
 
 		setLoading(true);
 		try {
-			if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
-				await CameraRoll.save(url, { album: 'Rocket.Chat' });
+                        if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
+                                await CameraRoll.save(url, { album: 'دبستان اندیشه حسینی' });
 			} else {
 				const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 				let filename = '';
@@ -184,8 +184,8 @@ const AttachmentView = (): React.ReactElement => {
 				} else {
 					filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
 				}
-				const file = await fileDownload(mediaAttachment, {}, filename);
-				await CameraRoll.save(file, { album: 'Rocket.Chat' });
+                                const file = await fileDownload(mediaAttachment, {}, filename);
+                                await CameraRoll.save(file, { album: 'دبستان اندیشه حسینی' });
 				FileSystem.deleteAsync(file, { idempotent: true });
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
