@@ -1,0 +1,17 @@
+workflows:
+  rocketchat_apk:
+    name: Build Rocket.Chat Android APK
+    max_build_duration: 60
+    environment:
+      node: 18
+      java: 17
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Build APK
+        script: |
+          cd android
+          ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/apk/debug/*.apk
