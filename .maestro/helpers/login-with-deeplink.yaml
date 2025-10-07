@@ -18,7 +18,6 @@ tags:
       link: ${output.utils.getDeepLink('auth', server || output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken)}
 - runFlow:
     when:
-      true: CLEAR_STATE
       platform: android
     commands:
       - extendedWaitUntil:
