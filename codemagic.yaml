@@ -8,7 +8,7 @@ workflows:
     scripts:
       - name: Install dependencies
         script: |
-          npm install
+          npm install --legacy-peer-deps
       - name: Build APK
         script: |
           cd android
