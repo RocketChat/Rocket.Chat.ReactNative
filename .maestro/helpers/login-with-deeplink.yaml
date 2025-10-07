@@ -20,6 +20,11 @@ tags:
     when:
       platform: android
     commands:
+      - runFlow:
+          when:
+            visible: '.*Pixel Launcher.*'
+          commands:
+            - tapOn: 'Close App'
       - extendedWaitUntil:
           visible:
             text: '.*Allow.*'
