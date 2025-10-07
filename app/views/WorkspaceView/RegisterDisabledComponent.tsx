@@ -7,21 +7,17 @@ import styles from './styles';
 import { REGISTRATION_DISABLED_MESSAGE } from '../../config/appConfig';
 
 const RegisterDisabledComponent = () => {
-        const { colors } = useTheme();
+	const { colors } = useTheme();
 
-        const { Accounts_iframe_enabled } = useAppSelector(state => ({
-                Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean
-        }));
+	const { Accounts_iframe_enabled } = useAppSelector(state => ({
+		Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean
+	}));
 
-        if (Accounts_iframe_enabled) {
-                return null;
-        }
+	if (Accounts_iframe_enabled) {
+		return null;
+	}
 
-        return (
-                <Text style={[styles.registrationText, { color: colors.fontSecondaryInfo }]}>
-                        {REGISTRATION_DISABLED_MESSAGE}
-                </Text>
-        );
+	return <Text style={[styles.registrationText, { color: colors.fontSecondaryInfo }]}>{REGISTRATION_DISABLED_MESSAGE}</Text>;
 };
 
 export default RegisterDisabledComponent;

@@ -23,14 +23,14 @@ type TNavigation = CompositeNavigationProp<
 >;
 
 const useWorkspaceViewSelector = () =>
-        useAppSelector(state => ({
-                server: state.server.server,
-                Site_Name: state.settings.Site_Name as string,
-                Site_Url: state.settings.Site_Url as string,
-                Assets_favicon_512: state.settings.Assets_favicon_512 as IAssetsFavicon512,
-                Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean,
-                showLoginButton: getShowLoginButton(state)
-        }));
+	useAppSelector(state => ({
+		server: state.server.server,
+		Site_Name: state.settings.Site_Name as string,
+		Site_Url: state.settings.Site_Url as string,
+		Assets_favicon_512: state.settings.Assets_favicon_512 as IAssetsFavicon512,
+		Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled as boolean,
+		showLoginButton: getShowLoginButton(state)
+	}));
 
 const WorkspaceView = () => {
 	const navigation = useNavigation<TNavigation>();
@@ -39,14 +39,8 @@ const WorkspaceView = () => {
 
 	const workspaceDomain = useWorkspaceDomain();
 
-	const {
-		Accounts_iframe_enabled,
-		Assets_favicon_512,
-		Site_Name,
-		Site_Url,
-                server,
-                showLoginButton
-        } = useWorkspaceViewSelector();
+	const { Accounts_iframe_enabled, Assets_favicon_512, Site_Name, Site_Url, server, showLoginButton } =
+		useWorkspaceViewSelector();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -54,9 +48,9 @@ const WorkspaceView = () => {
 		});
 	}, [navigation, workspaceDomain]);
 
-        const login = () => {
-                if (Accounts_iframe_enabled) {
-                        navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
+	const login = () => {
+		if (Accounts_iframe_enabled) {
+			navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
 			return;
 		}
 		navigation.navigate('LoginView', { title: workspaceDomain });
@@ -71,7 +65,7 @@ const WorkspaceView = () => {
 					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</Text>
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}
-                                <RegisterDisabledComponent />
+				<RegisterDisabledComponent />
 			</FormContainerInner>
 		</FormContainer>
 	);

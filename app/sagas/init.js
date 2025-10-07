@@ -24,20 +24,20 @@ export const initLocalSettings = function* initLocalSettings() {
 const restore = function* restore() {
 	console.log('RESTORE');
 	try {
-                const server = DEFAULT_SERVER_URL;
-                UserPreferences.setString(CURRENT_SERVER, server);
-                const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const server = DEFAULT_SERVER_URL;
+		UserPreferences.setString(CURRENT_SERVER, server);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
-                if (!userId) {
-                        yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-                } else {
-                        yield localAuthenticate(server);
-                        const serverRecord = yield getServerById(server);
-                        if (!serverRecord) {
-                                return;
-                        }
-                        yield put(selectServerRequest(server, serverRecord.version));
-                }
+		if (!userId) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		} else {
+			yield localAuthenticate(server);
+			const serverRecord = yield getServerById(server);
+			if (!serverRecord) {
+				return;
+			}
+			yield put(selectServerRequest(server, serverRecord.version));
+		}
 
 		yield put(appReady({}));
 		const pushNotification = yield call(AsyncStorage.getItem, 'pushNotification');

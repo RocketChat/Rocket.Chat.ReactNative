@@ -49,34 +49,31 @@ const UserForm = () => {
 		setFocus
 	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema), defaultValues: { user: username || '' } });
 
-        const {
-                Accounts_EmailOrUsernamePlaceholder,
-                Accounts_PasswordPlaceholder,
-                Accounts_PasswordReset,
-                isFetching,
-                error,
-                failure
-        } = useAppSelector(state => ({
-                isFetching: state.login.isFetching,
-                Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
-                Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
-                Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
-                failure: state.login.failure,
-                error: state.login.error && state.login.error.data
-        }));
-        useEffect(() => {
-                if (failure) {
-                        if (error?.error === 'error-invalid-email') {
-                                const user = getValues('user');
-                                navigation.navigate('SendEmailConfirmationView', { user });
-                        } else {
-                                Alert.alert(I18n.t('Oops'), handleLoginErrors(error?.error));
-                        }
-                }
-        }, [error?.error, failure, getValues, navigation]);
-
-
-
+	const {
+		Accounts_EmailOrUsernamePlaceholder,
+		Accounts_PasswordPlaceholder,
+		Accounts_PasswordReset,
+		isFetching,
+		error,
+		failure
+	} = useAppSelector(state => ({
+		isFetching: state.login.isFetching,
+		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
+		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
+		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
+		failure: state.login.failure,
+		error: state.login.error && state.login.error.data
+	}));
+	useEffect(() => {
+		if (failure) {
+			if (error?.error === 'error-invalid-email') {
+				const user = getValues('user');
+				navigation.navigate('SendEmailConfirmationView', { user });
+			} else {
+				Alert.alert(I18n.t('Oops'), handleLoginErrors(error?.error));
+			}
+		}
+	}, [error?.error, failure, getValues, navigation]);
 
 	const forgotPassword = () => {
 		navigation.navigate('ForgotPasswordView', { title: workspaceDomain });

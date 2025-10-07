@@ -12,32 +12,32 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'flex-end'
 	},
-        text: {
-                ...sharedStyles.textRegular,
-                fontSize: 13
-        },
-        bold: {
-                ...sharedStyles.textSemibold
-        },
-        designer: {
-                ...sharedStyles.textRegular,
-                fontSize: 12,
-                marginTop: 4,
-                textAlign: 'center'
-        }
+	text: {
+		...sharedStyles.textRegular,
+		fontSize: 13
+	},
+	bold: {
+		...sharedStyles.textSemibold
+	},
+	designer: {
+		...sharedStyles.textRegular,
+		fontSize: 12,
+		marginTop: 4,
+		textAlign: 'center'
+	}
 });
 
 const AppVersion = React.memo(() => {
 	const { colors } = useTheme();
 	return (
-                <View style={styles.container}>
-                        <Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>
-                                {I18n.t('Version_no', { version: '' })}
-                                <Text style={styles.bold}>{getReadableVersion}</Text>
-                        </Text>
-                        <Text style={[styles.designer, { color: colors.fontSecondaryInfo }]}>{DESIGNER_INFO}</Text>
-                </View>
-        );
+		<View style={styles.container}>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>
+				{I18n.t('Version_no', { version: '' })}
+				<Text style={styles.bold}>{getReadableVersion}</Text>
+			</Text>
+			<Text style={[styles.designer, { color: colors.fontSecondaryInfo }]}>{DESIGNER_INFO}</Text>
+		</View>
+	);
 });
 
 export default AppVersion;

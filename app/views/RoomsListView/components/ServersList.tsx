@@ -28,7 +28,7 @@ const MAX_ROWS = 4.5;
 
 const ServersList = () => {
 	const subscription = useRef<Subscription | null>(null);
-        const [servers, setServers] = useState<Array<{ id: string; iconURL: string; name: string; version: string }>>([]);
+	const [servers, setServers] = useState<Array<{ id: string; iconURL: string; name: string; version: string }>>([]);
 	const dispatch = useDispatch();
 	const server = useAppSelector(state => state.server.server);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -40,27 +40,27 @@ const ServersList = () => {
 			const serversDB = database.servers;
 			const observable = await serversDB.get('servers').query().observeWithColumns(['name']);
 
-                        subscription.current = observable.subscribe(data => {
-                                const mappedServers = data
-                                        .map(serverModel => ({
-                                                id: serverModel.id,
-                                                iconURL: serverModel.iconURL,
-                                                name: serverModel.name,
-                                                version: serverModel.version
-                                        }))
-                                        .filter(serverModel => serverModel.id === DEFAULT_SERVER_URL);
+			subscription.current = observable.subscribe(data => {
+				const mappedServers = data
+					.map(serverModel => ({
+						id: serverModel.id,
+						iconURL: serverModel.iconURL,
+						name: serverModel.name,
+						version: serverModel.version
+					}))
+					.filter(serverModel => serverModel.id === DEFAULT_SERVER_URL);
 
-                                if (mappedServers.length === 0) {
-                                        mappedServers.push({
-                                                id: DEFAULT_SERVER_URL,
-                                                iconURL: '',
-                                                name: DEFAULT_SERVER_URL,
-                                                version: ''
-                                        });
-                                }
+				if (mappedServers.length === 0) {
+					mappedServers.push({
+						id: DEFAULT_SERVER_URL,
+						iconURL: '',
+						name: DEFAULT_SERVER_URL,
+						version: ''
+					});
+				}
 
-                                setServers(mappedServers);
-                        });
+				setServers(mappedServers);
+			});
 		};
 		init();
 
@@ -75,14 +75,14 @@ const ServersList = () => {
 		hideActionSheetRef();
 	};
 
-        const navToNewServer = (previousServer: string) => {
-                batch(() => {
-                        dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+	const navToNewServer = (previousServer: string) => {
+		batch(() => {
+			dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			dispatch(serverInitAdd(previousServer));
 		});
 	};
 
-        const select = async (serverParam: string, version: string) => {
+	const select = async (serverParam: string, version: string) => {
 		close();
 		if (server !== serverParam) {
 			logEvent(events.RL_CHANGE_SERVER);
@@ -103,13 +103,9 @@ const ServersList = () => {
 		}
 	};
 
-        const renderItem = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => (
-                <ServerItem
-                        item={item}
-                        onPress={() => select(item.id, item.version)}
-                        hasCheck={item.id === server}
-                />
-        );
+	const renderItem = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => (
+		<ServerItem item={item} onPress={() => select(item.id, item.version)} hasCheck={item.id === server} />
+	);
 
 	return (
 		<View
