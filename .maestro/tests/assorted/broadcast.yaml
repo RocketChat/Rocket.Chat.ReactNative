@@ -112,6 +112,7 @@ tags:
     env:
       USERNAME: ${output.otherUser.username}
       PASSWORD: ${output.otherUser.password}
+      CLEAR_STATE: true
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:

@@ -27,6 +27,7 @@ tags:
     env:
       USERNAME: ${output.userA.username}
       PASSWORD: ${output.userA.password}
+      CLEAR_STATE: true
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/change-e2ee-key.yaml'
 
@@ -149,6 +150,7 @@ tags:
     env:
       USERNAME: ${output.userB.username}
       PASSWORD: ${output.userB.password}
+      CLEAR_STATE: true
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -164,6 +166,7 @@ tags:
     env:
       USERNAME: ${output.userA.username}
       PASSWORD: ${output.userA.password}
+      CLEAR_STATE: true
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -180,6 +183,7 @@ tags:
     env:
       USERNAME: ${output.userB.username}
       PASSWORD: ${output.userB.password}
+      CLEAR_STATE: true
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -212,6 +216,7 @@ tags:
     env:
       USERNAME: ${output.userA.username}
       PASSWORD: ${output.userA.password}
+      CLEAR_STATE: true
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -240,6 +245,7 @@ tags:
     env:
       USERNAME: ${output.userA.username}
       PASSWORD: ${output.userA.password}
+      CLEAR_STATE: true
 
 # should reset user E2EE key, login again and recreate keys
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
@@ -249,6 +255,7 @@ tags:
     env:
       USERNAME: ${output.userA.username}
       PASSWORD: ${output.userA.password}
+      CLEAR_STATE: true
 - runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/change-e2ee-key.yaml'
 
@@ -309,6 +316,7 @@ tags:
     env:
       USERNAME: ${output.userB.username}
       PASSWORD: ${output.userB.password}
+      CLEAR_STATE: true
 
 # should send message and be able to read it
 - runFlow:
