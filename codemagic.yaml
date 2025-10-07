@@ -1,19 +1,24 @@
 workflows:
   rocketchat_apk:
     name: Build Rocket.Chat Android APK
-    max_build_duration: 60
+    max_build_duration: 90
     environment:
       node: 18
       java: 17
       vars:
-        GRADLE_OPTS: '-Xmx4096m'
+        GRADLE_OPTS: "-Xmx6144m -Dorg.gradle.jvmargs='-Xmx6144m -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8'"
     scripts:
+      - name: Clean Gradle cache
+        script: |
+          cd android
+          ./gradlew clean
       - name: Install dependencies
         script: |
+          cd ..
           npm install --legacy-peer-deps
       - name: Build APK
         script: |
           cd android
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon --stacktrace --warning-mode all
     artifacts:
       - android/app/build/outputs/apk/debug/*.apk
