@@ -15,14 +15,18 @@ const useIOSBackSwipeHandler = () => {
 			if (e?.data?.closing) {
 				iOSBackSwipe.current = true;
 			}
-			Keyboard.dismiss();
 		});
 
 		const transitionEndListener = navigation.addListener('transitionEnd' as any, () => {
 			iOSBackSwipe.current = false;
 		});
 
+		const blurListener = navigation.addListener('blur' as any, () => {
+			Keyboard.dismiss();
+		});
+
 		return () => {
+			blurListener();
 			transitionStartListener();
 			transitionEndListener();
 		};
