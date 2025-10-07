@@ -24,13 +24,10 @@ tags:
           visible:
             text: '.*Allow.*'
           timeout: 30000
-          optional: true
       - tapOn:
           text: '.*Allow.*'
-          optional: true
       - assertNotVisible:
           text: '.*Allow.*'
-          optional: true
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
