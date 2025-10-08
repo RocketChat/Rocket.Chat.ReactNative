@@ -1,0 +1,167 @@
+appId: chat.rocket.reactnative
+name: Join From Directory
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-7
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+- evalScript: ${output.team = output.utils.createRandomTeam(output.user.username, output.user.password)}
+- evalScript: ${output.thread = output.random() + 'thread'}
+- evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, 'join-from-directory', output.thread)}
+- evalScript: ${output.threadReply = output.utils.sendMessage(output.user.username, output.user.password, output.result.message.rid, 'insidethread', output.result.message._id)}
+
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should tap directory
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-directory'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-directory'
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view'
+    timeout: 60000
+
+# should search public channel and navigate
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view-search'
+    timeout: 60000
+- tapOn:
+    id: 'directory-view-search'
+- inputText: join-from-directory
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view-item-join-from-directory'
+    timeout: 60000
+- tapOn:
+    id: 'directory-view-item-join-from-directory'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-join-from-directory'
+    timeout: 60000
+
+# should navigate to thread messages view and load messages
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-threads'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-header-threads'
+- extendedWaitUntil:
+    visible:
+      id: 'thread-messages-view-${output.thread}'
+    timeout: 60000
+- tapOn:
+    id: 'custom-header-back'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-threads'
+    timeout: 60000
+
+# should search user and navigate
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-directory'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-directory'
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view-filter'
+    timeout: 60000
+- tapOn:
+    id: 'directory-view-filter'
+- extendedWaitUntil:
+    visible:
+      text: 'Users'
+    timeout: 60000
+- tapOn:
+    text: 'Users'
+- tapOn:
+    id: 'directory-view-search'
+- inputText: ${output.otherUser.username}
+
+# This is to handle debouncing on search
+- eraseText: 1
+- inputText: ${output.otherUser.username.slice(-1)}
+
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'directory-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.otherUser.username}'
+    timeout: 60000
+
+# should search team and navigate
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-directory'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-directory'
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view-filter'
+    timeout: 60000
+- tapOn:
+    id: 'directory-view-filter'
+- extendedWaitUntil:
+    visible:
+      text: 'Teams'
+    timeout: 60000
+- tapOn:
+    text: 'Teams'
+- tapOn:
+    id: 'directory-view-search'
+- inputText: ${output.team}
+- extendedWaitUntil:
+    visible:
+      id: 'directory-view-item-${output.team}'
+    timeout: 60000
+- tapOn:
+    id: 'directory-view-item-${output.team}'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.team}'
+    timeout: 60000

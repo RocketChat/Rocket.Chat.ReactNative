@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
 import styles from './styles';

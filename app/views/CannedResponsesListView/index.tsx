@@ -14,7 +14,7 @@ import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import log from '../../lib/methods/helpers/log';
 import CannedResponseItem from './CannedResponseItem';
 import DepartmentFilter from './DepartmentFilter';
@@ -22,9 +22,9 @@ import styles from './styles';
 import { ICannedResponse } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useDebounce } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import { getListCannedResponse, getDepartments } from '../../lib/services/restApi';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { ISubscription } from '../../definitions';
 
 const COUNT = 25;
@@ -81,9 +81,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	const getDepartments = useDebounce(async () => {
+	const handleGetDepartments = useDebounce(async () => {
 		try {
-			const res = await Services.getDepartments();
+			const res = await getDepartments();
 			if (res.success) {
 				setDepartments([...fixedScopes, ...(res.departments as ILivechatDepartment[])]);
 			}
@@ -105,7 +105,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	const getListCannedResponse = async ({
+	const handleGetListCannedResponse = async ({
 		text,
 		department,
 		depId,
@@ -117,7 +117,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		debounced: boolean;
 	}) => {
 		try {
-			const res = await Services.getListCannedResponse({
+			const res = await getListCannedResponse({
 				text,
 				offset,
 				count: COUNT,
@@ -155,13 +155,13 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	}, [departments, cannedResponses]);
 
 	const searchCallback = useDebounce(async (text = '', department = '', depId = '') => {
-		await getListCannedResponse({ text, department, depId, debounced: true });
+		await handleGetListCannedResponse({ text, department, depId, debounced: true });
 	}, 1000);
 
 	useEffect(() => {
 		getRoomFromDb();
-		getDepartments();
-		getListCannedResponse({ text: '', department: '', depId: '', debounced: false });
+		handleGetDepartments();
+		handleGetListCannedResponse({ text: '', department: '', depId: '', debounced: false });
 	}, []);
 
 	const newSearch = () => {
@@ -204,7 +204,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			return;
 		}
 		setLoading(true);
-		await getListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
+		await handleGetListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
 	const getHeader = () => {

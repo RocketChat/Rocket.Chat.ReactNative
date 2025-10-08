@@ -1,0 +1,83 @@
+appId: chat.rocket.reactnative
+name: Create DM Group
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-10
+
+---
+- runFlow: '../../helpers/launch-app.yaml'
+
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+
+# should have new message screen
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+    timeout: 60000
+
+# should have search input
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-search'
+    timeout: 60000
+
+# should navigate to create DM
+- extendedWaitUntil:
+    visible:
+      text: '.*Direct message.*'
+    timeout: 60000
+- tapOn:
+    text: '.*Direct message.*'
+
+# should add users
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-search'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-search'
+- inputText: 'rocket.cat'
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-rocket.cat'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-rocket.cat'
+- tapOn:
+    id: 'select-users-view-search'
+- eraseText
+- inputText: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-users-view-submit'
+    timeout: 60000
+- tapOn:
+    id: 'selected-users-view-submit'
+
+# check Group DM exist
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-rocket.cat, ${output.otherUser.username}'
+    timeout: 60000

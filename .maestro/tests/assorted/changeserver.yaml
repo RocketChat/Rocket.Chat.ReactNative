@@ -1,0 +1,149 @@
+appId: chat.rocket.reactnative
+name: Change Server
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-5
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should open the servers list, have the server add button and create workspace button
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-server-add'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-create-workspace-button'
+    timeout: 60000
+
+# should login to server, add new server, close the app, open the app and show previous logged server
+- tapOn:
+    id: 'rooms-list-header-server-add'
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
+- tapOn:
+    id: 'new-server-view-input'
+- inputText: ${output.data.alternateServer}
+- pressKey: 'enter'
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view'
+    timeout: 60000
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+
+# should add server and create new user
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}'
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view-register'
+    timeout: 60000
+- tapOn:
+    id: 'workspace-view-register'
+- extendedWaitUntil:
+    visible:
+      id: 'register-view-name'
+    timeout: 60000
+- runFlow: '../../helpers/create-account.yaml'
+- extendedWaitUntil:
+    notVisible:
+      id: 'rooms-list-view-item-${output.room.name}'
+    timeout: 60000
+
+# should reopen the app and show alternate server
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.alternateServer}
+
+# should change back to main server
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.server}'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.server}'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.room.name}'
+    timeout: 60000
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.server}
+
+# should reopen the app and show main server
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.server}

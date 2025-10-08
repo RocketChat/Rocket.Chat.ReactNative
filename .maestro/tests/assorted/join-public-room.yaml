@@ -1,0 +1,167 @@
+appId: chat.rocket.reactnative
+name: Join Public Room
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-7
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/login.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.data.channels.detoxpublic.name}
+
+# should have room screen
+- assertVisible:
+    id: room-view
+
+# should have actions button
+- assertVisible:
+    id: room-header
+
+# should have join
+- assertVisible:
+    id: room-view-join
+
+# should have join text
+- assertVisible:
+    text: You are in preview mode
+
+# should have join button
+- assertVisible:
+    id: room-view-join-button
+
+# should not have message composer
+- assertNotVisible:
+    id: message-composer
+
+# Room Actions
+- runFlow: '../../helpers/navigate-to-room-action.yaml'
+
+# should have room actions screen
+- assertVisible:
+    id: room-actions-view
+
+# should have info
+- assertVisible:
+    id: room-actions-info
+
+# should have members
+- assertVisible:
+    id: room-actions-members
+
+# should have leave
+- assertVisible:
+    id: room-actions-files
+
+# should have mentions
+- assertVisible:
+    id: room-actions-mentioned
+
+# should have starred
+- assertVisible:
+    id: room-actions-starred
+
+# should have share
+- assertVisible:
+    id: room-actions-share
+
+# should have pinned
+- assertVisible:
+    id: room-actions-pinned
+
+# should not have notifications
+- assertNotVisible:
+    id: room-actions-notifications
+
+# should not have leave channel
+- assertNotVisible:
+    id: room-actions-leave-channel
+
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.data.channels.detoxpublic.name}
+
+# should join room
+- assertVisible:
+    id: room-view-join-button
+- tapOn:
+    id: room-view-join-button
+- assertNotVisible:
+    id: room-view-join-button
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.data.channels.detoxpublic.name}
+- assertVisible:
+    id: room-view
+- assertVisible:
+    id: message-composer
+- assertNotVisible:
+    id: room-view-join
+
+# should send message
+- evalScript: ${output.message = output.random(5)}
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: ${output.message}
+- assertVisible:
+    text: '.*${output.message}.*'
+
+# should have notifications and leave channel
+- runFlow: '../../helpers/navigate-to-room-action.yaml'
+- assertVisible:
+    id: 'room-actions-view'
+- assertVisible:
+    id: 'room-actions-info'
+- assertVisible:
+    id: 'room-actions-members'
+- assertVisible:
+    id: 'room-actions-files'
+- assertVisible:
+    id: 'room-actions-mentioned'
+- assertVisible:
+    id: 'room-actions-starred'
+- assertVisible:
+    id: 'room-actions-share'
+- assertVisible:
+    id: 'room-actions-pinned'
+- assertVisible:
+    id: 'room-actions-notifications'
+- scrollUntilVisible:
+    element:
+      id: 'room-actions-leave-channel'
+
+# should leave room
+- assertVisible:
+    id: 'room-actions-leave-channel'
+- tapOn:
+    id: 'room-actions-leave-channel'
+- extendedWaitUntil:
+    visible:
+      text: '.*Yes.*'
+    timeout: 60000
+- tapOn:
+    text: '.*Yes.*'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: 'rooms-list-view-item-${output.data.channels.detoxpublic.name}'
+    timeout: 60000

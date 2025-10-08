@@ -14,7 +14,7 @@ import { IAssetsFavicon512 } from '../../definitions/IAssetsFavicon512';
 import { getShowLoginButton } from '../../selectors/login';
 import ServerAvatar from './ServerAvatar';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
 
 type TNavigation = CompositeNavigationProp<

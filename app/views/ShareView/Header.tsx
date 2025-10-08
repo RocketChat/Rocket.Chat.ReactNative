@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../lib/methods/helpers/room';

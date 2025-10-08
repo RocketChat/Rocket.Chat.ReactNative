@@ -1,5 +1,10 @@
 {
   "1_person_reacted": "1 人回复了",
+  "A11y_appearance_dialog_require_manual_dismissal": "需要手动关闭",
+  "A11y_appearance_dialogs": "对话框",
+  "A11y_appearance_show_alerts_as": "将警报显示为",
+  "A11y_appearance_toast_dismissed_automatically": "自动消失",
+  "A11y_appearance_toasts": "Toast",
   "Accessibility": "无障碍性",
   "Accessibility_and_Appearance": "辅助功能和外观",
   "Accessibility_statement": "无障碍声明",
