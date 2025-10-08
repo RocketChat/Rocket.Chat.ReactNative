@@ -9,7 +9,6 @@ import { Dispatch } from 'redux';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants/colors';
-import { MEDIA_QUALITY, themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';
@@ -41,6 +40,7 @@ import { appStart } from '../../actions/app';
 import { compressImage, compressVideo } from './utils';
 import userPreferences from '../../lib/methods/userPreferences';
 import { TQuality } from '../../definitions/IMedia';
+import { MEDIA_QUALITY } from '../../lib/constants/mediaAutoDownload';
 
 interface IShareViewState {
 	selected: IShareAttachment;
