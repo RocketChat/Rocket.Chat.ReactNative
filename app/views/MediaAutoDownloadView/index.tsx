@@ -32,13 +32,9 @@ const MediaAutoDownload = () => {
 		});
 	}, [navigation]);
 
-	const setMediaPref = (type: String) => {
-    if (type === 'Media_quality_high_definition_title') {
-      setMediaQualityPreference('HD');
-		} else {
-      setMediaQualityPreference('SD');
-		}
-	};
+  const setMediaPref = (quality: MediaQualityOption) => {
+    	setMediaQualityPreference(quality);
+  };
 
 	return (
 		<SafeAreaView>
@@ -48,14 +44,14 @@ const MediaAutoDownload = () => {
 					<List.Item
 						title='Media_quality_standard_title'
 						subtitle='Media_quality_standard_subtitle'
-						onPress={setMediaPref}
+            onPress={() => setMediaPref('SD')}
             right={() => (mediaQualityPreference === 'SD' ? <List.Icon name='check' /> : <></>)}
 					/>
 					<List.Separator />
 					<List.Item
 						title='Media_quality_high_definition_title'
 						subtitle='Media_quality_high_definition_subtitle'
-						onPress={setMediaPref}
+            onPress={() => setMediaPref('HD')}
             right={() => (mediaQualityPreference === 'HD' ? <List.Icon name='check' /> : <></>)}
 					/>
 				</List.Section>
