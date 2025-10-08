@@ -3,11 +3,16 @@ import { Image as ImageCompressor, Video as CompressVideo } from 'react-native-c
 export const QUALITY_SD = 0.5;
 
 export const compressImage = async (uri: string) => {
-	const result = await ImageCompressor.compress(uri, {
-		compressionMethod: 'manual',
-		quality: QUALITY_SD
-	});
-	return result;
+	try {
+		const result = await ImageCompressor.compress(uri, {
+			compressionMethod: 'manual',
+			quality: QUALITY_SD
+		});
+		return result;
+	} catch (error) {
+		console.error('Image compression failed:', error);
+		return uri; // Fallback to original URI
+	}
 };
 
 export const compressVideo = async (uri: string) => {
