@@ -260,13 +260,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		const { attachments: originalAttachments, room, text, thread, action, selected, selectedMessages, quality } = this.state;
 		sendLoadingEvent({ visible: true });
-		let processAttachments = originalAttachments;
+		let attachmentsToSend = originalAttachments;
 		if (quality === 'SD') {
-			processAttachments = await this.processAttachments(originalAttachments);
+			attachmentsToSend = await this.processAttachments(originalAttachments);
 		}
 
 		sendLoadingEvent({ visible: false });
-		const attachments = processAttachments;
+		const attachments = attachmentsToSend;
 		const { navigation, server, user, dispatch } = this.props;
 		// update state
 		await this.selectFile(selected);
