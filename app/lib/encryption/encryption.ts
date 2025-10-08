@@ -409,7 +409,9 @@ class Encryption {
 			 * Filter out subscriptions that already have their lastMessage decrypted.
 			 * We fetch updated subscriptions from server and decrypt them later.
 			 */
-			const subsEncryptedToDecrypt = subsEncrypted.filter(sub => sub.lastMessage?.e2e !== E2E_STATUS.DONE);
+			const subsEncryptedToDecrypt = subsEncrypted.filter(
+				sub => sub.lastMessage?.t === E2E_MESSAGE_TYPE && sub.lastMessage?.e2e !== E2E_STATUS.DONE
+			);
 
 			const preparedSubscriptions: (Model | null)[] = await Promise.all(
 				subsEncryptedToDecrypt.map(async (sub: TSubscriptionModel) => {
