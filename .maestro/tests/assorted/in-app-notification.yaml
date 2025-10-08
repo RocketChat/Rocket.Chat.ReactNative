@@ -14,9 +14,8 @@ tags:
 - evalScript: ${output.result = output.utils.createDM(output.receiver.username, output.receiver.password, output.sender.username)}
 - evalScript: ${output.dmCreatedRid = output.result.room.rid}
 
-- runFlow: ../../helpers/launch-app.yaml
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.receiver.username}
       PASSWORD: ${output.receiver.password}
