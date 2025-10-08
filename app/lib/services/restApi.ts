@@ -963,13 +963,27 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
-export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
 	const result = await Encryption.encryptMessage(message as IMessage);
 	if (!result) {
 		throw new Error('Failed to encrypt message');
 	}
+
+	if (result.content) {
+		// RC 0.49.0
+		return sdk.post('chat.update', {
+			roomId: message.rid,
+			msgId: message.id,
+			content: result.content
+		});
+	}
+
 	// RC 0.49.0
-	return sdk.post('chat.update', { roomId: result.rid, msgId: message.id, text: result.msg || '' });
+	return sdk.post('chat.update', {
+		roomId: message.rid,
+		msgId: message.id,
+		text: message.msg || ''
+	});
 };
 
 export const registerPushToken = () =>
