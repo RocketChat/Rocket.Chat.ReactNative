@@ -5,9 +5,8 @@ tags:
 env:
   MESSAGE: m4
 ---
-- runFlow: '../../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../../helpers/login.yaml'
+    file: '../../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}
@@ -17,9 +16,8 @@ env:
 - runFlow: '../utils/reset-e2ee-key.yaml'
 
 # Login again and recreate keys
-- runFlow: '../../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../../helpers/login.yaml'
+    file: '../../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}

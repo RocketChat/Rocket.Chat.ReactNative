@@ -3,9 +3,8 @@ name: Verify Message Unread
 tags:
   - 'flow'
 ---
-- runFlow: '../../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../../helpers/login.yaml'
+    file: '../../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}

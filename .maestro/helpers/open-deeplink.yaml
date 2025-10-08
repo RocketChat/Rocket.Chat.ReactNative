@@ -12,3 +12,9 @@ tags:
       platform: iOS
     commands:
       - tapOn: Open
+- runFlow:
+    when:
+      visible: '.*Would like to send you notifications.*'
+      platform: iOS
+    commands:
+      - tapOn: 'Allow'

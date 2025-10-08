@@ -8,9 +8,8 @@ env:
   MESSAGE_3: m2
   MESSAGE_4: m3
 ---
-- runFlow: '../../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../../helpers/login.yaml'
+    file: '../../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${USERNAME}
       PASSWORD: ${PASSWORD}

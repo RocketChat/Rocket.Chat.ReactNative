@@ -4,13 +4,12 @@ tags:
   - 'util'
 
 ---
+- stopApp: chat.rocket.reactnative
 - runFlow:
     when:
       true: CLEAR_STATE
-      platform: android
     commands:
-      - clearState
-      - stopApp: chat.rocket.reactnative
+      - clearState: chat.rocket.reactnative
 - evalScript: ${output.login = output.utils.login(USERNAME, PASSWORD)}
 - runFlow:
     file: 'open-deeplink.yaml'
