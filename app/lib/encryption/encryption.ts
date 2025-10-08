@@ -536,10 +536,7 @@ class Encryption {
 	decryptSubscription = async (subscription: Partial<ISubscription>) => {
 		const { rid } = subscription;
 		const roomE2E = await this.getRoomInstance(rid as string);
-		if (!roomE2E || !roomE2E?.hasSessionKey()) {
-			return;
-		}
-		return roomE2E.decryptSubscription(subscription);
+		return roomE2E?.decryptSubscription(subscription);
 	};
 
 	// Encrypt a message
