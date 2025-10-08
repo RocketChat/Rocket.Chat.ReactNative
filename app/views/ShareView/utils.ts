@@ -11,8 +11,13 @@ export const compressImage = async (uri: string) => {
 };
 
 export const compressVideo = async (uri: string) => {
-	const result = await CompressVideo.compress(uri, {
-		compressionMethod: 'auto'
-	});
-	return result;
+	try {
+		const result = await CompressVideo.compress(uri, {
+			compressionMethod: 'auto'
+		});
+		return result;
+	} catch (error) {
+		console.error('Video compression failed:', error);
+		return uri; // Fallback to original URI
+	}
 };
