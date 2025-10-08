@@ -8,14 +8,12 @@ tags:
   - test-12
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.otherUser = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

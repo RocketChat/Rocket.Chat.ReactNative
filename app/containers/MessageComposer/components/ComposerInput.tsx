@@ -35,6 +35,7 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
+import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -64,6 +65,9 @@ export const ComposerInput = memo(
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
 		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
+
+		// workaround to handle issues with iOS back swipe navigation
+		const { iOSBackSwipe } = useIOSBackSwipeHandler();
 
 		// Draft/Canned Responses
 		useEffect(() => {
@@ -204,8 +208,10 @@ export const ComposerInput = memo(
 		};
 
 		const onBlur: TextInputProps['onBlur'] = () => {
-			setFocused(false);
-			stopAutocomplete();
+			if (!iOSBackSwipe.current) {
+				setFocused(false);
+				stopAutocomplete();
+			}
 		};
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
