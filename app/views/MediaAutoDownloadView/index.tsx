@@ -21,7 +21,7 @@ const MediaAutoDownload = () => {
 		IMAGE_PREFERENCE_DOWNLOAD,
 		'wifi_mobile_data'
 	);
-	const [mediaQuilityPreference, setMediaQuilityPreference] = useUserPreferences<MediaQualityOption>(MEDIA_QUALITY, 'SD');
+  const [mediaQualityPreference, setMediaQualityPreference] = useUserPreferences<MediaQualityOption>(MEDIA_QUALITY, 'SD');
 	const [videoPreference, setVideoPreference] = useUserPreferences<MediaDownloadOption>(VIDEO_PREFERENCE_DOWNLOAD, 'wifi');
 	const [audioPreference, setAudioPreference] = useUserPreferences<MediaDownloadOption>(AUDIO_PREFERENCE_DOWNLOAD, 'wifi');
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'MediaAutoDownloadView'>>();
@@ -33,10 +33,10 @@ const MediaAutoDownload = () => {
 	}, [navigation]);
 
 	const setMediaPref = (type: String) => {
-		if (type === 'Media_quality_high_definition_title') {
-			setMediaQuilityPreference('HD');
+    if (type === 'Media_quality_high_definition_title') {
+      setMediaQualityPreference('HD');
 		} else {
-			setMediaQuilityPreference('SD');
+      setMediaQualityPreference('SD');
 		}
 	};
 
@@ -49,14 +49,14 @@ const MediaAutoDownload = () => {
 						title='Media_quality_standard_title'
 						subtitle='Media_quality_standard_subtitle'
 						onPress={setMediaPref}
-						right={() => (mediaQuilityPreference === 'SD' ? <List.Icon name='check' /> : <></>)}
+            right={() => (mediaQualityPreference === 'SD' ? <List.Icon name='check' /> : <></>)}
 					/>
 					<List.Separator />
 					<List.Item
 						title='Media_quality_high_definition_title'
 						subtitle='Media_quality_high_definition_subtitle'
 						onPress={setMediaPref}
-						right={() => (mediaQuilityPreference === 'HD' ? <List.Icon name='check' /> : <></>)}
+            right={() => (mediaQualityPreference === 'HD' ? <List.Icon name='check' /> : <></>)}
 					/>
 				</List.Section>
 				<List.Section title='Media_auto_download'>
