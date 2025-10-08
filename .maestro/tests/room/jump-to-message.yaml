@@ -8,9 +8,8 @@ tags:
   - test-11
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.account.adminUser}
       PASSWORD: ${output.account.adminPassword}
