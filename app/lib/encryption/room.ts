@@ -780,7 +780,7 @@ export default class EncryptionRoom {
 		}
 
 		// If the subscription doesn't have a lastMessage just return
-		const { lastMessage } = subscription;
+		const { rid, lastMessage } = subscription;
 		if (!lastMessage) {
 			return subscription;
 		}
@@ -797,14 +797,13 @@ export default class EncryptionRoom {
 			return subscription;
 		}
 
-		const { rid } = subscription;
 		if (!rid) {
 			return subscription;
 		}
 
 		if (
 			this.subscription?.lastMessage?._updatedAt &&
-			lastMessage._updatedAt &&
+			lastMessage?._updatedAt &&
 			new Date(this.subscription.lastMessage._updatedAt).getTime() === new Date(lastMessage._updatedAt).getTime() &&
 			this.subscription?.lastMessage?.e2e === E2E_STATUS.DONE
 		) {
