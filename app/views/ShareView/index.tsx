@@ -360,7 +360,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			const processingPromises = originalAttachments.map(async attachment => {
 				try {
-					let compressedPath = '';
+          let compressedPath: string | undefined;
 
 					if (attachment.mime?.startsWith('image/')) {
 						compressedPath = await compressImage(attachment.path);
@@ -372,7 +372,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					return {
 						...attachment,
 						description: text,
-						path: compressedPath
+            path: compressedPath || attachment.path
 					};
 				} catch (compressionError) {
 					return attachment;
