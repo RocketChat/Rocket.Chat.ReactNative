@@ -4,6 +4,8 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-10
 
 ---
 - runFlow: '../../helpers/launch-app.yaml'
@@ -12,7 +14,7 @@ onFlowComplete:
 - evalScript: ${output.otherUser = output.utils.createUser()}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

@@ -17,9 +17,18 @@ import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATIO
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
-import { getPermalinkMessage, getQuoteMessageLink } from '../../lib/methods';
+import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
+import { getQuoteMessageLink } from '../../lib/methods/getQuoteMessageLink';
 import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import {
+	deleteMessage,
+	markAsUnread,
+	toggleStarMessage,
+	togglePinMessage,
+	createDirectMessage,
+	translateMessage,
+	reportMessage
+} from '../../lib/services/restApi';
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -218,7 +227,7 @@ const MessageActions = React.memo(
 				const { rid } = room;
 				try {
 					const db = database.active;
-					const result = await Services.markAsUnread({ messageId });
+					const result = await markAsUnread({ messageId });
 					if (result.success) {
 						const subRecord = await getSubscriptionByRoomId(rid);
 						if (!subRecord) {
@@ -276,7 +285,7 @@ const MessageActions = React.memo(
 
 			const handleReplyInDM = async (message: TAnyMessageModel) => {
 				if (message?.u?.username) {
-					const result = await Services.createDirectMessage(message.u.username);
+					const result = await createDirectMessage(message.u.username);
 					if (result.success) {
 						const { room } = result;
 						const params = {
@@ -294,8 +303,7 @@ const MessageActions = React.memo(
 			const handleStar = async (messageId: string, starred: boolean) => {
 				logEvent(starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
-					await Services.toggleStarMessage(messageId, starred);
-
+					await toggleStarMessage(messageId, starred);
 					EventEmitter.emit(LISTENER, { message: starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
@@ -306,7 +314,7 @@ const MessageActions = React.memo(
 			const handlePin = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_PIN);
 				try {
-					await Services.togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
+					await togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_PIN_F);
 					log(e);
@@ -345,7 +353,7 @@ const MessageActions = React.memo(
 					});
 					const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);
 					if (!translatedMessage) {
-						await Services.translateMessage(message.id, room.autoTranslateLanguage);
+						await translateMessage(message.id, room.autoTranslateLanguage);
 					}
 				} catch (e) {
 					log(e);
@@ -355,7 +363,7 @@ const MessageActions = React.memo(
 			const handleReport = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_REPORT);
 				try {
-					await Services.reportMessage(message.id);
+					await reportMessage(message.id);
 					Alert.alert(I18n.t('Message_Reported'));
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_REPORT_F);
@@ -370,7 +378,7 @@ const MessageActions = React.memo(
 					onPress: async () => {
 						try {
 							logEvent(events.ROOM_MSG_ACTION_DELETE);
-							await Services.deleteMessage(message.id, message.subscription ? message.subscription.id : '');
+							await deleteMessage(message.id, message.subscription ? message.subscription.id : '');
 						} catch (e) {
 							logEvent(events.ROOM_MSG_ACTION_DELETE_F);
 							log(e);
