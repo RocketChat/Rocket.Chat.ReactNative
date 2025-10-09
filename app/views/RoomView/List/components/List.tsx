@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import React, { useEffect, useMemo, useState } from 'react';
+import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 
-import { isIOS } from '../../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
-import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from '../definitions';
-import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
+import { SCROLL_LIMIT } from '../constants';
+import NavBottomFAB from './NavBottomFAB';
 
 const styles = StyleSheet.create({
 	list: {
@@ -20,38 +18,53 @@ const styles = StyleSheet.create({
 
 const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
+	const [userScrolled, setUserScrolled] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
-	const scrollHandler = useAnimatedScrollHandler({
-		onScroll: event => {
-			if (event.contentOffset.y > SCROLL_LIMIT) {
-				runOnJS(setVisible)(true);
-			} else {
-				runOnJS(setVisible)(false);
-			}
+
+	const maintainVisibleContentPositionConfig = useMemo(
+		() => ({
+			autoscrollToBottomThreshold: 0.05,
+			startRenderingFromBottom: true,
+			animateAutoScrollToBottom: true
+		}),
+		[]
+	);
+
+	const onScrollHandler = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+		const currentScroll = Math.round(e.nativeEvent?.contentSize?.height) - Math.round(e.nativeEvent?.contentOffset.y);
+		const layoutLimit = e.nativeEvent.layoutMeasurement.height + SCROLL_LIMIT;
+
+		if (layoutLimit < currentScroll) {
+			setVisible(true);
+		} else {
+			setVisible(false);
+			setUserScrolled(false);
 		}
-	});
+	};
+
+	useEffect(() => {
+		if (!userScrolled) {
+			setTimeout(() => {
+				listRef?.current.scrollToEnd();
+			}, 200);
+		}
+	}, [props.data?.length]);
 
 	return (
 		<View style={styles.list}>
-			{/* @ts-ignore */}
-			<Animated.FlatList
+			<FlashList
+				onMomentumScrollBegin={() => setUserScrolled(true)}
+				ref={listRef}
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
-				ref={listRef}
-				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted
-				removeClippedSubviews={isIOS}
-				initialNumToRender={7}
-				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
+				onScroll={onScrollHandler}
 				scrollEventThrottle={16}
-				onScroll={scrollHandler}
+				keyboardShouldPersistTaps='handled'
+				maintainVisibleContentPosition={maintainVisibleContentPositionConfig}
 				{...props}
-				{...scrollPersistTaps}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>

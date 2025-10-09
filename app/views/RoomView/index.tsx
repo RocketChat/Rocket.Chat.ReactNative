@@ -192,7 +192,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		this.messageComposerRef = React.createRef();
 		this.list = React.createRef();
-		this.flatList = React.createRef();
+		this.flatList = React.createRef() as TListRef;
 		this.joinCode = React.createRef();
 		this.mounted = false;
 

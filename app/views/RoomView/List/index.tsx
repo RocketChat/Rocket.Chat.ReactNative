@@ -15,14 +15,10 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			serverVersion,
 			hideSystemMessages
 		});
-		const {
-			jumpToBottom,
-			jumpToMessage,
-			cancelJumpToMessage,
-			viewabilityConfigCallbackPairs,
-			handleScrollToIndexFailed,
-			highlightedMessageId
-		} = useScroll({ listRef, messagesIds });
+		const { jumpToBottom, jumpToMessage, cancelJumpToMessage, highlightedMessageId } = useScroll({
+			listRef,
+			messagesIds
+		});
 
 		const onEndReached = useDebounce(() => {
 			fetchMessages();
@@ -33,7 +29,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			cancelJumpToMessage
 		}));
 
-		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index - 1], highlightedMessageId);
 
 		return (
 			<>
@@ -42,14 +38,9 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					listRef={listRef}
 					data={messages}
 					renderItem={renderItem}
-					onEndReached={onEndReached}
-					onScrollToIndexFailed={handleScrollToIndexFailed}
-					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+					onStartReached={onEndReached}
+					onStartReachedThreshold={0.9}
 					jumpToBottom={jumpToBottom}
-					maintainVisibleContentPosition={{
-						minIndexForVisible: 0,
-						autoscrollToTopThreshold: 0
-					}}
 				/>
 			</>
 		);
