@@ -12,6 +12,8 @@ import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
 
 import java.math.BigInteger;
 
+import chat.rocket.reactnative.BuildConfig;
+
 class RNCallback implements Callback {
     public void invoke(Object... args) {
 
@@ -114,19 +116,81 @@ public class Ejson {
     public String token() {
         ensureMMKVInitialized();
         String userId = userId();
-        if (mmkv != null && userId != null) {
-            return mmkv.decodeString(TOKEN_KEY.concat(userId));
+        
+        if (mmkv == null) {
+            Log.e(TAG, "token() called but MMKV is null");
+            return "";
         }
-        return "";
+        
+        if (userId == null || userId.isEmpty()) {
+            Log.w(TAG, "token() called but userId is null or empty");
+            return "";
+        }
+        
+        String key = TOKEN_KEY.concat(userId);
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Looking up token with key: " + key);
+        }
+        
+        String token = mmkv.decodeString(key);
+        
+        if (token == null || token.isEmpty()) {
+            Log.w(TAG, "No token found in MMKV for userId");
+        } else if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Successfully retrieved token from MMKV");
+        }
+        
+        return token != null ? token : "";
     }
 
     public String userId() {
         ensureMMKVInitialized();
         String serverURL = serverURL();
-        if (mmkv != null && serverURL != null) {
-            return mmkv.decodeString(TOKEN_KEY.concat(serverURL));
+        String key = TOKEN_KEY.concat(serverURL);
+        
+        if (mmkv == null) {
+            Log.e(TAG, "userId() called but MMKV is null");
+            return "";
         }
-        return "";
+        
+        if (serverURL == null) {
+            Log.e(TAG, "userId() called but serverURL is null");
+            return "";
+        }
+        
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Looking up userId with key: " + key);
+        }
+        
+        String userId = mmkv.decodeString(key);
+        
+        if (userId == null || userId.isEmpty()) {
+            Log.w(TAG, "No userId found in MMKV for server: " + sanitizeUrl(serverURL));
+            
+            // Only list keys in debug builds for diagnostics
+            if (BuildConfig.DEBUG) {
+                try {
+                    String[] allKeys = mmkv.allKeys();
+                    if (allKeys != null && allKeys.length > 0) {
+                        Log.d(TAG, "Available MMKV keys count: " + allKeys.length);
+                        // Log only keys that match the TOKEN_KEY pattern for security
+                        for (String k : allKeys) {
+                            if (k != null && k.startsWith("reactnativemeteor_usertoken")) {
+                                Log.d(TAG, "Found auth key: " + k);
+                            }
+                        }
+                    } else {
+                        Log.w(TAG, "MMKV has no keys stored");
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error listing MMKV keys", e);
+                }
+            }
+        } else if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Successfully retrieved userId from MMKV");
+        }
+        
+        return userId != null ? userId : "";
     }
 
     public String privateKey() {
@@ -157,5 +221,30 @@ public class Ejson {
         String ciphertext;
         String kid;
         String iv;
+    }
+    
+    /**
+     * Sanitize URL for logging by removing sensitive information
+     * @param url The URL to sanitize
+     * @return Sanitized URL showing only the protocol and host
+     */
+    private String sanitizeUrl(String url) {
+        if (url == null) {
+            return "[null]";
+        }
+        try {
+            // Simple sanitization - just show protocol and host
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+                int protocolEnd = url.indexOf("://") + 3;
+                int pathStart = url.indexOf("/", protocolEnd);
+                if (pathStart != -1) {
+                    return url.substring(0, pathStart);
+                }
+                return url;
+            }
+        } catch (Exception e) {
+            // If parsing fails, just return a generic placeholder
+        }
+        return "[url]";
     }
 }

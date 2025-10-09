@@ -69,11 +69,15 @@ public class CustomPushNotification extends PushNotification {
         Ejson receivedEjson = safeFromJson(received.getString("ejson", "{}"), Ejson.class);
 
         if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
+            android.util.Log.d("RocketChat.CustomPush", "Detected message-id-only notification, will fetch full content from server");
             notificationLoad(receivedEjson, new Callback() {
                 @Override
                 public void call(@Nullable Bundle bundle) {
                     if (bundle != null) {
+                        android.util.Log.d("RocketChat.CustomPush", "Successfully loaded notification content from server, updating notification props");
                         mNotificationProps = createProps(bundle);
+                    } else {
+                        android.util.Log.w("RocketChat.CustomPush", "Failed to load notification content from server, will display placeholder notification");
                     }
                 }
             });
@@ -154,6 +158,7 @@ public class CustomPushNotification extends PushNotification {
 
             // message couldn't be loaded from server (Fallback notification)
         } else {
+            android.util.Log.w("RocketChat.CustomPush", "Displaying fallback notification for message-id-only (content failed to load from server)");
             Gson gson = new Gson();
             // iterate over the current notification ids to dismiss fallback notifications from same server
             for (Map.Entry<String, List<Bundle>> bundleList : notificationMessages.entrySet()) {
@@ -168,6 +173,7 @@ public class CustomPushNotification extends PushNotification {
                         String id = not.getString("notId");
                         // cancel this notification
                         notificationManager.cancel(Integer.parseInt(id));
+                        android.util.Log.d("RocketChat.CustomPush", "Cancelled previous fallback notification from same server");
                     }
                 }
             }
