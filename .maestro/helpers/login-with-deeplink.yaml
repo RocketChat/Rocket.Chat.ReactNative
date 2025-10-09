@@ -31,15 +31,14 @@ tags:
       - assertNotVisible:
           text: '.*Allow.*'
           optional: true
-
 - runFlow:
     when:
       platform: iOS
       visible:
-        text: '.*Allow.*'
+        text: 'Allow'
     commands:
       - tapOn:
-          text: '.*Allow.*'
+          text: 'Allow'
           optional: true
 - extendedWaitUntil:
     visible:

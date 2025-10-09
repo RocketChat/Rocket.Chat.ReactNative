@@ -91,7 +91,7 @@ jobs:
       - name: Run Tests
         run: |
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-          maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --format junit --output maestro-report.xml
+          maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --exclude-tags=android-only --format junit --output maestro-report.xml
         env:
           SHARD: ${{ inputs.shard }}
 
