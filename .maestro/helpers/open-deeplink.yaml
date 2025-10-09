@@ -1,0 +1,13 @@
+appId: chat.rocket.reactnative
+name: Open Deep Link
+tags:
+  - 'util'
+
+---
+- openLink:
+    link: ${link}
+- runFlow:
+    when:
+      visible: '.*Open in.*'
+    commands:
+      - tapOn: Open

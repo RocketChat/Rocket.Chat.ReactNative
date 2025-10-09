@@ -49,16 +49,19 @@ tags:
     commands:
       - extendedWaitUntil:
           visible:
-            text: 'LOGOUT'
+            id: 'android:id/button1'
           timeout: 60000
-      - tapOn: 'LOGOUT'
+      - tapOn:
+          text: Logout
+          index: 0
 
 - runFlow:
     when:
       platform: iOS
     commands:
       - tapOn:
-          point: '67%,57%'
+          text: Logout
+          index: 1
 
 - extendedWaitUntil:
     visible:

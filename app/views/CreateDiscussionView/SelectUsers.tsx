@@ -8,7 +8,7 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType, IUser } from '../../definitions';
-import { search } from '../../lib/methods';
+import { search } from '../../lib/methods/search';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 
@@ -72,6 +72,7 @@ const SelectUsers = ({
 				placeholder={{ text: I18n.t('Select_Users') }}
 				context={BlockContext.FORM}
 				multiselect
+				testID='create-discussion-select-users'
 			/>
 		</View>
 	);

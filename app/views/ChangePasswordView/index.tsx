@@ -10,11 +10,11 @@ import { sha256 } from 'js-sha256';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isAndroid, showErrorAlert } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { TwoFactorMethods } from '../../definitions/ITotp';
-import { Services } from '../../lib/services';
+import { saveUserProfile, setPassword } from '../../lib/services/restApi';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { setUser } from '../../actions/login';
 import { LISTENER } from '../../containers/Toast';
@@ -108,7 +108,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 
 		try {
 			setValue('saving', true);
-			await Services.setUserPassword(newPassword);
+			await setPassword(newPassword);
 			dispatch(setUser({ requirePasswordChange: false }));
 			navigation.goBack();
 		} catch (error: any) {
@@ -131,10 +131,7 @@ const ChangePasswordView = ({ navigation }: IChangePasswordViewProps) => {
 			const { username, emails } = user;
 			if (fromProfileView) {
 				const params = { currentPassword: sha256(currentPassword), newPassword, username, email: emails?.[0].address || '' };
-				const twoFactorOptions = currentPassword
-					? { twoFactorCode: params?.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
-					: null;
-				const result = await Services.saveUserProfileMethod(params, {}, twoFactorCode || twoFactorOptions);
+				const result = await saveUserProfile(params);
 
 				if (result) {
 					logEvent(events.PROFILE_SAVE_CHANGES);

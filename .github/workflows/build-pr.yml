@@ -80,6 +80,12 @@ jobs:
     uses: ./.github/workflows/maestro-android.yml
     needs: [e2e-build-android]
     secrets: inherit
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+      fail-fast: false
+    with:
+      shard: ${{ matrix.shard }}
     
   e2e-build-ios:
     name: E2E Build iOS
@@ -94,3 +100,4 @@ jobs:
     uses: ./.github/workflows/maestro-ios.yml
     needs: [e2e-build-ios]
     secrets: inherit
+    

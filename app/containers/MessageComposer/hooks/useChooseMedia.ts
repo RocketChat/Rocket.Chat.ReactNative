@@ -9,7 +9,7 @@ import log from '../../../lib/methods/helpers/log';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useRoomContext } from '../../../views/RoomView/context';
 import ImagePicker, { ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 

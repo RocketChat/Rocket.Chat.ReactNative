@@ -17,7 +17,7 @@ import { connectRequest, connectSuccess, disconnect as disconnectAction } from '
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
-import { defaultSettings } from '../constants';
+import { defaultSettings } from '../constants/defaultSettings';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { getSettings } from '../methods/getSettings';
 import { onRolesChanged } from '../methods/getRoles';
@@ -26,6 +26,7 @@ import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../met
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { isIOS } from '../methods/helpers/deviceInfo';
 import { isSsl } from '../methods/helpers/isSsl';
+import fetch from '../methods/helpers/fetch';
 
 interface IServices {
 	[index: string]: string | boolean;

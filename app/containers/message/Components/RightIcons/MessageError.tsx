@@ -4,7 +4,7 @@ import Touchable from '../../Touchable';
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { BUTTON_HIT_SLOP } from '../../utils';
-import { themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
 import MessageContext from '../../Context';
 import { useTheme } from '../../../../theme';
 

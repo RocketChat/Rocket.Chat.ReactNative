@@ -1,6 +1,6 @@
 import { ImageStyle, StyleProp, TextInputProps } from 'react-native';
 
-import { emojisByCategory } from '../../lib/constants';
+import { emojisByCategory } from '../../lib/constants/emojis';
 import { ICustomEmoji, IEmoji } from '../../definitions';
 
 export enum EventTypes {

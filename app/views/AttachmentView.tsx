@@ -7,14 +7,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 
-import { isImageBase64 } from '../lib/methods';
+import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
 import { LISTENER } from '../containers/Toast';
 import { IAttachment } from '../definitions';
 import I18n from '../i18n';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';

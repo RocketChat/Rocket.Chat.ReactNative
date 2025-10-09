@@ -7,7 +7,7 @@ import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../CustomIcon';
 import { IEmoji } from '../../../definitions';
-import { useFrequentlyUsedEmoji } from '../../../lib/hooks';
+import { useFrequentlyUsedEmoji } from '../../../lib/hooks/useFrequentlyUsedEmoji';
 import { addFrequentlyUsed, searchEmojis } from '../../../lib/methods/emojis';
 import { useDebounce } from '../../../lib/methods/helpers/debounce';
 import sharedStyles from '../../../views/Styles';
