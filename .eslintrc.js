@@ -7,7 +7,7 @@ module.exports = {
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier'],
+	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier', 'plugin:react-hooks/recommended'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
