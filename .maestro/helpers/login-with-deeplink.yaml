@@ -36,6 +36,16 @@ tags:
       - assertNotVisible:
           text: '.*Allow.*'
           optional: true
+
+- runFlow:
+    when:
+      platform: iOS
+      visible:
+        text: '.*Allow.*'
+    commands:
+      - tapOn:
+          text: '.*Allow.*'
+          optional: true
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
