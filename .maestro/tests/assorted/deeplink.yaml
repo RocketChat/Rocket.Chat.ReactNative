@@ -1,0 +1,312 @@
+appId: chat.rocket.reactnative
+name: DeepLink Test
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-6
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.login = output.utils.login(output.user.username, output.user.password)}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
+- evalScript: ${output.threadMessage = 'to-thread-' + output.random()}
+- evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, output.room.name, output.threadMessage)}
+- evalScript: ${output.utils.sendMessage(output.user.username, output.user.password, output.result.message.rid, 'insidethread', output.result.message._id)}
+
+# should run a deep link to an invalid account and raise error
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.server, `userId=123&token=abc`)}
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view'
+    timeout: 60000
+
+# should authenticate and navigate
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- stopApp: chat.rocket.reactnative
+- evalScript: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.server}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.room.name}'
+    timeout: 60000
+
+# should create a new account on another server
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- runFlow:
+    file: '../../helpers/navigate-to-register.yaml'
+    env:
+      server: ${output.data.alternateServer}
+- runFlow: '../../helpers/create-account.yaml'
+
+# should authenticate and navigate back to the previous server
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken, '&path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.server}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.room.name}'
+    timeout: 60000
+
+# should navigate to the room using path
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+
+# should navigate to the thread using path
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name, '/thread/', output.result.message._id)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.threadMessage}'
+    timeout: 60000
+
+# should navigate to the room using rid
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'rid=', output.room._id)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+
+# should resume from background and navigate to the room
+- pressKey: home
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+
+# should simulate a tap on a push notification and navigate to the room
+# we are skipping this because we can't send push on iOS simulator and for android we have similar test
+
+# should change server
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}'
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.alternateServer}
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', output.data.server, 'path=group/', output.room.name)}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room.name}'
+    timeout: 60000
+
+# should add a not existing server and fallback to the previous one
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('room', 'https://google.com')}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+
+# should share text
+- evalScript: ${output.message = output.random()}
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: rocketchat://shareextension?text=${output.message}
+- extendedWaitUntil:
+    visible:
+      id: 'share-list-view'
+    timeout: 60000
+
+- extendedWaitUntil:
+    visible:
+      id: 'share-extension-item-${output.room.name}'
+    timeout: 60000
+- tapOn:
+    id: 'share-extension-item-${output.room.name}'
+- extendedWaitUntil:
+    visible:
+      id: 'share-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Send'
+    timeout: 60000
+- tapOn:
+    text: 'Send'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- extendedWaitUntil:
+    visible:
+      text: '.*${output.message}.*'
+    timeout: 60000
+
+# should change server and share text
+- evalScript: ${output.message = output.random()}
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}'
+- runFlow:
+    file: './utils/check-server.yaml'
+    env:
+      server: ${output.data.alternateServer}
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: rocketchat://shareextension?text=${output.message}
+- extendedWaitUntil:
+    visible:
+      id: 'share-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}'
+- extendedWaitUntil:
+    visible:
+      id: 'select-server-view'
+    timeout: 60000
+- tapOn:
+    id: 'server-item-${output.data.server}'
+- extendedWaitUntil:
+    visible:
+      id: 'share-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.server}'
+    timeout: 60000
+
+- extendedWaitUntil:
+    visible:
+      id: 'share-extension-item-${output.room.name}'
+    timeout: 60000
+- tapOn:
+    id: 'share-extension-item-${output.room.name}'
+- extendedWaitUntil:
+    visible:
+      id: 'share-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Send'
+    timeout: 60000
+- tapOn:
+    text: 'Send'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room.name}
+- extendedWaitUntil:
+    visible:
+      text: '.*${output.message}.*'
+    timeout: 60000
+
+# should open share without being logged in and go to onboarding
+- runFlow:
+    file: '../../helpers/launch-app.yaml'
+- stopApp: chat.rocket.reactnative
+- runFlow:
+    file: '../../helpers/open-deeplink.yaml'
+    env:
+      link: rocketchat://shareextension?text=whatever
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000

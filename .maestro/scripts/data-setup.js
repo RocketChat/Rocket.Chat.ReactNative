@@ -6,6 +6,21 @@ const TEAM_TYPE = {
 let headers = {}
 const { data } = output;
 
+const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
+
+const amp = '&';
+
+const getDeepLink = (method, server, ...params) => {
+    let deeplink = `rocketchat://${method}?host=${server.replace(/^(http:\/\/|https:\/\/)/, '')}`;
+
+    if (params.length > 0) {
+        deeplink += `&${params.join('')}`;
+    }
+
+    return deeplink;
+};
+
+
 const login = (username, password) => {
     const response = http.post(`${data.server}/api/v1/login`, {
         headers: {
@@ -28,7 +43,7 @@ const createUser = (customProps) => {
     const user = output.randomUser();
 
     login(output.account.adminUser, output.account.adminPassword);
-    
+
     http.post(`${data.server}/api/v1/users.create`, {
         headers: {
             'Content-Type': 'application/json',
@@ -65,7 +80,7 @@ const deleteCreatedUser = async ({ username: usernameToDelete }) => {
                 ...headers
             }
         });
-        
+
         const userId = json(result.body)?.data?.user?._id;
         http.post(`${data.server}/api/v1/users.delete`, { userId, confirmRelinquish: true }, {
             headers: {
@@ -94,10 +109,10 @@ const createRandomTeam = (username, password) => {
     return teamName;
 }
 
-const createRandomRoom = ( username, password, type = 'c' ) => {
+const createRandomRoom = (username, password, type = 'c') => {
     login(username, password);
     const room = `room${output.random()}`;
-    
+
     const response = http.post(`${data.server}/api/v1/${type === 'c' ? 'channels.create' : 'groups.create'}`, {
         headers: {
             'Content-Type': 'application/json',
@@ -117,7 +132,7 @@ const createRandomRoom = ( username, password, type = 'c' ) => {
 const sendMessage = (username, password, channel, msg, tmid) => {
     login(username, password);
     const channelParam = tmid ? { roomId: channel } : { channel };
-    
+
     const response = http.post(`${data.server}/api/v1/chat.postMessage`, {
         headers: {
             'Content-Type': 'application/json',
@@ -135,15 +150,10 @@ const sendMessage = (username, password, channel, msg, tmid) => {
     return result;
 };
 
-const getProfileInfo = async (param) => {
-    let query = '';
-    if ('userId' in param) {
-        query += `userId=${param.userId}`;
-    } else if ('username' in param) {
-        query += `username=${param.username}`;
-    }
-
-    const result = http.get(`${data.server}/api/v1/users.info?${query}`, {
+const getProfileInfo = (userId) => {
+    login(output.account.adminUser, output.account.adminPassword);
+    
+    const result = http.get(`${data.server}/api/v1/users.info?userId=${userId}`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -152,10 +162,10 @@ const getProfileInfo = async (param) => {
 
     const resultJson = json(result.body);
 
-    return resultJson?.data?.user;
+    return resultJson?.user;
 };
 
-const post = async (endpoint, username, password, body) => {
+const post = (endpoint, username, password, body) => {
     login(username, password);
 
     const response = http.post(`${data.server}/api/v1/${endpoint}`, {
@@ -168,6 +178,23 @@ const post = async (endpoint, username, password, body) => {
 
     return response;
 };
+
+const createDM = (username, password, otherUsername) => {
+    login(username, password);
+
+    const result = http.post(`${data.server}/api/v1/im.create`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...headers
+        },
+        body: JSON.stringify({
+            username: otherUsername
+        })
+    });
+
+    console.log(JSON.stringify(json(result.body), null, 2));
+    return json(result.body);
+}
 
 // Delete created users to avoid use all the Seats Available on the server
 const deleteCreatedUsers = () => {
@@ -191,5 +218,8 @@ output.utils = {
     createRandomRoom,
     sendMessage,
     getProfileInfo,
-    post
+    post,
+    login,
+    getDeepLink,
+    createDM
 };

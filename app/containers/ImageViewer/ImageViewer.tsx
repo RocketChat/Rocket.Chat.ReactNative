@@ -5,8 +5,8 @@ import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } fr
 import { Image, ImageStyle } from 'expo-image';
 
 import Touch from '../Touch';
-import { useUserPreferences } from '../../lib/methods';
-import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
 import { useTheme } from '../../theme';
 
 interface ImageViewerProps {

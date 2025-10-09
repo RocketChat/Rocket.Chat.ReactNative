@@ -16,7 +16,7 @@ import { isAndroid, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';
 import { getServerById } from '../../lib/database/services/Server';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
 import CertificatePicker from './components/CertificatePicker';

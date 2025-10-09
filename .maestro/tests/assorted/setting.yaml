@@ -4,6 +4,8 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-8
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
@@ -34,6 +36,8 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: 'settings-view'
+    timeout: 60000
+- waitForAnimationToEnd:
     timeout: 60000
 
 # should have settings view
@@ -105,6 +109,7 @@ onFlowComplete:
     id: 'settings-view-clear-cache'
 - tapOn:
     id: 'settings-view-clear-cache'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: '.*This will clear all your offline data.*'
