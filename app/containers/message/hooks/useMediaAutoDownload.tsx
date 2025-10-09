@@ -9,7 +9,8 @@ import {
 	getMediaCache,
 	isDownloadActive,
 	MediaTypes,
-	TDownloadState
+	TDownloadState,
+	persistMessage
 } from '../../../lib/methods/handleMediaDownload';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
@@ -155,6 +156,9 @@ export const useMediaAutoDownload = ({
 			urlToCache: url
 		});
 		if (result?.exists && !isEncrypted) {
+			if (!currentFile?.title_link) {
+				await persistMessage(id, result.uri, !!file.encryption);
+			}
 			updateCurrentFile(result.uri);
 		}
 		return result?.exists;
