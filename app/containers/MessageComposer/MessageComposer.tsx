@@ -16,11 +16,13 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods/actions';
 import { runSlashCommand } from '../../lib/services/restApi';
 import log from '../../lib/methods/helpers/log';
-import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
+import { prepareQuoteMessage, insertEmojiAtCursor, insertTimestampAtCursor } from './helpers';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
+import { useTimestampPicker } from './hooks/useTimestampPicker';
 import EmojiPicker from '../EmojiPicker';
+import { TimestampPicker } from './components/TimestampPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
 import { useTheme } from '../../theme';
 
@@ -45,6 +47,7 @@ export const MessageComposer = ({
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
+	const { showTimestampPicker, closeTimestampPicker } = useTimestampPicker();
 	const { setAlsoSendThreadToChannel, setAutocompleteParams } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
@@ -167,6 +170,17 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
+	const onTimestampInsert = (timestamp: string) => {
+		const text = composerInputComponentRef.current.getText();
+		const { start, end } = composerInputComponentRef.current.getSelection();
+		const cursor = Math.max(start, end);
+
+		const { updatedText, updatedCursor } = insertTimestampAtCursor(text, timestamp, cursor);
+		
+		composerInputComponentRef.current.setInput(updatedText, { start: updatedCursor, end: updatedCursor });
+		closeTimestampPicker();
+	};
+
 	const accessibilityFocusOnInput = () => {
 		const node = findNodeHandle(composerInputRef.current);
 		if (node) {
@@ -201,6 +215,7 @@ export const MessageComposer = ({
 			<Animated.View style={[emojiKeyboardStyle, { backgroundColor: colors.surfaceLight }]}>
 				{showEmojiKeyboard && !showEmojiSearchbar ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
 			</Animated.View>
+			{showTimestampPicker && <TimestampPicker onInsert={onTimestampInsert} onClose={closeTimestampPicker} />}
 			<Autocomplete
 				onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)}
 				style={autocompleteStyle}
