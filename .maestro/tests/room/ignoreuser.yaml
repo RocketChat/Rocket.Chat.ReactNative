@@ -87,10 +87,10 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'
-      index: 0
     timeout: 60000
 - tapOn:
     id: 'username-header-${output.otherUser.username}'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Ignore'
@@ -118,20 +118,30 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'
-      index: 0
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: 'message-01'
-      index: 0
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'message-content-message-01'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'message-content-message-02'
+          timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'
-      index: 0
     timeout: 60000
 - tapOn:
     id: 'username-header-${output.otherUser.username}'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Unignore'
@@ -148,7 +158,7 @@ tags:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
     visible:
-      text: 'message-02'
+      id: 'message-content-message-02'
       index: 0
     timeout: 60000
 
