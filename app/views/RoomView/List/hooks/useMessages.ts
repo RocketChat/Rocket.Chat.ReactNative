@@ -7,9 +7,8 @@ import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
 import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
-import { Services } from '../../../../lib/services';
+import { readThreads } from '../../../../lib/services/restApi';
 import { QUERY_SIZE } from '../constants';
-import loadPreviousMessages from '../../../../lib/methods/loadPreviousMessages';
 
 export const useMessages = ({
 	rid,
@@ -33,7 +32,6 @@ export const useMessages = ({
 	const fetchMessages = useCallback(async () => {
 		unsubscribe();
 		count.current += QUERY_SIZE;
-		const prevIds = messagesIds.current;
 
 		if (!rid) {
 			return;
@@ -68,7 +66,7 @@ export const useMessages = ({
 				.observe();
 		}
 
-		subscription.current = observable.subscribe(async result => {
+		subscription.current = observable.subscribe(result => {
 			let newMessages: TAnyMessageModel[] = result;
 			if (tmid && thread.current) {
 				newMessages.push(thread.current);
@@ -85,26 +83,13 @@ export const useMessages = ({
 			readThread();
 			setMessages(newMessages);
 			messagesIds.current = newMessages.map(m => m.id);
-
-			const addedIds = messagesIds.current?.filter(id => !prevIds.includes(id));
-
-			if (!addedIds.length) {
-				const tsNumbers = newMessages.map(m => {
-					const { ts } = m as any;
-					return ts?.getTime();
-				});
-				const oldestTsNumber = tsNumbers.length > 0 ? Math.min(...tsNumbers) : undefined;
-				if (oldestTsNumber) {
-					await loadPreviousMessages({ rid, lastOpen: new Date(oldestTsNumber) });
-				}
-			}
 		});
 	}, [rid, tmid, showMessageInMainThread, serverVersion, hideSystemMessages]);
 
 	const readThread = useDebounce(async () => {
 		if (tmid) {
 			try {
-				await Services.readThreads(tmid);
+				await readThreads(tmid);
 			} catch {
 				// Do nothing
 			}
