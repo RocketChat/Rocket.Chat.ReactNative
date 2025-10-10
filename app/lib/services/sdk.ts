@@ -83,6 +83,7 @@ class Sdk {
 				}
 				return resolve(result);
 			} catch (e: any) {
+				console.log('e', e);
 				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
 				const totpInvalid = 'totp-invalid';
 				const totpRequired = 'totp-required';

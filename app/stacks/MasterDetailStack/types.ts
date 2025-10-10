@@ -207,6 +207,8 @@ export type ModalStackParamList = {
 		name: string;
 	};
 	AccessibilityAndAppearanceView: undefined;
+	TotpView: undefined;
+	TotpVerifyView: undefined;
 };
 
 export type MasterDetailInsideStackParamList = {

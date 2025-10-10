@@ -90,6 +90,8 @@ import {
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
+import TotpView from '../views/TwoFactorAuthenticationView';
+import TotpVerifyView from '../views/TwoFactorAuthenticationView/VerifyView';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
@@ -202,6 +204,8 @@ const SettingsStackNavigator = () => {
 				component={ScreenLockConfigView}
 				options={ScreenLockConfigView.navigationOptions}
 			/>
+			<SettingsStack.Screen name='TotpView' component={TotpView} />
+			<SettingsStack.Screen name='TotpVerifyView' component={TotpVerifyView} />
 		</SettingsStack.Navigator>
 	);
 };

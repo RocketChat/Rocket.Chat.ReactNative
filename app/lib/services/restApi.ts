@@ -1105,3 +1105,14 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+
+export const getMe = () => sdk.get('me');
+
+export const requestUserTotp = (userid: string) =>
+	sdk.methodCall('2fa:enable', { msg: 'method', id: userid, method: '2fa:enable', params: [] });
+
+export const verifyUserTotp = (code: string) => sdk.methodCall('2fa:validateTempToken', [code]);
+
+export const enableEmail2fa = () => sdk.post('users.2fa.enableEmail');
+
+export const disableEmail2fa = () => sdk.post('users.2fa.disableEmail');
