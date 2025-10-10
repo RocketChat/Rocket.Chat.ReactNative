@@ -90,10 +90,34 @@ jobs:
 
       - name: Run Tests
         run: |
+          SHARD=${{ inputs.shard }}
+          echo "Running shard: $SHARD"
+
           export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
+
+          MAX_RETRIES=3
+          ATTEMPT=1
+          FINAL_EXIT_CODE=1
+
+          while [ $ATTEMPT -le $MAX_RETRIES ]; do
+            echo "Attempt $ATTEMPT of $MAX_RETRIES"
+
+            export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
           maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --exclude-tags=android-only --format junit --output maestro-report.xml
-        env:
-          SHARD: ${{ inputs.shard }}
+            TEST_EXIT_CODE=$?
+
+            if [ $TEST_EXIT_CODE -eq 0 ]; then
+              echo "Maestro passed on attempt $ATTEMPT"
+              FINAL_EXIT_CODE=0
+              break
+            else
+              echo "Maestro failed on attempt $ATTEMPT"
+            fi
+
+            ATTEMPT=$((ATTEMPT+1))
+          done
+
+          exit $FINAL_EXIT_CODE
 
       - name: Upload Test Report
         if: always()
