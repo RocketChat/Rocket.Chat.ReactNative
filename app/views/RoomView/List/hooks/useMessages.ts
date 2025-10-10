@@ -95,7 +95,6 @@ export const useMessages = ({
 				});
 				const oldestTsNumber = tsNumbers.length > 0 ? Math.min(...tsNumbers) : undefined;
 				if (oldestTsNumber) {
-					console.log('here');
 					await loadPreviousMessages({ rid, lastOpen: new Date(oldestTsNumber) });
 				}
 			}
