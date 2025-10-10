@@ -8,6 +8,8 @@ import { CustomIcon } from '../../../CustomIcon';
 import { hitSlop } from '../Buttons';
 
 export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement => {
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<BorderlessButton

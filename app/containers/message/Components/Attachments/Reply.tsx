@@ -101,6 +101,8 @@ interface IMessageReply {
 
 const Title = React.memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
+		'use memo';
+
 		const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 		return (
 			<View style={styles.authorContainer}>
@@ -126,6 +128,8 @@ const Description = React.memo(
 		getCustomEmoji: TGetCustomEmoji;
 		theme: TSupportedThemes;
 	}) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 		const text = attachment.text || attachment.title;
 
@@ -158,6 +162,8 @@ const Description = React.memo(
 
 const UrlImage = React.memo(
 	({ image }: { image?: string }) => {
+		'use memo';
+
 		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!image) {
@@ -180,6 +186,8 @@ const Fields = React.memo(
 		theme: TSupportedThemes;
 		getCustomEmoji: TGetCustomEmoji;
 	}) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 
 		if (!attachment.fields) {
@@ -203,6 +211,8 @@ const Fields = React.memo(
 
 const Reply = React.memo(
 	({ attachment, timeFormat, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
+		'use memo';
+
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);

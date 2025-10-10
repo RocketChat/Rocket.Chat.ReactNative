@@ -34,6 +34,8 @@ import SidebarView from '../SidebarView';
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
 const SettingsView = (): React.ReactElement => {
+	'use memo';
+
 	const { colors, theme } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();

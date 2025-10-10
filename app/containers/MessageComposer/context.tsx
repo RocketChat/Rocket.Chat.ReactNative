@@ -80,6 +80,8 @@ const reducer = (state: State, action: Actions): State => {
 };
 
 export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
+	'use memo';
+
 	const [state, dispatch] = useReducer(reducer, {
 		autocompleteParams: { text: '', type: null }
 	} as State);

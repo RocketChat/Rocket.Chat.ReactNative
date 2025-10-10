@@ -5,6 +5,8 @@ import { getMessageById } from '../../../lib/database/services/Message';
 
 // TODO: Not reactive. Should we work on an official version?
 export const useMessage = (messageId: string): IMessage | undefined => {
+	'use memo';
+
 	const [message, setMessage] = useState<IMessage>();
 	useEffect(() => {
 		const load = async () => {

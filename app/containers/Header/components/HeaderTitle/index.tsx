@@ -10,6 +10,8 @@ interface IHeaderTitle {
 }
 
 const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	if (!headerTitle) {
 		return null;

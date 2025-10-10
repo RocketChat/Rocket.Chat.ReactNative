@@ -56,6 +56,8 @@ const styles = StyleSheet.create({
 interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle'> {}
 
 const ListTitle = ({ title, color, styleTitle, translateTitle }: IListTitle) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	switch (typeof title) {
 		case 'string':
@@ -114,6 +116,8 @@ const Content = React.memo(
 		accessibilityRole,
 		accessibilityLabel
 	}: IListItemContent) => {
+		'use memo';
+
 		const { fontScale } = useResponsiveLayout();
 		const { colors } = useTheme();
 
@@ -187,6 +191,8 @@ interface IListItemButton {
 }
 
 const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => {
+	'use memo';
+
 	const { colors } = useTheme();
 
 	return (
@@ -206,6 +212,8 @@ export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListIt
 }
 
 const ListItem = React.memo(({ ...props }: IListItem) => {
+	'use memo';
+
 	const { colors } = useTheme();
 
 	if (props.onPress) {

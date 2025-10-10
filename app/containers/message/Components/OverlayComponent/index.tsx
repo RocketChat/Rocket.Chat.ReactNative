@@ -17,6 +17,8 @@ const OverlayComponent = ({
 	iconName: TIconsName;
 	showBackground?: boolean;
 }) => {
+	'use memo';
+
 	const { colors } = useTheme();
 
 	return (

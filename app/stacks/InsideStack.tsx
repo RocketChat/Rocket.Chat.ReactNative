@@ -94,6 +94,8 @@ import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceV
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
 const ChatsStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -159,6 +161,8 @@ const ChatsStackNavigator = () => {
 // ProfileStackNavigator
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList & TNavigation>();
 const ProfileStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -176,6 +180,8 @@ const ProfileStackNavigator = () => {
 // SettingsStackNavigator
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 const SettingsStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -203,6 +209,8 @@ const SettingsStackNavigator = () => {
 // AdminPanelStackNavigator
 const AdminPanelStack = createNativeStackNavigator<AdminPanelStackParamList>();
 const AdminPanelStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -215,6 +223,8 @@ const AdminPanelStackNavigator = () => {
 // AccessibilityStackNavigator
 const AccessibilityStack = createNativeStackNavigator<AccessibilityStackParamList>();
 const AccessibilityStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<AccessibilityStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -228,6 +238,8 @@ const AccessibilityStackNavigator = () => {
 // DrawerNavigator
 const Drawer = createDrawerNavigator<DrawerParamList>();
 const DrawerNavigator = () => {
+	'use memo';
+
 	const { colors } = React.useContext(ThemeContext);
 
 	return (
@@ -254,6 +266,8 @@ const DrawerNavigator = () => {
 // NewMessageStackNavigator
 const NewMessageStack = createNativeStackNavigator<NewMessageStackParamList>();
 const NewMessageStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -271,6 +285,8 @@ const NewMessageStackNavigator = () => {
 // E2ESaveYourPasswordStackNavigator
 const E2ESaveYourPasswordStack = createNativeStackNavigator<E2ESaveYourPasswordStackParamList>();
 const E2ESaveYourPasswordStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -284,6 +300,8 @@ const E2ESaveYourPasswordStackNavigator = () => {
 // E2EEnterYourPasswordStackNavigator
 const E2EEnterYourPasswordStack = createNativeStackNavigator<E2EEnterYourPasswordStackParamList>();
 const E2EEnterYourPasswordStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -296,6 +314,8 @@ const E2EEnterYourPasswordStackNavigator = () => {
 // InsideStackNavigator
 const InsideStack = createNativeStackNavigator<InsideStackParamList & TNavigation>();
 const InsideStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (

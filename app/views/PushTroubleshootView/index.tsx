@@ -23,7 +23,7 @@ const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.E
 	useFocusEffect(
 		useCallback(() => {
 			dispatch(initTroubleshootingNotification());
-		}, [])
+		}, [dispatch])
 	);
 
 	useEffect(() => {
