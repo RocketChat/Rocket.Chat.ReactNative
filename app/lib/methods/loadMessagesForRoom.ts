@@ -11,23 +11,52 @@ import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 
-async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }): Promise<IMessage[]> {
-	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest?: string };
-	if (latest) {
-		params = { ...params, latest: new Date(latest).toISOString() };
-	}
+interface HistoryParams {
+	roomId: string;
+	count: number;
+	latest?: string;
+}
 
+async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }): Promise<IMessage[]> {
 	const apiType = roomTypeToApiType(t);
 	if (!apiType) {
 		return [];
 	}
 
-	// RC 0.48.0
-	const data = await sdk.get(`${apiType}.history`, params);
-	if (!data.success) {
-		return [];
+	const allMessages: IMessage[] = [];
+	let mainMessagesCount = 0;
+
+	async function fetchBatch(lastTs?: string): Promise<void> {
+		const params: HistoryParams = { roomId, count: COUNT };
+		if (lastTs) {
+			params.latest = lastTs;
+		}
+
+		const data = await sdk.get(`${apiType}.history`, params);
+
+		if (!data?.success || !data.messages?.length) {
+			return;
+		}
+
+		const batch = data.messages as IMessage[];
+		allMessages.push(...batch);
+
+		const mainMessagesInBatch = batch.filter(message => !message.tmid);
+		mainMessagesCount += mainMessagesInBatch.length;
+
+		const needsMoreMainMessages = mainMessagesCount < COUNT;
+		const hasMoreMessages = batch.length === COUNT;
+
+		if (needsMoreMainMessages && hasMoreMessages) {
+			const lastMessage = batch[batch.length - 1];
+			return fetchBatch(lastMessage.ts as string);
+		}
 	}
-	return data.messages as IMessage[];
+
+	const startTimestamp = latest ? new Date(latest).toISOString() : undefined;
+	await fetchBatch(startTimestamp);
+
+	return allMessages;
 }
 
 export function loadMessagesForRoom(args: {
@@ -42,8 +71,7 @@ export function loadMessagesForRoom(args: {
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id as string);
-				const uniqueTmids = [...new Set(data.map(m => m.tmid).filter(Boolean))];
-				if (!lastMessageRecord && data.length === COUNT && !uniqueTmids) {
+				if (!lastMessageRecord && data.length === COUNT) {
 					const loadMoreMessage = {
 						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,
@@ -53,16 +81,6 @@ export function loadMessagesForRoom(args: {
 					} as IMessage;
 					data.push(loadMoreMessage);
 				}
-				const onlyThreadMessages = !data.find(item => !item.tmid);
-				if (uniqueTmids && onlyThreadMessages) {
-					await Promise.allSettled(
-						uniqueTmids.map(async tmid => {
-							const threadMessageRecord = (await sdk.get('chat.getMessage', { msgId: tmid as string })) as any;
-							data.push(threadMessageRecord?.message as IMessage);
-						})
-					);
-				}
-
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
 				return resolve();
 			}
