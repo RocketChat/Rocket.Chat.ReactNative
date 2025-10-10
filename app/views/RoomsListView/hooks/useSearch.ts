@@ -54,6 +54,8 @@ const searchReducer = (state: SearchState, action: SearchAction): SearchState =>
 };
 
 export const useSearch = () => {
+	'use memo';
+
 	const [state, dispatch] = useReducer(searchReducer, initialState);
 
 	const search = useDebounce(async (text: string) => {

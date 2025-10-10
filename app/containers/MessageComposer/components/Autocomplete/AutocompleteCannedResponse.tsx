@@ -9,6 +9,8 @@ import { NO_CANNED_RESPONSES } from '../../constants';
 import { useStyle } from './styles';
 
 export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCannedResponse }) => {
+	'use memo';
+
 	const [styles] = useStyle();
 	if (item.id === NO_CANNED_RESPONSES) {
 		return (

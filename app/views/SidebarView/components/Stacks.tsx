@@ -6,6 +6,8 @@ import { sidebarNavigate } from '../methods/sidebarNavigate';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 

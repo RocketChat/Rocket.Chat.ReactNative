@@ -17,6 +17,8 @@ const removeQuote = (file?: IAttachment) =>
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
+		'use memo';
+
 		const { translateLanguage } = useContext(MessageContext);
 
 		const nonQuoteAttachments = attachments?.filter(removeQuote);

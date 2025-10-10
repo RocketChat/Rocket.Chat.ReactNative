@@ -13,6 +13,8 @@ import { useTheme } from '../../theme';
 
 // TODO: Create a reusable button component for message
 const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
+	'use memo';
+
 	const { user, replyBroadcast } = useContext(MessageContext);
 	const { theme } = useTheme();
 	const isOwn = author?._id === user.id;
