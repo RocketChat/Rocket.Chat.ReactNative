@@ -2,13 +2,14 @@ import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
 import i18n from '../../../../i18n';
-import { ROOM_MENTIONS_PREFERENCES_KEY, themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
+import { ROOM_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
-import { useAppSelector } from '../../../../lib/hooks';
-import { useUserPreferences } from '../../../../lib/methods';
-import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useUserPreferences } from '../../../../lib/methods/userPreferences';
+import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';
-import { Services } from '../../../../lib/services';
+import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
 import { IUserChannel } from '../../interfaces';
@@ -39,7 +40,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			} else if (navParam.rid) {
 				sendLoadingEvent({ visible: true });
 				try {
-					await Services.getRoomInfo(navParam.rid);
+					await getRoomInfo(navParam.rid);
 					sendLoadingEvent({ visible: false });
 					navToRoomInfo(navParam);
 				} catch (error) {

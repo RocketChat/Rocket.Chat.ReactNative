@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
-import { useAppSelector } from '..';
+import { useAppSelector } from '../useAppSelector';
 import { cancelCall, initVideoCall } from '../../../actions/videoConf';
 import AvatarContainer from '../../../containers/Avatar';
 import Button from '../../../containers/Button';

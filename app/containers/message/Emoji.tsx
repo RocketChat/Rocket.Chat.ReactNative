@@ -7,6 +7,8 @@ import { IMessageEmoji } from './interfaces';
 
 const Emoji = React.memo(
 	({ content, standardEmojiStyle, customEmojiStyle, getCustomEmoji }: IMessageEmoji) => {
+		'use memo';
+
 		const parsedContent = content.replace(/^:|:$/g, '');
 		const emoji = getCustomEmoji(parsedContent);
 		const { formatShortnameToUnicode } = useShortnameToUnicode();

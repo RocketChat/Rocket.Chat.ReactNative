@@ -9,13 +9,13 @@ export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 	const [showMoreVisible, setShowMoreVisible] = useState(() => elements && elements.length > 5);
 	const renderedElements = showMoreVisible ? elements?.slice(0, 5) : elements;
 
-	const Elements = () => (
-		<>{renderedElements?.map(element => parser?.renderActions({ blockId, appId, ...element }, BlockContext.ACTION, parser))}</>
-	);
-
 	return (
 		<>
-			<Elements />
+			<>
+				{renderedElements
+					? renderedElements?.map(element => parser?.renderActions({ blockId, appId, ...element }, BlockContext.ACTION, parser))
+					: null}
+			</>
 			{showMoreVisible && <Button title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
 		</>
 	);

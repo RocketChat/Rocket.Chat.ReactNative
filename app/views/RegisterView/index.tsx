@@ -19,9 +19,9 @@ import { OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpers';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
+import { register } from '../../lib/services/restApi';
 import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import PasswordPolicies from '../../containers/PasswordPolicies';
 import getCustomFields from '../../lib/methods/getCustomFields';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
@@ -36,7 +36,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
 		email: yup
 			.string()
-			.email(I18n.t('Email_must_be_valid'))
+			.email(I18n.t('Email_must_be_a_valid_email'))
 			.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
 		username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
 		password: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Password') })),
@@ -130,7 +130,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		Keyboard.dismiss();
 
 		try {
-			const response = await Services.register({ name, email, pass: password, username });
+			const response = await register({ name, email, pass: password, username });
 
 			if (response.success) {
 				if (Accounts_EmailVerification) {

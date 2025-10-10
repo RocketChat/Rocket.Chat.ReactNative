@@ -7,7 +7,7 @@ import { IReaction } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 interface IAllReactionsListItemProps {
 	getCustomEmoji: TGetCustomEmoji;

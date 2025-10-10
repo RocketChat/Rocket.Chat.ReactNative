@@ -28,6 +28,7 @@ import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import { updateLastOpen } from '../updateLastOpen';
+import markMessagesRead from '../helpers/markMessagesRead';
 
 export default class RoomSubscription {
 	private rid: string;
@@ -102,7 +103,7 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDDPMessage) => {
+	handleNotifyRoomReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
@@ -133,10 +134,10 @@ export default class RoomSubscription {
 			const [name, activities] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (activities.includes('user-typing')) {
+				if (!!activities && activities.includes('user-typing')) {
 					reduxStore.dispatch(addUserTyping(name));
 				}
-				if (!activities.length) {
+				if (!activities?.length) {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}
@@ -231,6 +232,9 @@ export default class RoomSubscription {
 					log(e);
 				}
 			});
+		} else if (ev === 'messagesRead') {
+			const lastOpen = ddpMessage.fields.args[0]?.until?.$date;
+			await markMessagesRead({ rid: this.rid, lastOpen });
 		}
 	});
 

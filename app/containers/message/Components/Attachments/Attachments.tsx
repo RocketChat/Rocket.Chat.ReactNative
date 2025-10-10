@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
-import { Reply } from './components';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import MessageContext from '../../Context';
@@ -13,16 +12,22 @@ import { IMessageAttachments } from '../../interfaces';
 import { IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
+const removeQuote = (file?: IAttachment) =>
+	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed;
+
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
+		'use memo';
+
 		const { translateLanguage } = useContext(MessageContext);
 
-		if (!attachments || attachments.length === 0) {
+		const nonQuoteAttachments = attachments?.filter(removeQuote);
+
+		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
 			return null;
 		}
-
 		// TODO: memo?
-		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
+		const attachmentsElements = nonQuoteAttachments.map((file: IAttachment, index: number) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
 				return (
@@ -77,16 +82,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 			}
 
-			return (
-				<Reply
-					key={index}
-					attachment={file}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					msg={msg}
-					showAttachment={showAttachment}
-				/>
-			);
+			return null;
 		});
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},

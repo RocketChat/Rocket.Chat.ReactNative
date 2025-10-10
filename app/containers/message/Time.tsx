@@ -11,6 +11,8 @@ interface IMessageTime {
 }
 
 const MessageTime = ({ timeFormat, ts }: IMessageTime) => {
+	'use memo';
+
 	const { colors } = useTheme();
 
 	const time = moment(ts).format(timeFormat);

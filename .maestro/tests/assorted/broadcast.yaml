@@ -1,0 +1,170 @@
+appId: chat.rocket.reactnative
+name: Broadcast
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-5
+
+---
+- evalScript: ${output.room = 'broadcast' + output.random()}
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should create broadcast room
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-search'
+- inputText: ${output.otherUser.username}
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-${output.otherUser.username}'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-${output.otherUser.username}'
+    timeout: 60000
+- assertVisible:
+    id: 'selected-users-view-submit'
+- tapOn:
+    id: 'selected-users-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-view'
+    timeout: 60000
+- assertVisible:
+    id: 'create-channel-name'
+- tapOn:
+    id: 'create-channel-name'
+- inputText: ${output.room}
+- hideKeyboard
+- assertVisible:
+    id: 'create-channel-broadcast'
+- tapOn:
+    id: 'create-channel-broadcast'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-submit'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room}'
+- tapOn:
+    id: 'room-header'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    id: 'room-actions-info'
+- extendedWaitUntil:
+    visible:
+      id: 'room-info-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-info-view-broadcast'
+    timeout: 60000
+- runFlow: ../../helpers/go-back.yaml
+- runFlow: ../../helpers/go-back.yaml
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.room}
+- runFlow:
+    file: '../../helpers/send-message.yaml'
+    env:
+      message: 'message'
+
+# should login as user without write message authorization and enter room
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.otherUser.username}
+      PASSWORD: ${output.otherUser.password}
+      CLEAR_STATE: true
+- runFlow:
+    file: '../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${output.room}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room}'
+    timeout: 60000
+
+# should not have message composer
+- assertNotVisible:
+    id: 'message-composer'
+
+# should be read only
+- assertVisible:
+    label: 'This room is read only'
+
+# should have the message created earlier
+- assertVisible:
+    text: 'message'
+
+# should tap on reply button and navigate to direct room
+- assertVisible:
+    id: 'message-broadcast-reply'
+- tapOn:
+    id: 'message-broadcast-reply'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.user.username}'
+    timeout: 60000
+
+# should reply broadcasted message
+- assertVisible:
+    id: 'message-composer-input'
+- tapOn:
+    id: 'message-composer-input'
+- inputText: 'broadcastreply'
+- tapOn:
+    id: 'message-composer-send'
+- extendedWaitUntil:
+    visible:
+      text: '.*broadcastreply.*'
+    timeout: 60000
+- longPressOn:
+    text: '.*broadcastreply.*'
+    index: 0
+- extendedWaitUntil:
+    visible:
+      text: 'Jump to message'
+    timeout: 60000
+- tapOn:
+    text: 'Jump to message'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${output.room}'

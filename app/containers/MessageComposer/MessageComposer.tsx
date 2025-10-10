@@ -13,8 +13,8 @@ import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { generateTriggerId } from '../../lib/methods';
-import { Services } from '../../lib/services';
+import { generateTriggerId } from '../../lib/methods/actions';
+import { runSlashCommand } from '../../lib/services/restApi';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
@@ -31,6 +31,8 @@ export const MessageComposer = ({
 	forwardedRef: any;
 	children?: ReactElement;
 }): ReactElement | null => {
+	'use memo';
+
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
@@ -113,7 +115,7 @@ export const MessageComposer = ({
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
+					await runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
 				} catch (e) {
 					log(e);
 				}

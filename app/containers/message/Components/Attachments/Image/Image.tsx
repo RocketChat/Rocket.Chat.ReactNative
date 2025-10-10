@@ -8,12 +8,14 @@ import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
 import { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
-import { useUserPreferences } from '../../../../../lib/methods';
-import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants';
+import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
