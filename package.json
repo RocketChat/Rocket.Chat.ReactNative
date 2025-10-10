@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.65.0",
+	"version": "4.66.0",
 	"private": true,
 	"packageManager": "yarn@1.22.22",
 	"scripts": {
@@ -106,7 +106,7 @@
 		"react-native-file-viewer": "2.1.4",
 		"react-native-gesture-handler": "2.24.0",
 		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#5346870b0be10d300dc53924309dc6adc9946d50",
-		"react-native-katex": "0.5.1",
+		"react-native-katex": "git+https://github.com/RocketChat/react-native-katex.git",
 		"react-native-keyboard-controller": "^1.17.1",
 		"react-native-keychain": "^8.2.0",
 		"react-native-linear-gradient": "2.6.2",
