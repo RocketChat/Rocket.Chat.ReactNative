@@ -16,13 +16,13 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 	const confirmRef = useRef<IBase>(null);
 	const [subtitle, setSubtitle] = useState<string | null>(null);
 	const [status, setStatus] = useState(TYPE.CHOOSE);
-	const [previousPasscode, setPreviouPasscode] = useState('');
+	const [previousPasscode, setPreviousPasscode] = useState('');
 
 	const firstStep = (p: string) => {
 		setTimeout(() => {
 			setStatus(TYPE.CONFIRM);
-			setPreviouPasscode(p);
-			confirmRef?.current?.clearPasscode();
+			setPreviousPasscode(p);
+			chooseRef?.current?.clearPasscode();
 		}, 200);
 	};
 

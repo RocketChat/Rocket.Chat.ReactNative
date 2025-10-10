@@ -8,7 +8,7 @@ import { useTheme } from '../../../../theme';
 import styles from '../../styles';
 import CustomEmoji from '../../../EmojiPicker/CustomEmoji';
 import MarkdownContext from '../../contexts/MarkdownContext';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../../selectors/login';
 import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 

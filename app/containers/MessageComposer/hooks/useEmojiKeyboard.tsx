@@ -20,6 +20,8 @@ const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
 });
 
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
+	'use memo';
+
 	const showEmojiPickerSharedValue = useSharedValue(false);
 	const showEmojiSearchbarSharedValue = useSharedValue(false);
 
@@ -34,6 +36,8 @@ const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
 const useKeyboardAnimation = () => {
+	'use memo';
+
 	const height = useSharedValue(0);
 
 	useKeyboardHandler(
@@ -64,6 +68,8 @@ const useKeyboardAnimation = () => {
 };
 
 export const useEmojiKeyboard = () => {
+	'use memo';
+
 	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
 	const { focus } = useContext(MessageInnerContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);

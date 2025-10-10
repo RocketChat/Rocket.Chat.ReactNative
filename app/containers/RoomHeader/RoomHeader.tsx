@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -9,7 +9,7 @@ import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 import { IUsersTyping } from '../../reducers/usersTyping';
 
@@ -190,7 +190,7 @@ const Header = React.memo(
 			);
 		}
 
-		const handleOnPress = useCallback(() => onPress(), []);
+		const handleOnPress = () => onPress();
 
 		return (
 			<View

@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import Button from '../Button';
 import { textParser } from './utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../CustomIcon';
 import { isAndroid } from '../../lib/methods/helpers';

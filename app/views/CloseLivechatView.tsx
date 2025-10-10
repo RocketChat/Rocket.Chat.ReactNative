@@ -11,7 +11,7 @@ import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
 import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';

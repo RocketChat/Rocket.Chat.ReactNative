@@ -7,10 +7,12 @@ import sharedStyles from '../../../../views/Styles';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { MarkdownPreview } from '../../../markdown';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
+	'use memo';
+
 	const [styles, colors] = useStyle();
 	const message = useMessage(messageId);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);

@@ -3,7 +3,8 @@ import * as NavigationBar from 'expo-navigation-bar';
 import * as SystemUI from 'expo-system-ui';
 
 import { IThemePreference, TThemeMode } from '../../../definitions/ITheme';
-import { themes, THEME_PREFERENCES_KEY } from '../../constants';
+import { themes } from '../../constants/colors';
+import { THEME_PREFERENCES_KEY } from '../../constants/keys';
 import UserPreferences from '../userPreferences';
 import { TSupportedThemes } from '../../../theme';
 import { isAndroid } from './deviceInfo';

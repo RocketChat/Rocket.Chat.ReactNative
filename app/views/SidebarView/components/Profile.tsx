@@ -9,9 +9,11 @@ import { getUserSelector } from '../../../selectors/login';
 import styles from '../styles';
 import { DrawerParamList } from '../../../stacks/types';
 import * as List from '../../../containers/List';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { username, name } = useAppSelector(getUserSelector, shallowEqual);

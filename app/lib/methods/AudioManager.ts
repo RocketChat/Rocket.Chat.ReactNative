@@ -6,7 +6,7 @@ import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
 import { TMessageModel } from '../../definitions';
-import { AUDIO_MODE } from '../constants';
+import { AUDIO_MODE } from '../constants/audio';
 import { emitter } from './helpers';
 
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;

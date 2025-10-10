@@ -14,6 +14,8 @@ import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);

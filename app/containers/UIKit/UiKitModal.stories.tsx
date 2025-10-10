@@ -1,7 +1,7 @@
 import { UiKitComponent, UiKitModal } from '.';
 import { KitContext, defaultContext } from './utils';
 import MessageContext from '../message/Context';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',

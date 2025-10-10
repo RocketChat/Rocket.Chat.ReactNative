@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { MessageTypeLoad } from '../constants';
+import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { IMessage, TMessageModel } from '../../definitions';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';

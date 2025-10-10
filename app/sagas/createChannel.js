@@ -8,7 +8,7 @@ import database from '../lib/database';
 import I18n from '../i18n';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { goRoom } from '../lib/methods/helpers/goRoom';
-import { Services } from '../lib/services';
+import { createTeam, createGroupChat, createChannel, addRoomsToTeam } from '../lib/services/restApi';
 import { Encryption } from '../lib/encryption';
 
 const handleRequest = function* handleRequest({ data }) {
@@ -27,7 +27,7 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast: `${broadcast}`,
 				encrypted: `${encrypted}`
 			});
-			const result = yield Services.createTeam(data);
+			const result = yield createTeam(data);
 			sub = {
 				rid: result?.team?.roomId,
 				...result.team,
@@ -35,7 +35,7 @@ const handleRequest = function* handleRequest({ data }) {
 			};
 		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
-			const result = yield Services.createGroupChat();
+			const result = yield createGroupChat();
 			if (result.success) {
 				sub = {
 					rid: result.room?._id,
@@ -50,7 +50,7 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			});
-			const result = yield Services.createChannel(data);
+			const result = yield createChannel(data);
 			sub = {
 				rid: result?.channel?._id || result?.group?._id,
 				...result?.channel,

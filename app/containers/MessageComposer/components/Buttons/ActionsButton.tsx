@@ -6,11 +6,14 @@ import { TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
 import { MessageInnerContext } from '../../context';
 import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
-import { useAppSelector, usePermissions } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../../../lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const ActionsButton = () => {
+	'use memo';
+
 	const { rid, tmid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);

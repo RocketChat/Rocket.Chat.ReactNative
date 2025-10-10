@@ -24,6 +24,8 @@ interface RoomsSearchProviderProps {
 }
 
 const RoomsSearchProvider = ({ children }: RoomsSearchProviderProps) => {
+	'use memo';
+
 	const { searching, searchEnabled, searchResults, startSearch, stopSearch, search } = useSearch();
 
 	return (

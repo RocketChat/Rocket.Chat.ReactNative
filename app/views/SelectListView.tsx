@@ -9,7 +9,7 @@ import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ICON_SIZE } from '../containers/List/constants';

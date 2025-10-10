@@ -7,9 +7,9 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { IApplicationState } from '../../definitions';
-import { Services } from '../../lib/services';
+import { joinRoom } from '../../lib/services/restApi';
 import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -66,7 +66,7 @@ const JoinCode = React.memo(
 
 		const handleJoinRoom = async () => {
 			try {
-				await Services.joinRoom(rid, code, t as any);
+				await joinRoom(rid, code, t as any);
 				onJoin();
 				hide();
 			} catch (e) {

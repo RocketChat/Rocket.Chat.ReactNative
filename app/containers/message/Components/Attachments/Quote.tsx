@@ -11,7 +11,7 @@ import { getMessageFromAttachment } from '../../utils';
 const isQuoteAttachment = (file?: IAttachment): boolean => {
 	if (!file) return false;
 
-	if (file.image_url || file.audio_url || file.video_url || file.collapsed) {
+	if (!file.color && !file.text && (file.image_url || file.audio_url || file.video_url || file.collapsed)) {
 		return false;
 	}
 
@@ -24,6 +24,8 @@ const isQuoteAttachment = (file?: IAttachment): boolean => {
 
 const Quote: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
+		'use memo';
+
 		const { translateLanguage } = useContext(MessageContext);
 
 		const quotes = attachments?.filter(isQuoteAttachment);

@@ -8,6 +8,8 @@ import { MIN_HEIGHT } from '../../constants';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const Left = (): ReactElement | null => {
+	'use memo';
+
 	const { sharing } = useRoomContext();
 	const focused = useFocused();
 	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();

@@ -10,7 +10,7 @@ import { IUser } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
 import userPreferences from './userPreferences';
-import { NOTIFICATION_PRESENCE_CAP } from '../constants';
+import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
 import { setNotificationPresenceCap } from '../../actions/app';
 
 export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {
