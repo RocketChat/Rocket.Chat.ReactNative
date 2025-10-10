@@ -36,6 +36,9 @@ module.exports = {
 		'jest/globals': true
 	},
 	rules: {
+		'react-hooks/set-state-in-effect': 1,
+		'react-hooks/immutability': 1,
+		'react-hooks/refs': 1,
 		'import/named': 'error',
 		'import/no-unresolved': 'error',
 		'import/extensions': [

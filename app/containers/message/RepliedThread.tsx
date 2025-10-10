@@ -10,6 +10,8 @@ import { useTheme } from '../../theme';
 import { AvatarContainer } from './MessageAvatar';
 
 const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted }: IMessageRepliedThread) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
 

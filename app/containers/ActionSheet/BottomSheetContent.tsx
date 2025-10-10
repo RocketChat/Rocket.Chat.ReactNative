@@ -20,6 +20,8 @@ interface IBottomSheetContentProps {
 }
 
 const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 	const { fontScale } = useWindowDimensions();

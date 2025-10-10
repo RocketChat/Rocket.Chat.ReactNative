@@ -60,7 +60,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 			placeholder && !items.some(item => item.label === textParser([placeholder]))
 				? { label: textParser([placeholder]), value: null }
 				: {},
-		[items.length, placeholder?.text]
+		[items, placeholder]
 	);
 
 	const Icon = () =>

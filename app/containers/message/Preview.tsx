@@ -6,6 +6,8 @@ import { getUserSelector } from '../../selectors/login';
 import { TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
+	'use memo';
+
 	const { user, baseUrl, Message_TimeFormat, customEmojis, useRealName } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		baseUrl: state.server.server,

@@ -11,6 +11,8 @@ interface IMessageButton {
 }
 
 export const Button = ({ children, onPress, disabled }: IMessageButton) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<Touchable

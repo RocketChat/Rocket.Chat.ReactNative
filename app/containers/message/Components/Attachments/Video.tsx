@@ -81,6 +81,8 @@ const Video = ({
 	isReply,
 	msg
 }: IMessageVideo): React.ReactElement | null => {
+	'use memo';
+
 	const { user } = useContext(MessageContext);
 	const { colors } = useTheme();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });

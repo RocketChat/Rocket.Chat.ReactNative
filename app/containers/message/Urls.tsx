@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
 });
 
 const UrlContent = ({ title, description }: { title: string; description: string }) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<View style={styles.textContainer}>
@@ -116,6 +118,8 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 };
 
 const Url = ({ url }: { url: IUrl }) => {
+	'use memo';
+
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
@@ -184,6 +188,8 @@ const Url = ({ url }: { url: IUrl }) => {
 };
 const Urls = React.memo(
 	({ urls }: { urls?: IUrl[] }): ReactElement[] | null => {
+		'use memo';
+
 		if (!urls || urls.length === 0) {
 			return null;
 		}

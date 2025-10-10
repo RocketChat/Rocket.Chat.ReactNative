@@ -12,6 +12,8 @@ import * as List from '../../../containers/List';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 const Profile = ({ navigation }: { navigation: DrawerNavigationProp<DrawerParamList> }) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { username, name } = useAppSelector(getUserSelector, shallowEqual);
