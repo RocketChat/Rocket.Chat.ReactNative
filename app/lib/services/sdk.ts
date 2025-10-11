@@ -1,4 +1,5 @@
 import { Rocketchat } from '@rocket.chat/sdk';
+import { DDPSDK } from '@rocket.chat/ddp-client';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
@@ -15,18 +16,18 @@ import {
 import { compareServerVersion, random } from '../methods/helpers';
 
 class Sdk {
-	private sdk: typeof Rocketchat;
+	private sdk: DDPSDK;
 	private code: any;
 
-	private initializeSdk(server: string): typeof Rocketchat {
+	private initializeSdk(server: string): Promise<DDPSDK> {
 		// The app can't reconnect if reopen interval is 5s while in development
-		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+		return DDPSDK.createAndConnect(server);
 	}
 
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
-	initialize(server: string) {
+	async initialize(server: string) {
 		this.code = null;
-		this.sdk = this.initializeSdk(server);
+		this.sdk = await this.initializeSdk(server);
 		return this.sdk;
 	}
 
@@ -40,8 +41,7 @@ class Sdk {
 	 */
 	disconnect() {
 		if (this.sdk) {
-			this.sdk.disconnect();
-			this.sdk = null;
+			this.sdk.connection.close();
 		}
 		return null;
 	}
@@ -57,7 +57,7 @@ class Sdk {
 			? void
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
-		return this.current.get(endpoint, params);
+		return this.current.rest.get(`/v1/${endpoint}`, params);
 	}
 
 	post<TPath extends PathFor<'POST'>>(
@@ -74,7 +74,7 @@ class Sdk {
 		return new Promise(async (resolve, reject) => {
 			const isMethodCall = endpoint?.startsWith('method.call/');
 			try {
-				const result = await this.current.post(endpoint, params);
+				const result = await this.current.rest.post(`/v1/${endpoint}`, params);
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,

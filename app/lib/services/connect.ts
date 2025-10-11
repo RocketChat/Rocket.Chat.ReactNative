@@ -1,4 +1,5 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import  { DDPSDK } from '@rocket.chat/ddp-client';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -95,20 +96,15 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		sdk.initialize(server);
 		getSettings();
 
-		sdk.current
-			.connect()
-			.then(() => {
-				console.log('connected');
-			})
-			.catch((err: unknown) => {
-				console.log('connect error', err);
-			});
+		sdk.current.connection.on('connected', () => {
+			console.log('connected');
+		});
 
-		connectingListener = sdk.current.onStreamData('connecting', () => {
+		connectingListener = sdk.current.connection.on('connecting', () => {
 			store.dispatch(connectRequest());
 		});
 
-		connectedListener = sdk.current.onStreamData('connected', () => {
+		connectedListener = sdk.current.connection.on('connected', () => {
 			const { connected } = store.getState().meteor;
 			if (connected) {
 				return;
@@ -120,16 +116,16 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			}
 		});
 
-		closeListener = sdk.current.onStreamData('close', () => {
+		closeListener = sdk.current.connection.on('close', () => {
 			store.dispatch(disconnectAction());
 		});
 
-		usersListener = sdk.current.onStreamData(
+		usersListener = sdk.current.client.on(
 			'users',
 			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
 		);
 
-		notifyAllListener = sdk.current.onStreamData(
+		notifyAllListener = sdk.current.stream(
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
