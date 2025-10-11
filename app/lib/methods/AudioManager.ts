@@ -50,7 +50,7 @@ function createAudioManager() {
 	}
 
 	async function setPositionAsync(audioKey: string, time: number) {
-        audioQueue[audioKey]?.seekTo(time);
+		audioQueue[audioKey]?.seekTo(time);
 	}
 
 	async function setRateAsync(audioKey: string, value = 1.0) {
@@ -67,7 +67,7 @@ function createAudioManager() {
 	}
 
 	function setOnPlaybackStatusUpdate(audioKey: string, callback: (status: AudioStatus) => void): void {
-		audioQueue[audioKey]?.addListener('playbackStatusUpdate', (status) => {
+		audioQueue[audioKey]?.addListener('playbackStatusUpdate', status => {
 			onPlaybackStatusUpdate(audioKey, status, callback);
 		});
 	}
@@ -95,17 +95,16 @@ function createAudioManager() {
 		const msg = await getMessageById(msgId);
 		if (msg) {
 			const db = database.active;
-			const whereClause: Q.Clause[] = [
-				Q.sortBy('ts', Q.asc),
-				Q.where('ts', Q.gt(moment(msg.ts).valueOf())),
-				Q.take(1),
-			];
+			const whereClause: Q.Clause[] = [Q.sortBy('ts', Q.asc), Q.where('ts', Q.gt(moment(msg.ts).valueOf())), Q.take(1)];
 			if (msg.tmid) {
 				whereClause.push(Q.where('tmid', msg.tmid || msg.id));
 			} else {
 				whereClause.push(Q.where('rid', rid), Q.where('tmid', null));
 			}
-			const [message] = await db.get('messages').query(...whereClause).fetch();
+			const [message] = await db
+				.get('messages')
+				.query(...whereClause)
+				.fetch();
 			return message;
 		}
 		return null;
@@ -148,7 +147,7 @@ function createAudioManager() {
 		removeAudioRendered,
 		loadAudio,
 		onPlaybackStatusUpdate,
-		setOnPlaybackStatusUpdate,
+		setOnPlaybackStatusUpdate
 	};
 }
 

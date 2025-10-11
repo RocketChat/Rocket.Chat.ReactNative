@@ -86,7 +86,7 @@ const AudioPlayer = ({
 	};
 
 	const setPosition = async (time: number) => {
-        await AudioManager.setPositionAsync(audioUri.current, time);
+		await AudioManager.setPositionAsync(audioUri.current, time);
 	};
 
 	const togglePlayPause = async () => {

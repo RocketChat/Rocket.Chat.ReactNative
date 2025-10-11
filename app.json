@@ -1,6 +1,4 @@
 {
-  "name": "RocketChatRN",
-  "plugins": [
-    "expo-audio"
-  ]
+	"name": "RocketChatRN",
+	"plugins": ["expo-audio"]
 }
