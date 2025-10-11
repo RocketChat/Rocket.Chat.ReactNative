@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { InteractionManager, View } from 'react-native';
-import { AVPlaybackStatus } from 'expo-av';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
@@ -16,6 +15,7 @@ import { TDownloadState } from '../../lib/methods/handleMediaDownload';
 import { emitter } from '../../lib/methods/helpers/emitter';
 import { TAudioState } from './types';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { AudioStatus } from 'expo-audio';
 
 interface IAudioPlayerProps {
 	fileUri: string;
@@ -47,7 +47,7 @@ const AudioPlayer = ({
 	const audioUri = useRef<string>('');
 	const navigation = useNavigation();
 
-	const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+	const onPlaybackStatusUpdate = (status: AudioStatus) => {
 		if (status) {
 			onPlaying(status);
 			handlePlaybackStatusUpdate(status);
@@ -55,27 +55,27 @@ const AudioPlayer = ({
 		}
 	};
 
-	const onPlaying = (data: AVPlaybackStatus) => {
-		if (data.isLoaded && data.isPlaying) {
+	const onPlaying = (data: AudioStatus) => {
+		if (data.isLoaded && data.playing) {
 			setPaused(false);
 		} else {
 			setPaused(true);
 		}
 	};
 
-	const handlePlaybackStatusUpdate = (data: AVPlaybackStatus) => {
-		if (data.isLoaded && data.durationMillis) {
-			const durationSeconds = data.durationMillis / 1000;
+	const handlePlaybackStatusUpdate = (data: AudioStatus) => {
+		if (data.isLoaded && data.currentTime) {
+			const durationSeconds = data.duration;
 			duration.value = durationSeconds > 0 ? durationSeconds : 0;
-			const currentSecond = data.positionMillis / 1000;
+			const currentSecond = data.currentTime;
 			if (currentSecond <= durationSeconds) {
 				currentTime.value = currentSecond;
 			}
 		}
 	};
 
-	const onEnd = (data: AVPlaybackStatus) => {
-		if (data.isLoaded && data.didJustFinish) {
+	const onEnd = (data: AudioStatus) => {
+		if (data.isLoaded && data.playbackState === 'ended') {
 			try {
 				setPaused(true);
 				currentTime.value = 0;
@@ -86,7 +86,7 @@ const AudioPlayer = ({
 	};
 
 	const setPosition = async (time: number) => {
-		await AudioManager.setPositionAsync(audioUri.current, time);
+        await AudioManager.setPositionAsync(audioUri.current, time);
 	};
 
 	const togglePlayPause = async () => {

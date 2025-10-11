@@ -76,7 +76,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		onFinish() {
 			scale.value = 1;
 			isPanning.value = false;
-			runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
+			runOnJS(onChangeTime)(Math.round(currentTime.value));
 		}
 	});
 
