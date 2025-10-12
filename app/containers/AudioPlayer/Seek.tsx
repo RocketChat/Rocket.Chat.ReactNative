@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutChangeEvent, View, TextInput, TextInputProps, TouchableNativeFeedback } from 'react-native';
-import { Gesture, GestureDetector, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
     SharedValue,
     useAnimatedProps,
