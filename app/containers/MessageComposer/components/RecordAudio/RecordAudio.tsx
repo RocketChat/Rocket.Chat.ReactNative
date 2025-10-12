@@ -24,13 +24,13 @@ import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement | null => {
-    console.log('RecordAudio');
+	console.log('RecordAudio');
 	const [styles, colors] = useStyle();
-    const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
-    const recorderState = useAudioRecorderState(audioRecorder);
-    console.log(audioRecorder, recorderState)
+	const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+	const recorderState = useAudioRecorderState(audioRecorder);
+	console.log(audioRecorder, recorderState);
 
-    const durationRef = useRef<IDurationRef>({} as IDurationRef);
+	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
@@ -41,20 +41,20 @@ export const RecordAudio = (): ReactElement | null => {
 
 	useEffect(() => {
 		try {
-            async function doRecording() {
-                // await setAudioModeAsync({
-                //     playsInSilentMode: true,
-                //     allowsRecording: true,
-                // });
+			async function doRecording() {
+				// await setAudioModeAsync({
+				//     playsInSilentMode: true,
+				//     allowsRecording: true,
+				// });
 
-                await audioRecorder.prepareToRecordAsync();
-                await audioRecorder.record();
-            }
+				await audioRecorder.prepareToRecordAsync();
+				await audioRecorder.record();
+			}
 
-            doRecording();
-        } catch (e) {
-            console.log(e);
-        }
+			doRecording();
+		} catch (e) {
+			console.log(e);
+		}
 
 		return () => {
 			try {
@@ -65,11 +65,11 @@ export const RecordAudio = (): ReactElement | null => {
 		};
 	}, []);
 
-    useEffect(() => {
-        if(!durationRef.current) return;
-        
-        durationRef.current.onRecordingStatusUpdate(recorderState);
-    }, [recorderState]);
+	useEffect(() => {
+		if (!durationRef.current) return;
+
+		durationRef.current.onRecordingStatusUpdate(recorderState);
+	}, [recorderState]);
 
 	const cancelRecording = async () => {
 		try {
@@ -104,7 +104,7 @@ export const RecordAudio = (): ReactElement | null => {
 				size: fileData.exists ? fileData.size : null
 			} as IUpload;
 
-            console.log(fileInfo);
+			console.log(fileInfo);
 			if (fileInfo) {
 				if (permissionToUpload) {
 					await sendFileMessage(rid, fileInfo, tmid, server, user);
