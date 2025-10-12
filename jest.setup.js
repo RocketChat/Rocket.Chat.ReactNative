@@ -27,10 +27,12 @@ jest.mock('react-native-reanimated', () => {
 		...actual,
 		useSharedValue: jest.fn(init => ({ value: init })),
 		useAnimatedReaction: jest.fn(),
-		runOnJS: jest.fn(fn => fn),
 		withTiming: jest.fn(value => value)
 	};
 });
+jest.mock('react-native-worklets', () => ({
+	scheduleOnRN: jest.fn()
+}));
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
