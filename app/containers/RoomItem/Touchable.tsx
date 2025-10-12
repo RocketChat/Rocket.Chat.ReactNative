@@ -1,6 +1,7 @@
 import React, { useRef, memo } from 'react';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Gesture, GestureDetector, GestureUpdateEvent, PanGestureHandlerEventPayload } from 'react-native-gesture-handler';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
@@ -167,7 +168,7 @@ const Touchable = ({
 	const longPressGesture = Gesture.LongPress()
 		.minDuration(500)
 		.onStart(() => {
-			runOnJS(handleLongPress)();
+			scheduleOnRN(handleLongPress);
 		});
 
 	const panGesture = Gesture.Pan()
@@ -179,7 +180,7 @@ const Touchable = ({
 			if (transX.value > 2 * width) transX.value = 2 * width;
 		})
 		.onEnd(event => {
-			runOnJS(handleRelease)(event);
+			scheduleOnRN(handleRelease, event);
 		});
 
 	// Use Race instead of Simultaneous to prevent conflicts
