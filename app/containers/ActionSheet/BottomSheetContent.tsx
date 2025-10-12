@@ -45,7 +45,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				testID='action-sheet'
 				data={options}
 				refreshing={false}
-				keyExtractor={item => item.title}
+				keyExtractor={(item: TActionSheetOptionsItem) => item.title}
 				bounces={false}
 				renderItem={renderItem}
 				style={{ backgroundColor: colors.strokeExtraDark }}
