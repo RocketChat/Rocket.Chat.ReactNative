@@ -30,9 +30,6 @@ jest.mock('react-native-reanimated', () => {
 		withTiming: jest.fn(value => value)
 	};
 });
-jest.mock('react-native-worklets', () => ({
-	scheduleOnRN: jest.fn()
-}));
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
@@ -152,7 +149,7 @@ jest.mock('react-native-notifications', () => ({
 	}
 }));
 
-jest.mock('@discord/bottom-sheet', () => {
+jest.mock('@gorhom/bottom-sheet', () => {
 	const react = require('react-native');
 	return {
 		__esModule: true,
