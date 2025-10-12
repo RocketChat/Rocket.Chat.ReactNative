@@ -30,7 +30,6 @@ jest.mock('react-native-reanimated', () => {
 		withTiming: jest.fn(value => value)
 	};
 });
-
 jest.mock('react-native-worklets', () => ({
 	scheduleOnRN: jest.fn()
 }));
