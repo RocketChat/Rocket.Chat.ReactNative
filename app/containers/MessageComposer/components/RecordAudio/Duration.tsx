@@ -1,13 +1,13 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { FontVariant, Text } from 'react-native';
-import { Audio } from 'expo-av';
+import { RecorderState } from 'expo-audio';
 
 import sharedStyles from '../../../../views/Styles';
 import { useTheme } from '../../../../theme';
 import { formatTime } from './utils';
 
 export interface IDurationRef {
-	onRecordingStatusUpdate: (status: Audio.RecordingStatus) => void;
+	onRecordingStatusUpdate: (status: RecorderState) => void;
 }
 
 export const Duration = forwardRef<IDurationRef>((_, ref) => {
@@ -18,7 +18,7 @@ export const Duration = forwardRef<IDurationRef>((_, ref) => {
 		onRecordingStatusUpdate
 	}));
 
-	const onRecordingStatusUpdate = (status: Audio.RecordingStatus) => {
+	const onRecordingStatusUpdate = (status: RecorderState) => {
 		if (!status.isRecording) {
 			return;
 		}

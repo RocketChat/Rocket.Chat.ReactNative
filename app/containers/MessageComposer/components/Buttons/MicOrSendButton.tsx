@@ -1,4 +1,4 @@
-import { Audio } from 'expo-av';
+import { requestRecordingPermissionsAsync, getRecordingPermissionsAsync } from 'expo-audio';
 import React, { useContext } from 'react';
 import { Alert } from 'react-native';
 import { PermissionStatus } from 'expo-camera';
@@ -24,12 +24,12 @@ export const MicOrSendButton = (): React.ReactElement | null => {
 	const { setRecordingAudio } = useMessageComposerApi();
 
 	const requestPermissionAndStartToRecordAudio = () =>
-		Audio.requestPermissionsAsync()
+		requestRecordingPermissionsAsync()
 			.then(({ granted }) => setRecordingAudio(granted))
 			.catch(() => {});
 
 	const startRecording = async () => {
-		const { status, granted, canAskAgain } = await Audio.getPermissionsAsync();
+		const { status, granted, canAskAgain } = await getRecordingPermissionsAsync();
 		if (granted) return setRecordingAudio(true);
 		if (status === PermissionStatus.UNDETERMINED) return requestPermissionAndStartToRecordAudio();
 		if (canAskAgain) return requestPermissionAndStartToRecordAudio();
