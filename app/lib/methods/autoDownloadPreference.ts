@@ -3,11 +3,11 @@ import { NetInfoStateType } from '@react-native-community/netinfo';
 import {
 	IMAGE_PREFERENCE_DOWNLOAD,
 	AUDIO_PREFERENCE_DOWNLOAD,
-	VIDEO_PREFERENCE_DOWNLOAD,
-	MediaDownloadOption
+	VIDEO_PREFERENCE_DOWNLOAD
 } from '../constants/mediaAutoDownload';
 import userPreferences from './userPreferences';
 import { store } from '../store/auxStore';
+import { MediaDownloadOption } from '../../definitions/IMedia';
 
 type TMediaType = typeof IMAGE_PREFERENCE_DOWNLOAD | typeof AUDIO_PREFERENCE_DOWNLOAD | typeof VIDEO_PREFERENCE_DOWNLOAD;
 

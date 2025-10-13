@@ -37,12 +37,17 @@ import { sendMessage } from '../../lib/methods/sendMessage';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { appStart } from '../../actions/app';
+import { compressImage, compressVideo } from './utils';
+import userPreferences from '../../lib/methods/userPreferences';
+import { TQuality } from '../../definitions/IMedia';
+import { MEDIA_QUALITY } from '../../lib/constants/mediaAutoDownload';
 
 interface IShareViewState {
 	selected: IShareAttachment;
 	loading: boolean;
 	readOnly: boolean;
 	attachments: IShareAttachment[];
+	quality: TQuality;
 	text: string;
 	room: TSubscriptionModel;
 	thread: TThreadModel | string;
@@ -89,6 +94,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			loading: false,
 			readOnly: false,
 			attachments: [],
+			quality: 'SD',
 			text: props.route.params?.text ?? '',
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {},
@@ -106,6 +112,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const readOnly = await this.getReadOnly();
 		const { attachments, selected } = await this.getAttachments();
 		this.setState({ readOnly, attachments, selected }, () => this.setHeader());
+		const quality = userPreferences.getString(MEDIA_QUALITY);
+		if (quality) {
+			this.setState({ quality: quality as TQuality });
+			this.setHeader();
+		}
 		this.startShareView();
 	};
 
@@ -128,7 +139,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	setHeader = () => {
-		const { room, thread, readOnly, attachments } = this.state;
+		const { room, thread, readOnly, attachments, quality } = this.state;
 		const { navigation, theme } = this.props;
 
 		const options: NativeStackNavigationOptions = {
@@ -142,13 +153,21 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 
-		if (!attachments.length && !readOnly) {
-			options.headerRight = () => (
-				<HeaderButton.Container>
+		options.headerRight = () => (
+			<HeaderButton.Container>
+				<HeaderButton.Item
+					title={quality}
+					onPress={() => {
+						this.setState({ quality: quality === 'SD' ? 'HD' : 'SD' }, () => {
+							this.setHeader();
+						});
+					}}
+				/>
+				{!attachments.length && !readOnly ? (
 					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
-				</HeaderButton.Container>
-			);
-		}
+				) : null}
+			</HeaderButton.Container>
+		);
 
 		navigation.setOptions(options);
 	};
@@ -239,11 +258,18 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments, room, text, thread, action, selected, selectedMessages } = this.state;
+		const { attachments: originalAttachments, room, text, thread, action, selected, selectedMessages, quality } = this.state;
+		sendLoadingEvent({ visible: true });
+		let attachmentsToSend = originalAttachments;
+		if (quality === 'SD') {
+			attachmentsToSend = await this.processAttachments(originalAttachments);
+		}
+
+		sendLoadingEvent({ visible: false });
+		const attachments = attachmentsToSend;
 		const { navigation, server, user, dispatch } = this.props;
 		// update state
 		await this.selectFile(selected);
-
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
@@ -330,15 +356,42 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
+	processAttachments = async (originalAttachments: IShareAttachment[]): Promise<IShareAttachment[]> => {
+		try {
+			const processingPromises = originalAttachments.map(async attachment => {
+				try {
+          let compressedPath: string | undefined;
+
+					if (attachment.mime?.startsWith('image/')) {
+						compressedPath = await compressImage(attachment.path);
+					} else if (attachment.mime?.startsWith('video/')) {
+						compressedPath = await compressVideo(attachment.path);
+					}
+					const text = this.messageComposerRef.current?.getText();
+
+					return {
+						...attachment,
+						description: text,
+            path: compressedPath || attachment.path
+					};
+				} catch (compressionError) {
+					return attachment;
+				}
+			});
+
+			return await Promise.all(processingPromises);
+		} catch (error) {
+			return originalAttachments;
+		}
+	};
+
 	removeFile = (item: IShareAttachment) => {
 		const { selected, attachments } = this.state;
 		let newSelected = selected;
 		if (item.path === selected.path) {
 			const selectedIndex = attachments.findIndex(att => att.path === selected.path);
-			// Selects the next one, if available
 			if (attachments[selectedIndex + 1]?.path) {
 				newSelected = attachments[selectedIndex + 1];
-				// If it's the last thumb, selects the previous one
 			} else {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}

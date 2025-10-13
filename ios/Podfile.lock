@@ -1635,6 +1635,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-compressor (1.11.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-cookies (6.2.1):
     - React-Core
   - react-native-keyboard-controller (1.17.1):
@@ -2704,6 +2725,7 @@ DEPENDENCIES:
   - react-native-a11y-order (from `../node_modules/react-native-a11y-order`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
+  - react-native-compressor (from `../node_modules/react-native-compressor`)
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
@@ -2923,6 +2945,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-timer"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
+  react-native-compressor:
+    :path: "../node_modules/react-native-compressor"
   react-native-cookies:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-keyboard-controller:
@@ -3057,6 +3081,7 @@ SPEC CHECKSUMS:
   BugsnagReactNative: 8150cc1facb5c69c7a5d27d614fc50b4ed03c2b8
   BVLinearGradient: 7815a70ab485b7b155186dd0cc836363e0288cad
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
+
   EXAV: 90c33266835bf7e61dc0731fa8d82833d22d286f
   EXConstants: a1112af878fddfe6acc0399473ac56a07ced0f47
   Expo: bb70dfd014457bcca19f33e8c783afdc18308434

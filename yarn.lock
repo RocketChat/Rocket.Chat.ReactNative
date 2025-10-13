@@ -12886,6 +12886,11 @@ react-native-bootsplash@^6.3.8:
     ts-dedent "^2.2.0"
     xml-formatter "^3.6.5"
 
+react-native-compressor@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-compressor/-/react-native-compressor-1.11.0.tgz#e297fa650b09cc754392153c38ae2ca510aee024"
+  integrity sha512-XaI0U2CtlW6ZYjwdQ4jdpnJa3C9CD1pc1a4jiUMtnUxWtCqgT7PNjOiEqlYLLwwGTvorXXNuby5In1yy7Vdmhg==
+
 react-native-config-reader@4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/react-native-config-reader/-/react-native-config-reader-4.1.1.tgz#478b69e32adcc2e9a14f6ef5fa2cbbe012b9a27e"
