@@ -9,6 +9,8 @@ import { useRoomContext } from '../../../../views/RoomView/context';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {
+	'use memo';
+
 	const { sharing } = useRoomContext();
 	const { setMarkdownToolbar } = useMessageComposerApi();
 	const { openEmojiKeyboard } = useEmojiKeyboard();

@@ -4,10 +4,10 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-10
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 - evalScript: ${output.discussionFromNewMessage = output.random() + ' Discussion NewMessageView'}
@@ -15,7 +15,7 @@ onFlowComplete:
 - evalScript: ${output.selectUser = 'rocket.cat'}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -188,6 +188,7 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: create-discussion-submit
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view'
@@ -202,6 +203,7 @@ onFlowComplete:
     id: room-header
 - tapOn:
     id: room-header
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'

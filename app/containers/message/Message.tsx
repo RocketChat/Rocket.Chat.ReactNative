@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 import { View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
@@ -121,7 +121,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	};
 
 	// temp accessibilityLabel
-	const accessibilityLabel = useMemo(() => {
+	const accessibilityLabel = () => {
 		let label = '';
 		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
 		if (props.isThreadReply) {
@@ -146,20 +146,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
 		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
-	}, [
-		props.msg,
-		props.tmid,
-		props.isThreadReply,
-		props.isThreadSequential,
-		props.isEncrypted,
-		props.isInfo,
-		props.ts,
-		props.useRealName,
-		props.author,
-		props.mentions,
-		props.channels,
-		props.unread
-	]);
+	};
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
@@ -168,7 +155,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		return (
 			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
-				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
+				<View accessible accessibilityLabel={accessibilityLabel()} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
 					<View style={styles.messageContent}>
 						<Content {...props} />
@@ -184,7 +171,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
+		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel()} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View style={styles.messageContent}>

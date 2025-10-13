@@ -3,11 +3,18 @@ module.exports = {
 		'import/resolver': {
 			node: {
 				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js', '.native.js', '.ios.tsx', '.android.tsx']
+			},
+			typescript: {
+				alwaysTryTypes: true,
+				project: './tsconfig.json'
 			}
+		},
+		'import/parsers': {
+			'@typescript-eslint/parser': ['.ts', '.tsx']
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier'],
+	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier', 'plugin:react-hooks/recommended'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
@@ -29,6 +36,11 @@ module.exports = {
 		'jest/globals': true
 	},
 	rules: {
+		'react-hooks/set-state-in-effect': 1,
+		'react-hooks/immutability': 1,
+		'react-hooks/refs': 1,
+		'import/named': 'error',
+		'import/no-unresolved': 'error',
 		'import/extensions': [
 			'error',
 			'ignorePackages',
@@ -54,7 +66,7 @@ module.exports = {
 		'jsx-a11y/href-no-hash': 0,
 		'jsx-a11y/aria-role': 0,
 		'import/prefer-default-export': 0,
-		'import/no-cycle': 0,
+		'import/no-cycle': 2,
 		'import/order': [
 			'error',
 			{

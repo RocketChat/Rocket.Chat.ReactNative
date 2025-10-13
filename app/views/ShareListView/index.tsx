@@ -16,7 +16,7 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
 import SearchHeader from '../../containers/SearchHeader';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';

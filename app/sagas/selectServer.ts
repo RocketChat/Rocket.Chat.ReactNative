@@ -29,21 +29,17 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import {
-	checkSupportedVersions,
-	getLoginSettings,
-	getServerInfo,
-	setCustomEmojis,
-	setEnterpriseModules,
-	setPermissions,
-	setRoles,
-	setSettings
-} from '../lib/methods';
-import { Services } from '../lib/services';
-import { connect, disconnect } from '../lib/services/connect';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
+import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
+import { getServerInfo } from '../lib/methods/getServerInfo';
+import { setCustomEmojis } from '../lib/methods/getCustomEmojis';
+import { setEnterpriseModules } from '../lib/methods/enterpriseModules';
+import { setPermissions } from '../lib/methods/getPermissions';
+import { setRoles } from '../lib/methods/getRoles';
+import { connect, disconnect, getWebsocketInfo, getLoginServices } from '../lib/services/connect';
 import sdk from '../lib/services/sdk';
-import { appSelector } from '../lib/hooks';
+import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
@@ -106,7 +102,7 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
-			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
+			const websocketInfo = yield* call(getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
 				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
@@ -237,7 +233,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		const serversHistoryCollection = serversDB.get('servers_history');
 
 		if (serverInfo) {
-			yield Services.getLoginServices(server);
+			yield getLoginServices(server);
 			yield getLoginSettings({ server, serverVersion: serverInfo.version });
 			Navigation.navigate('WorkspaceView');
 

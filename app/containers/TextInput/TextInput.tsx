@@ -2,7 +2,7 @@ import React from 'react';
 import { I18nManager, StyleProp, StyleSheet, TextInput as RNTextInput, TextStyle } from 'react-native';
 
 import { IRCTextInputProps } from './FormTextInput';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({

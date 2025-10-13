@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { TGetCustomEmoji, ICustomEmoji } from '../../definitions/IEmoji';
 
 const theme = 'light';

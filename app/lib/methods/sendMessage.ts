@@ -7,7 +7,8 @@ import { random } from './helpers';
 import { Encryption } from '../encryption';
 import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
-import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
+import { messagesStatus } from '../constants/messagesStatus';
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
 	const db = database.active;

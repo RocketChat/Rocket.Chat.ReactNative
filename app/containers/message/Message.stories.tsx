@@ -3,7 +3,9 @@ import { ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import MessageComponent from './Message';
-import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
+import { E2E_MESSAGE_TYPE } from '../../lib/constants/keys';
+import { messagesStatus } from '../../lib/constants/messagesStatus';
+import { themes } from '../../lib/constants/colors';
 import MessageSeparator from '../MessageSeparator';
 import {
 	BASE_ROW_HEIGHT,
@@ -2015,3 +2017,56 @@ export const CollapsedAttachmentsLargeFont = () => (
 		<MessageLargeFont msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
 	</>
 );
+
+const attachmentWithTextAndLink = [
+	{
+		title: 'Rocket.Chat',
+		title_link: 'https://rocket.chat',
+		text: 'Rocket.Chat, the best open source chat',
+		image_url: 'https://rc.jena.de/images/integration-attachment-example.png',
+		color: '#764FA5'
+	}
+];
+
+export const AttachmentWithTextAndLink = () => <Message attachments={attachmentWithTextAndLink} />;
+
+export const AttachmentWithTextAndLinkLargeFont = () => <MessageLargeFont attachments={attachmentWithTextAndLink} />;
+const katex = {
+	msg: '\\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]',
+	md: [
+		{
+			type: 'KATEX',
+			value:
+				' \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }'
+		}
+	]
+};
+
+export const Katex = () => (
+	<>
+		<Message {...katex} />
+	</>
+);
+export const KatexLargeFont = () => <MessageLargeFont {...katex} />;
+
+const inlineKatex = {
+	msg: '\\(xˆ2 + yˆ2 - zˆ2\\)',
+	md: [
+		{
+			type: 'PARAGRAPH',
+			value: [
+				{
+					type: 'INLINE_KATEX',
+					value: 'xˆ2 + yˆ2 - zˆ2'
+				}
+			]
+		}
+	]
+};
+
+export const InlineKatex = () => (
+	<>
+		<Message {...inlineKatex} />
+	</>
+);
+export const InlineKatexLargeFont = () => <MessageLargeFont {...inlineKatex} />;

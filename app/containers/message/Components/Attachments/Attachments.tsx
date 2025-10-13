@@ -17,7 +17,10 @@ const removeQuote = (file?: IAttachment) =>
 	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed || file?.type === 'live-location';
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
+  
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author, messageId, roomId }: IMessageAttachments) => {
+		'use memo';
+  
 		const { translateLanguage } = useContext(MessageContext);
 
 		console.log('🔍 [Attachments] Processing attachments:', attachments?.length || 0);
