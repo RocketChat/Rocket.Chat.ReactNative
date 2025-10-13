@@ -198,9 +198,11 @@ export const setLanguage = (lng: string) => {
     I18nManager.forceRTL(isRTL(locale));
     I18nManager.swapLeftAndRightInRTL(isRTL(locale));
     moment.locale(toMomentLocale(locale));
-    console.log('locale', locale, toMomentLocale(locale));
 
-    i18n.addResourceBundle(lng, '', translation);
+    if(!i18n.hasResourceBundle(lng, '')) {
+        i18n.addResourceBundle(lng, '', translation);
+    }
+    
     i18n.changeLanguage(lng);
 }
 
