@@ -90,6 +90,8 @@ jobs:
 
       - name: Run Tests
         run: |
+          set +e
+
           SHARD=${{ inputs.shard }}
           echo "Running shard: $SHARD"
 
@@ -103,7 +105,7 @@ jobs:
             echo "Attempt $ATTEMPT of $MAX_RETRIES"
 
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-          maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --exclude-tags=android-only --format junit --output maestro-report.xml
+            maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --exclude-tags=android-only --format junit --output maestro-report.xml
             TEST_EXIT_CODE=$?
 
             if [ $TEST_EXIT_CODE -eq 0 ]; then
