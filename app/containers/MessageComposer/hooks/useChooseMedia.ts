@@ -22,6 +22,8 @@ export const useChooseMedia = ({
 	tmid?: string;
 	permissionToUpload: boolean;
 }) => {
+	'use memo';
+
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 	const { action, setQuotesAndText, selectedMessages, getText } = useRoomContext();
 	const allowList = FileUpload_MediaTypeWhiteList as string;

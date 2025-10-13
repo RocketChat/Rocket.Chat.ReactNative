@@ -10,6 +10,8 @@ import { useTheme } from '../../../../theme';
 
 const MessageError = React.memo(
 	({ hasError }: { hasError: boolean }) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { onErrorPress } = useContext(MessageContext);
 

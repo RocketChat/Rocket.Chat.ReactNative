@@ -24,6 +24,8 @@ const isQuoteAttachment = (file?: IAttachment): boolean => {
 
 const Quote: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
+		'use memo';
+
 		const { translateLanguage } = useContext(MessageContext);
 
 		const quotes = attachments?.filter(isQuoteAttachment);

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UseFormSetValue } from 'react-hook-form';
 
@@ -39,29 +39,26 @@ export const RoomSettings = ({
 		encryptionEnabled: state.encryption.enabled
 	}));
 
-	const onValueChangeType = useCallback(
-		(value: boolean) => {
-			logEvent(events.CR_TOGGLE_TYPE);
-			// If we set the channel as public, encrypted status should be false
-			setType(value);
-			setValue('type', value);
-			setEncrypted(value && encrypted);
-			setValue('encrypted', value && encrypted);
-		},
-		[encrypted]
-	);
+	const onValueChangeType = (value: boolean) => {
+		logEvent(events.CR_TOGGLE_TYPE);
+		// If we set the channel as public, encrypted status should be false
+		setType(value);
+		setValue('type', value);
+		setEncrypted(value && encrypted);
+		setValue('encrypted', value && encrypted);
+	};
 
-	const onValueChangeReadOnly = useCallback((value: boolean) => {
+	const onValueChangeReadOnly = (value: boolean) => {
 		logEvent(events.CR_TOGGLE_READ_ONLY);
 		setReadOnly(value);
 		setValue('readOnly', value);
-	}, []);
+	};
 
-	const onValueChangeEncrypted = useCallback((value: boolean) => {
+	const onValueChangeEncrypted = (value: boolean) => {
 		logEvent(events.CR_TOGGLE_ENCRYPTED);
 		setEncrypted(value);
 		setValue('encrypted', value);
-	}, []);
+	};
 
 	const onValueChangeBroadcast = (value: boolean) => {
 		logEvent(events.CR_TOGGLE_BROADCAST);

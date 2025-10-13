@@ -16,6 +16,8 @@ export interface IActionSheetItem {
 }
 
 export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
+	'use memo';
+
 	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
