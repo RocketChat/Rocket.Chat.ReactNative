@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -208,7 +208,7 @@ export default class Root extends React.Component<{}, IState> {
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
-			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
+			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
 					<ThemeContext.Provider
 						value={{
