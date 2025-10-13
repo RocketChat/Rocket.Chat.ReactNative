@@ -33,13 +33,10 @@ tags:
           optional: true
 - runFlow:
     when:
+      visible: '.*Would like to send you notifications.*'
       platform: iOS
-      visible:
-        text: 'Allow'
     commands:
-      - tapOn:
-          text: 'Allow'
-          optional: true
+      - tapOn: 'Allow'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
