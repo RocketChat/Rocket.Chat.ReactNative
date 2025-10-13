@@ -62,7 +62,9 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 
 	const startTimestamp = latest ? new Date(latest).toISOString() : undefined;
 	await fetchBatch(startTimestamp);
-	console.log('allMessages', allMessages);
+ const startTimestamp = latest ? new Date(latest).toISOString() : undefined;
+ await fetchBatch(startTimestamp);
+ return allMessages;
 	return allMessages;
 }
 
