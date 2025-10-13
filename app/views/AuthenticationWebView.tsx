@@ -40,6 +40,8 @@ window.addEventListener('popstate', function() {
 });
 `;
 
+const SSO_AUTH_TYPES = ['saml', 'cas', 'iframe'];
+
 const AuthenticationWebView = () => {
 	const [logging, setLogging] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -93,7 +95,7 @@ const AuthenticationWebView = () => {
 	const onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
 		const url = decodeURIComponent(webViewState.url);
 
-		if (['saml', 'cas', 'iframe'].includes(authType)) {
+		if (SSO_AUTH_TYPES.includes(authType)) {
 			try {
 				const parsed = parse(url, true);
 				setHeaderTitle(parsed.host || url);
@@ -147,7 +149,7 @@ const AuthenticationWebView = () => {
 
 	useLayoutEffect(() => {
 		const urlTitle = headerTitle || parse(url, true).host;
-		const isSSOType = ['saml', 'cas', 'iframe'].includes(authType);
+		const isSSOType = SSO_AUTH_TYPES.includes(authType);
 		const staticFallback = isSSOType ? 'SSO' : 'OAuth';
 
 		navigation.setOptions({
