@@ -43,7 +43,7 @@ window.addEventListener('popstate', function() {
 const AuthenticationWebView = () => {
 	const [logging, setLogging] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [headerTitle, setHeaderTitle] = useState<string | undefined>(undefined);
+	const [headerTitle, setHeaderTitle] = useState<string | null>(null);
 
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 	const {
