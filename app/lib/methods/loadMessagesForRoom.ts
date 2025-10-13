@@ -11,12 +11,6 @@ import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 
-interface HistoryParams {
-	roomId: string;
-	count: number;
-	latest?: string;
-}
-
 async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }): Promise<IMessage[]> {
 	const apiType = roomTypeToApiType(t);
 	if (!apiType) {
@@ -27,12 +21,26 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 	let mainMessagesCount = 0;
 
 	async function fetchBatch(lastTs?: string): Promise<void> {
-		const params: HistoryParams = { roomId, count: COUNT };
-		if (lastTs) {
-			params.latest = lastTs;
+		if (allMessages.length >= COUNT * 10) {
+			return;
 		}
 
-		const data = await sdk.get(`${apiType}.history`, params);
+		const params = { roomId, count: COUNT, ...(lastTs && { latest: lastTs }) };
+
+		let data;
+		switch (apiType) {
+			case 'channels':
+				data = await sdk.get('channels.history', params);
+				break;
+			case 'groups':
+				data = await sdk.get('groups.history', params);
+				break;
+			case 'im':
+				data = await sdk.get('im.history', params);
+				break;
+			default:
+				return;
+		}
 
 		if (!data?.success || !data.messages?.length) {
 			return;
@@ -45,17 +53,16 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 		mainMessagesCount += mainMessagesInBatch.length;
 
 		const needsMoreMainMessages = mainMessagesCount < COUNT;
-		const hasMoreMessages = batch.length === COUNT;
 
-		if (needsMoreMainMessages && hasMoreMessages) {
+		if (needsMoreMainMessages) {
 			const lastMessage = batch[batch.length - 1];
-			return fetchBatch(lastMessage.ts as string);
+			await fetchBatch(lastMessage.ts as string);
 		}
 	}
 
 	const startTimestamp = latest ? new Date(latest).toISOString() : undefined;
 	await fetchBatch(startTimestamp);
-
+	console.log('allMessages', allMessages);
 	return allMessages;
 }
 
