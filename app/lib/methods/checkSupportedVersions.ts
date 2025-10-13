@@ -1,7 +1,7 @@
-import moment from 'moment';
 import coerce from 'semver/functions/coerce';
 import satisfies from 'semver/functions/satisfies';
 
+import dayjs from '../../lib/dayjs';
 import { ISupportedVersionsData, TSVDictionary, TSVMessage, TSVStatus } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
@@ -12,11 +12,11 @@ export const getMessage = ({
 	messages?: TSVMessage[];
 	expiration?: string;
 }): TSVMessage | undefined => {
-	if (!messages?.length || !expiration || moment(expiration).diff(new Date(), 'days') < 0) {
+	if (!messages?.length || !expiration || dayjs(expiration).diff(new Date(), 'days') < 0) {
 		return;
 	}
 	const sortedMessages = messages.sort((a, b) => a.remainingDays - b.remainingDays);
-	return sortedMessages.find(({ remainingDays }) => moment(expiration).diff(new Date(), 'hours') <= remainingDays * 24);
+	return sortedMessages.find(({ remainingDays }) => dayjs(expiration).diff(new Date(), 'hours') <= remainingDays * 24);
 };
 
 const getStatus = ({ expiration, message }: { expiration?: string; message?: TSVMessage }): TSVStatus => {

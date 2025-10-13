@@ -1,0 +1,38 @@
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import calendar from 'dayjs/plugin/calendar';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+import 'dayjs/locale/en';
+import 'dayjs/locale/ar';
+import 'dayjs/locale/bn';
+import 'dayjs/locale/cs';
+import 'dayjs/locale/de';
+import 'dayjs/locale/es';
+import 'dayjs/locale/fi';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/hi';
+import 'dayjs/locale/hu';
+import 'dayjs/locale/it';
+import 'dayjs/locale/ja';
+import 'dayjs/locale/nl';
+import 'dayjs/locale/nb';
+import 'dayjs/locale/nn';
+import 'dayjs/locale/pt-br';
+import 'dayjs/locale/pt';
+import 'dayjs/locale/ru';
+import 'dayjs/locale/sl';
+import 'dayjs/locale/sv';
+import 'dayjs/locale/ta';
+import 'dayjs/locale/te';
+import 'dayjs/locale/tr';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/zh-tw';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(calendar);
+dayjs.extend(relativeTime);
+
+export default dayjs;

@@ -3,8 +3,8 @@ import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
 import DateTimePicker, { BaseProps } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BlockContext } from '@rocket.chat/ui-kit';
-import moment from 'moment';
 
+import dayjs from '../../lib/dayjs';
 import Button from '../Button';
 import { textParser } from './utils';
 import { themes } from '../../lib/constants/colors';
@@ -54,7 +54,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 					onShow(false);
 				}
 			});
-			action({ value: moment(newDate).format('YYYY-MM-DD') });
+			action({ value: dayjs(newDate).format('YYYY-MM-DD') });
 		}
 	};
 

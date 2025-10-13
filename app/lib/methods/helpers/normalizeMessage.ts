@@ -1,5 +1,4 @@
-import moment from 'moment';
-
+import dayjs from '../../../lib/dayjs';
 import parseUrls from './parseUrls';
 import type { IAttachment, IMessage, IThreadResult } from '../../../definitions';
 
@@ -15,7 +14,7 @@ function normalizeAttachments(msg: TMsg) {
 		.map(att => {
 			att.fields = att.fields || [];
 			if (att.ts) {
-				att.ts = moment(att.ts).toDate();
+				att.ts = dayjs(att.ts).toDate();
 			}
 			att = normalizeAttachments(att as TMsg);
 			return att;

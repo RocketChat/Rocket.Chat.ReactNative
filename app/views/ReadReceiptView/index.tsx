@@ -1,11 +1,11 @@
 import React from 'react';
 import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/core';
 
+import dayjs from '../../lib/dayjs';
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
@@ -112,7 +112,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 
 	renderItem = ({ item }: { item: IReadReceipts }) => {
 		const { theme, Message_TimeAndDateFormat } = this.props;
-		const time = moment(item.ts).format(Message_TimeAndDateFormat);
+		const time = dayjs(item.ts).format(Message_TimeAndDateFormat);
 		if (!item?.user?.username) {
 			return null;
 		}

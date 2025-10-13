@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
-import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 
+import dayjs from '../../lib/dayjs';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
@@ -27,7 +27,7 @@ export function loadSurroundingMessages({ messageId, rid }: { messageId: string;
 						const loadMoreItem = {
 							_id: generateLoadMoreId(firstMessage._id),
 							rid: firstMessage.rid,
-							ts: moment(firstMessage.ts).subtract(1, 'millisecond').toDate(),
+							ts: dayjs(firstMessage.ts).subtract(1, 'millisecond').toDate(),
 							t: MessageTypeLoad.PREVIOUS_CHUNK,
 							msg: firstMessage.msg
 						} as IMessage;
@@ -42,7 +42,7 @@ export function loadSurroundingMessages({ messageId, rid }: { messageId: string;
 						const loadMoreItem = {
 							_id: generateLoadMoreId(lastMessage._id),
 							rid: lastMessage.rid,
-							ts: moment(lastMessage.ts).add(1, 'millisecond').toDate(),
+							ts: dayjs(lastMessage.ts).add(1, 'millisecond').toDate(),
 							t: MessageTypeLoad.NEXT_CHUNK,
 							msg: lastMessage.msg
 						} as IMessage;

@@ -2,8 +2,8 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { sha256 } from 'js-sha256';
-import moment from 'moment';
 
+import dayjs from '../../../lib/dayjs';
 import UserPreferences from '../userPreferences';
 import { store } from '../../store/auxStore';
 import database from '../../database';
@@ -146,7 +146,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
 			// diff to last authenticated session
-			const diffToLastSession = moment(timesync).diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
+			const diffToLastSession = dayjs(timesync).diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
 			// if it was not possible to get `timesync` from server or the last authenticated session is older than the configured auto lock time, authentication is required
 			if (!timesync || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
