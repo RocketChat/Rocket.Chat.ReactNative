@@ -12,13 +12,12 @@ import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { MessageTypesValues, IUserMessage } from '../../definitions';
-import LiveLocationCard from './Components/LiveLocationCard';
-import { markLiveLocationAsEnded } from '../../views/LocationShare/services/handleLiveLocationUrl';
+
 
 const Content = React.memo(
 	(props: IMessageContent & { author?: IUserMessage }) => {
 		const { theme } = useTheme();
-		const { user, onLinkPress, ts } = useContext(MessageContext);
+		const { user, onLinkPress } = useContext(MessageContext);
 
 		if (props.isInfo) {
 			// @ts-ignore
@@ -43,42 +42,7 @@ const Content = React.memo(
 		const isPreview = props.tmid && !props.isThreadRoom;
 		let content = null;
 
-		// Live location message detection
-		const isLiveLocationMessage = props.msg && props.msg.includes('📍 **Live Location Start**');
-		const isLiveLocationStopMessage = props.msg && props.msg.includes('📍 **Live Location Ended**');
-
-		// Derive a timestamp safely without changing IMessageContent
-		const anyProps = props as any;
-		const messageTs: string | Date | number | undefined =
-			ts ??
-			anyProps?.ts ??
-			anyProps?._updatedAt ??
-			anyProps?.updatedAt ??
-			undefined;
-
-		if (isLiveLocationMessage && props.msg) {
-			content = (
-				<LiveLocationCard
-					msg={props.msg}
-					isActive={true}
-					author={props.author}
-				/>
-			);
-		} else if (isLiveLocationStopMessage && props.msg) {
-			// Handle live location stop message - extract ID and mark as ended
-			const idMatch = props.msg.match(/\(ID: ([^)]+)\)/);
-			if (idMatch) {
-				const liveLocationId = idMatch[1];
-				markLiveLocationAsEnded(liveLocationId);
-			}
-			
-			// Display a simple stop message
-			content = (
-				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>
-					📍 Live location sharing ended
-				</Text>
-			);
-		} else if (props.isEncrypted) {
+		if (props.isEncrypted) {
 			content = (
 				<Text
 					style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}

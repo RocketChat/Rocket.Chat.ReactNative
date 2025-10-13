@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+
 import { useTheme } from '../../../theme';
-import { themes } from '../../../lib/constants';
+import {
+	themes,
+	MAP_PROVIDER_PREFERENCE_KEY,
+	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
+	OSM_API_KEY_PREFERENCE_KEY,
+	MAP_PROVIDER_DEFAULT
+} from '../../../lib/constants';
 import Navigation from '../../../lib/navigation/appNavigation';
+import { useAppSelector } from '../../../lib/hooks';
+import { useUserPreferences } from '../../../lib/methods';
 import {
 	addStatusChangeListener,
 	removeStatusChangeListener,
@@ -15,14 +24,6 @@ import {
 	addLiveLocationEndedListener,
 	removeLiveLocationEndedListener
 } from '../../../views/LocationShare/services/handleLiveLocationUrl';
-import { useAppSelector } from '../../../lib/hooks';
-import { useUserPreferences } from '../../../lib/methods';
-import {
-	MAP_PROVIDER_PREFERENCE_KEY,
-	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
-	OSM_API_KEY_PREFERENCE_KEY,
-	MAP_PROVIDER_DEFAULT
-} from '../../../lib/constants';
 import { MapProviderName } from '../../../views/LocationShare/services/mapProviders';
 
 interface LiveLocationCardProps {

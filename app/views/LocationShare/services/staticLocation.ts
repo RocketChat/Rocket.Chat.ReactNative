@@ -23,7 +23,6 @@ function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
 
 export async function getCurrentPositionOnce(): Promise<Coords> {
 	try {
-		// Try cached location first
 		try {
 			const last = await Location.getLastKnownPositionAsync({ maxAge: LAST_KNOWN_MAX_AGE_MS });
 
@@ -36,14 +35,13 @@ export async function getCurrentPositionOnce(): Promise<Coords> {
 					timestamp: last.timestamp
 				};
 			}
-		} catch (e) {
-			// Use fresh location if cached fails
+		} catch (_e) {
+			// Failed to get last known position
 		}
 
-		// Get fresh position with balanced accuracy for battery optimization
 		const loc = await withTimeout(
 			Location.getCurrentPositionAsync({
-				accuracy: Location.Accuracy.Balanced // Lower accuracy for better battery life
+				accuracy: Location.Accuracy.High
 			}),
 			LOCATION_TIMEOUT_MS
 		);

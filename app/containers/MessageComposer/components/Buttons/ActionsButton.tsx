@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { Platform, PermissionsAndroid, InteractionManager } from 'react-native';
+import * as Location from 'expo-location';
 
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
@@ -9,8 +11,6 @@ import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector, usePermissions } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
-import { Platform, PermissionsAndroid, InteractionManager } from 'react-native';
-import * as Location from 'expo-location';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { getCurrentPositionOnce } from '../../../../views/LocationShare/services/staticLocation';
 import { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';

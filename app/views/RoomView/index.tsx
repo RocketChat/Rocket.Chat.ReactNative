@@ -9,7 +9,14 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
 
-import { getRoutingConfig } from '../../lib/services/restApi';
+import {
+	getRoutingConfig,
+	getUserInfo,
+	editMessage,
+	setReaction,
+	joinRoom,
+	toggleFollowMessage
+} from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
@@ -20,7 +27,6 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
-import StatusBar from '../../containers/StatusBar';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -48,6 +54,7 @@ import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
+import LiveLocationStatusBar from '../LocationShare/LiveLocationStatusBar';
 import {
 	IApplicationState,
 	IAttachment,
@@ -62,23 +69,17 @@ import {
 	TGetCustomEmoji,
 	RoomType
 } from '../../definitions';
-import {
-	E2E_MESSAGE_TYPE,
-	E2E_STATUS,
-	MESSAGE_TYPE_ANY_LOAD,
-	MessageTypeLoad,
-	themes,
-	NOTIFICATION_IN_APP_VIBRATION
-} from '../../lib/constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
+import { themes } from '../../lib/constants/colors';
+import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import {
-	callJitsi,
-	loadSurroundingMessages,
-	loadThreadMessages,
-	readMessages,
-	sendMessage,
-	triggerBlockAction
-} from '../../lib/methods';
+import { callJitsi } from '../../lib/methods/callJitsi';
+import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
+import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
+import { readMessages } from '../../lib/methods/readMessages';
+import { sendMessage } from '../../lib/methods/sendMessage';
+import { triggerBlockAction } from '../../lib/methods/triggerActions';
 import {
 	isGroupChat,
 	getUidDirectMessage,
@@ -88,7 +89,6 @@ import {
 	isIOS,
 	hasPermission
 } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
 import { withActionSheet } from '../../containers/ActionSheet';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
@@ -103,7 +103,6 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
-import LiveLocationStatusBar from '../LocationShare/LiveLocationStatusBar';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -624,7 +623,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const roomUserId = getUidDirectMessage(room);
 				this.setState({ roomUserId }, () => this.setHeader());
 
-				const result = await Services.getUserInfo(roomUserId);
+				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					return result.user;
 				}
@@ -715,7 +714,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 		try {
 			this.resetAction();
-			await Services.editMessage(message);
+			await editMessage(message);
 		} catch (e) {
 			log(e);
 		}
@@ -826,7 +825,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				shortname = emoji.name;
 			}
-			await Services.setReaction(shortname, messageId);
+			await setReaction(shortname, messageId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();
 		} catch (e) {
@@ -1044,7 +1043,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (joinCodeRequired) {
 					this.joinCode.current?.show();
 				} else {
-					await Services.joinRoom(rid, null, this.t as any);
+					await joinRoom(rid, null, this.t as any);
 					this.onJoin();
 				}
 			}
@@ -1089,7 +1088,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (!threadMessageId) {
 				return;
 			}
-			await Services.toggleFollowMessage(threadMessageId, !isFollowingThread);
+			await toggleFollowMessage(threadMessageId, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
@@ -1495,7 +1494,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, action, selectedMessages, isAutocompleteVisible } = this.state;
+		const { room, action, selectedMessages, isAutocompleteVisible } = this.state;
 		const { user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
@@ -1536,7 +1535,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getText: this.getText
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-					<StatusBar />
 					<LiveLocationStatusBar />
 					{!this.tmid ? (
 						<Banner

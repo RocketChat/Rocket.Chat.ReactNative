@@ -44,8 +44,8 @@ async function saveEndedSet() {
 	if (!endedIds) return;
 	try {
 		await AsyncStorage.setItem(ENDED_KEY, JSON.stringify(Array.from(endedIds)));
-	} catch (e) {
-		
+	} catch (_e) {
+		// Failed to save ended set to storage
 	}
 }
 
@@ -75,12 +75,13 @@ export async function handleLiveLocationUrl(url: string) {
 		const u = new URL(url);
 		if (u.protocol !== 'rocketchat:' || u.host !== 'live-location') return;
 
-		const liveLocationId = u.searchParams.get('liveLocationId') || undefined;
+		// msgId is now the server message ID instead of custom liveLocationId
+		const msgId = u.searchParams.get('msgId') || u.searchParams.get('liveLocationId') || undefined; // Support both for backward compatibility
 		const provider = (u.searchParams.get('provider') || 'osm') as 'google' | 'osm';
 		const rid = u.searchParams.get('rid') || undefined;
 		const tmid = u.searchParams.get('tmid') || undefined;
 
-		if (liveLocationId && (await isLiveLocationEnded(liveLocationId))) {
+		if (msgId && (await isLiveLocationEnded(msgId))) {
 			Alert.alert(I18n.t('Live_Location_Ended_Title'), I18n.t('Live_Location_Ended_Message'), [{ text: I18n.t('OK') }]);
 			return;
 		}
@@ -91,14 +92,14 @@ export async function handleLiveLocationUrl(url: string) {
 				provider,
 				...(rid ? { rid } : {}),
 				...(tmid ? { tmid } : {}),
-				liveLocationId,
+				liveLocationId: msgId, // Use msgId as the tracking identifier
 				isTracking: false
 			});
 			return true;
 		}
 
 		const params = getCurrentLiveParams();
-		if (params?.liveLocationId && liveLocationId && params.liveLocationId !== liveLocationId) {
+		if (params?.liveLocationId && msgId && params.liveLocationId !== msgId) {
 			return;
 		}
 

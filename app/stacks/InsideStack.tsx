@@ -79,6 +79,7 @@ import LegalView from '../views/LegalView';
 import LocationPreferencesView from '../views/LocationPreferencesView';
 import LocationPreviewModal from '../views/LocationShare/LocationPreviewModal';
 import LiveLocationPreviewModal from '../views/LocationShare/LiveLocationPreviewModal';
+import LiveLocationViewerModal from '../views/LocationShare/LiveLocationViewerModal';
 import {
 	AdminPanelStackParamList,
 	ChatsStackParamList,
@@ -331,6 +332,11 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='LiveLocationPreviewModal'
 				component={LiveLocationPreviewModal}
+				options={{ presentation: 'modal', title: I18n.t('Live_Location') }}
+			/>
+			<InsideStack.Screen
+				name='LiveLocationViewerModal'
+				component={LiveLocationViewerModal}
 				options={{ presentation: 'modal', title: I18n.t('Live_Location') }}
 			/>
 		</InsideStack.Navigator>

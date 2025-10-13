@@ -1,14 +1,14 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Linking } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
+import { shallowEqual } from 'react-redux';
 
+import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
-import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { useAppSelector } from '../../lib/hooks';
 import { getUserSelector } from '../../selectors/login';
-import { shallowEqual } from 'react-redux';
-import I18n from '../../i18n';
+import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
 
 type Coords = { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
 
@@ -37,10 +37,9 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 		if (mounted.current) fn();
 	};
 
-	const { id, token, username } = useAppSelector(
+	const { id, username } = useAppSelector(
 		state => ({
 			id: getUserSelector(state).id,
-			token: getUserSelector(state).token,
 			username: getUserSelector(state).username
 		}),
 		shallowEqual

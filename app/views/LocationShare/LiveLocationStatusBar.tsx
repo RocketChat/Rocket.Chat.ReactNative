@@ -6,16 +6,15 @@ import {
 	StyleSheet,
 	Animated,
 	InteractionManager,
-	Linking,
-	Platform,
-	StatusBar
+	Linking
 } from 'react-native';
+
 import {
 	reopenLiveLocationModal,
 	stopGlobalLiveLocation,
-	isLiveLocationActive,
-	addStatusChangeListener,
-	removeStatusChangeListener,
+	isLiveLocationMinimized,
+	addMinimizedStatusListener,
+	removeMinimizedStatusListener,
 	getCurrentLiveParams
 } from './LiveLocationPreviewModal';
 import { handleLiveLocationUrl, isLiveMessageLink } from './services/handleLiveLocationUrl';
@@ -41,12 +40,12 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 		if (mounted.current) fn();
 	};
 
-	// subscribe to global live-location status
+	// subscribe to global live-location minimized status
 	useEffect(() => {
-		safeSet(() => setIsActive(isLiveLocationActive()));
-		const handleStatusChange = (active: boolean) => safeSet(() => setIsActive(active));
-		addStatusChangeListener(handleStatusChange);
-		return () => removeStatusChangeListener(handleStatusChange);
+		safeSet(() => setIsActive(isLiveLocationMinimized()));
+		const handleStatusChange = (minimized: boolean) => safeSet(() => setIsActive(minimized));
+		addMinimizedStatusListener(handleStatusChange);
+		return () => removeMinimizedStatusListener(handleStatusChange);
 	}, []);
 
 	// GLOBAL DEEPLINK LISTENER (works around openLink.ts)

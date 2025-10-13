@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, Linking, InteractionManager } from 'react-native';
 import { Image as ExpoImage, type ImageErrorEventData } from 'expo-image';
-import I18n from '../../i18n';
+import * as Location from 'expo-location';
+import { shallowEqual } from 'react-redux';
 
+import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
-import { sendMessage } from '../../lib/methods/sendMessage';
+import { useAppSelector } from '../../lib/hooks';
+import { getUserSelector } from '../../selectors/login';
 import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
 import {
 	LiveLocationTracker,
-	LiveLocationState,
-	generateLiveLocationId,
-	createLiveLocationMessage,
-	createLiveLocationStopMessage
+	LiveLocationState
 } from './services/liveLocation';
 import { 
 	markLiveLocationAsEnded,
@@ -19,9 +19,6 @@ import {
 	addLiveLocationEndedListener,
 	removeLiveLocationEndedListener
 } from './services/handleLiveLocationUrl';
-import { useAppSelector } from '../../lib/hooks';
-import { getUserSelector } from '../../selectors/login';
-import { shallowEqual } from 'react-redux';
 
 type RouteParams = {
 	rid: string;
@@ -34,7 +31,6 @@ type RouteParams = {
 	isTracking?: boolean;
 };
 
-// Global tracker instance to keep it running when minimized
 let globalTracker: LiveLocationTracker | null = null;
 let globalTrackerParams: {
 	rid?: string;
@@ -49,14 +45,37 @@ let globalTrackerParams: {
 	username?: string;
 } | null = null;
 
-// Support multiple callbacks for multiple viewers
 const globalLocationUpdateCallbacks = new Set<(state: LiveLocationState) => void>();
-
-// Simple callback system for live location status
 const statusChangeListeners = new Set<(isActive: boolean) => void>();
+
+let isModalMinimized = false;
+const minimizedStatusListeners = new Set<(isMinimized: boolean) => void>();
 
 export function getCurrentLiveParams() {
 	return globalTrackerParams;
+}
+
+export function isLiveLocationMinimized(): boolean {
+	return isModalMinimized && isLiveLocationActive();
+}
+
+export function addMinimizedStatusListener(listener: (isMinimized: boolean) => void) {
+	minimizedStatusListeners.add(listener);
+}
+
+export function removeMinimizedStatusListener(listener: (isMinimized: boolean) => void) {
+	minimizedStatusListeners.delete(listener);
+}
+
+function emitMinimizedStatusChange(minimized?: boolean) {
+	const value = typeof minimized === 'boolean' ? minimized : isLiveLocationMinimized();
+	minimizedStatusListeners.forEach(fn => {
+		try {
+			fn(value);
+		} catch (e) {
+			// Error in minimized status listener
+		}
+	});
 }
 export function addStatusChangeListener(listener: (isActive: boolean) => void) {
 	statusChangeListeners.add(listener);
@@ -85,14 +104,16 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	const trackerRef = useRef<LiveLocationTracker | null>(null);
 	const viewerUpdateIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-	// mounted guard
+	useEffect(() => {
+		isModalMinimized = false;
+		emitMinimizedStatusChange(false);
+	}, []);
+
 	const mounted = useRef(true);
 	useEffect(
 		() => () => {
 			mounted.current = false;
-			// Remove this component's callback when it unmounts
 			globalLocationUpdateCallbacks.delete(handleLocationUpdate);
-			// Clean up viewer mode update interval
 			if (viewerUpdateIntervalRef.current) {
 				clearInterval(viewerUpdateIntervalRef.current);
 				viewerUpdateIntervalRef.current = null;
@@ -110,16 +131,10 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		}
 	}, [mapImageUrl]);
 
-	const serverUrl = useAppSelector(state => state.server.server);
-	const { id, username } = useAppSelector(
-		state => ({
-			id: getUserSelector(state).id,
-			username: getUserSelector(state).username
-		}),
-		shallowEqual
-	);
-
+	const { id, username } = useAppSelector(getUserSelector, shallowEqual);
+	
 	const handleLocationUpdate = (state: LiveLocationState) => {
+		
 		safeSet(() => setLocationState(state));
 
 		if (state.coords) {
@@ -131,38 +146,31 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			let mapUrl = '';
 			
 			// Try to generate map URL with API keys if available
-			if (provider === 'google' && googleKey) {
-				opts.googleApiKey = googleKey;
-				const { url } = staticMapUrl(provider, state.coords, opts);
+		if (provider === 'google' && googleKey) {
+			opts.googleApiKey = googleKey;
+			const { url } = staticMapUrl(provider, state.coords, opts);
+			mapUrl = url;
+		} else if (provider === 'osm' && osmKey) {
+			opts.osmApiKey = osmKey;
+			const { url } = staticMapUrl(provider, state.coords, opts);
+			mapUrl = url;
+		} else {
+			try {
+				const { url } = staticMapUrl('google', state.coords, opts);
 				mapUrl = url;
-			} else if (provider === 'osm' && osmKey) {
-				opts.osmApiKey = osmKey;
-				const { url } = staticMapUrl(provider, state.coords, opts);
-				mapUrl = url;
-			} else {
-				// Fallback: try Google without API key (may work for limited requests)
-				try {
-					const { url } = staticMapUrl('google', state.coords, opts);
-					mapUrl = url;
-				} catch (error) {
-					console.warn('Failed to generate map URL:', error);
-					mapUrl = ''; // Will show placeholder
-				}
+			} catch (error) {
+				mapUrl = '';
 			}
-			
-			safeSet(() => setMapImageUrl(mapUrl));
+		}			safeSet(() => setMapImageUrl(mapUrl));
 		}
 
 		emitStatusChange();
 	};
 
 	useEffect(() => {
-		// If this is viewer mode (not tracking but has liveLocationId), check if location is still active
 		if (!isTracking && liveLocationId) {
-			// Check if this live location has ended
 			isLiveLocationEnded(liveLocationId).then(ended => {
 				if (ended) {
-					// Location has ended, show inactive state
 					const inactiveState = {
 						coords: {
 							latitude: 37.78583,
@@ -174,7 +182,6 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					};
 					handleLocationUpdate(inactiveState);
 				} else {
-					// Location is still active, show active state
 					const activeState = {
 						coords: {
 							latitude: 37.78583,
@@ -188,17 +195,15 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 				}
 			});
 
-			// Listen for live location end events
 			const handleLiveLocationEnded = (endedLocationId: string) => {
 				if (endedLocationId === liveLocationId) {
-					// This live location has ended, update to inactive state
 					const inactiveState = {
 						coords: {
 							latitude: 37.78583,
 							longitude: -122.40642,
 							accuracy: 5
 						},
-						timestamp: Date.now() - (5 * 60 * 1000), // Show as old
+						timestamp: Date.now() - (5 * 60 * 1000),
 						isActive: false
 					};
 					handleLocationUpdate(inactiveState);
@@ -214,19 +219,22 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		}
 
 		if (globalTracker && isTracking) {
-			// Reuse existing tracker
 			trackerRef.current = globalTracker;
 			globalLocationUpdateCallbacks.add(handleLocationUpdate);
 
 			const currentState = globalTracker.getCurrentState();
 			if (currentState) handleLocationUpdate(currentState);
-		} else {
-			const tracker = new LiveLocationTracker((state: LiveLocationState) => {
-				// Notify all registered callbacks (owner and viewers)
-				globalLocationUpdateCallbacks.forEach(callback => {
-					if (callback) callback(state);
-				});
-			});
+		} else if (isTracking) {
+			const tracker = new LiveLocationTracker(
+				rid,
+				tmid,
+				{ id, username },
+				(state: LiveLocationState) => {
+					globalLocationUpdateCallbacks.forEach(callback => {
+						if (callback) callback(state);
+					});
+				}
+			);
 
 			trackerRef.current = tracker;
 			globalLocationUpdateCallbacks.add(handleLocationUpdate);
@@ -234,6 +242,32 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			tracker.startTracking().catch(error => {
 				// Failed to start live location
 				Alert.alert(I18n.t('Error'), error.message || I18n.t('Could_not_get_location'));
+			});
+		} else {
+			Location.getCurrentPositionAsync({
+				accuracy: Location.Accuracy.High
+			}).then((location: Location.LocationObject) => {
+				const previewState: LiveLocationState = {
+					coords: {
+						latitude: location.coords.latitude,
+						longitude: location.coords.longitude,
+						accuracy: location.coords.accuracy ?? undefined
+					},
+					timestamp: Date.now(),
+					isActive: false
+				};
+				handleLocationUpdate(previewState);
+			}).catch((_error: any) => {
+				const defaultState: LiveLocationState = {
+					coords: {
+						latitude: 37.78583,
+						longitude: -122.40642,
+						accuracy: 5
+					},
+					timestamp: Date.now(),
+					isActive: false
+				};
+				handleLocationUpdate(defaultState);
 			});
 		}
 	}, [provider, googleKey, osmKey, isTracking, liveLocationId]);
@@ -268,11 +302,30 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		try {
 			safeSet(() => setSubmitting(true));
 
-			const currentLiveLocationId = liveLocationId || generateLiveLocationId();
-			const message = createLiveLocationMessage(currentLiveLocationId, provider, locationState.coords, serverUrl, rid, tmid);
-			await sendMessage(rid, message, tmid, { id, username }, false);
+			// If no tracker exists, create one and start tracking
+			if (!trackerRef.current) {
+				const tracker = new LiveLocationTracker(
+					rid,
+					tmid,
+					{ id, username },
+					(state: LiveLocationState) => {
+						// Notify all registered callbacks (owner and viewers)
+						globalLocationUpdateCallbacks.forEach(callback => {
+							if (callback) callback(state);
+						});
+					}
+				);
+
+				trackerRef.current = tracker;
+				globalLocationUpdateCallbacks.add(handleLocationUpdate);
+
+				// Start tracking immediately when sharing
+				await tracker.startTracking();
+			}
 
 			if (trackerRef.current) {
+				const msgId = trackerRef.current.getMsgId();
+
 				globalTracker = trackerRef.current;
 				globalTrackerParams = {
 					rid,
@@ -280,13 +333,15 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					provider,
 					googleKey,
 					osmKey,
-					liveLocationId: currentLiveLocationId,
+					liveLocationId: msgId || undefined, // Use tracker's message ID
 					ownerName: username || 'You',
 					isTracking: true,
 					userId: id,
 					username
 				};
 				emitStatusChange(true);
+
+
 			}
 
 			safeSet(() => {
@@ -304,6 +359,11 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		// Keep tracking; just remove this component's callback but keep status updates
 		globalLocationUpdateCallbacks.delete(handleLocationUpdate);
 		globalLocationUpdateCallbacks.add(() => emitStatusChange(true));
+		
+		// Set minimized state to show status bar
+		isModalMinimized = true;
+		emitMinimizedStatusChange(true);
+		
 		Navigation.back();
 	};
 
@@ -314,30 +374,23 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		}
 
 		if (trackerRef.current) {
-			const currentState = trackerRef.current.getCurrentState();
-			const idToStop = liveLocationId ?? (globalTrackerParams && globalTrackerParams.liveLocationId) ?? null;
+			const msgId = trackerRef.current.getMsgId();
 
-			trackerRef.current.stopTracking();
-			if (idToStop) {
+			// stopTracking() now handles server communication
+			try {
+				await trackerRef.current.stopTracking();
+			} catch (error) {
+				// Failed to stop tracker
+			}
+			
+			if (msgId) {
 				try {
-					await markLiveLocationAsEnded(idToStop);
+					await markLiveLocationAsEnded(msgId);
 				} catch (e) {
-					// best-effort; ignore but keep ESLint happy
-					void e;
+					// Failed to mark live location as ended
 				}
 			}
 			emitStatusChange(false);
-
-			if (idToStop && currentState?.coords) {
-				try {
-					const stopMessage = createLiveLocationStopMessage(idToStop, provider, currentState.coords);
-					if (stopMessage.trim()) {
-						await sendMessage(rid, stopMessage, tmid, { id, username }, false);
-					}
-				} catch (error) {
-					// Failed to send stop message
-				}
-			}
 
 			globalTracker = null;
 			globalTrackerParams = null;
@@ -348,8 +401,51 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		Navigation.back();
 	};
 
-	const formatTimestamp = (timestamp: number) => new Date(timestamp).toLocaleTimeString();
+	const formatTimestamp = (timestamp: number) => {
+		if (!timestamp || isNaN(timestamp)) {
+			return 'Invalid Date';
+		}
+		return new Date(timestamp).toLocaleTimeString();
+	};
 	const isOwner = () => isTracking || (currentOwnerName && username ? currentOwnerName === username : Boolean(isShared));
+
+	const renderActionButtons = () => {
+		const shouldShowActiveButtons = (isShared || isTracking) || (!isTracking && liveLocationId);
+
+		if (!shouldShowActiveButtons) {
+			return (
+				<>
+					<TouchableOpacity onPress={onCancel} style={styles.btn}>
+						<Text style={styles.btnText}>{I18n.t('Cancel')}</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						disabled={submitting || !locationState?.coords}
+						onPress={onShare}
+						style={[styles.btn, styles.btnPrimary, !locationState?.coords && styles.btnDisabled]}>
+						{submitting ? (
+							<ActivityIndicator color='#fff' />
+						) : (
+							<Text style={[styles.btnText, styles.btnTextPrimary]}>Start</Text>
+						)}
+					</TouchableOpacity>
+				</>
+			);
+		}
+
+		if (isOwner() && !(!isTracking && liveLocationId)) {
+			return (
+				<TouchableOpacity onPress={onStopSharing} style={[styles.btn, styles.btnDanger]}>
+					<Text style={[styles.btnText, styles.btnTextDanger]}>Stop Sharing</Text>
+				</TouchableOpacity>
+			);
+		}
+
+		return (
+			<TouchableOpacity onPress={() => Navigation.back()} style={[styles.btn]}>
+				<Text style={[styles.btnText]}>Close</Text>
+			</TouchableOpacity>
+		);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -417,7 +513,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 						/>
 					) : (
 						<View style={styles.mapPlaceholder}>
-							<Text style={[styles.loadingText, { fontSize: 16, fontWeight: 'bold', marginBottom: 8 }]}>📍 Map Preview</Text>
+							<Text style={[styles.loadingText, { fontSize: 16, fontWeight: 'bold', marginBottom: 8 }]}>ðŸ“ Map Preview</Text>
 							{locationState?.coords && (
 								<Text style={[styles.loadingText, { fontSize: 14, marginBottom: 8 }]}>
 									{locationState.coords.latitude.toFixed(5)}, {locationState.coords.longitude.toFixed(5)}
@@ -434,33 +530,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 
 				{/* Buttons */}
 				<View style={styles.buttons}>
-					{(isShared || isTracking) || (!isTracking && liveLocationId) ? (
-						isOwner() && !(!isTracking && liveLocationId) ? (
-							<TouchableOpacity onPress={onStopSharing} style={[styles.btn, styles.btnDanger]}>
-								<Text style={[styles.btnText, styles.btnTextDanger]}>Stop Sharing</Text>
-							</TouchableOpacity>
-						) : (
-							<TouchableOpacity onPress={() => Navigation.back()} style={[styles.btn]}>
-								<Text style={[styles.btnText]}>Close</Text>
-							</TouchableOpacity>
-						)
-					) : (
-						<>
-							<TouchableOpacity onPress={onCancel} style={styles.btn}>
-								<Text style={styles.btnText}>{I18n.t('Cancel')}</Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								disabled={submitting || !locationState?.coords}
-								onPress={onShare}
-								style={[styles.btn, styles.btnPrimary, !locationState?.coords && styles.btnDisabled]}>
-								{submitting ? (
-									<ActivityIndicator color='#fff' />
-								) : (
-									<Text style={[styles.btnText, styles.btnTextPrimary]}>Start</Text>
-								)}
-							</TouchableOpacity>
-						</>
-					)}
+					{renderActionButtons()}
 				</View>
 			</View>
 		</View>
@@ -473,6 +543,11 @@ export function isLiveLocationActive(): boolean {
 
 export function reopenLiveLocationModal() {
 	if (!globalTracker || !globalTrackerParams) return;
+	
+	// Clear minimized state when reopening modal
+	isModalMinimized = false;
+	emitMinimizedStatusChange(false);
+	
 	InteractionManager.runAfterInteractions(() => {
 		Navigation.navigate('LiveLocationPreviewModal', {
 			...globalTrackerParams,
@@ -489,33 +564,32 @@ export async function stopGlobalLiveLocation() {
 
 	const params = globalTrackerParams;
 	try {
-		const state = globalTracker.getCurrentState();
-		globalTracker.stopTracking();
+		await globalTracker.stopTracking();
 
 		if (params?.liveLocationId) {
 			try {
 				await markLiveLocationAsEnded(params.liveLocationId);
-			} catch {}
+			} catch {
+				// Failed to mark live location as ended
+			}
 		}
 
-		if (params?.rid && params.liveLocationId && params.userId && params.username) {
+		// No need to send manual stop message - server handles this via LiveLocationApi.stop
+		if (params?.liveLocationId) {
 			try {
-				const stopMsg = createLiveLocationStopMessage(
-					params.liveLocationId,
-					params.provider,
-					state?.coords || { latitude: 0, longitude: 0 }
-				);
-				if (stopMsg.trim()) {
-					await sendMessage(params.rid, stopMsg, params.tmid, { id: params.userId, username: params.username }, false);
-				}
+				await markLiveLocationAsEnded(params.liveLocationId);
 			} catch (e) {
-				// Failed to send stop message
+				// best-effort cleanup
 			}
 		}
 	} finally {
 		globalTracker = null;
 		globalTrackerParams = null;
 		globalLocationUpdateCallbacks.clear();
+		
+		// Clear minimized state when stopping
+		isModalMinimized = false;
+		emitMinimizedStatusChange(false);
 		emitStatusChange(false);
 	}
 }

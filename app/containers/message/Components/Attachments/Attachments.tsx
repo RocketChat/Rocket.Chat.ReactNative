@@ -7,21 +7,36 @@ import Audio from './Audio';
 import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
+import LiveLocationAttachment from './LiveLocationAttachment';
 import MessageContext from '../../Context';
 import { IMessageAttachments } from '../../interfaces';
 import { IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
-	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed;
+	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed || file?.type === 'live-location';
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author, messageId, roomId }: IMessageAttachments) => {
 		const { translateLanguage } = useContext(MessageContext);
+
+		console.log('🔍 [Attachments] Processing attachments:', attachments?.length || 0);
+		if (attachments) {
+			attachments.forEach((att, idx) => {
+				console.log(`🔍 [Attachments] Attachment ${idx}:`, {
+					type: att.type,
+					hasLive: !!(att as any).live,
+					keys: Object.keys(att)
+				});
+			});
+		}
 
 		const nonQuoteAttachments = attachments?.filter(removeQuote);
 
+		console.log('🔍 [Attachments] Non-quote attachments:', nonQuoteAttachments?.length || 0);
+
 		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
+			console.log('🔍 [Attachments] No attachments to render');
 			return null;
 		}
 		// TODO: memo?
@@ -78,6 +93,25 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 			if (typeof file.collapsed === 'boolean') {
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
+			}
+
+			// Handle live location attachments
+			console.log('🔍 [Attachments] Checking file:', { type: file.type, hasLive: !!(file as any).live });
+			if (file.type === 'live-location' && (file as any).live) {
+				console.log('✅ [Attachments] Rendering LiveLocationAttachment!');
+				return (
+					<LiveLocationAttachment
+						key={`live-location-${index}`}
+						attachment={file as any}
+						getCustomEmoji={getCustomEmoji}
+						showAttachment={showAttachment}
+						style={style}
+						isReply={isReply}
+						author={author}
+						messageId={messageId}
+						roomId={roomId}
+					/>
+				);
 			}
 
 			return null;

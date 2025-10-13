@@ -39,7 +39,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<>
 					<Quote {...props} />
 					<Content {...props} />
-					<Attachments {...props} />
+					<Attachments {...props} messageId={props.id} roomId={props.rid} />
 				</>
 				<Urls {...props} />
 			</>
@@ -87,7 +87,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<View style={{ gap: 4 }}>
 					<Quote {...props} />
 					<Content {...props} />
-					<Attachments {...props} />
+					<Attachments {...props} messageId={props.id} roomId={props.rid} />
 					<Urls {...props} />
 					<Thread {...props} />
 					<Reactions {...props} />
@@ -174,7 +174,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 						<Content {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
-								<Attachments {...props} />
+								<Attachments {...props} messageId={props.id} roomId={props.rid} />
 							</View>
 						) : null}
 					</View>

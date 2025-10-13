@@ -312,6 +312,13 @@ export type InsideStackParamList = {
 		ownerName?: string;
 		isTracking?: boolean;
 	};
+	LiveLocationViewerModal: {
+		rid: string;
+		msgId: string;
+		provider?: 'osm' | 'google';
+		googleKey?: string;
+		osmKey?: string;
+	};
 };
 
 export type OutsideParamList = {
