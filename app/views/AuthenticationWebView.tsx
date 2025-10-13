@@ -146,9 +146,13 @@ const AuthenticationWebView = () => {
 	const isIframe = authType === 'iframe';
 
 	useLayoutEffect(() => {
+		const urlTitle = headerTitle || parse(url, true).host;
+		const isSSOType = ['saml', 'cas', 'iframe'].includes(authType);
+		const staticFallback = isSSOType ? 'SSO' : 'OAuth';
+
 		navigation.setOptions({
 			headerLeft: () => <HeaderButton.CloseModal />,
-			title: ['saml', 'cas', 'iframe'].includes(authType) ? headerTitle || parse(url, true).host || 'SSO' : 'OAuth'
+			title: urlTitle || staticFallback
 		});
 	}, [authType, navigation, headerTitle, url]);
 
