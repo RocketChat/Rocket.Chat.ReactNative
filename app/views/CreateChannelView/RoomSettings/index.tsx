@@ -1,13 +1,21 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { UseFormSetValue } from 'react-hook-form';
 
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { SwitchItem } from './SwitchItem';
 import { SwitchItemType } from './SwitchItemType';
 import { SwitchItemReadOnly } from './SwitchItemReadOnly';
 import { SwitchItemEncrypted } from './SwitchItemEncrypted';
 import { IFormData } from '..';
+
+const styles = StyleSheet.create({
+	container: {
+		gap: 12,
+		paddingVertical: 12
+	}
+});
 
 export const RoomSettings = ({
 	isTeam,
@@ -31,29 +39,26 @@ export const RoomSettings = ({
 		encryptionEnabled: state.encryption.enabled
 	}));
 
-	const onValueChangeType = useCallback(
-		(value: boolean) => {
-			logEvent(events.CR_TOGGLE_TYPE);
-			// If we set the channel as public, encrypted status should be false
-			setType(value);
-			setValue('type', value);
-			setEncrypted(value && encrypted);
-			setValue('encrypted', value && encrypted);
-		},
-		[encrypted]
-	);
+	const onValueChangeType = (value: boolean) => {
+		logEvent(events.CR_TOGGLE_TYPE);
+		// If we set the channel as public, encrypted status should be false
+		setType(value);
+		setValue('type', value);
+		setEncrypted(value && encrypted);
+		setValue('encrypted', value && encrypted);
+	};
 
-	const onValueChangeReadOnly = useCallback((value: boolean) => {
+	const onValueChangeReadOnly = (value: boolean) => {
 		logEvent(events.CR_TOGGLE_READ_ONLY);
 		setReadOnly(value);
 		setValue('readOnly', value);
-	}, []);
+	};
 
-	const onValueChangeEncrypted = useCallback((value: boolean) => {
+	const onValueChangeEncrypted = (value: boolean) => {
 		logEvent(events.CR_TOGGLE_ENCRYPTED);
 		setEncrypted(value);
 		setValue('encrypted', value);
-	}, []);
+	};
 
 	const onValueChangeBroadcast = (value: boolean) => {
 		logEvent(events.CR_TOGGLE_BROADCAST);
@@ -66,12 +71,19 @@ export const RoomSettings = ({
 	const isDisabled = [createChannelPermission, createPrivateChannelPermission].filter(r => r === true).length <= 1;
 
 	return (
-		<>
+		<View style={styles.container}>
 			<SwitchItemType
 				isTeam={isTeam}
 				type={createPrivateChannelPermission ? type : false}
 				onValueChangeType={onValueChangeType}
 				isDisabled={isDisabled}
+			/>
+			<SwitchItem
+				id={'broadcast'}
+				value={broadcast}
+				label={'Broadcast'}
+				hint={'Broadcast_hint'}
+				onValueChange={onValueChangeBroadcast}
 			/>
 			<SwitchItemReadOnly
 				broadcast={broadcast}
@@ -86,13 +98,6 @@ export const RoomSettings = ({
 				encrypted={encrypted}
 				onValueChangeEncrypted={onValueChangeEncrypted}
 			/>
-			<SwitchItem
-				id={'broadcast'}
-				value={broadcast}
-				label={'Broadcast'}
-				hint={'Broadcast_hint'}
-				onValueChange={onValueChangeBroadcast}
-			/>
-		</>
+		</View>
 	);
 };

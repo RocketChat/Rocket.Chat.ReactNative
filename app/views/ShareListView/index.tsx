@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BackHandler, FlatList, Keyboard, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, NativeEventSubscription, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
@@ -12,12 +12,11 @@ import database from '../../lib/database';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../containers/DirectoryItem';
 import ServerItem from '../../containers/ServerItem';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
 import SearchHeader from '../../containers/SearchHeader';
-import { themes } from '../../lib/constants';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
+import { themes } from '../../lib/constants/colors';
 import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
@@ -72,6 +71,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	private unsubscribeBlur: (() => void) | undefined;
 
+	private backHandler: NativeEventSubscription | undefined;
+
 	constructor(props: IShareListViewProps) {
 		super(props);
 		this.state = {
@@ -87,12 +88,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		};
 		this.setHeader();
 		if (isAndroid) {
-			this.unsubscribeFocus = props.navigation.addListener('focus', () =>
-				BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+			this.unsubscribeFocus = props.navigation.addListener(
+				'focus',
+				() => (this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress))
 			);
-			this.unsubscribeBlur = props.navigation.addListener('blur', () =>
-				BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
-			);
+			this.unsubscribeBlur = props.navigation.addListener('blur', () => this.backHandler?.remove());
 		}
 	}
 
@@ -217,15 +217,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		});
 	};
 
-	internalSetState = (...args: object[]) => {
-		const { navigation } = this.props;
-		if (navigation.isFocused()) {
-			animateNextTransition();
-		}
-		// @ts-ignore
-		this.setState(...args);
-	};
-
 	query = async (text?: string) => {
 		const db = database.active;
 		const defaultWhereClause = [
@@ -274,11 +265,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 
 		if (server) {
-			const chats = await this.query();
+			const chats = (await this.query()) as TSubscriptionModel[];
 			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
-			let serverInfo = {};
+			let serverInfo = {} as TServerModel;
 			try {
 				serverInfo = await serversCollection.find(server);
 			} catch (error) {
@@ -286,7 +277,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			}
 
 			if (this.airGappedReadOnly) {
-				this.internalSetState({
+				this.setState({
 					chats: [],
 					serversCount,
 					loading: false,
@@ -296,7 +287,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				return;
 			}
 
-			this.internalSetState({
+			this.setState({
 				chats: chats ?? [],
 				serversCount,
 				loading: false,
@@ -327,8 +318,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	search = async (text: string) => {
-		const result = await this.query(text);
-		this.internalSetState({
+		const result = (await this.query(text)) as TSubscriptionModel[];
+		this.setState({
 			searchResults: result,
 			searchText: text
 		});
@@ -340,7 +331,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	cancelSearch = () => {
-		this.internalSetState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
+		this.setState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
 		Keyboard.dismiss();
 	};
 

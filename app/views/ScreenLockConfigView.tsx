@@ -4,11 +4,16 @@ import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
-import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
-import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../lib/methods/helpers/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes } from '../lib/constants';
+import {
+	changePasscode,
+	checkHasPasscode,
+	supportedBiometryLabel,
+	handleLocalAuthentication
+} from '../lib/methods/helpers/localAuthentication';
+import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
+import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import userPreferences from '../lib/methods/userPreferences';
@@ -125,6 +130,10 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	};
 
 	changePasscode = async ({ force }: { force: boolean }) => {
+		const { autoLock } = this.state;
+		if (autoLock) {
+			await handleLocalAuthentication(true);
+		}
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		await changePasscode({ force });
 	};
@@ -256,7 +265,6 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const { autoLock } = this.state;
 		return (
 			<SafeAreaView>
-				<StatusBar />
 				<List.Container>
 					<List.Section>
 						<List.Separator />

@@ -63,12 +63,9 @@ export default {
 	RL_GO_ROOM: 'rl_go_room',
 	RL_FAVORITE_CHANNEL: 'rl_favorite_channel',
 	RL_UNFAVORITE_CHANNEL: 'rl_unfavorite_channel',
-	RL_TOGGLE_FAVORITE_F: 'rl_toggle_favorite_f',
 	RL_READ_CHANNEL: 'rl_read_channel',
 	RL_UNREAD_CHANNEL: 'rl_unread_channel',
-	RL_TOGGLE_READ_F: 'rl_toggle_read_f',
 	RL_HIDE_CHANNEL: 'rl_hide_channel',
-	RL_HIDE_CHANNEL_F: 'rl_hide_channel_f',
 	RL_CREATE_NEW_WORKSPACE: 'rl_create_new_workspace',
 
 	// DISPLAY PREFERENCES VIEW
@@ -215,7 +212,6 @@ export default {
 	ROOM_MSG_ACTION_PERMALINK_F: 'room_msg_action_permalink_f',
 	ROOM_MSG_ACTION_DISCUSSION: 'room_msg_action_discussion',
 	ROOM_MSG_ACTION_UNREAD: 'room_msg_action_unread',
-	ROOM_MSG_ACTION_UNREAD_F: 'room_msg_action_unread_f',
 	ROOM_MSG_ACTION_COPY: 'room_msg_action_copy',
 	ROOM_MSG_ACTION_SHARE: 'room_msg_action_share',
 	ROOM_MSG_ACTION_SHARE_F: 'room_msg_action_share_f',

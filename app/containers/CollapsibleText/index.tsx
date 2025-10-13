@@ -3,8 +3,8 @@ import { TextStyle, Text, StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
-import { previewFormatText } from '../markdown/previewFormatText';
 import I18n from '../../i18n';
+import usePreviewFormatText from '../../lib/hooks/usePreviewFormatText';
 
 interface ICollapsibleText {
 	msg?: string;
@@ -29,12 +29,13 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 	const [showTruncated, setShowTruncated] = useState(true);
 
 	const { colors } = useTheme();
+	const formattedText = usePreviewFormatText(msg ?? '');
 
 	if (!msg) {
 		return null;
 	}
 
-	const m = previewFormatText(msg);
+	const m = formattedText;
 
 	if (truncatedText && showTruncated) {
 		return (
@@ -67,15 +68,13 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 				} else {
 					setShowTruncated(false);
 				}
-			}}
-		>
+			}}>
 			{m}
 			{truncatedText ? (
 				<Text
 					testID='collapsible-text-show-less'
 					onPress={() => setShowTruncated(true)}
-					style={[styles.textInfo, { color: colors.fontHint }]}
-				>
+					style={[styles.textInfo, { color: colors.fontHint }]}>
 					{` ${I18n.t('Show_less')}`}
 				</Text>
 			) : null}

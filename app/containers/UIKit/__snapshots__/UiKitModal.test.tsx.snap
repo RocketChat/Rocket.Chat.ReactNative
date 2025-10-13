@@ -1,0 +1,4422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Title
+    </Text>
+    <A11yOrderView
+      orderKey=":r0:"
+    >
+      <A11yIndexView
+        importantForAccessibility="yes"
+        orderFocusType={0}
+        orderIndex={1}
+        orderKey=":r0:"
+      >
+        <View
+          style={
+            [
+              {
+                "gap": 4,
+                "marginBottom": 10,
+              },
+              {
+                "marginBottom": 0,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={false}
+            style={
+              {
+                "justifyContent": "center",
+                "position": "relative",
+              }
+            }
+          >
+            <TextInput
+              accessibilityLabel=""
+              accessible={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardAppearance="light"
+              onChangeText={[Function]}
+              placeholderTextColor="#9EA2A8"
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                  },
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
+                ]
+              }
+              underlineColorAndroid="transparent"
+            />
+          </View>
+        </View>
+      </A11yIndexView>
+    </A11yOrderView>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Details"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Details
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignSelf": "stretch",
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "height": 48,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="ios_touchable_wrapper"
+      >
+        <View
+          pointerEvents="box-only"
+        >
+          <TextInput
+            editable={false}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+            testID="text_input"
+            value="TypeL Task"
+          />
+          <View
+            style={
+              [
+                {
+                  "position": "absolute",
+                  "right": 0,
+                },
+                undefined,
+              ]
+            }
+            testID="icon_container"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 22,
+                  },
+                  [
+                    {
+                      "lineHeight": 22,
+                    },
+                    false,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignSelf": "stretch",
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "height": 48,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="ios_touchable_wrapper"
+      >
+        <View
+          pointerEvents="box-only"
+        >
+          <TextInput
+            editable={false}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+            testID="text_input"
+            value="Project: Space (winter)"
+          />
+          <View
+            style={
+              [
+                {
+                  "position": "absolute",
+                  "right": 0,
+                },
+                undefined,
+              ]
+            }
+            testID="icon_container"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 22,
+                  },
+                  [
+                    {
+                      "lineHeight": 22,
+                    },
+                    false,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignSelf": "stretch",
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "height": 48,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="ios_touchable_wrapper"
+      >
+        <View
+          pointerEvents="box-only"
+        >
+          <TextInput
+            editable={false}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+            testID="text_input"
+            value="Priority (optional)"
+          />
+          <View
+            style={
+              [
+                {
+                  "position": "absolute",
+                  "right": 0,
+                },
+                undefined,
+              ]
+            }
+            testID="icon_container"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 22,
+                  },
+                  [
+                    {
+                      "lineHeight": 22,
+                    },
+                    false,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignSelf": "stretch",
+          },
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderColor": "#CBCED1",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "height": 48,
+            "justifyContent": "center",
+            "marginBottom": 16,
+            "paddingHorizontal": 16,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+          }
+        }
+        testID="ios_touchable_wrapper"
+      >
+        <View
+          pointerEvents="box-only"
+        >
+          <TextInput
+            editable={false}
+            style={
+              {
+                "backgroundColor": "transparent",
+                "color": "#6C727A",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+            testID="text_input"
+            value="Assinee (optional)"
+          />
+          <View
+            style={
+              [
+                {
+                  "position": "absolute",
+                  "right": 0,
+                },
+                undefined,
+              ]
+            }
+            testID="icon_container"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 22,
+                  },
+                  [
+                    {
+                      "lineHeight": 22,
+                    },
+                    false,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Description
+    </Text>
+    <A11yOrderView
+      orderKey=":r1:"
+    >
+      <A11yIndexView
+        importantForAccessibility="yes"
+        orderFocusType={0}
+        orderIndex={1}
+        orderKey=":r1:"
+      >
+        <View
+          style={
+            [
+              {
+                "gap": 4,
+                "marginBottom": 10,
+              },
+              {
+                "marginBottom": 0,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={false}
+            style={
+              {
+                "justifyContent": "center",
+                "position": "relative",
+              }
+            }
+          >
+            <TextInput
+              accessibilityLabel=""
+              accessible={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardAppearance="light"
+              multiline={true}
+              onChangeText={[Function]}
+              placeholderTextColor="#9EA2A8"
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                  },
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    {
+                      "height": 130,
+                    },
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
+                ]
+              }
+              underlineColorAndroid="transparent"
+            />
+          </View>
+        </View>
+      </A11yIndexView>
+    </A11yOrderView>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "minHeight": 36,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Due today"
+      numberOfLines={0}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+            "lineHeight": undefined,
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+      testID="markdown-preview-Due today"
+    >
+      Due today
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "height": 0.5,
+        },
+        {
+          "alignSelf": "center",
+          "marginBottom": 16,
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "#CBCED1",
+        },
+      ]
+    }
+  />,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Finish interface componests (3 hours)"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Finish interface componests (3 hours)
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={
+        {
+          "bottom": 4,
+          "left": 4,
+          "right": 4,
+          "top": 4,
+        }
+      }
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "justifyContent": "center",
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 18,
+            },
+            [
+              {
+                "lineHeight": 18,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="English Class (1 hour)"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              English Class (1 hour)
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={
+        {
+          "bottom": 4,
+          "left": 4,
+          "right": 4,
+          "top": 4,
+        }
+      }
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "justifyContent": "center",
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 18,
+            },
+            [
+              {
+                "lineHeight": 18,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Send an email to John (15min)"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Send an email to John (15min)
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      hitSlop={
+        {
+          "bottom": 4,
+          "left": 4,
+          "right": 4,
+          "top": 4,
+        }
+      }
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "justifyContent": "center",
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 18,
+            },
+            [
+              {
+                "lineHeight": 18,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
+<View
+  style={
+    {
+      "marginBottom": 16,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginVertical": 10,
+          "textAlign": "left",
+        },
+        {
+          "color": "#D40C26",
+        },
+      ]
+    }
+  >
+    Label
+  </Text>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "backgroundColor": "#FFFFFF",
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "flexDirection": "row",
+            "height": 48,
+            "paddingLeft": 16,
+          },
+          {
+            "borderColor": "#EC0D2A",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "color": "#D40C26",
+            },
+          ]
+        }
+      >
+        Invalid Date
+      </Text>
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#EC0D2A",
+              "fontSize": 20,
+            },
+            [
+              {
+                "lineHeight": 20,
+              },
+              {
+                "position": "absolute",
+                "right": 16,
+              },
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+  </View>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "400",
+          "marginTop": 8,
+          "textAlign": "center",
+        },
+        {
+          "color": "#D40C26",
+        },
+      ]
+    }
+  >
+    error test
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <A11yOrderView
+      orderKey=":r2:"
+    >
+      <A11yIndexView
+        importantForAccessibility="yes"
+        orderFocusType={0}
+        orderIndex={1}
+        orderKey=":r2:"
+      >
+        <View
+          style={
+            [
+              {
+                "gap": 4,
+                "marginBottom": 10,
+              },
+              {
+                "marginBottom": 0,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={false}
+            style={
+              {
+                "justifyContent": "center",
+                "position": "relative",
+              }
+            }
+          >
+            <TextInput
+              accessibilityLabel=""
+              accessible={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardAppearance="light"
+              onChangeText={[Function]}
+              placeholderTextColor="#9EA2A8"
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                  },
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
+                ]
+              }
+              underlineColorAndroid="transparent"
+            />
+          </View>
+        </View>
+      </A11yIndexView>
+    </A11yOrderView>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Outgoing Title
+    </Text>
+    <A11yOrderView
+      orderKey=":r3:"
+    >
+      <A11yIndexView
+        importantForAccessibility="yes"
+        orderFocusType={0}
+        orderIndex={1}
+        orderKey=":r3:"
+      >
+        <View
+          style={
+            [
+              {
+                "gap": 4,
+                "marginBottom": 10,
+              },
+              {
+                "marginBottom": 0,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={false}
+            style={
+              {
+                "justifyContent": "center",
+                "position": "relative",
+              }
+            }
+          >
+            <TextInput
+              accessibilityLabel=""
+              accessible={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardAppearance="light"
+              onChangeText={[Function]}
+              placeholderTextColor="#9EA2A8"
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                  },
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    undefined,
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
+                ]
+              }
+              underlineColorAndroid="transparent"
+            />
+          </View>
+        </View>
+      </A11yIndexView>
+    </A11yOrderView>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      Pick something unique!
+    </Text>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Set a date
+    </Text>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "height": 48,
+              "paddingLeft": 16,
+            },
+            {
+              "borderColor": "#CBCED1",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Invalid Date
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 20,
+              },
+              [
+                {
+                  "lineHeight": 20,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "minHeight": 36,
+      }
+    }
+  >
+    <Text
+      accessibilityLabel="Task: ZOL-994"
+      numberOfLines={0}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+            "lineHeight": undefined,
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+      testID="markdown-preview-Task: ZOL-994"
+    >
+      Task: ZOL-994
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Update Spec final assets"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Update Spec final assets
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityLabel="Change"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#156FF5",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 16,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Change
+      </Text>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "height": 0.5,
+        },
+        {
+          "alignSelf": "center",
+          "marginBottom": 16,
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "#CBCED1",
+        },
+      ]
+    }
+  />,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Notes
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 15,
+            "fontWeight": "400",
+            "marginBottom": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      Describe your update
+    </Text>
+    <A11yOrderView
+      orderKey=":r4:"
+    >
+      <A11yIndexView
+        importantForAccessibility="yes"
+        orderFocusType={0}
+        orderIndex={1}
+        orderKey=":r4:"
+      >
+        <View
+          style={
+            [
+              {
+                "gap": 4,
+                "marginBottom": 10,
+              },
+              {
+                "marginBottom": 0,
+              },
+            ]
+          }
+        >
+          <View
+            accessible={false}
+            style={
+              {
+                "justifyContent": "center",
+                "position": "relative",
+              }
+            }
+          >
+            <TextInput
+              accessibilityLabel=""
+              accessible={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardAppearance="light"
+              multiline={true}
+              onChangeText={[Function]}
+              placeholderTextColor="#9EA2A8"
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                  },
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "paddingHorizontal": 16,
+                      "paddingVertical": 14,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    {},
+                    {
+                      "backgroundColor": "#FFFFFF",
+                      "borderColor": "#9EA2A8",
+                      "color": "#1F2329",
+                    },
+                    {},
+                    {
+                      "height": 130,
+                    },
+                  ],
+                  {
+                    "textAlign": "auto",
+                  },
+                ]
+              }
+              underlineColorAndroid="transparent"
+            />
+          </View>
+        </View>
+      </A11yIndexView>
+    </A11yOrderView>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      Please take the time to compose something short
+    </Text>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
+<View
+  style={
+    {
+      "marginBottom": 16,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginVertical": 10,
+          "textAlign": "left",
+        },
+        {
+          "color": "#D40C26",
+        },
+      ]
+    }
+  >
+    Label
+  </Text>
+  <A11yOrderView
+    orderKey=":r5:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r5:"
+    >
+      <View
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            {
+              "marginBottom": 0,
+            },
+          ]
+        }
+      >
+        <View
+          accessible={false}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            accessibilityLabel=""
+            accessible={true}
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            onChangeText={[Function]}
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+          />
+        </View>
+      </View>
+    </A11yIndexView>
+  </A11yOrderView>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "400",
+          "marginTop": 8,
+          "textAlign": "center",
+        },
+        {
+          "color": "#D40C26",
+        },
+      ]
+    }
+  >
+    error test
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Share with...
+    </Text>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 4,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "minHeight": 48,
+              "paddingBottom": 0,
+              "paddingHorizontal": 8,
+            },
+            {
+              "borderRadius": 4,
+            },
+            {
+              "borderColor": "#9EA2A8",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "paddingLeft": 6,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Search
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      Initial Value Undefined
+    </Text>
+  </View>,
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginVertical": 10,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Share with...
+    </Text>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 4,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "minHeight": 48,
+              "paddingBottom": 0,
+              "paddingHorizontal": 8,
+            },
+            {
+              "borderRadius": 4,
+            },
+            {
+              "borderColor": "#9EA2A8",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+              "marginRight": 50,
+              "paddingTop": 8,
+            }
+          }
+        >
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#F2F3F5",
+                "borderRadius": 2,
+                "flexDirection": "row",
+                "height": 28,
+                "marginBottom": 8,
+                "marginRight": 8,
+                "opacity": 1,
+                "paddingHorizontal": 4,
+              }
+            }
+            testID="multi-select-chip-1"
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "500",
+                    "paddingHorizontal": 8,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              John
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#6C727A",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      Initial Value as John
+    </Text>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
+<View
+  style={
+    {
+      "marginBottom": 16,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginVertical": 10,
+          "textAlign": "left",
+        },
+        {
+          "color": "#D40C26",
+        },
+      ]
+    }
+  >
+    Label
+  </Text>
+  <A11yOrderView
+    orderKey=":r6:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r6:"
+    >
+      <View
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            {
+              "marginBottom": 0,
+            },
+          ]
+        }
+      >
+        <View
+          accessible={false}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            accessibilityLabel=""
+            accessible={true}
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            multiline={true}
+            onChangeText={[Function]}
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  {
+                    "height": 130,
+                  },
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+          />
+        </View>
+      </View>
+    </A11yIndexView>
+  </A11yOrderView>
+  <Text
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "400",
+          "marginTop": 8,
+          "textAlign": "center",
+        },
+        {
+          "color": "#D40C26",
+        },
+      ]
+    }
+  >
+    error test
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Bruno Quadros"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Bruno Quadros
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=","
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              ,
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Please review your details for your "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Please review your details for your 
+            </Text>
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="travel expense"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                travel expense
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel="."
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              .
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Expense no. "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Expense no. 
+            </Text>
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="DA921"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                DA921
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel="."
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              .
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+    <ViewManagerAdapter_ExpoImage
+      borderRadius={2}
+      containerViewRef={"[React.ref]"}
+      contentFit="cover"
+      contentPosition={
+        {
+          "left": "50%",
+          "top": "50%",
+        }
+      }
+      height={88}
+      nativeViewRef={"[React.ref]"}
+      onError={[Function]}
+      onLoad={[Function]}
+      onLoadStart={[Function]}
+      onProgress={[Function]}
+      placeholder={[]}
+      source={
+        [
+          {
+            "uri": "https://raw.githubusercontent.com/RocketChat/Rocket.Chat.Artwork/master/Logos/icon-circle-256.png",
+          },
+        ]
+      }
+      style={
+        {
+          "borderRadius": 2,
+          "height": 88,
+          "width": 88,
+        }
+      }
+      transition={null}
+      width={88}
+    />
+  </View>,
+  <View
+    style={
+      [
+        {
+          "height": 0.5,
+        },
+        {
+          "alignSelf": "center",
+          "marginBottom": 16,
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "#CBCED1",
+        },
+      ]
+    }
+  />,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Date:"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Date:
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="11/02/2020"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              11/02/2020
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Category:"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Category:
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Travel"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Travel
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Cost:"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Cost:
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="$150.00 USD"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              $150.00 USD
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Notes:"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Notes:
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="WebSummit Conference"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              WebSummit Conference
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
+[
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+          "padding": 4,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Rocket.Chat is free, unlimited and open source"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Rocket.Chat is free, unlimited and open source
+              </Text>
+            </Text>
+            <Text
+              accessibilityLabel=" "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+               
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                ]
+              }
+            >
+              🚀
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="If you have any doubt ask to "
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              If you have any doubt ask to 
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              @rocketcat
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "height": 0.5,
+        },
+        {
+          "alignSelf": "center",
+          "marginBottom": 16,
+          "width": "100%",
+        },
+        {
+          "backgroundColor": "#CBCED1",
+        },
+      ]
+    }
+  />,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 4,
+          },
+          {
+            "marginVertical": 6,
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Text 1"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Text 1
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Description, Mussum Ipsum, cacilds vidis litro"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Description, Mussum Ipsum, cacilds vidis litro
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 4,
+          },
+          {
+            "marginVertical": 6,
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Text 2"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Text 2
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Description, Mussum Ipsum, cacilds vidis litro"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Description, Mussum Ipsum, cacilds vidis litro
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </Text>
+  </View>,
+  <View
+    style={
+      [
+        {
+          "marginBottom": 8,
+        },
+        {
+          "justifyContent": "center",
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 4,
+          },
+          {
+            "marginVertical": 6,
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Text 3"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Text 3
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Description, Mussum Ipsum, cacilds vidis litro"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Description, Mussum Ipsum, cacilds vidis litro
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "flex": 1,
+            "padding": 4,
+          },
+          {
+            "marginVertical": 6,
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 2,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="Text 4"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                Text 4
+              </Text>
+            </Text>
+          </Text>
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Description, Mussum Ipsum, cacilds vidis litro"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Description, Mussum Ipsum, cacilds vidis litro
+            </Text>
+          </Text>
+        </Text>
+      </View>
+    </Text>
+  </View>,
+]
+`;

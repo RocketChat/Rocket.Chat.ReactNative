@@ -8,11 +8,10 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { addUser, removeUser, reset } from '../../actions/selectedUsers';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import UserItem from '../../containers/UserItem';
@@ -22,9 +21,9 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { search as searchMethod, TSearch } from '../../lib/methods';
+import { search as searchMethod, TSearch } from '../../lib/methods/search';
 import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Header from './Header';
 
 type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
@@ -151,7 +150,6 @@ const SelectedUsersView = () => {
 
 	return (
 		<SafeAreaView testID='select-users-view'>
-			<StatusBar />
 			<FlatList
 				data={data}
 				keyExtractor={item => item._id}

@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { ThemeContext, TSupportedThemes } from '../../theme';
-import { longText } from '../../../.storybook/utils';
+import { longText } from '../../../.rnstorybook/utils';
 import BackgroundContainer, { IBackgroundContainer } from '.';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 
 export default {
 	title: 'BackgroundContainer'

@@ -1,24 +1,23 @@
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { AccessibilityInfo, ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
-import { HeaderBackButton } from '@react-navigation/elements';
+import { useForm } from 'react-hook-form';
 
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as List from '../../containers/List';
 import styles from './styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import Avatar from '../../containers/Avatar';
 import AvatarPresentational from '../../containers/Avatar/Avatar';
-import AvatarUrl from './AvatarUrl';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -27,6 +26,9 @@ import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
 import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { isImageURL, useDebounce } from '../../lib/methods/helpers';
+import { ControlledFormTextInput } from '../../containers/TextInput';
+import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -63,6 +65,17 @@ function reducer(state: IState, action: IReducerAction) {
 }
 
 const ChangeAvatarView = () => {
+	const {
+		control,
+		getValues,
+		setValue,
+		setError,
+		clearErrors,
+		formState: { errors }
+	} = useForm({
+		mode: 'onChange',
+		defaultValues: { rawImageUrl: '' }
+	});
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
@@ -81,14 +94,7 @@ const ChangeAvatarView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: titleHeader || I18n.t('Avatar'),
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.goBack()}
-					tintColor={colors.fontDefault}
-					testID='header-back'
-				/>
-			)
+			headerLeft: () => <HeaderBackButton onPress={() => navigation.goBack()} />
 		});
 	}, [titleHeader, navigation]);
 
@@ -114,6 +120,38 @@ const ChangeAvatarView = () => {
 	const dispatchAvatar = (action: IReducerAction) => {
 		isDirty.current = true;
 		dispatch(action);
+	};
+
+	const validateImage = useDebounce(async (value: string) => {
+		const result = await isImageURL(value);
+
+		if (!result || !value) {
+			dispatchAvatar({
+				type: AvatarStateActions.CHANGE_AVATAR,
+				payload: { url: '', data: '', service: 'url' }
+			});
+		}
+	}, textInputDebounceTime);
+
+	const onChangeText = (value: string) => {
+		setValue('rawImageUrl', value);
+		validateImage(value);
+	};
+
+	const fetchImageFromURL = async () => {
+		const { rawImageUrl } = getValues();
+		const result = await isImageURL(rawImageUrl);
+		if (result) {
+			dispatchAvatar({
+				type: AvatarStateActions.CHANGE_AVATAR,
+				payload: { url: rawImageUrl, data: rawImageUrl, service: 'url' }
+			});
+			clearErrors();
+			return;
+		}
+
+		AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 	};
 
 	const submit = async () => {
@@ -168,11 +206,10 @@ const ChangeAvatarView = () => {
 	const deletingRoomAvatar = context === 'room' && state.data === null;
 
 	return (
-		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
-			<StatusBar />
+		<KeyboardView>
 			<SafeAreaView testID='change-avatar-view'>
 				<ScrollView
-					contentContainerStyle={sharedStyles.containerScrollView}
+					contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 32 }}
 					testID='change-avatar-view-list'
 					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
@@ -189,7 +226,7 @@ const ChangeAvatarView = () => {
 							<Avatar
 								text={room?.name || state.resetUserAvatar || username}
 								avatar={state?.url}
-								isStatic={state?.url}
+								isStatic={Boolean(state?.url)}
 								size={120}
 								type={t}
 								rid={room?.rid}
@@ -197,15 +234,28 @@ const ChangeAvatarView = () => {
 						)}
 					</View>
 					{context === 'profile' ? (
-						<AvatarUrl
-							submit={value =>
-								dispatchAvatar({
-									type: AvatarStateActions.CHANGE_AVATAR,
-									payload: { url: value, data: value, service: 'url' }
-								})
-							}
-						/>
+						<>
+							<ControlledFormTextInput
+								control={control}
+								name='rawImageUrl'
+								label={I18n.t('Avatar_Url')}
+								testID='change-avatar-view-avatar-url'
+								error={errors.rawImageUrl?.message}
+								containerStyle={{ marginBottom: 0 }}
+								onChangeText={onChangeText}
+							/>
+							<Button
+								title={I18n.t('Fetch_image_from_URL')}
+								type='secondary'
+								disabled={saving}
+								backgroundColor={colors.buttonBackgroundSecondaryDefault}
+								onPress={fetchImageFromURL}
+								testID='change-avatar-view-take-a-photo'
+								style={{ marginTop: 36, marginBottom: 0 }}
+							/>
+						</>
 					) : null}
+
 					<List.Separator style={styles.separator} />
 					{context === 'profile' ? (
 						<AvatarSuggestion
@@ -224,40 +274,46 @@ const ChangeAvatarView = () => {
 							}
 						/>
 					) : null}
-					<Button
-						title={I18n.t('Take_a_photo')}
-						type='secondary'
-						disabled={saving}
-						backgroundColor={colors.buttonBackgroundSecondaryDefault}
-						onPress={() => pickImage(true)}
-						testID='change-avatar-view-take-a-photo'
-					/>
-					<Button
-						title={I18n.t('Upload_image')}
-						type='secondary'
-						disabled={saving}
-						backgroundColor={colors.buttonBackgroundSecondaryDefault}
-						onPress={pickImage}
-						testID='change-avatar-view-upload-image'
-					/>
-					{context === 'room' ? (
+					<View style={styles.buttons}>
 						<Button
-							title={I18n.t('Delete_image')}
-							type='primary'
+							title={I18n.t('Take_a_photo')}
+							type='secondary'
 							disabled={saving}
-							backgroundColor={colors.buttonBackgroundDangerDefault}
-							onPress={() => dispatchAvatar({ type: AvatarStateActions.RESET_ROOM_AVATAR, payload: { data: null } })}
-							testID='change-avatar-view-delete-my-account'
+							backgroundColor={colors.buttonBackgroundSecondaryDefault}
+							onPress={() => pickImage(true)}
+							testID='change-avatar-view-take-a-photo'
+							style={styles.containerInput}
 						/>
-					) : null}
-					<Button
-						title={I18n.t('Save')}
-						disabled={!isDirty.current || saving}
-						type='primary'
-						loading={saving}
-						onPress={submit}
-						testID='change-avatar-view-submit'
-					/>
+						<Button
+							title={I18n.t('Upload_image')}
+							type='secondary'
+							disabled={saving}
+							backgroundColor={colors.buttonBackgroundSecondaryDefault}
+							onPress={() => pickImage()}
+							testID='change-avatar-view-upload-image'
+							style={styles.containerInput}
+						/>
+						{context === 'room' ? (
+							<Button
+								title={I18n.t('Delete_image')}
+								type='primary'
+								disabled={saving}
+								backgroundColor={colors.buttonBackgroundDangerDefault}
+								onPress={() => dispatchAvatar({ type: AvatarStateActions.RESET_ROOM_AVATAR, payload: { data: null } })}
+								testID='change-avatar-view-delete-my-account'
+								style={styles.containerInput}
+							/>
+						) : null}
+						<Button
+							title={I18n.t('Save')}
+							disabled={!isDirty.current || saving}
+							type='primary'
+							loading={saving}
+							onPress={submit}
+							testID='change-avatar-view-submit'
+							style={styles.containerInput}
+						/>
+					</View>
 				</ScrollView>
 			</SafeAreaView>
 		</KeyboardView>

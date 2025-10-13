@@ -10,11 +10,13 @@ import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
 import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { MessageTypesValues } from '../../definitions';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { user, onLinkPress } = useContext(MessageContext);
 
@@ -46,13 +48,13 @@ const Content = React.memo(
 				<Text
 					style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
 					accessibilityLabel={I18n.t('Encrypted_message')}
-				>
+					testID='message-encrypted'>
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);
 		} else if (isPreview) {
-			content = <MarkdownPreview msg={props.msg} />;
-		} else {
+			content = <MarkdownPreview testID={`message-preview-${props.msg}`} msg={props.msg} />;
+		} else if (props.msg) {
 			content = (
 				<Markdown
 					msg={props.msg}
@@ -65,18 +67,26 @@ const Content = React.memo(
 					navToRoomInfo={props.navToRoomInfo}
 					tmid={props.tmid}
 					useRealName={props.useRealName}
-					theme={theme}
 					onLinkPress={onLinkPress}
 					isTranslated={props.isTranslated}
+					testID={`message-markdown-${props.msg}`}
 				/>
 			);
 		}
 
 		if (props.isIgnored) {
-			content = <Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Message_Ignored')}</Text>;
+			content = (
+				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${props.msg}`}>
+					{I18n.t('Message_Ignored')}
+				</Text>
+			);
 		}
 
-		return <View style={props.isTemp && styles.temp}>{content}</View>;
+		return content ? (
+			<View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
+				{content}
+			</View>
+		) : null;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.isTemp !== nextProps.isTemp) {

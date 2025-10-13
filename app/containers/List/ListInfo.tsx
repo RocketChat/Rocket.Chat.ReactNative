@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
 import I18n from '../../i18n';
@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
+		lineHeight: 20,
 		...sharedStyles.textRegular
 	}
 });
@@ -24,6 +25,8 @@ interface IListInfo {
 }
 
 const ListInfo = React.memo(({ info, translateInfo = true }: IListInfo) => {
+	'use memo';
+
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>

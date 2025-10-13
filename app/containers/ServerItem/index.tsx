@@ -1,12 +1,11 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Text, View } from 'react-native';
+import { Image } from 'expo-image';
 
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
-import { themes } from '../../lib/constants';
-import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
+import Touch from '../Touch';
 
 export { ROW_HEIGHT };
 
@@ -25,42 +24,38 @@ export interface IServerItem {
 const defaultLogo = require('../../static/images/logo.png');
 
 const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	return (
-		<Pressable
+		<Touch
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
 			testID={`server-item-${item.id}`}
-			android_ripple={{ color: themes[theme].surfaceNeutral }}
-			style={({ pressed }: { pressed: boolean }) => ({
-				backgroundColor: isIOS && pressed ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom
-			})}>
+			style={{ backgroundColor: colors.surfaceRoom }}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
-					<FastImage
+					<Image
 						source={{
-							uri: item.iconURL,
-							priority: FastImage.priority.high
+							uri: item.iconURL
 						}}
-						// @ts-ignore TODO: Remove when updating FastImage
-						defaultSource={defaultLogo}
+						placeholder={defaultLogo}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
+						contentFit='contain'
 					/>
 				) : (
-					<FastImage source={defaultLogo} style={styles.serverIcon} />
+					<Image source={defaultLogo} style={styles.serverIcon} contentFit='contain' />
 				)}
 				<View style={styles.serverTextContainer}>
-					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].fontTitlesLabels }]}>
+					<Text numberOfLines={1} style={[styles.serverName, { color: colors.fontTitlesLabels }]}>
 						{item.name || item.id}
 					</Text>
-					<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].fontSecondaryInfo }]}>
+					<Text numberOfLines={1} style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>
 						{item.id}
 					</Text>
 				</View>
 				{hasCheck ? <Check /> : null}
 			</View>
-		</Pressable>
+		</Touch>
 	);
 });
 

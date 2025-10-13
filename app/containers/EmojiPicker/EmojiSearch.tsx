@@ -1,28 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInputProps } from 'react-native';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { isIOS } from '../../lib/methods/helpers';
-
-const styles = StyleSheet.create({
-	input: {
-		height: 32,
-		borderWidth: 0,
-		paddingVertical: 0,
-		borderRadius: 4
-	},
-	textInputContainer: {
-		marginBottom: 0
-	}
-});
-
-interface IEmojiSearchBarProps {
-	onBlur?: TextInputProps['onBlur'];
-	onChangeText: TextInputProps['onChangeText'];
-	bottomSheet?: boolean;
-}
+import { IEmojiSearchBarProps } from './interfaces';
+import styles from './styles';
 
 export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps): React.ReactElement => {
 	const { colors } = useTheme();
@@ -37,6 +20,7 @@ export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchB
 
 	return (
 		<FormTextInput
+			accessibilityLabel={I18n.t('Search_emoji')}
 			autoCapitalize='none'
 			autoCorrect={false}
 			autoComplete='off'

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 
 import { IAttachment, IUserMessage } from '../../../../definitions';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
@@ -18,14 +18,16 @@ interface IMessageAudioProps {
 }
 
 const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMessageAudioProps) => {
+	'use memo';
+
 	const { user, id, rid } = useContext(MessageContext);
 	const { status, onPress, url } = useMediaAutoDownload({ file, author });
 
 	return (
-		<>
+		<View style={{ gap: 4 }}>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
 			<AudioPlayer msgId={id} fileUri={url} downloadState={status} onPlayButtonPress={onPress} rid={rid} />
-		</>
+		</View>
 	);
 };
 

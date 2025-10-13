@@ -1,24 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native';
-import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 
+import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
-import { DisplayMode, SortBy } from '../lib/constants';
-import * as HeaderButton from '../containers/HeaderButton';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
+import Radio from '../containers/Radio';
 import { IPreferences } from '../definitions';
 import I18n from '../i18n';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { saveSortPreference } from '../lib/methods';
-import { useAppSelector } from '../lib/hooks';
+import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const DisplayPrefsView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
@@ -27,19 +25,13 @@ const DisplayPrefsView = (): React.ReactElement => {
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
 		state => state.sortPreferences
 	);
-	const { isMasterDetail } = useAppSelector(state => state.app);
 	const dispatch = useDispatch();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Display')
 		});
-		if (!isMasterDetail) {
-			navigation.setOptions({
-				headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
-			});
-		}
-	}, [isMasterDetail, navigation]);
+	}, []);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));
@@ -94,13 +86,10 @@ const DisplayPrefsView = (): React.ReactElement => {
 		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
-	const renderRadio = (value: boolean) => (
-		<RadioButton selected={!!value} color={value ? colors.fontHint : colors.fontSecondaryInfo} size={ICON_SIZE} />
-	);
+	const renderRadio = (value: boolean) => <Radio check={value} size={ICON_SIZE} />;
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container testID='display-view-list'>
 				<List.Section title='Display'>
 					<List.Separator />
@@ -111,6 +100,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						right={() => renderRadio(displayMode === DisplayMode.Expanded)}
 						onPress={displayExpanded}
 						additionalAcessibilityLabel={displayMode === DisplayMode.Expanded}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -120,6 +110,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						right={() => renderRadio(displayMode === DisplayMode.Condensed)}
 						onPress={displayCondensed}
 						additionalAcessibilityLabel={displayMode === DisplayMode.Condensed}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -141,6 +132,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={sortByActivity}
 						right={() => renderRadio(sortBy === SortBy.Activity)}
 						additionalAcessibilityLabel={sortBy === SortBy.Activity}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -150,6 +142,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={sortByName}
 						right={() => renderRadio(sortBy === SortBy.Alphabetical)}
 						additionalAcessibilityLabel={sortBy === SortBy.Alphabetical}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 				</List.Section>
@@ -163,6 +156,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleUnread}
 						right={() => renderCheckBox(showUnread)}
 						additionalAcessibilityLabel={showUnread}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
@@ -172,6 +166,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleGroupByFavorites}
 						right={() => renderCheckBox(showFavorites)}
 						additionalAcessibilityLabel={showFavorites}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
@@ -181,6 +176,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleGroupByType}
 						right={() => renderCheckBox(groupByType)}
 						additionalAcessibilityLabel={groupByType}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 				</List.Section>

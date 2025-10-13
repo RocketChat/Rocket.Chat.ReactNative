@@ -2,7 +2,7 @@ import { Linking } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import parse from 'url-parse';
 
-import { themes } from '../../constants';
+import { themes } from '../../constants/colors';
 import { TSupportedThemes } from '../../../theme';
 import UserPreferences from '../userPreferences';
 import ensureSecureProtocol from './ensureSecureProtocol';
@@ -39,8 +39,8 @@ const appSchemeURL = (url: string, browser: string): string => {
 };
 
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
-	const telRegExp = new RegExp(/^(tel:)/);
-	if (telRegExp.test(url)) {
+	const phoneOrEmailRegExp = new RegExp(/^(tel:|mailto:)/);
+	if (phoneOrEmailRegExp.test(url)) {
 		try {
 			await Linking.openURL(url);
 			return;

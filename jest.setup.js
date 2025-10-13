@@ -1,7 +1,7 @@
 import React from 'react';
-import '@testing-library/react-native/extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+import { Image } from 'expo-image';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
@@ -16,13 +16,21 @@ jest.mock('react-native-safe-area-context', () => {
 	};
 });
 
-jest.mock('./node_modules/react-native/Libraries/Interaction/InteractionManager', () => ({
-	runAfterInteractions: callback => callback()
-}));
+const loadAsyncMock = jest.spyOn(Image, 'loadAsync');
+loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300 }));
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
-jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+jest.mock('react-native-reanimated', () => {
+	const actual = jest.requireActual('react-native-reanimated/mock');
+	return {
+		...actual,
+		useSharedValue: jest.fn(init => ({ value: init })),
+		useAnimatedReaction: jest.fn(),
+		runOnJS: jest.fn(fn => fn),
+		withTiming: jest.fn(value => value)
+	};
+});
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
@@ -31,6 +39,12 @@ jest.mock('react-native-file-viewer', () => ({
 }));
 
 jest.mock('expo-haptics', () => jest.fn(() => null));
+
+jest.mock('expo-font', () => ({
+	isLoaded: jest.fn(() => true),
+	loadAsync: jest.fn(() => Promise.resolve()),
+	__esModule: true
+}));
 
 jest.mock('expo-av', () => ({
 	...jest.requireActual('expo-av'),
@@ -42,7 +56,14 @@ jest.mock('expo-av', () => ({
 			startAsync: jest.fn(),
 			stopAndUnloadAsync: jest.fn(),
 			setOnRecordingStatusUpdate: jest.fn()
-		}))
+		})),
+		Sound: {
+			createAsync: jest.fn(() => ({
+				sound: {
+					setOnPlaybackStatusUpdate: jest.fn()
+				}
+			}))
+		}
 	}
 }));
 
@@ -56,8 +77,6 @@ jest.mock('./app/lib/database', () => ({
 	}
 }));
 
-jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
-
 jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	useFrequentlyUsedEmoji: () => ({
 		frequentlyUsed: [],
@@ -65,12 +84,37 @@ jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	})
 }));
 
-jest.mock('./app/lib/database/services/Message', () => ({
-	getMessageById: messageId => ({
-		id: messageId,
-		rid: 'rid',
-		msg: `Message ${messageId}`
-	})
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+	__esModule: true,
+	default: jest.fn(() => ({
+		fontScale: 1
+	}))
+}));
+
+jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
+	useResponsiveLayout: jest.fn(() => ({
+		fontScale: 1,
+		isLargeFontScale: false,
+		fontScaleLimited: 1,
+		rowHeight: 75,
+		rowHeightCondensed: 60
+	})),
+	FONT_SCALE_LIMIT: 1.3
+}));
+
+jest.mock('./app/containers/CustomIcon', () => {
+	const actualNav = jest.requireActual('./app/containers/CustomIcon');
+
+	return {
+		...actualNav,
+		IconSet: {
+			hasIcon: () => true
+		}
+	};
+});
+
+jest.mock('./app/lib/encryption', () => ({
+	encryptMessage: jest.fn(() => ({ rid: 'test', msg: 'test' }))
 }));
 
 jest.mock('@react-navigation/native', () => {
@@ -115,7 +159,6 @@ jest.mock('@discord/bottom-sheet', () => {
 	};
 });
 
-// If you need to manually mock a lib use this mock pattern and set exports.
 jest.mock('react-native-math-view', () => {
 	const react = require('react-native');
 	return {
@@ -125,13 +168,12 @@ jest.mock('react-native-math-view', () => {
 	};
 });
 
-jest.mock('react-native-ui-lib/keyboard', () => {
-	const react = jest.requireActual('react');
-	return {
-		__esModule: true,
-		KeyboardAccessoryView: react.forwardRef((props, ref) => {
-			const MockName = 'keyboard-accessory-view-mock';
-			return <MockName>{props.renderContent()}</MockName>;
-		})
-	};
+jest.mock('react-native-keyboard-controller');
+
+jest.mock('react-native-webview', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const WebView = React.forwardRef(() => <View />);
+	WebView.defaultProps = {};
+	return { WebView };
 });

@@ -1,6 +1,12 @@
 module.exports = {
-	presets: ['module:@react-native/babel-preset'],
+	presets: ['babel-preset-expo'],
 	plugins: [
+		[
+			'babel-plugin-react-compiler',
+			{
+				compilationMode: 'annotation'
+			}
+		],
 		['@babel/plugin-proposal-decorators', { legacy: true }],
 		'react-native-reanimated/plugin',
 		'@babel/plugin-transform-named-capturing-groups-regex',

@@ -7,18 +7,17 @@ import { ScrollView, View } from 'react-native';
 import { Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ISubscription, IUser, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
+import { createDirectMessage, getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
@@ -28,6 +27,7 @@ import RoomInfoViewBody from './components/RoomInfoViewBody';
 import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
+import Navigation from '../../lib/navigation/appNavigation';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
@@ -40,7 +40,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();
-	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
+	const { addListener, setOptions, navigate } = useNavigation<TRoomInfoViewNavigationProp>();
 
 	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
@@ -80,7 +80,7 @@ const RoomInfoView = (): React.ReactElement => {
 	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
 	useLayoutEffect(() => {
 		setHeader(false);
-	});
+	}, []);
 
 	useEffect(() => {
 		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
@@ -103,6 +103,7 @@ const RoomInfoView = (): React.ReactElement => {
 		const HeaderRight = () => (
 			<HeaderButton.Container>
 				<HeaderButton.Item
+					accessibilityLabel={I18n.t('Room_Info_Edit')}
 					iconName='edit'
 					onPress={() => {
 						if (!room) return;
@@ -125,7 +126,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadVisitor = async () => {
 		try {
 			if (room?.visitor?._id) {
-				const result = await Services.getVisitorInfo(room.visitor._id);
+				const result = await getVisitorInfo(room.visitor._id);
 				if (result.success) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
@@ -164,7 +165,7 @@ const RoomInfoView = (): React.ReactElement => {
 		if (isEmpty(roomUser)) {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
-				const result = await Services.getUserInfo(roomUserId);
+				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
 					const r = handleRoles(user);
@@ -196,12 +197,12 @@ const RoomInfoView = (): React.ReactElement => {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+				setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 			});
 		} else {
 			try {
 				if (!isDirect) {
-					const result = await Services.getRoomInfo(rid);
+					const result = await getRoomInfo(rid);
 					if (result.success) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
 				}
 			} catch (e) {
@@ -209,7 +210,7 @@ const RoomInfoView = (): React.ReactElement => {
 			}
 		}
 		setShowEdit(canEdit);
-		setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 	};
 
 	const createDirect = () =>
@@ -217,7 +218,7 @@ const RoomInfoView = (): React.ReactElement => {
 			// We don't need to create a direct
 			if (!isEmpty(member)) return resolve();
 			try {
-				const result = await Services.createDirectMessage(roomUser.username);
+				const result = await createDirectMessage(roomUser.username);
 				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
 			} catch (e) {
 				reject(e);
@@ -235,15 +236,10 @@ const RoomInfoView = (): React.ReactElement => {
 
 		if (r?.rid) {
 			if (r.rid === subscribedRoom) {
-				if (isMasterDetail) {
-					return navigate('DrawerNavigator');
-				}
-				goBack();
-				goBack();
+				Navigation.popToRoom(isMasterDetail);
 				return;
 			}
-			// if it's on master detail layout, we close the modal and replace RoomView
-			goRoom({ item: params, isMasterDetail, popToRoot: true });
+			goRoom({ item: params, isMasterDetail });
 		}
 	};
 
@@ -267,7 +263,7 @@ const RoomInfoView = (): React.ReactElement => {
 		if (!r?.rid) return;
 		logEvent(events.RI_TOGGLE_BLOCK_USER);
 		try {
-			await Services.toggleBlockUser(r.rid, userBlocked, !blocker);
+			await toggleBlockUser(r.rid, userBlocked, !blocker);
 		} catch (e) {
 			log(e);
 		}
@@ -289,7 +285,6 @@ const RoomInfoView = (): React.ReactElement => {
 
 	return (
 		<ScrollView style={[styles.scroll, { backgroundColor: colors.surfaceRoom }]}>
-			<StatusBar />
 			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-info-view'>
 				<View style={[styles.avatarContainer, { backgroundColor: colors.surfaceHover }]}>
 					<RoomInfoViewAvatar

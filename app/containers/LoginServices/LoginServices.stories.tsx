@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { colors } from '../../lib/constants';
+import { colors } from '../../lib/constants/colors';
 import i18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import ServicesSeparator from './ServicesSeparator';

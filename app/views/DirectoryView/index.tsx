@@ -12,26 +12,25 @@ import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { debounce } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
 import styles from './styles';
 import Options from './Options';
-import { Services } from '../../lib/services';
+import { getDirectory, createDirectMessage, getRoomByTypeAndName } from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
-	NativeStackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
-	NativeStackNavigationProp<MasterDetailInsideStackParamList>
+		NativeStackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	baseUrl: string;
 	isFederationEnabled: boolean;
@@ -107,8 +106,13 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.setState({ loading: true });
 
 		try {
-			const { data, type, globalUsers } = this.state;
-			const directories = await Services.getDirectory({
+			const { type, globalUsers } = this.state;
+			let { data } = this.state;
+			// TODO: workaround to fix Fabric batch behavior. It should be fixed when we migrate to function components
+			if (newSearch) {
+				data = [];
+			}
+			const directories = await getDirectory({
 				text,
 				type,
 				workspace: globalUsers ? 'all' : 'local',
@@ -117,11 +121,11 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
 			if (directories.success) {
-				this.setState({
-					data: [...data, ...(directories.result as IServerRoom[])],
+				this.setState(prev => ({
+					data: [...prev.data, ...(directories.result as IServerRoom[])],
 					loading: false,
 					total: directories.total
-				});
+				}));
 			} else {
 				this.setState({ loading: false });
 			}
@@ -173,14 +177,14 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 	goRoom = (item: TGoRoomItem) => {
 		const { isMasterDetail } = this.props;
-		goRoom({ item, isMasterDetail, popToRoot: true });
+		goRoom({ item, isMasterDetail });
 	};
 
 	onPressItem = async (item: IServerRoom) => {
 		try {
 			const { type } = this.state;
 			if (type === 'users') {
-				const result = await Services.createDirectMessage(item.username as string);
+				const result = await createDirectMessage(item.username as string);
 				if (result.success) {
 					this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
 				}
@@ -192,7 +196,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				return;
 			}
 			if (['p', 'c'].includes(item.t) && !item.teamMain) {
-				const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
+				const result = await getRoomByTypeAndName(item.t, item.name || item.fname);
 				if (result) {
 					this.goRoom({
 						rid: item._id,
@@ -215,7 +219,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		} catch {
 			// do nothing
 		}
-		
 	};
 
 	renderHeader = () => (
@@ -288,7 +291,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='directory-view'>
-				<StatusBar />
 				<FlatList
 					data={data}
 					style={styles.list}

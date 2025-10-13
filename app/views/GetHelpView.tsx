@@ -4,7 +4,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
-import StatusBar from '../containers/StatusBar';
 import NewWindowIcon from '../containers/NewWindowIcon';
 import { SettingsStackParamList } from '../stacks/types';
 import i18n from '../i18n';
@@ -27,12 +26,12 @@ const GetHelpView = () => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container>
 				<List.Section>
 					<List.Separator />
 					<List.Item
 						title='Rocket_Chat_Documentation'
+						accessibilityRole='link'
 						right={() => <NewWindowIcon />}
 						onPress={() => openLink(DOCS_LINK, theme)}
 						testID='settings-view-get-help-documentation'
@@ -40,6 +39,7 @@ const GetHelpView = () => {
 					<List.Separator />
 					<List.Item
 						title='Accessibility_statement'
+						accessibilityRole='link'
 						right={() => <NewWindowIcon />}
 						onPress={() => openLink(ACCESSIBILITY_LINK, theme)}
 						testID='settings-view-get-help-accessibility-statement'
@@ -47,6 +47,7 @@ const GetHelpView = () => {
 					<List.Separator />
 					<List.Item
 						title='Glossary_of_simplified_terms'
+						accessibilityRole='link'
 						right={() => <NewWindowIcon />}
 						onPress={() => openLink(GLOSSARY_LINK, theme)}
 						testID='settings-view-get-help-glossary'

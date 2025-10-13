@@ -7,15 +7,17 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { DISCUSSION } from './constants';
-import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../lib/methods/helpers/room';
 import { IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
 
+// TODO: Create a reusable button component for message
 const Discussion = React.memo(
 	({ msg, dcount, dlm }: Pick<IMessage, 'msg' | 'dcount' | 'dlm'>) => {
-		const { theme } = useTheme();
+		'use memo';
+
+		const { colors } = useTheme();
 		let time;
 		if (dlm) {
 			time = formatDateThreads(dlm);
@@ -23,24 +25,23 @@ const Discussion = React.memo(
 		const buttonText = formatMessageCount(dcount, DISCUSSION);
 		const { onDiscussionPress } = useContext(MessageContext);
 		return (
-			<>
-				<Text style={[styles.startedDiscussion, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
-				<Text style={[styles.text, { color: themes[theme].fontDefault }]}>{msg}</Text>
-				<View style={styles.buttonContainer}>
+			<View style={{ gap: 4 }}>
+				<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
+				<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{msg}</Text>
+				<View style={[styles.buttonContainer, { gap: 8 }]}>
 					<Touchable
 						onPress={onDiscussionPress}
-						background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-						style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
-						hitSlop={BUTTON_HIT_SLOP}
-					>
-						<>
-							<CustomIcon name='discussions' size={16} style={styles.buttonIcon} color={themes[theme].fontWhite} />
-							<Text style={[styles.buttonText, { color: themes[theme].fontWhite }]}>{buttonText}</Text>
-						</>
+						background={Touchable.Ripple(colors.surfaceNeutral)}
+						style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
+						hitSlop={BUTTON_HIT_SLOP}>
+						<View style={styles.buttonInnerContainer}>
+							<CustomIcon name='discussions' size={16} color={colors.fontWhite} />
+							<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{buttonText}</Text>
+						</View>
 					</Touchable>
-					<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
+					<Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>
 				</View>
-			</>
+			</View>
 		);
 	},
 	(prevProps, nextProps) => {

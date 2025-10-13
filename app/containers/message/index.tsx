@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, ViewStyle } from 'react-native';
+import { Keyboard } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -9,7 +9,8 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
 import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
-import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
+import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
 
 interface IMessageContainerProps {
@@ -22,7 +23,6 @@ interface IMessageContainerProps {
 	msg?: string;
 	rid: string;
 	timeFormat?: string;
-	style?: ViewStyle;
 	archived?: boolean;
 	broadcast?: boolean;
 	previousItem?: TAnyMessageModel;
@@ -356,7 +356,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		const {
 			item,
 			user,
-			style,
 			archived,
 			baseUrl,
 			useRealName,
@@ -452,7 +451,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
 					isEncrypted: this.isEncrypted
 				}}>
-				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 				{/* @ts-ignore*/}
 				<Message
 					id={id}
@@ -470,7 +468,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					avatar={avatar}
 					emoji={emoji}
 					timeFormat={timeFormat}
-					style={style}
 					archived={archived}
 					broadcast={broadcast}
 					useRealName={useRealName}
@@ -509,6 +506,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isPreview={isPreview}
 					pinned={pinned}
 				/>
+				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</MessageContext.Provider>
 		);
 	}

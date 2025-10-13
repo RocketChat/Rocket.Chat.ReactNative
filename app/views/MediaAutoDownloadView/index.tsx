@@ -4,7 +4,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import ListPicker from './ListPicker';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
@@ -12,7 +11,7 @@ import {
 	IMAGE_PREFERENCE_DOWNLOAD,
 	MediaDownloadOption,
 	VIDEO_PREFERENCE_DOWNLOAD
-} from '../../lib/constants';
+} from '../../lib/constants/mediaAutoDownload';
 import i18n from '../../i18n';
 import { SettingsStackParamList } from '../../stacks/types';
 
@@ -33,7 +32,6 @@ const MediaAutoDownload = () => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container>
 				<List.Section>
 					<List.Separator />

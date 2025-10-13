@@ -9,7 +9,7 @@ import { hasNotch } from '../lib/methods/helpers';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
 import { CustomIcon } from '../containers/CustomIcon';
-import { CHANGE_PASSCODE_EMITTER } from '../lib/constants';
+import { CHANGE_PASSCODE_EMITTER } from '../lib/constants/localAuthentication';
 
 const styles = StyleSheet.create({
 	modal: {

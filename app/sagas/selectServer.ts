@@ -1,5 +1,4 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
@@ -11,6 +10,7 @@ import { SERVER } from '../actions/actionsTypes';
 import {
 	ISelectServerAction,
 	IServerRequestAction,
+	selectServerCancel,
 	selectServerFailure,
 	selectServerRequest,
 	selectServerSuccess,
@@ -27,25 +27,22 @@ import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
-import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import {
-	checkSupportedVersions,
-	getLoginSettings,
-	getServerInfo,
-	setCustomEmojis,
-	setEnterpriseModules,
-	setPermissions,
-	setRoles,
-	setSettings
-} from '../lib/methods';
-import { Services } from '../lib/services';
-import { connect, disconnect } from '../lib/services/connect';
-import { appSelector } from '../lib/hooks';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
+import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
+import { getServerInfo } from '../lib/methods/getServerInfo';
+import { setCustomEmojis } from '../lib/methods/getCustomEmojis';
+import { setEnterpriseModules } from '../lib/methods/enterpriseModules';
+import { setPermissions } from '../lib/methods/getPermissions';
+import { setRoles } from '../lib/methods/getRoles';
+import { connect, disconnect, getWebsocketInfo, getLoginServices } from '../lib/services/connect';
+import sdk from '../lib/services/sdk';
+import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
+import SSLPinning from '../lib/methods/helpers/sslPinning';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -102,14 +99,12 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
-				Alert.alert(I18n.t('Invalid_workspace_URL'), serverInfoResult.message);
-				yield put(serverFailure());
+				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
-			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
+			const websocketInfo = yield* call(getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
-				Alert.alert(I18n.t('Invalid_workspace_URL'), websocketInfo.message);
-				yield put(serverFailure());
+				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
 		}
@@ -142,6 +137,11 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
+		if (sdk.current?.client?.host === server) {
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			yield put(selectServerCancel());
+			return;
+		}
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
@@ -224,18 +224,16 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	try {
-		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
-
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
 		if (serverInfo) {
-			yield Services.getLoginServices(server);
+			yield getLoginServices(server);
 			yield getLoginSettings({ server, serverVersion: serverInfo.version });
 			Navigation.navigate('WorkspaceView');
 

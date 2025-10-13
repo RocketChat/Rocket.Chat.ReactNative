@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { themes } from '../../constants';
+import { themes } from '../../constants/colors';
 import I18n from '../../../i18n';
 import { IAttachment, SubscriptionType, TSubscriptionModel } from '../../../definitions';
 import { TSupportedThemes } from '../../../theme';
@@ -21,6 +21,14 @@ export const capitalize = (s: string): string => {
 	}
 	return s.charAt(0).toUpperCase() + s.slice(1);
 };
+
+export const formatDateAccessibility = (date: string | Date): string =>
+	moment(date).calendar(null, {
+		lastDay: `[${I18n.t('Last_updated')}] [${I18n.t('Yesterday')}]`,
+		sameDay: `[${I18n.t('Last_updated_at')}] LT`,
+		lastWeek: `[${I18n.t('Last_updated_on')}] dddd`,
+		sameElse: `[${I18n.t('Last_updated_on')}] MMMM, Do YYYY`
+	});
 
 export const formatDate = (date: string | Date): string =>
 	moment(date).calendar(null, {

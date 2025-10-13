@@ -1,6 +1,6 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { login, navigateToLogin, logout, tapBack, tapAndWaitFor } from '../../helpers/app';
+import { login, navigateToLogin, logout, tapBack } from '../../helpers/app';
 import data from '../../data';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
@@ -22,16 +22,16 @@ describe('Server history', () => {
 		});
 
 		it('should show servers history', async () => {
-			await element(by.id('new-server-view-input')).tap();
-			await waitFor(element(by.id(`server-history-${data.server}`)))
-				.toBeVisible()
+			await element(by.id('servers-history-button')).tap();
+			await waitFor(element(by.id(`servers-history-${data.server}`)))
+				.toExist()
 				.withTimeout(2000);
 		});
 
 		it('should tap on a server history and navigate to login', async () => {
-			await element(by.id(`server-history-${data.server}`)).tap();
+			await element(by.id(`servers-history-${data.server}`)).tap();
 			await waitFor(element(by.id('login-view-email')))
-				.toBeVisible()
+				.toExist()
 				.withTimeout(5000);
 			await expect(element(by.label(user.username).withAncestor(by.id('login-view-email'))));
 		});
@@ -45,11 +45,17 @@ describe('Server history', () => {
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(2000);
-			await tapAndWaitFor(element(by.id('new-server-view-input')), element(by.id(`server-history-${data.server}`)), 2000);
-			await element(by.id(`server-history-delete-${data.server}`)).tap();
-			await element(by.id('new-server-view-input')).tap();
-			await waitFor(element(by.id(`server-history-${data.server}`)))
-				.toBeNotVisible()
+			await element(by.id('servers-history-button')).tap();
+			await waitFor(element(by.id(`servers-history-${data.server}`)))
+				.toExist()
+				.withTimeout(2000);
+			await waitFor(element(by.id(`servers-history-delete-${data.server}`)))
+				.toExist()
+				.withTimeout(2000);
+			await element(by.id(`servers-history-delete-${data.server}`)).tap();
+
+			await waitFor(element(by.id('servers-history-button')))
+				.not.toExist()
 				.withTimeout(2000);
 		});
 	});

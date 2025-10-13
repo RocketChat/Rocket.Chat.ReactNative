@@ -2,10 +2,10 @@ import { dequal } from 'dequal';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 
 import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
-import { themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';
@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: 4,
 		alignSelf: 'flex-start',
 		borderLeftWidth: 2
 	},
@@ -41,12 +40,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 8
+		gap: 4
 	},
 	titleAndDescriptionContainer: {
 		flexDirection: 'column',
 		flex: 1,
-		width: 200
+		width: 200,
+		gap: 4
 	},
 	author: {
 		fontSize: 16,
@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
 	fieldsContainer: {
 		flex: 1,
 		flexWrap: 'wrap',
-		flexDirection: 'row'
+		flexDirection: 'row',
+		rowGap: 12
 	},
 	fieldContainer: {
-		flexDirection: 'column',
-		padding: 10
+		flexDirection: 'column'
 	},
 	fieldTitle: {
 		fontSize: 14,
@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
 	title: {
 		flex: 1,
 		fontSize: 16,
-		marginBottom: 3,
 		...sharedStyles.textMedium
 	}
 });
@@ -95,7 +94,6 @@ const styles = StyleSheet.create({
 interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
-	index: number;
 	getCustomEmoji: TGetCustomEmoji;
 	msg?: string;
 	showAttachment?: (file: IAttachment) => void;
@@ -103,6 +101,8 @@ interface IMessageReply {
 
 const Title = React.memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
+		'use memo';
+
 		const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 		return (
 			<View style={styles.authorContainer}>
@@ -128,6 +128,8 @@ const Description = React.memo(
 		getCustomEmoji: TGetCustomEmoji;
 		theme: TSupportedThemes;
 	}) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 		const text = attachment.text || attachment.title;
 
@@ -141,7 +143,6 @@ const Description = React.memo(
 				style={[{ color: themes[theme].fontHint, fontSize: 14 }]}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
-				theme={theme}
 			/>
 		);
 	},
@@ -161,6 +162,8 @@ const Description = React.memo(
 
 const UrlImage = React.memo(
 	({ image }: { image?: string }) => {
+		'use memo';
+
 		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!image) {
@@ -168,7 +171,7 @@ const UrlImage = React.memo(
 		}
 
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
+		return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );
@@ -183,6 +186,8 @@ const Fields = React.memo(
 		theme: TSupportedThemes;
 		getCustomEmoji: TGetCustomEmoji;
 	}) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 
 		if (!attachment.fields) {
@@ -194,7 +199,7 @@ const Fields = React.memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
-						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}
 			</View>
@@ -205,7 +210,9 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
+	({ attachment, timeFormat, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
+		'use memo';
+
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
 		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
@@ -235,15 +242,12 @@ const Reply = React.memo(
 		}
 
 		return (
-			<>
-				{/* The testID is to test properly quoted messages using it as ancestor  */}
+			<View style={{ gap: 4 }}>
 				<Touchable
 					testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 					onPress={onPress}
 					style={[
 						styles.button,
-						index > 0 && styles.marginTop,
-						msg && styles.marginBottom,
 						{
 							borderColor: strokeLight
 						}
@@ -258,7 +262,7 @@ const Reply = React.memo(
 								attachments={attachment.attachments}
 								getCustomEmoji={getCustomEmoji}
 								timeFormat={timeFormat}
-								style={[{ color: themes[theme].fontHint, fontSize: 14, marginBottom: 8 }]}
+								style={[{ color: themes[theme].fontHint, fontSize: 14 }]}
 								isReply
 								showAttachment={showAttachment}
 							/>
@@ -277,8 +281,8 @@ const Reply = React.memo(
 						<UrlImage image={attachment.thumb_url} />
 					</View>
 				</Touchable>
-				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
-			</>
+				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} />
+			</View>
 		);
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)

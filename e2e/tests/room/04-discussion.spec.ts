@@ -47,14 +47,14 @@ describe('Discussion', () => {
 			.toExist()
 			.withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
-		await element(by[textMatcher]('Select a channel...')).tap();
+		await element(by[textMatcher]('Select a channel')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${room}`);
 		await waitFor(element(by.id(`multi-select-item-${room}`)))
 			.toExist()
 			.withTimeout(10000);
 		await element(by.id(`multi-select-item-${room}`)).tap();
 		await element(by.id('multi-select-discussion-name')).replaceText(discussionFromNewMessage);
-		await element(by[textMatcher]('Select users...')).tap();
+		await element(by[textMatcher]('Select users')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${selectUser}`);
 		await waitFor(element(by.id(`multi-select-item-${selectUser}`)))
 			.toExist()
@@ -177,11 +177,13 @@ describe('Discussion', () => {
 
 		it('should have starred', async () => {
 			await element(by.id('room-actions-scrollview')).swipe('up', 'slow', 0.5);
+			await sleep(300);
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 		});
 
 		it('should have share', async () => {
-			await element(by.id('room-actions-scrollview')).swipe('up');
+			await element(by.id('room-actions-scrollview')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 		});
 
@@ -198,7 +200,8 @@ describe('Discussion', () => {
 		});
 
 		it('should navigate to RoomActionView', async () => {
-			await element(by.id('room-actions-scrollview')).swipe('down');
+			await element(by.id('room-actions-scrollview')).swipe('down', 'fast', 0.5);
+			await sleep(300);
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			await element(by.id('room-actions-info')).tap();
 			await waitFor(element(by.id('room-info-view')))

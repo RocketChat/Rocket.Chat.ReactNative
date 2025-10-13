@@ -1,27 +1,24 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import CookieManager from '@react-native-cookies/cookies';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
 import { selectServerRequest } from '../../actions/server';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import NewWindowIcon from '../../containers/NewWindowIcon';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
 import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
-import { APP_STORE_LINK, FDROID_MARKET_LINK, isFDroidBuild, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
-import database from '../../lib/database';
-import { useAppSelector } from '../../lib/hooks';
-import { clearCache } from '../../lib/methods';
+import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants/links';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { clearCache } from '../../lib/methods/clearCache';
 import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
 import { getDeviceModel, getReadableVersion, isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -29,20 +26,20 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
-import { Services } from '../../lib/services';
-import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
+import { disconnect } from '../../lib/services/connect';
 import SidebarView from '../SidebarView';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
 const SettingsView = (): React.ReactElement => {
+	'use memo';
+
 	const { colors, theme } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const userId = useAppSelector(state => getUserSelector(state).id);
 	const { server, version } = useAppSelector(state => state.server);
 
 	useLayoutEffect(() => {
@@ -57,39 +54,12 @@ const SettingsView = (): React.ReactElement => {
 		});
 	}, [navigation, isMasterDetail]);
 
-	const checkCookiesAndLogout = async () => {
-		const db = database.servers;
-		const usersCollection = db.get('users');
-		try {
-			const userRecord = await usersCollection.find(userId);
-			if (userRecord.isFromWebView) {
-				showConfirmationAlert({
-					title: I18n.t('Clear_cookies_alert'),
-					message: I18n.t('Clear_cookies_desc'),
-					confirmationText: I18n.t('Clear_cookies_yes'),
-					dismissText: I18n.t('Clear_cookies_no'),
-					onPress: async () => {
-						await CookieManager.clearAll(true);
-						dispatch(logout());
-					},
-					onCancel: () => {
-						dispatch(logout());
-					}
-				});
-			} else {
-				dispatch(logout());
-			}
-		} catch {
-			// Do nothing: user not found
-		}
-	};
-
 	const handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
-			onPress: checkCookiesAndLogout
+			onPress: () => dispatch(logout())
 		});
 	};
 
@@ -102,9 +72,9 @@ const SettingsView = (): React.ReactElement => {
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
 				await deleteMediaFiles(server);
 				await clearCache({ server });
-				await FastImage.clearMemoryCache();
-				await FastImage.clearDiskCache();
-				Services.disconnect();
+				await Image.clearMemoryCache();
+				await Image.clearDiskCache();
+				disconnect();
 				dispatch(selectServerRequest(server, version, true));
 			}
 		});
@@ -136,9 +106,6 @@ const SettingsView = (): React.ReactElement => {
 		let message;
 		if (isAndroid) {
 			message = PLAY_MARKET_LINK;
-			if (isFDroidBuild) {
-				message = FDROID_MARKET_LINK;
-			}
 		} else {
 			message = APP_STORE_LINK;
 		}
@@ -168,22 +135,19 @@ const SettingsView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView testID='settings-view'>
-			<StatusBar />
 			<List.Container>
 				{isMasterDetail ? (
 					<>
 						<List.Section>
-							<List.Separator />
-							<SidebarView />
-							<List.Separator />
+							<SidebarView navigation={navigation as any} />
 						</List.Section>
 						<List.Section>
 							<List.Separator />
 							<List.Item
-								title='Display'
-								onPress={() => navigateToScreen('DisplayPrefsView')}
+								title='Accessibility_and_Appearance'
+								onPress={() => navigateToScreen('AccessibilityAndAppearanceView')}
 								showActionIndicator
-								left={() => <List.Icon name='sort' />}
+								left={() => <List.Icon name='accessibility' />}
 							/>
 							<List.Separator />
 							<List.Item
@@ -217,14 +181,6 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
-						title='Theme'
-						showActionIndicator
-						onPress={() => navigateToScreen('ThemeView')}
-						testID='settings-view-theme'
-						left={() => <List.Icon name='moon' />}
-					/>
-					<List.Separator />
-					<List.Item
 						title='Media_auto_download'
 						showActionIndicator
 						onPress={() => navigateToScreen('MediaAutoDownloadView')}
@@ -243,6 +199,7 @@ const SettingsView = (): React.ReactElement => {
 				</List.Section>
 
 				<List.Section>
+					<List.Separator />
 					<List.Item
 						title='Get_help'
 						left={() => <List.Icon name='support' />}
@@ -260,27 +217,34 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
+						title='Legal'
+						showActionIndicator
+						onPress={() => navigateToScreen('LegalView')}
+						testID='settings-view-legal'
+						left={() => <List.Icon name='book' />}
+					/>
+					<List.Separator />
+					<List.Item
 						title='Contact_us'
+						accessibilityRole='link'
 						onPress={sendEmail}
 						testID='settings-view-contact'
 						left={() => <List.Icon name='mail' />}
 						right={() => <NewWindowIcon />}
 					/>
 					<List.Separator />
-					{!isFDroidBuild ? (
-						<>
-							<List.Item
-								title='Review_this_app'
-								onPress={onReviewPress}
-								testID='settings-view-review-app'
-								left={() => <List.Icon name='star' />}
-								right={() => <NewWindowIcon />}
-							/>
-						</>
-					) : null}
+					<List.Item
+						title='Review_this_app'
+						accessibilityRole='link'
+						onPress={onReviewPress}
+						testID='settings-view-review-app'
+						left={() => <List.Icon name='star' />}
+						right={() => <NewWindowIcon />}
+					/>
 					<List.Separator />
 					<List.Item
 						title='License'
+						accessibilityRole='link'
 						onPress={onPressLicense}
 						testID='settings-view-license'
 						left={() => <List.Icon name='file-document' />}

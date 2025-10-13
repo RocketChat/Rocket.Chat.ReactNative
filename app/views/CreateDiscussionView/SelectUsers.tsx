@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
@@ -8,7 +8,7 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType, IUser } from '../../definitions';
-import { search } from '../../lib/methods';
+import { search } from '../../lib/methods/search';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 
@@ -58,7 +58,7 @@ const SelectUsers = ({
 		});
 
 	return (
-		<>
+		<View accessibilityLabel={I18n.t('Invite_users')}>
 			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Invite_users')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
@@ -69,11 +69,12 @@ const SelectUsers = ({
 					text: { text: getRoomTitle(user) },
 					imageUrl: getAvatar(user)
 				}))}
-				placeholder={{ text: `${I18n.t('Select_Users')}...` }}
+				placeholder={{ text: I18n.t('Select_Users') }}
 				context={BlockContext.FORM}
 				multiselect
+				testID='create-discussion-select-users'
 			/>
-		</>
+		</View>
 	);
 };
 

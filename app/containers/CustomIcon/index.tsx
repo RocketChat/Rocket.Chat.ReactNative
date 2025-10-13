@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import type { IconProps } from 'react-native-vector-icons/Icon';
 
 import { mappedIcons } from './mappedIcons';
 import { useTheme } from '../../theme';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const icoMoonConfig = require('./selection.json');
 
@@ -17,9 +18,21 @@ export interface ICustomIcon extends IconProps {
 	color?: string;
 }
 
-const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
+const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
 	const { colors } = useTheme();
-	return <IconSet name={name} size={size} color={color || colors.fontDefault} style={[{ lineHeight: size }, style]} {...props} />;
-};
+	const { fontScaleLimited } = useResponsiveLayout();
+
+	const iconSize = size * fontScaleLimited;
+
+	return (
+		<IconSet
+			name={name}
+			size={iconSize}
+			color={color || colors.fontDefault}
+			style={[{ lineHeight: iconSize }, style]}
+			{...props}
+		/>
+	);
+});
 
 export { CustomIcon };

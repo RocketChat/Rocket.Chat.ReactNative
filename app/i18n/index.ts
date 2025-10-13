@@ -87,6 +87,16 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/nl.json')
 	},
 	{
+		label: 'Norwegian',
+		value: 'no',
+		file: () => require('./locales/no.json')
+	},
+	{
+		label: 'Norwegian Nynorsk',
+		value: 'nn',
+		file: () => require('./locales/nn.json')
+	},
+	{
 		label: 'Português (BR)',
 		value: 'pt-BR',
 		file: () => require('./locales/pt-BR.json')

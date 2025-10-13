@@ -4,23 +4,23 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import * as List from '../../containers/List';
 import database from '../../lib/database';
 import I18n from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import SearchBox from '../../containers/SearchBox';
-import * as HeaderButton from '../../containers/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sendLoadingEvent } from '../../containers/Loading';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../../definitions';
 import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
-import { useAppSelector } from '../../lib/hooks';
+import { addRoomsToTeam } from '../../lib/services/restApi';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import Navigation from '../../lib/navigation/appNavigation';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 type TRoute = RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
@@ -117,12 +117,11 @@ const AddExistingChannelView = () => {
 
 	const onSearchChangeText = useDebounce((text: string) => {
 		query(text);
-	}, 300);
+	}, textInputDebounceTime);
 
 	const isChecked = (rid: string) => selected.includes(rid);
 
 	const toggleChannel = (rid: string) => {
-		animateNextTransition();
 		if (!isChecked(rid)) {
 			logEvent(events.AEC_ADD_CHANNEL);
 			setSelected([...selected, rid]);
@@ -137,11 +136,10 @@ const AddExistingChannelView = () => {
 		sendLoadingEvent({ visible: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await Services.addRoomsToTeam({ rooms: selected, teamId });
+			const result = await addRoomsToTeam({ rooms: selected, teamId });
 			if (result.success) {
 				sendLoadingEvent({ visible: false });
-				// Expect that after you add an existing channel to a team, the user should move back to the team
-				navigation.navigate('RoomView');
+				Navigation.resetTo();
 			}
 		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
@@ -152,7 +150,6 @@ const AddExistingChannelView = () => {
 
 	return (
 		<SafeAreaView testID='add-existing-channel-view'>
-			<StatusBar />
 			<FlatList
 				data={channels}
 				extraData={channels}

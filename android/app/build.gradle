@@ -1,14 +1,8 @@
-def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
-def isFoss = taskRequests.contains("foss")
-
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-if (!isFoss) {
-    apply plugin: 'com.google.firebase.crashlytics'
-    apply plugin: 'com.bugsnag.android.gradle'
-}
+apply plugin: 'com.google.firebase.crashlytics'
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -16,14 +10,14 @@ if (!isFoss) {
  */
 react {
     /* Folders */
-    //   The root of your project, i.e. where "package.json" lives. Default is '..'
-    // root = file("../")
-    //   The folder where the react-native NPM package is. Default is ../node_modules/react-native
-    // reactNativeDir = file("../node_modules/react-native")
-    //   The folder where the react-native Codegen package is. Default is ../node_modules/@react-native/codegen
-    // codegenDir = file("../node_modules/@react-native/codegen")
-    //   The cli.js file which is the React Native CLI entrypoint. Default is ../node_modules/react-native/cli.js
-    // cliFile = file("../node_modules/react-native/cli.js")
+    //   The root of your project, i.e. where "package.json" lives. Default is '../..'
+    // root = file("../../")
+    //   The folder where the react-native NPM package is. Default is ../../node_modules/react-native
+    // reactNativeDir = file("../../node_modules/react-native")
+    //   The folder where the react-native Codegen package is. Default is ../../node_modules/@react-native/codegen
+    // codegenDir = file("../../node_modules/@react-native/codegen")
+    //   The cli.js file which is the React Native CLI entrypoint. Default is ../../node_modules/react-native/cli.js
+    // cliFile = file("../../node_modules/react-native/cli.js")
 
     /* Variants */
     //   The list of variants to that are debuggable. For those we're going to
@@ -57,6 +51,9 @@ react {
     //
     //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
     hermesFlags = ["-O", "-output-source-map"]
+
+    /* Autolinking */
+    autolinkLibrariesWithApp()
 }
 
 /**
@@ -68,14 +65,14 @@ def enableProguardInReleaseBuilds = false
  * The preferred build flavor of JavaScriptCore (JSC)
  *
  * For example, to use the international variant, you can use:
- * `def jscFlavor = 'org.webkit:android-jsc-intl:+'`
+ * `def jscFlavor = io.github.react-native-community:jsc-android-intl:2026004.+`
  *
  * The international variant includes ICU i18n library and necessary data
  * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
  * give correct results when using with locales other than en-US. Note that
  * this variant is about 6MiB larger per architecture than default.
  */
-def jscFlavor = 'org.webkit:android-jsc:+'
+def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 project.ext.react = [
     // bundleAssetName: "app.bundle",
@@ -93,12 +90,10 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.55.0"
+        versionName "4.66.0"
         vectorDrawables.useSupportLibrary = true
-        if (!isFoss) {
-            manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
-            missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
-        }
+        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -106,6 +101,7 @@ android {
 
     signingConfigs {
         release {
+            v1SigningEnabled false
             if (project.hasProperty('KEYSTORE')) {
                 storeFile file(KEYSTORE)
                 storePassword KEYSTORE_PASSWORD
@@ -119,31 +115,15 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            if (!isFoss) {
-                firebaseCrashlytics {
-                    nativeSymbolUploadEnabled true
-                    strippedNativeLibsDir 'build/intermediates/stripped_native_libs/release/out/lib'
-                    unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
-                }
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                strippedNativeLibsDir 'build/intermediates/stripped_native_libs/release/out/lib'
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
             }
         }
     }
 
-    // packagingOptions {
-    //     pickFirst '**/armeabi-v7a/libc++_shared.so'
-    //     pickFirst '**/x86/libc++_shared.so'
-    //     pickFirst '**/arm64-v8a/libc++_shared.so'
-    //     pickFirst '**/x86_64/libc++_shared.so'
-    // }
-
-    // FIXME: Remove when we update RN
-    // packagingOptions {
-    //     pickFirst '**/*.so'
-    // }
-
-    // applicationVariants are e.g. debug, release
-
-    flavorDimensions "app", "type"
+    flavorDimensions "app"
     productFlavors {
         official {
             dimension = "app"
@@ -153,40 +133,12 @@ android {
             dimension = "app"
             buildConfigField "boolean", "IS_OFFICIAL", "false"
         }
-        foss {
-            dimension = "type"
-            buildConfigField "boolean", "FDROID_BUILD", "true"
-        }
-        play {
-            dimension = "type"
-            buildConfigField "boolean", "FDROID_BUILD", "false"
-        }
-    }
-    sourceSets {
-        // TODO: refactor making sure notifications are working properly both on debug and release
-        experimentalPlayDebug {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        experimentalPlayRelease {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        officialPlayDebug {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        officialPlayRelease {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
     }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation("com.facebook.react:flipper-integration")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -194,27 +146,15 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation project(':@react-native-community_viewpager')
-    // implementation "androidx.core:core-splashscreen:1.0.0"
-    playImplementation project(':react-native-notifications')
-    playImplementation "com.google.firebase:firebase-messaging:23.3.1"
-    playImplementation project(':@react-native-firebase_app')
-    playImplementation project(':@react-native-firebase_analytics')
-    playImplementation project(':@react-native-firebase_crashlytics')
+    implementation project(':react-native-notifications')
+    implementation "com.google.firebase:firebase-messaging:23.3.1"
     implementation project(':watermelondb-jsi')
 
     implementation "com.google.code.gson:gson:2.8.9"
-    implementation "com.github.bumptech.glide:glide:4.9.0"
-    annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
     implementation "com.tencent:mmkv-static:1.2.10"
     androidTestImplementation('com.wix:detox:+')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.facebook.soloader:soloader:0.10.4'
-    implementation("com.facebook.fresco:animated-gif:2.5.0")
-    implementation "com.facebook.fresco:imagepipeline-okhttp3:3.1.3"
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-if (!isFoss) {
-    apply plugin: 'com.google.gms.google-services'
-}
+apply plugin: 'com.google.gms.google-services'

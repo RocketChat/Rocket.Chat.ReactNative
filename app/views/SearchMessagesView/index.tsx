@@ -12,13 +12,13 @@ import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
@@ -38,8 +38,9 @@ import {
 	TGetCustomEmoji,
 	ICustomEmoji
 } from '../../definitions';
-import { Services } from '../../lib/services';
+import { searchMessages } from '../../lib/services/restApi';
 import { TNavigation } from '../../stacks/stackType';
+import Navigation from '../../lib/navigation/appNavigation';
 
 const QUERY_SIZE = 50;
 
@@ -75,6 +76,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	};
 	theme: TSupportedThemes;
 	useRealName: boolean;
+	isMasterDetail: boolean;
 }
 class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
@@ -157,7 +159,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await Services.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
+		const result = await searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
 			const urlRenderMessages = result.messages?.map(message => {
 				if (message.urls && message.urls.length > 0) {
@@ -202,7 +204,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	searchDebounced = debounce(async (searchText: string) => {
 		await this.getMessages(searchText, true);
-	}, 1000);
+	}, textInputDebounceTime);
 
 	getCustomEmoji: TGetCustomEmoji = name => {
 		const { customEmojis } = this.props;
@@ -227,7 +229,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	};
 
 	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {
-		const { navigation } = this.props;
+		const { isMasterDetail } = this.props;
 		let params: {
 			rid: string;
 			jumpToMessageId: string;
@@ -242,16 +244,17 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			room: this.room as TSubscriptionModel
 		};
 		if ('tmid' in item && item.tmid) {
-			navigation.pop();
+			Navigation.popToRoom(isMasterDetail);
 			params = {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid as string, item._id),
 				t: SubscriptionType.THREAD
 			};
-			navigation.push('RoomView', params);
+			Navigation.push('RoomView', params);
 		} else {
-			navigation.navigate('RoomView', params);
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams(params);
 		}
 	};
 
@@ -328,7 +331,6 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		const { theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='search-messages-view'>
-				<StatusBar />
 				<View style={styles.searchContainer}>
 					<FormTextInput
 						autoFocus
@@ -337,7 +339,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} />
 					<View style={[styles.divider, { backgroundColor: themes[theme].strokeLight }]} />
 				</View>
 				{this.renderList()}
@@ -348,6 +350,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
+	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,

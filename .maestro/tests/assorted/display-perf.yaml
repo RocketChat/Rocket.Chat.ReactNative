@@ -1,0 +1,160 @@
+appId: chat.rocket.reactnative
+name: Display Perf
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-6
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# should have rooms list screen
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+    label: 'Should have rooms list screen'
+
+# should have room item
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-general'
+    timeout: 60000
+    label: 'Should have room item'
+
+# should have create channel button
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+    label: 'Should have create channel button'
+
+# should have sidebar button
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-sidebar'
+    timeout: 60000
+    label: 'Should have sidebar button'
+
+# should go to Display Preferences
+- runFlow:
+    file: './utils/go-to-display-pref.yaml'
+    label: 'Should go to Display Preferences'
+
+# should have Displays button, expanded, condensed, avatars
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-expanded'
+    timeout: 60000
+    label: 'Should have view expanded'
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-condensed'
+    timeout: 60000
+    label: 'Should have view condensed'
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-avatars'
+    timeout: 60000
+    label: 'Should have view avatars'
+
+# should have Sort By button
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-activity'
+    timeout: 60000
+    label: 'Should have sort by activity'
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-name'
+    timeout: 60000
+    label: 'Should have sort by name'
+
+# should have Group by button
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-unread'
+    timeout: 60000
+    label: 'Should have group by unread'
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-favorites'
+    timeout: 60000
+    label: 'Should have group by favorites'
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-types'
+    timeout: 60000
+    label: 'Should have group by types'
+
+# should appear the last message in RoomList when is Expanded
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-expanded'
+    timeout: 60000
+- tapOn:
+    id: 'display-pref-view-expanded'
+- runFlow:
+    file: './utils/go-to-room-list.yaml'
+    label: 'Should go to Room List'
+- extendedWaitUntil:
+    visible:
+      id: 'room-item-last-message-container'
+      index: 0
+    timeout: 60000
+    label: 'Should appear the last message in RoomList when is Expanded'
+
+# should not appear the last message in RoomList when is Condensed
+- runFlow:
+    file: './utils/go-to-display-pref.yaml'
+    label: 'Should go to Display Preferences'
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-condensed'
+    timeout: 60000
+- tapOn:
+    id: 'display-pref-view-condensed'
+    label: 'Should tap on view condensed'
+- runFlow:
+    file: './utils/go-to-room-list.yaml'
+    label: 'Should go to Room List'
+- extendedWaitUntil:
+    notVisible:
+      id: 'room-item-last-message-container'
+    timeout: 60000
+    label: 'Should not appear the last message in RoomList when is Condensed'
+
+# should have avatar as default in room list
+- extendedWaitUntil:
+    visible:
+      id: 'avatar'
+      index: 0
+    timeout: 60000
+    label: 'Should have avatar as default in room list'
+
+# should hide the avatar
+- runFlow:
+    file: './utils/go-to-display-pref.yaml'
+    label: 'Should go to Display Preferences'
+- extendedWaitUntil:
+    visible:
+      id: 'display-pref-view-avatar-switch'
+    timeout: 60000
+- tapOn:
+    id: 'display-pref-view-avatar-switch'
+    label: 'Should tap on avatar switch'
+- runFlow:
+    file: './utils/go-to-room-list.yaml'
+    label: 'Should go to Room List'
+- extendedWaitUntil:
+    notVisible:
+      id: 'avatar'
+    timeout: 60000
+    label: 'Should hide the avatar'

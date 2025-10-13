@@ -8,16 +8,15 @@ import { RouteProp } from '@react-navigation/core';
 
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IApplicationState, IReadReceipts } from '../../definitions';
-import { Services } from '../../lib/services';
+import { getReadReceipts } from '../../lib/services/restApi';
 
 interface IReadReceiptViewState {
 	loading: boolean;
@@ -85,7 +84,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getReadReceipts(this.messageId);
+			const result = await getReadReceipts(this.messageId);
 			if (result.success) {
 				this.setState({
 					receipts: result.receipts,
@@ -143,7 +142,6 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 
 		return (
 			<SafeAreaView testID='read-receipt-view'>
-				<StatusBar />
 				<FlatList
 					data={receipts}
 					renderItem={this.renderItem}

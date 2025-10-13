@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { acceptCall, cancelCall } from '../../../actions/videoConf';
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { CustomIcon } from '../../CustomIcon';
@@ -49,8 +49,7 @@ const IncomingCallHeader = React.memo(
 					{
 						marginTop: insets.top
 					}
-				]}
-			>
+				]}>
 				<CallHeader
 					title={i18n.t('Incoming_call_from')}
 					cam={cam}
@@ -69,8 +68,7 @@ const IncomingCallHeader = React.memo(
 							setAudio(!audio);
 							hideNotification();
 						}}
-						style={styles.closeButton}
-					>
+						style={styles.closeButton}>
 						<CustomIcon name='close' size={20} />
 					</Touchable>
 					<Touchable
@@ -80,8 +78,7 @@ const IncomingCallHeader = React.memo(
 							hideNotification();
 							dispatch(cancelCall({ callId }));
 						}}
-						style={styles.cancelButton}
-					>
+						style={styles.cancelButton}>
 						<Text style={styles.buttonText}>{i18n.t('decline')}</Text>
 					</Touchable>
 					<Touchable
@@ -91,8 +88,7 @@ const IncomingCallHeader = React.memo(
 							hideNotification();
 							dispatch(acceptCall({ callId }));
 						}}
-						style={styles.acceptButton}
-					>
+						style={styles.acceptButton}>
 						<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
 					</Touchable>
 				</View>

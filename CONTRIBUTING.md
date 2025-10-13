@@ -4,12 +4,14 @@ Great to have you here! Here are a few ways you can help make this project bette
 
 ## Setting up a development environment
 
-Refer to [React Native environment setup](https://reactnative.dev/docs/environment-setup) to make sure everything is up and running.
-Follow the `React Native CLI Quickstart` section as we don't support Expo managed flow.
+Refer to [React Native environment setup](https://reactnative.dev/docs/set-up-your-environment) to make sure everything is up and running.
 
 *Note: you'll need a MacOS to run iOS apps*
+*Note: We don't support Expo managed flow*
 
 ### How to run
+
+Minimum Node version: 22.14.0
 
 Clone repository and install dependencies:
 ```sh
@@ -20,7 +22,7 @@ yarn
 
 Run the app:
 ```sh
-npx pod-install
+yarn pod-install
 yarn ios
 ```
 
@@ -33,10 +35,6 @@ yarn android
 At this point, the app should be running on the simulator or on your device!
 
 *Note: npm won't work on this project*
-
-### How to inspect the app
-
-We use [Reactotron](https://github.com/infinitered/reactotron) to inspect logs, redux state, redux-sagas, HTTP requests, etc.
 
 ## Issues needing help
 
@@ -78,7 +76,8 @@ We use [Jest](https://jestjs.io/) and [Storybook](https://storybook.js.org/) on 
 
 Storybook is a tool for developing UI Components and has some plugins to make Jest generate snapshots of them.
 
-[On the root of the project](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/index.js#L24), comment everything leaving only the last import to Storybook left  and refresh your project.
+To open the Storybook, run yarn `storybook:start`, and then use `yarn android` or `yarn ios` to launch it on your desired platform.
+
 You'll see some tests like this:
 
 <img src="https://user-images.githubusercontent.com/804994/89677725-56393200-d8c4-11ea-84b0-213be1d24e98.png" width="350" />
@@ -103,8 +102,6 @@ We use [Detox](https://github.com/wix/Detox) framework to end-to-end test our ap
 
 As soon as your changes are ready, you can open a Pull Request.
 
-The title of your PR should be descriptive, including either [NEW], [IMPROVEMENT] or [FIX] at the beginning, e.g. [FIX] App crashing on startup.
+Refer to [Pull request's tags](https://developer.rocket.chat/docs/pull-requests-tags) to write a good PR title.
 
-You may share working results prior to finishing, please include [WIP] in the title. This way anyone can look at your code: you can ask for help within the PR if you don't know how to solve a problem.
-
-Your PR is automatically inspected by various tools, check their response and try to improve your code accordingly. Requests that fail to build or have wrong coding style won't be merged.
+Open your PR as draft before asking for review. Your PR is automatically inspected by various tools, check their response and try to improve your code accordingly. Requests that fail to build or have wrong coding style won't be merged.

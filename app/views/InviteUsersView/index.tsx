@@ -7,7 +7,6 @@ import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
 import Button from '../../containers/Button';
 import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { FormTextInput } from '../../containers/TextInput';
 import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
@@ -23,7 +22,7 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 	const rid = route.params?.rid;
 	const timeDateFormat = useSelector((state: IApplicationState) => state.settings.Message_TimeAndDateFormat as string);
 	const invite = useSelector((state: IApplicationState) => state.inviteLinks.invite);
-	const { colors, theme } = useTheme();
+	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -81,13 +80,12 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 
 	const renderExpiration = () => {
 		const expirationMessage = linkExpirationText();
-		return <Markdown msg={expirationMessage} theme={theme} />;
+		return <Markdown msg={expirationMessage} />;
 	};
 
 	return (
 		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }}>
 			<ScrollView {...scrollPersistTaps} style={{ backgroundColor: colors.surfaceHover }} showsVerticalScrollIndicator={false}>
-				<StatusBar />
 				<View style={styles.innerContainer}>
 					<FormTextInput label={I18n.t('Invite_Link')} value={invite && invite.url} editable={false} />
 					{renderExpiration()}

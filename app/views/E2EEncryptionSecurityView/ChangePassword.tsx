@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
 
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { useTheme } from '../../theme';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
@@ -13,7 +14,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import { useDebounce } from '../../lib/methods/helpers';
 import sharedStyles from '../Styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	title: {
@@ -42,7 +43,7 @@ const ChangePassword = () => {
 	}));
 	const newPasswordInputRef = useRef<RNTextInput | null>(null);
 
-	const onChangePasswordText = useDebounce((text: string) => setNewPassword(text), 300);
+	const onChangePasswordText = useDebounce((text: string) => setNewPassword(text), textInputDebounceTime);
 
 	const changePassword = () => {
 		if (!newPassword.trim()) {

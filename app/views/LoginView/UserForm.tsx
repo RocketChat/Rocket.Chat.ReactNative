@@ -16,7 +16,7 @@ import { OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import styles from './styles';
 import { handleLoginErrors } from './handleLoginErrors';
 
@@ -127,6 +127,7 @@ const UserForm = () => {
 					testID='login-view-password'
 					textContentType='password'
 					autoComplete='password'
+					importantForAutofill='yes'
 				/>
 				<Button
 					title={I18n.t('Login')}

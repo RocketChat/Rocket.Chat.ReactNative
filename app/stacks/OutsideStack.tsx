@@ -17,23 +17,24 @@ import { OutsideModalParamList, OutsideParamList } from './types';
 
 // Outside
 const Outside = createNativeStackNavigator<OutsideParamList>();
-const _OutsideStack = () => {
+const OutsideStackComponent = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<Outside.Navigator screenOptions={themedHeader(theme)}>
 			{/* @ts-ignore */}
 			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
-			<Outside.Screen name='WorkspaceView' component={WorkspaceView} />
+			<Outside.Screen name='WorkspaceView' component={WorkspaceView} options={defaultHeader} />
 
-			<Outside.Screen name='LoginView' component={LoginView} />
-			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} />
+			<Outside.Screen name='LoginView' component={LoginView} options={defaultHeader} />
+			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} options={defaultHeader} />
+			<Outside.Screen name='SendEmailConfirmationView' component={SendEmailConfirmationView} options={defaultHeader} />
 			{/* @ts-ignore */}
-			<Outside.Screen name='SendEmailConfirmationView' component={SendEmailConfirmationView} />
+			<Outside.Screen name='RegisterView' component={RegisterView} options={defaultHeader} />
 			{/* @ts-ignore */}
-			<Outside.Screen name='RegisterView' component={RegisterView} options={RegisterView.navigationOptions} />
-			{/* @ts-ignore */}
-			<Outside.Screen name='LegalView' component={LegalView} />
+			<Outside.Screen name='LegalView' component={LegalView} options={defaultHeader} />
 		</Outside.Navigator>
 	);
 };
@@ -42,18 +43,19 @@ const mapStateToProps = (state: any) => ({
 	root: state.app.root
 });
 
-const OutsideStack = connect(mapStateToProps)(_OutsideStack);
+const OutsideStack = connect(mapStateToProps)(OutsideStackComponent);
 
 // OutsideStackModal
 const OutsideModal = createNativeStackNavigator<OutsideModalParamList>();
 const OutsideStackModal = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<OutsideModal.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), presentation: 'containedTransparentModal' }}>
-			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false }} />
-			<OutsideModal.Screen name='AuthenticationWebView' component={AuthenticationWebView} />
+		<OutsideModal.Navigator screenOptions={{ ...themedHeader(theme), presentation: 'containedTransparentModal' }}>
+			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false, ...defaultHeader }} />
+			<OutsideModal.Screen name='AuthenticationWebView' component={AuthenticationWebView} options={defaultHeader} />
 		</OutsideModal.Navigator>
 	);
 };

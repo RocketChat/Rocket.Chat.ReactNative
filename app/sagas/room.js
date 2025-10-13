@@ -9,7 +9,7 @@ import log, { events, logEvent } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { LISTENER } from '../containers/Toast';
-import { Services } from '../lib/services';
+import { leaveRoom, deleteRoom, leaveTeam, deleteTeam, forwardLivechat, emitTyping } from '../lib/services/restApi';
 import getMoreMessages from '../lib/methods/getMoreMessages';
 import { getMessageById } from '../lib/database/services/Message';
 
@@ -36,7 +36,7 @@ let inactiveTypingTask = null;
 const clearUserTyping = function* clearUserTyping({ rid, status }) {
 	try {
 		if (!status) {
-			yield Services.emitTyping(rid, false);
+			yield emitTyping(rid, false);
 			if (inactiveTypingTask) {
 				yield cancel(inactiveTypingTask);
 			}
@@ -54,7 +54,7 @@ const clearInactiveTyping = function* clearInactiveTyping({ rid }) {
 const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	try {
 		if (status) {
-			yield Services.emitTyping(rid, status);
+			yield emitTyping(rid, status);
 			if (inactiveTypingTask) {
 				yield cancel(inactiveTypingTask);
 			}
@@ -67,11 +67,7 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 
 const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	if (isMasterDetail) {
-		yield Navigation.navigate('DrawerNavigator');
-	} else {
-		yield Navigation.navigate('RoomsListView');
-	}
+	Navigation.popToTop(isMasterDetail);
 
 	if (actionType === 'leave') {
 		EventEmitter.emit(LISTENER, {
@@ -100,9 +96,9 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield Services.leaveRoom(room.rid, room.t);
+			result = yield leaveRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
-			result = yield Services.leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
+			result = yield leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
 		}
 
 		if (result?.success) {
@@ -126,9 +122,9 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield Services.deleteRoom(room.rid || room._id, room.t);
+			result = yield deleteRoom(room.rid || room._id, room.t);
 		} else if (roomType === 'team') {
-			result = yield Services.deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
+			result = yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
 		}
 
 		if (result?.success) {
@@ -147,7 +143,7 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 
 const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 	try {
-		const result = yield Services.forwardLivechat(transferData);
+		const result = yield forwardLivechat(transferData);
 		if (result === true) {
 			const isMasterDetail = yield select(state => state.app.isMasterDetail);
 			if (isMasterDetail) {

@@ -1,6 +1,6 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
+import { navigateToLogin, login, platformTypes, TTextMatcher, sleep } from '../../helpers/app';
 import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
@@ -52,6 +52,7 @@ describe('Create team screen', () => {
 		describe('Usage', () => {
 			it('should create private team', async () => {
 				await element(by.id('create-channel-name')).replaceText(teamName);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);
@@ -85,10 +86,12 @@ describe('Create team screen', () => {
 			await waitFor(element(by.id('room-info-edit-view-list')))
 				.toBeVisible()
 				.withTimeout(2000);
-			await element(by.id('room-info-edit-view-list')).swipe('up');
+			await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 1);
+			await sleep(300);
 			await waitFor(element(by.id('room-info-edit-view-delete')))
 				.toBeVisible()
 				.withTimeout(2000);
+			await sleep(300);
 			await element(by.id('room-info-edit-view-delete')).tap();
 			await waitFor(element(by[textMatcher]('Yes, delete it!')))
 				.toExist()

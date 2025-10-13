@@ -1,0 +1,1160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Content should match snapshot 1`] = `
+[
+  <RNGestureHandlerButton
+    activeOpacity={1}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={1}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onLongPress={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    testID="server-item-https://open.rocket.chat/"
+    underlayColor="#E4E7EA"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": undefined,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      style={{}}
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          }
+        }
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={44}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={
+            [
+              {
+                "uri": "test-file-stub",
+              },
+            ]
+          }
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 44,
+              "width": 44,
+            }
+          }
+          transition={null}
+          width={44}
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": 12,
+              "paddingRight": 18,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Rocket.Chat
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            https://open.rocket.chat/
+          </Text>
+        </View>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#095AD2",
+                "fontSize": 22,
+              },
+              [
+                {
+                  "lineHeight": 22,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+  <RNGestureHandlerButton
+    activeOpacity={1}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={2}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onLongPress={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    testID="server-item-https://superlongservername.tologintoasuperlongservername/"
+    underlayColor="#E4E7EA"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": undefined,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      style={{}}
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          }
+        }
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={44}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={
+            [
+              {
+                "uri": "test-file-stub",
+              },
+            ]
+          }
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 44,
+              "width": 44,
+            }
+          }
+          transition={null}
+          width={44}
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": 12,
+              "paddingRight": 18,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Super Long Server Name in Rocket.Chat
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            https://superlongservername.tologintoasuperlongservername/
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+  <RNGestureHandlerButton
+    activeOpacity={1}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={3}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onLongPress={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    testID="server-item-https://stable.rocket.chat/"
+    underlayColor="#E4E7EA"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": undefined,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      style={{}}
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          }
+        }
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={44}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={
+            [
+              {
+                "uri": "test-file-stub",
+              },
+            ]
+          }
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 44,
+              "width": 44,
+            }
+          }
+          transition={null}
+          width={44}
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": 12,
+              "paddingRight": 18,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Rocket.Chat
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            https://stable.rocket.chat/
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+]
+`;
+
+exports[`Story Snapshots: Themes should match snapshot 1`] = `
+[
+  <RNGestureHandlerButton
+    activeOpacity={1}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={4}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onLongPress={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    testID="server-item-https://open.rocket.chat/"
+    underlayColor="#E4E7EA"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": undefined,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      style={{}}
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          }
+        }
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={44}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={
+            [
+              {
+                "uri": "test-file-stub",
+              },
+            ]
+          }
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 44,
+              "width": 44,
+            }
+          }
+          transition={null}
+          width={44}
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": 12,
+              "paddingRight": 18,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Rocket.Chat
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            https://open.rocket.chat/
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+  <RNGestureHandlerButton
+    activeOpacity={1}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={5}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onLongPress={[Function]}
+    onPress={[Function]}
+    rippleColor="#2D3039"
+    style={
+      [
+        {
+          "backgroundColor": "#1F2329",
+          "borderRadius": undefined,
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    testID="server-item-https://open.rocket.chat/"
+    underlayColor="#2D3039"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#2D3039",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": undefined,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      style={{}}
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          }
+        }
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={44}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={
+            [
+              {
+                "uri": "test-file-stub",
+              },
+            ]
+          }
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 44,
+              "width": 44,
+            }
+          }
+          transition={null}
+          width={44}
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": 12,
+              "paddingRight": 18,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Rocket.Chat
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9EA2A8",
+                },
+              ]
+            }
+          >
+            https://open.rocket.chat/
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+  <RNGestureHandlerButton
+    activeOpacity={1}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={6}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onLongPress={[Function]}
+    onPress={[Function]}
+    rippleColor="#16181a"
+    style={
+      [
+        {
+          "backgroundColor": "#000000",
+          "borderRadius": undefined,
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    testID="server-item-https://open.rocket.chat/"
+    underlayColor="#16181a"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#16181a",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": undefined,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      style={{}}
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "padding": 12,
+          }
+        }
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="contain"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={44}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={
+            [
+              {
+                "uri": "test-file-stub",
+              },
+            ]
+          }
+          source={
+            [
+              {
+                "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 44,
+              "width": 44,
+            }
+          }
+          transition={null}
+          width={44}
+        />
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+              "justifyContent": "center",
+              "paddingLeft": 12,
+              "paddingRight": 18,
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Rocket.Chat
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9EA2A8",
+                },
+              ]
+            }
+          >
+            https://open.rocket.chat/
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+]
+`;
+
+exports[`Story Snapshots: Touchable should match snapshot 1`] = `
+<RNGestureHandlerButton
+  activeOpacity={1}
+  collapsable={false}
+  delayLongPress={600}
+  handlerTag={7}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onLongPress={[Function]}
+  onPress={[Function]}
+  rippleColor="#E4E7EA"
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": undefined,
+        "margin": undefined,
+        "marginBottom": undefined,
+        "marginEnd": undefined,
+        "marginHorizontal": undefined,
+        "marginLeft": undefined,
+        "marginRight": undefined,
+        "marginStart": undefined,
+        "marginTop": undefined,
+        "marginVertical": undefined,
+      },
+      {
+        "cursor": undefined,
+      },
+    ]
+  }
+  testID="server-item-https://open.rocket.chat/"
+  underlayColor="#E4E7EA"
+>
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": undefined,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
+  <View
+    style={{}}
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "padding": 12,
+        }
+      }
+    >
+      <ViewManagerAdapter_ExpoImage
+        borderRadius={4}
+        containerViewRef={"[React.ref]"}
+        contentFit="contain"
+        contentPosition={
+          {
+            "left": "50%",
+            "top": "50%",
+          }
+        }
+        height={44}
+        nativeViewRef={"[React.ref]"}
+        onError={[Function]}
+        onLoad={[Function]}
+        onLoadStart={[Function]}
+        onProgress={[Function]}
+        placeholder={
+          [
+            {
+              "uri": "test-file-stub",
+            },
+          ]
+        }
+        source={
+          [
+            {
+              "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+            },
+          ]
+        }
+        style={
+          {
+            "borderRadius": 4,
+            "height": 44,
+            "width": 44,
+          }
+        }
+        transition={null}
+        width={44}
+      />
+      <View
+        style={
+          {
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "center",
+            "paddingLeft": 12,
+            "paddingRight": 18,
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Rocket.Chat
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          https://open.rocket.chat/
+        </Text>
+      </View>
+    </View>
+  </View>
+</RNGestureHandlerButton>
+`;

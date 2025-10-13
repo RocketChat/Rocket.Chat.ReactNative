@@ -7,15 +7,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 
-import { isImageBase64 } from '../lib/methods';
+import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
-import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import { IAttachment } from '../definitions';
 import I18n from '../i18n';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
@@ -110,25 +109,40 @@ const AttachmentView = (): React.ReactElement => {
 		shallowEqual
 	);
 
-	const setHeader = () => {
-		let { title } = attachment;
+	const getTitle = () => {
+		const { image_url, video_url, title_link, title } = attachment;
 
-		try {
-			if (title) {
-				title = decodeURI(title);
+		if (title) {
+			try {
+				return decodeURI(title);
+			} catch {
+				return title;
 			}
-		} catch {
-			// Do nothing
 		}
+
+		const url = image_url ?? video_url ?? title_link;
+		if (!url) return '';
+
+		const parts = url.split('/');
+		return parts.at(-1);
+	};
+
+	const setHeader = () => {
+		const title = getTitle();
 		const options = {
 			title: title || '',
 			headerLeft: () => (
-				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.fontDefault} />
+				<HeaderButton.CloseModal
+					testID='close-attachment-view'
+					navigation={navigation}
+					color={colors.fontDefault}
+					style={{ marginRight: -12 }}
+				/>
 			),
-			headerRight: () =>
-				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url) ? (
-					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
-				) : null
+			headerRight:
+				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url)
+					? () => <HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
+					: undefined
 		};
 		navigation.setOptions(options);
 	};
@@ -183,7 +197,6 @@ const AttachmentView = (): React.ReactElement => {
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
-			<StatusBar />
 			<RenderContent attachment={attachment} setLoading={setLoading} />
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}
 		</View>

@@ -127,11 +127,15 @@ export default class Subscription extends Model {
 
 	@field('e2e_key') E2EKey;
 
+	@json('old_room_keys', sanitizer) oldRoomKeys;
+
 	@field('e2e_suggested_key') E2ESuggestedKey;
 
 	@field('encrypted') encrypted;
 
 	@field('e2e_key_id') e2eKeyId;
+
+	@json('users_waiting_for_e2e_keys', sanitizer) usersWaitingForE2EKeys;
 
 	@field('avatar_etag') avatarETag;
 
@@ -146,6 +150,8 @@ export default class Subscription extends Model {
 	@json('source', sanitizer) source;
 
 	@field('disable_notifications') disableNotifications;
+
+	@field('federated') federated;
 
 	asPlain() {
 		return {
@@ -179,8 +185,8 @@ export default class Subscription extends Model {
 			reactWhenReadOnly: this.reactWhenReadOnly,
 			archived: this.archived,
 			joinCodeRequired: this.joinCodeRequired,
-			notifications: this.notifications,
 			muted: this.muted,
+			unmuted: this.unmuted,
 			ignored: this.ignored,
 			broadcast: this.broadcast,
 			prid: this.prid,
@@ -201,16 +207,19 @@ export default class Subscription extends Model {
 			livechatData: this.livechatData,
 			tags: this.tags,
 			E2EKey: this.E2EKey,
+			oldRoomKeys: this.oldRoomKeys,
 			E2ESuggestedKey: this.E2ESuggestedKey,
 			encrypted: this.encrypted,
 			e2eKeyId: this.e2eKeyId,
+			usersWaitingForE2EKeys: this.usersWaitingForE2EKeys,
 			avatarETag: this.avatarETag,
 			teamId: this.teamId,
 			teamMain: this.teamMain,
 			onHold: this.onHold,
 			usersCount: this.usersCount,
 			source: this.source,
-			disableNotifications: this.disableNotifications
+			disableNotifications: this.disableNotifications,
+			federated: this.federated
 		};
 	}
 }

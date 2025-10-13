@@ -7,22 +7,22 @@ import { TActionSheetOptionsItem, useActionSheet } from '../../containers/Action
 import { sendLoadingEvent } from '../../containers/Loading';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
-import { RadioButton } from '../../containers/RadioButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
-import StatusBar from '../../containers/StatusBar';
 import UserItem from '../../containers/UserItem';
+import Radio from '../../containers/Radio';
 import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 import { compareServerVersion, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { Services } from '../../lib/services';
+import { getRoomMembers } from '../../lib/services/restApi';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -41,6 +41,7 @@ import {
 	TRoomType
 } from './helpers';
 import styles from './styles';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 const PAGE_SIZE = 25;
 
@@ -128,6 +129,15 @@ const RoomMembersView = (): React.ReactElement => {
 	}, []);
 
 	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			const { allUsers } = state;
+			fetchMembers(allUsers);
+		});
+
+		return unsubscribe;
+	}, [navigation]);
+
+	useEffect(() => {
 		const fetchRoles = () => {
 			if (isGroupChat(state.room)) {
 				return;
@@ -180,13 +190,13 @@ const RoomMembersView = (): React.ReactElement => {
 									{
 										title: I18n.t('Online'),
 										onPress: () => toggleStatus(true),
-										right: () => <RadioButton check={allUsers} />,
+										right: () => <Radio check={allUsers} />,
 										testID: 'room-members-view-toggle-status-online'
 									},
 									{
 										title: I18n.t('All'),
 										onPress: () => toggleStatus(false),
-										right: () => <RadioButton check={!allUsers} />,
+										right: () => <Radio check={!allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
 								]
@@ -348,7 +358,7 @@ const RoomMembersView = (): React.ReactElement => {
 
 		updateState({ isLoading: true });
 		try {
-			const membersResult = await Services.getRoomMembers({
+			const membersResult = await getRoomMembers({
 				rid: room.rid,
 				roomType: t,
 				type: !status ? 'all' : 'online',
@@ -371,17 +381,14 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
+	const filter = sanitizeLikeString(state.filter.toLowerCase()) || '';
 	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
-			? state.members.filter(
-					m =>
-						m.username.toLowerCase().match(state.filter.toLowerCase()) || m.name?.toLowerCase().match(state.filter.toLowerCase())
-			  )
+			? state.members.filter(m => m.username.toLowerCase().match(filter) || m.name?.toLowerCase().match(filter))
 			: null;
 
 	return (
 		<SafeAreaView testID='room-members-view'>
-			<StatusBar />
 			<FlatList
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (

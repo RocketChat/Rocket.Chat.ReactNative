@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TextInputProps, View } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -17,13 +17,13 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 
 	const { colors } = useTheme();
 
-	const internalOnChangeText = useCallback((value: string) => {
+	const internalOnChangeText = (value: string) => {
 		setText(value);
 		onChangeText?.(value);
-	}, []);
+	};
 
 	return (
-		<View testID='searchbox' style={{ backgroundColor: colors.surfaceRoom }} >
+		<View testID='searchbox' style={{ backgroundColor: colors.surfaceRoom }}>
 			<FormTextInput
 				autoCapitalize='none'
 				autoCorrect={false}

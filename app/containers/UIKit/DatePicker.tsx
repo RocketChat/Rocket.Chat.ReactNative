@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import Button from '../Button';
 import { textParser } from './utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../CustomIcon';
 import { isAndroid } from '../../lib/methods/helpers';
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 export const DatePicker = ({ element, language, action, context, loading, value, error }: IDatePicker) => {
 	const { theme } = useTheme();
 	const [show, onShow] = useState(false);
-	const initial_date = element?.initial_date;
+	const initial_date = element?.initialDate;
 	const placeholder = element?.placeholder;
 
 	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
@@ -65,11 +65,12 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 			<Touchable
 				onPress={() => onShow(!show)}
 				style={{ backgroundColor: themes[theme].surfaceRoom }}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			>
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
 				<View
-					style={[styles.input, { borderColor: error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].strokeLight }]}
-				>
+					style={[
+						styles.input,
+						{ borderColor: error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].strokeLight }
+					]}>
 					<Text style={[styles.inputText, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>
 						{currentDate.toLocaleDateString(language)}
 					</Text>

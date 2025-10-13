@@ -1,7 +1,7 @@
 import Model from '@nozbe/watermelondb/Model';
-import { MarkdownAST } from '@rocket.chat/message-parser';
+import { Root } from '@rocket.chat/message-parser';
 
-import { MessageTypeLoad } from '../lib/constants';
+import { MessageTypeLoad } from '../lib/constants/messageTypeLoad';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 import { TThreadMessageModel } from './IThreadMessage';
@@ -65,7 +65,7 @@ export interface ILastMessage {
 	urls?: IUrlFromServer[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
-	md?: MarkdownAST;
+	md?: Root;
 	attachments?: IAttachment[];
 	reactions?: IReaction[];
 	unread?: boolean;
@@ -95,7 +95,7 @@ export interface IMessageFromServer {
 	urls?: IUrl[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
-	md?: MarkdownAST;
+	md?: Root;
 	file?: IMessageFile;
 	files?: IMessageFile[];
 	groupable?: boolean;

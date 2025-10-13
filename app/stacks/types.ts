@@ -119,6 +119,9 @@ export type ChatsStackParamList = {
 		room: TSubscriptionModel;
 	};
 	DirectoryView: undefined;
+	E2EEToggleRoomView: {
+		rid: string;
+	};
 	NotificationPrefView: {
 		rid: string;
 		room: TSubscriptionModel;
@@ -153,10 +156,6 @@ export type ChatsStackParamList = {
 	};
 	AddExistingChannelView: {
 		teamId: string;
-	};
-	MarkdownTableView: {
-		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
-		tableWidth: number;
 	};
 	ReadReceiptsView: {
 		messageId: string;
@@ -199,14 +198,15 @@ export type ProfileStackParamList = {
 		room?: ISubscription;
 		t?: SubscriptionType;
 	};
+	ChangePasswordView: undefined;
 };
 
 export type SettingsStackParamList = {
+	LegalView: undefined;
 	SettingsView: undefined;
 	SecurityPrivacyView: undefined;
 	E2EEncryptionSecurityView: undefined;
 	LanguageView: undefined;
-	ThemeView: undefined;
 	DefaultBrowserView: undefined;
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
@@ -214,10 +214,17 @@ export type SettingsStackParamList = {
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
 	GetHelpView: undefined;
+	AccessibilityAndAppearanceView: undefined;
 };
 
 export type AdminPanelStackParamList = {
 	AdminPanelView: undefined;
+};
+
+export type AccessibilityStackParamList = {
+	AccessibilityAndAppearanceView: undefined;
+	DisplayPrefsView: undefined;
+	ThemeView: undefined;
 };
 
 export type DisplayPrefStackParamList = {
@@ -229,7 +236,7 @@ export type DrawerParamList = {
 	ProfileStackNavigator: NavigatorScreenParams<ProfileStackParamList>;
 	SettingsStackNavigator: NavigatorScreenParams<SettingsStackParamList>;
 	AdminPanelStackNavigator: NavigatorScreenParams<AdminPanelStackParamList>;
-	DisplayPrefStackNavigator: NavigatorScreenParams<DisplayPrefStackParamList>;
+	AccessibilityStackNavigator: NavigatorScreenParams<AccessibilityStackParamList>;
 };
 
 export type NewMessageStackParamList = {

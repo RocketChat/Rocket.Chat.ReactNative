@@ -1,103 +1,109 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { ScrollView, Text } from 'react-native';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ScrollView, Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
-import * as HeaderButton from '../../containers/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
-import { withTheme } from '../../theme';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
-import { FormTextInput } from '../../containers/TextInput';
+import { ControlledFormTextInput } from '../../containers/TextInput';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
-import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } from './interfaces';
-import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
-import { E2E_ROOM_TYPES, themes } from '../../lib/constants';
-import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
+import { ICreateChannelViewProps, IResult, IError } from './interfaces';
+import { ISearchLocal, ISubscription } from '../../definitions';
+import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
+import { getRoomTitle } from '../../lib/methods/helpers';
 import * as List from '../../containers/List';
 import Switch from '../../containers/Switch';
+import Button from '../../containers/Button';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useTheme } from '../../theme';
+import handleSubmitEvent from './utils/handleSubmitEvent';
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 
-class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
-	private channel: ISubscription;
+const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
+	const schema = yup.object().shape({
+		name: yup.string().required(I18n.t('Discussion_name_required'))
+	});
+	const { colors } = useTheme();
+	const dispatch = useDispatch();
+	const {
+		server,
+		error,
+		blockUnauthenticatedAccess,
+		encryptionEnabled,
+		failure,
+		isMasterDetail,
+		loading,
+		result,
+		serverVersion,
+		user
+	} = useAppSelector(state => ({
+		user: getUserSelector(state),
+		server: state.server.server,
+		error: state.createDiscussion.error as IError,
+		failure: state.createDiscussion.failure,
+		loading: state.createDiscussion.isFetching,
+		result: state.createDiscussion.result as IResult,
+		blockUnauthenticatedAccess: !!(state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true),
+		serverVersion: state.server.version as string,
+		isMasterDetail: state.app.isMasterDetail,
+		encryptionEnabled: state.encryption.enabled
+	}));
 
-	constructor(props: ICreateChannelViewProps) {
-		super(props);
-		const { route } = props;
-		this.channel = route.params?.channel;
-		const message = route.params?.message ?? {};
-		this.state = {
-			channel: this.channel,
-			message,
-			name: message?.msg || '',
-			users: [],
-			reply: '',
-			encrypted: props.encryptionEnabled
-		};
-		this.setHeader();
-	}
+	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params?.channel);
+	const [encrypted, setEncrypted] = useState<boolean>(encryptionEnabled);
+	const [users, setUsers] = useState<string[]>([]);
 
-	componentDidUpdate(prevProps: ICreateChannelViewProps, prevState: ICreateChannelViewState) {
-		const { channel, name } = this.state;
-		const { loading, failure, error, result, isMasterDetail } = this.props;
+	const message = route.params?.message;
+	const {
+		control,
+		handleSubmit,
+		watch,
+		formState: { errors }
+	} = useForm({
+		defaultValues: {
+			name: message?.msg || ''
+		},
+		resolver: yupResolver(schema)
+	});
 
-		if (channel?.rid !== prevState.channel?.rid || name !== prevState.name) {
-			this.setHeader();
-		}
+	const inputValues = watch();
+	const prevLoading = useRef<boolean>(loading);
+	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
-		if (loading !== prevProps.loading) {
-			sendLoadingEvent({ visible: loading });
-			if (!loading) {
-				if (failure) {
-					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_discussion') });
-					showErrorAlert(msg);
-				} else {
-					const { rid, t, prid } = result;
-					const item = {
-						rid,
-						name: getRoomTitle(result),
-						t,
-						prid
-					};
-					goRoom({ item, isMasterDetail, popToRoot: true });
-				}
-			}
-		}
-	}
-
-	setHeader = () => {
-		const { navigation, route } = this.props;
-		const showCloseModal = route.params?.showCloseModal;
-		navigation.setOptions({
-			title: I18n.t('Create_Discussion'),
-			headerRight: this.valid()
-				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
-						</HeaderButton.Container>
-				  )
-				: () => null,
-			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
-		});
+	const selectChannel = ({ value }: { value: ISearchLocal }) => {
+		logEvent(events.CD_SELECT_CHANNEL);
+		setChannel(value);
+		setEncrypted(value?.encrypted);
 	};
 
-	submit = () => {
-		const {
-			name: t_name,
-			channel,
-			message: { id: pmid },
-			reply,
-			users,
-			encrypted
-		} = this.state;
-		const { dispatch } = this.props;
+	const selectUsers = ({ value }: { value: string[] }) => {
+		logEvent(events.CD_SELECT_USERS);
+		setUsers(value);
+	};
+
+	const onEncryptedChange = (value: boolean) => {
+		logEvent(events.CD_TOGGLE_ENCRY);
+		setEncrypted(value);
+	};
+
+	const submit = () => {
+		const pmid = message?.id;
+		const reply = '';
+		const { name: t_name } = inputValues;
+
+		if (!t_name || (!channel.prid && !channel.rid)) {
+			return;
+		}
 
 		const params: ICreateDiscussionRequestData = {
 			prid: ('prid' in channel && channel.prid) || channel.rid,
@@ -106,106 +112,88 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			reply,
 			users
 		};
-		if (this.isEncryptionEnabled) {
+		if (isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;
 		}
-
 		dispatch(createDiscussionRequest(params));
 	};
 
-	valid = () => {
-		const { channel, name } = this.state;
+	useA11yErrorAnnouncement({ errors, inputValues });
 
-		return channel && channel.rid && channel.rid.trim().length && name?.trim().length;
-	};
+	useEffect(() => {
+		if (loading === prevLoading.current) {
+			prevLoading.current = loading;
+			return;
+		}
 
-	selectChannel = ({ value }: { value: ISearchLocal }) => {
-		logEvent(events.CD_SELECT_CHANNEL);
-		this.setState({ channel: value, encrypted: value?.encrypted });
-	};
+		handleSubmitEvent({ loading, failure, isMasterDetail, error, result });
+		prevLoading.current = loading;
+	}, [loading]);
 
-	selectUsers = ({ value }: { value: string[] }) => {
-		logEvent(events.CD_SELECT_USERS);
-		this.setState({ users: value });
-	};
+	useLayoutEffect(() => {
+		const showCloseModal = route.params?.showCloseModal;
+		navigation.setOptions({
+			title: I18n.t('Create_Discussion'),
+			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
+		});
+	}, [navigation, route]);
 
-	get isEncryptionEnabled() {
-		const { channel } = this.state;
-		const { encryptionEnabled } = this.props;
-		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
-	}
-
-	onEncryptedChange = (value: boolean) => {
-		logEvent(events.CD_TOGGLE_ENCRY);
-		this.setState({ encrypted: value });
-	};
-
-	render() {
-		const { name, users, encrypted } = this.state;
-		const { server, user, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
-		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].surfaceHover }}
-				contentContainerStyle={styles.container}
-				keyboardVerticalOffset={128}>
-				<StatusBar />
-				<SafeAreaView testID='create-discussion-view' style={styles.container}>
-					<ScrollView {...scrollPersistTaps}>
-						<Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Discussion_Desc')}</Text>
+	return (
+		<KeyboardView style={styles.container} backgroundColor={colors.surfaceHover}>
+			<SafeAreaView testID='create-discussion-view'>
+				<ScrollView {...scrollPersistTaps}>
+					<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
+					<View style={styles.form}>
 						<SelectChannel
 							server={server}
 							userId={user.id}
 							token={user.token}
-							initial={this.channel && { text: getRoomTitle(this.channel) }}
-							onChannelSelect={this.selectChannel}
+							initial={channel && { text: getRoomTitle(channel) }}
+							onChannelSelect={selectChannel}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							serverVersion={serverVersion}
 						/>
-						<FormTextInput
+						<ControlledFormTextInput
+							control={control}
+							name='name'
+							required
+							error={errors.name?.message}
 							label={I18n.t('Discussion_name')}
 							testID='multi-select-discussion-name'
-							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
 							containerStyle={styles.inputStyle}
-							defaultValue={name}
-							onChangeText={(text: string) => this.setState({ name: text })}
 						/>
 						<SelectUsers
 							server={server}
 							userId={user.id}
 							token={user.token}
 							selected={users}
-							onUserSelect={this.selectUsers}
+							onUserSelect={selectUsers}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							serverVersion={serverVersion}
 						/>
-						{this.isEncryptionEnabled ? (
-							<>
-								<List.Item
-									title='Encrypted'
-									testID='room-actions-encrypt'
-									right={() => <Switch value={encrypted} onValueChange={this.onEncryptedChange} />}
-									additionalAcessibilityLabel={encrypted}
-								/>
-							</>
-						) : null}
-					</ScrollView>
-				</SafeAreaView>
-			</KeyboardView>
-		);
-	}
-}
+					</View>
 
-const mapStateToProps = (state: IApplicationState) => ({
-	user: getUserSelector(state),
-	server: state.server.server,
-	error: state.createDiscussion.error as IError,
-	failure: state.createDiscussion.failure,
-	loading: state.createDiscussion.isFetching,
-	result: state.createDiscussion.result as IResult,
-	blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
-	serverVersion: state.server.version as string,
-	isMasterDetail: state.app.isMasterDetail,
-	encryptionEnabled: state.encryption.enabled
-});
+					{isEncryptionEnabled ? (
+						<>
+							<List.Item
+								title='Encrypted'
+								testID='room-actions-encrypt'
+								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} />}
+								additionalAcessibilityLabel={encrypted}
+							/>
+						</>
+					) : null}
 
-export default connect(mapStateToProps)(withTheme(CreateChannelView));
+					<Button
+						testID='create-discussion-submit'
+						style={{ marginTop: 36 }}
+						title={I18n.t('Create_Discussion')}
+						onPress={handleSubmit(submit)}
+					/>
+				</ScrollView>
+			</SafeAreaView>
+		</KeyboardView>
+	);
+};
+
+export default CreateDiscussionView;

@@ -5,7 +5,7 @@ import database from '../database';
 import { IEmoji, TFrequentlyUsedEmojiModel } from '../../definitions';
 import log from './helpers/log';
 import { sanitizeLikeString } from '../database/utils';
-import { emojis } from '../constants';
+import { emojis } from '../constants/emojis';
 
 export const addFrequentlyUsed = async (emoji: IEmoji) => {
 	const db = database.active;

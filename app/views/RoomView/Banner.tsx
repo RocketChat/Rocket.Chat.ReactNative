@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 
 import Markdown, { MarkdownPreview } from '../../containers/markdown';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import styles from './styles';
 import { useTheme } from '../../theme';
 
@@ -29,10 +29,9 @@ const Banner = React.memo(
 					<BorderlessButton
 						style={[styles.bannerContainer, { backgroundColor: themes[theme].surfaceNeutral }]}
 						testID='room-view-banner'
-						onPress={toggleModal}
-					>
+						onPress={toggleModal}>
 						<MarkdownPreview msg={text} style={[styles.bannerText]} />
-						<BorderlessButton onPress={closeBanner}>
+						<BorderlessButton onPress={closeBanner} hitSlop={10}>
 							<CustomIcon color={themes[theme].fontSecondaryInfo} name='close' size={20} />
 						</BorderlessButton>
 					</BorderlessButton>
@@ -42,12 +41,11 @@ const Banner = React.memo(
 						useNativeDriver
 						isVisible={showModal}
 						animationIn='fadeIn'
-						animationOut='fadeOut'
-					>
+						animationOut='fadeOut'>
 						<View style={[styles.modalView, { backgroundColor: themes[theme].surfaceNeutral }]}>
 							<Text style={[styles.bannerModalTitle, { color: themes[theme].fontSecondaryInfo }]}>{title}</Text>
 							<ScrollView style={styles.modalScrollView}>
-								<Markdown msg={text} theme={theme} />
+								<Markdown msg={text} />
 							</ScrollView>
 						</View>
 					</Modal>

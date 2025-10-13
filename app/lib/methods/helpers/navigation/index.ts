@@ -1,12 +1,13 @@
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
-import { themes } from '../../../constants';
+import { themes } from '../../../constants/colors';
 import { TSupportedThemes } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
+import Header from '../../../../containers/Header';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	headerBackTitleVisible: false
+	header: Header
 };
 
 export const drawerStyle = {
@@ -18,7 +19,7 @@ export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOpti
 		backgroundColor: themes[theme].surfaceNeutral
 	},
 	headerTintColor: themes[theme].fontDefault,
-	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].fontTitlesLabels, fontSize: 18 }
+	headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {

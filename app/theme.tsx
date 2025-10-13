@@ -3,7 +3,7 @@ import React from 'react';
 
 import { IThemePreference } from './definitions/ITheme';
 import { TNavigationOptions } from './definitions/navigationTypes';
-import { colors } from './lib/constants';
+import { colors } from './lib/constants/colors';
 
 export type TSupportedThemes = keyof typeof colors;
 export type TColors = (typeof colors)[TSupportedThemes];
@@ -22,7 +22,7 @@ export function withTheme<T extends object>(Component: React.ComponentType<T> & 
 		<ThemeContext.Consumer>{contexts => <Component {...props} {...contexts} />}</ThemeContext.Consumer>
 	);
 
-	hoistNonReactStatics(ThemedComponent, Component);
+	hoistNonReactStatics(ThemedComponent, Component as any);
 	return ThemedComponent;
 }
 

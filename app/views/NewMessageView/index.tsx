@@ -5,10 +5,9 @@ import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ISearch, TSubscriptionModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -16,8 +15,8 @@ import { useTheme } from '../../theme';
 import { goRoom as goRoomMethod, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { NewMessageStackParamList } from '../../stacks/types';
-import { search as searchMethod } from '../../lib/methods';
-import { useAppSelector } from '../../lib/hooks';
+import { search as searchMethod } from '../../lib/methods/search';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import UserItem from '../../containers/UserItem';
 import HeaderNewMessage from './HeaderNewMessage';
 
@@ -82,7 +81,6 @@ const NewMessageView = () => {
 
 	return (
 		<SafeAreaView testID='new-message-view'>
-			<StatusBar />
 			<FlatList
 				data={search.length > 0 ? search : chats}
 				keyExtractor={item => item._id || item.rid}

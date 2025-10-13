@@ -1,0 +1,450 @@
+appId: chat.rocket.reactnative
+name: Team
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-4
+
+---
+- evalScript: ${output.firstUser = output.utils.createUser()}
+- evalScript: ${output.secondUser = output.utils.createUser()}
+- evalScript: ${output.team = output.utils.createRandomTeam(output.firstUser.username, output.firstUser.password)}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.firstUser.username, output.firstUser.password)}
+- evalScript: ${output.privateRoomName = 'private' + output.random() + '-channel-team'}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.firstUser.username}
+      PASSWORD: ${output.firstUser.password}
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.team}
+
+# Team Header
+- assertVisible:
+    id: room-header
+- assertVisible:
+    id: room-view-header-call
+- assertVisible:
+    id: room-view-header-threads
+- assertVisible:
+    id: room-view-search
+
+# Team Action Usage
+- tapOn:
+    id: room-header
+- tapOn:
+    id: room-actions-teams
+- extendedWaitUntil:
+    visible:
+      id: team-channels-view
+    timeout: 5000
+    label: Should navigate to team channels view
+
+# Team Channels Header
+- assertVisible:
+    id: room-header
+    label: Should have actions button
+- assertVisible:
+    id: team-channels-view-create
+    label: Should have team channels button
+- assertVisible:
+    id: team-channels-view-search
+    label: Should have search button
+
+# Team Channels Header Usage
+- tapOn:
+    id: team-channels-view-create
+- extendedWaitUntil:
+    visible:
+      id: add-channel-team-view
+    timeout: 5000
+    label: Should navigate to add channel view
+- extendedWaitUntil:
+    visible:
+      id: add-channel-team-view-create-channel
+    timeout: 5000
+    label: should have create new button
+- extendedWaitUntil:
+    visible:
+      id: add-channel-team-view-add-existing
+    timeout: 5000
+    label: should have add existing button
+
+# Create new channel for team
+- tapOn:
+    id: add-channel-team-view-create-channel
+- assertVisible:
+    id: select-users-view-search
+- tapOn:
+    id: select-users-view-search
+- inputText:
+    id: select-users-view-search
+    text: rocket.cat
+- extendedWaitUntil:
+    visible:
+      id: select-users-view-item-rocket.cat
+    timeout: 60000
+- tapOn:
+    id: select-users-view-item-rocket.cat
+- extendedWaitUntil:
+    visible:
+      id: selected-user-rocket.cat
+    timeout: 60000
+- tapOn:
+    id: selected-users-view-submit
+- extendedWaitUntil:
+    visible:
+      id: create-channel-view
+    timeout: 60000
+- assertVisible:
+    id: create-channel-name
+- tapOn:
+    id: create-channel-name
+- inputText: ${output.privateRoomName}
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: create-channel-submit
+    timeout: 60000
+    label: should have submit button
+- tapOn:
+    id: create-channel-submit
+- extendedWaitUntil:
+    visible:
+      id: room-view
+    timeout: 60000
+    label: should navigate to room view
+- assertVisible:
+    id: room-header
+- tapOn:
+    id: room-header
+- assertVisible:
+    id: room-actions-teams
+- tapOn:
+    id: room-actions-teams
+
+- extendedWaitUntil:
+    visible:
+      id: team-channels-view
+    timeout: 60000
+    label: Should navigate to team channels view
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view-item-${output.privateRoomName}
+    timeout: 60000
+- assertVisible:
+    id: rooms-list-view-item-${output.privateRoomName}
+- tapOn:
+    id: rooms-list-view-item-${output.privateRoomName}
+- extendedWaitUntil:
+    visible:
+      id: room-view-title-${output.privateRoomName}
+    timeout: 60000
+- assertVisible:
+    id: room-view-title-${output.privateRoomName}
+- assertVisible:
+    id: room-view-header-call
+- assertVisible:
+    id: room-view-header-threads
+- assertVisible:
+    id: room-view-search
+- runFlow: '../../helpers/go-back.yaml'
+
+# should add existing channel to team
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.team}
+- assertVisible:
+    id: room-header
+- tapOn:
+    id: room-header
+- assertVisible:
+    id: room-actions-teams
+- tapOn:
+    id: room-actions-teams
+- extendedWaitUntil:
+    visible:
+      id: team-channels-view
+    timeout: 60000
+    label: Should navigate to team channels view
+- tapOn:
+    id: team-channels-view-create
+- extendedWaitUntil:
+    visible:
+      id: add-channel-team-view
+    timeout: 60000
+    label: Should navigate to add channel view
+- tapOn:
+    id: add-channel-team-view-add-existing
+- extendedWaitUntil:
+    visible:
+      id: add-existing-channel-view
+    timeout: 60000
+    label: Should navigate to add existing channel view
+- assertVisible:
+    id: add-existing-channel-view-item-${output.room.name}
+- tapOn:
+    id: add-existing-channel-view-item-${output.room.name}
+- extendedWaitUntil:
+    visible:
+      id: add-existing-channel-view-submit
+    timeout: 60000
+    label: should have submit button
+- tapOn:
+    id: add-existing-channel-view-submit
+- extendedWaitUntil:
+    visible:
+      id: room-view-title-${output.team}
+    timeout: 60000
+- tapOn:
+    id: room-header
+- assertVisible:
+    id: room-actions-teams
+- tapOn:
+    id: room-actions-teams
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view-item-${output.room.name}
+    timeout: 60000
+    label: Should navigate to team channels view
+
+# It should activate/deactivate auto-join to channel
+- assertVisible:
+    id: rooms-list-view-item-${output.privateRoomName}
+- longPressOn:
+    id: rooms-list-view-item-${output.privateRoomName}
+- scrollUntilVisible:
+    element:
+      id: action-sheet-delete
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-auto-join
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: auto-join-unchecked
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-remove-from-team
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-delete
+    timeout: 60000
+- tapOn:
+    id: auto-join-unchecked
+- extendedWaitUntil:
+    visible:
+      id: auto-join-tag
+    timeout: 60000
+- longPressOn:
+    id: rooms-list-view-item-${output.privateRoomName}
+- extendedWaitUntil:
+    visible:
+      id: auto-join-checked
+    timeout: 60000
+- tapOn:
+    id: auto-join-checked
+- extendedWaitUntil:
+    notVisible:
+      id: auto-join-tag
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view-item-${output.privateRoomName}
+      index: 0
+    timeout: 60000
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${output.team}
+
+- extendedWaitUntil:
+    visible:
+      id: room-view
+    timeout: 60000
+- tapOn:
+    id: room-header
+- extendedWaitUntil:
+    visible:
+      id: room-actions-view
+    timeout: 60000
+
+# should add users to the team
+- tapOn:
+    id: room-actions-members
+- extendedWaitUntil:
+    visible:
+      id: room-members-view
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: room-actions-add-user
+    timeout: 60000
+- tapOn:
+    id: room-actions-add-user
+- assertVisible:
+    id: select-users-view-search
+- tapOn:
+    id: select-users-view-search
+- inputText: rocket.cat
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: select-users-view-item-rocket.cat
+    timeout: 60000
+- tapOn:
+    id: select-users-view-item-rocket.cat
+- extendedWaitUntil:
+    visible:
+      id: selected-user-rocket.cat
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: select-users-view-search
+    timeout: 60000
+- tapOn:
+    id: select-users-view-search
+- eraseText
+- inputText: ${output.secondUser.username}
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: select-users-view-item-${output.secondUser.username}
+    timeout:
+- tapOn:
+    id: select-users-view-item-${output.secondUser.username}
+- extendedWaitUntil:
+    visible:
+      id: selected-user-${output.secondUser.username}
+    timeout: 60000
+- assertVisible:
+    id: selected-users-view-submit
+- tapOn:
+    id: selected-users-view-submit
+
+- assertVisible:
+    id: room-members-view-filter
+- tapOn:
+    id: room-members-view-filter
+- extendedWaitUntil:
+    visible:
+      id: room-members-view-toggle-status-all
+    timeout: 60000
+- tapOn:
+    id: room-members-view-toggle-status-all
+- extendedWaitUntil:
+    visible:
+      id: room-members-view-item-${output.secondUser.username}
+    timeout: 60000
+
+# should remove member from team
+- runFlow:
+    file: './utils/open-action-sheet.yaml'
+    env:
+      username: rocket.cat
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-remove-from-team
+    timeout: 60000
+- tapOn:
+    id: action-sheet-remove-from-team
+- extendedWaitUntil:
+    visible:
+      id: select-list-view-item-${output.privateRoomName}
+    timeout: 60000
+- tapOn:
+    id: select-list-view-item-${output.privateRoomName}
+- extendedWaitUntil:
+    visible:
+      id: ${output.privateRoomName}-checked
+    timeout: 60000
+- tapOn:
+    id: select-list-view-item-${output.privateRoomName}
+- extendedWaitUntil:
+    notVisible:
+      id: ${output.privateRoomName}-checked
+    timeout: 60000
+- assertVisible:
+    id: select-list-view-submit
+- tapOn:
+    id: select-list-view-submit
+- extendedWaitUntil:
+    notVisible:
+      id: room-members-view-item-rocket.cat
+    timeout: 60000
+
+# should set member as owner
+- runFlow:
+    file: './utils/open-action-sheet.yaml'
+    env:
+      username: ${output.secondUser.username}
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-set-owner
+    timeout: 60000
+- tapOn:
+    id: action-sheet-set-owner
+
+- runFlow:
+    file: './utils/open-action-sheet.yaml'
+    env:
+      username: ${output.secondUser.username}
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-set-owner-checked
+    timeout: 60000
+- runFlow:
+    file: './utils/close-action-sheet.yaml'
+
+# should leave team
+- runFlow: '../../helpers/go-back.yaml'
+- extendedWaitUntil:
+    visible:
+      id: room-actions-view
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: room-actions-leave-channel
+- tapOn:
+    id: room-actions-leave-channel
+- extendedWaitUntil:
+    visible:
+      id: select-list-view
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: select-list-view-item-${output.room.name}
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: select-list-view-item-${output.privateRoomName}
+    timeout: 60000
+- tapOn:
+    id: select-list-view-item-${output.privateRoomName}
+- assertVisible:
+    text: You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.
+- tapOn: OK
+- extendedWaitUntil:
+    visible:
+      id: select-list-view-submit
+    timeout: 60000
+- tapOn:
+    id: select-list-view-submit
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: rooms-list-view-item-${output.team}
+    timeout: 60000

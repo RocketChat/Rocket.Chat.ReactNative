@@ -34,7 +34,7 @@ export function withDimensions<T extends object>(Component: React.ComponentType<
 		<DimensionsContext.Consumer>{contexts => <Component {...props} {...contexts} />}</DimensionsContext.Consumer>
 	);
 
-	hoistNonReactStatics(DimensionsComponent, Component);
+	hoistNonReactStatics(DimensionsComponent, Component as any);
 	return DimensionsComponent;
 }
 

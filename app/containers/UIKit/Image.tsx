@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Components/Attachments/Image';
@@ -24,7 +24,7 @@ const ThumbContext = (args: IThumb) => (
 );
 
 export const Thumb = ({ element, size = 88 }: IThumb) => (
-	<FastImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element?.imageUrl }} />
+	<ExpoImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element?.imageUrl }} />
 );
 
 export const Media = ({ element }: IImage) => {

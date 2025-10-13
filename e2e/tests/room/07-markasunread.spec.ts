@@ -32,6 +32,7 @@ describe('Mark as unread', () => {
 					.toBeVisible()
 					.withTimeout(3000);
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300);
 				await element(by[textMatcher]('Mark unread')).atIndex(0).tap();
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()

@@ -1,22 +1,11 @@
-import { HeaderBackButton } from '@react-navigation/elements';
-import React, { useCallback } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 
 import Avatar from '../../containers/Avatar';
-import { themes } from '../../lib/constants';
 import { useAppNavigation } from '../../lib/hooks/navigation';
-import { isIOS } from '../../lib/methods/helpers';
-import { TSupportedThemes } from '../../theme';
+import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
 
 const styles = StyleSheet.create({
-	container: {
-		marginLeft: -15,
-		...Platform.select({
-			ios: {
-				minWidth: 34
-			}
-		})
-	},
 	avatar: {
 		borderRadius: 10
 	}
@@ -31,7 +20,6 @@ interface ILeftButtonsProps {
 	token?: string;
 	title?: string;
 	t: string;
-	theme: TSupportedThemes;
 	goRoomActionsView: Function;
 	isMasterDetail: boolean;
 }
@@ -45,12 +33,12 @@ const LeftButtons = ({
 	token,
 	title,
 	t,
-	theme,
 	goRoomActionsView,
 	isMasterDetail
 }: ILeftButtonsProps): React.ReactElement | null => {
 	const { goBack } = useAppNavigation();
-	const onPress = useCallback(() => goRoomActionsView(), []);
+	const onPress = () => goRoomActionsView();
+	const { fontScale } = useWindowDimensions();
 
 	if (!isMasterDetail || tmid) {
 		let label = ' ';
@@ -60,20 +48,10 @@ const LeftButtons = ({
 		if (unreadsCount) {
 			label = unreadsCount > 99 ? '+99' : unreadsCount.toString() || ' ';
 			labelLength = label.length ? label.length : 1;
-			marginLeft = -2 * labelLength;
+			marginLeft = -4 * labelLength;
 			fontSize = labelLength > 1 ? 14 : 17;
 		}
-		return (
-			<HeaderBackButton
-				label={label}
-				labelVisible={isIOS}
-				onPress={goBack}
-				tintColor={themes[theme].fontDefault}
-				labelStyle={{ fontSize, marginLeft }}
-				style={styles.container}
-				testID='header-back'
-			/>
-		);
+		return <HeaderBackButton label={label} onPress={goBack} labelStyle={{ fontSize: fontSize * fontScale, marginLeft }} />;
 	}
 
 	if (baseUrl && userId && token) {

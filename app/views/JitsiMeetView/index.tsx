@@ -5,8 +5,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, BackHandler, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 
-import { userAgent } from '../../lib/constants';
-import { useAppSelector } from '../../lib/hooks';
+import { userAgent } from '../../lib/constants/userAgent';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { isIOS } from '../../lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFromJitsiCall';
 import { events, logEvent } from '../../lib/methods/helpers/log';
@@ -30,7 +30,7 @@ const JitsiMeetView = (): React.ReactElement => {
 		const date = new Date();
 		date.setDate(date.getDate() + 1);
 		const expires = date.toISOString();
-		const domain = serverUrl.replace(/^https?:\/\//, '');
+		const domain = serverUrl.replace(/^https?:\/\//, '').split(':')[0]; // remove the ":<port>"
 		const ck = { domain, version: '1', expires };
 
 		await CookieManager.set(serverUrl, {

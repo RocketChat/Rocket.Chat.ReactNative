@@ -11,7 +11,7 @@ import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import { THUMBS_HEIGHT } from './constants';
 import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { IShareAttachment } from '../../definitions';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
@@ -98,7 +98,8 @@ const Preview = React.memo(({ item, theme, length }: IPreview) => {
 		}
 
 		if (type?.match(/image/)) {
-			return <ImageViewer uri={item.path} width={width} height={calculatedHeight} />;
+			const imageViewerWidth = width - insets.left - insets.right;
+			return <ImageViewer uri={item.path} width={imageViewerWidth} height={calculatedHeight} />;
 		}
 
 		return (

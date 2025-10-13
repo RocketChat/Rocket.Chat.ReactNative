@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 
 import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Item from './Item';
 
 const Timezone = ({ utcOffset }: { utcOffset?: number }): React.ReactElement | null => {

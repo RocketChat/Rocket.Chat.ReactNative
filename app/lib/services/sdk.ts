@@ -166,7 +166,9 @@ class Sdk {
 		return Promise.all([
 			this.subscribe('stream-room-messages', args[0], ...args),
 			eventUserTyping,
-			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args)
+			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args),
+			this.subscribe(topic, `${args[0]}/deleteMessageBulk`, ...args),
+			this.subscribe(topic, `${args[0]}/messagesRead`, ...args)
 		]);
 	}
 

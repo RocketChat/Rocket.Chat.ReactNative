@@ -3,7 +3,7 @@ import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../../containers/CustomIcon';
 import { isIOS } from '../../lib/methods/helpers';
 import { THUMBS_HEIGHT } from './constants';
@@ -92,7 +92,7 @@ const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
 	);
 });
 
-const ThumbButton: typeof React.Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
+const ThumbButton = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
 const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => (
 	<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>

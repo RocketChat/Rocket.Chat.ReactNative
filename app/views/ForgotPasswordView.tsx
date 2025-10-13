@@ -10,7 +10,7 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
-import { Services } from '../lib/services';
+import { forgotPassword } from '../lib/services/restApi';
 import { OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
@@ -51,7 +51,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 		try {
 			logEvent(events.FP_FORGOT_PASSWORD);
 			setIsFetching(true);
-			const result = await Services.forgotPassword(email);
+			const result = await forgotPassword(email);
 			if (result.success) {
 				navigation.pop();
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
@@ -71,7 +71,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 					{I18n.t('Reset_password')}
 				</Text>
 				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22, fontSize: 16 }]}>
-					{I18n.t('email')}
+					{I18n.t('Email')}
 				</Text>
 				<ControlledFormTextInput
 					name='email'

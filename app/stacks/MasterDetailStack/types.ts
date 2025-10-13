@@ -117,6 +117,9 @@ export type ModalStackParamList = {
 		rid: string;
 		room: ISubscription;
 	};
+	E2EEToggleRoomView: {
+		rid: string;
+	};
 	ForwardMessageView: {
 		message: TAnyMessageModel;
 	};
@@ -153,10 +156,6 @@ export type ModalStackParamList = {
 		teamId: string;
 		joined: boolean;
 	};
-	MarkdownTableView: {
-		renderRows: Function;
-		tableWidth: number;
-	};
 	ReadReceiptsView: {
 		messageId: string;
 	};
@@ -167,6 +166,7 @@ export type ModalStackParamList = {
 	ScreenLockConfigView: undefined;
 	StatusView: undefined;
 	ProfileView: undefined;
+	ChangePasswordView: undefined;
 	DisplayPrefsView: undefined;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;
@@ -197,6 +197,7 @@ export type ModalStackParamList = {
 	MediaAutoDownloadView: undefined;
 	E2EEncryptionSecurityView: undefined;
 	PushTroubleshootView: undefined;
+	LegalView: undefined;
 	SupportedVersionsWarning: {
 		showCloseButton?: boolean;
 	};
@@ -205,6 +206,7 @@ export type ModalStackParamList = {
 		userId: string;
 		name: string;
 	};
+	AccessibilityAndAppearanceView: undefined;
 };
 
 export type MasterDetailInsideStackParamList = {

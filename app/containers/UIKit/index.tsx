@@ -15,7 +15,7 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
 import { FormTextInput } from '../TextInput';
 import { textParser, useBlockContext } from './utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../../views/Styles';
 import { Divider } from './Divider';
 import { Section } from './Section';
@@ -77,7 +77,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} numberOfLines={0} />
 			);
 		}
-		return <Markdown msg={element.text} theme={theme} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} />;
+		return <Markdown msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} />;
 	}
 
 	button(element: IButton, context: BlockContext) {
@@ -179,9 +179,9 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 			<Input
 				parser={this.current}
 				element={{ ...element, appId, blockId }}
-				label={plainText(label)}
-				description={plainText(description)}
-				hint={plainText(hint)}
+				{...(label && { label: plainText(label) })}
+				{...(description && { description: plainText(description) })}
+				{...(hint && { hint: plainText(hint) })}
 				error={error}
 				theme={theme}
 			/>
@@ -198,7 +198,7 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 		return (
 			<FormTextInput
 				key={actionId}
-				placeholder={plainText(placeholder)}
+				{...(placeholder && { placeholder: plainText(placeholder) })}
 				multiline={multiline}
 				loading={loading}
 				onChangeText={text => action({ value: text })}

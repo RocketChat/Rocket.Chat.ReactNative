@@ -1,167 +1,89 @@
-import { Q } from '@nozbe/watermelondb';
-import { Base64 } from 'js-base64';
-import React from 'react';
-import { BackHandler, Image, Keyboard, StyleSheet, Text } from 'react-native';
-import { connect } from 'react-redux';
-import parse from 'url-parse';
+import React, { useEffect, useState } from 'react';
+import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { Image } from 'expo-image';
+import { useForm } from 'react-hook-form';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
-import { CERTIFICATE_KEY, themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/HeaderButton';
-import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
+import { TServerHistoryModel } from '../../definitions';
 import I18n from '../../i18n';
-import database from '../../lib/database';
-import { sanitizeLikeString } from '../../lib/database/utils';
-import UserPreferences from '../../lib/methods/userPreferences';
-import { OutsideParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { isAndroid, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
-import { showConfirmationAlert } from '../../lib/methods/helpers/info';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import SSLPinning from '../../lib/methods/helpers/sslPinning';
-import sharedStyles from '../Styles';
-import ServerInput from './ServerInput';
-import { serializeAsciiUrl } from '../../lib/methods';
+import ServerInput from './components/ServerInput';
 import { getServerById } from '../../lib/database/services/Server';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import useServersHistory from './hooks/useServersHistory';
+import useCertificate from './hooks/useCertificate';
+import CertificatePicker from './components/CertificatePicker';
+import useConnectServer from './hooks/useConnectServer';
+import { INewServerViewProps } from './definitions';
+import completeUrl from './utils/completeUrl';
+import styles from './styles';
 
-const styles = StyleSheet.create({
-	onboardingImage: {
-		alignSelf: 'center',
-		resizeMode: 'contain'
-	},
-	buttonPrompt: {
-		...sharedStyles.textRegular,
-		textAlign: 'center',
-		lineHeight: 20
-	},
-	connectButton: {
-		marginTop: 36
-	}
-});
+const NewServerView = ({ navigation }: INewServerViewProps) => {
+	const dispatch = useDispatch();
+	const { colors } = useTheme();
+	const { previousServer, connecting, failureMessage } = useAppSelector(state => ({
+		previousServer: state.server.previousServer,
+		connecting: state.server.connecting,
+		failureMessage: state.server.failureMessage
+	}));
 
-interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
-	connecting: boolean;
-	previousServer: string | null;
-}
+	const {
+		control,
+		watch,
+		formState: { errors },
+		setValue,
+		setError,
+		clearErrors
+	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
-interface INewServerViewState {
-	text: string;
-	certificate: string | null;
-	serversHistory: TServerHistoryModel[];
-	showBottomInfo: boolean;
-}
+	const workspaceUrl = watch('workspaceUrl');
+	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
+	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
+	const { certificate, chooseCertificate, removeCertificate, autocompleteCertificate } = useCertificate();
+	const { submit } = useConnectServer({ workspaceUrl, certificate, previousServer });
+	const phoneMarginTop = previousServer ? 32 : 84;
+	const marginTop = isTablet ? 0 : phoneMarginTop;
+	const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
 
-interface ISubmitParams {
-	fromServerHistory?: boolean;
-	username?: string;
-}
-
-class NewServerView extends React.Component<INewServerViewProps, INewServerViewState> {
-	constructor(props: INewServerViewProps) {
-		super(props);
-		this.setHeader();
-
-		this.state = {
-			text: '',
-			certificate: null,
-			serversHistory: [],
-			showBottomInfo: true
-		};
-		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-		if (isAndroid) {
-			Keyboard.addListener('keyboardDidShow', () => this.handleShowKeyboard());
-			Keyboard.addListener('keyboardDidHide', () => this.handleHideKeyboard());
-		}
-	}
-
-	componentDidMount() {
-		this.queryServerHistory();
-	}
-
-	componentWillUnmount() {
-		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-		if (isAndroid) {
-			Keyboard.removeAllListeners('keyboardDidShow');
-			Keyboard.removeAllListeners('keyboardDidHide');
-		}
-
-		const { previousServer, dispatch } = this.props;
-		if (previousServer) {
-			dispatch(serverFinishAdd());
-		}
-	}
-
-	componentDidUpdate(prevProps: Readonly<INewServerViewProps>) {
-		if (prevProps.connecting !== this.props.connecting) {
-			this.setHeader();
-		}
-	}
-
-	setHeader = () => {
-		const { previousServer, navigation, connecting } = this.props;
-		if (previousServer) {
-			return navigation.setOptions({
-				headerTitle: I18n.t('Add_server'),
-				headerLeft: () =>
-					!connecting ? (
-						<HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
-					) : null
-			});
-		}
-
-		return navigation.setOptions({
-			headerShown: false
-		});
+	const onChangeText = (text: string) => {
+		setValue('workspaceUrl', text);
+		queryServerHistory(text);
+		clearErrors();
+		autocompleteCertificate(completeUrl(text));
 	};
 
-	handleBackPress = () => {
-		const { navigation, previousServer } = this.props;
+	const onPressServerHistory = (serverHistory: TServerHistoryModel) => {
+		setValue('workspaceUrl', serverHistory.url);
+		autocompleteCertificate(serverHistory.url);
+		submit({ fromServerHistory: true, username: serverHistory?.username, serverUrl: serverHistory?.url });
+	};
+
+	const handleBackPress = () => {
 		if (navigation.isFocused() && previousServer) {
-			this.close();
+			close();
 			return true;
 		}
 		return false;
 	};
 
-	handleShowKeyboard = () => {
-		this.setState({ ...this.state, showBottomInfo: false });
-	};
-
-	handleHideKeyboard = () => {
-		this.setState({ ...this.state, showBottomInfo: true });
-	};
-
-	onChangeText = (text: string) => {
-		this.setState({ text });
-		this.queryServerHistory(text);
-	};
-
-	queryServerHistory = async (text?: string) => {
-		const db = database.servers;
-		try {
-			const serversHistoryCollection = db.get('servers_history');
-			let whereClause = [Q.where('username', Q.notEq(null)), Q.sortBy('updated_at', Q.desc), Q.take(3)];
-			if (text) {
-				const likeString = sanitizeLikeString(text);
-				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
-			}
-			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
-			this.setState({ serversHistory });
-		} catch {
-			// Do nothing
+	const handleNewServerEvent = (event: { server: string }) => {
+		let { server } = event;
+		if (!server) {
+			return;
 		}
+		setValue('workspaceUrl', server);
+		server = completeUrl(server);
+		dispatch(serverRequest(server));
 	};
 
-	close = async () => {
-		const { dispatch, previousServer } = this.props;
-
+	const close = async () => {
 		dispatch(inviteLinksClear());
 		if (previousServer) {
 			const serverRecord = await getServerById(previousServer);
@@ -171,202 +93,108 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		}
 	};
 
-	handleNewServerEvent = (event: { server: string }) => {
-		let { server } = event;
-		if (!server) {
-			return;
+	const setHeader = () => {
+		if (previousServer) {
+			return navigation.setOptions({
+				headerTitle: I18n.t('Add_Server'),
+				headerLeft: () =>
+					!connecting ? <HeaderButton.CloseModal navigation={navigation} onPress={close} testID='new-server-view-close' /> : null
+			});
 		}
-		const { dispatch } = this.props;
-		this.setState({ text: server });
-		server = this.completeUrl(server);
-		dispatch(serverRequest(server));
-	};
-
-	onPressServerHistory = (serverHistory: TServerHistoryModel) => {
-		this.setState({ text: serverHistory.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
-	};
-
-	submit = ({ fromServerHistory = false, username }: ISubmitParams = {}) => {
-		logEvent(events.NS_CONNECT_TO_WORKSPACE);
-		const { text, certificate } = this.state;
-		const { dispatch } = this.props;
-
-		if (text) {
-			Keyboard.dismiss();
-			const server = this.completeUrl(text);
-
-			// Save info - SSL Pinning
-			if (certificate) {
-				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
-			}
-
-			// Save info - HTTP Basic Authentication
-			this.basicAuth(server, text);
-
-			if (fromServerHistory) {
-				dispatch(serverRequest(server, username, true));
-			} else {
-				dispatch(serverRequest(server));
-			}
-		}
-	};
-
-	basicAuth = (server: string, text: string) => {
-		try {
-			const parsedUrl = parse(text, true);
-			if (parsedUrl.auth.length) {
-				const credentials = Base64.encode(parsedUrl.auth);
-				UserPreferences.setString(`${BASIC_AUTH_KEY}-${server}`, credentials);
-				setBasicAuth(credentials);
-			}
-		} catch {
-			// do nothing
-		}
-	};
-
-	chooseCertificate = async () => {
-		try {
-			const certificate = await SSLPinning?.pickCertificate();
-			this.setState({ certificate });
-		} catch {
-			// Do nothing
-		}
-	};
-
-	completeUrl = (url: string) => {
-		const parsedUrl = parse(url, true);
-		if (parsedUrl.auth.length) {
-			url = parsedUrl.origin;
-		}
-
-		url = url && url.replace(/\s/g, '');
-
-		if (/^(\w|[0-9-_]){3,}$/.test(url) && /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
-			url = `${url}.rocket.chat`;
-		}
-
-		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			if (/^localhost(:\d+)?/.test(url)) {
-				url = `http://${url}`;
-			} else if (/^https?:\/\//.test(url) === false) {
-				url = `https://${url}`;
-			}
-		}
-		return serializeAsciiUrl(url.replace(/\/+$/, '').replace(/\\/g, '/'));
-	};
-
-	uriToPath = (uri: string) => uri.replace('file://', '');
-
-	handleRemove = () => {
-		showConfirmationAlert({
-			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
-			confirmationText: I18n.t('Remove'),
-			onPress: () => this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
+		return navigation.setOptions({
+			headerShown: false
 		});
 	};
 
-	deleteServerHistory = async (item: TServerHistoryModel) => {
-		const db = database.servers;
-		try {
-			await db.write(async () => {
-				await item.destroyPermanently();
-			});
-			this.setState((prevstate: INewServerViewState) => ({
-				serversHistory: prevstate.serversHistory.filter(server => server.id !== item.id)
-			}));
-		} catch {
-			// Nothing
+	useEffect(() => {
+		if (failureMessage && !errors.workspaceUrl) {
+			AccessibilityInfo.announceForAccessibility(failureMessage);
+			setError('workspaceUrl', { message: failureMessage });
 		}
-	};
+	}, [failureMessage]);
 
-	renderCertificatePicker = () => {
-		const { certificate, showBottomInfo } = this.state;
-		const { theme, connecting } = this.props;
+	useEffect(() => {
+		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
+		const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
-		if (!showBottomInfo) return <></>;
+		let keyboardShowListener: ReturnType<typeof Keyboard.addListener> | null = null;
+		let keyboardHideListener: ReturnType<typeof Keyboard.addListener> | null = null;
 
-		return (
-			<>
-				<Text style={[styles.buttonPrompt, { color: themes[theme].fontSecondaryInfo }]}>
-					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
-				</Text>
-				<Button
-					onPress={certificate ? this.handleRemove : this.chooseCertificate}
-					testID='new-server-choose-certificate'
-					title={certificate ?? I18n.t('Apply_Certificate')}
-					type='secondary'
-					disabled={connecting}
-					style={{ marginTop: 12, marginBottom: 24 }}
-					fontSize={12}
-					styleText={{ ...sharedStyles.textBold, textAlign: 'center' }}
-					small
+		if (isAndroid) {
+			keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => setShowBottomInfo(false));
+			keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => setShowBottomInfo(true));
+		}
+
+		return () => {
+			EventEmitter.removeListener('NewServer', handleNewServerEvent);
+			backHandler.remove();
+
+			if (isAndroid) {
+				keyboardShowListener?.remove();
+				keyboardHideListener?.remove();
+			}
+
+			if (previousServer) {
+				dispatch(serverFinishAdd());
+			}
+		};
+	}, []);
+
+	useEffect(() => {
+		setHeader();
+	}, [connecting, previousServer]);
+
+	return (
+		<FormContainer
+			style={formContainerStyle}
+			showAppVersion={showBottomInfo}
+			testID='new-server-view'
+			keyboardShouldPersistTaps='handled'>
+			<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
+				<Image
+					style={{
+						...styles.onboardingImage,
+						marginTop
+					}}
+					source={require('../../static/images/logo_with_name.png')}
+					contentFit='contain'
 				/>
-			</>
-		);
-	};
+				<Text
+					style={{
+						...styles.title,
+						color: colors.fontTitlesLabels
+					}}>
+					{I18n.t('Add_server')}
+				</Text>
+				<ServerInput
+					error={errors.workspaceUrl?.message}
+					control={control}
+					serversHistory={serversHistory}
+					onChangeText={onChangeText}
+					onSubmit={submit}
+					onDelete={deleteServerHistory}
+					onPressServerHistory={onPressServerHistory}
+				/>
+				<Button
+					title={I18n.t('Connect')}
+					type='primary'
+					onPress={submit}
+					disabled={!workspaceUrl || connecting}
+					loading={connecting}
+					style={styles.connectButton}
+					testID='new-server-view-button'
+				/>
+			</FormContainerInner>
+			<CertificatePicker
+				certificate={certificate}
+				chooseCertificate={() => chooseCertificate(completeUrl(workspaceUrl))}
+				connecting={connecting}
+				handleRemove={() => removeCertificate(completeUrl(workspaceUrl))}
+				previousServer={previousServer}
+				showBottomInfo
+			/>
+		</FormContainer>
+	);
+};
 
-	render() {
-		const { connecting, theme, previousServer } = this.props;
-		const { text, serversHistory, showBottomInfo } = this.state;
-		const marginTop = previousServer ? 32 : 84;
-		const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
-		return (
-			<FormContainer
-				style={formContainerStyle}
-				showAppVersion={showBottomInfo}
-				testID='new-server-view'
-				keyboardShouldPersistTaps='never'>
-				<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
-					<Image
-						style={[
-							styles.onboardingImage,
-							{
-								marginBottom: 32,
-								marginTop: isTablet ? 0 : marginTop,
-								width: 250,
-								height: 50
-							}
-						]}
-						source={require('../../static/images/logo_with_name.png')}
-						fadeDuration={0}
-					/>
-					<Text
-						style={{
-							fontSize: 24,
-							lineHeight: 36,
-							marginBottom: 24,
-							color: themes[theme].fontTitlesLabels,
-							...sharedStyles.textBold
-						}}>
-						{I18n.t('Add_server')}
-					</Text>
-					<ServerInput
-						text={text}
-						serversHistory={serversHistory}
-						onChangeText={this.onChangeText}
-						onSubmit={this.submit}
-						onDelete={this.deleteServerHistory}
-						onPressServerHistory={this.onPressServerHistory}
-					/>
-					<Button
-						title={I18n.t('Connect')}
-						type='primary'
-						onPress={this.submit}
-						disabled={!text || connecting}
-						loading={connecting}
-						style={styles.connectButton}
-						testID='new-server-view-button'
-					/>
-				</FormContainerInner>
-				{this.renderCertificatePicker()}
-			</FormContainer>
-		);
-	}
-}
-
-const mapStateToProps = (state: IApplicationState) => ({
-	connecting: state.server.connecting,
-	previousServer: state.server.previousServer
-});
-
-export default connect(mapStateToProps)(withTheme(NewServerView));
+export default NewServerView;
