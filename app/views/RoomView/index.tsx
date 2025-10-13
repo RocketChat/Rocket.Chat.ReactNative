@@ -1299,7 +1299,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			showUnreadSeparator = dayjs(item.ts).isAfter(lastOpen);
 		} else {
 			showUnreadSeparator =
-				(lastOpen && (dayjs(item.ts).isSame(lastOpen) || dayjs(item.ts).isAfter(lastOpen)) && dayjs(previousItem.ts).isBefore(lastOpen)) ?? false;
+				(lastOpen &&
+					(dayjs(item.ts).isSame(lastOpen) || dayjs(item.ts).isAfter(lastOpen)) &&
+					dayjs(previousItem.ts).isBefore(lastOpen)) ??
+				false;
 			if (!dayjs(item.ts).isSame(previousItem.ts, 'day')) {
 				dateSeparator = item.ts;
 			}
