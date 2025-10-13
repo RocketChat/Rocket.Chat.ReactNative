@@ -15,7 +15,8 @@ const localeKeys: { [key: string]: string } = {
 	sv: 'sv',
 	tr: 'tr',
 	'zh-CN': 'zh-cn',
-	'zh-TW': 'zh-tw'
+	'zh-TW': 'zh-tw',
+    'hi': 'hi'
 };
 
 export const toMomentLocale = (locale: string): string => localeKeys[locale];
