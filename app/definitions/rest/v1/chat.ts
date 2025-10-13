@@ -1,4 +1,4 @@
-import type { EncryptedContent, IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
+import type { TEncryptedContent, IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import { PaginatedResult } from '../helpers/PaginatedResult';
 
@@ -75,7 +75,13 @@ export type ChatEndpoints = {
 		};
 	};
 	'chat.update': {
-		POST: (params: { roomId: IServerRoom['_id']; msgId: string; text?: string; content?: EncryptedContent }) => {
+		POST: (params: {
+			roomId: IServerRoom['_id'];
+			msgId: string;
+			text?: string;
+			content?: TEncryptedContent;
+			e2eMentions?: IMessage['e2eMentions'];
+		}) => {
 			messages: IMessageFromServer;
 		};
 	};
