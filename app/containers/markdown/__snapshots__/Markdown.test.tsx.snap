@@ -485,16 +485,14 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#2F343D",
+                "fontSize": 15,
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
+              [
+                {
+                  "color": "#2F343D",
+                },
+                {},
+              ],
             ]
           }
         >
@@ -504,16 +502,14 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#2F343D",
+                "fontSize": 15,
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
+              [
+                {
+                  "color": "#2F343D",
+                },
+                {},
+              ],
             ]
           }
         >
@@ -523,16 +519,14 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#2F343D",
+                "fontSize": 15,
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
+              [
+                {
+                  "color": "#2F343D",
+                },
+                {},
+              ],
             ]
           }
         >
@@ -597,23 +591,27 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#2F343D",
+                "fontSize": 15,
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {},
-              false,
+              [
+                {
+                  "color": "#2F343D",
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {},
+                false,
+              ],
             ]
           }
         >
-           
-          😂
+            😂
         </Text>
         <Text
           accessibilityLabel=" "
@@ -636,23 +634,27 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           style={
             [
               {
-                "color": "#2F343D",
+                "fontSize": 15,
               },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "lineHeight": 22,
-                "textAlign": "left",
-              },
-              {},
-              false,
+              [
+                {
+                  "color": "#2F343D",
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {},
+                false,
+              ],
             ]
           }
         >
-           
-          👍
+            👍
         </Text>
       </Text>
     </Text>
@@ -860,16 +862,14 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         style={
           [
             {
-              "color": "#2F343D",
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
               "fontSize": 30,
-              "fontWeight": "400",
-              "lineHeight": 43,
-              "textAlign": "left",
             },
+            [
+              {
+                "color": "#2F343D",
+              },
+              {},
+            ],
           ]
         }
       >
@@ -879,18 +879,23 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         style={
           [
             {
-              "color": "#2F343D",
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
               "fontSize": 30,
-              "fontWeight": "400",
-              "lineHeight": 43,
-              "textAlign": "left",
             },
-            {},
-            false,
+            [
+              {
+                "color": "#2F343D",
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 30,
+                "fontWeight": "400",
+                "lineHeight": 43,
+                "textAlign": "left",
+              },
+              {},
+              false,
+            ],
           ]
         }
       >
