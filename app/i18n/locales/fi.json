@@ -10,6 +10,7 @@
   "A11y_appearance_toast_dismissed_automatically": "Sulkeutuu automaattisesti",
   "A11y_appearance_toasts": "Toasts",
   "A11y_in_app_notification": "Uusi viesti {{name}}: {{message}}",
+  "A11y_incoming_call_dismiss": "Hylkää",
   "A11y_incoming_call_swipe_down_to_view_options": "Pyyhkäise alas nähdäksesi vaihtoehdot",
   "Accessibility": "Saavutettavuus",
   "Accessibility_and_Appearance": "Saavutettavuus ja ulkonäkö",

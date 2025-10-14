@@ -10,6 +10,7 @@
   "A11y_appearance_toast_dismissed_automatically": "স্বয়ংক্রিয়ভাবে বরখাস্ত করা হয়েছে",
   "A11y_appearance_toasts": "টোস্ট",
   "A11y_in_app_notification": "{{name}} থেকে নতুন বার্তা: {{message}}",
+  "A11y_incoming_call_dismiss": "বন্ধ করুন",
   "A11y_incoming_call_swipe_down_to_view_options": "নির্বাচনগুলি দেখতে নিচে সোয়াইপ করুন",
   "accept": "গ্রহণ করুন",
   "Accessibility": "অ্যাক্সেসিবিলিটি",

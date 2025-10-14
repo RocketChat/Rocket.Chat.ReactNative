@@ -6,6 +6,7 @@
   "A11y_appearance_toast_dismissed_automatically": "自動で却下されました",
   "A11y_appearance_toasts": "トースト",
   "A11y_in_app_notification": "{{name}} からの新しいメッセージ: {{message}}",
+  "A11y_incoming_call_dismiss": "閉じる",
   "A11y_incoming_call_swipe_down_to_view_options": "オプションを見るには下にスワイプしてください",
   "Accessibility": "アクセシビリティ",
   "Accessibility_and_Appearance": "アクセシビリティと外観",

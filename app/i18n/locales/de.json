@@ -10,6 +10,7 @@
   "A11y_appearance_toast_dismissed_automatically": "Automatisch verworfen",
   "A11y_appearance_toasts": "Toast-Benachrichtigungen",
   "A11y_in_app_notification": "Neue Nachricht von {{name}}: {{message}}",
+  "A11y_incoming_call_dismiss": "Verwerfen",
   "A11y_incoming_call_swipe_down_to_view_options": "Nach unten wischen, um Optionen anzuzeigen",
   "accept": "Annehmen",
   "Accessibility": "Barrierefreiheit",

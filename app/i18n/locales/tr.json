@@ -6,6 +6,7 @@
   "A11y_appearance_toast_dismissed_automatically": "Otomatik olarak kapatılır",
   "A11y_appearance_toasts": "Toast bildirimleri",
   "A11y_in_app_notification": "Yeni mesaj {{name}}: {{message}}",
+  "A11y_incoming_call_dismiss": "Dismiss et.",
   "A11y_incoming_call_swipe_down_to_view_options": "Aşağı kaydırarak seçenekleri görüntüle",
   "Accessibility": "Erişilebilirlik",
   "Accessibility_and_Appearance": "Erişilebilirlik ve görünüm",
