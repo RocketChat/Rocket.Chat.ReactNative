@@ -135,3 +135,10 @@ jobs:
         with:
           name: iOS Maestro Logs - Shard ${{ inputs.shard }}
           path: ~/.maestro/tests/
+      
+      - name: Upload Maestro Video
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS Maestro Video - Shard ${{ inputs.shard }}
+          path: 'user.mp4'

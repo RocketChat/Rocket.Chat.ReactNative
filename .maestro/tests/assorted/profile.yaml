@@ -9,7 +9,7 @@ tags:
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
-
+- startRecording: 'user'
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
@@ -211,3 +211,4 @@ tags:
     visible:
       id: 'profile-view'
     timeout: 60000
+- stopRecording
