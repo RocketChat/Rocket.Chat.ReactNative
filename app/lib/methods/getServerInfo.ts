@@ -1,6 +1,6 @@
 import { KJUR } from 'jsrsasign';
 
-import dayjs from "../dayjs";
+import dayjs from '../dayjs';
 import { getSupportedVersionsCloud } from '../services/restApi';
 import { TCloudInfo, IServerInfo, ISupportedVersions, ISupportedVersionsData, IApiServerInfo } from '../../definitions';
 import { selectServerFailure } from '../../actions/server';

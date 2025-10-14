@@ -1,4 +1,4 @@
-import dayjs from "../../dayjs";
+import dayjs from '../../dayjs';
 import { themes } from '../../constants/colors';
 import I18n from '../../../i18n';
 import { IAttachment, SubscriptionType, TSubscriptionModel } from '../../../definitions';

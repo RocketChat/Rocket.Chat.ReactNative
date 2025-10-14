@@ -1,4 +1,4 @@
-import dayjs from "../../dayjs";
+import dayjs from '../../dayjs';
 import parseUrls from './parseUrls';
 import type { IAttachment, IMessage, IThreadResult } from '../../../definitions';
 

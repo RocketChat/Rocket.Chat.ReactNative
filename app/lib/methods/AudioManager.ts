@@ -1,7 +1,7 @@
 import { AVPlaybackStatus, Audio } from 'expo-av';
 import { Q } from '@nozbe/watermelondb';
 
-import dayjs from "../dayjs";
+import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';

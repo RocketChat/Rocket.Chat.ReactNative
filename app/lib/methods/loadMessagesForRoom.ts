@@ -1,4 +1,4 @@
-import dayjs from "../dayjs";
+import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { IMessage, TMessageModel } from '../../definitions';
 import log from './helpers/log';
