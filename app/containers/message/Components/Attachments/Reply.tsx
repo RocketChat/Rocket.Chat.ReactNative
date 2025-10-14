@@ -12,7 +12,7 @@ import openLink from '../../../../lib/methods/helpers/openLink';
 import { TSupportedThemes, useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import RCActivityIndicator from '../../../ActivityIndicator';
-import Markdown from '../../../markdown';
+import Markdown, { MarkdownPreview } from '../../../markdown';
 import { Attachments } from './components';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
@@ -129,6 +129,16 @@ const Description = React.memo(
 			return null;
 		}
 
+		// For file attachments without explicit text, the title is just a filename (e.g., "test.py").
+		// We use MarkdownPreview to avoid markdown parsing treating filenames as URLs or markdown syntax.
+		// For other attachments (message quotes, embeds), the text may contain actual markdown formatting,
+		// so we use the full Markdown component to preserve styling.
+		const isFileName = attachment.type === 'file' && !attachment.text;
+
+		if (isFileName) {
+			return <MarkdownPreview msg={text} numberOfLines={0} />;
+		}
+
 		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
 	},
 	(prevProps, nextProps) => {
@@ -136,6 +146,9 @@ const Description = React.memo(
 			return false;
 		}
 		if (prevProps.attachment.title !== nextProps.attachment.title) {
+			return false;
+		}
+		if (prevProps.attachment.type !== nextProps.attachment.type) {
 			return false;
 		}
 		return true;
