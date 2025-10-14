@@ -5,13 +5,15 @@ import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import HeaderTitle from './components/HeaderTitle';
 import HeaderContainer from './components/HeaderContainer';
 import { isAndroid } from '../../lib/methods/helpers';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { styles } from './styles';
 import { HeaderBackButton } from './components/HeaderBackButton';
 
 interface IHeader extends NativeStackHeaderProps {}
 
 const Header = ({ options, navigation, route }: IHeader) => {
+	'use memo';
+
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);

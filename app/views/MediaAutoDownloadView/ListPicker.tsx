@@ -7,7 +7,7 @@ import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import { MediaDownloadOption } from '../../lib/constants';
+import { MediaDownloadOption } from '../../lib/constants/mediaAutoDownload';
 
 const styles = StyleSheet.create({
 	leftTitleContainer: {

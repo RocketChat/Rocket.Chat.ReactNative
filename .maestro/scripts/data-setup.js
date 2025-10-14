@@ -150,15 +150,10 @@ const sendMessage = (username, password, channel, msg, tmid) => {
     return result;
 };
 
-const getProfileInfo = async (param) => {
-    let query = '';
-    if ('userId' in param) {
-        query += `userId=${param.userId}`;
-    } else if ('username' in param) {
-        query += `username=${param.username}`;
-    }
-
-    const result = http.get(`${data.server}/api/v1/users.info?${query}`, {
+const getProfileInfo = (userId) => {
+    login(output.account.adminUser, output.account.adminPassword);
+    
+    const result = http.get(`${data.server}/api/v1/users.info?userId=${userId}`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -167,10 +162,10 @@ const getProfileInfo = async (param) => {
 
     const resultJson = json(result.body);
 
-    return resultJson?.data?.user;
+    return resultJson?.user;
 };
 
-const post = async (endpoint, username, password, body) => {
+const post = (endpoint, username, password, body) => {
     login(username, password);
 
     const response = http.post(`${data.server}/api/v1/${endpoint}`, {
@@ -197,7 +192,6 @@ const createDM = (username, password, otherUsername) => {
         })
     });
 
-    console.log(JSON.stringify(json(result.body), null, 2));
     return json(result.body);
 }
 

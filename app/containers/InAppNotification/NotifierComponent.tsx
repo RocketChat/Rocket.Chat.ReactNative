@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Avatar from '../Avatar';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';

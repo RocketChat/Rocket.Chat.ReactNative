@@ -3,7 +3,7 @@ import { shallowEqual } from 'react-redux';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { IServices } from '../../selectors/login';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { IItemService, IServiceList } from './interfaces';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';

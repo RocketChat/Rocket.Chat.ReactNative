@@ -4,16 +4,15 @@ import { Text, View, ViewStyle } from 'react-native';
 import Touch from '../Touch';
 import Avatar from '../Avatar';
 import RoomTypeIcon from '../RoomTypeIcon';
-import styles, { ROW_HEIGHT } from './styles';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, useTheme } from '../../theme';
+import styles from './styles';
+import { useTheme } from '../../theme';
 import { MarkdownPreview } from '../markdown';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
-export { ROW_HEIGHT };
-
+export const ROW_HEIGHT = 54;
 interface IDirectoryItemLabel {
 	text?: string;
-	theme: TSupportedThemes;
+	color: string;
 }
 
 interface IDirectoryItem {
@@ -29,11 +28,11 @@ interface IDirectoryItem {
 	teamMain?: boolean;
 }
 
-const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => {
+const DirectoryItemLabel = React.memo(({ text, color }: IDirectoryItemLabel) => {
 	if (!text) {
 		return null;
 	}
-	return <Text style={[styles.directoryItemLabel, { color: themes[theme].fontSecondaryInfo }]}>{text}</Text>;
+	return <Text style={[styles.directoryItemLabel, { color }]}>{text}</Text>;
 });
 
 const DirectoryItem = ({
@@ -48,28 +47,31 @@ const DirectoryItem = ({
 	rid,
 	teamMain
 }: IDirectoryItem): React.ReactElement => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
+	const { fontScale } = useResponsiveLayout();
+	const height = ROW_HEIGHT * fontScale;
+
 	return (
 		<View accessible accessibilityLabel={`${title} ${rightLabel}`}>
-			<Touch onPress={onPress} style={{ backgroundColor: themes[theme].surfaceRoom }} testID={testID}>
-				<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
+			<Touch onPress={onPress} style={{ backgroundColor: colors.surfaceRoom }} testID={testID}>
+				<View style={[styles.directoryItemContainer, { height }, style]}>
 					<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 					<View style={styles.directoryItemTextContainer}>
 						<View style={styles.directoryItemTextTitle}>
 							{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
-							<Text style={[styles.directoryItemName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+							<Text style={[styles.directoryItemName, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 								{title}
 							</Text>
 						</View>
 						{description ? (
 							<MarkdownPreview
 								msg={description}
-								style={[styles.directoryItemUsername, { color: themes[theme].fontSecondaryInfo }]}
+								style={[styles.directoryItemUsername, { color: colors.fontSecondaryInfo }]}
 								numberOfLines={1}
 							/>
 						) : null}
 					</View>
-					<DirectoryItemLabel text={rightLabel} theme={theme} />
+					<DirectoryItemLabel text={rightLabel} color={colors.fontSecondaryInfo} />
 				</View>
 			</Touch>
 		</View>

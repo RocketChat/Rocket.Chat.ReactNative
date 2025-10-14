@@ -12,10 +12,10 @@ import * as List from '../../../containers/List';
 import ServerItem from '../../../containers/ServerItem';
 import { RootEnum, TServerModel } from '../../../definitions';
 import I18n from '../../../i18n';
-import { TOKEN_KEY } from '../../../lib/constants';
+import { TOKEN_KEY } from '../../../lib/constants/keys';
 import database from '../../../lib/database';
-import { useAppSelector } from '../../../lib/hooks';
-import { removeServer } from '../../../lib/methods';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { removeServer } from '../../../lib/methods/logout';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import { showConfirmationAlert } from '../../../lib/methods/helpers/info';
@@ -29,6 +29,8 @@ const ROW_HEIGHT = 68;
 const MAX_ROWS = 4.5;
 
 const ServersList = () => {
+	'use memo';
+
 	const subscription = useRef<Subscription | null>(null);
 	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();

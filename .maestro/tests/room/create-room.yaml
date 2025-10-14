@@ -1,13 +1,19 @@
 appId: chat.rocket.reactnative
 name: Create Room
 onFlowStart:
-  - runFlow: '../helpers/setup.yaml'
-onFlowEnd:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-10
 
 ---
-- runFlow: ../helpers/launch-app.yaml
-- runFlow: ../helpers/login.yaml
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
 
 - extendedWaitUntil:
     visible:
@@ -68,7 +74,7 @@ onFlowEnd:
     visible:
       id: 'room-view-title-rocket.cat'
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -201,7 +207,7 @@ onFlowEnd:
     visible:
       id: ${'room-view-title-' + output.publicRoomName}
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -267,7 +273,7 @@ onFlowEnd:
     visible:
       id: ${'room-view-title-' + output.privateRoomName}
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -331,7 +337,7 @@ onFlowEnd:
     visible:
       id: ${'room-view-title-' + output.emptyRoomName}
     timeout: 60000
-- runFlow: '../helpers/go-back.yaml'
+- runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -401,7 +407,7 @@ onFlowEnd:
           visible:
             id: ${'room-view-title-' + output.nonLatinRoomName}
           timeout: 60000
-      - runFlow: '../helpers/go-back.yaml'
+      - runFlow: '../../helpers/go-back.yaml'
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view'

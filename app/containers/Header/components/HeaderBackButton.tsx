@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
 });
 
 export const HeaderBackButton = ({ ...props }: HeaderBackButtonProps) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<RNHeaderBackButton

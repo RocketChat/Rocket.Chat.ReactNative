@@ -10,6 +10,8 @@ import { useTheme } from '../../theme';
 
 const Thread = React.memo(
 	({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
+		'use memo';
+
 		const { theme, colors } = useTheme();
 		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 

@@ -6,6 +6,8 @@ import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {
 	title: string;
+	subtitle?: string;
+	accessibilityLabel?: string;
 	icon?: TIconsName;
 	danger?: boolean;
 	testID?: string;
@@ -52,6 +54,8 @@ export const withActionSheet = (Component: React.ComponentType<any>): typeof Com
 const actionSheetRef: React.Ref<IActionSheetProvider> = createRef();
 
 export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
+	'use memo';
+
 	const getContext = (): IActionSheetProvider => ({
 		showActionSheet: options => {
 			actionSheetRef.current?.showActionSheet(options);

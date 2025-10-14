@@ -13,6 +13,8 @@ interface IHeaderContainer extends ViewProps {
 
 const HeaderContainer = memo(
 	({ addExtraNotchPadding = false, isMasterDetail = false, customRightIcon, customLeftIcon, children }: IHeaderContainer) => {
+		'use memo';
+
 		const insets = useSafeAreaInsets();
 		const { colors } = useTheme();
 		const { height, width } = useWindowDimensions();

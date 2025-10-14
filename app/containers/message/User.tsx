@@ -80,6 +80,8 @@ const User = React.memo(
 		isTranslated,
 		...props
 	}: IMessageUser) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
 		const { isLargeFontScale } = useResponsiveLayout();

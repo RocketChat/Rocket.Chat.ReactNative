@@ -7,7 +7,7 @@ import NotifierComponent, { INotifierComponent } from './NotifierComponent';
 import EventEmitter from '../../lib/methods/helpers/events';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getActiveRoute } from '../../lib/methods/helpers/navigation';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { setInAppFeedback } from '../../actions/inAppFeedback';
 import I18n from '../../i18n';
 

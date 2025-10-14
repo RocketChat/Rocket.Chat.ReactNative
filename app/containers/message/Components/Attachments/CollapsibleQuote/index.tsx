@@ -3,7 +3,7 @@ import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../../../lib/constants';
+import { themes } from '../../../../../lib/constants/colors';
 import { IAttachment } from '../../../../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../../CustomIcon';
@@ -85,6 +85,8 @@ interface IMessageReply {
 
 const AttText = React.memo(
 	({ text, getCustomEmoji }: IMessageAttText) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 
 		if (!text) {
@@ -98,6 +100,8 @@ const AttText = React.memo(
 
 const Fields = React.memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { user } = useContext(MessageContext);
 
@@ -123,6 +127,8 @@ const Fields = React.memo(
 
 const CollapsibleQuote = React.memo(
 	({ attachment, getCustomEmoji }: IMessageReply) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 

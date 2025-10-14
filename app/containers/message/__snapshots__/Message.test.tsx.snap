@@ -710,6 +710,1302 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
 </RCTScrollView>
 `;
 
+exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "400",
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 4,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityState={
+                        {
+                          "busy": undefined,
+                          "checked": undefined,
+                          "disabled": false,
+                          "expanded": undefined,
+                          "selected": undefined,
+                        }
+                      }
+                      accessibilityValue={
+                        {
+                          "max": undefined,
+                          "min": undefined,
+                          "now": undefined,
+                          "text": undefined,
+                        }
+                      }
+                      accessible={true}
+                      collapsable={false}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        {
+                          "alignItems": "center",
+                          "alignSelf": "flex-start",
+                          "borderColor": "#764FA5",
+                          "borderLeftWidth": 2,
+                          "flex": 1,
+                          "flexDirection": "row",
+                          "opacity": 1,
+                        }
+                      }
+                      testID="reply-undefined-Rocket.Chat, the best open source chat"
+                    >
+                      <View
+                        style={
+                          {
+                            "borderRadius": 4,
+                            "flex": 1,
+                            "flexDirection": "row",
+                            "paddingLeft": 8,
+                            "paddingVertical": 4,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            {
+                              "flex": 1,
+                              "flexDirection": "column",
+                              "gap": 4,
+                              "width": 200,
+                            }
+                          }
+                        >
+                          <View
+                            style={
+                              {
+                                "alignItems": "center",
+                                "flex": 1,
+                                "flexDirection": "row",
+                                "gap": 4,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "flex": 1,
+                                    "fontFamily": "Inter",
+                                    "fontSize": 16,
+                                    "fontWeight": "500",
+                                    "textAlign": "left",
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
+                              }
+                            >
+                              Rocket.Chat
+                            </Text>
+                          </View>
+                          <View
+                            style={
+                              {
+                                "gap": 2,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "fontFamily": "Inter",
+                                    "fontSize": 16,
+                                    "fontWeight": "400",
+                                    "lineHeight": 22,
+                                    "textAlign": "left",
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
+                              }
+                            >
+                              <Text
+                                style={
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "flexShrink": 1,
+                                    "fontFamily": "Inter",
+                                    "fontWeight": "400",
+                                    "textAlign": "left",
+                                  }
+                                }
+                              >
+                                <Text
+                                  onLongPress={[Function]}
+                                  onPress={[Function]}
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Inter",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#095AD2",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  Rocket.Chat
+                                </Text>
+                                <Text
+                                  accessibilityLabel=", the best open source chat"
+                                  style={
+                                    [
+                                      {
+                                        "flexShrink": 1,
+                                        "fontSize": 16,
+                                        "lineHeight": 22,
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  , the best open source chat
+                                </Text>
+                              </Text>
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                >
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      {
+                        "borderRadius": 4,
+                        "flexDirection": "column",
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <View
+                      onLayout={[Function]}
+                      style={
+                        {
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          [
+                            {
+                              "borderRadius": 4,
+                              "minHeight": 200,
+                              "overflow": "hidden",
+                              "width": "100%",
+                            },
+                            {
+                              "borderColor": "#CBCED1",
+                              "borderRadius": 4,
+                              "borderWidth": 1,
+                              "overflow": "hidden",
+                            },
+                          ]
+                        }
+                      />
+                      <View
+                        style={
+                          [
+                            [
+                              {
+                                "borderRadius": 4,
+                                "minHeight": 200,
+                                "overflow": "hidden",
+                                "width": "100%",
+                              },
+                              {
+                                "borderColor": "#CBCED1",
+                                "borderRadius": 4,
+                                "borderWidth": 1,
+                                "overflow": "hidden",
+                              },
+                            ],
+                            {
+                              "borderWidth": 0,
+                              "bottom": 0,
+                              "left": 0,
+                              "position": "absolute",
+                              "right": 0,
+                              "top": 0,
+                            },
+                            {
+                              "backgroundColor": "#E4E7EA",
+                            },
+                          ]
+                        }
+                      />
+                      <View
+                        style={
+                          [
+                            [
+                              {
+                                "borderRadius": 4,
+                                "minHeight": 200,
+                                "overflow": "hidden",
+                                "width": "100%",
+                              },
+                              {
+                                "borderColor": "#CBCED1",
+                                "borderRadius": 4,
+                                "borderWidth": 1,
+                                "overflow": "hidden",
+                              },
+                            ],
+                            {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                              "position": "absolute",
+                            },
+                          ]
+                        }
+                      >
+                        <Text
+                          allowFontScaling={false}
+                          selectable={false}
+                          style={
+                            [
+                              {
+                                "color": "#2F343D",
+                                "fontSize": 54,
+                              },
+                              [
+                                {
+                                  "lineHeight": 54,
+                                },
+                                undefined,
+                              ],
+                              {
+                                "fontFamily": "custom",
+                                "fontStyle": "normal",
+                                "fontWeight": "normal",
+                              },
+                              {},
+                            ]
+                          }
+                        >
+                          
+                        </Text>
+                      </View>
+                      <View
+                        style={
+                          {
+                            "bottom": 8,
+                            "flexDirection": "row",
+                            "gap": 8,
+                            "position": "absolute",
+                            "right": 8,
+                          }
+                        }
+                      />
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM undefined.  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 46.800000000000004,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 46.800000000000004,
+                    "width": 46.800000000000004,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={46.800000000000004}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 46.800000000000004,
+                      "width": 46.800000000000004,
+                    }
+                  }
+                  transition={null}
+                  width={46.800000000000004}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "400",
+                      "lineHeight": 18,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                10:00 AM
+              </Text>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 4,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityState={
+                        {
+                          "busy": undefined,
+                          "checked": undefined,
+                          "disabled": false,
+                          "expanded": undefined,
+                          "selected": undefined,
+                        }
+                      }
+                      accessibilityValue={
+                        {
+                          "max": undefined,
+                          "min": undefined,
+                          "now": undefined,
+                          "text": undefined,
+                        }
+                      }
+                      accessible={true}
+                      collapsable={false}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        {
+                          "alignItems": "center",
+                          "alignSelf": "flex-start",
+                          "borderColor": "#764FA5",
+                          "borderLeftWidth": 2,
+                          "flex": 1,
+                          "flexDirection": "row",
+                          "opacity": 1,
+                        }
+                      }
+                      testID="reply-undefined-Rocket.Chat, the best open source chat"
+                    >
+                      <View
+                        style={
+                          {
+                            "borderRadius": 4,
+                            "flex": 1,
+                            "flexDirection": "row",
+                            "paddingLeft": 8,
+                            "paddingVertical": 4,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            {
+                              "flex": 1,
+                              "flexDirection": "column",
+                              "gap": 4,
+                              "width": 200,
+                            }
+                          }
+                        >
+                          <View
+                            style={
+                              {
+                                "alignItems": "center",
+                                "flex": 1,
+                                "flexDirection": "row",
+                                "gap": 4,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "flex": 1,
+                                    "fontFamily": "Inter",
+                                    "fontSize": 16,
+                                    "fontWeight": "500",
+                                    "textAlign": "left",
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
+                              }
+                            >
+                              Rocket.Chat
+                            </Text>
+                          </View>
+                          <View
+                            style={
+                              {
+                                "gap": 2,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "fontFamily": "Inter",
+                                    "fontSize": 16,
+                                    "fontWeight": "400",
+                                    "lineHeight": 22,
+                                    "textAlign": "left",
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
+                              }
+                            >
+                              <Text
+                                style={
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "flexShrink": 1,
+                                    "fontFamily": "Inter",
+                                    "fontWeight": "400",
+                                    "textAlign": "left",
+                                  }
+                                }
+                              >
+                                <Text
+                                  onLongPress={[Function]}
+                                  onPress={[Function]}
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Inter",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#095AD2",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  Rocket.Chat
+                                </Text>
+                                <Text
+                                  accessibilityLabel=", the best open source chat"
+                                  style={
+                                    [
+                                      {
+                                        "flexShrink": 1,
+                                        "fontSize": 16,
+                                        "lineHeight": 22,
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  , the best open source chat
+                                </Text>
+                              </Text>
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                >
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      {
+                        "borderRadius": 4,
+                        "flexDirection": "column",
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <View
+                      onLayout={[Function]}
+                      style={
+                        {
+                          "flex": 1,
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          [
+                            {
+                              "borderRadius": 4,
+                              "minHeight": 200,
+                              "overflow": "hidden",
+                              "width": "100%",
+                            },
+                            {
+                              "borderColor": "#CBCED1",
+                              "borderRadius": 4,
+                              "borderWidth": 1,
+                              "overflow": "hidden",
+                            },
+                          ]
+                        }
+                      />
+                      <View
+                        style={
+                          [
+                            [
+                              {
+                                "borderRadius": 4,
+                                "minHeight": 200,
+                                "overflow": "hidden",
+                                "width": "100%",
+                              },
+                              {
+                                "borderColor": "#CBCED1",
+                                "borderRadius": 4,
+                                "borderWidth": 1,
+                                "overflow": "hidden",
+                              },
+                            ],
+                            {
+                              "borderWidth": 0,
+                              "bottom": 0,
+                              "left": 0,
+                              "position": "absolute",
+                              "right": 0,
+                              "top": 0,
+                            },
+                            {
+                              "backgroundColor": "#E4E7EA",
+                            },
+                          ]
+                        }
+                      />
+                      <View
+                        style={
+                          [
+                            [
+                              {
+                                "borderRadius": 4,
+                                "minHeight": 200,
+                                "overflow": "hidden",
+                                "width": "100%",
+                              },
+                              {
+                                "borderColor": "#CBCED1",
+                                "borderRadius": 4,
+                                "borderWidth": 1,
+                                "overflow": "hidden",
+                              },
+                            ],
+                            {
+                              "alignItems": "center",
+                              "justifyContent": "center",
+                              "position": "absolute",
+                            },
+                          ]
+                        }
+                      >
+                        <Text
+                          allowFontScaling={false}
+                          selectable={false}
+                          style={
+                            [
+                              {
+                                "color": "#2F343D",
+                                "fontSize": 70.2,
+                              },
+                              [
+                                {
+                                  "lineHeight": 70.2,
+                                },
+                                undefined,
+                              ],
+                              {
+                                "fontFamily": "custom",
+                                "fontStyle": "normal",
+                                "fontWeight": "normal",
+                              },
+                              {},
+                            ]
+                          }
+                        >
+                          
+                        </Text>
+                      </View>
+                      <View
+                        style={
+                          {
+                            "bottom": 8,
+                            "flexDirection": "row",
+                            "gap": 8,
+                            "position": "absolute",
+                            "right": 8,
+                          }
+                        }
+                      />
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Story Snapshots: Avatar should match snapshot 1`] = `
 <RCTScrollView
   style={
@@ -6355,6 +7651,2390 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                         Reply
                       </Text>
                     </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "400",
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                >
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    hitSlop={
+                      {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      {
+                        "alignItems": "center",
+                        "backgroundColor": "#F7F8FA",
+                        "borderBottomColor": "#EBECEF",
+                        "borderLeftColor": "#CBCED1",
+                        "borderLeftWidth": 2,
+                        "borderRadius": 4,
+                        "borderRightColor": "#EBECEF",
+                        "borderTopColor": "#EBECEF",
+                        "borderWidth": 1,
+                        "flexDirection": "row",
+                        "minHeight": 40,
+                        "opacity": 1,
+                      }
+                    }
+                    testID="collapsibleQuoteTouchable-Title collapsed"
+                  >
+                    <View
+                      style={
+                        {
+                          "flexDirection": "row",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "borderRadius": 4,
+                            "flex": 1,
+                            "padding": 8,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            {
+                              "flexDirection": "row",
+                            }
+                          }
+                        >
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "500",
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                              ]
+                            }
+                          >
+                            Title collapsed
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={
+                          {
+                            "alignItems": "center",
+                            "height": 20,
+                            "justifyContent": "center",
+                            "right": 8,
+                            "top": 8,
+                            "width": 20,
+                          }
+                        }
+                      >
+                        <Text
+                          allowFontScaling={false}
+                          selectable={false}
+                          style={
+                            [
+                              {
+                                "color": "#9EA2A8",
+                                "fontSize": 22,
+                              },
+                              [
+                                {
+                                  "lineHeight": 22,
+                                },
+                                undefined,
+                              ],
+                              {
+                                "fontFamily": "custom",
+                                "fontStyle": "normal",
+                                "fontWeight": "normal",
+                              },
+                              {},
+                            ]
+                          }
+                        >
+                          
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "400",
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 4,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityState={
+                        {
+                          "busy": undefined,
+                          "checked": undefined,
+                          "disabled": false,
+                          "expanded": undefined,
+                          "selected": undefined,
+                        }
+                      }
+                      accessibilityValue={
+                        {
+                          "max": undefined,
+                          "min": undefined,
+                          "now": undefined,
+                          "text": undefined,
+                        }
+                      }
+                      accessible={true}
+                      collapsable={false}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        {
+                          "alignItems": "center",
+                          "alignSelf": "flex-start",
+                          "borderColor": "#CBCED1",
+                          "borderLeftWidth": 2,
+                          "flex": 1,
+                          "flexDirection": "row",
+                          "opacity": 1,
+                        }
+                      }
+                      testID="reply-undefined-undefined"
+                    >
+                      <View
+                        style={
+                          {
+                            "borderRadius": 4,
+                            "flex": 1,
+                            "flexDirection": "row",
+                            "paddingLeft": 8,
+                            "paddingVertical": 4,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            {
+                              "flex": 1,
+                              "flexDirection": "column",
+                              "gap": 4,
+                              "width": 200,
+                            }
+                          }
+                        >
+                          <View
+                            style={
+                              {
+                                "alignItems": "center",
+                                "flex": 1,
+                                "flexDirection": "row",
+                                "gap": 4,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "flex": 1,
+                                    "fontFamily": "Inter",
+                                    "fontSize": 16,
+                                    "fontWeight": "500",
+                                    "textAlign": "left",
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
+                              }
+                            >
+                              Title collapsed
+                            </Text>
+                          </View>
+                          <View
+                            style={
+                              {
+                                "gap": 2,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "fontFamily": "Inter",
+                                    "fontSize": 16,
+                                    "fontWeight": "400",
+                                    "lineHeight": 22,
+                                    "textAlign": "left",
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
+                              }
+                            >
+                              <Text
+                                style={
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "flexShrink": 1,
+                                    "fontFamily": "Inter",
+                                    "fontWeight": "400",
+                                    "textAlign": "left",
+                                  }
+                                }
+                              >
+                                <Text
+                                  accessibilityLabel="Title collapsed"
+                                  style={
+                                    [
+                                      {
+                                        "flexShrink": 1,
+                                        "fontSize": 16,
+                                        "lineHeight": 22,
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  Title collapsed
+                                </Text>
+                              </Text>
+                            </Text>
+                          </View>
+                          <View
+                            style={
+                              {
+                                "flex": 1,
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "rowGap": 12,
+                              }
+                            }
+                          >
+                            <View
+                              style={
+                                [
+                                  {
+                                    "flexDirection": "column",
+                                  },
+                                  {
+                                    "width": "100%",
+                                  },
+                                ]
+                              }
+                            >
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 14,
+                                      "fontWeight": "600",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                Field 1
+                              </Text>
+                              <View
+                                style={
+                                  {
+                                    "gap": 2,
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Inter",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "lineHeight": 22,
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  <Text
+                                    style={
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "flexShrink": 1,
+                                        "fontFamily": "Inter",
+                                        "fontWeight": "400",
+                                        "textAlign": "left",
+                                      }
+                                    }
+                                  >
+                                    <Text
+                                      accessibilityLabel="Value 1"
+                                      style={
+                                        [
+                                          {
+                                            "flexShrink": 1,
+                                            "fontSize": 16,
+                                            "lineHeight": 22,
+                                          },
+                                          {
+                                            "color": "#2F343D",
+                                          },
+                                        ]
+                                      }
+                                    >
+                                      Value 1
+                                    </Text>
+                                  </Text>
+                                </Text>
+                              </View>
+                            </View>
+                            <View
+                              style={
+                                [
+                                  {
+                                    "flexDirection": "column",
+                                  },
+                                  {
+                                    "width": "100%",
+                                  },
+                                ]
+                              }
+                            >
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 14,
+                                      "fontWeight": "600",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                Field 2
+                              </Text>
+                              <View
+                                style={
+                                  {
+                                    "gap": 2,
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Inter",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "lineHeight": 22,
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  <Text
+                                    style={
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "flexShrink": 1,
+                                        "fontFamily": "Inter",
+                                        "fontWeight": "400",
+                                        "textAlign": "left",
+                                      }
+                                    }
+                                  >
+                                    <Text
+                                      accessibilityLabel="Value 2"
+                                      style={
+                                        [
+                                          {
+                                            "flexShrink": 1,
+                                            "fontSize": 16,
+                                            "lineHeight": 22,
+                                          },
+                                          {
+                                            "color": "#2F343D",
+                                          },
+                                        ]
+                                      }
+                                    >
+                                      Value 2
+                                    </Text>
+                                  </Text>
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 46.800000000000004,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 46.800000000000004,
+                    "width": 46.800000000000004,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={46.800000000000004}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 46.800000000000004,
+                      "width": 46.800000000000004,
+                    }
+                  }
+                  transition={null}
+                  width={46.800000000000004}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "400",
+                      "lineHeight": 18,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                10:00 AM
+              </Text>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                >
+                  <View
+                    accessibilityState={
+                      {
+                        "busy": undefined,
+                        "checked": undefined,
+                        "disabled": undefined,
+                        "expanded": undefined,
+                        "selected": undefined,
+                      }
+                    }
+                    accessibilityValue={
+                      {
+                        "max": undefined,
+                        "min": undefined,
+                        "now": undefined,
+                        "text": undefined,
+                      }
+                    }
+                    accessible={true}
+                    collapsable={false}
+                    focusable={true}
+                    hitSlop={
+                      {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      {
+                        "alignItems": "center",
+                        "backgroundColor": "#F7F8FA",
+                        "borderBottomColor": "#EBECEF",
+                        "borderLeftColor": "#CBCED1",
+                        "borderLeftWidth": 2,
+                        "borderRadius": 4,
+                        "borderRightColor": "#EBECEF",
+                        "borderTopColor": "#EBECEF",
+                        "borderWidth": 1,
+                        "flexDirection": "row",
+                        "minHeight": 40,
+                        "opacity": 1,
+                      }
+                    }
+                    testID="collapsibleQuoteTouchable-Title collapsed"
+                  >
+                    <View
+                      style={
+                        {
+                          "flexDirection": "row",
+                        }
+                      }
+                    >
+                      <View
+                        style={
+                          {
+                            "borderRadius": 4,
+                            "flex": 1,
+                            "padding": 8,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            {
+                              "flexDirection": "row",
+                            }
+                          }
+                        >
+                          <Text
+                            style={
+                              [
+                                {
+                                  "backgroundColor": "transparent",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 16,
+                                  "fontWeight": "500",
+                                  "textAlign": "left",
+                                },
+                                {
+                                  "color": "#6C727A",
+                                },
+                              ]
+                            }
+                          >
+                            Title collapsed
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={
+                          {
+                            "alignItems": "center",
+                            "height": 20,
+                            "justifyContent": "center",
+                            "right": 8,
+                            "top": 8,
+                            "width": 20,
+                          }
+                        }
+                      >
+                        <Text
+                          allowFontScaling={false}
+                          selectable={false}
+                          style={
+                            [
+                              {
+                                "color": "#9EA2A8",
+                                "fontSize": 28.6,
+                              },
+                              [
+                                {
+                                  "lineHeight": 28.6,
+                                },
+                                undefined,
+                              ],
+                              {
+                                "fontFamily": "custom",
+                                "fontStyle": "normal",
+                                "fontWeight": "normal",
+                              },
+                              {},
+                            ]
+                          }
+                        >
+                          
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM Message.  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 46.800000000000004,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 46.800000000000004,
+                    "width": 46.800000000000004,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={46.800000000000004}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 46.800000000000004,
+                      "width": 46.800000000000004,
+                    }
+                  }
+                  transition={null}
+                  width={46.800000000000004}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "400",
+                      "lineHeight": 18,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                10:00 AM
+              </Text>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  style={
+                    {
+                      "gap": 4,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 4,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityState={
+                        {
+                          "busy": undefined,
+                          "checked": undefined,
+                          "disabled": false,
+                          "expanded": undefined,
+                          "selected": undefined,
+                        }
+                      }
+                      accessibilityValue={
+                        {
+                          "max": undefined,
+                          "min": undefined,
+                          "now": undefined,
+                          "text": undefined,
+                        }
+                      }
+                      accessible={true}
+                      collapsable={false}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
+                        {
+                          "alignItems": "center",
+                          "alignSelf": "flex-start",
+                          "borderColor": "#CBCED1",
+                          "borderLeftWidth": 2,
+                          "flex": 1,
+                          "flexDirection": "row",
+                          "opacity": 1,
+                        }
+                      }
+                      testID="reply-undefined-undefined"
+                    >
+                      <View
+                        style={
+                          {
+                            "borderRadius": 4,
+                            "flex": 1,
+                            "flexDirection": "row",
+                            "paddingLeft": 8,
+                            "paddingVertical": 4,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            {
+                              "flex": 1,
+                              "flexDirection": "column",
+                              "gap": 4,
+                              "width": 200,
+                            }
+                          }
+                        >
+                          <View
+                            style={
+                              {
+                                "alignItems": "center",
+                                "flex": 1,
+                                "flexDirection": "row",
+                                "gap": 4,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "flex": 1,
+                                    "fontFamily": "Inter",
+                                    "fontSize": 16,
+                                    "fontWeight": "500",
+                                    "textAlign": "left",
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
+                              }
+                            >
+                              Title collapsed
+                            </Text>
+                          </View>
+                          <View
+                            style={
+                              {
+                                "gap": 2,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "fontFamily": "Inter",
+                                    "fontSize": 16,
+                                    "fontWeight": "400",
+                                    "lineHeight": 22,
+                                    "textAlign": "left",
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
+                              }
+                            >
+                              <Text
+                                style={
+                                  {
+                                    "backgroundColor": "transparent",
+                                    "flexShrink": 1,
+                                    "fontFamily": "Inter",
+                                    "fontWeight": "400",
+                                    "textAlign": "left",
+                                  }
+                                }
+                              >
+                                <Text
+                                  accessibilityLabel="Title collapsed"
+                                  style={
+                                    [
+                                      {
+                                        "flexShrink": 1,
+                                        "fontSize": 16,
+                                        "lineHeight": 22,
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  Title collapsed
+                                </Text>
+                              </Text>
+                            </Text>
+                          </View>
+                          <View
+                            style={
+                              {
+                                "flex": 1,
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "rowGap": 12,
+                              }
+                            }
+                          >
+                            <View
+                              style={
+                                [
+                                  {
+                                    "flexDirection": "column",
+                                  },
+                                  {
+                                    "width": "100%",
+                                  },
+                                ]
+                              }
+                            >
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 14,
+                                      "fontWeight": "600",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                Field 1
+                              </Text>
+                              <View
+                                style={
+                                  {
+                                    "gap": 2,
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Inter",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "lineHeight": 22,
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  <Text
+                                    style={
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "flexShrink": 1,
+                                        "fontFamily": "Inter",
+                                        "fontWeight": "400",
+                                        "textAlign": "left",
+                                      }
+                                    }
+                                  >
+                                    <Text
+                                      accessibilityLabel="Value 1"
+                                      style={
+                                        [
+                                          {
+                                            "flexShrink": 1,
+                                            "fontSize": 16,
+                                            "lineHeight": 22,
+                                          },
+                                          {
+                                            "color": "#2F343D",
+                                          },
+                                        ]
+                                      }
+                                    >
+                                      Value 1
+                                    </Text>
+                                  </Text>
+                                </Text>
+                              </View>
+                            </View>
+                            <View
+                              style={
+                                [
+                                  {
+                                    "flexDirection": "column",
+                                  },
+                                  {
+                                    "width": "100%",
+                                  },
+                                ]
+                              }
+                            >
+                              <Text
+                                style={
+                                  [
+                                    {
+                                      "backgroundColor": "transparent",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 14,
+                                      "fontWeight": "600",
+                                      "textAlign": "left",
+                                    },
+                                    {
+                                      "color": "#2F343D",
+                                    },
+                                  ]
+                                }
+                              >
+                                Field 2
+                              </Text>
+                              <View
+                                style={
+                                  {
+                                    "gap": 2,
+                                  }
+                                }
+                              >
+                                <Text
+                                  style={
+                                    [
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "fontFamily": "Inter",
+                                        "fontSize": 16,
+                                        "fontWeight": "400",
+                                        "lineHeight": 22,
+                                        "textAlign": "left",
+                                      },
+                                      {
+                                        "color": "#2F343D",
+                                      },
+                                    ]
+                                  }
+                                >
+                                  <Text
+                                    style={
+                                      {
+                                        "backgroundColor": "transparent",
+                                        "flexShrink": 1,
+                                        "fontFamily": "Inter",
+                                        "fontWeight": "400",
+                                        "textAlign": "left",
+                                      }
+                                    }
+                                  >
+                                    <Text
+                                      accessibilityLabel="Value 2"
+                                      style={
+                                        [
+                                          {
+                                            "flexShrink": 1,
+                                            "fontSize": 16,
+                                            "lineHeight": 22,
+                                          },
+                                          {
+                                            "color": "#2F343D",
+                                          },
+                                        ]
+                                      }
+                                    >
+                                      Value 2
+                                    </Text>
+                                  </Text>
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  testID="message-content-Message"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text
+                          accessibilityLabel="Message"
+                          style={
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
+                          }
+                        >
+                          Message
+                        </Text>
+                      </Text>
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -37770,6 +41450,1322 @@ exports[`Story Snapshots: IgnoredLargeFont should match snapshot 1`] = `
               >
                 Message ignored. Tap to display it.
               </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM \\(xˆ2 + yˆ2 - zˆ2\\).  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "400",
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  testID="message-content-\\(xˆ2 + yˆ2 - zˆ2\\)"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text>
+                          xˆ2 + yˆ2 - zˆ2
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM \\(xˆ2 + yˆ2 - zˆ2\\).  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 46.800000000000004,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 46.800000000000004,
+                    "width": 46.800000000000004,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={46.800000000000004}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 46.800000000000004,
+                      "width": 46.800000000000004,
+                    }
+                  }
+                  transition={null}
+                  width={46.800000000000004}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "400",
+                      "lineHeight": 18,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                10:00 AM
+              </Text>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  testID="message-content-\\(xˆ2 + yˆ2 - zˆ2\\)"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <Text
+                      style={
+                        [
+                          {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "Inter",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "lineHeight": 22,
+                            "textAlign": "left",
+                          },
+                          {
+                            "color": "#2F343D",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          {
+                            "backgroundColor": "transparent",
+                            "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <Text>
+                          xˆ2 + yˆ2 - zˆ2
+                        </Text>
+                      </Text>
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Katex should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM \\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\].  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "400",
+                          "lineHeight": 18,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    10:00 AM
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  testID="message-content-\\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <View
+                      math=" \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }"
+                      renderError={[Function]}
+                      style={
+                        {
+                          "color": "#2F343D",
+                        }
+                      }
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: KatexLargeFont should match snapshot 1`] = `
+<RCTScrollView
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+>
+  <View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": undefined,
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="diego.mello 10:00:00 AM \\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\].  "
+        accessible={true}
+        style={
+          {
+            "flexDirection": "column",
+            "gap": 8,
+            "paddingHorizontal": 12,
+            "paddingVertical": 4,
+            "width": "100%",
+          }
+        }
+        testID="message-undefined"
+      >
+        <View
+          style={
+            {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 46.800000000000004,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 46.800000000000004,
+                    "width": 46.800000000000004,
+                  },
+                  {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={46.800000000000004}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=93.60000000000001",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 46.800000000000004,
+                      "width": 46.800000000000004,
+                    }
+                  }
+                  transition={null}
+                  width={46.800000000000004}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <View
+              onLayout={[Function]}
+              style={
+                {
+                  "flex": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "gap": 4,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="username-header-diego.mello"
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#1F2329",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "400",
+                      "lineHeight": 18,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                10:00 AM
+              </Text>
+              <View
+                style={
+                  {
+                    "gap": 4,
+                  }
+                }
+              >
+                <View
+                  testID="message-content-\\[ \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }\\]"
+                >
+                  <View
+                    style={
+                      {
+                        "gap": 2,
+                      }
+                    }
+                  >
+                    <View
+                      math=" \\color{black} \\colorbox{white}{ \\boxed{ \\begin{matrix} \\;\\;\\;\\; \\overlinesegment {\\underlinesegment{ \\Huge Test\\; Test \\; in \\; Test} } & \\\\ \\;\\;\\textit{develop}\\end{matrix} } }"
+                      renderError={[Function]}
+                      style={
+                        {
+                          "color": "#2F343D",
+                        }
+                      }
+                    />
+                  </View>
+                </View>
+              </View>
             </View>
           </View>
         </View>

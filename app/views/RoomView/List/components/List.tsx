@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
+const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 	const scrollHandler = useAnimatedScrollHandler({
@@ -57,3 +57,5 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		</View>
 	);
 };
+
+export default List;

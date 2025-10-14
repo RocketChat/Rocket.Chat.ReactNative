@@ -53,6 +53,8 @@ const Item = memo(
 		accessibilityLabel,
 		...props
 	}: IHeaderButtonItem): React.ReactElement => {
+		'use memo';
+
 		const { colors } = useTheme();
 		return (
 			<BorderlessButton

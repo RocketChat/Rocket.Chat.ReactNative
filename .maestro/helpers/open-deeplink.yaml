@@ -9,5 +9,6 @@ tags:
 - runFlow:
     when:
       visible: '.*Open in.*'
+      platform: iOS
     commands:
       - tapOn: Open

@@ -8,7 +8,7 @@ import { isIOS } from '../../../lib/methods/helpers';
 import { acceptCall, cancelCall } from '../../../actions/videoConf';
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
 import { CustomIcon } from '../../CustomIcon';

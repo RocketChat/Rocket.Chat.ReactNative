@@ -4,10 +4,16 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-3
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/login.yaml
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
 - runFlow: ../../helpers/logout.yaml
 
 - assertVisible:
@@ -20,10 +26,10 @@ onFlowEnd:
     id: 'servers-history-https://mobile.rocket.chat'
 
 # should tap on a server history and navigate to login
-- tapOn: 'Connect to https://mobile.rocket.chat as ${output.createdUser.username}'
+- tapOn: 'Connect to https://mobile.rocket.chat as ${output.user.username}'
 - assertVisible:
     id: 'login-view-submit'
-- assertVisible: ${output.createdUser.username}
+- assertVisible: ${output.user.username}
 
 # we are going back to add workspace from login screen
 - runFlow: ../../helpers/go-back.yaml

@@ -25,27 +25,6 @@ platform :ios do
     )	
   end
 
-  desc "Submit a new Beta Build to Apple TestFlight (Circle CI)"
-  lane :beta_circle_ci do |options|
-    api_key = app_store_connect_api_key(
-      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
-      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
-      key_filepath: 'fastlane/app_store_connect_api_key.p8',
-      in_house: false
-    )
-    pilot(
-      ipa: 'ios/Rocket.Chat.ipa',
-      app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
-      skip_waiting_for_build_processing: true
-    )
-    upload_symbols_to_crashlytics(dsym_path: "./ios/Rocket.Chat.app.dSYM.zip")
-    upload_symbols_to_bugsnag(
-      config_file: "./RocketChatRN/Info.plist",
-      dsym_path: "./ios/Rocket.Chat.app.dSYM.zip",
-      api_key: options[:official] ? ENV["BUGSNAG_KEY_OFFICIAL"] : ENV["BUGSNAG_KEY"]
-    )
-  end
-
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do |options|
     api_key = app_store_connect_api_key(

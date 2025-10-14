@@ -10,7 +10,7 @@ import I18n from '../i18n';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
-import { Services } from '../lib/services';
+import { sendConfirmationEmail } from '../lib/services/restApi';
 
 const SendEmailConfirmationView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'SendEmailConfirmationView'>>();
@@ -33,7 +33,7 @@ const SendEmailConfirmationView = () => {
 		}
 		try {
 			setIsFetching(true);
-			const result = await Services.sendConfirmationEmail(email);
+			const result = await sendConfirmationEmail(email);
 			if (result.success) {
 				navigation.pop();
 				showErrorAlert(I18n.t('Verify_email_desc'));
