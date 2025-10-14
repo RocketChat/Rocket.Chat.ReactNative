@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
-import { IAutocompleteEmoji, IAutocompleteUserRoom, TAutocompleteItem, TAutocompleteType } from '../interfaces';
+import { type IAutocompleteEmoji, type IAutocompleteUserRoom, type TAutocompleteItem, type TAutocompleteType } from '../interfaces';
 import { search } from '../../../lib/methods/search';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';
 import { emojis } from '../../../lib/constants/emojis';
-import { ICustomEmoji } from '../../../definitions';
+import { type ICustomEmoji } from '../../../definitions';
 import { getCommandPreview, getListCannedResponse } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import I18n from '../../../i18n';

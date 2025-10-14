@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View, AccessibilityRole, ViewStyle } from 'react-native';
+import { I18nManager, type StyleProp, StyleSheet, Text, type TextStyle, View, type AccessibilityRole, type ViewStyle } from 'react-native';
 
 import Touch from '../Touch';
 import sharedStyles from '../../views/Styles';

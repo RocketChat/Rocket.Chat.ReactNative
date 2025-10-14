@@ -1,7 +1,7 @@
 import { by, device, element, expect, waitFor } from 'detox';
 
-import { TTextMatcher, login, navigateToLogin, platformTypes, searchRoom, sleep, tapBack, tryTapping } from '../../helpers/app';
-import { ITestUser, createRandomUser, initApi } from '../../helpers/data_setup';
+import { type TTextMatcher, login, navigateToLogin, platformTypes, searchRoom, sleep, tapBack, tryTapping } from '../../helpers/app';
+import { type ITestUser, createRandomUser, initApi } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const roomId = '64b846e4760e618aa9f91ab7';

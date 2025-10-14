@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import log from '../lib/methods/helpers/log';
-import { TSupportedThemes, withTheme } from '../theme';
+import { type TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants/colors';
 import { FormTextInput } from '../containers/TextInput';
 import KeyboardView from '../containers/KeyboardView';
@@ -18,9 +18,9 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
-import { IApplicationState, IUser } from '../definitions';
-import { ChatsStackParamList } from '../stacks/types';
+import { type ICustomFields, type IInputsRefs, type TParams, type ITitle, type ILivechat } from '../definitions/ILivechatEditView';
+import { type IApplicationState, type IUser } from '../definitions';
+import { type ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { getAgentDepartments, getCustomFields, editLivechat, getTagsList } from '../lib/services/restApi';
 import { usePermissions } from '../lib/hooks/usePermissions';

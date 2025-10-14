@@ -1,7 +1,6 @@
-import { IProfileParams } from '../../IProfile';
+import { type IProfileParams } from '../../IProfile';
 import type { ITeam } from '../../ITeam';
-import type { IUser } from '../../IUser';
-import { INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
+import type { IUser , type INotificationPreferences, type IUserPreferences, type IUserRegistered } from '../../IUser';
 
 export type UsersEndpoints = {
 	'users.2fa.sendEmailCode': {

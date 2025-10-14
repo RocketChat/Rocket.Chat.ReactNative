@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ViewStyle } from 'react-native';
+import { Text, View, type ViewStyle } from 'react-native';
 
 import Touch from '../Touch';
 import Avatar from '../Avatar';

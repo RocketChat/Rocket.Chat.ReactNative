@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
 import Button from '../containers/Button';
-import { TSupportedThemes, useTheme } from '../theme';
+import { type TSupportedThemes, useTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { themes } from '../lib/constants/colors';
 import Markdown from '../containers/markdown';
-import { ICannedResponse } from '../definitions/ICannedResponse';
-import { ChatsStackParamList } from '../stacks/types';
+import { type ICannedResponse } from '../definitions/ICannedResponse';
+import { type ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
+import { type StyleProp, type TextStyle, View } from 'react-native';
 
-import { IAttachment, IUserMessage } from '../../../../definitions';
-import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { type IAttachment, type IUserMessage } from '../../../../definitions';
+import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import AudioPlayer from '../../../AudioPlayer';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';

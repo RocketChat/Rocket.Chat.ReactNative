@@ -5,7 +5,7 @@ import { Encryption } from '../../encryption';
 import { store as reduxStore } from '../../store/auxStore';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import { ISubscription, IServerSubscription, IServerRoom, IRoom, IOmnichannelRoom } from '../../../definitions';
+import { type ISubscription, type IServerSubscription, type IServerRoom, type IRoom, type IOmnichannelRoom } from '../../../definitions';
 import { compareServerVersion } from './compareServerVersion';
 
 export const merge = (
