@@ -1,6 +1,11 @@
 import React, { useRef, memo } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
-import { Gesture, GestureDetector, type GestureUpdateEvent, type PanGestureHandlerEventPayload } from 'react-native-gesture-handler';
+import {
+	Gesture,
+	GestureDetector,
+	type GestureUpdateEvent,
+	type PanGestureHandlerEventPayload
+} from 'react-native-gesture-handler';
 
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';

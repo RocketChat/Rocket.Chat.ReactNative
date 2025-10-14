@@ -4,7 +4,15 @@ import { type ImageStyle } from 'expo-image';
 
 import { type IUserChannel } from '../markdown/interfaces';
 import { type TGetCustomEmoji } from '../../definitions/IEmoji';
-import { type IAttachment, type IThread, type IUrl, type IUserMention, type IUserMessage, type MessageType, type TAnyMessageModel } from '../../definitions';
+import {
+	type IAttachment,
+	type IThread,
+	type IUrl,
+	type IUserMention,
+	type IUserMessage,
+	type MessageType,
+	type TAnyMessageModel
+} from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 
 export interface IMessageAttachments {

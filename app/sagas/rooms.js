@@ -18,7 +18,7 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 		const serverRecord = yield serversCollection.find(server);
 
 		return serversDB.write(async () => {
-			await serverRecord.update((record) => {
+			await serverRecord.update(record => {
 				record.roomsUpdatedAt = newRoomsUpdatedAt;
 			});
 		});
@@ -75,12 +75,12 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 
 			const allRecords = [
 				...subsToCreate.map(subscription =>
-					subCollection.prepareCreate((s) => {
+					subCollection.prepareCreate(s => {
 						s._raw = sanitizedRaw({ id: subscription.rid }, subCollection.schema);
 						return Object.assign(s, subscription);
 					})
 				),
-				...subsToUpdate.map((subscription) => {
+				...subsToUpdate.map(subscription => {
 					try {
 						const newSub = subscriptions.find(s => s._id === subscription._id);
 						if (!newSub) {
@@ -99,7 +99,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 						return null;
 					}
 				}),
-				...subsToDelete.map((subscription) => {
+				...subsToDelete.map(subscription => {
 					try {
 						return subscription.prepareDestroyPermanently();
 					} catch (e) {
@@ -108,13 +108,13 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 					}
 				}),
 				...messagesToCreate.map(message =>
-					messagesCollection.prepareCreate((m) => {
+					messagesCollection.prepareCreate(m => {
 						m._raw = sanitizedRaw({ id: message._id }, messagesCollection.schema);
 						m.subscription.id = message.rid;
 						return Object.assign(m, message);
 					})
 				),
-				...messagesToUpdate.map((message) => {
+				...messagesToUpdate.map(message => {
 					const newMessage = lastMessages.find(m => m._id === message.id);
 					return message.prepareUpdate(() => {
 						try {

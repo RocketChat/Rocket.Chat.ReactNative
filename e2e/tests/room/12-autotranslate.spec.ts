@@ -1,6 +1,15 @@
 import { by, device, element, expect, waitFor } from 'detox';
 
-import { type TTextMatcher, login, navigateToLogin, platformTypes, searchRoom, sleep, tapBack, tryTapping } from '../../helpers/app';
+import {
+	type TTextMatcher,
+	login,
+	navigateToLogin,
+	platformTypes,
+	searchRoom,
+	sleep,
+	tapBack,
+	tryTapping
+} from '../../helpers/app';
 import { type ITestUser, createRandomUser, initApi } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 

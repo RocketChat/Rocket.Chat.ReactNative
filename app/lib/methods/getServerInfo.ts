@@ -2,7 +2,13 @@ import { KJUR } from 'jsrsasign';
 import moment from 'moment';
 
 import { getSupportedVersionsCloud } from '../services/restApi';
-import { type TCloudInfo, type IServerInfo, type ISupportedVersions, type ISupportedVersionsData, type IApiServerInfo } from '../../definitions';
+import {
+	type TCloudInfo,
+	type IServerInfo,
+	type ISupportedVersions,
+	type ISupportedVersionsData,
+	type IApiServerInfo
+} from '../../definitions';
 import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
 import I18n from '../../i18n';

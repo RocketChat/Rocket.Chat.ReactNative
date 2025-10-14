@@ -31,7 +31,14 @@ import { type ChatsStackParamList } from '../../stacks/types';
 import { Filter } from './filters';
 import Item from './Item';
 import styles from './styles';
-import { type IApplicationState, type IBaseScreen, type IMessage, SubscriptionType, type TSubscriptionModel, type TThreadModel } from '../../definitions';
+import {
+	type IApplicationState,
+	type IBaseScreen,
+	type IMessage,
+	SubscriptionType,
+	type TSubscriptionModel,
+	type TThreadModel
+} from '../../definitions';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services/restApi';
 import UserPreferences from '../../lib/methods/userPreferences';

@@ -18,7 +18,13 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { type ICustomFields, type IInputsRefs, type TParams, type ITitle, type ILivechat } from '../definitions/ILivechatEditView';
+import {
+	type ICustomFields,
+	type IInputsRefs,
+	type TParams,
+	type ITitle,
+	type ILivechat
+} from '../definitions/ILivechatEditView';
 import { type IApplicationState, type IUser } from '../definitions';
 import { type ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';

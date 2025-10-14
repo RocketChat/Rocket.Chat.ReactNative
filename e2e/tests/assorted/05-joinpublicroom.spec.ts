@@ -1,7 +1,15 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, tapBack, platformTypes, type TTextMatcher, mockMessage, navigateToRoom } from '../../helpers/app';
+import {
+	navigateToLogin,
+	login,
+	tapBack,
+	platformTypes,
+	type TTextMatcher,
+	mockMessage,
+	navigateToRoom
+} from '../../helpers/app';
 import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 

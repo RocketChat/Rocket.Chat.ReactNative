@@ -16,7 +16,14 @@ import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
-import { type IApplicationState, type IBaseScreen, type ISubscription, type IUser, SubscriptionType, type TSubscriptionModel } from '../../definitions';
+import {
+	type IApplicationState,
+	type IBaseScreen,
+	type ISubscription,
+	type IUser,
+	SubscriptionType,
+	type TSubscriptionModel
+} from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';

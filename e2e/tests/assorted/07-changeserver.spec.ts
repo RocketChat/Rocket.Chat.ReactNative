@@ -2,7 +2,13 @@ import { device, waitFor, element, by } from 'detox';
 
 import data from '../../data';
 import { navigateToLogin, login, checkServer, signup } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, deleteCreatedUsers, type IDeleteCreateUser, type ITestUser } from '../../helpers/data_setup';
+import {
+	createRandomRoom,
+	createRandomUser,
+	deleteCreatedUsers,
+	type IDeleteCreateUser,
+	type ITestUser
+} from '../../helpers/data_setup';
 
 const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });

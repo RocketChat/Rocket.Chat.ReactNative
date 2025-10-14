@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
-import { type IAutocompleteEmoji, type IAutocompleteUserRoom, type TAutocompleteItem, type TAutocompleteType } from '../interfaces';
+import {
+	type IAutocompleteEmoji,
+	type IAutocompleteUserRoom,
+	type TAutocompleteItem,
+	type TAutocompleteType
+} from '../interfaces';
 import { search } from '../../../lib/methods/search';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';

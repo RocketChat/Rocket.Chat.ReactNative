@@ -1,5 +1,14 @@
 import React, { useMemo, useState } from 'react';
-import { type StyleProp, StyleSheet, Text, type TextInput as RNTextInput, type TextInputProps, type TextStyle, View, type ViewStyle } from 'react-native';
+import {
+	type StyleProp,
+	StyleSheet,
+	Text,
+	type TextInput as RNTextInput,
+	type TextInputProps,
+	type TextStyle,
+	View,
+	type ViewStyle
+} from 'react-native';
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';

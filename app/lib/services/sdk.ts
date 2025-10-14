@@ -5,7 +5,13 @@ import isEmpty from 'lodash/isEmpty';
 import { twoFactor } from './twoFactor';
 import { isSsl } from '../methods/helpers/isSsl';
 import { store as reduxStore } from '../store/auxStore';
-import { type Serialized, type MatchPathPattern, type OperationParams, type PathFor, type ResultFor } from '../../definitions/rest/helpers';
+import {
+	type Serialized,
+	type MatchPathPattern,
+	type OperationParams,
+	type PathFor,
+	type ResultFor
+} from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
 class Sdk {
