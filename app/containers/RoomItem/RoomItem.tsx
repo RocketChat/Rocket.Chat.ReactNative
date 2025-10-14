@@ -55,6 +55,8 @@ const RoomItem = ({
 	hideMentionStatus,
 	accessibilityDate
 }: IRoomItemProps) => {
+	'use memo';
+
 	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),

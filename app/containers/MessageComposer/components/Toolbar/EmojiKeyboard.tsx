@@ -8,6 +8,8 @@ import { Gap } from '../Gap';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const EmojiKeyboard = (): ReactElement => {
+	'use memo';
+
 	const { closeEmojiKeyboard } = useEmojiKeyboard();
 
 	const close = async () => {

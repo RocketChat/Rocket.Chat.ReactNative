@@ -15,6 +15,8 @@ import { MessageTypesValues } from '../../definitions';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { user, onLinkPress } = useContext(MessageContext);
 

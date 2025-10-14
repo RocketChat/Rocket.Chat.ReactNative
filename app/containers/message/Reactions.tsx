@@ -29,6 +29,8 @@ interface IMessageReactions {
 }
 
 const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
+	'use memo';
+
 	const { reactionInit } = useContext(MessageContext);
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
@@ -48,6 +50,8 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 });
 
 const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
+	'use memo';
+
 	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
@@ -79,6 +83,8 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 });
 
 const Reactions = React.memo(({ reactions, getCustomEmoji }: IMessageReactions) => {
+	'use memo';
+
 	const { theme } = useTheme();
 
 	if (!Array.isArray(reactions) || reactions.length === 0) {

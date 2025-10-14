@@ -71,6 +71,8 @@ const getAutocompleteAccessibilityLabel = (item: TAutocompleteItem): string => {
 };
 
 export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
+	'use memo';
+
 	const [styles, colors] = useStyle();
 	const autocompleteAccessibilityLabel = getAutocompleteAccessibilityLabel(item);
 	return (
