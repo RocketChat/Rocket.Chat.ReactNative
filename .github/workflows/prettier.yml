@@ -27,7 +27,7 @@ jobs:
         run: yarn prettier --write .
 
       - name: Check for changes
-        id: check_changes
+        id: prettier_changes
         run: |
           if git diff --quiet; then
             echo "No code format changes detected"
@@ -37,11 +37,34 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
       
-      - name: Commit and push changes
-        if: steps.check_changes.outputs.changes == 'true'
+      - name: Commit and push prettier changes
+        if: steps.prettier_changes.outputs.changes == 'true'
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add .
           git commit -m "chore: format code with Prettier [skip ci]"
+          git push origin ${{ github.ref_name }}
+
+      - name: Run ESLint
+        run: npx eslint . --fix
+        
+      - name: Check for changes
+        id: eslint_changes
+        run: |
+          if git diff --quiet; then
+            echo "No code format changes detected"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Code format changes detected"
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push eslint changes
+        if: steps.eslint_changes.outputs.changes == 'true'
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add .
+          git commit -m "chore: auto fix by ESLint [skip ci]"
           git push origin ${{ github.ref_name }}
