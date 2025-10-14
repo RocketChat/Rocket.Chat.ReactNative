@@ -6,7 +6,7 @@ import { LOCKED_OUT_TIMER_KEY, TIME_TO_LOCK } from '../../lib/constants/localAut
 export const getLockedUntil = async () => {
 	const t = await AsyncStorage.getItem(LOCKED_OUT_TIMER_KEY);
 	if (t) {
-		return dayjs(t).add(TIME_TO_LOCK).toDate();
+		return dayjs(t).add(TIME_TO_LOCK, 'millisecond').toDate();
 	}
 	return null;
 };
