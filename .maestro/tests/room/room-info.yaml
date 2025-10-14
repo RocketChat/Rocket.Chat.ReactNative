@@ -178,6 +178,7 @@ tags:
     element:
       id: 'room-info-edit-view-t'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-t'
 - scrollUntilVisible:
@@ -208,12 +209,11 @@ tags:
     timeout: 60000
 - assertVisible:
     text: '.*${output.room.name}.*'
-    childOf:
-      id: 'room-info-edit-view-name'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'
     timeout: 60000
+    direction: UP
 - assertVisible:
     text: ''
     childOf:
@@ -254,6 +254,7 @@ tags:
     element:
       id: 'room-info-edit-view-ro'
     timeout: 60000
+    centerElement: true
 - assertVisible:
     checked: false
     childOf:
@@ -262,22 +263,24 @@ tags:
     element:
       id: 'room-info-edit-switch-system-messages'
     timeout: 60000
+    centerElement: true
 - assertNotVisible:
     id: 'room-info-edit-view-react-when-ro'
 
 # should change room name
 - evalScript: ${output.newroomname = output.room.name + 'new'}
-- scrollUntilVisible:
-    element:
-      id: 'room-info-edit-view-name'
-    direction: UP
-    timeout: 60000
 - tapOn:
-    id: 'room-info-edit-view-name'
+    id: custom-header-back
+- tapOn:
+    id: room-info-view-edit-button
+- extendedWaitUntil:
+    visible:
+      text: '.*${output.room.name}.*'
+    timeout: 60000
 - runFlow:
     file: '../../helpers/erase-text.yaml'
     env:
-      id: 'room-info-edit-view-name'
+      text: '.*${output.room.name}.*'
 - inputText: ${output.newroomname}
 - pressKey: Enter
 - scrollUntilVisible:
@@ -310,6 +313,7 @@ tags:
     element:
       id: 'room-info-edit-view-topic'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-topic'
 - inputText: 'new topic'
@@ -317,13 +321,16 @@ tags:
     element:
       id: 'room-info-edit-view-announcement'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-announcement'
 - inputText: 'new announcement'
+- pressKey: Enter
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-description'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-description'
 - inputText: 'new description'
