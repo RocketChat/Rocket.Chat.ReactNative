@@ -1,11 +1,11 @@
 {
-  "A11y_in_app_notification": "Ny melding frå {{name}}: {{message}}",
-  "A11y_incoming_call_swipe_down_to_view_options": "Sveip ned for å se alternativene",
   "A11y_appearance_dialog_require_manual_dismissal": "Krev manuell avvising",
   "A11y_appearance_dialogs": "Dialoger",
   "A11y_appearance_show_alerts_as": "Vis varsler som",
   "A11y_appearance_toast_dismissed_automatically": "Lukket automatisk",
   "A11y_appearance_toasts": "Toasts",
+  "A11y_in_app_notification": "Ny melding frå {{name}}: {{message}}",
+  "A11y_incoming_call_swipe_down_to_view_options": "Sveip ned for å se alternativene",
   "accept": "Aksepter",
   "Accessibility": "Tilgjengelighet",
   "Accessibility_and_Appearance": "Tilgjengelighet og utseende",
