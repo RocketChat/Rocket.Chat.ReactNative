@@ -15,6 +15,8 @@ import { useTheme } from '../../theme';
 // TODO: Create a reusable button component for message
 const Discussion = React.memo(
 	({ msg, dcount, dlm }: Pick<IMessage, 'msg' | 'dcount' | 'dlm'>) => {
+		'use memo';
+
 		const { colors } = useTheme();
 		let time;
 		if (dlm) {

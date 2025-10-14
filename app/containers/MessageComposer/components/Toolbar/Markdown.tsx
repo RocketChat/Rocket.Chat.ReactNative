@@ -7,6 +7,8 @@ import { TMarkdownStyle } from '../../interfaces';
 import { emitter } from '../../../../lib/methods/helpers/emitter';
 
 export const Markdown = (): ReactElement => {
+	'use memo';
+
 	const { setMarkdownToolbar } = useMessageComposerApi();
 
 	const onPress = (style: TMarkdownStyle) => emitter.emit('addMarkdown', { style });

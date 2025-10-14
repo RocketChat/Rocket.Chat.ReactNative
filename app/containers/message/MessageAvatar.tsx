@@ -17,6 +17,8 @@ export const AvatarContainer = ({ children }: { children?: ReactElement | null }
 };
 
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
+	'use memo';
+
 	const { user } = useContext(MessageContext);
 	const { fontScaleLimited } = useResponsiveLayout();
 	const smallSize = 20 * fontScaleLimited;

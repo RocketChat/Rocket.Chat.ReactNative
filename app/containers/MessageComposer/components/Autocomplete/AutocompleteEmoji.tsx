@@ -6,6 +6,8 @@ import { Emoji } from '../../../EmojiPicker/Emoji';
 import { useStyle } from './styles';
 
 export const AutocompleteEmoji = ({ item }: { item: IAutocompleteEmoji }) => {
+	'use memo';
+
 	const [styles] = useStyle();
 	return (
 		<>

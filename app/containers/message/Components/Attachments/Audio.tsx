@@ -18,6 +18,8 @@ interface IMessageAudioProps {
 }
 
 const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMessageAudioProps) => {
+	'use memo';
+
 	const { user, id, rid } = useContext(MessageContext);
 	const { status, onPress, url } = useMediaAutoDownload({ file, author });
 

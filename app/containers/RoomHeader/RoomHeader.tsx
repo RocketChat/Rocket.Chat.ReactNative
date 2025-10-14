@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -190,7 +190,7 @@ const Header = React.memo(
 			);
 		}
 
-		const handleOnPress = useCallback(() => onPress(), []);
+		const handleOnPress = () => onPress();
 
 		return (
 			<View

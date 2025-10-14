@@ -57,6 +57,8 @@ export const useMediaAutoDownload = ({
 	author?: IUserMessage;
 	showAttachment?: Function;
 }) => {
+	'use memo';
+
 	const fileType = getFileType(file) ?? 'image';
 	const { id, baseUrl, user } = useContext(MessageContext);
 	const [status, setStatus] = useState<TDownloadState>('to-download');
