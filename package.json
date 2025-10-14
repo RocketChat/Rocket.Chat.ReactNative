@@ -33,7 +33,7 @@
 	},
 	"dependencies": {
 		"@bugsnag/react-native": "8.4.0",
-		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
+		"@gorhom/bottom-sheet": "^5",
 		"@hookform/resolvers": "^2.9.10",
 		"@notifee/react-native": "7.8.2",
 		"@nozbe/watermelondb": "^0.28.0",

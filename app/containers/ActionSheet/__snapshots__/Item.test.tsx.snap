@@ -1,0 +1,4630 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: AllStates should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={1}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Regular Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Regular Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={2}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="With Subtitle. Additional information"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              With Subtitle
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Additional information
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={3}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="With Right Component"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              With Right Component
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "paddingLeft": 12,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#156FF5",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={4}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Disabled Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#CBCED1",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#CBCED1",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Disabled Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={5}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Danger Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#D40C26",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Danger Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: BasicItem should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={6}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Basic Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 0,
+                  },
+                ]
+              }
+            >
+              Basic Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={7}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
+        style={
+          [
+            {
+              "backgroundColor": "#0d0d0d",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#16181a"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Regular Item. With subtitle"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#E4E7EA",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Regular Item
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#9EA2A8",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              With subtitle
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={8}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
+        style={
+          [
+            {
+              "backgroundColor": "#0d0d0d",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#16181a"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Selected Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#E4E7EA",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Selected Item
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "paddingLeft": 12,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#3976D1",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={9}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
+        style={
+          [
+            {
+              "backgroundColor": "#0d0d0d",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#16181a"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Disabled Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#60646C",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#60646C",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Disabled Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={10}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#16181a"
+        style={
+          [
+            {
+              "backgroundColor": "#0d0d0d",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#16181a"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#16181a",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Danger Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#CF6E7A",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#CF6E7A",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Danger Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: DangerItem should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={11}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Delete"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#D40C26",
+                    "marginLeft": 0,
+                  },
+                ]
+              }
+            >
+              Delete
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={12}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Delete with Icon"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#D40C26",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Delete with Icon
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={13}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Remove from Team. This action cannot be undone"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#D40C26",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Remove from Team
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              This action cannot be undone
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={14}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
+        style={
+          [
+            {
+              "backgroundColor": "#262931",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#2D3039"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Regular Item. With subtitle"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#E4E7EA",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Regular Item
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#9EA2A8",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              With subtitle
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={15}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
+        style={
+          [
+            {
+              "backgroundColor": "#262931",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#2D3039"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Selected Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#E4E7EA",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Selected Item
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "paddingLeft": 12,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#3976D1",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={16}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
+        style={
+          [
+            {
+              "backgroundColor": "#262931",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#2D3039"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Disabled Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#60646C",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#60646C",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Disabled Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={17}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#2D3039"
+        style={
+          [
+            {
+              "backgroundColor": "#262931",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#2D3039"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#2D3039",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Danger Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#CF6E7A",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#CF6E7A",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Danger Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: DisabledItem should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={18}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Disabled Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#CBCED1",
+                    "marginLeft": 0,
+                  },
+                ]
+              }
+            >
+              Disabled Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={19}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Disabled with Icon"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#CBCED1",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#CBCED1",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Disabled with Icon
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={20}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Disabled with Subtitle. You need permission to perform this action"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#CBCED1",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#CBCED1",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Disabled with Subtitle
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              You need permission to perform this action
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ItemWithIcon should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={21}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Item with Camera Icon"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Item with Camera Icon
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={22}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Item with Edit Icon"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Item with Edit Icon
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={23}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Item with Delete Icon"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Item with Delete Icon
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ItemWithRightComponent should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={24}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Selected Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 0,
+                  },
+                ]
+              }
+            >
+              Selected Item
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "paddingLeft": 12,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#156FF5",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={25}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="With Icon and Right Component"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              With Icon and Right Component
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "paddingLeft": 12,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#156FF5",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ItemWithSubtitle should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={26}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Item with Subtitle. This is a subtitle"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 0,
+                  },
+                ]
+              }
+            >
+              Item with Subtitle
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "marginLeft": 0,
+                  },
+                ]
+              }
+            >
+              This is a subtitle
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={27}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="With Icon and Subtitle. Additional information here"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              With Icon and Subtitle
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Additional information here
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={28}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Long Subtitle. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Long Subtitle
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={29}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Regular Item. With subtitle"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Regular Item
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              With subtitle
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={30}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Selected Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Selected Item
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "paddingLeft": 12,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#156FF5",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={31}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Disabled Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#CBCED1",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#CBCED1",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Disabled Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 1,
+      }
+    }
+  >
+    <View>
+      <RNGestureHandlerButton
+        accessibilityRole="button"
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={32}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          accessibilityLabel="Danger Item"
+          accessible={true}
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 48,
+              "paddingHorizontal": 16,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <View
+            style={
+              {
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "500",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#D40C26",
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              Danger Item
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
