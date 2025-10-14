@@ -48,7 +48,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 						{calling && direct ? <DotsLoader /> : null}
 					</View>
 					<View style={style.actionSheetHeaderButtons}>
-						<A11y.Index index={1} style={{ flex: 1 }}>
+						<A11y.Index index={1}>
 							<Touchable
 								accessibilityLabel={cam ? I18n.t('Turn_camera_off') : I18n.t('Turn_camera_on')}
 								onPress={() => setCam(!cam)}
@@ -58,7 +58,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 								<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
 							</Touchable>
 						</A11y.Index>
-						<A11y.Index index={2} style={{ flex: 1 }}>
+						<A11y.Index index={2}>
 							<Touchable
 								accessibilityLabel={mic ? I18n.t('Turn_mic_off') : I18n.t('Turn_mic_on')}
 								onPress={() => setMic(!mic)}
