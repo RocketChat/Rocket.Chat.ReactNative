@@ -60,16 +60,13 @@ const Content = React.memo(
 					msg={props.msg}
 					md={props.type !== 'e2e' ? props.md : undefined}
 					getCustomEmoji={props.getCustomEmoji}
-					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}
-					tmid={props.tmid}
 					useRealName={props.useRealName}
 					onLinkPress={onLinkPress}
 					isTranslated={props.isTranslated}
-					testID={`message-markdown-${props.msg}`}
 				/>
 			);
 		}

@@ -13,8 +13,6 @@ const ImageContainer = ({
 	file,
 	showAttachment,
 	getCustomEmoji,
-	style,
-	isReply,
 	author,
 	msg,
 	imagePreview,
@@ -36,7 +34,7 @@ const ImageContainer = ({
 	if (msg) {
 		return (
 			<View style={{ gap: 4 }}>
-				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
+				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} />
 				{image}
 			</View>
 		);

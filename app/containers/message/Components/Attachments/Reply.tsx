@@ -119,15 +119,7 @@ const Title = React.memo(
 );
 
 const Description = React.memo(
-	({
-		attachment,
-		getCustomEmoji,
-		theme
-	}: {
-		attachment: IAttachment;
-		getCustomEmoji: TGetCustomEmoji;
-		theme: TSupportedThemes;
-	}) => {
+	({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -137,23 +129,13 @@ const Description = React.memo(
 			return null;
 		}
 
-		return (
-			<Markdown
-				msg={text}
-				style={[{ color: themes[theme].fontHint, fontSize: 14 }]}
-				username={user.username}
-				getCustomEmoji={getCustomEmoji}
-			/>
-		);
+		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.attachment.text !== nextProps.attachment.text) {
 			return false;
 		}
 		if (prevProps.attachment.title !== nextProps.attachment.title) {
-			return false;
-		}
-		if (prevProps.theme !== nextProps.theme) {
 			return false;
 		}
 		return true;
@@ -257,13 +239,11 @@ const Reply = React.memo(
 					<View style={styles.attachmentContainer}>
 						<View style={styles.titleAndDescriptionContainer}>
 							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
 							<Attachments
 								attachments={attachment.attachments}
 								getCustomEmoji={getCustomEmoji}
 								timeFormat={timeFormat}
-								style={[{ color: themes[theme].fontHint, fontSize: 14 }]}
-								isReply
 								showAttachment={showAttachment}
 							/>
 							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
@@ -281,7 +261,7 @@ const Reply = React.memo(
 						<UrlImage image={attachment.thumb_url} />
 					</View>
 				</Touchable>
-				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} />
+				{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
 			</View>
 		);
 	},
