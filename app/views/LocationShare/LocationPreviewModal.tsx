@@ -6,7 +6,7 @@ import { shallowEqual } from 'react-redux';
 import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
 import { sendMessage } from '../../lib/methods/sendMessage';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
 

@@ -8,18 +8,18 @@ import I18n from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ProfileStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { useUserPreferences } from '../../lib/methods';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
 	MAP_PROVIDER_PREFERENCE_KEY,
 	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
 	OSM_API_KEY_PREFERENCE_KEY,
 	MAP_PROVIDER_DEFAULT
-} from '../../lib/constants';
+} from '../../lib/constants/keys';
 import { MapProviderName } from '../LocationShare/services/mapProviders';
 import ListPicker from './ListPicker';
 import ApiKeyModal from './ApiKeyModal';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ProfileStackParamList, 'LocationPreferencesView'>,

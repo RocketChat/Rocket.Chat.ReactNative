@@ -15,13 +15,13 @@ import { useRoomContext } from '../../../../views/RoomView/context';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { getCurrentPositionOnce } from '../../../../views/LocationShare/services/staticLocation';
 import { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
-import { useUserPreferences } from '../../../../lib/methods';
+import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 import {
 	MAP_PROVIDER_PREFERENCE_KEY,
 	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
 	OSM_API_KEY_PREFERENCE_KEY,
 	MAP_PROVIDER_DEFAULT
-} from '../../../../lib/constants';
+} from '../../../../lib/constants/keys';
 
 export const ActionsButton = () => {
 	'use memo';

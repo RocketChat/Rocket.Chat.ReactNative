@@ -3,15 +3,15 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 import { useTheme } from '../../../theme';
 import {
-	themes,
 	MAP_PROVIDER_PREFERENCE_KEY,
 	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
 	OSM_API_KEY_PREFERENCE_KEY,
 	MAP_PROVIDER_DEFAULT
-} from '../../../lib/constants';
+} from '../../../lib/constants/keys';
+import { themes } from '../../../lib/constants/colors';
 import Navigation from '../../../lib/navigation/appNavigation';
-import { useAppSelector } from '../../../lib/hooks';
-import { useUserPreferences } from '../../../lib/methods';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useUserPreferences } from '../../../lib/methods/userPreferences';
 import {
 	addStatusChangeListener,
 	removeStatusChangeListener,

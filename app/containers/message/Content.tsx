@@ -10,7 +10,7 @@ import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
 import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { MessageTypesValues, IUserMessage } from '../../definitions';
 
 

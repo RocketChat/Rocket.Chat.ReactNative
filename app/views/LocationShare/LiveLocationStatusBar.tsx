@@ -18,7 +18,7 @@ import {
 	getCurrentLiveParams
 } from './LiveLocationPreviewModal';
 import { handleLiveLocationUrl, isLiveMessageLink } from './services/handleLiveLocationUrl';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 
 type Props = { onPress?: () => void };

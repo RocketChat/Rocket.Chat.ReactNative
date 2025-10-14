@@ -8,14 +8,14 @@ import StatusBar from '../../containers/StatusBar';
 import Navigation from '../../lib/navigation/appNavigation';
 import { LiveLocationApi, serverToMobileCoords } from './services/liveLocationApi';
 import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
-import { useAppSelector } from '../../lib/hooks';
-import { useUserPreferences } from '../../lib/methods';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
 	MAP_PROVIDER_PREFERENCE_KEY,
 	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
 	OSM_API_KEY_PREFERENCE_KEY,
 	MAP_PROVIDER_DEFAULT
-} from '../../lib/constants';
+} from '../../lib/constants/keys';
 
 export interface LiveLocationViewerModalProps {
 	navigation: any;
