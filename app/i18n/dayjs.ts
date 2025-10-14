@@ -15,7 +15,8 @@ const localeKeys: { [key: string]: string } = {
 	sv: 'sv',
 	tr: 'tr',
 	'zh-CN': 'zh-cn',
-	'zh-TW': 'zh-tw'
+	'zh-TW': 'zh-tw',
+    'no': 'nb'
 };
 
 export const toDayJsLocale = (locale: string): string => localeKeys[locale] || locale;
