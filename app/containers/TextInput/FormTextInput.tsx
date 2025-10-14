@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
-import { BottomSheetTextInput } from '@discord/bottom-sheet';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
 

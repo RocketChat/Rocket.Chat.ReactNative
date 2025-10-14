@@ -1,8 +1,9 @@
 import React, { createContext, ReactElement, useContext, useState } from 'react';
 import { Platform } from 'react-native';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
-import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import { MessageInnerContext } from '../context';
 
@@ -155,7 +156,7 @@ export const useEmojiKeyboard = () => {
 			} else if (previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
 				updateHeight();
 			}
-			runOnJS(setShowEmojiKeyboard)(currentValue);
+			scheduleOnRN(setShowEmojiKeyboard, currentValue);
 		},
 		[showEmojiPickerSharedValue]
 	);
@@ -171,7 +172,7 @@ export const useEmojiKeyboard = () => {
 			} else if (currentValue === false && showEmojiPickerSharedValue.value === true) {
 				openEmojiPicker();
 			}
-			runOnJS(setShowEmojiSearchbar)(currentValue);
+			scheduleOnRN(setShowEmojiSearchbar, currentValue);
 		},
 		[showEmojiSearchbarSharedValue]
 	);

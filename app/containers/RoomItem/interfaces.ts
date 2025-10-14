@@ -1,11 +1,11 @@
 import React from 'react';
-import Animated from 'react-native-reanimated';
+import { SharedValue } from 'react-native-reanimated';
 
 import { TSupportedThemes } from '../../theme';
 import { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource, ISubscription } from '../../definitions';
 
 export interface ILeftActionsProps {
-	transX: Animated.SharedValue<number>;
+	transX: SharedValue<number>;
 	isRead: boolean;
 	width: number;
 	onToggleReadPress(): void;
@@ -13,7 +13,7 @@ export interface ILeftActionsProps {
 }
 
 export interface IRightActionsProps {
-	transX: Animated.SharedValue<number>;
+	transX: SharedValue<number>;
 	favorite: boolean;
 	width: number;
 	toggleFav(): void;
