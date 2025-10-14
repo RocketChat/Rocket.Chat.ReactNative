@@ -3,7 +3,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { sha256 } from 'js-sha256';
 
-import dayjs from '../../../lib/dayjs';
+import dayjs from "../../dayjs";
 import UserPreferences from '../userPreferences';
 import { store } from '../../store/auxStore';
 import database from '../../database';

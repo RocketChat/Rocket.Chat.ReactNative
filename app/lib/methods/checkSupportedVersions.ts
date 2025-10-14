@@ -1,7 +1,7 @@
 import coerce from 'semver/functions/coerce';
 import satisfies from 'semver/functions/satisfies';
 
-import dayjs from '../../lib/dayjs';
+import dayjs from "../dayjs";
 import { ISupportedVersionsData, TSVDictionary, TSVMessage, TSVStatus } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 

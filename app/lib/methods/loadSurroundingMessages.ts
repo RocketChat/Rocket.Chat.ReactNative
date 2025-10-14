@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
 import orderBy from 'lodash/orderBy';
 
-import dayjs from '../../lib/dayjs';
+import dayjs from "../dayjs";
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
