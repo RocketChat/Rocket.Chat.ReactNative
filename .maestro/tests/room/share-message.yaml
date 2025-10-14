@@ -40,10 +40,10 @@ tags:
 # should open the action sheet and tap Forward
 - extendedWaitUntil:
     visible:
-      text: 'Hello room'
-      index: 0
+      id: 'message-content-Hello room'
     timeout: 60000
-- longPressOn: 'Hello room'
+- longPressOn:
+    id: 'message-content-Hello room'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
@@ -102,9 +102,9 @@ tags:
       ROOM: ${output.otherUser.username}
 - extendedWaitUntil:
     visible:
-      text: '.*Hello user.*'
+      id: 'message-content-Hello user'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*Hello room.*'
+      text: 'Hello room'
     timeout: 60000
