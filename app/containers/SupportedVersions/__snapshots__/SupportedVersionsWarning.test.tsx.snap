@@ -1,0 +1,1093 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#0d0d0d",
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#BB3E4E",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#F2F3F5",
+          },
+        ]
+      }
+      testID="sv-warn-title"
+    >
+      Update Required
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "700",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#E4E7EA",
+          },
+        ]
+      }
+      testID="sv-warn-subtitle"
+    >
+      Your workspace version is outdated
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#E4E7EA",
+          },
+        ]
+      }
+      testID="sv-warn-description"
+    >
+      Please update your Rocket.Chat server to continue using this app. Your current version will stop working soon.
+    </Text>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#16181a",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+      testID="sv-warn-button"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#E4E7EA",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#262931",
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#BB3E4E",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#F2F3F5",
+          },
+        ]
+      }
+      testID="sv-warn-title"
+    >
+      Update Required
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "700",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#E4E7EA",
+          },
+        ]
+      }
+      testID="sv-warn-subtitle"
+    >
+      Your workspace version is outdated
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#E4E7EA",
+          },
+        ]
+      }
+      testID="sv-warn-description"
+    >
+      Please update your Rocket.Chat server to continue using this app. Your current version will stop working soon.
+    </Text>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#1F2329",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+      testID="sv-warn-button"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#E4E7EA",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Default should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#EC0D2A",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+      testID="sv-warn-title"
+    >
+      Update Required
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "700",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+      testID="sv-warn-subtitle"
+    >
+      Your workspace version is outdated
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+      testID="sv-warn-description"
+    >
+      Please update your Rocket.Chat server to continue using this app. Your current version will stop working soon.
+    </Text>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+      testID="sv-warn-button"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: LongContent should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#EC0D2A",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+      testID="sv-warn-title"
+    >
+      Critical Update Required - Your Server Version is Outdated
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "700",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+      testID="sv-warn-subtitle"
+    >
+      Immediate action needed to maintain service
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+      testID="sv-warn-description"
+    >
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+    </Text>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+      testID="sv-warn-button"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: MinimalMessage should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#EC0D2A",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+      testID="sv-warn-title"
+    >
+      Update Required
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+      testID="sv-warn-description"
+    >
+      Please update your server.
+    </Text>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+      testID="sv-warn-button"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: WithoutSubtitle should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#EC0D2A",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+      testID="sv-warn-title"
+    >
+      Server Update Available
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+      testID="sv-warn-description"
+    >
+      A new version of Rocket.Chat is available. Update your server to access the latest features and security improvements.
+    </Text>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+      testID="sv-warn-button"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;

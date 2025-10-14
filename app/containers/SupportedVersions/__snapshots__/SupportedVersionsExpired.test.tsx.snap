@@ -1,0 +1,913 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#0d0d0d",
+          "paddingTop": 120,
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#BB3E4E",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#F2F3F5",
+          },
+        ]
+      }
+    >
+      Open ws is running an unsupported version of Rocket.Chat
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#E4E7EA",
+          },
+        ]
+      }
+    >
+      An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.
+    </Text>
+    <View
+      accessibilityLabel="Check again"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#3976D1",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Check again
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#16181a",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#E4E7EA",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#262931",
+          "paddingTop": 120,
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#BB3E4E",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#F2F3F5",
+          },
+        ]
+      }
+    >
+      Open ws is running an unsupported version of Rocket.Chat
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#E4E7EA",
+          },
+        ]
+      }
+    >
+      An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.
+    </Text>
+    <View
+      accessibilityLabel="Check again"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#095AD2",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Check again
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#1F2329",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#E4E7EA",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Default should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "paddingTop": 120,
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#EC0D2A",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      Open ws is running an unsupported version of Rocket.Chat
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.
+    </Text>
+    <View
+      accessibilityLabel="Check again"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#156FF5",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Check again
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: WithLongWorkspaceName should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#fff",
+          "flex": 1,
+          "padding": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "paddingTop": 120,
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="Attention"
+      accessible={true}
+      style={
+        {
+          "alignItems": "center",
+          "padding": 24,
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#EC0D2A",
+              "fontSize": 36,
+            },
+            [
+              {
+                "lineHeight": 36,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": "700",
+            "lineHeight": 30,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#1F2329",
+          },
+        ]
+      }
+    >
+      My Very Long Workspace Name For Testing is running an unsupported version of Rocket.Chat
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 24,
+            "marginBottom": 24,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.
+    </Text>
+    <View
+      accessibilityLabel="Check again"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": false,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#156FF5",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Check again
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Learn more"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "justifyContent": "center",
+          "marginBottom": 12,
+          "opacity": 1,
+          "paddingHorizontal": 16,
+          "paddingVertical": 14,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Learn more
+      </Text>
+    </View>
+  </View>
+</View>
+`;
