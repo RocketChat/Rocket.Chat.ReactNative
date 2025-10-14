@@ -85,7 +85,7 @@ jobs:
           echo "UDID=$UDID" >> $GITHUB_ENV
 
       - name: Install App
-        run: | 
+        run: |
           xcrun simctl install $UDID "ios-simulator-app"
 
       - name: Run Tests
