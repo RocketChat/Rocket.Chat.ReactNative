@@ -1,15 +1,15 @@
-import { ICannedResponse } from '../../ICannedResponse';
-import { ILivechatAgent } from '../../ILivechatAgent';
-import { ILivechatDepartment } from '../../ILivechatDepartment';
-import { ILivechatDepartmentAgents } from '../../ILivechatDepartmentAgents';
-import { ILivechatMonitor } from '../../ILivechatMonitor';
-import { ILivechatTag } from '../../ILivechatTag';
-import { ILivechatVisitor, ILivechatVisitorDTO } from '../../ILivechatVisitor';
-import { IMessage } from '../../IMessage';
-import { IOmnichannelRoom, IServerRoom } from '../../IRoom';
-import { ISetting } from '../../ISetting';
-import { PaginatedRequest } from '../helpers/PaginatedRequest';
-import { PaginatedResult } from '../helpers/PaginatedResult';
+import { type ICannedResponse } from '../../ICannedResponse';
+import { type ILivechatAgent } from '../../ILivechatAgent';
+import { type ILivechatDepartment } from '../../ILivechatDepartment';
+import { type ILivechatDepartmentAgents } from '../../ILivechatDepartmentAgents';
+import { type ILivechatMonitor } from '../../ILivechatMonitor';
+import { type ILivechatTag } from '../../ILivechatTag';
+import { type ILivechatVisitor, type ILivechatVisitorDTO } from '../../ILivechatVisitor';
+import { type IMessage } from '../../IMessage';
+import { type IOmnichannelRoom, type IServerRoom } from '../../IRoom';
+import { type ISetting } from '../../ISetting';
+import { type PaginatedRequest } from '../helpers/PaginatedRequest';
+import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 type booleanString = 'true' | 'false';
 

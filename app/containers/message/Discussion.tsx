@@ -9,7 +9,7 @@ import { CustomIcon } from '../CustomIcon';
 import { DISCUSSION } from './constants';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../lib/methods/helpers/room';
-import { IMessage } from '../../definitions';
+import { type IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
 
 // TODO: Create a reusable button component for message
