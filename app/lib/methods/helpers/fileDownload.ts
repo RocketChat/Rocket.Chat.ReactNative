@@ -6,7 +6,7 @@ import { IAttachment } from '../../../definitions';
 import i18n from '../../../i18n';
 import EventEmitter from './events';
 import { Encryption } from '../../encryption';
-import { sanitizeFileName } from '../handleMediaDownload';
+import { downloadMediaFile, getMediaCache, sanitizeFileName } from '../handleMediaDownload';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 
@@ -17,9 +17,22 @@ export const fileDownload = async (url: string, attachment?: IAttachment, fileNa
 	}
 	if (attachment?.title) {
 		path = `${path}${sanitizeFileName(attachment.title)}`;
-	}
-	const file = await FileSystem.downloadAsync(url, path);
-	return file.uri;
+  }
+
+  const cache = await getMediaCache({ type: 'other' as const, mimeType: attachment?.format, urlToCache: url });
+
+  if (cache?.exists) {
+
+					return cache.uri;
+		}
+  const option = {
+					messageId: url,
+					type:  'other' as const,
+					downloadUrl: url
+				};
+				
+	const uri = await downloadMediaFile(option);
+	return uri;
 };
 
 export const fileDownloadAndPreview = async (url: string, attachment: IAttachment, messageId: string): Promise<void> => {

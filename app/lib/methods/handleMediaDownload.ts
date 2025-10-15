@@ -15,7 +15,7 @@ import database from '../database';
 import { getThreadById } from '../database/services/Thread';
 import { headers } from './helpers/fetch';
 
-export type MediaTypes = 'audio' | 'image' | 'video';
+export type MediaTypes = 'audio' | 'image' | 'video' | 'other';
 export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
 const defaultType = {
 	audio: 'mp3',
@@ -68,10 +68,25 @@ export const getFilename = ({
 	return `${filenameFromUrl}.${extension}`;
 };
 
-const getExtension = (type: MediaTypes, mimeType?: string, url?: string) => {
+export const getExtension = (type: MediaTypes, mimeType?: string, url?: string) => {
 	// support url with gif extension and mimetype undefined, ex.: using the app tenor and giphy.
 	if (url?.split('.').pop() === 'gif') {
 		return 'gif';
+  }
+  
+  // support url with doc extension
+	if (url?.split('.').pop() === 'doc') {
+		return 'doc';
+	}
+	
+	// support url with docx extension
+	if (url?.split('.').pop() === 'docx') {
+		return 'docx';
+	}
+	
+	// support url with pdf extension
+	if (url?.split('.').pop() === 'pdf') {
+		return 'pdf';
 	}
 	if (!mimeType) {
 		return defaultType[type];
@@ -96,7 +111,8 @@ const getExtension = (type: MediaTypes, mimeType?: string, url?: string) => {
 	// The mime.extension can return false when there aren't any extension
 	if (!extension) {
 		return defaultType[type];
-	}
+  }
+  
 	return extension;
 };
 
