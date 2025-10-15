@@ -14,7 +14,7 @@ module.exports = {
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier'],
+	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier', 'plugin:react-hooks/recommended'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
@@ -36,6 +36,9 @@ module.exports = {
 		'jest/globals': true
 	},
 	rules: {
+		'react-hooks/set-state-in-effect': 1,
+		'react-hooks/immutability': 1,
+		'react-hooks/refs': 1,
 		'import/named': 'error',
 		'import/no-unresolved': 'error',
 		'import/extensions': [

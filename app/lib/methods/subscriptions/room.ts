@@ -134,10 +134,10 @@ export default class RoomSubscription {
 			const [name, activities] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (activities.includes('user-typing')) {
+				if (!!activities && activities.includes('user-typing')) {
 					reduxStore.dispatch(addUserTyping(name));
 				}
-				if (!activities.length) {
+				if (!activities?.length) {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}

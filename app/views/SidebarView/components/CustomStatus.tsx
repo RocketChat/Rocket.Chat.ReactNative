@@ -16,6 +16,8 @@ import { NOTIFICATION_PRESENCE_CAP } from '../../../lib/constants/notifications'
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
 const CustomStatus = () => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const { status: userStatus, statusText } = useAppSelector(getUserSelector, shallowEqual);
 	const presenceBroadcastDisabled = useAppSelector(state => state.settings.Presence_broadcast_disabled) as boolean;

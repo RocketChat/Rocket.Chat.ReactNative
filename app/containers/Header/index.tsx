@@ -12,6 +12,8 @@ import { HeaderBackButton } from './components/HeaderBackButton';
 interface IHeader extends NativeStackHeaderProps {}
 
 const Header = ({ options, navigation, route }: IHeader) => {
+	'use memo';
+
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);

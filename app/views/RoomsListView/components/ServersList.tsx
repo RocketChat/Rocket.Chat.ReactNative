@@ -29,6 +29,8 @@ const ROW_HEIGHT = 68;
 const MAX_ROWS = 4.5;
 
 const ServersList = () => {
+	'use memo';
+
 	const subscription = useRef<Subscription | null>(null);
 	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();

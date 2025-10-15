@@ -20,6 +20,8 @@ export const Autocomplete = ({
 	style: ViewStyle;
 	accessibilityFocusOnInput: () => void;
 }): ReactElement | null => {
+	'use memo';
+
 	const { rid, updateAutocompleteVisible } = useRoomContext();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({

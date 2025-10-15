@@ -8,6 +8,8 @@ import { AutocompleteItemLoading } from './AutocompleteItemLoading';
 import { useStyle } from './styles';
 
 export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) => {
+	'use memo';
+
 	const [styles, colors] = useStyle();
 
 	let content;

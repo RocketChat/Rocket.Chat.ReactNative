@@ -40,9 +40,12 @@ window.addEventListener('popstate', function() {
 });
 `;
 
+const SSO_AUTH_TYPES = ['saml', 'cas', 'iframe'];
+
 const AuthenticationWebView = () => {
 	const [logging, setLogging] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [headerTitle, setHeaderTitle] = useState<string | null>(null);
 
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 	const {
@@ -91,6 +94,15 @@ const AuthenticationWebView = () => {
 
 	const onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
 		const url = decodeURIComponent(webViewState.url);
+
+		if (SSO_AUTH_TYPES.includes(authType)) {
+			try {
+				const parsed = parse(url, true);
+				setHeaderTitle(parsed.host || url);
+			} catch {
+				setHeaderTitle(url);
+			}
+		}
 		if (authType === 'saml' || authType === 'cas') {
 			const parsedUrl = parse(url, true);
 			// ticket -> cas / validate & saml_idp_credentialToken -> saml
@@ -136,11 +148,15 @@ const AuthenticationWebView = () => {
 	const isIframe = authType === 'iframe';
 
 	useLayoutEffect(() => {
+		const urlTitle = headerTitle || parse(url, true).host;
+		const isSSOType = SSO_AUTH_TYPES.includes(authType);
+		const staticFallback = isSSOType ? 'SSO' : 'OAuth';
+
 		navigation.setOptions({
 			headerLeft: () => <HeaderButton.CloseModal />,
-			title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
+			title: urlTitle || staticFallback
 		});
-	}, [authType, navigation]);
+	}, [authType, navigation, headerTitle, url]);
 
 	return (
 		<>
