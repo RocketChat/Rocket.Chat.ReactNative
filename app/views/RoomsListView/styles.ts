@@ -37,14 +37,14 @@ export default StyleSheet.create({
 	},
 	serverHeaderAdd: {
 		fontSize: 16,
-		marginRight: 12,
-		paddingVertical: 10,
+		lineHeight: 24,
 		...sharedStyles.textRegular
 	},
 	buttonCreateWorkspace: {
 		justifyContent: 'center',
 		marginBottom: 0,
 		paddingVertical: 14,
-		paddingHorizontal: 16
+		paddingHorizontal: 16,
+		borderRadius: 4
 	}
 });

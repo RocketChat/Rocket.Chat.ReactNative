@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { FlatList, Linking, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import EventEmitter from '../../../lib/methods/helpers/events';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import { showConfirmationAlert } from '../../../lib/methods/helpers/info';
 import { localAuthenticate } from '../../../lib/methods/helpers/localAuthentication';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
 import UserPreferences from '../../../lib/methods/userPreferences';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
@@ -59,15 +59,6 @@ const ServersList = () => {
 
 	const close = () => {
 		hideActionSheetRef();
-	};
-
-	const createWorkspace = async () => {
-		logEvent(events.RL_CREATE_NEW_WORKSPACE);
-		try {
-			await Linking.openURL('https://cloud.rocket.chat/trial');
-		} catch (e) {
-			log(e);
-		}
 	};
 
 	const navToNewServer = (previousServer: string) => {
@@ -124,7 +115,7 @@ const ServersList = () => {
 		<ServerItem
 			item={item}
 			onPress={() => select(item.id, item.version)}
-			onLongPress={() => item.id === server || remove(item.id)}
+			onDeletePress={() => remove(item.id)}
 			hasCheck={item.id === server}
 		/>
 	);
@@ -132,16 +123,13 @@ const ServersList = () => {
 	return (
 		<View
 			style={{
-				backgroundColor: colors.surfaceRoom,
+				backgroundColor: colors.surfaceLight,
 				borderColor: colors.strokeLight,
 				marginBottom: insets.bottom
 			}}
 			testID='rooms-list-header-servers-list'>
 			<View style={[styles.serversListContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>
-				<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Server')}</Text>
-				<TouchableOpacity onPress={addServer} testID='rooms-list-header-server-add'>
-					<Text style={[styles.serverHeaderAdd, { color: colors.fontInfo }]}>{I18n.t('Add_Server')}</Text>
-				</TouchableOpacity>
+				<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</Text>
 			</View>
 			<FlatList
 				style={{ maxHeight: MAX_ROWS * ROW_HEIGHT }}
@@ -152,16 +140,17 @@ const ServersList = () => {
 				keyboardShouldPersistTaps='always'
 			/>
 			<List.Separator />
-			<Button
-				title={I18n.t('Create_a_new_workspace')}
-				type='secondary'
-				onPress={createWorkspace}
-				testID='rooms-list-header-create-workspace-button'
-				style={styles.buttonCreateWorkspace}
-				color={colors.badgeBackgroundLevel2}
-				backgroundColor={colors.surfaceRoom}
-				styleText={[styles.serverHeaderAdd, { textAlign: 'center', color: colors.fontInfo }]}
-			/>
+			<View style={{ padding: 16 }}>
+				<Button
+					title={I18n.t('Add_Server')}
+					type='primary'
+					onPress={addServer}
+					testID='rooms-list-header-create-workspace-button'
+					style={styles.buttonCreateWorkspace}
+					color={colors.buttonFontSecondary}
+					backgroundColor={colors.buttonBackgroundSecondaryDefault}
+				/>
+			</View>
 		</View>
 	);
 };

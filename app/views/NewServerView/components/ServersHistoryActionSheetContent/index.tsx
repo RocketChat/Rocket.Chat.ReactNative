@@ -1,14 +1,29 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { A11y } from 'react-native-a11y-order';
 
 import * as List from '../../../../containers/List';
-import Touch from '../../../../containers/Touch';
-import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import { TServerHistoryModel } from '../../../../definitions';
-import i18n from '../../../../i18n';
+import ServersHistoryItem from '../ServersHistoryItem';
+import I18n from '../../../../i18n';
+import sharedStyles from '../../../Styles';
+
+const styles = StyleSheet.create({
+	header: {
+		height: 41,
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+	headerText: {
+		fontSize: 16,
+		marginLeft: 12,
+		...sharedStyles.textRegular
+	}
+});
 
 interface IServersHistoryActionSheetContent {
 	serversHistory: TServerHistoryModel[];
@@ -25,43 +40,21 @@ export const ServersHistoryActionSheetContent = ({
 	const { bottom } = useSafeAreaInsets();
 
 	return (
-		<View style={{ paddingBottom: bottom }}>
-			<List.Container>
-				<List.Separator />
-				<>
-					{serversHistory.map(item => (
-						<>
-							<A11y.Order>
-								<A11y.Index index={1}>
-									<List.Item
-										accessibilityLabel={i18n.t('Connect_to_server_as_user', { serverUrl: item.url, user: item.username })}
-										testID={`servers-history-${item.url}`}
-										onPress={() => onPressServerHistory(item)}
-										right={() => (
-											<A11y.Index index={2}>
-												<Touch
-													accessible
-													accessibilityLabel={i18n.t('Remove_from_workspace_history')}
-													testID={`servers-history-delete-${item.url}`}
-													onPress={() => onDelete(item)}>
-													<CustomIcon name='delete' size={24} color={colors.fontDefault} />
-												</Touch>
-											</A11y.Index>
-										)}
-										styleTitle={{ fontSize: 18 }}
-										translateTitle={false}
-										translateSubtitle={false}
-										title={item.url}
-										subtitle={item.username}
-									/>
-								</A11y.Index>
-							</A11y.Order>
-
-							<List.Separator />
-						</>
-					))}
-				</>
-			</List.Container>
+		<View style={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}>
+			<View style={[styles.header, { borderColor: colors.strokeLight }]}>
+				<Text style={[styles.headerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</Text>
+			</View>
+			<List.Separator />
+			{serversHistory.map(item => (
+				<React.Fragment key={item.id}>
+					<A11y.Order>
+						<A11y.Index index={1}>
+							<ServersHistoryItem item={item} onPress={() => onPressServerHistory(item)} onDeletePress={() => onDelete(item)} />
+						</A11y.Index>
+					</A11y.Order>
+					<List.Separator />
+				</React.Fragment>
+			))}
 		</View>
 	);
 };
