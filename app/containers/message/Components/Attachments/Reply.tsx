@@ -4,12 +4,12 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
+import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants/colors';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';
-import { TSupportedThemes, useTheme } from '../../../../theme';
+import { type TSupportedThemes, useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown, { MarkdownPreview } from '../../../markdown';

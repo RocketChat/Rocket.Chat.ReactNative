@@ -1,4 +1,4 @@
-import { ILastMessage } from './IMessage';
+import { type ILastMessage } from './IMessage';
 
 export interface ISearchLocal {
 	avatarETag: string;

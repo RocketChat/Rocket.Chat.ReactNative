@@ -7,8 +7,8 @@ import {
 	uiKitMessage,
 	uiKitModal,
 	BlockContext,
-	Markdown as IMarkdown,
-	PlainText
+	type Markdown as IMarkdown,
+	type PlainText
 } from '@rocket.chat/ui-kit';
 
 import Markdown, { MarkdownPreview } from '../markdown';
@@ -28,7 +28,7 @@ import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
-import { IActions, IButton, IElement, IInputIndex, IParser, ISection } from './interfaces';
+import { type IActions, type IButton, type IElement, type IInputIndex, type IParser, type ISection } from './interfaces';
 import VideoConferenceBlock from './VideoConferenceBlock';
 
 const styles = StyleSheet.create({

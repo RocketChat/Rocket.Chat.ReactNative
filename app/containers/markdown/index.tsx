@@ -4,8 +4,8 @@ import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
-import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
+import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import MarkdownContext from './contexts/MarkdownContext';
 import LineBreak from './components/LineBreak';
 import { KaTeX } from './components/Katex';

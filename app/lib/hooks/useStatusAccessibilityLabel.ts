@@ -1,4 +1,4 @@
-import getRoomAccessibilityLabel, { IGetAccessibilityRoomLabel } from '../helpers/getRoomAccessibilityLabel';
+import getRoomAccessibilityLabel, { type IGetAccessibilityRoomLabel } from '../helpers/getRoomAccessibilityLabel';
 import { useAppSelector } from './useAppSelector';
 
 interface IUseStatusAccessibiltyLabel extends IGetAccessibilityRoomLabel {

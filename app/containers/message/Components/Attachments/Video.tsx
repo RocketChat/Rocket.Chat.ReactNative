@@ -1,22 +1,22 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { IUserMessage } from '../../../../definitions';
-import { IAttachment } from '../../../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { type IUserMessage } from '../../../../definitions';
+import { type IAttachment } from '../../../../definitions/IAttachment';
+import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import I18n from '../../../../i18n';
 import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { TIconsName } from '../../../CustomIcon';
+import { type TIconsName } from '../../../CustomIcon';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import BlurComponent from '../OverlayComponent';
-import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
+import { type TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];

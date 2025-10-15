@@ -1,11 +1,19 @@
-import { Root } from '@rocket.chat/message-parser';
-import { StyleProp } from 'react-native';
-import { ImageStyle } from 'expo-image';
+import { type Root } from '@rocket.chat/message-parser';
+import { type StyleProp } from 'react-native';
+import { type ImageStyle } from 'expo-image';
 
-import { IUserChannel } from '../markdown/interfaces';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IThread, IUrl, IUserMention, IUserMessage, MessageType, TAnyMessageModel } from '../../definitions';
-import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { type IUserChannel } from '../markdown/interfaces';
+import { type TGetCustomEmoji } from '../../definitions/IEmoji';
+import {
+	type IAttachment,
+	type IThread,
+	type IUrl,
+	type IUserMention,
+	type IUserMessage,
+	type MessageType,
+	type TAnyMessageModel
+} from '../../definitions';
+import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 
 export interface IMessageAttachments {
 	attachments?: IAttachment[];
