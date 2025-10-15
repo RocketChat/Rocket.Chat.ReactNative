@@ -56,6 +56,7 @@
 		"@react-navigation/elements": "^2.6.1",
 		"@react-navigation/native": "^7.1.16",
 		"@react-navigation/native-stack": "^7.3.23",
+		"@rocket.chat/media-signaling": "/Users/diegomello/Development/Work/Rocket.Chat/packages/media-signaling",
 		"@rocket.chat/message-parser": "^0.31.31",
 		"@rocket.chat/mobile-crypto": "RocketChat/rocket.chat-mobile-crypto",
 		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
