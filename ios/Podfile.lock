@@ -2381,8 +2381,30 @@ PODS:
     - ReactCommon/turbomodule/core
     - TOCropViewController (~> 2.7.4)
     - Yoga
-  - RNKeychain (8.2.0):
+  - RNKeychain (10.0.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNLocalize (2.1.1):
     - React-Core
   - RNNotifee (7.8.2):
@@ -3172,7 +3194,7 @@ SPEC CHECKSUMS:
   React-timing: 2d07431f1c1203c5b0aaa6dc7b5f503704519218
   React-utils: 67cf7dcfc18aa4c56bec19e11886033bb057d9fa
   ReactAppDependencyProvider: bf62814e0fde923f73fc64b7e82d76c63c284da9
-  ReactCodegen: c51a63d05629675dd61caf58d1a093c4457972c0
+  ReactCodegen: df3ff45729335a27d1c85bed1787e79783289968
   ReactCommon: 177fca841e97b2c0e288e86097b8be04c6e7ae36
   RNBootSplash: 1280eeb18d887de0a45bb4923d4fc56f25c8b99c
   RNCAsyncStorage: edb872909c88d8541c0bfade3f86cd7784a7c6b3
@@ -3188,7 +3210,7 @@ SPEC CHECKSUMS:
   RNFileViewer: f9424017fa643c115c1444e11292e84fb16ddd68
   RNGestureHandler: 8ff2b1434b0ff8bab28c8242a656fb842990bbc8
   RNImageCropPicker: b219389d3a300679b396e81d501e8c8169ffa3c0
-  RNKeychain: bbe2f6d5cc008920324acb49ef86ccc03d3b38e4
+  RNKeychain: 48338bf1d8f5e29f84db1b605c2e107b45b83af9
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
   RNNotifee: 8768d065bf1e2f9f8f347b4bd79147431c7eacd6
   RNReanimated: f52ccd5ceea2bae48d7421eec89b3f0c10d7b642
