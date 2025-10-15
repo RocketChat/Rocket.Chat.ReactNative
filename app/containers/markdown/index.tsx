@@ -1,5 +1,5 @@
 import React from 'react';
-import { type StyleProp, type TextStyle, View } from 'react-native';
+import { View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
@@ -27,16 +27,9 @@ interface IMarkdownProps {
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;
 	username?: string;
-	tmid?: string;
-	numberOfLines?: number;
-	customEmojis?: boolean;
 	useRealName?: boolean;
 	channels?: IUserChannel[];
-	enableMessageParser?: boolean;
-	// TODO: Refactor when migrate Room
 	navToRoomInfo?: Function;
-	testID?: string;
-	style?: StyleProp<TextStyle>[];
 	onLinkPress?: TOnLinkPress;
 	isTranslated?: boolean;
 }

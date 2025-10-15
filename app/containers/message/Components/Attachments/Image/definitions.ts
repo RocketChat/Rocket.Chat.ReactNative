@@ -1,5 +1,3 @@
-import { type StyleProp, type TextStyle } from 'react-native';
-
 import { type IAttachment, type IUserMessage } from '../../../../../definitions';
 import { type TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { type TDownloadState } from '../../../../../lib/methods/handleMediaDownload';
@@ -7,8 +5,6 @@ import { type TDownloadState } from '../../../../../lib/methods/handleMediaDownl
 export interface IImageContainer {
 	file: IAttachment;
 	showAttachment?: (file: IAttachment) => void;
-	style?: StyleProp<TextStyle>[];
-	isReply?: boolean;
 	getCustomEmoji?: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;

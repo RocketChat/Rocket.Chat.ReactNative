@@ -1,5 +1,5 @@
 import { type Root } from '@rocket.chat/message-parser';
-import { type StyleProp, type TextStyle } from 'react-native';
+import { type StyleProp } from 'react-native';
 import { type ImageStyle } from 'expo-image';
 
 import { type IUserChannel } from '../markdown/interfaces';
@@ -18,8 +18,6 @@ import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 export interface IMessageAttachments {
 	attachments?: IAttachment[];
 	timeFormat?: string;
-	style?: StyleProp<TextStyle>[];
-	isReply?: boolean;
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;

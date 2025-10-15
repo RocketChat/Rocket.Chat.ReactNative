@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { type StyleProp, StyleSheet, Text, type TextStyle, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { type IUserMessage } from '../../../../definitions';
 import { type IAttachment } from '../../../../definitions/IAttachment';
@@ -39,8 +39,6 @@ interface IMessageVideo {
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
-	style?: StyleProp<TextStyle>[];
-	isReply?: boolean;
 	msg?: string;
 }
 
@@ -72,15 +70,7 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 	);
 };
 
-const Video = ({
-	file,
-	showAttachment,
-	getCustomEmoji,
-	author,
-	style,
-	isReply,
-	msg
-}: IMessageVideo): React.ReactElement | null => {
+const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVideo): React.ReactElement | null => {
 	'use memo';
 
 	const { user } = useContext(MessageContext);
@@ -112,7 +102,7 @@ const Video = ({
 
 	return (
 		<View style={{ gap: 4 }}>
-			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} />
+			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
 			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
 			</Touchable>
