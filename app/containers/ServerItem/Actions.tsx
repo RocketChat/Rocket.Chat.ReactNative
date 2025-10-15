@@ -37,7 +37,6 @@ export const DeleteAction = React.memo(({ transX, width, onDeletePress, testID }
 	useAnimatedReaction(
 		() => transX.value,
 		(currentTransX, previousTransX) => {
-			// Triggers the animation and hapticFeedback if swipe reaches/unreaches the threshold.
 			if (I18n.isRTL) {
 				if (previousTransX && currentTransX > LONG_SWIPE && previousTransX <= LONG_SWIPE) {
 					runOnJS(triggerDeleteAnimation)(ACTION_WIDTH);
