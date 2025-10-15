@@ -103,6 +103,7 @@ tags:
     element:
       id: 'profile-view-submit'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'profile-view-submit'
 
@@ -127,6 +128,7 @@ tags:
     element:
       id: 'profile-view-submit'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'profile-view-submit'
 
