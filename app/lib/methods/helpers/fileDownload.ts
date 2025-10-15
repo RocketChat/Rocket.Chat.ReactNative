@@ -17,20 +17,19 @@ export const fileDownload = async (url: string, attachment?: IAttachment, fileNa
 	}
 	if (attachment?.title) {
 		path = `${path}${sanitizeFileName(attachment.title)}`;
-  }
+	}
 
-  const cache = await getMediaCache({ type: 'other' as const, mimeType: attachment?.format, urlToCache: url });
+	const cache = await getMediaCache({ type: 'other' as const, mimeType: attachment?.format, urlToCache: url });
 
-  if (cache?.exists) {
+	if (cache?.exists) {
+		return cache.uri;
+	}
+	const option = {
+		messageId: url,
+		type: 'other' as const,
+		downloadUrl: url
+	};
 
-					return cache.uri;
-		}
-  const option = {
-					messageId: url,
-					type:  'other' as const,
-					downloadUrl: url
-				};
-				
 	const uri = await downloadMediaFile(option);
 	return uri;
 };
