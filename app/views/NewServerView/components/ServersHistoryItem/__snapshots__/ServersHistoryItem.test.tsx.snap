@@ -74,7 +74,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://open.rocket.chat/-delete"
+          testID="servers-history-delete-https://open.rocket.chat"
           underlayColor="black"
         >
           <View
@@ -168,7 +168,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             },
           ]
         }
-        testID="server-item-https://open.rocket.chat/"
+        testID="servers-history-https://open.rocket.chat"
         underlayColor="#E4E7EA"
       >
         <View
@@ -198,6 +198,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               {
                 "alignItems": "center",
                 "flexDirection": "row",
+                "minHeight": 56,
                 "padding": 12,
               }
             }
@@ -218,13 +219,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               onLoad={[Function]}
               onLoadStart={[Function]}
               onProgress={[Function]}
-              placeholder={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
+              placeholder={[]}
               source={
                 [
                   {
@@ -270,7 +265,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   ]
                 }
               >
-                Rocket.Chat
+                https://open.rocket.chat
               </Text>
               <Text
                 numberOfLines={1}
@@ -289,35 +284,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   ]
                 }
               >
-                https://open.rocket.chat/
+                john.doe
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#156FF5",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -395,7 +364,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://superlongservername.tologintoasuperlongservername/-delete"
+          testID="servers-history-delete-https://superlongservername.tologintoasuperlongservername.rocket.chat"
           underlayColor="black"
         >
           <View
@@ -489,7 +458,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             },
           ]
         }
-        testID="server-item-https://superlongservername.tologintoasuperlongservername/"
+        testID="servers-history-https://superlongservername.tologintoasuperlongservername.rocket.chat"
         underlayColor="#E4E7EA"
       >
         <View
@@ -519,6 +488,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               {
                 "alignItems": "center",
                 "flexDirection": "row",
+                "minHeight": 56,
                 "padding": 12,
               }
             }
@@ -539,13 +509,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               onLoad={[Function]}
               onLoadStart={[Function]}
               onProgress={[Function]}
-              placeholder={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
+              placeholder={[]}
               source={
                 [
                   {
@@ -591,7 +555,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   ]
                 }
               >
-                Super Long Server Name in Rocket.Chat
+                https://superlongservername.tologintoasuperlongservername.rocket.chat
               </Text>
               <Text
                 numberOfLines={1}
@@ -610,35 +574,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   ]
                 }
               >
-                https://superlongservername.tologintoasuperlongservername/
+                very.long.username.here
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#9EA2A8",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -716,7 +654,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://stable.rocket.chat/-delete"
+          testID="servers-history-delete-https://stable.rocket.chat"
           underlayColor="black"
         >
           <View
@@ -810,7 +748,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             },
           ]
         }
-        testID="server-item-https://stable.rocket.chat/"
+        testID="servers-history-https://stable.rocket.chat"
         underlayColor="#E4E7EA"
       >
         <View
@@ -840,6 +778,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               {
                 "alignItems": "center",
                 "flexDirection": "row",
+                "minHeight": 56,
                 "padding": 12,
               }
             }
@@ -860,17 +799,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               onLoad={[Function]}
               onLoadStart={[Function]}
               onProgress={[Function]}
-              placeholder={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
+              placeholder={[]}
               source={
                 [
                   {
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+                    "uri": "test-file-stub",
                   },
                 ]
               }
@@ -912,7 +845,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   ]
                 }
               >
-                Rocket.Chat
+                https://stable.rocket.chat
               </Text>
               <Text
                 numberOfLines={1}
@@ -931,35 +864,9 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                   ]
                 }
               >
-                https://stable.rocket.chat/
+                admin
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#9EA2A8",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -1042,7 +949,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://open.rocket.chat/-delete"
+          testID="servers-history-delete-https://open.rocket.chat"
           underlayColor="black"
         >
           <View
@@ -1136,7 +1043,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             },
           ]
         }
-        testID="server-item-https://open.rocket.chat/"
+        testID="servers-history-https://open.rocket.chat"
         underlayColor="#E4E7EA"
       >
         <View
@@ -1166,6 +1073,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               {
                 "alignItems": "center",
                 "flexDirection": "row",
+                "minHeight": 56,
                 "padding": 12,
               }
             }
@@ -1186,13 +1094,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               onLoad={[Function]}
               onLoadStart={[Function]}
               onProgress={[Function]}
-              placeholder={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
+              placeholder={[]}
               source={
                 [
                   {
@@ -1238,7 +1140,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                   ]
                 }
               >
-                Rocket.Chat
+                https://open.rocket.chat
               </Text>
               <Text
                 numberOfLines={1}
@@ -1257,35 +1159,9 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                   ]
                 }
               >
-                https://open.rocket.chat/
+                john.doe
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#9EA2A8",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -1363,7 +1239,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://example.com/-delete"
+          testID="servers-history-delete-https://example.com"
           underlayColor="black"
         >
           <View
@@ -1457,7 +1333,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             },
           ]
         }
-        testID="server-item-https://example.com/"
+        testID="servers-history-https://example.com"
         underlayColor="#E4E7EA"
       >
         <View
@@ -1487,6 +1363,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               {
                 "alignItems": "center",
                 "flexDirection": "row",
+                "minHeight": 56,
                 "padding": 12,
               }
             }
@@ -1507,13 +1384,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               onLoad={[Function]}
               onLoadStart={[Function]}
               onProgress={[Function]}
-              placeholder={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
+              placeholder={[]}
               source={
                 [
                   {
@@ -1559,7 +1430,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                   ]
                 }
               >
-                Another Server
+                https://example.com
               </Text>
               <Text
                 numberOfLines={1}
@@ -1578,35 +1449,9 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                   ]
                 }
               >
-                https://example.com/
+                user123
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#9EA2A8",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -1689,7 +1534,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://open.rocket.chat/-delete"
+          testID="servers-history-delete-https://open.rocket.chat"
           underlayColor="black"
         >
           <View
@@ -1783,7 +1628,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="server-item-https://open.rocket.chat/"
+        testID="servers-history-https://open.rocket.chat"
         underlayColor="#E4E7EA"
       >
         <View
@@ -1813,6 +1658,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               {
                 "alignItems": "center",
                 "flexDirection": "row",
+                "minHeight": 56,
                 "padding": 12,
               }
             }
@@ -1833,13 +1679,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               onLoad={[Function]}
               onLoadStart={[Function]}
               onProgress={[Function]}
-              placeholder={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
+              placeholder={[]}
               source={
                 [
                   {
@@ -1885,7 +1725,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                Rocket.Chat
+                https://open.rocket.chat
               </Text>
               <Text
                 numberOfLines={1}
@@ -1904,35 +1744,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                https://open.rocket.chat/
+                john.doe
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#9EA2A8",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -2010,7 +1824,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://open.rocket.chat/-delete"
+          testID="servers-history-delete-https://open.rocket.chat"
           underlayColor="black"
         >
           <View
@@ -2104,7 +1918,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="server-item-https://open.rocket.chat/"
+        testID="servers-history-https://open.rocket.chat"
         underlayColor="#2D3039"
       >
         <View
@@ -2134,6 +1948,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               {
                 "alignItems": "center",
                 "flexDirection": "row",
+                "minHeight": 56,
                 "padding": 12,
               }
             }
@@ -2154,13 +1969,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               onLoad={[Function]}
               onLoadStart={[Function]}
               onProgress={[Function]}
-              placeholder={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
+              placeholder={[]}
               source={
                 [
                   {
@@ -2206,7 +2015,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                Rocket.Chat
+                https://open.rocket.chat
               </Text>
               <Text
                 numberOfLines={1}
@@ -2225,35 +2034,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                https://open.rocket.chat/
+                john.doe
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#404754",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -2331,7 +2114,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="server-item-https://open.rocket.chat/-delete"
+          testID="servers-history-delete-https://open.rocket.chat"
           underlayColor="black"
         >
           <View
@@ -2425,7 +2208,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             },
           ]
         }
-        testID="server-item-https://open.rocket.chat/"
+        testID="servers-history-https://open.rocket.chat"
         underlayColor="#16181a"
       >
         <View
@@ -2455,6 +2238,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               {
                 "alignItems": "center",
                 "flexDirection": "row",
+                "minHeight": 56,
                 "padding": 12,
               }
             }
@@ -2475,13 +2259,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               onLoad={[Function]}
               onLoadStart={[Function]}
               onProgress={[Function]}
-              placeholder={
-                [
-                  {
-                    "uri": "test-file-stub",
-                  },
-                ]
-              }
+              placeholder={[]}
               source={
                 [
                   {
@@ -2527,7 +2305,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                Rocket.Chat
+                https://open.rocket.chat
               </Text>
               <Text
                 numberOfLines={1}
@@ -2546,35 +2324,9 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                   ]
                 }
               >
-                https://open.rocket.chat/
+                john.doe
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#404754",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
           </View>
         </View>
       </RNGestureHandlerButton>
