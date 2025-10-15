@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { Heading as HeadingProps } from '@rocket.chat/message-parser';
+import { type Heading as HeadingProps } from '@rocket.chat/message-parser';
 
 import { themes } from '../../../lib/constants/colors';
 import styles from '../styles';

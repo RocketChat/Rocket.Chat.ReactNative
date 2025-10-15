@@ -2,7 +2,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
-import { IEmoji, TFrequentlyUsedEmojiModel } from '../../definitions';
+import { type IEmoji, type TFrequentlyUsedEmojiModel } from '../../definitions';
 import log from './helpers/log';
 import { sanitizeLikeString } from '../database/utils';
 import { emojis } from '../constants/emojis';

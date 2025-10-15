@@ -1,8 +1,8 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { createRef, ForwardedRef, forwardRef, useContext } from 'react';
-import { AccessibilityRole } from 'react-native';
+import React, { createRef, type ForwardedRef, forwardRef, useContext } from 'react';
+import { type AccessibilityRole } from 'react-native';
 
-import { TIconsName } from '../CustomIcon';
+import { type TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {

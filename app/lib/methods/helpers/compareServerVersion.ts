@@ -1,4 +1,4 @@
-import { coerce, gt, gte, lt, lte, SemVer } from 'semver';
+import { coerce, gt, gte, lt, lte, type SemVer } from 'semver';
 
 const methods = {
 	lowerThan: lt,

@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import ListRadio from '../../containers/List/ListRadio';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -15,7 +15,7 @@ import { RootEnum } from '../../definitions';
 import I18n, { isRTL, LANGUAGES } from '../../i18n';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { SettingsStackParamList } from '../../stacks/types';
+import { type SettingsStackParamList } from '../../stacks/types';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { saveUserPreferences } from '../../lib/services/restApi';
