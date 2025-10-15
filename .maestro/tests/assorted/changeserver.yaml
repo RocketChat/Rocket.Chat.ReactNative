@@ -146,3 +146,43 @@ tags:
     file: './utils/check-server.yaml'
     env:
       server: ${output.data.server}
+
+# should test swipe to delete on alternate server
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+
+# swipe left to reveal delete button
+- swipe:
+    direction: LEFT
+    from:
+      id: 'server-item-${output.data.alternateServer}'
+
+# tap delete button
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}-delete'
+
+# confirm deletion
+- extendedWaitUntil:
+    visible:
+      text: '.*Delete.*'
+    timeout: 60000
+- tapOn:
+    text: 'Delete'
+
+# verify alternate server is deleted
+- extendedWaitUntil:
+    notVisible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+
+# verify main server still exists
+- assertVisible:
+    id: 'server-item-${output.data.server}'
