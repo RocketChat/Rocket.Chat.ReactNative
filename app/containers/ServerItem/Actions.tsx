@@ -7,7 +7,7 @@ import Animated, {
 	runOnJS,
 	useAnimatedReaction,
 	useSharedValue,
-	SharedValue
+	type SharedValue
 } from 'react-native-reanimated';
 import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
