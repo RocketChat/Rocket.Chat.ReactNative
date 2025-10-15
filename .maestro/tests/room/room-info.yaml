@@ -11,6 +11,7 @@ tags:
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
 
+- startRecording: room
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
@@ -429,3 +430,4 @@ tags:
     timeout: 60000
 - assertVisible:
     id: 'user-role-Livechat-Agent'
+- stopRecording
