@@ -61,10 +61,6 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		fontSize: 14,
 		...sharedStyles.textMedium
-	},
-	itemContent: {
-		fontSize: 14,
-		...sharedStyles.textRegular
 	}
 });
 
@@ -81,7 +77,7 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>
 				{label}
 			</Text>
-			<Markdown style={[styles.itemContent, { color: themes[theme].fontSecondaryInfo }]} msg={content} />
+			<Markdown msg={content} />
 		</View>
 	) : null;
 
