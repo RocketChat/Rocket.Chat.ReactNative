@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { type StyleProp, Text, type TextStyle } from 'react-native';
 
 import i18n from '../../../../i18n';
 import { themes } from '../../../../lib/constants/colors';
@@ -12,7 +12,7 @@ import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
-import { IUserChannel } from '../../interfaces';
+import { type IUserChannel } from '../../interfaces';
 import styles from '../../styles';
 
 interface IHashtag {

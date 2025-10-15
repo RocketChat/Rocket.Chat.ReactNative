@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import { useTheme } from '../../theme';
 import IconOrAvatar from './IconOrAvatar';
-import { IWrapperProps } from './interfaces';
+import { type IWrapperProps } from './interfaces';
 import styles from './styles';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 

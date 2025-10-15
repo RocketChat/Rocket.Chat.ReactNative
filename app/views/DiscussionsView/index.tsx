@@ -1,11 +1,11 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { IMessageFromServer, TThreadModel } from '../../definitions';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type IMessageFromServer, type TThreadModel } from '../../definitions';
+import { type ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import log from '../../lib/methods/helpers/log';

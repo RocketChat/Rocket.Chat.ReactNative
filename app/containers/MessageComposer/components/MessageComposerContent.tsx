@@ -1,8 +1,8 @@
-import { memo, ReactElement, RefObject } from 'react';
-import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { memo, type ReactElement, type RefObject } from 'react';
+import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
-import { TMessageAction } from '../../../views/RoomView/context';
-import { IComposerInput } from '../interfaces';
+import { type TMessageAction } from '../../../views/RoomView/context';
+import { type IComposerInput } from '../interfaces';
 import { useTheme } from '../../../theme';
 import { RecordAudio } from './RecordAudio';
 import { Left, Right } from './Unfocused';
