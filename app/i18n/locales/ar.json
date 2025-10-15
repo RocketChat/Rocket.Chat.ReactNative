@@ -592,6 +592,7 @@
   "Without_Servers": "بدون خوادم",
   "Workspace_URL": "عنوان URL لمساحة العمل",
   "Workspace_URL_Example": "open.rocket.chat",
+  "Workspaces": "مساحات العمل",
   "Would_you_like_to_return_the_inquiry": "هل ترغب بالرد على السؤال؟",
   "Write_External_Permission": "إذن معرض",
   "Write_External_Permission_Message": "يحتاج Rocket.Chat للوصول إلى معرض الصور الخاص بك حتى تتمكن من حفظ الصور",

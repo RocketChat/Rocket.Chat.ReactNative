@@ -519,6 +519,7 @@
   "Without_Servers": "サーバーを除く",
   "Workspace_URL": "ワークスペースのURL",
   "Workspace_URL_Example": "open.rocket.chat",
+  "Workspaces": "ワークスペース",
   "Write_External_Permission": "ギャラリーへのアクセス許可",
   "Write_External_Permission_Message": "Rocket.Chatは画像を保存するためにギャラリーへのアクセスを求めています。",
   "Yes_action_it": "はい、{{action}}します！",
