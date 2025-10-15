@@ -1,6 +1,6 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { tapBack, navigateToLogin, login, platformTypes, TTextMatcher, tapAndWaitFor, searchRoom } from '../../helpers/app';
+import { tapBack, navigateToLogin, login, platformTypes, type TTextMatcher, tapAndWaitFor, searchRoom } from '../../helpers/app';
 import { createRandomUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 

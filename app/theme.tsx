@@ -1,8 +1,8 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import React from 'react';
 
-import { IThemePreference } from './definitions/ITheme';
-import { TNavigationOptions } from './definitions/navigationTypes';
+import { type IThemePreference } from './definitions/ITheme';
+import { type TNavigationOptions } from './definitions/navigationTypes';
 import { colors } from './lib/constants/colors';
 
 export type TSupportedThemes = keyof typeof colors;

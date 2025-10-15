@@ -3,8 +3,8 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Observable, Subscription } from 'rxjs';
+import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type Observable, type Subscription } from 'rxjs';
 
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -17,7 +17,7 @@ import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { themes, colors } from '../../lib/constants/colors';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
@@ -27,11 +27,18 @@ import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { Filter } from './filters';
 import Item from './Item';
 import styles from './styles';
-import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
+import {
+	type IApplicationState,
+	type IBaseScreen,
+	type IMessage,
+	SubscriptionType,
+	type TSubscriptionModel,
+	type TThreadModel
+} from '../../definitions';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services/restApi';
 import UserPreferences from '../../lib/methods/userPreferences';

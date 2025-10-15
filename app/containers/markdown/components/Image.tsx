@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image as ImageProps } from '@rocket.chat/message-parser';
+import { type Image as ImageProps } from '@rocket.chat/message-parser';
 import { Image as ExpoImage } from 'expo-image';
 
 import { useTheme } from '../../../theme';
