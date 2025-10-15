@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Dimensions } from 'react-native';
 import { Image } from 'expo-image';
 
-import Check from '../Check';
+import Radio from '../Radio';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
-import Touch from '../Touch';
+import Touchable from './Touchable';
 
 export { ROW_HEIGHT };
 
@@ -17,20 +17,18 @@ export interface IServerItem {
 		useRealName?: boolean;
 	};
 	onPress(): void;
-	onLongPress?(): void;
+	onDeletePress?(): void;
 	hasCheck?: boolean;
 }
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
+const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();
+	const { width } = Dimensions.get('window');
+
 	return (
-		<Touch
-			onPress={onPress}
-			onLongPress={() => onLongPress?.()}
-			testID={`server-item-${item.id}`}
-			style={{ backgroundColor: colors.surfaceRoom }}>
+		<Touchable onPress={onPress} onDeletePress={onDeletePress || (() => {})} testID={`server-item-${item.id}`} width={width}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<Image
@@ -53,9 +51,9 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 						{item.id}
 					</Text>
 				</View>
-				{hasCheck ? <Check /> : null}
+				<Radio check={hasCheck || false} size={24} />
 			</View>
-		</Touch>
+		</Touchable>
 	);
 });
 
