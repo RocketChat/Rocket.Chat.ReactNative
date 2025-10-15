@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CommonActions, NavigationContainerRef, StackActions } from '@react-navigation/native';
+import { CommonActions, type NavigationContainerRef, StackActions } from '@react-navigation/native';
 
 // TODO: we need change this any to the correctly types from our stacks
 const navigationRef = React.createRef<NavigationContainerRef<any>>();

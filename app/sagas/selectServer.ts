@@ -8,8 +8,8 @@ import { call } from 'typed-redux-saga';
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
 import {
-	ISelectServerAction,
-	IServerRequestAction,
+	type ISelectServerAction,
+	type IServerRequestAction,
 	selectServerCancel,
 	selectServerFailure,
 	selectServerRequest,
@@ -28,7 +28,7 @@ import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
-import { IServerInfo, RootEnum, TServerModel } from '../definitions';
+import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';

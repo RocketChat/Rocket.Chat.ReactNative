@@ -9,7 +9,7 @@ import { textParser } from './utils';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import ActivityIndicator from '../ActivityIndicator';
 import { useTheme } from '../../theme';
-import { IText, Option } from './interfaces';
+import { type IText, type Option } from './interfaces';
 
 const styles = StyleSheet.create({
 	iosPadding: {

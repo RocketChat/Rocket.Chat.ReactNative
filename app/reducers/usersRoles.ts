@@ -1,5 +1,5 @@
 import { USERS_ROLES } from '../actions/actionsTypes';
-import { TApplicationActions } from '../definitions';
+import { type TApplicationActions } from '../definitions';
 
 type TUserRole = {
 	_id: string;

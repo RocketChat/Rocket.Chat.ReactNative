@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { OrderedList as OrderedListProps } from '@rocket.chat/message-parser';
+import { type OrderedList as OrderedListProps } from '@rocket.chat/message-parser';
 
 import Inline from '../Inline';
 import styles from '../../styles';

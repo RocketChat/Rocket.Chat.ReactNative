@@ -1,19 +1,19 @@
-import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useReducer } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 
-import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { sendLoadingEvent } from '../../containers/Loading';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import UserItem from '../../containers/UserItem';
 import Radio from '../../containers/Radio';
-import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
+import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../lib/hooks/usePermissions';
@@ -23,9 +23,9 @@ import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { getRoomMembers } from '../../lib/services/restApi';
-import { TSupportedPermissions } from '../../reducers/permissions';
+import { type TSupportedPermissions } from '../../reducers/permissions';
 import { getUserSelector } from '../../selectors/login';
-import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import ActionsSection from './components/ActionsSection';
 import {
@@ -38,7 +38,7 @@ import {
 	handleRemoveFromTeam,
 	handleRemoveUserFromRoom,
 	navToDirectMessage,
-	TRoomType
+	type TRoomType
 } from './helpers';
 import styles from './styles';
 import { sanitizeLikeString } from '../../lib/database/utils';

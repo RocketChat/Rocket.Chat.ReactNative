@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { ISubscription } from '../../definitions';
+import { type ISubscription } from '../../definitions';
 
 type TResult = ISubscription | null;
 
