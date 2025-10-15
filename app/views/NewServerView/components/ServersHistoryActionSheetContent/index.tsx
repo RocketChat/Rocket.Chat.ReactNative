@@ -5,10 +5,11 @@ import { A11y } from 'react-native-a11y-order';
 
 import * as List from '../../../../containers/List';
 import { useTheme } from '../../../../theme';
-import { TServerHistoryModel } from '../../../../definitions';
+import { type TServerHistoryModel } from '../../../../definitions';
 import ServersHistoryItem from '../ServersHistoryItem';
 import I18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
+
 
 const styles = StyleSheet.create({
 	header: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	}
 });
-
+  
 interface IServersHistoryActionSheetContent {
 	serversHistory: TServerHistoryModel[];
 	onPressServerHistory(serverHistory: TServerHistoryModel): void;

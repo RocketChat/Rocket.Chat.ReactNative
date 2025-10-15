@@ -2,7 +2,7 @@ import { device, waitFor, element, by } from 'detox';
 
 import data from '../../data';
 import { navigateToLogin, login, tapBack, sleep } from '../../helpers/app';
-import { createRandomTeam, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomTeam, createRandomUser, type ITestUser, sendMessage } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 async function navigateToRoom(search: string) {

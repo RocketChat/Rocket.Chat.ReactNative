@@ -8,12 +8,12 @@ import {
 	tapBack,
 	searchRoom,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	checkRoomTitle,
 	mockMessage,
 	jumpToQuotedMessage
 } from '../../helpers/app';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 describe('Broadcast room', () => {

@@ -1,7 +1,7 @@
 import { device, waitFor, element, by } from 'detox';
 
-import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { navigateToLogin, login, platformTypes, type TTextMatcher } from '../../helpers/app';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 describe('Group DM', () => {
 	let textMatcher: TTextMatcher;

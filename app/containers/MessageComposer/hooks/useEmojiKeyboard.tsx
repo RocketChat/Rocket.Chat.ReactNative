@@ -1,7 +1,7 @@
-import React, { createContext, ReactElement, useContext, useState } from 'react';
+import React, { createContext, type ReactElement, useContext, useState } from 'react';
 import { Platform } from 'react-native';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
-import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { MessageInnerContext } from '../context';

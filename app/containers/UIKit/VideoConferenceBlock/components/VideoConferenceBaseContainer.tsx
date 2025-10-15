@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import i18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
-import { CustomIcon, TIconsName } from '../../../CustomIcon';
+import { CustomIcon, type TIconsName } from '../../../CustomIcon';
 import useStyle from './styles';
 
 type VideoConfMessageIconProps = {

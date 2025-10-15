@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
 import { appStart } from '../../../actions/app';
 import { selectServerRequest, serverInitAdd } from '../../../actions/server';
@@ -10,7 +10,7 @@ import { hideActionSheetRef } from '../../../containers/ActionSheet';
 import Button from '../../../containers/Button';
 import * as List from '../../../containers/List';
 import ServerItem from '../../../containers/ServerItem';
-import { RootEnum, TServerModel } from '../../../definitions';
+import { RootEnum, type TServerModel } from '../../../definitions';
 import I18n from '../../../i18n';
 import { TOKEN_KEY } from '../../../lib/constants/keys';
 import database from '../../../lib/database';

@@ -2,37 +2,37 @@ import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 import { themes } from '../../lib/constants/colors';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
-import { ChatsStackParamList } from '../../stacks/types';
-import { IRoomInfoParam } from '../SearchMessagesView';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { type IRoomInfoParam } from '../SearchMessagesView';
 import {
-	IApplicationState,
-	TMessageModel,
-	ISubscription,
+	type IApplicationState,
+	type TMessageModel,
+	type ISubscription,
 	SubscriptionType,
-	IAttachment,
-	IMessage,
-	TAnyMessageModel,
-	IUrl,
-	TGetCustomEmoji,
-	ICustomEmoji
+	type IAttachment,
+	type IMessage,
+	type TAnyMessageModel,
+	type IUrl,
+	type TGetCustomEmoji,
+	type ICustomEmoji
 } from '../../definitions';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
-import { TNavigation } from '../../stacks/stackType';
+import { type TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
 import Navigation from '../../lib/navigation/appNavigation';
