@@ -3,6 +3,8 @@ import { call, cancel, delay, fork, put, race, select, take, takeLatest } from '
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import * as Keychain from 'react-native-keychain';
+import { Emitter } from '@rocket.chat/emitter';
+import { MediaSignalingSession, MediaCallWebRTCProcessor } from '@rocket.chat/media-signaling';
 
 import moment from 'moment';
 import * as types from '../actions/actionsTypes';
@@ -42,6 +44,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
+import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -214,6 +217,15 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const startVoipFork = function* startVoipFork() {
+	try {
+		const userId = yield select(state => state.login.user.id);
+		mediaSessionInstance.init(userId);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
@@ -230,6 +242,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield delay(1000);
+		yield fork(startVoipFork);
 
 		setLanguage(user?.language);
 

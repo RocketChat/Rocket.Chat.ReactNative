@@ -1,0 +1,15 @@
+diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+index 19d31ae..d5295b5 100644
+--- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
++++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+@@ -549,7 +549,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+       'uiInteraction',
+       'e2ekeyRequest',
+       'userData',
+-      'video-conference'
++      'video-conference',
++      'media-signal',
++      'media-calls'
+     ].map(event => this.subscribe(topic, `${this.userId}/${event}`, false)))
+   }
+ 
