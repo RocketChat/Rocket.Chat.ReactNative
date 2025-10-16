@@ -1,10 +1,10 @@
 import moment from 'moment';
 
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
-import { IMessage, TMessageModel } from '../../definitions';
+import { type IMessage, type TMessageModel } from '../../definitions';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
-import { RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
+import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';

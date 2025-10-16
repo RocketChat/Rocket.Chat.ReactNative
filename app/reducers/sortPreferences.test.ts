@@ -1,4 +1,4 @@
-import { IPreferences } from '../definitions';
+import { type IPreferences } from '../definitions';
 import { setAllPreferences, setPreference } from '../actions/sortPreferences';
 import { mockedStore } from './mockedStore';
 import { initialState } from './sortPreferences';

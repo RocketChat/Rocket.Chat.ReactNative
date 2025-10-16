@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor } from '../../definitions';
+import { type IApplicationState, type TUserStatus, type IOmnichannelSource, type IVisitor } from '../../definitions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';

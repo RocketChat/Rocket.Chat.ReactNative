@@ -6,7 +6,7 @@ import {
 	tapBack,
 	sleep,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapAndWaitFor,
 	navigateToRoom,
 	mockMessage,

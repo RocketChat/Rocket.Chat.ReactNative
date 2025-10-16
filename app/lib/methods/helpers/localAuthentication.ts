@@ -18,7 +18,7 @@ import {
 } from '../../constants/localAuthentication';
 import I18n from '../../../i18n';
 import { setLocalAuthenticated } from '../../../actions/login';
-import { TServerModel } from '../../../definitions';
+import { type TServerModel } from '../../../definitions';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 

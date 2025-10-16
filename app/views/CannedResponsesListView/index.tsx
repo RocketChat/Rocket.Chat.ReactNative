@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp } from '@react-navigation/native';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -19,13 +19,13 @@ import log from '../../lib/methods/helpers/log';
 import CannedResponseItem from './CannedResponseItem';
 import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
-import { ICannedResponse } from '../../definitions/ICannedResponse';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ICannedResponse } from '../../definitions/ICannedResponse';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { useDebounce } from '../../lib/methods/helpers';
 import { getListCannedResponse, getDepartments } from '../../lib/services/restApi';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { ISubscription } from '../../definitions';
+import { type ISubscription } from '../../definitions';
 
 const COUNT = 25;
 

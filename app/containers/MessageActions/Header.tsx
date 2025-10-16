@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
-import { TSupportedThemes, useTheme } from '../../theme';
+import { type TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
@@ -9,7 +9,7 @@ import { addFrequentlyUsed } from '../../lib/methods/emojis';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import sharedStyles from '../../views/Styles';
-import { IEmoji, TAnyMessageModel } from '../../definitions';
+import { type IEmoji, type TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
 import I18n from '../../i18n';
 

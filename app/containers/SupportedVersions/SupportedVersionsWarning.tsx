@@ -1,4 +1,4 @@
-import React, { ReactElement, useLayoutEffect } from 'react';
+import React, { type ReactElement, useLayoutEffect } from 'react';
 import { View, Text, Linking } from 'react-native';
 
 import { useTheme } from '../../theme';
