@@ -5,7 +5,7 @@ import { Image } from 'expo-image';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../../../theme';
 import Touchable from './Touchable';
-import { TServerHistoryModel } from '../../../../definitions';
+import { type TServerHistoryModel } from '../../../../definitions';
 
 export { ROW_HEIGHT };
 

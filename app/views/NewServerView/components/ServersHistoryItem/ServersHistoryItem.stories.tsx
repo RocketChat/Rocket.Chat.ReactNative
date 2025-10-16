@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { themes } from '../../../../lib/constants/colors';
-import ServersHistoryItemComponent, { IServersHistoryItem } from '.';
-import { ThemeContext, TSupportedThemes } from '../../../../theme';
-import { TServerHistoryModel } from '../../../../definitions';
+import ServersHistoryItemComponent, { type IServersHistoryItem } from '.';
+import { ThemeContext, type TSupportedThemes } from '../../../../theme';
+import { type TServerHistoryModel } from '../../../../definitions';
 
 export default {
 	title: 'ServersHistoryItem'
