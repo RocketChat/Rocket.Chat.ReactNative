@@ -53,10 +53,7 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 		mainMessagesCount += mainMessagesInBatch.length;
 
 		const needsMoreMainMessages = mainMessagesCount < COUNT;
-		console.log('needsMoreMainMessages', needsMoreMainMessages);
-		console.log('mainMessagesCount', mainMessagesCount);
-		console.log('batch', batch.length);
-		console.log('allMessages', allMessages.length);
+
 		if (needsMoreMainMessages) {
 			const lastMessage = batch[batch.length - 1];
 			await fetchBatch(lastMessage.ts as string);
