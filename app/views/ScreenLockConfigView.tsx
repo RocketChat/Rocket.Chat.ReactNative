@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
 import I18n from '../i18n';
-import { TSupportedThemes, withTheme } from '../theme';
+import { type TSupportedThemes, withTheme } from '../theme';
 import * as List from '../containers/List';
 import database from '../lib/database';
 import {
@@ -17,7 +17,7 @@ import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import userPreferences from '../lib/methods/userPreferences';
-import { IApplicationState, TServerModel } from '../definitions';
+import { type IApplicationState, type TServerModel } from '../definitions';
 import Switch from '../containers/Switch';
 
 const DEFAULT_BIOMETRY = false;

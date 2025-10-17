@@ -3,7 +3,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
@@ -17,7 +17,7 @@ import EventEmitter from '../lib/methods/helpers/events';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import UserPreferences from '../lib/methods/userPreferences';
-import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import { type E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 

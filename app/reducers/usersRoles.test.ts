@@ -1,6 +1,6 @@
 import { setUsersRoles } from '../actions/usersRoles';
 import { mockedStore } from './mockedStore';
-import { TUsersRoles, initialState } from './usersRoles';
+import { type TUsersRoles, initialState } from './usersRoles';
 
 describe('test userRoles reducer', () => {
 	it('should return initial state', () => {

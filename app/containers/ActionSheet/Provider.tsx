@@ -1,7 +1,7 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { createRef, ForwardedRef, forwardRef, useContext } from 'react';
+import React, { createRef, type ForwardedRef, forwardRef, useContext } from 'react';
 
-import { TIconsName } from '../CustomIcon';
+import { type TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {

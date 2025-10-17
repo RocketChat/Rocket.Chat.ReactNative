@@ -1,18 +1,18 @@
-import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setLoading } from '../../../actions/selectedUsers';
 import * as List from '../../../containers/List';
-import { TSubscriptionModel } from '../../../definitions';
+import { type TSubscriptionModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { addUsersToRoom } from '../../../lib/services/restApi';
-import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { ChatsStackParamList } from '../../../stacks/types';
+import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '../../../stacks/types';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,

@@ -1,4 +1,4 @@
-import { ILastMessage, IMessage, IThreadResult } from '../../../definitions';
+import { type ILastMessage, type IMessage, type IThreadResult } from '../../../definitions';
 import { messagesStatus } from '../../constants/messagesStatus';
 import normalizeMessage from './normalizeMessage';
 

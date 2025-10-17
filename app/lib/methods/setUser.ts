@@ -2,7 +2,7 @@ import { InteractionManager } from 'react-native';
 
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
-import { IUser } from '../../definitions';
+import { type IUser } from '../../definitions';
 import { store as reduxStore } from '../store/auxStore';
 import { compareServerVersion } from './helpers';
 

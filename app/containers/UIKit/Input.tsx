@@ -4,7 +4,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
-import { IInput } from './interfaces';
+import { type IInput } from './interfaces';
 
 const styles = StyleSheet.create({
 	container: {

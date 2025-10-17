@@ -15,7 +15,7 @@ import { useTheme } from '../../theme';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { ICredentials } from '../../definitions';
+import { type ICredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Toast from '../Toast';

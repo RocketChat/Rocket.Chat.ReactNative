@@ -829,9 +829,6 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
             "color": "#2F343D",
             "lineHeight": undefined,
           },
-          {
-            "color": "#6C727A",
-          },
         ]
       }
       testID="markdown-preview-Due today"
@@ -1817,9 +1814,6 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
           {
             "color": "#2F343D",
             "lineHeight": undefined,
-          },
-          {
-            "color": "#6C727A",
           },
         ]
       }

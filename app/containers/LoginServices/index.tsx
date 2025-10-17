@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { IServices } from '../../selectors/login';
+import { type IServices } from '../../selectors/login';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { IItemService, IServiceList } from './interfaces';
+import { type IItemService, type IServiceList } from './interfaces';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
 import Service from './Service';

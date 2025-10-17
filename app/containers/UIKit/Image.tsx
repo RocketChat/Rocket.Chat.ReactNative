@@ -5,8 +5,8 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Components/Attachments/Image';
 import Navigation from '../../lib/navigation/appNavigation';
-import { IThumb, IImage, IElement } from './interfaces';
-import { IAttachment } from '../../definitions';
+import { type IThumb, type IImage, type IElement } from './interfaces';
+import { type IAttachment } from '../../definitions';
 
 const styles = StyleSheet.create({
 	image: {

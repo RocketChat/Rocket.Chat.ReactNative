@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
-import { IEmoji } from '../../definitions';
+import { type IEmoji } from '../../definitions';
 import { DEFAULT_EMOJIS } from '../constants/emojis';
 
 export const useFrequentlyUsedEmoji = (

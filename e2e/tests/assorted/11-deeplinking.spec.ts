@@ -12,7 +12,7 @@ import {
 	sleep
 } from '../../helpers/app';
 import {
-	IDeleteCreateUser,
+	type IDeleteCreateUser,
 	createRandomRoom,
 	createRandomUser,
 	deleteCreatedUsers,

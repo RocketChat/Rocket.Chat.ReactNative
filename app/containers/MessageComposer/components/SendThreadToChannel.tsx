@@ -1,7 +1,7 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StyleSheet, Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
 import { useRoomContext } from '../../../views/RoomView/context';

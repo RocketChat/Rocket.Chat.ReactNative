@@ -1,4 +1,4 @@
-import { Image } from 'react-native-image-crop-picker';
+import { type Image } from 'react-native-image-crop-picker';
 
 import { forceJpgExtension } from './forceJpgExtension';
 

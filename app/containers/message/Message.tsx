@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View, type ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -16,7 +16,7 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
-import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
+import { type IMessage, type IMessageInner, type IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 import { WidthAwareView } from './Components/WidthAwareView';

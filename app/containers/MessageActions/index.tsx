@@ -13,10 +13,16 @@ import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
-import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
-import Header, { HEADER_HEIGHT, IHeader } from './Header';
+import { type TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
+import Header, { HEADER_HEIGHT, type IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
-import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import {
+	type IApplicationState,
+	type IEmoji,
+	type ILoggedUser,
+	type TAnyMessageModel,
+	type TSubscriptionModel
+} from '../../definitions';
 import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
 import { getQuoteMessageLink } from '../../lib/methods/getQuoteMessageLink';
 import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';

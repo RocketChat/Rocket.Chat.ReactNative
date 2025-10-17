@@ -14,7 +14,7 @@ import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { IApplicationState, TUserStatus } from '../../definitions';
+import { type IApplicationState, type TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { setUserStatus } from '../../lib/services/restApi';

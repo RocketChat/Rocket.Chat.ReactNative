@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import Switch from '../../containers/Switch';
@@ -7,7 +7,7 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import I18n from '../../i18n';
-import { AccessibilityStackParamList } from '../../stacks/types';
+import { type AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {

@@ -1,4 +1,5 @@
-import Detox, { device, waitFor, element, by, expect } from 'detox';
+import type Detox from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../data';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { InteractionManager, View } from 'react-native';
-import { AVPlaybackStatus } from 'expo-av';
+import { type AVPlaybackStatus } from 'expo-av';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
@@ -12,9 +12,9 @@ import PlaybackSpeed from './PlaybackSpeed';
 import PlayButton from './PlayButton';
 import AudioManager from '../../lib/methods/AudioManager';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
-import { TDownloadState } from '../../lib/methods/handleMediaDownload';
+import { type TDownloadState } from '../../lib/methods/handleMediaDownload';
 import { emitter } from '../../lib/methods/helpers/emitter';
-import { TAudioState } from './types';
+import { type TAudioState } from './types';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 
 interface IAudioPlayerProps {

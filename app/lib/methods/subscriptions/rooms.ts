@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
 import database from '../../database';
 import protectedFunction from '../helpers/protectedFunction';
@@ -16,18 +16,18 @@ import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotificatio
 import { Encryption } from '../../encryption';
 import updateMessages from '../updateMessages';
 import {
-	IMessage,
-	IServerRoom,
-	IRoom,
-	ISubscription,
-	TMessageModel,
-	TRoomModel,
-	TThreadMessageModel,
-	TThreadModel,
+	type IMessage,
+	type IServerRoom,
+	type IRoom,
+	type ISubscription,
+	type TMessageModel,
+	type TRoomModel,
+	type TThreadMessageModel,
+	type TThreadModel,
 	SubscriptionType
 } from '../../../definitions';
 import sdk from '../../services/sdk';
-import { IDDPMessage } from '../../../definitions/IDDPMessage';
+import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
 import { E2E_MESSAGE_TYPE } from '../../constants/keys';

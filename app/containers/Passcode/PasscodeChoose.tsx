@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
-import Base, { IBase } from './Base';
+import Base, { type IBase } from './Base';
 import { TYPE } from './constants';
 import I18n from '../../i18n';
 

@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
 import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
-import { IMessageImage } from './definitions';
+import { type IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
 import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';

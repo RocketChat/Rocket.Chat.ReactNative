@@ -1,12 +1,12 @@
 import { forwardRef, useImperativeHandle } from 'react';
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import log from '../lib/methods/helpers/log';
-import { TMessageModel } from '../definitions';
+import { type TMessageModel } from '../definitions';
 import { resendMessage } from '../lib/methods/sendMessage';
 
 export interface IMessageErrorActions {

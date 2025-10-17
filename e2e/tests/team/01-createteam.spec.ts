@@ -1,7 +1,7 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, login, platformTypes, TTextMatcher, sleep } from '../../helpers/app';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { navigateToLogin, login, platformTypes, type TTextMatcher, sleep } from '../../helpers/app';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 describe('Create team screen', () => {

@@ -7,7 +7,7 @@ import {
 	login,
 	sleep,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	navigateToRoom,
 	jumpToQuotedMessage
 } from '../../helpers/app';

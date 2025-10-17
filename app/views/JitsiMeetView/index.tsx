@@ -1,9 +1,9 @@
 import CookieManager from '@react-native-cookies/cookies';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, BackHandler, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
-import WebView, { WebViewNavigation } from 'react-native-webview';
+import WebView, { type WebViewNavigation } from 'react-native-webview';
 
 import { userAgent } from '../../lib/constants/userAgent';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -12,7 +12,7 @@ import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFr
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoConfTimer';
 import { getUserSelector } from '../../selectors/login';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
 
 const JitsiMeetView = (): React.ReactElement => {

@@ -1,8 +1,8 @@
 import { device, waitFor, element, by } from 'detox';
 
 import data from '../../data';
-import { sleep, navigateToLogin, login, checkServer, platformTypes, TTextMatcher, signup } from '../../helpers/app';
-import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
+import { sleep, navigateToLogin, login, checkServer, platformTypes, type TTextMatcher, signup } from '../../helpers/app';
+import { createRandomUser, deleteCreatedUsers, type IDeleteCreateUser, type ITestUser } from '../../helpers/data_setup';
 
 describe('Delete server', () => {
 	let alertButtonType: string;

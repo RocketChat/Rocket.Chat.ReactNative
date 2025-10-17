@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import log from '../../../lib/methods/helpers/log';
-import { ISubscription } from '../../../definitions';
+import { type ISubscription } from '../../../definitions';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 
 interface IUserRoomSubscription {

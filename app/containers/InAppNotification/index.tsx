@@ -1,8 +1,8 @@
-import React, { ElementType, memo, useEffect } from 'react';
+import React, { type ElementType, memo, useEffect } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 import { useDispatch } from 'react-redux';
 
-import NotifierComponent, { INotifierComponent } from './NotifierComponent';
+import NotifierComponent, { type INotifierComponent } from './NotifierComponent';
 import EventEmitter from '../../lib/methods/helpers/events';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getActiveRoute } from '../../lib/methods/helpers/navigation';

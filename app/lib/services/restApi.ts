@@ -1,25 +1,25 @@
 import {
-	IAvatarSuggestion,
-	IMessage,
-	IMessagePreferences,
-	INotificationPreferences,
-	IPreviewItem,
-	IProfileParams,
-	IRoleUser,
-	IRoom,
-	IRoomNotifications,
-	IServerRoom,
-	RoomType,
-	SubscriptionType
+	type IAvatarSuggestion,
+	type IMessage,
+	type IMessagePreferences,
+	type INotificationPreferences,
+	type IPreviewItem,
+	type IProfileParams,
+	type IRoleUser,
+	type IRoom,
+	type IRoomNotifications,
+	type IServerRoom,
+	type RoomType,
+	type SubscriptionType
 } from '../../definitions';
-import { TParams } from '../../definitions/ILivechatEditView';
-import { ILivechatTag } from '../../definitions/ILivechatTag';
-import { ISpotlight } from '../../definitions/ISpotlight';
+import { type TParams } from '../../definitions/ILivechatEditView';
+import { type ILivechatTag } from '../../definitions/ILivechatTag';
+import { type ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
-import { OperationParams, ResultFor } from '../../definitions/rest/helpers';
-import { SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
+import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
+import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
-import { RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
+import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
 import { getDeviceToken } from '../notifications';

@@ -1,7 +1,7 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, login, platformTypes, TTextMatcher, tapBack } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { navigateToLogin, login, platformTypes, type TTextMatcher, tapBack } from '../../helpers/app';
+import { createRandomRoom, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 describe('Settings screen', () => {
 	let alertButtonType: string;

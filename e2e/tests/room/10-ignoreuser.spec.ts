@@ -5,13 +5,13 @@ import {
 	login,
 	sleep,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapBack,
 	tapAndWaitFor,
 	checkRoomTitle,
 	navigateToRoom
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser, sendMessage } from '../../helpers/data_setup';
 
 async function navigateToInfoView() {
 	await element(by.id('room-header')).tap();

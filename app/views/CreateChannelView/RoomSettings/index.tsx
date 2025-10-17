@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { UseFormSetValue } from 'react-hook-form';
+import { type UseFormSetValue } from 'react-hook-form';
 
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
@@ -8,7 +8,7 @@ import { SwitchItem } from './SwitchItem';
 import { SwitchItemType } from './SwitchItemType';
 import { SwitchItemReadOnly } from './SwitchItemReadOnly';
 import { SwitchItemEncrypted } from './SwitchItemEncrypted';
-import { IFormData } from '..';
+import { type IFormData } from '..';
 
 const styles = StyleSheet.create({
 	container: {

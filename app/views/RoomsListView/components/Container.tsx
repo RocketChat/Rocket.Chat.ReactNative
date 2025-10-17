@@ -1,4 +1,4 @@
-import { memo, ReactElement } from 'react';
+import { memo, type ReactElement } from 'react';
 
 import SafeAreaView from '../../../containers/SafeAreaView';
 import { useTheme } from '../../../theme';

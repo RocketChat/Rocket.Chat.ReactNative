@@ -24,7 +24,7 @@ import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
-import { TAppDatabase, TServerDatabase } from './interfaces';
+import { type TAppDatabase, type TServerDatabase } from './interfaces';
 
 if (__DEV__) {
 	console.log(appGroupPath);

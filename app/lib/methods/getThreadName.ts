@@ -6,7 +6,7 @@ import { getThreadById } from '../database/services/Thread';
 import log from './helpers/log';
 import { Encryption } from '../encryption';
 import getSingleMessage from './getSingleMessage';
-import { IMessage, IThread, TThreadModel } from '../../definitions';
+import { type IMessage, type IThread, type TThreadModel } from '../../definitions';
 
 const buildThreadName = (thread: IThread | IMessage): string | undefined => thread.msg || thread?.attachments?.[0]?.title;
 

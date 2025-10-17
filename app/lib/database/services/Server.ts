@@ -1,6 +1,6 @@
-import { TServerModel } from '../../../definitions';
+import { type TServerModel } from '../../../definitions';
 import database from '..';
-import { TServerDatabase } from '../interfaces';
+import { type TServerDatabase } from '../interfaces';
 import { SERVERS_TABLE } from '../model';
 
 const getCollection = (db: TServerDatabase) => db.get(SERVERS_TABLE);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { Route } from 'reanimated-tab-view';
+import { type Route } from 'reanimated-tab-view';
 import { Text, View } from 'react-native';
 
 import { TabView } from './index';

@@ -1,7 +1,7 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, platformTypes, TTextMatcher } from '../../helpers/app';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { navigateToLogin, platformTypes, type TTextMatcher } from '../../helpers/app';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 describe('Forgot password screen', () => {
 	let alertButtonType: string;

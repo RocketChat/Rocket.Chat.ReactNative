@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { IMessage } from '../../../definitions';
+import { type IMessage } from '../../../definitions';
 import { getMessageById } from '../../../lib/database/services/Message';
 
 // TODO: Not reactive. Should we work on an official version?

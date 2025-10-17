@@ -1,10 +1,10 @@
 import { NetInfoStateType } from '@react-native-community/netinfo';
 
 import {
-	IMAGE_PREFERENCE_DOWNLOAD,
-	AUDIO_PREFERENCE_DOWNLOAD,
-	VIDEO_PREFERENCE_DOWNLOAD,
-	MediaDownloadOption
+	type IMAGE_PREFERENCE_DOWNLOAD,
+	type AUDIO_PREFERENCE_DOWNLOAD,
+	type VIDEO_PREFERENCE_DOWNLOAD,
+	type MediaDownloadOption
 } from '../constants/mediaAutoDownload';
 import userPreferences from './userPreferences';
 import { store } from '../store/auxStore';

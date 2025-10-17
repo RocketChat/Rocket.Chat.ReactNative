@@ -1,8 +1,8 @@
 import {
 	ActionTypes,
-	ITriggerBlockAction,
-	ITriggerCancel,
-	ITriggerSubmitView,
+	type ITriggerBlockAction,
+	type ITriggerCancel,
+	type ITriggerSubmitView,
 	ModalActions
 } from '../../containers/UIKit/interfaces';
 import Navigation from '../navigation/appNavigation';

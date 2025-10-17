@@ -1,4 +1,4 @@
-import { ILastMessageProps } from '../../containers/RoomItem/interfaces';
+import { type ILastMessageProps } from '../../containers/RoomItem/interfaces';
 import I18n from '../../i18n';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 

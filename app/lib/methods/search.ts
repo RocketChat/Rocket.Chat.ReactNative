@@ -4,7 +4,7 @@ import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { type ISearch, type ISearchLocal, type IUserMessage, SubscriptionType, type TSubscriptionModel } from '../../definitions';
 import { isGroupChat, isReadOnly } from './helpers';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 

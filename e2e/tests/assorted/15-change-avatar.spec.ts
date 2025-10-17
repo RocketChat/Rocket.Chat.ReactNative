@@ -1,7 +1,7 @@
 import { device, waitFor, element, by } from 'detox';
 
-import { navigateToLogin, login, sleep, platformTypes, TTextMatcher, tapBack } from '../../helpers/app';
-import { createRandomUser, getProfileInfo, ITestUser, login as loginSetup } from '../../helpers/data_setup';
+import { navigateToLogin, login, sleep, platformTypes, type TTextMatcher, tapBack } from '../../helpers/app';
+import { createRandomUser, getProfileInfo, type ITestUser, login as loginSetup } from '../../helpers/data_setup';
 
 describe('Change avatar', () => {
 	let textMatcher: TTextMatcher;

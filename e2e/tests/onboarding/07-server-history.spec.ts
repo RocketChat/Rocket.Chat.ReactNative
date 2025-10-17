@@ -2,7 +2,7 @@ import { device, waitFor, element, by, expect } from 'detox';
 
 import { login, navigateToLogin, logout, tapBack } from '../../helpers/app';
 import data from '../../data';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 describe('Server history', () => {
 	let user: ITestUser;

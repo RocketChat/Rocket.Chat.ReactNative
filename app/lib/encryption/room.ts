@@ -1,6 +1,6 @@
 import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
-import ByteBuffer from 'bytebuffer';
+import type ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 import {
@@ -15,12 +15,12 @@ import {
 
 import getSingleMessage from '../methods/getSingleMessage';
 import {
-	IAttachment,
-	IMessage,
-	IUpload,
-	TSendFileMessageFileInfo,
-	IServerAttachment,
-	TSubscriptionModel
+	type IAttachment,
+	type IMessage,
+	type IUpload,
+	type TSendFileMessageFileInfo,
+	type IServerAttachment,
+	type TSubscriptionModel
 } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { compareServerVersion, debounce } from '../methods/helpers';
@@ -58,7 +58,7 @@ import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getMessageById } from '../database/services/Message';
-import { TEncryptFileResult, TGetContent } from './definitions';
+import { type TEncryptFileResult, type TGetContent } from './definitions';
 import { store } from '../store/auxStore';
 
 export default class EncryptionRoom {

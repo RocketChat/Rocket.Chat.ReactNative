@@ -1,5 +1,5 @@
 import { IN_APP_FEEDBACK } from '../actions/actionsTypes';
-import { TApplicationActions } from '../definitions';
+import { type TApplicationActions } from '../definitions';
 
 export interface IInAppFeedbackState {
 	[key: string]: string;

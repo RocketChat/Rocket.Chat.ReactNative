@@ -1,4 +1,4 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -11,7 +11,7 @@ import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
 import { useTheme } from '../../theme';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { NewMessageStackParamList } from '../../stacks/types';
+import { type NewMessageStackParamList } from '../../stacks/types';
 import { compareServerVersion } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../lib/hooks/usePermissions';

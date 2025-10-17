@@ -1,12 +1,12 @@
-import { Text, useWindowDimensions, ViewProps } from 'react-native';
+import { Text, useWindowDimensions, type ViewProps } from 'react-native';
 import React from 'react';
 import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
-import { IActionSheetItem, Item } from './Item';
-import { TActionSheetOptionsItem } from './Provider';
+import { type IActionSheetItem, Item } from './Item';
+import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';

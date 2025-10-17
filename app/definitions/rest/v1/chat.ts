@@ -1,6 +1,6 @@
 import type { IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
-import { PaginatedResult } from '../helpers/PaginatedResult';
+import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type ChatEndpoints = {
 	'chat.getMessage': {

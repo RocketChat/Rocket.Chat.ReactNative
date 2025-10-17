@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, View } from 'react-native';
+import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { Image, ImageStyle } from 'expo-image';
+import { Image, type ImageStyle } from 'expo-image';
 
 import Touch from '../Touch';
 import { useUserPreferences } from '../../lib/methods/userPreferences';

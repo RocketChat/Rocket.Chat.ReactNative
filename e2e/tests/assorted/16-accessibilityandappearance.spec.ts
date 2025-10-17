@@ -1,7 +1,7 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import { login, mockMessage, navigateToLogin, navigateToRoom } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 const navigateToAccessibilityAndAppearance = async () => {
 	await waitFor(element(by.id('rooms-list-view-sidebar')))

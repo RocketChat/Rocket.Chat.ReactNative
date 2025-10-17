@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
+import { StyleSheet, Text, type TextInput as RNTextInput } from 'react-native';
 
 import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { useTheme } from '../../theme';

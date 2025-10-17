@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions, View } from 'react-native';
 
 import { longText } from '../../../.rnstorybook/utils';
-import { ThemeContext, TSupportedThemes } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { colors, themes } from '../../lib/constants/colors';
 import RoomHeaderComponent from './RoomHeader';
 

@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, Keyboard, Text, TextInput, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,10 +12,10 @@ import FormContainer, { FormContainerInner } from '../../containers/FormContaine
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { IBaseScreen } from '../../definitions';
+import { type IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { getShowLoginButton } from '../../selectors/login';
-import { OutsideParamList } from '../../stacks/types';
+import { type OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpers';
 import { events, logEvent } from '../../lib/methods/helpers/log';

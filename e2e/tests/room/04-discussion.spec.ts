@@ -1,7 +1,7 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import {
-	TTextMatcher,
+	type TTextMatcher,
 	navigateToLogin,
 	login,
 	tapBack,
@@ -11,7 +11,7 @@ import {
 	sleep,
 	checkRoomTitle
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 describe('Discussion', () => {

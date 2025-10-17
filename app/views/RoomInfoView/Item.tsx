@@ -21,7 +21,7 @@ const Item = ({ label, content, testID }: IItem): React.ReactElement | null => {
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>
 				{label}
 			</Text>
-			<Markdown style={[styles.itemContent, { color: colors.fontSecondaryInfo }]} msg={content} />
+			<Markdown msg={content} />
 		</View>
 	);
 };

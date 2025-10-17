@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import Status from './Status';
-import { IStatus } from './definition';
+import { type IStatus } from './definition';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserPresence } from '../../lib/methods/getUsersPresence';
 

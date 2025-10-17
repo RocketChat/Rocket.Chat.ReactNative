@@ -1,7 +1,8 @@
-import Detox, { device, waitFor, element, by, expect } from 'detox';
+import type Detox from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { navigateToLogin, login } from '../../helpers/app';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 const defaultLaunchArgs = { permissions: { notifications: 'YES' } } as Detox.DeviceLaunchAppConfig;
 

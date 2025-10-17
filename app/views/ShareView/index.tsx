@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp } from '@react-navigation/native';
 import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { Dispatch } from 'redux';
+import { type Dispatch } from 'redux';
 
-import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { InsideStackParamList } from '../../stacks/types';
+import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { type InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants/colors';
 import I18n from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { FormTextInput } from '../../containers/TextInput';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
@@ -23,14 +23,14 @@ import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
 import {
-	IApplicationState,
-	IServer,
-	IShareAttachment,
-	IUser,
+	type IApplicationState,
+	type IServer,
+	type IShareAttachment,
+	type IUser,
 	RootEnum,
-	TMessageAction,
-	TSubscriptionModel,
-	TThreadModel
+	type TMessageAction,
+	type TSubscriptionModel,
+	type TThreadModel
 } from '../../definitions';
 import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { sendMessage } from '../../lib/methods/sendMessage';

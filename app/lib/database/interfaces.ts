@@ -1,7 +1,7 @@
-import { Database, Collection } from '@nozbe/watermelondb';
+import { type Database, type Collection } from '@nozbe/watermelondb';
 
-import * as models from './model';
-import * as definitions from '../../definitions';
+import type * as models from './model';
+import type * as definitions from '../../definitions';
 
 export type TAppDatabaseNames =
 	| typeof models.SUBSCRIPTIONS_TABLE

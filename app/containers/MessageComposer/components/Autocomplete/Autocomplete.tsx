@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react';
-import { FlatList, ViewStyle } from 'react-native';
+import React, { type ReactElement } from 'react';
+import { FlatList, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAutocompleteParams } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
-import { IAutocompleteItemProps } from '../../interfaces';
+import { type IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useStyle } from './styles';

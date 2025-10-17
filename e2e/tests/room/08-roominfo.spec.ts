@@ -1,7 +1,8 @@
-import Detox, { device, waitFor, element, by, expect } from 'detox';
+import type Detox from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, login, tapBack, sleep, platformTypes, TTextMatcher, navigateToRoom } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { navigateToLogin, login, tapBack, sleep, platformTypes, type TTextMatcher, navigateToRoom } from '../../helpers/app';
+import { createRandomRoom, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 async function navigateToRoomInfo(room: string) {
 	await navigateToRoom(room);

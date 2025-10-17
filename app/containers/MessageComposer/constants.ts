@@ -1,6 +1,6 @@
-import { Options } from 'react-native-image-crop-picker';
+import { type Options } from 'react-native-image-crop-picker';
 
-import { TMarkdownStyle } from './interfaces';
+import { type TMarkdownStyle } from './interfaces';
 
 export const IMAGE_PICKER_CONFIG = {
 	cropping: true,

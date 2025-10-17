@@ -1,4 +1,4 @@
-import { ITriggerAction, IUserInteraction, ModalActions } from '../../containers/UIKit/interfaces';
+import { type ITriggerAction, type IUserInteraction, ModalActions } from '../../containers/UIKit/interfaces';
 import EventEmitter from './helpers/events';
 import fetch from './helpers/fetch';
 import { random } from './helpers';

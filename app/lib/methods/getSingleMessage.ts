@@ -1,4 +1,4 @@
-import { IMessage } from '../../definitions';
+import { type IMessage } from '../../definitions';
 import { getSingleMessage as getSingleMessageService } from '../services/restApi';
 
 const getSingleMessage = (messageId: string): Promise<IMessage> =>

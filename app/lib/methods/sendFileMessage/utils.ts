@@ -4,11 +4,11 @@ import { Alert } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 
 import { getUploadByPath } from '../../database/services/Upload';
-import { IUpload, TUploadModel } from '../../../definitions';
+import { type IUpload, type TUploadModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import database from '../../database';
 import log from '../helpers/log';
-import { IFileUpload } from '../helpers/fileUpload/definitions';
+import { type IFileUpload } from '../helpers/fileUpload/definitions';
 
 export const uploadQueue: { [index: string]: IFileUpload } = {};
 

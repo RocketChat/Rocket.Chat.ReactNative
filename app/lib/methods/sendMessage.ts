@@ -1,11 +1,11 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Model } from '@nozbe/watermelondb';
+import { type Model } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from './helpers/log';
 import { random } from './helpers';
 import { Encryption } from '../encryption';
-import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
+import { type E2EType, type IMessage, type IUser, type TMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { messagesStatus } from '../constants/messagesStatus';

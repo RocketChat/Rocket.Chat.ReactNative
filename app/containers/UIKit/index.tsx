@@ -7,8 +7,8 @@ import {
 	uiKitMessage,
 	uiKitModal,
 	BlockContext,
-	Markdown as IMarkdown,
-	PlainText
+	type Markdown as IMarkdown,
+	type PlainText
 } from '@rocket.chat/ui-kit';
 
 import Markdown, { MarkdownPreview } from '../markdown';
@@ -28,7 +28,7 @@ import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
-import { IActions, IButton, IElement, IInputIndex, IParser, ISection } from './interfaces';
+import { type IActions, type IButton, type IElement, type IInputIndex, type IParser, type ISection } from './interfaces';
 import VideoConferenceBlock from './VideoConferenceBlock';
 
 const styles = StyleSheet.create({
@@ -61,23 +61,17 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 
 		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
-			return (
-				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} numberOfLines={0} />
-			);
+			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
 		}
 		return <Text style={[styles.text, { color: themes[theme].fontDefault }]}>{element.text}</Text>;
 	}
 
 	mrkdwn(element: IMarkdown, context: BlockContext) {
-		const { theme } = useContext(ThemeContext);
-
 		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
-			return (
-				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} numberOfLines={0} />
-			);
+			return <MarkdownPreview msg={element.text} numberOfLines={0} />;
 		}
-		return <Markdown msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} />;
+		return <Markdown msg={element.text} />;
 	}
 
 	button(element: IButton, context: BlockContext) {

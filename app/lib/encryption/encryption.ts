@@ -1,4 +1,4 @@
-import { Model, Q } from '@nozbe/watermelondb';
+import { type Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system';
@@ -10,20 +10,20 @@ import {
 	rsaGenerateKeys,
 	rsaImportKey,
 	rsaExportKey,
-	JWK,
+	type JWK,
 	calculateFileChecksum
 } from '@rocket.chat/mobile-crypto';
 import { sampleSize } from 'lodash';
 
 import {
-	IMessage,
-	IServerAttachment,
-	ISubscription,
-	TMessageModel,
-	TSendFileMessageFileInfo,
-	TSubscriptionModel,
-	TThreadMessageModel,
-	TThreadModel
+	type IMessage,
+	type IServerAttachment,
+	type ISubscription,
+	type TMessageModel,
+	type TSendFileMessageFileInfo,
+	type TSubscriptionModel,
+	type TThreadMessageModel,
+	type TThreadModel
 } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
@@ -49,7 +49,7 @@ import {
 } from '../services/restApi';
 import { store } from '../store/auxStore';
 import { MAX_CONCURRENT_QUEUE } from './constants';
-import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import { type IDecryptionFileQueue, type TDecryptFile, type TEncryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
 import {

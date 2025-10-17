@@ -7,7 +7,7 @@ import * as List from '../../../../containers/List';
 import Touch from '../../../../containers/Touch';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
-import { TServerHistoryModel } from '../../../../definitions';
+import { type TServerHistoryModel } from '../../../../definitions';
 import i18n from '../../../../i18n';
 
 interface IServersHistoryActionSheetContent {

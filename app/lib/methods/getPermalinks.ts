@@ -1,5 +1,5 @@
 import log from './helpers/log';
-import { TMessageModel, TSubscriptionModel, SubscriptionType } from '../../definitions';
+import { type TMessageModel, type TSubscriptionModel, type SubscriptionType } from '../../definitions';
 import { store } from '../store/auxStore';
 import { isGroupChat } from './helpers';
 import { getRoom } from './getRoom';

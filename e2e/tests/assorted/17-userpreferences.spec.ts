@@ -1,7 +1,7 @@
 import { device, waitFor, element, by } from 'detox';
 
 import { navigateToLogin, login, tapBack, navigateToRoom } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser, sendMessage } from '../../helpers/data_setup';
 
 const navigateFromRoomsListViewToUserPreferencesView = async () => {
 	await element(by.id('rooms-list-view-sidebar')).tap();

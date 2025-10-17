@@ -1,4 +1,4 @@
-import { TMessageModel } from '../../../definitions';
+import { type TMessageModel } from '../../../definitions';
 
 export const mapMessageFromDB = (messageModel: TMessageModel) => {
 	const parsedMessage = messageModel.asPlain();

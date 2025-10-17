@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,7 +11,7 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
 import { forgotPassword } from '../lib/services/restApi';
-import { OutsideParamList } from '../stacks/types';
+import { type OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
