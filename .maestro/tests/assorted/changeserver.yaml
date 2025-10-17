@@ -32,10 +32,6 @@ tags:
     visible:
       id: 'rooms-list-header-server-add'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-create-workspace-button'
-    timeout: 60000
 
 # should login to server, add new server, close the app, open the app and show previous logged server
 - tapOn:
@@ -73,6 +69,8 @@ tags:
     visible:
       id: 'server-item-${output.data.alternateServer}'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn:
     id: 'server-item-${output.data.alternateServer}'
 - extendedWaitUntil:
@@ -111,6 +109,8 @@ tags:
     visible:
       id: 'rooms-list-header-servers-list-button'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:

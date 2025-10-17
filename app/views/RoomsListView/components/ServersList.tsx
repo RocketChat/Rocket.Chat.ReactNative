@@ -145,7 +145,7 @@ const ServersList = () => {
 					title={I18n.t('Add_Server')}
 					type='primary'
 					onPress={addServer}
-					testID='rooms-list-header-create-workspace-button'
+					testID='rooms-list-header-server-add'
 					style={styles.buttonCreateWorkspace}
 					color={colors.buttonFontSecondary}
 					backgroundColor={colors.buttonBackgroundSecondaryDefault}
