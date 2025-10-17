@@ -410,7 +410,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			replies,
 			md,
 			comment,
-			pinned
+			pinned,
+            private: isPrivate
 		} = item;
 
 		let message = msg;
@@ -505,6 +506,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isBeingEdited={isBeingEdited}
 					isPreview={isPreview}
 					pinned={pinned}
+					private={isPrivate}
 				/>
 				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</MessageContext.Provider>

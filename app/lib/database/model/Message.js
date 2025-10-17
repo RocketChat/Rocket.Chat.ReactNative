@@ -88,6 +88,8 @@ export default class Message extends Model {
 
 	@field('comment') comment;
 
+    @field('private') private;
+
 	asPlain() {
 		return {
 			id: this.id,
@@ -102,7 +104,7 @@ export default class Message extends Model {
 			avatar: this.avatar,
 			emoji: this.emoji,
 			attachments: this.attachments,
-			urls: this.urls,
+		    urls: this.urls,
 			_updatedAt: this._updatedAt,
 			status: this.status,
 			pinned: this.pinned,
@@ -128,7 +130,8 @@ export default class Message extends Model {
 			tshow: this.tshow,
 			md: this.md,
 			content: this.content,
-			comment: this.comment
+			comment: this.comment,
+            private: this.private
 		};
 	}
 }

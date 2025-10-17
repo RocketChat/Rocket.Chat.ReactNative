@@ -102,6 +102,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import { deletePrivateMessages } from '../../lib/methods/deletePrivateMessages';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -353,6 +354,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
+
+        deletePrivateMessages();
 		if (!this.tmid) {
 			await AudioManager.unloadRoomAudios(this.rid);
 		}
@@ -803,6 +806,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (action && action !== 'quote') {
 			return;
 		}
+
+        if(message.private) {
+            return;
+        }
+        
 		// if it's a thread message on main room, we disable the long press
 		if (message.tmid && !this.tmid) {
 			return;

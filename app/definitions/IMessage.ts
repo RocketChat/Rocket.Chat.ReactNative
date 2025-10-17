@@ -153,6 +153,7 @@ export interface IMessage extends IMessageFromServer {
 	subscription?: { id: string };
 	user?: string;
 	editedAt?: string | Date;
+    private?: boolean;
 }
 
 export type TMessageModel = IMessage &
