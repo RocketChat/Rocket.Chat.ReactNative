@@ -411,7 +411,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			md,
 			comment,
 			pinned,
-            private: isPrivate
+			private: isPrivate
 		} = item;
 
 		let message = msg;

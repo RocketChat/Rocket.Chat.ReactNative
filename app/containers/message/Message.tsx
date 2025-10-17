@@ -177,14 +177,14 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 				<MessageAvatar {...props} />
 				<View style={styles.messageContent}>
 					<MessageInner {...props} />
-                    {
-                        props.private && (
-                            <View style={styles.privateIndicator}>
-                                <Text style={styles.privateIndicatorText}>{i18n.t('Only_you_can_see_this_message')} • </Text>
-                                <Pressable onPress={() => deletePrivateMessages(props.id)}><Text style={styles.privateMessageDismiss}>{i18n.t('Dismiss_message')}</Text></Pressable>
-                            </View>
-                        )
-                    }
+					{props.private && (
+						<View style={styles.privateIndicator}>
+							<Text style={styles.privateIndicatorText}>{i18n.t('Only_you_can_see_this_message')} • </Text>
+							<Pressable onPress={() => deletePrivateMessages(props.id)}>
+								<Text style={styles.privateMessageDismiss}>{i18n.t('Dismiss_message')}</Text>
+							</Pressable>
+						</View>
+					)}
 				</View>
 				{!props.isHeader ? (
 					<RightIcons

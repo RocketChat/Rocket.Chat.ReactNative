@@ -332,14 +332,14 @@ export default schemaMigrations({
 				})
 			]
 		},
-        {
-            toVersion: 28,
-            steps: [
-                addColumns({
-                    table: 'messages',
-                    columns: [{ name: 'private', type: 'boolean', isOptional: true }]
-                })
-            ]
-        }
+		{
+			toVersion: 28,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [{ name: 'private', type: 'boolean', isOptional: true }]
+				})
+			]
+		}
 	]
 });

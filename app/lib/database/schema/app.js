@@ -130,7 +130,7 @@ export default appSchema({
 				{ name: 'md', type: 'string', isOptional: true },
 				{ name: 'content', type: 'string', isOptional: true },
 				{ name: 'comment', type: 'string', isOptional: true },
-                { name: 'private', type: 'boolean', isOptional: true },
+				{ name: 'private', type: 'boolean', isOptional: true }
 			]
 		}),
 		tableSchema({

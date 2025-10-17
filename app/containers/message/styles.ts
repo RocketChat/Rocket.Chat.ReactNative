@@ -162,17 +162,17 @@ export default StyleSheet.create({
 		right: 8,
 		flexDirection: 'row',
 		gap: 8
-    },
-    privateIndicator: {
-        flexDirection: 'row',
-        gap: 8
-    },
-    privateIndicatorText: {
-        fontSize: 12,
-        ...sharedStyles.textRegular
-    },
-    privateMessageDismiss: {
-        fontSize: 12,
-        ...sharedStyles.textRegular
-    }
+	},
+	privateIndicator: {
+		flexDirection: 'row',
+		gap: 8
+	},
+	privateIndicatorText: {
+		fontSize: 12,
+		...sharedStyles.textRegular
+	},
+	privateMessageDismiss: {
+		fontSize: 12,
+		...sharedStyles.textRegular
+	}
 });

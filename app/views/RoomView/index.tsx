@@ -355,7 +355,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		EventEmitter.removeListener('connected', this.handleConnected);
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 
-        deletePrivateMessages();
+		deletePrivateMessages();
 		if (!this.tmid) {
 			await AudioManager.unloadRoomAudios(this.rid);
 		}
@@ -807,10 +807,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return;
 		}
 
-        if(message.private) {
-            return;
-        }
-        
+		if (message.private) {
+			return;
+		}
+
 		// if it's a thread message on main room, we disable the long press
 		if (message.tmid && !this.tmid) {
 			return;
