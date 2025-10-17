@@ -261,10 +261,21 @@ export default class RoomSubscription {
 			try {
 				const messageRecord = await getMessageById(message._id);
 				if (messageRecord) {
+                    if(messageRecord.t === 'e2e' && message.attachments) {
+                        message.attachments = message.attachments?.map((att) => {
+                            const existing = messageRecord.attachments?.find((a) => a.image_url === att.image_url || a.video_url === att.video_url || a.audio_url === att.audio_url || a.thumb_url === att.thumb_url);
+                            
+                            return {
+                                ...att,
+                                e2e: existing?.e2e,
+                                title_link: existing?.e2e === 'done' ? existing?.title_link : att.title_link
+                            }
+                        });
+                    }
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
-								Object.assign(m, message);
+                                Object.assign(m, message);
 							})
 						)
 					);
