@@ -1,5 +1,5 @@
 import { VIDEO_CONF } from '../actions/actionsTypes';
-import { TActionVideoConf } from '../actions/videoConf';
+import { type TActionVideoConf } from '../actions/videoConf';
 
 export type TSupportedCallStatus = 'call' | 'canceled' | 'accepted' | 'rejected' | 'confirmed' | 'join' | 'end' | 'calling';
 

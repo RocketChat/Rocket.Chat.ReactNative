@@ -1,6 +1,6 @@
 import { clearVideoConfCalls, removeVideoConfCall, setVideoConfCall, setCalling } from '../actions/videoConf';
 import { mockedStore } from './mockedStore';
-import { initialState, ICallInfo } from './videoConf';
+import { initialState, type ICallInfo } from './videoConf';
 
 describe('test videoConf reducer', () => {
 	it('should return initial state', () => {
