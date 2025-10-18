@@ -6,14 +6,14 @@ import {
 	sleep,
 	tapBack,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapAndWaitFor,
 	mockMessage,
 	tryTapping,
 	navigateToRoom,
 	checkRoomTitle
 } from '../../helpers/app';
-import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, deleteCreatedUsers, type IDeleteCreateUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 let alertButtonType: string;

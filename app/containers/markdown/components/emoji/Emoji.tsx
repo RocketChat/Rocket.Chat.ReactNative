@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, useWindowDimensions, View } from 'react-native';
+import { Text, View, useWindowDimensions } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
 import Plain from '../Plain';

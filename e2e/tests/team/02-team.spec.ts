@@ -1,4 +1,5 @@
-import Detox, { device, waitFor, element, by, expect } from 'detox';
+import type Detox from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import {
 	navigateToLogin,
@@ -6,12 +7,12 @@ import {
 	tapBack,
 	sleep,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	checkRoomTitle,
 	tapAndWaitFor,
 	navigateToRoom
 } from '../../helpers/app';
-import { createRandomRoom, createRandomTeam, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomTeam, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 async function openActionSheet(username: string) {

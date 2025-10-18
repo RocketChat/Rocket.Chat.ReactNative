@@ -1,22 +1,22 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { Observable, Subscription } from 'rxjs';
+import { type Dispatch } from 'redux';
+import { type Observable, type Subscription } from 'rxjs';
 
-import { TActionSheetOptionsItem } from '../../containers/ActionSheet';
+import { type TActionSheetOptionsItem } from '../../containers/ActionSheet';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import {
-	IApplicationState,
-	ISubscription,
-	SubscriptionType,
-	TMessageModel,
-	TSubscriptionModel,
-	TUserStatus
+	type IApplicationState,
+	type ISubscription,
+	type SubscriptionType,
+	type TMessageModel,
+	type TSubscriptionModel,
+	type TUserStatus
 } from '../../definitions';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import i18n from '../../i18n';
 import database from '../../lib/database';
 import { hasPermission, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
@@ -24,10 +24,10 @@ import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
-import { TNavigation } from '../../stacks/stackType';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type TNavigation } from '../../stacks/stackType';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { HeaderCallButton } from './components';
-import { TColors, TSupportedThemes, withTheme } from '../../theme';
+import { type TColors, type TSupportedThemes, withTheme } from '../../theme';
 import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {

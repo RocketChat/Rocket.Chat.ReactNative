@@ -1,5 +1,5 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 import * as Keychain from 'react-native-keychain';
 
 import { getDeviceToken } from '../notifications';
