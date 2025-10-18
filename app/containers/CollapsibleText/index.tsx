@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextStyle, Text, StyleSheet } from 'react-native';
+import { type TextStyle, Text, StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';

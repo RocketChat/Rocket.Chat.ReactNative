@@ -1,6 +1,6 @@
 import { setTroubleshootingNotification, initTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import { mockedStore } from './mockedStore';
-import { ITroubleshootingNotification, initialState } from './troubleshootingNotification';
+import { type ITroubleshootingNotification, initialState } from './troubleshootingNotification';
 
 describe('test troubleshootingNotification reducer', () => {
 	it('should return initial state', () => {
