@@ -1,5 +1,5 @@
-import { IUser } from './IUser';
-import { E2EType, IAttachmentTranslations, IMessageE2EEContent } from './IMessage';
+import { type IUser } from './IUser';
+import { type E2EType, type IAttachmentTranslations, type IMessageE2EEContent } from './IMessage';
 
 export type TAttachmentEncryption = {
 	iv: string;

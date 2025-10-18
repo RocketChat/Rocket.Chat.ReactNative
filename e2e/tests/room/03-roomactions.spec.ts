@@ -7,12 +7,12 @@ import {
 	sleep,
 	searchRoom,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapAndWaitFor,
 	tryTapping,
 	mockMessage
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser, post } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser, post } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const { sendMessage } = require('../../helpers/data_setup');

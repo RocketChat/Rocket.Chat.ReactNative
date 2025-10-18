@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import type { IconProps } from 'react-native-vector-icons/Icon';
 
-import { mappedIcons } from './mappedIcons';
+import { type mappedIcons } from './mappedIcons';
 import { useTheme } from '../../theme';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 

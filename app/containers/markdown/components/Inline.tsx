@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { Text, StyleProp, TextStyle } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';

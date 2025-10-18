@@ -1,11 +1,11 @@
 import React from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { StyleProp, ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { isIOS } from '../../../../lib/methods/helpers/deviceInfo';
 import Container from './HeaderButtonContainer';
-import Item, { IHeaderButtonItem } from './HeaderButtonItem';
+import Item, { type IHeaderButtonItem } from './HeaderButtonItem';
 import { useTheme } from '../../../../theme';
 
 interface IHeaderButtonCommon extends IHeaderButtonItem {
