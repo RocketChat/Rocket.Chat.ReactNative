@@ -11,6 +11,7 @@ import CollapsibleText from '../../../containers/CollapsibleText';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { LISTENER } from '../../../containers/Toast';
 import I18n from '../../../i18n';
+import StatusTextContainer from '../../../containers/StatusText';
 
 interface IRoomInfoViewTitle {
 	room?: ISubscription;
@@ -45,11 +46,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				)}
 				{!!statusText && (
 					<View testID='room-info-view-custom-status'>
-						<CollapsibleText
-							linesToTruncate={2}
-							msg={statusText}
-							style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
-						/>
+                        <StatusTextContainer status={statusText} numberOfLines={2} style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]} />
 					</View>
 				)}
 			</View>

@@ -12,6 +12,7 @@ import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 import { IUsersTyping } from '../../reducers/usersTyping';
+import StatusTextContainer from '../../containers/StatusText';
 
 const HIT_SLOP = {
 	top: 5,
@@ -108,7 +109,8 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 	// subtitle
 	if (subtitle) {
-		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
+        return <StatusTextContainer status={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
+		//return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
 	return null;

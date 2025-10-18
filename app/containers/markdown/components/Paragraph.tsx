@@ -6,12 +6,15 @@ import Inline from './Inline';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants/colors';
+import { StyleProp, TextStyle } from 'react-native';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
+    numberOfLines?: number;
+    style?: StyleProp<TextStyle>;
 }
 
-const Paragraph = ({ value }: IParagraphProps) => {
+const Paragraph = ({ value, numberOfLines, style }: IParagraphProps) => {
 	let forceTrim = false;
 	const { theme } = useTheme();
 	if (
@@ -32,8 +35,8 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		forceTrim = true;
 	}
 	return (
-		<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
-			<Inline value={value} forceTrim={forceTrim} />
+		<Text style={[styles.text, { color: themes[theme].fontDefault }, style]} numberOfLines={numberOfLines || undefined}>
+			<Inline value={value} forceTrim={forceTrim} style={style} />
 		</Text>
 	);
 };

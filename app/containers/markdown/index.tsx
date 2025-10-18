@@ -51,7 +51,9 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	username = '',
 	getCustomEmoji,
 	onLinkPress,
-	isTranslated
+	isTranslated,
+    numberOfLines,
+    style
 }: IMarkdownProps) => {
 	if (!msg) return null;
 
@@ -89,7 +91,7 @@ const Markdown: React.FC<IMarkdownProps> = ({
 						case 'QUOTE':
 							return <Quote value={block.value} />;
 						case 'PARAGRAPH':
-							return <Paragraph value={block.value} />;
+							return <Paragraph value={block.value} numberOfLines={numberOfLines} style={style} />;
 						case 'CODE':
 							return <Code value={block.value} />;
 						case 'HEADING':

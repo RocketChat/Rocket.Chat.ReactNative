@@ -67,6 +67,7 @@ import CallSection from './components/CallSection';
 import { TNavigation } from '../../stacks/stackType';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import Navigation from '../../lib/navigation/appNavigation';
+import StatusTextContainer from '../../containers/StatusText';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -798,9 +799,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 							/>
-							{room.t === 'd' && (
-								<MarkdownPreview
-									msg={member.statusText}
+							{room.t === 'd' && member.statusText && (
+								<StatusTextContainer
+									status={member.statusText}
 									style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 								/>
 							)}

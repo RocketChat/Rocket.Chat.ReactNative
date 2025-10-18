@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text } from 'react-native';
+import { StyleProp, Text, TextStyle } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
@@ -15,12 +15,13 @@ import MarkdownContext from '../contexts/MarkdownContext';
 interface IParagraphProps {
 	value: ParagraphProps['value'];
 	forceTrim?: boolean;
+    style?: StyleProp<TextStyle>;
 }
 
-const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
+const Inline = ({ value, forceTrim, style }: IParagraphProps): React.ReactElement | null => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
-		<Text style={styles.inline}>
+		<Text style={[styles.inline, style]}>
 			{value.map((block, index) => {
 				// We are forcing trim when is a `[ ](https://https://open.rocket.chat/) plain_text`
 				// to clean the empty spaces
@@ -42,7 +43,7 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 					case 'IMAGE':
 						return <Image value={block.value} />;
 					case 'PLAIN_TEXT':
-						return <Plain value={block.value} />;
+						return <Plain value={block.value} style={style} />;
 					case 'BOLD':
 						return <Bold value={block.value} />;
 					case 'STRIKE':
