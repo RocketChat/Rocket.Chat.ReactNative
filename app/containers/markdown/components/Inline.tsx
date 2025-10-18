@@ -15,7 +15,7 @@ import MarkdownContext from '../contexts/MarkdownContext';
 interface IParagraphProps {
 	value: ParagraphProps['value'];
 	forceTrim?: boolean;
-    style?: StyleProp<TextStyle>;
+	style?: StyleProp<TextStyle>;
 }
 
 const Inline = ({ value, forceTrim, style }: IParagraphProps): React.ReactElement | null => {

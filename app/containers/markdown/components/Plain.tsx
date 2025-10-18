@@ -7,7 +7,7 @@ import styles from '../styles';
 
 interface IPlainProps {
 	value: PlainProps['value'];
-    style?: StyleProp<TextStyle>;
+	style?: StyleProp<TextStyle>;
 }
 
 const Plain = ({ value, style }: IPlainProps): React.ReactElement => {

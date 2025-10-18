@@ -10,8 +10,8 @@ import { StyleProp, TextStyle } from 'react-native';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
-    numberOfLines?: number;
-    style?: StyleProp<TextStyle>;
+	numberOfLines?: number;
+	style?: StyleProp<TextStyle>;
 }
 
 const Paragraph = ({ value, numberOfLines, style }: IParagraphProps) => {

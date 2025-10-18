@@ -9,23 +9,23 @@ import { parse } from '@rocket.chat/message-parser';
 import Markdown from '../../containers/markdown';
 
 interface IStatusTextContainer {
-    status: string;
-    style?: StyleProp<TextStyle>;
-    numberOfLines?: number;
+	status: string;
+	style?: StyleProp<TextStyle>;
+	numberOfLines?: number;
 }
 
 const StatusTextContainer = ({ status, style, numberOfLines = 1 }: IStatusTextContainer): React.ReactElement => {
 	const customEmojis = useAppSelector(state => state.customEmojis);
-    
-    const getCustomEmoji = (emoji: string) => {
-        const customEmoji = customEmojis?.[emoji];
-        if (customEmoji) {
-            return customEmoji;
-        }
-        return null;
-    };
 
-	return <Markdown msg={status} numberOfLines={numberOfLines} getCustomEmoji={getCustomEmoji} style={[style]}/>;
+	const getCustomEmoji = (emoji: string) => {
+		const customEmoji = customEmojis?.[emoji];
+		if (customEmoji) {
+			return customEmoji;
+		}
+		return null;
+	};
+
+	return <Markdown msg={status} numberOfLines={numberOfLines} getCustomEmoji={getCustomEmoji} style={[style]} />;
 };
 
 export default StatusTextContainer;

@@ -52,8 +52,8 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	getCustomEmoji,
 	onLinkPress,
 	isTranslated,
-    numberOfLines,
-    style
+	numberOfLines,
+	style
 }: IMarkdownProps) => {
 	if (!msg) return null;
 

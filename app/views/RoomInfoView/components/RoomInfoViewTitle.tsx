@@ -46,7 +46,11 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				)}
 				{!!statusText && (
 					<View testID='room-info-view-custom-status'>
-                        <StatusTextContainer status={statusText} numberOfLines={2} style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]} />
+						<StatusTextContainer
+							status={statusText}
+							numberOfLines={2}
+							style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
+						/>
 					</View>
 				)}
 			</View>

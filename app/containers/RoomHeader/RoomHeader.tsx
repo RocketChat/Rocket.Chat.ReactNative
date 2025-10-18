@@ -109,7 +109,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 	// subtitle
 	if (subtitle) {
-        return <StatusTextContainer status={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
+		return <StatusTextContainer status={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 		//return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
