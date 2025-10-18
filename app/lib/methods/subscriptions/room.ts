@@ -265,10 +265,10 @@ export default class RoomSubscription {
 						message.attachments = message.attachments?.map(att => {
 							const existing = messageRecord.attachments?.find(
 								a =>
-									a.image_url === att.image_url ||
-									a.video_url === att.video_url ||
-									a.audio_url === att.audio_url ||
-									a.thumb_url === att.thumb_url
+									(a.image_url && a.image_url === att.image_url) ||
+									(a.video_url && a.video_url === att.video_url) ||
+									(a.audio_url && a.audio_url === att.audio_url) ||
+									(a.thumb_url && a.thumb_url === att.thumb_url)
 							);
 
 							return {
