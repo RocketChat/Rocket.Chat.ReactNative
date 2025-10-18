@@ -106,10 +106,6 @@ jobs:
               --format junit \
               --output maestro-report.xml
 
-      - name: Handle Timeout
-        if: failure() && contains(steps.maestro-tests.outputs.failure_message, 'Timeout')
-        run: echo "TIMED_OUT=true" >> $GITHUB_ENV
-
       - name: Upload Test Report
         if: always()
         uses: actions/upload-artifact@v4
