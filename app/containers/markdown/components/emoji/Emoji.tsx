@@ -69,9 +69,9 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 
 	if (emoji) {
 		return (
-            <View style={[{ transform: [{ translateY: 3 }] }]}>
-                <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
-            </View>
+			<View style={[{ transform: [{ translateY: 3 }] }]}>
+				<CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
+			</View>
 		);
 	}
 
