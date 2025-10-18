@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, useWindowDimensions } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
 import Plain from '../Plain';
@@ -68,7 +68,11 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 	};
 
 	if (emoji) {
-		return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
+		return (
+            <View style={[{ transform: [{ translateY: 3 }] }]}>
+                <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
+            </View>
+		);
 	}
 
 	return (
