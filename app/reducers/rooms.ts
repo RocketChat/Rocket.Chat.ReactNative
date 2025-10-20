@@ -1,4 +1,4 @@
-import { IRoomsAction } from '../actions/rooms';
+import { type IRoomsAction } from '../actions/rooms';
 import { ROOMS } from '../actions/actionsTypes';
 
 export interface IRooms {

@@ -4,7 +4,7 @@ import { aesDecryptFile, aesEncryptFile, getRandomValues, randomBytes } from '@r
 import { compareServerVersion } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
 import * as hexLite from './helpers/hex-lite';
-import { TSubscriptionModel } from '../../definitions';
+import { type TSubscriptionModel } from '../../definitions';
 import { store } from '../store/auxStore';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';

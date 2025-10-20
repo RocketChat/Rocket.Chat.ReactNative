@@ -9,7 +9,7 @@ import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
-import { IOption, IOptions, IOverflow } from './interfaces';
+import { type IOption, type IOptions, type IOverflow } from './interfaces';
 
 const keyExtractor = (item: any) => item.value;
 

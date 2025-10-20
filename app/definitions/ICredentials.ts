@@ -1,4 +1,4 @@
-import { AppleAuthenticationFullName } from 'expo-apple-authentication';
+import { type AppleAuthenticationFullName } from 'expo-apple-authentication';
 
 export interface ICredentials {
 	resume?: string;

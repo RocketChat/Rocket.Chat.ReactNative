@@ -2,7 +2,7 @@ import * as FileSystem from 'expo-file-system';
 import FileViewer from 'react-native-file-viewer';
 
 import { LISTENER } from '../../../containers/Toast';
-import { IAttachment } from '../../../definitions';
+import { type IAttachment } from '../../../definitions';
 import i18n from '../../../i18n';
 import EventEmitter from './events';
 import { Encryption } from '../../encryption';
