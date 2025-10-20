@@ -2,28 +2,25 @@ import { Emitter } from '@rocket.chat/emitter';
 import { MediaSignalingSession, MediaCallWebRTCProcessor } from '@rocket.chat/media-signaling';
 import type { MediaSignalTransport, ClientMediaSignal, WebRTCProcessorConfig } from '@rocket.chat/media-signaling';
 import { mediaDevices } from 'react-native-webrtc';
-// import BackgroundTimer from 'react-native-background-timer';
+import BackgroundTimer from 'react-native-background-timer';
 
 import { MediaCallLogger } from './MediaCallLogger';
-// import { useIceServers } from './useIceServers';
 
 type SignalTransport = MediaSignalTransport<ClientMediaSignal>;
 
 const randomStringFactory = (): string =>
 	Date.now().toString(36) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-// const getSessionIdKey = (userId: string): string => `rcx-media-session-id-${userId}`;
-
 class MediaSessionStore extends Emitter<{ change: void }> {
 	private sessionInstance: MediaSignalingSession | null = null;
 	private sendSignalFn: SignalTransport | null = null;
 	private _webrtcProcessorFactory: ((config: WebRTCProcessorConfig) => MediaCallWebRTCProcessor) | null = null;
 
-	private change(): void {
+	private change() {
 		this.emit('change');
 	}
 
-	public onChange(callback: () => void): () => void {
+	public onChange(callback: () => void) {
 		return this.on('change', callback);
 	}
 
@@ -34,25 +31,21 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 		return this._webrtcProcessorFactory(config);
 	}
 
-	private sendSignal(signal: ClientMediaSignal): void {
-		if (this.sendSignalFn) {
-			this.sendSignalFn(signal);
-			return;
+	private sendSignal(signal: ClientMediaSignal) {
+		if (!this.sendSignalFn) {
+			throw new Error('Send signal function not set');
 		}
-
-		console.warn('Media Call - Tried to send signal, but no sendSignalFn was set');
+		return this.sendSignalFn(signal);
 	}
 
 	private makeInstance(userId: string): MediaSignalingSession | null {
 		if (this.sessionInstance !== null) {
-			console.log('ending session', this.sessionInstance);
 			this.sessionInstance.endSession();
 			this.sessionInstance = null;
 		}
 
 		if (!this._webrtcProcessorFactory || !this.sendSignalFn) {
-			console.warn('Media Call - Tried to make instance, but no webrtcProcessorFactory or sendSignalFn was set');
-			return null;
+			throw new Error('WebRTC processor factory and send signal function must be set');
 		}
 
 		this.sessionInstance = new MediaSignalingSession({
@@ -63,24 +56,22 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			},
 			mediaStreamFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
-			logger: new MediaCallLogger()
-			// timerProcessor: {
-			// 	setInterval: BackgroundTimer.setInterval,
-			// 	clearInterval: BackgroundTimer.clearInterval,
-			// 	setTimeout: BackgroundTimer.setTimeout,
-			// 	clearTimeout: BackgroundTimer.clearTimeout
-			// }
+			logger: new MediaCallLogger(),
+			timerProcessor: {
+				setInterval: (callback: () => void, interval: number) => BackgroundTimer.setInterval(callback, interval),
+				clearInterval: (interval: number) => BackgroundTimer.clearInterval(interval),
+				setTimeout: (callback: () => void, timeout: number) => BackgroundTimer.setTimeout(callback, timeout),
+				clearTimeout: (timeout: number) => BackgroundTimer.clearTimeout(timeout)
+			}
 		});
 
 		this.change();
-
 		return this.sessionInstance;
 	}
 
 	public getInstance(userId?: string): MediaSignalingSession | null {
 		if (!userId) {
-			console.warn('Media Call - Tried to get instance, but no userId was set');
-			return null;
+			throw new Error('User Id is required');
 		}
 
 		if (this.sessionInstance?.userId === userId) {
@@ -90,12 +81,9 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 		return this.makeInstance(userId);
 	}
 
-	public setSendSignalFn(sendSignalFn: SignalTransport): () => void {
+	public setSendSignalFn(sendSignalFn: SignalTransport) {
 		this.sendSignalFn = sendSignalFn;
 		this.change();
-		return () => {
-			this.sendSignalFn = null;
-		};
 	}
 
 	public setWebRTCProcessorFactory(factory: (config: WebRTCProcessorConfig) => MediaCallWebRTCProcessor): void {
