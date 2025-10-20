@@ -1,18 +1,18 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
-import { ProfileStackParamList } from '../../stacks/types';
-import { INotificationPreferences } from '../../definitions';
+import { type ProfileStackParamList } from '../../stacks/types';
+import { type INotificationPreferences } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import { getUserPreferences, setUserPreferences } from '../../lib/services/restApi';
 import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';

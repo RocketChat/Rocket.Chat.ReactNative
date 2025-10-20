@@ -1,4 +1,4 @@
-import { createContext, memo, ReactElement } from 'react';
+import { createContext, memo, type ReactElement } from 'react';
 
 import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
 import { useSearch } from '../hooks/useSearch';

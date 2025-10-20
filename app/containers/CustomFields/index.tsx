@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput } from 'react-native';
+import { type TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import { FormTextInput } from '../TextInput';

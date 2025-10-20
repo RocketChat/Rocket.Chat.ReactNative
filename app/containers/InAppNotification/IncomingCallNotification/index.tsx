@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
 
 import { acceptCall, cancelCall } from '../../../actions/videoConf';
-import { ISubscription, SubscriptionType } from '../../../definitions';
+import { type ISubscription, type SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';

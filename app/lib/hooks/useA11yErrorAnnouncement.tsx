@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { AccessibilityInfo } from 'react-native';
-import { FieldErrorsImpl } from 'react-hook-form';
+import { type FieldErrorsImpl } from 'react-hook-form';
 
 import { useDebounce } from '../methods/helpers';
 import { accessibilityErrorAnnouncementDebounceTime } from '../constants/debounceConfig';
