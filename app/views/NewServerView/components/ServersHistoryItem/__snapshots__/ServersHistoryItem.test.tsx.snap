@@ -1901,7 +1901,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         style={
           [
             {
-              "backgroundColor": "#1F2329",
+              "backgroundColor": "#262931",
               "borderRadius": undefined,
               "margin": undefined,
               "marginBottom": undefined,
@@ -2191,7 +2191,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         style={
           [
             {
-              "backgroundColor": "#000000",
+              "backgroundColor": "#0d0d0d",
               "borderRadius": undefined,
               "margin": undefined,
               "marginBottom": undefined,
