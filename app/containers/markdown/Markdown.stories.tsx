@@ -3,8 +3,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
-import { themes } from '../../lib/constants';
-import { TGetCustomEmoji, ICustomEmoji } from '../../definitions/IEmoji';
+import { themes } from '../../lib/constants/colors';
+import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions/IEmoji';
 
 const theme = 'light';
 
@@ -124,10 +124,7 @@ export const Links = () => (
 		<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' />
 		<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' />
 		<Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' />
-		<Markdown
-			msg='[Markdown link](https://rocket.chat) and the text with a color specific as fontSecondaryInfo'
-			style={[{ color: themes[theme].fontSecondaryInfo }]}
-		/>
+		<Markdown msg='[Markdown link](https://rocket.chat) and the text continues on the next line' />
 	</View>
 );
 

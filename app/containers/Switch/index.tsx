@@ -1,4 +1,4 @@
-import { Switch as RNSwitch, SwitchProps } from 'react-native';
+import { Switch as RNSwitch, type SwitchProps } from 'react-native';
 import React from 'react';
 
 import { useTheme } from '../../theme';
@@ -7,11 +7,13 @@ const Switch = (props: SwitchProps): React.ReactElement => {
 	const { colors } = useTheme();
 
 	const trackColor = {
-		false: colors.buttonBackgroundDangerPress,
-		true: colors.buttonBackgroundSuccessPress
+		false: colors.strokeDark,
+		true: colors.buttonBackgroundPrimaryDefault
 	};
 
-	return <RNSwitch trackColor={trackColor} {...props} />;
+	return (
+		<RNSwitch trackColor={trackColor} thumbColor={colors.fontPureWhite} ios_backgroundColor={colors.strokeDark} {...props} />
+	);
 };
 
 export default Switch;

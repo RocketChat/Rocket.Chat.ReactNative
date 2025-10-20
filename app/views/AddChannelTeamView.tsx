@@ -1,18 +1,17 @@
 import React, { useLayoutEffect } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { CompositeNavigationProp } from '@react-navigation/core';
+import { type CompositeNavigationProp } from '@react-navigation/core';
 
 import * as List from '../containers/List';
-import StatusBar from '../containers/StatusBar';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
-import { ChatsStackParamList, DrawerParamList, NewMessageStackParamList } from '../stacks/types';
-import { IApplicationState } from '../definitions';
-import { usePermissions } from '../lib/hooks';
+import { type ChatsStackParamList, type DrawerParamList, type NewMessageStackParamList } from '../stacks/types';
+import { type IApplicationState } from '../definitions';
+import { usePermissions } from '../lib/hooks/usePermissions';
 import { compareServerVersion } from '../lib/methods/helpers';
-import { TSupportedPermissions } from '../reducers/permissions';
+import { type TSupportedPermissions } from '../reducers/permissions';
 
 type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
 
@@ -61,7 +60,6 @@ const AddChannelTeamView = () => {
 
 	return (
 		<SafeAreaView testID='add-channel-team-view'>
-			<StatusBar />
 			<List.Container>
 				<List.Separator />
 				{canCreateNew ? (

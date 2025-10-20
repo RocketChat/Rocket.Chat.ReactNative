@@ -1,25 +1,23 @@
 import React from 'react';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { RouteProp } from '@react-navigation/native';
+import { type RouteProp } from '@react-navigation/native';
 
-import { ChatsStackParamList } from '../stacks/types';
+import { type ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import { themes } from '../lib/constants';
-import { TSupportedThemes, withTheme } from '../theme';
+import { themes } from '../lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
-import { IApplicationState } from '../definitions';
-import { TDataSelect } from '../definitions/IDataSelect';
+import { type IApplicationState } from '../definitions';
+import { type TDataSelect } from '../definitions/IDataSelect';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -127,7 +125,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	toggleItem = (rid: string) => {
 		const { selected } = this.state;
 
-		animateNextTransition();
 		if (this.isRadio) {
 			if (!this.isChecked(rid)) {
 				this.setState({ selected: [rid] }, () => this.setHeader());
@@ -197,7 +194,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
-				<StatusBar />
 				<FlatList
 					data={!isSearching ? data : dataFiltered}
 					extraData={this.state}

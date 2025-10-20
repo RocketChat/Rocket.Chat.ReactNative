@@ -6,11 +6,14 @@ import { BUTTON_HIT_SLOP } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
-import { themes } from '../../lib/constants';
-import { IMessageCallButton } from './interfaces';
+import { themes } from '../../lib/constants/colors';
+import { type IMessageCallButton } from './interfaces';
 import { useTheme } from '../../theme';
 
+// TODO: Create a reusable button component for message
 const CallButton = React.memo(({ handleEnterCall }: IMessageCallButton) => {
+	'use memo';
+
 	const { theme } = useTheme();
 	return (
 		<View style={styles.buttonContainer}>
@@ -19,10 +22,10 @@ const CallButton = React.memo(({ handleEnterCall }: IMessageCallButton) => {
 				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 				style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
 				hitSlop={BUTTON_HIT_SLOP}>
-				<>
-					<CustomIcon name='camera' size={16} style={styles.buttonIcon} color={themes[theme].fontWhite} />
+				<View style={styles.buttonInnerContainer}>
+					<CustomIcon name='camera' size={16} color={themes[theme].fontWhite} />
 					<Text style={[styles.buttonText, { color: themes[theme].fontWhite }]}>{I18n.t('Click_to_join')}</Text>
-				</>
+				</View>
 			</Touchable>
 		</View>
 	);

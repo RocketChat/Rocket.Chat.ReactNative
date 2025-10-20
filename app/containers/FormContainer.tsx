@@ -1,11 +1,10 @@
 import React from 'react';
-import { ScrollView, ScrollViewProps, StyleSheet, View } from 'react-native';
+import { ScrollView, type ScrollViewProps, StyleSheet, View } from 'react-native';
 
 import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import KeyboardView from './KeyboardView';
 import { useTheme } from '../theme';
-import StatusBar from './StatusBar';
 import AppVersion from './AppVersion';
 import { isTablet } from '../lib/methods/helpers';
 import SafeAreaView from './SafeAreaView';
@@ -39,7 +38,6 @@ const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IF
 
 	return (
 		<KeyboardView>
-			<StatusBar />
 			<ScrollView
 				style={sharedStyles.container}
 				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}

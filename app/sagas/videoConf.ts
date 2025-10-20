@@ -1,25 +1,24 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 import { delay, put, takeEvery } from 'redux-saga/effects';
 import { call } from 'typed-redux-saga';
 
 import { VIDEO_CONF } from '../actions/actionsTypes';
-import { removeVideoConfCall, setCalling, setVideoConfCall, TCallProps } from '../actions/videoConf';
+import { removeVideoConfCall, setCalling, setVideoConfCall, type TCallProps } from '../actions/videoConf';
 import { hideActionSheetRef } from '../containers/ActionSheet';
 import { INAPP_NOTIFICATION_EMITTER } from '../containers/InAppNotification';
 import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
-import { appSelector } from '../lib/hooks';
-import { callJitsi } from '../lib/methods';
+import { appSelector } from '../lib/hooks/useAppSelector';
+import { callJitsi } from '../lib/methods/callJitsi';
 import { compareServerVersion, showErrorAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import log from '../lib/methods/helpers/log';
 import { hideNotification } from '../lib/methods/helpers/notifications';
 import { showToast } from '../lib/methods/helpers/showToast';
 import { videoConfJoin } from '../lib/methods/videoConf';
-import { Services } from '../lib/services';
-import { notifyUser } from '../lib/services/restApi';
-import { ICallInfo } from '../reducers/videoConf';
+import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
+import { type ICallInfo } from '../reducers/videoConf';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -170,7 +169,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
 	if (isServer5OrNewer) {
 		try {
-			const videoConfResponse = yield* call(Services.videoConferenceStart, rid);
+			const videoConfResponse = yield* call(videoConferenceStart, rid);
 			if (videoConfResponse.success) {
 				if (direct && videoConfResponse.data.type === 'direct') {
 					yield call(callUser, { rid, uid: videoConfResponse.data.calleeId, callId: videoConfResponse.data.callId });
@@ -199,7 +198,7 @@ function* giveUp({ rid, uid, callId, rejected }: { rid: string; uid: string; cal
 	yield call(notifyUser, `${uid}/video-conference`, { action: rejected ? 'rejected' : 'canceled', params: { uid, rid, callId } });
 	if (!rejected) {
 		yield put(setCalling(false));
-		yield call(Services.videoConferenceCancel, callId);
+		yield call(videoConferenceCancel, callId);
 	}
 }
 

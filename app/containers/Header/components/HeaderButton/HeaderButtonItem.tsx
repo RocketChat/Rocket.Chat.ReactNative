@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { CustomIcon, TIconsName } from '../../../CustomIcon';
+import { CustomIcon, type TIconsName } from '../../../CustomIcon';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 
@@ -53,6 +53,8 @@ const Item = memo(
 		accessibilityLabel,
 		...props
 	}: IHeaderButtonItem): React.ReactElement => {
+		'use memo';
+
 		const { colors } = useTheme();
 		return (
 			<BorderlessButton

@@ -1,16 +1,15 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
-import { Subscription } from 'rxjs';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type Subscription } from 'rxjs';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
-import { ISubscription } from '../../definitions';
+import { type ISubscription } from '../../definitions';
 import I18n from '../../i18n';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
-import { ChatsStackParamList } from '../../stacks/types';
+import { getSupportedLanguagesAutoTranslate, saveAutoTranslate } from '../../lib/services/restApi';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -41,7 +40,7 @@ const AutoTranslateView = (): React.ReactElement => {
 	useEffect(() => {
 		(async () => {
 			try {
-				const languages = await Services.getSupportedLanguagesAutoTranslate();
+				const languages = await getSupportedLanguagesAutoTranslate();
 				setLanguages(languages);
 			} catch (error) {
 				console.log(error);
@@ -70,7 +69,7 @@ const AutoTranslateView = (): React.ReactElement => {
 		logEvent(events.AT_TOGGLE_TRANSLATE);
 		try {
 			setEnableAutoTranslate(!enableAutoTranslate);
-			await Services.saveAutoTranslate({
+			await saveAutoTranslate({
 				rid,
 				field: 'autoTranslate',
 				value: enableAutoTranslate ? '0' : '1',
@@ -85,7 +84,7 @@ const AutoTranslateView = (): React.ReactElement => {
 	const saveAutoTranslateLanguage = async (selectedLanguage: string) => {
 		logEvent(events.AT_SET_LANG);
 		try {
-			await Services.saveAutoTranslate({
+			await saveAutoTranslate({
 				rid,
 				field: 'autoTranslateLanguage',
 				value: selectedLanguage
@@ -113,7 +112,6 @@ const AutoTranslateView = (): React.ReactElement => {
 	));
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<FlatList
 				testID='auto-translate-view'
 				data={languages}

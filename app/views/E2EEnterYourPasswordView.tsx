@@ -9,10 +9,9 @@ import Button from '../containers/Button';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { useTheme } from '../theme';
@@ -88,13 +87,13 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 	}, [encryptionFailure, prevEncryptionFailure]);
 
 	const submit = () => {
+		prevEncryptionFailure.current = false;
 		logEvent(events.E2E_ENTER_PW_SUBMIT);
 		dispatch(encryptionDecodeKey(password));
 	};
 
 	return (
 		<KeyboardView>
-			<StatusBar />
 			<ScrollView
 				{...scrollPersistTaps}
 				style={sharedStyles.container}

@@ -1,12 +1,11 @@
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
-import StatusBar from '../containers/StatusBar';
 import NewWindowIcon from '../containers/NewWindowIcon';
-import { SettingsStackParamList } from '../stacks/types';
+import { type SettingsStackParamList } from '../stacks/types';
 import i18n from '../i18n';
 import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
@@ -27,7 +26,6 @@ const GetHelpView = () => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container>
 				<List.Section>
 					<List.Separator />

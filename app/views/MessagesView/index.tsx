@@ -2,38 +2,37 @@ import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { themes } from '../../lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
-import { ChatsStackParamList } from '../../stacks/types';
-import { IRoomInfoParam } from '../SearchMessagesView';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { type IRoomInfoParam } from '../SearchMessagesView';
 import {
-	IApplicationState,
-	TMessageModel,
-	ISubscription,
+	type IApplicationState,
+	type TMessageModel,
+	type ISubscription,
 	SubscriptionType,
-	IAttachment,
-	IMessage,
-	TAnyMessageModel,
-	IUrl,
-	TGetCustomEmoji,
-	ICustomEmoji
+	type IAttachment,
+	type IMessage,
+	type TAnyMessageModel,
+	type IUrl,
+	type TGetCustomEmoji,
+	type ICustomEmoji
 } from '../../definitions';
-import { Services } from '../../lib/services';
-import { TNavigation } from '../../stacks/stackType';
+import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
+import { type TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
 import Navigation from '../../lib/navigation/appNavigation';
@@ -186,7 +185,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Files'),
 				fetchFunc: async () => {
 					const { messages } = this.state;
-					const result = await Services.getFiles(this.rid, this.t, messages.length);
+					const result = await getFiles(this.rid, this.t, messages.length);
 					if (result.success) {
 						return { ...result, messages: await Encryption.decryptFiles(result.files) };
 					}
@@ -218,7 +217,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Mentions'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages({ roomId: this.rid, type: this.t, offset: messages.length, mentionIds: [user.id] });
+					return getMessages({ roomId: this.rid, type: this.t, offset: messages.length, mentionIds: [user.id] });
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
@@ -229,7 +228,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Starred'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages({ roomId: this.rid, type: this.t, offset: messages.length, starredIds: [user.id] });
+					return getMessages({ roomId: this.rid, type: this.t, offset: messages.length, starredIds: [user.id] });
 				},
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
@@ -241,14 +240,14 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					icon: message.starred ? 'star-filled' : 'star',
 					onPress: this.handleActionPress
 				}),
-				handleActionPress: (message: IMessage) => Services.toggleStarMessage(message._id, message.starred)
+				handleActionPress: (message: IMessage) => toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
 			Pinned: {
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getPinnedMessages({ roomId: this.rid, offset: messages.length, count: 50 });
+					return getPinnedMessages({ roomId: this.rid, offset: messages.length, count: 50 });
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
@@ -256,7 +255,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
 				),
 				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
-				handleActionPress: (message: IMessage) => Services.togglePinMessage(message._id, message.pinned)
+				handleActionPress: (message: IMessage) => togglePinMessage(message._id, message.pinned)
 			}
 		}[name];
 	};
@@ -366,7 +365,6 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
-				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

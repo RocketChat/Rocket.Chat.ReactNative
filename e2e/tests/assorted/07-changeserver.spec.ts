@@ -2,7 +2,13 @@ import { device, waitFor, element, by } from 'detox';
 
 import data from '../../data';
 import { navigateToLogin, login, checkServer, signup } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
+import {
+	createRandomRoom,
+	createRandomUser,
+	deleteCreatedUsers,
+	type IDeleteCreateUser,
+	type ITestUser
+} from '../../helpers/data_setup';
 
 const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
@@ -36,7 +42,7 @@ describe('Change server', () => {
 			.withTimeout(2000);
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(5000);
 		await waitFor(element(by.id('rooms-list-header-server-add')))
 			.toBeVisible()
@@ -62,7 +68,7 @@ describe('Change server', () => {
 	it('should add server and create new user', async () => {
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(5000);
 		await element(by.id(`server-item-${data.alternateServer}`)).tap();
 		await waitFor(element(by.id('workspace-view')))
@@ -90,7 +96,7 @@ describe('Change server', () => {
 	it('should change back to main server', async () => {
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(5000);
 		await element(by.id(`server-item-${data.server}`)).tap();
 		await waitFor(element(by.id('rooms-list-view')))

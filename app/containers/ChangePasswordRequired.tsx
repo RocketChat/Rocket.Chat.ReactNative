@@ -1,61 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { type NavigationProp, type NavigationState } from '@react-navigation/native';
 
-import { logout, setUser } from '../actions/login';
+import { logout } from '../actions/login';
 import I18n from '../i18n';
-import { useSetting } from '../lib/hooks/useSetting';
-import { showErrorAlert } from '../lib/methods/helpers';
-import { Services } from '../lib/services';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
-import { useActionSheet } from './ActionSheet';
-import ActionSheetContentWithInputAndSubmit from './ActionSheet/ActionSheetContentWithInputAndSubmit';
 import Button from './Button';
 import { CustomIcon } from './CustomIcon';
 
-export const ChangePasswordRequired = () => {
-	const [loading, setLoading] = useState(false);
+interface IChangePasswordRequired {
+	navigation: Omit<NavigationProp<any>, 'getState'> & {
+		getState(): NavigationState | undefined;
+	};
+}
+
+export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-	const { showActionSheet, hideActionSheet } = useActionSheet();
 
-	const requiresPasswordConfirmation = useSetting('Accounts_RequirePasswordConfirmation');
-	const passwordPlaceholder = useSetting('Accounts_PasswordPlaceholder') as string;
-	const passwordConfirmationPlaceholder = useSetting('Accounts_ConfirmPasswordPlaceholder') as string;
-
-	const changePassword = async (password: string) => {
-		setLoading(true);
-		try {
-			await Services.setUserPassword(password);
-			dispatch(setUser({ requirePasswordChange: false }));
-			hideActionSheet();
-		} catch (error: any) {
-			showErrorAlert(error?.reason || error?.message, I18n.t('Oops'));
-		}
-		setLoading(false);
-	};
-
-	const showActionSheetPassword = () => {
-		const inputs = [{ placeholder: passwordPlaceholder || I18n.t('Password'), secureTextEntry: true, key: 'password' }];
-		if (requiresPasswordConfirmation) {
-			inputs.push({
-				placeholder: passwordConfirmationPlaceholder || I18n.t('Confirm_your_password'),
-				secureTextEntry: true,
-				key: 'confirm-password'
-			});
-		}
-		showActionSheet({
-			children: (
-				<ActionSheetContentWithInputAndSubmit
-					title={I18n.t('Please_Enter_your_new_password')}
-					testID='change-password-required-sheet'
-					inputs={inputs}
-					onSubmit={input => changePassword(input[0])}
-					isDisabled={input => (loading || input[0] === '' || requiresPasswordConfirmation ? input[0] !== input[1] : false)}
-				/>
-			)
-		});
+	const handleChangePassword = () => {
+		navigation.navigate('ProfileStackNavigator', { screen: 'ChangePasswordView', params: { fromProfileView: false } });
 	};
 
 	return (
@@ -69,7 +35,7 @@ export const ChangePasswordRequired = () => {
 				testID='change-password-required-button'
 				title={I18n.t('Change_password')}
 				type='primary'
-				onPress={showActionSheetPassword}
+				onPress={handleChangePassword}
 			/>
 			<Button
 				testID='change-password-required-logout'

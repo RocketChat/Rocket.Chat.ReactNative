@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
-import { IRoomItemContainerProps } from './interfaces';
+import { type IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
@@ -15,9 +15,6 @@ const RoomItemContainer = React.memo(
 		onPress,
 		onLongPress,
 		width,
-		toggleFav,
-		toggleRead,
-		hideChannel,
 		isFocused,
 		showLastMessage,
 		username,
@@ -73,9 +70,6 @@ const RoomItemContainer = React.memo(
 				favorite={item.f}
 				rid={item.rid}
 				userId={userId}
-				toggleFav={toggleFav}
-				toggleRead={toggleRead}
-				hideChannel={hideChannel}
 				testID={testID}
 				type={item.t}
 				isFocused={isFocused}

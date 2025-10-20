@@ -6,14 +6,14 @@ import {
 	sleep,
 	tapBack,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapAndWaitFor,
 	mockMessage,
 	tryTapping,
 	navigateToRoom,
 	checkRoomTitle
 } from '../../helpers/app';
-import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, deleteCreatedUsers, type IDeleteCreateUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 let alertButtonType: string;
@@ -280,6 +280,23 @@ describe('E2E Encryption', () => {
 			await navigateToRoom(room);
 			await mockMessage(getMessage(5));
 			await readMessages(4);
+		});
+
+		it('should send a message, edit it and be able to read it', async () => {
+			await mockMessage(getMessage(99));
+			await element(by[textMatcher](getMessage(99)))
+				.atIndex(0)
+				.longPress();
+			await waitFor(element(by.id('action-sheet')))
+				.toExist()
+				.withTimeout(2000);
+			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
+			await element(by[textMatcher]('Edit')).atIndex(0).tap();
+			await element(by.id('message-composer-input')).replaceText(getMessage(6));
+			await element(by.id('message-composer-send')).tap();
+			await readMessages(5);
 		});
 	});
 

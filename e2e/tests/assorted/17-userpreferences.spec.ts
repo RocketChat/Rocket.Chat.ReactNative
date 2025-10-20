@@ -1,7 +1,7 @@
-import { device, waitFor, element, by, expect } from 'detox';
+import { device, waitFor, element, by } from 'detox';
 
 import { navigateToLogin, login, tapBack, navigateToRoom } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser, sendMessage } from '../../helpers/data_setup';
 
 const navigateFromRoomsListViewToUserPreferencesView = async () => {
 	await element(by.id('rooms-list-view-sidebar')).tap();
@@ -66,14 +66,20 @@ describe('User Preferences screen', () => {
 				await waitFor(element(by.id('sidebar-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await expect(element(by.id('sidebar-chats'))).toBeVisible();
+				await waitFor(element(by.id('sidebar-chats')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('sidebar-chats')).tap();
 				await waitFor(element(by.text(`${otherUser.username}: :(`)))
 					.toBeVisible()
 					.withTimeout(2000);
 				await navigateToRoom(room);
-				await expect(element(by.text(':('))).toBeVisible();
-				await expect(element(by.text('😞'))).not.toBeVisible();
+				await waitFor(element(by.text(':(')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await waitFor(element(by.text('😞')))
+					.not.toBeVisible()
+					.withTimeout(2000);
 			});
 
 			it('ASCII should be converted to emoji', async () => {
@@ -91,14 +97,20 @@ describe('User Preferences screen', () => {
 				await waitFor(element(by.id('sidebar-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await expect(element(by.id('sidebar-chats'))).toBeVisible();
+				await waitFor(element(by.id('sidebar-chats')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('sidebar-chats')).tap();
 				await waitFor(element(by.text(`${otherUser.name}: 😞`)))
 					.toBeVisible()
 					.withTimeout(2000);
 				await navigateToRoom(room);
-				await expect(element(by.text('😞'))).toBeVisible();
-				await expect(element(by.text(':('))).not.toBeVisible();
+				await waitFor(element(by.text('😞')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await waitFor(element(by.text(':(')))
+					.not.toBeVisible()
+					.withTimeout(2000);
 			});
 		});
 	});
