@@ -1,12 +1,12 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Observable, Subscription } from 'rxjs';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import { type Observable, type Subscription } from 'rxjs';
+import { type CompositeNavigationProp } from '@react-navigation/native';
 
 import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
@@ -16,13 +16,20 @@ import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
-import { IApplicationState, IBaseScreen, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import {
+	type IApplicationState,
+	type IBaseScreen,
+	type ISubscription,
+	type IUser,
+	SubscriptionType,
+	type TSubscriptionModel
+} from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { getUserSelector } from '../../selectors/login';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -58,13 +65,13 @@ import {
 	returnLivechat
 } from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import CallSection from './components/CallSection';
-import { TNavigation } from '../../stacks/stackType';
+import { type TNavigation } from '../../stacks/stackType';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import Navigation from '../../lib/navigation/appNavigation';
 

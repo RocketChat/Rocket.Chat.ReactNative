@@ -1,4 +1,4 @@
-import { IUser } from '../../IUser';
+import { type IUser } from '../../IUser';
 
 export type E2eEndpoints = {
 	'e2e.setUserPublicAndPrivateKeys': {

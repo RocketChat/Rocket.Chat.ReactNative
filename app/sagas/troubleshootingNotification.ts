@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 import { call, takeLatest, put } from 'typed-redux-saga';
 import notifee, { AuthorizationStatus } from '@notifee/react-native';
 

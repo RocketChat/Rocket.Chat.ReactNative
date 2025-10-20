@@ -9,8 +9,8 @@ import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import LiveLocationAttachment from './LiveLocationAttachment';
 import MessageContext from '../../Context';
-import { IMessageAttachments } from '../../interfaces';
-import { IAttachment } from '../../../../definitions';
+import { type IMessageAttachments } from '../../interfaces';
+import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
@@ -42,7 +42,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			console.log('🔍 [Attachments] No attachments to render');
 			return null;
 		}
-		// TODO: memo?
+
 		const attachmentsElements = nonQuoteAttachments.map((file: IAttachment, index: number) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
@@ -52,8 +52,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}
-						style={style}
-						isReply={isReply}
 						author={author}
 						msg={msg}
 						imagePreview={file.image_preview}
@@ -63,17 +61,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 
 			if (file && file.audio_url) {
-				return (
-					<Audio
-						key={file.audio_url}
-						file={file}
-						getCustomEmoji={getCustomEmoji}
-						isReply={isReply}
-						style={style}
-						author={author}
-						msg={msg}
-					/>
-				);
+				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
 			}
 
 			if (file.video_url) {
@@ -83,8 +71,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}
-						style={style}
-						isReply={isReply}
 						author={author}
 						msg={msg}
 					/>

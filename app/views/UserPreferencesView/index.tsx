@@ -1,4 +1,4 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -9,12 +9,12 @@ import { compareServerVersion } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as List from '../../containers/List';
 import { getUserSelector } from '../../selectors/login';
-import { ProfileStackParamList } from '../../stacks/types';
+import { type ProfileStackParamList } from '../../stacks/types';
 import { saveUserPreferences } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
-import { IUser } from '../../definitions';
+import { type IUser } from '../../definitions';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;

@@ -81,19 +81,19 @@ import LocationPreviewModal from '../views/LocationShare/LocationPreviewModal';
 import LiveLocationPreviewModal from '../views/LocationShare/LiveLocationPreviewModal';
 import LiveLocationViewerModal from '../views/LocationShare/LiveLocationViewerModal';
 import {
-	AdminPanelStackParamList,
-	ChatsStackParamList,
-	DrawerParamList,
-	E2EEnterYourPasswordStackParamList,
-	E2ESaveYourPasswordStackParamList,
-	InsideStackParamList,
-	NewMessageStackParamList,
-	ProfileStackParamList,
-	SettingsStackParamList,
-	AccessibilityStackParamList
+	type AdminPanelStackParamList,
+	type ChatsStackParamList,
+	type DrawerParamList,
+	type E2EEnterYourPasswordStackParamList,
+	type E2ESaveYourPasswordStackParamList,
+	type InsideStackParamList,
+	type NewMessageStackParamList,
+	type ProfileStackParamList,
+	type SettingsStackParamList,
+	type AccessibilityStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
-import { TNavigation } from './stackType';
+import { type TNavigation } from './stackType';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 
 // ChatsStackNavigator

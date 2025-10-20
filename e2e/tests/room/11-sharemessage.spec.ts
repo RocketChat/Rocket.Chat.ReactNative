@@ -5,13 +5,13 @@ import {
 	login,
 	sleep,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapBack,
 	navigateToRoom,
 	mockMessage,
 	checkRoomTitle
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 describe('Forward a message with another user', () => {
 	let user: ITestUser;

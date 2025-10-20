@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
@@ -69,13 +69,13 @@ import DiscussionsView from '../../views/DiscussionsView';
 import AccessibilityAndAppearanceView from '../../views/AccessibilityAndAppearanceView';
 import { ModalContainer } from './ModalContainer';
 import {
-	MasterDetailChatsStackParamList,
-	MasterDetailDrawerParamList,
-	MasterDetailInsideStackParamList,
-	ModalStackParamList
+	type MasterDetailChatsStackParamList,
+	type MasterDetailDrawerParamList,
+	type MasterDetailInsideStackParamList,
+	type ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
-import { TNavigation } from '../stackType';
+import { type TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 // ChatsStackNavigator
