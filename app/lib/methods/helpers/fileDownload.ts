@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system';
+
 import FileViewer from 'react-native-file-viewer';
 
 import { LISTENER } from '../../../containers/Toast';
@@ -6,18 +6,18 @@ import { type IAttachment } from '../../../definitions';
 import i18n from '../../../i18n';
 import EventEmitter from './events';
 import { Encryption } from '../../encryption';
-import { downloadMediaFile, getMediaCache, sanitizeFileName } from '../handleMediaDownload';
+import { downloadMediaFile, getMediaCache } from '../handleMediaDownload';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 
-export const fileDownload = async (url: string, attachment?: IAttachment, fileName?: string): Promise<string> => {
-	let path = `${FileSystem.documentDirectory}`;
-	if (fileName) {
-		path = `${path}${sanitizeFileName(fileName)}`;
-	}
-	if (attachment?.title) {
-		path = `${path}${sanitizeFileName(attachment.title)}`;
-	}
+export const fileDownload = async (url: string, attachment?: IAttachment, fileName?: string, messageId?: string): Promise<string> => {
+	// let path = `${FileSystem.documentDirectory}`;
+	// if (fileName) {
+	// 	path = `${path}${sanitizeFileName(fileName)}`;
+	// }
+	// if (attachment?.title) {
+	// 	path = `${path}${sanitizeFileName(attachment.title)}`;
+	// }
 
 	const cache = await getMediaCache({ type: 'other' as const, mimeType: attachment?.format, urlToCache: url });
 
@@ -25,9 +25,9 @@ export const fileDownload = async (url: string, attachment?: IAttachment, fileNa
 		return cache.uri;
 	}
 	const option = {
-		messageId: url,
+	  messageId: messageId || url,
 		type: 'other' as const,
-		downloadUrl: url
+    downloadUrl: url
 	};
 
 	const uri = await downloadMediaFile(option);
@@ -39,7 +39,7 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 		let file = url;
 		// If url starts with file://, we assume it's a local file and we don't download/decrypt it
 		if (!file.startsWith('file://')) {
-			file = await fileDownload(file, attachment);
+      file = await fileDownload(file, attachment, undefined, messageId);
 
 			if (attachment.encryption) {
 				if (!attachment.hashes?.sha256) {

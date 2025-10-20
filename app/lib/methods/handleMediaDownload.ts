@@ -20,7 +20,8 @@ export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
 const defaultType = {
 	audio: 'mp3',
 	image: 'jpg',
-	video: 'mp4'
+  video: 'mp4',
+  other: 'bin'
 };
 export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
 

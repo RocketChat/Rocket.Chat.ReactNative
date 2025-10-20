@@ -41,7 +41,9 @@ export interface IAttachment {
 	translations?: IAttachmentTranslations;
 	e2e?: E2EType;
 	encryption?: TAttachmentEncryption;
-	format?: string;
+  format?: string;
+  other_type?: string
+  other_url?:string
 	hashes?: {
 		sha256: string;
 	};
