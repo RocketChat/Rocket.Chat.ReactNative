@@ -138,7 +138,7 @@ const Touchable = ({
 						onPress={handlePress}
 						testID={testID}
 						style={{
-							backgroundColor: colors.surfaceRoom
+							backgroundColor: colors.surfaceLight
 						}}>
 						{children}
 					</Touch>
