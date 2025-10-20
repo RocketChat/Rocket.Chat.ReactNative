@@ -3,8 +3,9 @@ import { call, cancel, delay, fork, put, race, select, take, takeLatest } from '
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import * as Keychain from 'react-native-keychain';
-import { Emitter } from '@rocket.chat/emitter';
-import { MediaSignalingSession, MediaCallWebRTCProcessor } from '@rocket.chat/media-signaling';
+import RNCallKeep from 'react-native-callkeep';
+import { PermissionsAndroid } from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
 
 import moment from 'moment';
 import * as types from '../actions/actionsTypes';
@@ -217,8 +218,48 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+function* initCallKeep() {
+	try {
+		const options = {
+			ios: {
+				appName: 'Rocket.Chat',
+				includesCallsInRecents: false
+			},
+			android: {
+				alertTitle: 'Permissions required',
+				alertDescription: 'This application needs to access your phone accounts',
+				cancelButton: 'Cancel',
+				okButton: 'Ok',
+				imageName: 'phone_account_icon',
+				additionalPermissions: [
+					PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
+					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+					PermissionsAndroid.PERMISSIONS.CALL_PHONE
+				],
+				// Required to get audio in background when using Android 11
+				foregroundService: {
+					channelId: 'chat.rocket.reactnative',
+					channelName: 'Rocket.Chat',
+					notificationTitle: 'Voice call is running on background'
+				}
+			}
+		};
+
+		RNCallKeep.setup(options);
+		RNCallKeep.canMakeMultipleCalls(false);
+
+		const start = Date.now();
+		setInterval(() => {
+			console.log('Timer fired after', Date.now() - start, 'ms');
+		}, 1000);
+	} catch (e) {
+		log(e);
+	}
+}
+
 const startVoipFork = function* startVoipFork() {
 	try {
+		yield call(initCallKeep);
 		const userId = yield select(state => state.login.user.id);
 		mediaSessionInstance.init(userId);
 	} catch (e) {

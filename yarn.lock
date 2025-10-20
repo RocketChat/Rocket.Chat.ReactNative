@@ -12917,6 +12917,11 @@ react-native-bootsplash@^6.3.8:
     ts-dedent "^2.2.0"
     xml-formatter "^3.6.5"
 
+react-native-callkeep@^4.3.16:
+  version "4.3.16"
+  resolved "https://registry.yarnpkg.com/react-native-callkeep/-/react-native-callkeep-4.3.16.tgz#56291796984b896113ef00f8b67ae3fe177baf70"
+  integrity sha512-aIxn02T5zW4jNPyzRdFGTWv6xD3Vy/1AkBMB6iYvWZEHWnfmgNGF0hELqg03Vbc2BNUhfqpu17aIydos+5Hurg==
+
 react-native-config-reader@4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/react-native-config-reader/-/react-native-config-reader-4.1.1.tgz#478b69e32adcc2e9a14f6ef5fa2cbbe012b9a27e"

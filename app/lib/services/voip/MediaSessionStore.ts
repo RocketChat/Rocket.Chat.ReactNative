@@ -2,6 +2,7 @@ import { Emitter } from '@rocket.chat/emitter';
 import { MediaSignalingSession, MediaCallWebRTCProcessor } from '@rocket.chat/media-signaling';
 import type { MediaSignalTransport, ClientMediaSignal, WebRTCProcessorConfig } from '@rocket.chat/media-signaling';
 import { mediaDevices } from 'react-native-webrtc';
+// import BackgroundTimer from 'react-native-background-timer';
 
 import { MediaCallLogger } from './MediaCallLogger';
 // import { useIceServers } from './useIceServers';
@@ -63,6 +64,12 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			mediaStreamFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
 			logger: new MediaCallLogger()
+			// timerProcessor: {
+			// 	setInterval: BackgroundTimer.setInterval,
+			// 	clearInterval: BackgroundTimer.clearInterval,
+			// 	setTimeout: BackgroundTimer.setTimeout,
+			// 	clearTimeout: BackgroundTimer.clearTimeout
+			// }
 		});
 
 		this.change();
