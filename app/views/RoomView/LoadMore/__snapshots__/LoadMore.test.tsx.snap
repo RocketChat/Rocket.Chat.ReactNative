@@ -414,10 +414,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         </Text>
       </View>
     </RNGestureHandlerButton>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -467,386 +463,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Hey!"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#F2F3F5",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#9EA2A8",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Hey!"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            Hey!
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-              accessibilityLanguage="en-US"
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -961,7 +585,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   "flex": 1,
                 }
               }
->>>>>>> develop
             >
               <View
                 style={
@@ -974,16 +597,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-=======
                   accessibilityState={
                     {
                       "busy": undefined,
@@ -1037,64 +650,10 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         },
                         {
                           "color": "#F2F3F5",
->>>>>>> develop
                         },
-                        false,
                       ]
                     }
                   >
-<<<<<<< HEAD
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-=======
                     diego.mello
                   </Text>
                   <Text
@@ -1116,7 +675,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   >
                     10:00 AM
                   </Text>
->>>>>>> develop
                 </View>
                 <View
                   style={
@@ -1126,8 +684,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   }
                 />
               </View>
-<<<<<<< HEAD
-=======
               <View
                 style={
                   {
@@ -1195,16 +751,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   </View>
                 </View>
               </View>
->>>>>>> develop
             </View>
           </View>
         </View>
       </View>
     </View>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -1254,62 +805,15 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-            accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
-            accessible={true}
             style={
-<<<<<<< HEAD
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Older message"
-              accessibilityLanguage="en-US"
-=======
               {
                 "alignItems": "flex-end",
                 "width": 36,
@@ -1331,93 +835,15 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   "flex": 1,
                 }
               }
->>>>>>> develop
             >
               <View
                 style={
                   {
-<<<<<<< HEAD
-                    "flexDirection": "row",
-=======
                     "gap": 4,
->>>>>>> develop
                   }
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Older message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            Older message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-=======
                   testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 >
                   <View
@@ -1635,10 +1061,16 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
->>>>>>> develop
               </View>
             </View>
           </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          />
         </View>
       </View>
     </View>
@@ -1808,10 +1240,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         </Text>
       </View>
     </RNGestureHandlerButton>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -1861,326 +1289,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#F2F3F5",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#9EA2A8",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -2461,16 +1577,11 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                   </View>
                 </View>
               </View>
->>>>>>> develop
             </View>
           </View>
         </View>
       </View>
     </View>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -2520,41 +1631,9 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-<<<<<<< HEAD
-              "backgroundColor": undefined,
-              "opacity": 1,
-=======
               "flexDirection": "row",
             }
           }
@@ -2874,32 +1953,10 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
->>>>>>> develop
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the third message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -3016,7 +2073,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
               }
             >
               <View
->>>>>>> develop
                 style={
                   {
                     "alignItems": "center",
@@ -3027,392 +2083,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the third message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            This is the third message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the second message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the second message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            This is the second message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the first message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-=======
                   accessibilityState={
                     {
                       "busy": undefined,
@@ -3466,159 +2136,10 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         },
                         {
                           "color": "#F2F3F5",
->>>>>>> develop
                         },
                       ]
                     }
                   >
-<<<<<<< HEAD
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#F2F3F5",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#9EA2A8",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the first message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            This is the first message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-=======
                     diego.mello
                   </Text>
                   <Text
@@ -3713,7 +2234,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         </Text>
                       </Text>
                     </Text>
->>>>>>> develop
                   </View>
                 </View>
               </View>
@@ -3818,10 +2338,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         </Text>
       </View>
     </RNGestureHandlerButton>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -3871,386 +2387,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Hey!"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#F2F3F5",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#9EA2A8",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Hey!"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            Hey!
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-              accessibilityLanguage="en-US"
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -4365,7 +2509,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   "flex": 1,
                 }
               }
->>>>>>> develop
             >
               <View
                 style={
@@ -4378,16 +2521,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-=======
                   accessibilityState={
                     {
                       "busy": undefined,
@@ -4441,64 +2574,10 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         },
                         {
                           "color": "#F2F3F5",
->>>>>>> develop
                         },
-                        false,
                       ]
                     }
                   >
-<<<<<<< HEAD
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-=======
                     diego.mello
                   </Text>
                   <Text
@@ -4520,7 +2599,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   >
                     10:00 AM
                   </Text>
->>>>>>> develop
                 </View>
                 <View
                   style={
@@ -4530,8 +2608,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   }
                 />
               </View>
-<<<<<<< HEAD
-=======
               <View
                 style={
                   {
@@ -4599,16 +2675,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   </View>
                 </View>
               </View>
->>>>>>> develop
             </View>
           </View>
         </View>
       </View>
     </View>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -4658,62 +2729,15 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-            accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
-            accessible={true}
             style={
-<<<<<<< HEAD
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Older message"
-              accessibilityLanguage="en-US"
-=======
               {
                 "alignItems": "flex-end",
                 "width": 36,
@@ -4735,93 +2759,15 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   "flex": 1,
                 }
               }
->>>>>>> develop
             >
               <View
                 style={
                   {
-<<<<<<< HEAD
-                    "flexDirection": "row",
-=======
                     "gap": 4,
->>>>>>> develop
                   }
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Older message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            Older message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-=======
                   testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 >
                   <View
@@ -5039,10 +2985,16 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
->>>>>>> develop
               </View>
             </View>
           </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          />
         </View>
       </View>
     </View>
@@ -5212,10 +3164,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         </Text>
       </View>
     </RNGestureHandlerButton>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -5265,326 +3213,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#F2F3F5",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#9EA2A8",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -5865,16 +3501,11 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                   </View>
                 </View>
               </View>
->>>>>>> develop
             </View>
           </View>
         </View>
       </View>
     </View>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -5924,41 +3555,9 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-<<<<<<< HEAD
-              "backgroundColor": undefined,
-              "opacity": 1,
-=======
               "flexDirection": "row",
             }
           }
@@ -6278,32 +3877,10 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
->>>>>>> develop
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the third message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -6420,7 +3997,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
               }
             >
               <View
->>>>>>> develop
                 style={
                   {
                     "alignItems": "center",
@@ -6431,392 +4007,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the third message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            This is the third message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the second message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the second message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            This is the second message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the first message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-=======
                   accessibilityState={
                     {
                       "busy": undefined,
@@ -6870,159 +4060,10 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         },
                         {
                           "color": "#F2F3F5",
->>>>>>> develop
                         },
                       ]
                     }
                   >
-<<<<<<< HEAD
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#F2F3F5",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#9EA2A8",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#E4E7EA",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the first message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#E4E7EA",
-                                },
-                              ]
-                            }
-                          >
-                            This is the first message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-=======
                     diego.mello
                   </Text>
                   <Text
@@ -7117,7 +4158,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         </Text>
                       </Text>
                     </Text>
->>>>>>> develop
                   </View>
                 </View>
               </View>
@@ -7222,10 +4262,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         </Text>
       </View>
     </RNGestureHandlerButton>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -7275,386 +4311,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  Hey!.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Hey!"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#1F2329",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#6C727A",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Hey!"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            Hey!
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-              accessibilityLanguage="en-US"
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -7769,7 +4433,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   "flex": 1,
                 }
               }
->>>>>>> develop
             >
               <View
                 style={
@@ -7782,16 +4445,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-=======
                   accessibilityState={
                     {
                       "busy": undefined,
@@ -7845,64 +4498,10 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         },
                         {
                           "color": "#1F2329",
->>>>>>> develop
                         },
-                        false,
                       ]
                     }
                   >
-<<<<<<< HEAD
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-=======
                     diego.mello
                   </Text>
                   <Text
@@ -7924,7 +4523,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   >
                     10:00 AM
                   </Text>
->>>>>>> develop
                 </View>
                 <View
                   style={
@@ -7934,8 +4532,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   }
                 />
               </View>
-<<<<<<< HEAD
-=======
               <View
                 style={
                   {
@@ -8003,16 +4599,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   </View>
                 </View>
               </View>
->>>>>>> develop
             </View>
           </View>
         </View>
       </View>
     </View>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -8062,62 +4653,15 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-            accessibilityLabel="diego.mello 10:00:00 AM  Older message.  "
-            accessible={true}
             style={
-<<<<<<< HEAD
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Older message"
-              accessibilityLanguage="en-US"
-=======
               {
                 "alignItems": "flex-end",
                 "width": 36,
@@ -8139,93 +4683,15 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   "flex": 1,
                 }
               }
->>>>>>> develop
             >
               <View
                 style={
                   {
-<<<<<<< HEAD
-                    "flexDirection": "row",
-=======
                     "gap": 4,
->>>>>>> develop
                   }
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Older message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            Older message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-=======
                   testID="message-content-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                 >
                   <View
@@ -8443,10 +4909,16 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     </Text>
                   </View>
                 </View>
->>>>>>> develop
               </View>
             </View>
           </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          />
         </View>
       </View>
     </View>
@@ -8616,10 +5088,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         </Text>
       </View>
     </RNGestureHandlerButton>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -8669,326 +5137,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-              "backgroundColor": undefined,
-              "opacity": 1,
+              "flexDirection": "row",
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-                        },
-                      ]
-                    }
-                  >
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#1F2329",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#6C727A",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -9269,16 +5425,11 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                   </View>
                 </View>
               </View>
->>>>>>> develop
             </View>
           </View>
         </View>
       </View>
     </View>
-<<<<<<< HEAD
-    <View>
-      <View>
-=======
     <View
       accessibilityState={
         {
@@ -9328,41 +5479,9 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
         }
         testID="message-undefined"
       >
->>>>>>> develop
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             {
-<<<<<<< HEAD
-              "backgroundColor": undefined,
-              "opacity": 1,
-=======
               "flexDirection": "row",
             }
           }
@@ -9682,32 +5801,10 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
           style={
             {
               "flexDirection": "row",
->>>>>>> develop
             }
           }
         >
           <View
-<<<<<<< HEAD
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the third message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the third message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-=======
             style={
               {
                 "alignItems": "flex-end",
@@ -9824,7 +5921,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
               }
             >
               <View
->>>>>>> develop
                 style={
                   {
                     "alignItems": "center",
@@ -9835,392 +5931,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 }
               >
                 <View
-<<<<<<< HEAD
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the third message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            This is the third message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the second message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the second message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        false,
-                      ]
-                    }
-                  >
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the second message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            This is the second message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={
-                    {
-                      "flexDirection": "row",
-                    }
-                  }
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-    <View>
-      <View>
-        <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": false,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "backgroundColor": undefined,
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            accessibilityLabel="diego.mello 10:00:00 AM  This is the first message.  "
-            accessible={true}
-            style={
-              [
-                {
-                  "flexDirection": "column",
-                  "paddingHorizontal": 14,
-                  "paddingVertical": 4,
-                  "width": "100%",
-                },
-                undefined,
-              ]
-            }
-          >
-            <View
-              accessibilityLabel="This is the first message"
-              accessibilityLanguage="en-US"
-            >
-              <View
-                style={
-                  {
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  style={
-                    [
-                      {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                      {
-                        "marginTop": 4,
-                      },
-                    ]
-                  }
-                  testID="avatar"
-                >
-                  <View
-                    accessibilityLabel="diego.mello's avatar"
-                    accessibilityState={
-                      {
-                        "busy": undefined,
-                        "checked": undefined,
-                        "disabled": undefined,
-                        "expanded": undefined,
-                        "selected": undefined,
-                      }
-                    }
-                    accessibilityValue={
-                      {
-                        "max": undefined,
-                        "min": undefined,
-                        "now": undefined,
-                        "text": undefined,
-                      }
-                    }
-                    accessible={true}
-                    collapsable={false}
-                    focusable={true}
-                    onClick={[Function]}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      {
-                        "opacity": 1,
-                      }
-                    }
-                  >
-                    <ViewManagerAdapter_ExpoImage
-                      borderRadius={4}
-                      containerViewRef={"[React.ref]"}
-                      contentFit="cover"
-                      contentPosition={
-                        {
-                          "left": "50%",
-                          "top": "50%",
-                        }
-                      }
-                      height={36}
-                      nativeViewRef={"[React.ref]"}
-                      onError={[Function]}
-                      onLoad={[Function]}
-                      onLoadStart={[Function]}
-                      onProgress={[Function]}
-                      placeholder={[]}
-                      priority="high"
-                      source={
-                        [
-                          {
-                            "headers": {
-                              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-                            },
-                            "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
-                          },
-                        ]
-                      }
-                      style={
-                        {
-                          "borderRadius": 4,
-                          "height": 36,
-                          "width": 36,
-                        }
-                      }
-                      transition={null}
-                      width={36}
-                    />
-                  </View>
-                </View>
-                <View
-                  accessibilityLabel=" "
-                >
-                  <View
-                    style={
-                      [
-                        {
-                          "flex": 1,
-                          "marginLeft": 46,
-                        },
-                        {
-                          "marginLeft": 10,
-=======
                   accessibilityState={
                     {
                       "busy": undefined,
@@ -10274,159 +5984,10 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         },
                         {
                           "color": "#1F2329",
->>>>>>> develop
                         },
                       ]
                     }
                   >
-<<<<<<< HEAD
-                    <View
-                      style={
-                        {
-                          "alignItems": "center",
-                          "flex": 1,
-                          "flexDirection": "row",
-                          "justifyContent": "space-between",
-                        }
-                      }
-                    >
-                      <View
-                        accessibilityState={
-                          {
-                            "busy": undefined,
-                            "checked": undefined,
-                            "disabled": undefined,
-                            "expanded": undefined,
-                            "selected": undefined,
-                          }
-                        }
-                        accessibilityValue={
-                          {
-                            "max": undefined,
-                            "min": undefined,
-                            "now": undefined,
-                            "text": undefined,
-                          }
-                        }
-                        accessible={true}
-                        collapsable={false}
-                        focusable={true}
-                        onClick={[Function]}
-                        onResponderGrant={[Function]}
-                        onResponderMove={[Function]}
-                        onResponderRelease={[Function]}
-                        onResponderTerminate={[Function]}
-                        onResponderTerminationRequest={[Function]}
-                        onStartShouldSetResponder={[Function]}
-                        style={
-                          {
-                            "alignItems": "center",
-                            "flexDirection": "row",
-                            "flexShrink": 1,
-                            "opacity": 1,
-                          }
-                        }
-                        testID="username-header-diego.mello"
-                      >
-                        <Text
-                          numberOfLines={1}
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "flexShrink": 1,
-                                "fontFamily": "Inter",
-                                "fontSize": 16,
-                                "fontWeight": "600",
-                                "lineHeight": 22,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#1F2329",
-                              },
-                            ]
-                          }
-                        >
-                          diego.mello
-                        </Text>
-                        <Text
-                          style={
-                            [
-                              {
-                                "backgroundColor": "transparent",
-                                "fontFamily": "Inter",
-                                "fontSize": 13,
-                                "fontWeight": "400",
-                                "marginLeft": 8,
-                                "textAlign": "left",
-                              },
-                              {
-                                "color": "#6C727A",
-                              },
-                            ]
-                          }
-                        >
-                          10:00 AM
-                        </Text>
-                      </View>
-                      <View
-                        style={
-                          {
-                            "flexDirection": "row",
-                          }
-                        }
-                      />
-                    </View>
-                    <View>
-                      <Text
-                        style={
-                          [
-                            {
-                              "backgroundColor": "transparent",
-                              "fontFamily": "Inter",
-                              "fontSize": 16,
-                              "fontWeight": "400",
-                              "lineHeight": 22,
-                              "textAlign": "left",
-                            },
-                            {
-                              "color": "#2F343D",
-                            },
-                          ]
-                        }
-                      >
-                        <Text
-                          style={
-                            {
-                              "backgroundColor": "transparent",
-                              "flexShrink": 1,
-                              "fontFamily": "Inter",
-                              "fontWeight": "400",
-                              "textAlign": "left",
-                            }
-                          }
-                        >
-                          <Text
-                            accessibilityLabel="This is the first message"
-                            style={
-                              [
-                                {
-                                  "flexShrink": 1,
-                                  "fontSize": 16,
-                                  "lineHeight": 22,
-                                },
-                                {
-                                  "color": "#2F343D",
-                                },
-                              ]
-                            }
-                          >
-                            This is the first message
-                          </Text>
-                        </Text>
-                      </Text>
-                    </View>
-=======
                     diego.mello
                   </Text>
                   <Text
@@ -10521,7 +6082,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         </Text>
                       </Text>
                     </Text>
->>>>>>> develop
                   </View>
                 </View>
               </View>
