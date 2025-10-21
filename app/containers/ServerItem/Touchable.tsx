@@ -6,6 +6,7 @@ import {
 	type GestureUpdateEvent,
 	type PanGestureHandlerEventPayload
 } from 'react-native-gesture-handler';
+import { View } from 'react-native';
 
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
@@ -21,7 +22,7 @@ export interface IServerItemTouchableProps {
 	onDeletePress(): void;
 }
 
-const Touchable = ({ children, testID, width, onPress, onDeletePress }: IServerItemTouchableProps): React.ReactElement => {
+const Touchable = ({ width, children, testID, onPress, onDeletePress }: IServerItemTouchableProps): React.ReactElement => {
 	const { colors } = useTheme();
 
 	const transX = useSharedValue(0);
@@ -66,7 +67,7 @@ const Touchable = ({ children, testID, width, onPress, onDeletePress }: IServerI
 				if (I18n.isRTL) {
 					toValue = -ACTION_WIDTH;
 				} else {
-					toValue = -2 * ACTION_WIDTH;
+					toValue = -1 * ACTION_WIDTH;
 				}
 				rowState.value = 1;
 			} else if (translationX <= -LONG_SWIPE) {
@@ -80,7 +81,7 @@ const Touchable = ({ children, testID, width, onPress, onDeletePress }: IServerI
 			}
 		} else if (rowState.value === 1) {
 			// if right option is opened (delete action)
-			if (valueRef.current > -2 * SMALL_SWIPE) {
+			if (valueRef.current > -1 * SMALL_SWIPE) {
 				toValue = 0;
 				rowState.value = 0;
 			} else if (valueRef.current < -LONG_SWIPE) {
@@ -88,7 +89,7 @@ const Touchable = ({ children, testID, width, onPress, onDeletePress }: IServerI
 			} else if (I18n.isRTL) {
 				toValue = -ACTION_WIDTH;
 			} else {
-				toValue = -2 * ACTION_WIDTH;
+				toValue = -1 * ACTION_WIDTH;
 			}
 		}
 
@@ -108,6 +109,8 @@ const Touchable = ({ children, testID, width, onPress, onDeletePress }: IServerI
 				transX.value = 0;
 			} else {
 				transX.value = newValue;
+				// Limit how far left it can stretch
+				if (transX.value < -1 * width) transX.value = -1 * width;
 			}
 		})
 		.onEnd(event => {
@@ -120,19 +123,19 @@ const Touchable = ({ children, testID, width, onPress, onDeletePress }: IServerI
 
 	return (
 		<GestureDetector gesture={panGesture}>
-			<Animated.View>
-				<DeleteAction transX={transX} width={width} onDeletePress={handleDeletePress} testID={`${testID}-delete`} />
+			<View>
+				<DeleteAction width={width} transX={transX} onDeletePress={handleDeletePress} testID={`${testID}-delete`} />
 				<Animated.View style={animatedStyles}>
 					<Touch
 						onPress={handlePress}
 						testID={testID}
 						style={{
-							backgroundColor: colors.surfaceRoom
+							backgroundColor: colors.surfaceLight
 						}}>
 						{children}
 					</Touch>
 				</Animated.View>
-			</Animated.View>
+			</View>
 		</GestureDetector>
 	);
 };

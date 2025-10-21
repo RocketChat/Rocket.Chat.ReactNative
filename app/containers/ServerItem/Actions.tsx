@@ -24,6 +24,8 @@ export interface IDeleteActionProps {
 	testID?: string;
 }
 
+const SERVER_ITEM_PADDING_VERTICAL = 12;
+
 export const DeleteAction = React.memo(({ transX, width, onDeletePress, testID }: IDeleteActionProps) => {
 	const { colors } = useTheme();
 
@@ -73,18 +75,18 @@ export const DeleteAction = React.memo(({ transX, width, onDeletePress, testID }
 		}
 		return { transform: [{ translateX: transX.value + ACTION_WIDTH + translateXDelete.value }] };
 	});
-
-	const viewHeight = { height: ROW_HEIGHT };
+	const viewHeight = { height: ROW_HEIGHT + SERVER_ITEM_PADDING_VERTICAL };
 
 	return (
-		<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
+		<View
+			style={[styles.actionsLeftContainer, viewHeight, { backgroundColor: colors.buttonBackgroundDangerDefault }]}
+			pointerEvents='box-none'>
 			<Animated.View
 				style={[
 					styles.actionRightButtonContainer,
 					{
-						width: width * 2,
-						backgroundColor: colors.buttonBackgroundDangerDefault,
-						left: '100%'
+						width,
+						alignItems: 'flex-end'
 					},
 					viewHeight,
 					animatedDeleteButtonStyles
