@@ -69,7 +69,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 			title: I18n.t('Create_Discussion'),
 			buttonText: I18n.t('Next')
 		});
-	}, []);
+	}, [navigation]);
 
 	return (
 		<>
