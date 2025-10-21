@@ -276,7 +276,7 @@ tags:
     id: room-info-view-edit-button
 - extendedWaitUntil:
     visible:
-      text: '.*${output.room.name}.*'
+      id: 'room-info-edit-view-name'
     timeout: 60000
 - runFlow:
     file: '../../helpers/erase-text.yaml'
