@@ -120,6 +120,17 @@ const AccessibilityAndAppearanceView = () => {
 					/>
 					<List.Separator />
 				</List.Section>
+				<List.Section>
+					<List.Separator />
+					<ListPicker
+						onChangeValue={value => {
+							setAlertDisplayType(value);
+						}}
+						title={I18n.t('A11y_appearance_show_alerts_as')}
+						value={alertDisplayType}
+					/>
+					<List.Separator />
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);
