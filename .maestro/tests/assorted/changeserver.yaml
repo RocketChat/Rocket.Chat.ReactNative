@@ -49,6 +49,8 @@ tags:
       id: 'workspace-view'
     timeout: 60000
 - launchApp
+- waitForAnimationToEnd:
+    timeout: 500
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -123,6 +125,8 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'server-item-${output.data.server}'
+- waitForAnimationToEnd:
+    timeout: 500
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -138,6 +142,8 @@ tags:
 
 # should reopen the app and show main server
 - launchApp
+- waitForAnimationToEnd:
+    timeout: 500
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -178,6 +184,14 @@ tags:
     text: 'Delete'
 
 # verify alternate server is deleted
+- waitForAnimationToEnd:
+    timeout: 500
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     notVisible:
       id: 'server-item-${output.data.alternateServer}'
