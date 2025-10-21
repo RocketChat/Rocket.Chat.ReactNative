@@ -378,7 +378,6 @@ tags:
     element:
       id: 'room-info-edit-view-submit'
     timeout: 60000
-    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-submit'
 - extendedWaitUntil:
