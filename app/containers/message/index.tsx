@@ -34,6 +34,7 @@ interface IMessageContainerProps {
 	useRealName?: boolean;
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
+	autoTranslateLanguageBcp47?: string;
 	status?: number;
 	isIgnored?: boolean;
 	highlighted?: boolean;
@@ -379,7 +380,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			isBeingEdited,
 			isPreview,
 			showUnreadSeparator,
-			dateSeparator
+			dateSeparator,
+			autoTranslateLanguageBcp47
 		} = this.props;
 		const {
 			id,
@@ -505,7 +507,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isBeingEdited={isBeingEdited}
 					isPreview={isPreview}
 					pinned={pinned}
-					autoTranslateLanguage={autoTranslateLanguage}
+					autoTranslateLanguage={autoTranslateLanguageBcp47 || autoTranslateLanguage}
 				/>
 				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</MessageContext.Provider>
