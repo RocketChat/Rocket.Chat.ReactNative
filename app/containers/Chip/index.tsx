@@ -8,7 +8,7 @@ import Avatar from '../Avatar';
 
 const styles = StyleSheet.create({
 	pressable: {
-		paddingHorizontal: 8,
+		paddingHorizontal: 4,
 		marginHorizontal: 4,
 		borderRadius: 4,
 		justifyContent: 'center',
