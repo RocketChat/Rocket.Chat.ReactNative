@@ -1358,7 +1358,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					useRealName={useRealName}
 					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
+					autoTranslateLanguage={'id' in room ? room?.autoTranslateLanguageBcp47 || room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
 					getCustomEmoji={this.getCustomEmoji}
 					handleEnterCall={this.handleEnterCall}
@@ -1372,7 +1372,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isBeingEdited={isBeingEdited}
 					dateSeparator={dateSeparator}
 					showUnreadSeparator={showUnreadSeparator}
-					autoTranslateLanguageBcp47={'id' in room ? room?.autoTranslateLanguageBcp47 : undefined}
 				/>
 			);
 		}
