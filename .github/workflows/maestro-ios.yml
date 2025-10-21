@@ -112,17 +112,4 @@ jobs:
         with:
           name: Test Report - Shard ${{ inputs.shard }}
           path: maestro-report.xml
-
-      - name: Upload Maestro Logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: iOS Maestro Logs - Shard ${{ inputs.shard }}
-          path: ~/.maestro/tests/
-      
-      - name: Upload Maestro Video
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: iOS Maestro Video - Shard ${{ inputs.shard }}
-          path: '*.mp4'
+    
