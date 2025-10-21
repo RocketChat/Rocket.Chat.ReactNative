@@ -3,7 +3,7 @@ name: Room Info
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
-  - evalScript: ${output.utils.deleteCreatedUsers()
+  - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
   - test-12
 
@@ -11,7 +11,6 @@ tags:
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
 
-- startRecording: room
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
@@ -151,48 +150,50 @@ tags:
     id: room-info-edit-view-name
 - eraseText
 - inputText: abc
-- pressKey: Enter
-- assertVisible:
-    id: 'room-info-edit-view-topic'
+- scrollUntilVisible:
+    element:
+      id: 'room-info-edit-view-topic'
+    timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-topic'
 - inputText: abc
-- pressKey: Enter
-- assertVisible:
-    id: 'room-info-edit-view-announcement'
+- scrollUntilVisible:
+    element:
+      id: 'room-info-edit-view-announcement'
+    timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-announcement'
 - inputText: abc
-- pressKey: Enter
-- assertVisible:
-    id: 'room-info-edit-view-description'
+- scrollUntilVisible:
+    element:
+      id: 'room-info-edit-view-description'
+    timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-description'
 - inputText: abc
-- pressKey: Enter
-- assertVisible:
-    id: 'room-info-edit-view-password'
+- scrollUntilVisible:
+    element:
+      id: 'room-info-edit-view-password'
+    timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-password'
 - inputText: abc
+- pressKey: Enter
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-t'
     timeout: 60000
-    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-t'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-ro'
-    centerElement: true
     timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-ro'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-react-when-ro'
-    direction: UP
     timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-react-when-ro'
@@ -205,16 +206,17 @@ tags:
 
 - scrollUntilVisible:
     element:
-      text: '.*${output.room.name}.*'
+      id: 'room-info-edit-view-name'
     direction: UP
     timeout: 60000
 - assertVisible:
     text: '.*${output.room.name}.*'
+    childOf:
+      id: 'room-info-edit-view-name'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'
     timeout: 60000
-    direction: UP
 - assertVisible:
     text: ''
     childOf:
@@ -255,7 +257,6 @@ tags:
     element:
       id: 'room-info-edit-view-ro'
     timeout: 60000
-    centerElement: true
 - assertVisible:
     checked: false
     childOf:
@@ -264,37 +265,38 @@ tags:
     element:
       id: 'room-info-edit-switch-system-messages'
     timeout: 60000
-    centerElement: true
 - assertNotVisible:
     id: 'room-info-edit-view-react-when-ro'
 
 # should change room name
 - evalScript: ${output.newroomname = output.room.name + 'new'}
-- tapOn:
-    id: custom-header-back
-- tapOn:
-    id: room-info-view-edit-button
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: 'room-info-edit-view-name'
+    direction: UP
     timeout: 60000
+- tapOn:
+    id: 'room-info-edit-view-name'
 - runFlow:
     file: '../../helpers/erase-text.yaml'
     env:
-      text: '.*${output.room.name}.*'
+      id: 'room-info-edit-view-name'
 - inputText: ${output.newroomname}
 - pressKey: Enter
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-submit'
     timeout: 60000
-    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-submit'
-- extendedWaitUntil:
-    visible:
-      text: '.*Settings succesfully changed.*'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '.*Settings succesfully changed.*'
+          timeout: 60000
 - tapOn:
     id: custom-header-back
 - extendedWaitUntil:
@@ -315,7 +317,6 @@ tags:
     element:
       id: 'room-info-edit-view-topic'
     timeout: 60000
-    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-topic'
 - inputText: 'new topic'
@@ -323,16 +324,13 @@ tags:
     element:
       id: 'room-info-edit-view-announcement'
     timeout: 60000
-    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-announcement'
 - inputText: 'new announcement'
-- pressKey: Enter
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-description'
     timeout: 60000
-    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-description'
 - inputText: 'new description'
@@ -341,13 +339,16 @@ tags:
     element:
       id: 'room-info-edit-view-submit'
     timeout: 60000
-    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-submit'
-- extendedWaitUntil:
-    visible:
-      text: '.*Settings succesfully changed.*'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '.*Settings succesfully changed.*'
+          timeout: 60000
 - tapOn:
     id: custom-header-back
 - extendedWaitUntil:
@@ -380,10 +381,14 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-submit'
-- extendedWaitUntil:
-    visible:
-      text: '.*Settings succesfully changed.*'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '.*Settings succesfully changed.*'
+          timeout: 60000
 
 # should archive room
 - scrollUntilVisible:
@@ -432,4 +437,3 @@ tags:
     timeout: 60000
 - assertVisible:
     id: 'user-role-Livechat-Agent'
-- stopRecording

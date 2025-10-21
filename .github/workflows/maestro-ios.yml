@@ -106,10 +106,19 @@ jobs:
               --format junit \
               --output maestro-report.xml
 
-      - name: Upload Test Report
+      - name: Maestro Test Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Test Report - Shard ${{ inputs.shard }}
           path: maestro-report.xml
+          retention-days: 28
+
+      - name: Maestro Screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS Maestro Screenshot - Shard ${{ inputs.shard }}
+          path: ~/.maestro/**/*.png
+          retention-days: 28
     

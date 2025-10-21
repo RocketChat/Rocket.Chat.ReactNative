@@ -128,3 +128,11 @@ jobs:
           name: maestro-video-${{ inputs.shard }}
           path: test_run_${{ inputs.shard }}_attempt_*.mp4
           retention-days: 7
+
+      - name: Upload Screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-screenshot-${{ inputs.shard }}
+          path: ~/.maestro/**/*.png
+          retention-days: 7
