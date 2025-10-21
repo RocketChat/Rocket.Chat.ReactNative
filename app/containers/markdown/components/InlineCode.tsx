@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text } from 'react-native';
 import { type InlineCode as InlineCodeProps } from '@rocket.chat/message-parser';
 
@@ -10,7 +10,9 @@ interface IInlineCodeProps {
 	value: InlineCodeProps['value'];
 }
 
-const InlineCode = ({ value }: IInlineCodeProps) => {
+const InlineCode = memo(({ value }: IInlineCodeProps) => {
+    'use memo';
+    
 	const { theme } = useTheme();
 
 	return (
@@ -33,6 +35,6 @@ const InlineCode = ({ value }: IInlineCodeProps) => {
 			})(value)}
 		</Text>
 	);
-};
+});
 
 export default InlineCode;

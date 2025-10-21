@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { Text, useWindowDimensions } from 'react-native';
 import { type Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
@@ -32,7 +32,9 @@ function getEmojiToken(block: EmojiProps, isAvatar: boolean) {
 	return block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
 }
 
-const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmojiProps) => {
+const Emoji = memo(({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmojiProps) => {
+    'use memo';
+    
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();
@@ -83,6 +85,6 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 			{displayAsciiEmoji ? <Plain value={block.value!.value} /> : emojiUnicode}
 		</Text>
 	);
-};
+});
 
 export default Emoji;

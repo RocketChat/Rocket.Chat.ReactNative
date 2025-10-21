@@ -23,6 +23,8 @@ interface IHashtag {
 }
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+    'use memo';
+    
 	const { theme } = useTheme();
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);

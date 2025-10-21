@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, type TextStyle } from 'react-native';
 
 import { themes } from '../../../lib/constants/colors';
@@ -13,7 +13,9 @@ interface IMarkdownPreview {
 	style?: TextStyle[];
 }
 
-const MarkdownPreview = ({ msg, numberOfLines = 1, style = [], testID }: IMarkdownPreview) => {
+const MarkdownPreview = memo(({ msg, numberOfLines = 1, style = [], testID }: IMarkdownPreview) => {
+    'use memo';
+    
 	const { theme } = useTheme();
 	const formattedText = usePreviewFormatText(msg ?? '');
 
@@ -30,6 +32,6 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, style = [], testID }: IMarkdo
 			{m}
 		</Text>
 	);
-};
+});
 
 export default MarkdownPreview;

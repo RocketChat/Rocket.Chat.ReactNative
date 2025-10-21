@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 import { type Tasks as TasksProps } from '@rocket.chat/message-parser';
 
@@ -11,7 +11,9 @@ interface ITasksProps {
 	value: TasksProps['value'];
 }
 
-const TaskList = ({ value = [] }: ITasksProps) => {
+const TaskList = memo(({ value = [] }: ITasksProps) => {
+    'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<View>
@@ -31,6 +33,6 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 			))}
 		</View>
 	);
-};
+});
 
 export default TaskList;

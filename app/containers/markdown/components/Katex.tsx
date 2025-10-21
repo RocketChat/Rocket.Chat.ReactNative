@@ -1,5 +1,5 @@
 import { type KaTeX as KaTeXProps } from '@rocket.chat/message-parser';
-import React from 'react';
+import React, { memo } from 'react';
 import { type StyleProp, type ViewStyle } from 'react-native';
 import Katex from 'react-native-katex';
 // eslint-disable-next-line import/no-unresolved
@@ -13,7 +13,9 @@ interface IKaTeXProps {
 	value: KaTeXProps['value'];
 }
 
-export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
+export const KaTeX = memo(({ value }: IKaTeXProps): React.ReactElement | null => {
+    'use memo';
+        
 	const { colors } = useTheme();
 	const fixAndroidWebviewCrashStyle: StyleProp<ViewStyle> = isAndroid ? { opacity: 0.99, overflow: 'hidden' } : {};
 	return (
@@ -25,9 +27,11 @@ export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
 			)}
 		/>
 	);
-};
+});
 
-export const InlineKaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
+export const InlineKaTeX = memo(({ value }: IKaTeXProps): React.ReactElement | null => {
+    'use memo';
+    
 	const { colors } = useTheme();
 	return <MathText color value={`$$${value}$$`} direction='ltr' style={{ color: colors.fontDefault }} />;
-};
+});

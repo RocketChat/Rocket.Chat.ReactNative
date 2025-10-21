@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { type UnorderedList as UnorderedListProps } from '@rocket.chat/message-parser';
 import { View, Text } from 'react-native';
 
@@ -11,7 +11,9 @@ interface IUnorderedListProps {
 	value: UnorderedListProps['value'];
 }
 
-const UnorderedList = ({ value }: IUnorderedListProps) => {
+const UnorderedList = memo(({ value }: IUnorderedListProps) => {
+    'use memo';
+    
 	const { theme } = useTheme();
 	return (
 		<View>
@@ -25,6 +27,6 @@ const UnorderedList = ({ value }: IUnorderedListProps) => {
 			))}
 		</View>
 	);
-};
+});
 
 export default UnorderedList;
