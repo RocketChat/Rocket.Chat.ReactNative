@@ -1,4 +1,4 @@
-import { PermissionsAndroid, Permission } from 'react-native';
+import { PermissionsAndroid, type Permission } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import i18n from '../../i18n';

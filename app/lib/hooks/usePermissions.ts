@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { dequal } from 'dequal';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 import { createSelector } from 'reselect';
 import { shallowEqual } from 'react-redux';
 import { orderBy } from 'lodash';
 
-import { TSupportedPermissions } from '../../reducers/permissions';
-import { IApplicationState, TSubscriptionModel } from '../../definitions';
+import { type TSupportedPermissions } from '../../reducers/permissions';
+import { type IApplicationState, type TSubscriptionModel } from '../../definitions';
 import { getUserSelector } from '../../selectors/login';
 import { useAppSelector } from './useAppSelector';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';

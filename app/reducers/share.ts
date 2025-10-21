@@ -1,4 +1,4 @@
-import { TActionsShare } from '../actions/share';
+import { type TActionsShare } from '../actions/share';
 import { SHARE } from '../actions/actionsTypes';
 
 export type TShareParams = Record<string, any>;

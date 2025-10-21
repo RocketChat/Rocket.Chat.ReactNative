@@ -1,6 +1,6 @@
 import { setPermissions, updatePermission } from '../actions/permissions';
 import { mockedStore } from './mockedStore';
-import { initialState, IPermissionsState } from './permissions';
+import { initialState, type IPermissionsState } from './permissions';
 
 describe('test permissions reducer', () => {
 	it('should return initial state', () => {

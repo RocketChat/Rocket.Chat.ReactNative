@@ -1,4 +1,4 @@
-import { CodeLine as CodeLineProps } from '@rocket.chat/message-parser';
+import { type CodeLine as CodeLineProps } from '@rocket.chat/message-parser';
 import React from 'react';
 import { Text } from 'react-native';
 

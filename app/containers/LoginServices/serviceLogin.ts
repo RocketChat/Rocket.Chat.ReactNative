@@ -3,7 +3,7 @@ import { Linking } from 'react-native';
 import { Base64 } from 'js-base64';
 
 import Navigation from '../../lib/navigation/appNavigation';
-import { IItemService, IOpenOAuth, IServiceLogin } from './interfaces';
+import { type IItemService, type IOpenOAuth, type IServiceLogin } from './interfaces';
 import { random } from '../../lib/methods/helpers';
 import { loginOAuthOrSso } from '../../lib/services/connect';
 import { events, logEvent } from '../../lib/methods/helpers/log';
