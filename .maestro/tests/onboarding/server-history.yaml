@@ -53,8 +53,7 @@ tags:
 - waitForAnimationToEnd:
     timeout: 500
 - tapOn:
-    id: 'servers-history-delete-https://mobile.rocket.chat'
-
+    id: 'servers-history-https://mobile.rocket.chat-delete'
 - extendedWaitUntil:
     notVisible:
       id: 'servers-history-button'
