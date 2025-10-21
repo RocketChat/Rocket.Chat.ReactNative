@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 import { type Quote as QuoteProps } from '@rocket.chat/message-parser';
-
+ 
 import { themes } from '../../../lib/constants/colors';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
