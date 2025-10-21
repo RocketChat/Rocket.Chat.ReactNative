@@ -11,7 +11,7 @@ interface ICodeProps {
 }
 
 const Code = memo(({ value }: ICodeProps): React.ReactElement => {
-    'use memo';
+	'use memo';
 
 	const { colors } = useTheme();
 

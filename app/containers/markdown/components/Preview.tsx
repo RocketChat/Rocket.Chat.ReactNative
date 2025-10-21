@@ -14,8 +14,8 @@ interface IMarkdownPreview {
 }
 
 const MarkdownPreview = memo(({ msg, numberOfLines = 1, style = [], testID }: IMarkdownPreview) => {
-    'use memo';
-    
+	'use memo';
+
 	const { theme } = useTheme();
 	const formattedText = usePreviewFormatText(msg ?? '');
 

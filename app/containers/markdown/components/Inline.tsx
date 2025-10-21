@@ -18,8 +18,8 @@ interface IParagraphProps {
 }
 
 const Inline = memo(({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
-    'use memo';
-    
+	'use memo';
+
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
 		<Text style={styles.inline}>

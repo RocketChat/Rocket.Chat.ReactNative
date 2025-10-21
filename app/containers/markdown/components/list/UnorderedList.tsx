@@ -12,8 +12,8 @@ interface IUnorderedListProps {
 }
 
 const UnorderedList = memo(({ value }: IUnorderedListProps) => {
-    'use memo';
-    
+	'use memo';
+
 	const { theme } = useTheme();
 	return (
 		<View>

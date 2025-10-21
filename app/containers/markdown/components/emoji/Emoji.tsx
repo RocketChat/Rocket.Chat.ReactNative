@@ -33,8 +33,8 @@ function getEmojiToken(block: EmojiProps, isAvatar: boolean) {
 }
 
 const Emoji = memo(({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmojiProps) => {
-    'use memo';
-    
+	'use memo';
+
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();

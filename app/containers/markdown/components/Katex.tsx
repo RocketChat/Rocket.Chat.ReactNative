@@ -14,8 +14,8 @@ interface IKaTeXProps {
 }
 
 export const KaTeX = memo(({ value }: IKaTeXProps): React.ReactElement | null => {
-    'use memo';
-        
+	'use memo';
+
 	const { colors } = useTheme();
 	const fixAndroidWebviewCrashStyle: StyleProp<ViewStyle> = isAndroid ? { opacity: 0.99, overflow: 'hidden' } : {};
 	return (
@@ -30,8 +30,8 @@ export const KaTeX = memo(({ value }: IKaTeXProps): React.ReactElement | null =>
 });
 
 export const InlineKaTeX = memo(({ value }: IKaTeXProps): React.ReactElement | null => {
-    'use memo';
-    
+	'use memo';
+
 	const { colors } = useTheme();
 	return <MathText color value={`$$${value}$$`} direction='ltr' style={{ color: colors.fontDefault }} />;
 });

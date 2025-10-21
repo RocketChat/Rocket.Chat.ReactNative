@@ -10,8 +10,8 @@ interface IPlainProps {
 }
 
 const Plain = memo(({ value }: IPlainProps): React.ReactElement => {
-    'use memo';
-    
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<Text accessibilityLabel={value} style={[styles.plainText, { color: colors.fontDefault }]}>

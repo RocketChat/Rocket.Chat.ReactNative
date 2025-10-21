@@ -12,8 +12,8 @@ interface IQuoteProps {
 }
 
 const Quote = memo(({ value }: IQuoteProps) => {
-    'use memo';
-    
+	'use memo';
+
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>

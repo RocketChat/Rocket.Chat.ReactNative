@@ -11,8 +11,8 @@ interface IOrderedListProps {
 }
 
 const OrderedList = memo(({ value }: IOrderedListProps): React.ReactElement => {
-    'use memo';
-    
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<View>

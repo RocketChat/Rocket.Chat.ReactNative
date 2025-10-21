@@ -10,8 +10,8 @@ interface IImageProps {
 }
 
 const Image = memo(({ value }: IImageProps) => {
-    'use memo';
-    
+	'use memo';
+
 	const { colors } = useTheme();
 	const { src } = value;
 

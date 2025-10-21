@@ -12,7 +12,7 @@ interface ITasksProps {
 }
 
 const TaskList = memo(({ value = [] }: ITasksProps) => {
-    'use memo';
+	'use memo';
 
 	const { colors } = useTheme();
 	return (

@@ -12,8 +12,8 @@ interface IHeadingProps {
 }
 
 const Heading = memo(({ value, level }: IHeadingProps) => {
-    'use memo';
-    
+	'use memo';
+
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
 

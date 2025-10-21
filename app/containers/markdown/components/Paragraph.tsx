@@ -12,8 +12,8 @@ interface IParagraphProps {
 }
 
 const Paragraph = memo(({ value }: IParagraphProps) => {
-    'use memo';
-    
+	'use memo';
+
 	let forceTrim = false;
 	const { theme } = useTheme();
 	if (

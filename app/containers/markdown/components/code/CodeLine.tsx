@@ -10,7 +10,8 @@ interface ICodeLineProps {
 }
 
 const CodeLine = memo(({ value }: ICodeLineProps): React.ReactElement | null => {
-    'use memo';
+	'use memo';
+
 	const { colors } = useTheme();
 	if (value.type !== 'PLAIN_TEXT') {
 		return null;

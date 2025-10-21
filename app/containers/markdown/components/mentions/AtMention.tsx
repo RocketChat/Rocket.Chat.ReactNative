@@ -19,8 +19,8 @@ interface IAtMention {
 }
 
 const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
-    'use memo';
-    
+	'use memo';
+
 	const { theme } = useTheme();
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
 	const preffix = mentionsWithAtSymbol ? '@' : '';

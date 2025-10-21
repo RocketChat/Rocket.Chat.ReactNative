@@ -11,8 +11,8 @@ interface IInlineCodeProps {
 }
 
 const InlineCode = memo(({ value }: IInlineCodeProps) => {
-    'use memo';
-    
+	'use memo';
+
 	const { theme } = useTheme();
 
 	return (
