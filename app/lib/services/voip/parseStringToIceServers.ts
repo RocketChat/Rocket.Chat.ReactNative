@@ -16,6 +16,9 @@ export const parseStringToIceServer = (server: string): IceServer => {
 };
 
 export const parseStringToIceServers = (string: string): IceServer[] => {
+	if (!string) {
+		return [];
+	}
 	const lines = string.trim() ? string.split(',') : [];
 	return lines.map(line => parseStringToIceServer(line));
 };
