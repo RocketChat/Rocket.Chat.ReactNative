@@ -2630,7 +2630,7 @@ PODS:
   - simdjson (3.9.4)
   - SocketRocket (0.7.1)
   - TOCropViewController (2.7.4)
-  - WatermelonDB (0.28.0):
+  - WatermelonDB (0.28.1-0):
     - React
     - simdjson
   - Yoga (0.0.0)
@@ -3172,7 +3172,7 @@ SPEC CHECKSUMS:
   React-timing: 2d07431f1c1203c5b0aaa6dc7b5f503704519218
   React-utils: 67cf7dcfc18aa4c56bec19e11886033bb057d9fa
   ReactAppDependencyProvider: bf62814e0fde923f73fc64b7e82d76c63c284da9
-  ReactCodegen: c51a63d05629675dd61caf58d1a093c4457972c0
+  ReactCodegen: df3ff45729335a27d1c85bed1787e79783289968
   ReactCommon: 177fca841e97b2c0e288e86097b8be04c6e7ae36
   RNBootSplash: 1280eeb18d887de0a45bb4923d4fc56f25c8b99c
   RNCAsyncStorage: edb872909c88d8541c0bfade3f86cd7784a7c6b3
@@ -3202,7 +3202,7 @@ SPEC CHECKSUMS:
   simdjson: 7bb9e33d87737cec966e7b427773c67baa4458fe
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
-  WatermelonDB: 75e467adbaf2cb2809780fb3eda7ce4964e11778
+  WatermelonDB: 4c846c8cb94eef3cba90fa034d15310163226703
   Yoga: dfabf1234ccd5ac41d1b1d43179f024366ae9831
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
