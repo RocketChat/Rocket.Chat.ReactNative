@@ -16,7 +16,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             "right": 0,
           },
           {
-            "height": 56,
+            "height": 68,
+          },
+          {
+            "backgroundColor": "#EC0D2A",
           },
         ]
       }
@@ -30,12 +33,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "backgroundColor": "#EC0D2A",
-              "left": "100%",
-              "width": 1500,
+              "alignItems": "flex-end",
+              "width": 750,
             },
             {
-              "height": 56,
+              "height": 68,
             },
             {
               "transform": [
@@ -74,7 +76,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-delete-https://open.rocket.chat"
+          testID="servers-history-https://open.rocket.chat-delete"
           underlayColor="black"
         >
           <View
@@ -306,7 +308,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             "right": 0,
           },
           {
-            "height": 56,
+            "height": 68,
+          },
+          {
+            "backgroundColor": "#EC0D2A",
           },
         ]
       }
@@ -320,12 +325,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "backgroundColor": "#EC0D2A",
-              "left": "100%",
-              "width": 1500,
+              "alignItems": "flex-end",
+              "width": 750,
             },
             {
-              "height": 56,
+              "height": 68,
             },
             {
               "transform": [
@@ -364,7 +368,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-delete-https://superlongservername.tologintoasuperlongservername.rocket.chat"
+          testID="servers-history-https://superlongservername.tologintoasuperlongservername.rocket.chat-delete"
           underlayColor="black"
         >
           <View
@@ -596,7 +600,10 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             "right": 0,
           },
           {
-            "height": 56,
+            "height": 68,
+          },
+          {
+            "backgroundColor": "#EC0D2A",
           },
         ]
       }
@@ -610,12 +617,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "backgroundColor": "#EC0D2A",
-              "left": "100%",
-              "width": 1500,
+              "alignItems": "flex-end",
+              "width": 750,
             },
             {
-              "height": 56,
+              "height": 68,
             },
             {
               "transform": [
@@ -654,7 +660,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-delete-https://stable.rocket.chat"
+          testID="servers-history-https://stable.rocket.chat-delete"
           underlayColor="black"
         >
           <View
@@ -891,7 +897,10 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             "right": 0,
           },
           {
-            "height": 56,
+            "height": 68,
+          },
+          {
+            "backgroundColor": "#EC0D2A",
           },
         ]
       }
@@ -905,12 +914,11 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "backgroundColor": "#EC0D2A",
-              "left": "100%",
-              "width": 1500,
+              "alignItems": "flex-end",
+              "width": 750,
             },
             {
-              "height": 56,
+              "height": 68,
             },
             {
               "transform": [
@@ -949,7 +957,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-delete-https://open.rocket.chat"
+          testID="servers-history-https://open.rocket.chat-delete"
           underlayColor="black"
         >
           <View
@@ -1181,7 +1189,10 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             "right": 0,
           },
           {
-            "height": 56,
+            "height": 68,
+          },
+          {
+            "backgroundColor": "#EC0D2A",
           },
         ]
       }
@@ -1195,12 +1206,11 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "backgroundColor": "#EC0D2A",
-              "left": "100%",
-              "width": 1500,
+              "alignItems": "flex-end",
+              "width": 750,
             },
             {
-              "height": 56,
+              "height": 68,
             },
             {
               "transform": [
@@ -1239,7 +1249,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-delete-https://example.com"
+          testID="servers-history-https://example.com-delete"
           underlayColor="black"
         >
           <View
@@ -1476,7 +1486,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "right": 0,
           },
           {
-            "height": 56,
+            "height": 68,
+          },
+          {
+            "backgroundColor": "#EC0D2A",
           },
         ]
       }
@@ -1490,12 +1503,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "backgroundColor": "#EC0D2A",
-              "left": "100%",
-              "width": 1500,
+              "alignItems": "flex-end",
+              "width": 750,
             },
             {
-              "height": 56,
+              "height": 68,
             },
             {
               "transform": [
@@ -1534,7 +1546,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-delete-https://open.rocket.chat"
+          testID="servers-history-https://open.rocket.chat-delete"
           underlayColor="black"
         >
           <View
@@ -1766,7 +1778,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "right": 0,
           },
           {
-            "height": 56,
+            "height": 68,
+          },
+          {
+            "backgroundColor": "#BB3E4E",
           },
         ]
       }
@@ -1780,12 +1795,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "backgroundColor": "#BB3E4E",
-              "left": "100%",
-              "width": 1500,
+              "alignItems": "flex-end",
+              "width": 750,
             },
             {
-              "height": 56,
+              "height": 68,
             },
             {
               "transform": [
@@ -1824,7 +1838,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-delete-https://open.rocket.chat"
+          testID="servers-history-https://open.rocket.chat-delete"
           underlayColor="black"
         >
           <View
@@ -2056,7 +2070,10 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "right": 0,
           },
           {
-            "height": 56,
+            "height": 68,
+          },
+          {
+            "backgroundColor": "#BB3E4E",
           },
         ]
       }
@@ -2070,12 +2087,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "backgroundColor": "#BB3E4E",
-              "left": "100%",
-              "width": 1500,
+              "alignItems": "flex-end",
+              "width": 750,
             },
             {
-              "height": 56,
+              "height": 68,
             },
             {
               "transform": [
@@ -2114,7 +2130,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               },
             ]
           }
-          testID="servers-history-delete-https://open.rocket.chat"
+          testID="servers-history-https://open.rocket.chat-delete"
           underlayColor="black"
         >
           <View
