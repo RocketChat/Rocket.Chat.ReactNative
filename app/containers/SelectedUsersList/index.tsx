@@ -52,7 +52,7 @@ const SelectedUsersList = ({ users, useRealName, onPress }: ISelectedUsersList) 
 				style={[
 					styles.list,
 					{
-						backgroundColor: colors.surfaceRoom,
+						backgroundColor: colors.surfaceHover,
 						borderColor: colors.strokeLight
 					}
 				]}
@@ -62,7 +62,12 @@ const SelectedUsersList = ({ users, useRealName, onPress }: ISelectedUsersList) 
 					const username = item.name;
 
 					return (
-						<Chip text={name} avatar={username} onPress={() => onPress(item)} testID={`create-channel-view-item-${item.name}`} />
+						<Chip
+							text={name}
+							avatar={username}
+							onPress={() => onPress(item._id)}
+							testID={`create-channel-view-item-${item.name}`}
+						/>
 					);
 				}}
 				keyboardShouldPersistTaps='always'

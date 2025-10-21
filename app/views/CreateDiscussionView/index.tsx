@@ -28,6 +28,7 @@ import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import SelectedUsersList from '../../containers/SelectedUsersList';
+import { type ISelectedUser } from '../../reducers/selectedUsers';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const schema = yup.object().shape({
@@ -62,10 +63,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		encryptionEnabled: state.encryption.enabled,
 		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
-	const initialSelectedUsers = selectedUsers.map(item => item.name);
+
 	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params?.channel);
 	const [encrypted, setEncrypted] = useState<boolean>(encryptionEnabled);
-	const [users, setUsers] = useState<string[]>(initialSelectedUsers);
+	const [users, setUsers] = useState<ISelectedUser[]>(selectedUsers);
 	const message = route.params?.message;
 	const {
 		control,
@@ -94,8 +95,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		setEncrypted(value);
 	};
 
-	const removeUser = (user: string) => {
-		setUsers(users.filter(item => item !== user));
+	const removeUser = (id: string) => {
+		setUsers(prevState => prevState.filter(item => item._id !== id));
 	};
 
 	const submit = () => {
@@ -112,7 +113,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			pmid,
 			t_name,
 			reply,
-			users
+			users: users.map(item => item.name)
 		};
 		if (isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;
@@ -177,9 +178,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 						</>
 					) : null}
 
-					{selectedUsers.length > 0 ? (
-						<SelectedUsersList onPress={removeUser} users={selectedUsers} useRealName={useRealName} />
-					) : null}
+					{users.length > 0 ? <SelectedUsersList onPress={removeUser} users={users} useRealName={useRealName} /> : null}
 
 					<Button
 						testID='create-discussion-submit'
