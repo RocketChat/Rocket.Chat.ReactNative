@@ -28,4 +28,4 @@ tags:
       notVisible:
         text: 'Select All'
     commands:
-      - eraseText: 1
+      - eraseText: 100
