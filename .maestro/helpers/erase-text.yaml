@@ -23,3 +23,9 @@ tags:
     commands:
       - tapOn: Select All
       - eraseText: 1
+- runFlow:
+    when:
+      notVisible:
+        text: 'Select All'
+    commands:
+      - eraseText: 1

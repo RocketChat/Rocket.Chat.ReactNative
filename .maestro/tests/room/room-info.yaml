@@ -142,15 +142,19 @@ tags:
     timeout: 60000
 
 # should reset form
-- scrollUntilVisible:
-    element:
+- tapOn:
+    id: custom-header-back
+- tapOn:
+    id: room-info-view-edit-button
+- extendedWaitUntil:
+    visible:
       id: 'room-info-edit-view-name'
-    direction: UP
     timeout: 60000
 - tapOn:
     id: room-info-edit-view-name
 - eraseText
 - inputText: abc
+- runFlow:  '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'
@@ -158,6 +162,7 @@ tags:
 - tapOn:
     id: 'room-info-edit-view-topic'
 - inputText: abc
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-announcement'
@@ -165,6 +170,7 @@ tags:
 - tapOn:
     id: 'room-info-edit-view-announcement'
 - inputText: abc
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-description'
@@ -172,6 +178,7 @@ tags:
 - tapOn:
     id: 'room-info-edit-view-description'
 - inputText: abc
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-password'
@@ -179,7 +186,7 @@ tags:
 - tapOn:
     id: 'room-info-edit-view-password'
 - inputText: abc
-- pressKey: Enter
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-t'
@@ -191,6 +198,7 @@ tags:
     element:
       id: 'room-info-edit-view-ro'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-ro'
 - scrollUntilVisible:
@@ -208,13 +216,13 @@ tags:
 
 - scrollUntilVisible:
     element:
-      id: 'room-info-edit-view-name'
-    direction: UP
+      id: 'avatar-edit-button'
     timeout: 60000
-- assertVisible:
-    text: '.*${output.room.name}.*'
-    childOf:
-      id: 'room-info-edit-view-name'
+    direction: UP
+- scrollUntilVisible:
+    element:
+      text: '.*${output.room.name}.*'
+    timeout: 60000
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'
@@ -271,12 +279,11 @@ tags:
     id: 'room-info-edit-view-react-when-ro'
 
 # should change room name
+- tapOn:
+    id: custom-header-back
+- tapOn:
+    id: room-info-view-edit-button
 - evalScript: ${output.newroomname = output.room.name + 'new'}
-- scrollUntilVisible:
-    element:
-      id: 'room-info-edit-view-name'
-    direction: UP
-    timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-name'
 - runFlow:
@@ -322,6 +329,7 @@ tags:
 - tapOn:
     id: 'room-info-edit-view-topic'
 - inputText: 'new topic'
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-announcement'
@@ -329,6 +337,7 @@ tags:
 - tapOn:
     id: 'room-info-edit-view-announcement'
 - inputText: 'new announcement'
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-description'
@@ -336,7 +345,7 @@ tags:
 - tapOn:
     id: 'room-info-edit-view-description'
 - inputText: 'new description'
-- pressKey: Enter
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-submit'

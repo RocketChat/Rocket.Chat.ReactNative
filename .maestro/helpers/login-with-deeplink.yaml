@@ -36,7 +36,8 @@ tags:
       visible: '.*Would like to send you notifications.*'
       platform: iOS
     commands:
-      - tapOn: 'Allow'
+      - tapOn:
+          point: 65%,60%
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
