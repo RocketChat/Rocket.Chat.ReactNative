@@ -154,7 +154,7 @@ tags:
     id: room-info-edit-view-name
 - eraseText
 - inputText: abc
-- runFlow:  '../../helpers/hide-keyboard.yaml'
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'
