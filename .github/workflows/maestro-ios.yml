@@ -122,3 +122,10 @@ jobs:
           path: ~/.maestro/**/*.png
           retention-days: 28
     
+      - name: Maestro Video
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS Maestro Video - Shard ${{ inputs.shard }}
+          path: room-info.mp4
+          retention-days: 28
