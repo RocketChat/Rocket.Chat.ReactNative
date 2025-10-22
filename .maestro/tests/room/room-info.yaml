@@ -184,6 +184,7 @@ tags:
     element:
       id: 'room-info-edit-view-t'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-t'
 - scrollUntilVisible:
