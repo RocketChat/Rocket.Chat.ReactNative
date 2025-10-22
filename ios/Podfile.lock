@@ -1686,6 +1686,30 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-mmkv (3.3.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-mmkv-storage (12.0.0):
     - DoubleConversion
     - glog
@@ -2706,6 +2730,7 @@ DEPENDENCIES:
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
+  - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
@@ -2927,6 +2952,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-keyboard-controller:
     :path: "../node_modules/react-native-keyboard-controller"
+  react-native-mmkv:
+    :path: "../node_modules/react-native-mmkv"
   react-native-mmkv-storage:
     :path: "../node_modules/react-native-mmkv-storage"
   react-native-netinfo:
@@ -3136,6 +3163,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 23d28040c32ca8b20661e0c41b56ab041779244b
   react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
   react-native-keyboard-controller: 9ec7ee23328c30251a399cffd8b54324a00343bf
+  react-native-mmkv: 5e7896e3de0768080642f8a2d38f1750d464af7f
   react-native-mmkv-storage: 9afc38c25213482f668c80bf2f0a50f75dda1777
   react-native-netinfo: 2e3c27627db7d49ba412bfab25834e679db41e21
   react-native-notifications: 3bafa1237ae8a47569a84801f17d80242fe9f6a5

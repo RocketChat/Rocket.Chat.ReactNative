@@ -13016,6 +13016,11 @@ react-native-mmkv-storage@^12.0.0:
   resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-12.0.0.tgz#9d15cd6dff8abbb7f52992446eef3954dc8f9c3a"
   integrity sha512-sssZInILQBquytDDfjosjEdvevwMPk3fqQQjdjfnH362IcsBsApvtT8yJS406Mz9aJ6VhqVsZw/awltsUuPSYg==
 
+react-native-mmkv@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-3.3.1.tgz#854ec786d3951e4bbbaa6161d812c3345d071d85"
+  integrity sha512-LYamDWQirPTUJZ9Re+BkCD+zLRGNr+EVJDeIeblvoJXGatWy9PXnChtajDSLqwjX3EXVeUyjgrembs7wlBw9ug==
+
 react-native-modal@13.0.1:
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-13.0.1.tgz#691f1e646abb96fa82c1788bf18a16d585da37cd"
