@@ -1,5 +1,10 @@
 import Foundation
 
+// Note: This file is disabled during migration to react-native-mmkv
+// The new library doesn't provide a Swift API for Watch app usage
+// This functionality needs to be reimplemented if Watch app support is needed
+
+/*
 extension MMKV {
 	static func build() -> MMKV {
 		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
@@ -38,3 +43,4 @@ extension MMKV {
 		return privateKey
 	}
 }
+*/
