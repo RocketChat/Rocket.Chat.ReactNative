@@ -112,7 +112,7 @@ const AccessibilityAndAppearanceView = () => {
 							setAlertDisplayType(value);
 						}}
 						title={I18n.t('A11y_appearance_show_alerts_as')}
-						value={alertDisplayType}
+						value={alertDisplayType ?? 'TOAST'}
 					/>
 					<List.Separator />
 				</List.Section>
