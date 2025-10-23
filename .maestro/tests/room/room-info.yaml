@@ -20,7 +20,6 @@ tags:
     file: './utils/navigate-to-room-info.yaml'
     env:
       ROOM: ${output.room.name}
-- startRecording: room-info
 
 # should have room info view
 - extendedWaitUntil:
@@ -448,4 +447,3 @@ tags:
     timeout: 60000
 - assertVisible:
     id: 'user-role-Livechat-Agent'
-- stopRecording
