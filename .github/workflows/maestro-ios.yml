@@ -113,3 +113,11 @@ jobs:
           name: Test Report - Shard ${{ inputs.shard }}
           path: maestro-report.xml
           retention-days: 28
+
+      - name: iOS Maestro Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS Maestro Logs - Shard ${{ inputs.shard }}
+          path: ~/.maestro/tests/
+          retention-days: 28
