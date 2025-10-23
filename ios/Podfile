@@ -8,6 +8,7 @@ prepare_react_native_project!
 
 def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
+  pod 'react-native-mmkv', path: '../node_modules/react-native-mmkv', modular_headers: true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
   use_expo_modules!
@@ -36,7 +37,6 @@ end
 $static_framework = [ 
   'WatermelonDB',
   'simdjson',
-  'react-native-mmkv-storage',
   'react-native-notifications'
 ]
 pre_install do |installer|
@@ -66,6 +66,18 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
       config.build_settings['ENABLE_BITCODE'] = "NO"
+      
+      # Add SecureStorage headers to search paths for react-native-webview
+      if target.name == 'react-native-webview'
+        config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
+        config.build_settings['HEADER_SEARCH_PATHS'] << '$(SRCROOT)/..'
+      end
+      
+      # Add FORCE_POSIX for MMKV to expose C++ API properly
+      if target.name == 'react-native-mmkv'
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FORCE_POSIX=1'
+      end
     end
   end
 
