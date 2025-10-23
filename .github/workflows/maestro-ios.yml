@@ -114,14 +114,6 @@ jobs:
           path: maestro-report.xml
           retention-days: 28
 
-      - name: Maestro Screenshot
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: iOS Maestro Screenshot - Shard ${{ inputs.shard }}
-          path: .maestro/**/*.png
-          retention-days: 28
-    
       - name: Maestro Video
         if: always()
         uses: actions/upload-artifact@v4
