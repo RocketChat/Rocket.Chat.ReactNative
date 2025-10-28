@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 import { useTheme } from '../../../theme';
@@ -40,6 +40,11 @@ interface LiveLocationCardProps {
 const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = true, messageTimestamp, author, onPress }) => {
 	const { theme } = useTheme();
 	const [cardIsActive, setCardIsActive] = useState(isActive);
+	// Keep latest active state accessible inside closures (e.g., setInterval)
+	const cardIsActiveRef = useRef(cardIsActive);
+	useEffect(() => {
+		cardIsActiveRef.current = cardIsActive;
+	}, [cardIsActive]);
 	
 	// Get viewer's own API keys from user preferences
 	const userId = useAppSelector(state => state.login.user.id);
@@ -151,9 +156,10 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 		addStatusChangeListener(handleStatusChange);
 		addLiveLocationEndedListener(handleLiveLocationEnded);
 
-		// Stale check every 5 minutes
+
+		// Stale check every 5 minutes, read latest state from ref
 		const staleCheck = setInterval(() => {
-			if (isMessageTooOld(messageTimestamp) && cardIsActive) {
+			if (isMessageTooOld(messageTimestamp) && cardIsActiveRef.current) {
 				setCardIsActive(false);
 			}
 		}, 5 * 60 * 1000);
@@ -163,7 +169,6 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 			removeLiveLocationEndedListener(handleLiveLocationEnded);
 			clearInterval(staleCheck);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [msg, isActive, messageTimestamp]);
 
 	const handleCardPress = () => {

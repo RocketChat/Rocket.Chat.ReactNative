@@ -26,8 +26,6 @@
     <!-- If you stream/live share or track in background -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
-    <!-- Optional: only if you truly need background updates on Android 10+ -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:name="chat.rocket.reactnative.MainApplication"
@@ -97,6 +95,12 @@
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="${BugsnagAPIKey}" />
+
+        <!-- Foreground location service declaration for Android 10+ compliance -->
+        <service
+            android:name=".LocationService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
     </application>
 
     <queries>

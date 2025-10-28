@@ -7,7 +7,7 @@ type AppleProvider = 'apple';
 type AnyProvider = MapProviderName | AppleProvider;
 type GoogleMapType = 'roadmap' | 'satellite' | 'hybrid' | 'terrain';
 
-export type Coords = { latitude: number; longitude: number };
+export type Coords = { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
 
 export type StaticOpts = {
   zoom?: number;
@@ -125,9 +125,10 @@ function androidOsmLink({ latitude, longitude }: Coords): string {
 export async function mapsDeepLink(provider: AnyProvider, coords: Coords): Promise<string> {
   if (Platform.OS === 'ios') {
     switch (provider) {
-      case 'google':
+      case 'google': {
         const url = await iosGoogleLink(coords); 
         return url;
+      }
       case 'osm':
         return iosOsmLink(coords);
       case 'apple':

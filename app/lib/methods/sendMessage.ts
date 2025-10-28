@@ -6,6 +6,7 @@ import log from './helpers/log';
 import { random } from './helpers';
 import { Encryption } from '../encryption';
 import { type E2EType, type IMessage, type IUser, type TMessageModel } from '../../definitions';
+import type { IAttachment } from '../../definitions/IAttachment';
 import sdk from '../services/sdk';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
 import { messagesStatus } from '../constants/messagesStatus';
@@ -48,7 +49,7 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 	}
 };
 
-async function sendMessageCall(message: any) {
+async function sendMessageCall(message: IMessage) {
 	const { _id, tmid } = message;
 	try {
 		// RC 0.60.0
@@ -91,7 +92,7 @@ export async function sendMessage(
 	tmid: string | undefined,
 	user: Partial<Pick<IUser, 'id' | 'username' | 'name'>>,
 	tshow?: boolean,
-	attachments?: any[]
+	attachments?: IAttachment[]
 ): Promise<void> {
 	try {
 		const db = database.active;
@@ -166,7 +167,7 @@ export async function sendMessage(
 						tm.ts = messageDate;
 						tm._updatedAt = messageDate;
 						tm.status = messagesStatus.TEMP;
-						tm.attachments = attachments as any;
+						tm.attachments = attachments as IAttachment[] | undefined;
 						tm.u = {
 							_id: user.id || '1',
 							username: user.username,
@@ -199,7 +200,7 @@ export async function sendMessage(
 					username: user.username,
 					name: user.name
 				};
-				m.attachments = attachments as any;
+				m.attachments = attachments as IAttachment[] | undefined;
 				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
 					// m.tlm = messageDate; // I don't think this is necessary... leaving it commented just in case...

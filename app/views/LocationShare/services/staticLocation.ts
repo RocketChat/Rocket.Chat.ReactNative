@@ -1,6 +1,5 @@
 import * as Location from 'expo-location';
-
-export type Coords = { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
+import type { Coords } from './mapProviders';
 
 const LOCATION_TIMEOUT_MS = 15_000;
 const LAST_KNOWN_MAX_AGE_MS = 15_000;

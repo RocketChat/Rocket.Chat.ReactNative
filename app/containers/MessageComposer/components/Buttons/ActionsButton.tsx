@@ -22,7 +22,7 @@ import {
 } from '../../../../lib/constants/keys';
 
 export const ActionsButton = () => {
-	'use memo';
+	// no-op
 
 	const { rid, tmid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);

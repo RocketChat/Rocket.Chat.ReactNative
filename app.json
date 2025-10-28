@@ -1,10 +1,4 @@
 {
-	"name": "RocketChatRN",
-	"plugins": ["expo-web-browser"],
-	"expo": {
-		"extra": {
-			"GOOGLE_MAPS_API_KEY": "",
-			"OSM_API_KEY": ""
-		}
-	}
+  "name": "RocketChatRN",
+  "plugins": ["expo-web-browser"]
 }
