@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
 
-@interface SecureStorage : NSObject
+@interface SecureStorage : NSObject <RCTBridgeModule>
 
 - (NSString *)getSecureKey:(NSString *)key;
 - (BOOL)setSecureKey:(NSString *)key value:(NSString *)value;

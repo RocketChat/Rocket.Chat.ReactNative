@@ -9,10 +9,36 @@
 #import "SecureStorage.h"
 #import <Security/Security.h>
 #import <UIKit/UIKit.h>
+#import <React/RCTBridgeModule.h>
 
 static NSString *serviceName = nil;
 
 @implementation SecureStorage
+
+RCT_EXPORT_MODULE();
+
+RCT_EXPORT_METHOD(getSecureKey:(NSString *)key
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    @try {
+        NSString *value = [self getSecureKey:key];
+        resolve(value);
+    } @catch (NSException *exception) {
+        reject(@"GET_SECURE_KEY_ERROR", exception.reason, nil);
+    }
+}
+
+RCT_EXPORT_METHOD(setSecureKey:(NSString *)key
+                  value:(NSString *)value
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    @try {
+        BOOL success = [self setSecureKey:key value:value];
+        resolve(@(success));
+    } @catch (NSException *exception) {
+        reject(@"SET_SECURE_KEY_ERROR", exception.reason, nil);
+    }
+}
 
 - (NSString *)getSecureKey:(NSString *)key {
     @try {

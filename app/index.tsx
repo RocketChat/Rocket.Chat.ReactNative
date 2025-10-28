@@ -23,6 +23,7 @@ import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/cras
 import { debounce, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
+import { migrateMMKVStorage } from './lib/methods/mmkvMigration';
 import {
 	getTheme,
 	initialTheme,
@@ -126,6 +127,9 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
+		// Migrate MMKV storage from old library to new one
+		await migrateMMKVStorage();
+
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
