@@ -4,8 +4,18 @@ tags:
   - 'util'
 
 ---
-- longPressOn:
-    id: ${id}
+- runFlow:
+    when:
+      true: ${id != null}
+    commands:
+      - longPressOn:
+          id: ${id}
+- runFlow:
+    when:
+      true: ${text != null}
+    commands:
+      - doubleTapOn:
+          text: .*${text}.*
 - runFlow:
     when:
       visible:
@@ -13,3 +23,9 @@ tags:
     commands:
       - tapOn: Select All
       - eraseText: 1
+- runFlow:
+    when:
+      notVisible:
+        text: 'Select All'
+    commands:
+      - eraseText: 100

@@ -68,6 +68,7 @@ const SelectPersonOrChannel = ({
 				placeholder={{ text: `${I18n.t('Select')}` }}
 				context={BlockContext.FORM}
 				multiselect
+				testID='select-person-or-channel'
 			/>
 		</View>
 	);
