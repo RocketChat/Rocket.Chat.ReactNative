@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { MMKV } from 'react-native-mmkv';
 
-import { getSecureKey } from './helpers/getSecureKey';
+import { getSecureKey, getAppGroupPath } from './helpers/getSecureKey';
 
 let storage: MMKV | null = null;
 let storageInitPromise: Promise<MMKV> | null = null;
@@ -12,11 +12,14 @@ function initializeStorage() {
 	if (storageInitPromise) return storageInitPromise;
 
 	storageInitPromise = (async () => {
-		const encryptionKey = await getSecureKey('com.MMKV.default');
-		console.log('[MMKV Init] Encryption key retrieved:', encryptionKey ? 'YES' : 'NO');
+		const [encryptionKey, appGroupPath] = await Promise.all([getSecureKey('com.MMKV.default'), getAppGroupPath()]);
+
+		// Old react-native-mmkv-storage used a 'mmkv' subdirectory in the app group
+		const mmkvPath = appGroupPath ? `${appGroupPath}/mmkv` : undefined;
 
 		storage = new MMKV({
 			id: 'default',
+			path: mmkvPath,
 			encryptionKey: encryptionKey || undefined
 		});
 
@@ -26,46 +29,22 @@ function initializeStorage() {
 	return storageInitPromise;
 }
 
-function getStorage(): MMKV {
+function getStorageSync(): MMKV {
 	if (!storage) {
-		throw new Error('MMKV not initialized. Ensure migrateMMKVStorage() runs first.');
+		console.warn('[MMKV] Storage not yet initialized, waiting...');
+		throw new Error('MMKV not ready. Try again shortly.');
 	}
 	return storage;
 }
 
-// Start initialization and migration when module loads
-(async () => {
-	try {
-		const storage = await initializeStorage();
-
-		// Run migration check
-		const MIGRATION_KEY = 'MMKV_MIGRATION_COMPLETED_V1';
-		const migrationCompleted = storage.getBoolean(MIGRATION_KEY);
-
-		if (!migrationCompleted) {
-			const allKeys = storage.getAllKeys();
-			console.log(`[MMKV Migration] Found ${allKeys.length} keys in storage`);
-
-			if (allKeys.length > 0) {
-				console.log('[MMKV Migration] Sample keys:', allKeys.slice(0, 10));
-				const hasToken = allKeys.some(k => k.includes('usertoken'));
-				const hasServers = allKeys.some(k => k.includes('servers'));
-				console.log('[MMKV Migration] Has user tokens:', hasToken);
-				console.log('[MMKV Migration] Has servers:', hasServers);
-			}
-
-			storage.set(MIGRATION_KEY, true);
-			console.log('[MMKV Migration] Completed');
-		}
-	} catch (error) {
-		console.error('[MMKV Init/Migration] Failed:', error);
-	}
-})();
+// Initialize storage when module loads
+// This happens automatically when userPreferences is first imported
+initializeStorage();
 
 class UserPreferences {
 	getString(key: string): string | null {
 		try {
-			return getStorage().getString(key) ?? null;
+			return getStorageSync().getString(key) ?? null;
 		} catch {
 			return null;
 		}
@@ -73,7 +52,7 @@ class UserPreferences {
 
 	setString(key: string, value: string): void {
 		try {
-			getStorage().set(key, value);
+			getStorageSync().set(key, value);
 		} catch (error) {
 			console.error('Error setting string in MMKV:', error);
 		}
@@ -81,7 +60,7 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
-			return getStorage().getBoolean(key) ?? null;
+			return getStorageSync().getBoolean(key) ?? null;
 		} catch {
 			return null;
 		}
@@ -89,7 +68,7 @@ class UserPreferences {
 
 	setBool(key: string, value: boolean): void {
 		try {
-			getStorage().set(key, value);
+			getStorageSync().set(key, value);
 		} catch (error) {
 			console.error('Error setting boolean in MMKV:', error);
 		}
@@ -97,7 +76,7 @@ class UserPreferences {
 
 	getMap(key: string): object | null {
 		try {
-			const jsonString = getStorage().getString(key);
+			const jsonString = getStorageSync().getString(key);
 			return jsonString ? JSON.parse(jsonString) : null;
 		} catch {
 			return null;
@@ -106,7 +85,7 @@ class UserPreferences {
 
 	setMap(key: string, value: object): void {
 		try {
-			getStorage().set(key, JSON.stringify(value));
+			getStorageSync().set(key, JSON.stringify(value));
 		} catch (error) {
 			console.error('Error setting map in MMKV:', error);
 		}
@@ -114,7 +93,7 @@ class UserPreferences {
 
 	removeItem(key: string): void {
 		try {
-			getStorage().delete(key);
+			getStorageSync().delete(key);
 		} catch (error) {
 			console.error('Error removing item from MMKV:', error);
 		}
@@ -123,7 +102,7 @@ class UserPreferences {
 	// Additional utility methods
 	getNumber(key: string): number | null {
 		try {
-			return getStorage().getNumber(key) ?? null;
+			return getStorageSync().getNumber(key) ?? null;
 		} catch {
 			return null;
 		}
@@ -131,7 +110,7 @@ class UserPreferences {
 
 	setNumber(key: string, value: number): void {
 		try {
-			getStorage().set(key, value);
+			getStorageSync().set(key, value);
 		} catch (error) {
 			console.error('Error setting number in MMKV:', error);
 		}
@@ -139,7 +118,7 @@ class UserPreferences {
 
 	getAllKeys(): string[] {
 		try {
-			return getStorage().getAllKeys();
+			return getStorageSync().getAllKeys();
 		} catch {
 			return [];
 		}
@@ -147,7 +126,7 @@ class UserPreferences {
 
 	contains(key: string): boolean {
 		try {
-			return getStorage().contains(key);
+			return getStorageSync().contains(key);
 		} catch {
 			return false;
 		}
@@ -155,7 +134,7 @@ class UserPreferences {
 
 	clearAll(): void {
 		try {
-			getStorage().clearAll();
+			getStorageSync().clearAll();
 		} catch (error) {
 			console.error('Error clearing MMKV:', error);
 		}
@@ -166,7 +145,7 @@ class UserPreferences {
 export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undefined, (value: T) => void] {
 	const getInitialValue = useCallback((): T | undefined => {
 		try {
-			const storedValue = getStorage().getString(key);
+			const storedValue = getStorageSync().getString(key);
 			if (storedValue !== undefined) {
 				// Try to parse as JSON first (for objects)
 				try {
@@ -177,12 +156,12 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 				}
 			}
 			// Check for boolean
-			const boolValue = getStorage().getBoolean(key);
+			const boolValue = getStorageSync().getBoolean(key);
 			if (boolValue !== undefined) {
 				return boolValue as T;
 			}
 			// Check for number
-			const numValue = getStorage().getNumber(key);
+			const numValue = getStorageSync().getNumber(key);
 			if (numValue !== undefined) {
 				return numValue as T;
 			}
@@ -196,7 +175,7 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 
 	// Listen for changes
 	useEffect(() => {
-		const listener = getStorage().addOnValueChangedListener(changedKey => {
+		const listener = getStorageSync().addOnValueChangedListener(changedKey => {
 			if (changedKey === key) {
 				setValue(getInitialValue());
 			}
@@ -210,7 +189,7 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 	const setStoredValue = useCallback(
 		(newValue: T) => {
 			try {
-				const mmkv = getStorage();
+				const mmkv = getStorageSync();
 				if (typeof newValue === 'string') {
 					mmkv.set(key, newValue);
 				} else if (typeof newValue === 'boolean') {

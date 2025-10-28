@@ -17,6 +17,10 @@ static NSString *serviceName = nil;
 
 RCT_EXPORT_MODULE();
 
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
 RCT_EXPORT_METHOD(getSecureKey:(NSString *)key
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) {
@@ -37,6 +41,23 @@ RCT_EXPORT_METHOD(setSecureKey:(NSString *)key
         resolve(@(success));
     } @catch (NSException *exception) {
         reject(@"SET_SECURE_KEY_ERROR", exception.reason, nil);
+    }
+}
+
+RCT_EXPORT_METHOD(getAppGroupPath:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject) {
+    @try {
+        NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+        if (appGroup) {
+            NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
+            if (groupURL) {
+                resolve([groupURL path]);
+                return;
+            }
+        }
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(@"GET_APP_GROUP_PATH_ERROR", exception.reason, nil);
     }
 }
 

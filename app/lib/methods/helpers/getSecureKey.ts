@@ -3,6 +3,7 @@ import { NativeModules } from 'react-native';
 interface ISecureStorage {
 	getSecureKey: (alias: string) => Promise<string | null>;
 	setSecureKey: (alias: string, value: string) => Promise<void>;
+	getAppGroupPath: () => Promise<string | null>;
 }
 
 const { SecureStorage } = NativeModules as { SecureStorage: ISecureStorage };
@@ -34,5 +35,14 @@ export async function setSecureKey(alias: string, value: string): Promise<void> 
 	} catch (error) {
 		console.error('[setSecureKey] Error storing key:', error);
 		throw error;
+	}
+}
+
+export async function getAppGroupPath(): Promise<string | null> {
+	try {
+		return await SecureStorage.getAppGroupPath();
+	} catch (error) {
+		console.error('[getAppGroupPath] Error:', error);
+		return null;
 	}
 }
