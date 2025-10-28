@@ -114,14 +114,20 @@ runs:
       shell: bash
 
     - name: Build iOS app
-      working-directory: ios
-      run: |
-        if [[ ${{ inputs.type }} == "official" ]]; then
-          bundle exec fastlane ios build_official
-        fi
-        if [[ ${{ inputs.type }} == "experimental" ]]; then
-          bundle exec fastlane ios build_experimental
-        fi
+      uses: nick-fields/retry@v3
+      with:
+        max_attempts: 3
+        retry_wait_seconds: 60
+        timeout_minutes: 30
+        shell: bash
+        command: |
+          cd ios
+          if [[ ${{ inputs.type }} == "official" ]]; then
+            bundle exec fastlane ios build_official
+          fi
+          if [[ ${{ inputs.type }} == "experimental" ]]; then
+            bundle exec fastlane ios build_experimental
+          fi
       env:
         MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
         MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
@@ -129,7 +135,6 @@ runs:
         APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
         APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
         FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
-      shell: bash
 
     - name: Upload IPA artifact
       uses: actions/upload-artifact@v4
@@ -151,6 +156,7 @@ runs:
       with:
         name: ios-build-experimental-dSYM
         path: ios/Rocket.Chat.app.dSYM.zip
+        retention-days: 14
 
     - name: Upload Rocket.Chat.app.dSYM.zip
       uses: actions/upload-artifact@v4
@@ -158,6 +164,7 @@ runs:
       with:
         name: ios-build-official-dSYM
         path: ios/Rocket.Chat.app.dSYM.zip
+        retention-days: 14
 
     - name: Upload RocketChatRN/Info.plist
       uses: actions/upload-artifact@v4
@@ -165,6 +172,7 @@ runs:
       with:
         name: ios-build-experimental-info-plist
         path: ios/RocketChatRN/Info.plist
+        retention-days: 14
 
     - name: Upload RocketChatRN/Info.plist
       uses: actions/upload-artifact@v4
@@ -172,3 +180,4 @@ runs:
       with:
         name: ios-build-official-info-plist
         path: ios/RocketChatRN/Info.plist
+        retention-days: 14
