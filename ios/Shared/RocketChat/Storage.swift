@@ -7,9 +7,7 @@ struct Credentials {
 }
 
 final class Storage {
-    // Note: MMKV usage commented out during migration to react-native-mmkv
-    // The new library doesn't provide Swift API for Watch app
-    // private let mmkv = MMKV.build()
+    private let mmkv = MMKVBridge.build()
     
     private var appGroupIdentifier: String? {
         return Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String
@@ -47,9 +45,6 @@ final class Storage {
     }
     
     func getPrivateKey(server: String) -> String? {
-        // Note: MMKV access removed during migration to react-native-mmkv
-        // This functionality needs to be reimplemented for Watch app if needed
-        // mmkv.privateKey(for: server)
-        return nil
+        return mmkv.privateKey(for: server)
     }
 }

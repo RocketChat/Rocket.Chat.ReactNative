@@ -80,6 +80,18 @@ post_install do |installer|
       end
     end
   end
+  
+  # Add FORCE_POSIX to main project targets that use MMKV C++ API
+  installer.aggregate_targets.each do |aggregate_target|
+    aggregate_target.user_project.targets.each do |target|
+      if ['NotificationService', 'RocketChatRN', 'Rocket.Chat'].include?(target.name)
+        target.build_configurations.each do |config|
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FORCE_POSIX=1' unless config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'].include?('FORCE_POSIX=1')
+        end
+      end
+    end
+  end
 
   bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
   def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)

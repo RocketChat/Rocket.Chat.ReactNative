@@ -5,11 +5,7 @@ struct ClientSSL: Codable {
 	let password: String
 }
 
-// Note: MMKV extension disabled during migration to react-native-mmkv
-// The new library doesn't provide Swift API for Watch app usage
-// This functionality needs to be reimplemented if Watch app support is needed
-/*
-extension MMKV {
+extension MMKVBridge {
 	func clientSSL(for url: URL) -> ClientSSL? {
 		let server = url.absoluteString.removeTrailingSlash()
 		let host = url.host ?? ""
@@ -31,4 +27,3 @@ extension MMKV {
 		return documentsDirectory.path + "/" + name
 	}
 }
-*/

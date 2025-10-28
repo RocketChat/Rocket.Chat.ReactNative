@@ -4,8 +4,7 @@ import WatchConnectivity
 @objc
 final class WatchConnection: NSObject {
 	private let database = Database(name: "default")
-	// Note: MMKV disabled during migration to react-native-mmkv (no Swift API available)
-	// private let mmkv = MMKV.build()
+	private let mmkv = MMKVBridge.build()
 	private let session: WCSession
 	
 	@objc init(session: WCSession) {
@@ -42,10 +41,6 @@ final class WatchConnection: NSObject {
         }
 
         let servers = serversQuery.compactMap { item -> WatchMessage.Server? in
-            // Note: MMKV disabled - Watch app functionality needs to be reimplemented
-            // For now, return nil to allow compilation
-            return nil
-            /*
             guard let userId = mmkv.userId(for: item.identifier), let userToken = mmkv.userToken(for: userId) else {
                 return nil
             }
@@ -79,7 +74,6 @@ final class WatchConnection: NSObject {
                 },
                 version: item.version
             )
-            */
         }
 
         return WatchMessage(servers: servers)

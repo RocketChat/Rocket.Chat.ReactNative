@@ -6,8 +6,7 @@ final class SSLPinning: NSObject {
 	}
 	
 	private let database = Database(name: "default")
-	// Note: MMKV disabled during migration to react-native-mmkv (no Swift API available)
-	// private let mmkv = MMKV.build()
+	private let mmkv = MMKVBridge.build()
 	
 	@objc func setCertificate(_ server: String, _ path: String, _ password: String) {
 		guard FileManager.default.fileExists(atPath: path) else {
@@ -18,15 +17,11 @@ final class SSLPinning: NSObject {
 			return
 		}
 		
-		// Note: MMKV disabled - certificates now managed via JS layer
-		// mmkv.set(Data(referencing: certificate), forKey: Constants.certificateKey.appending(server))
-		// mmkv.set(password, forKey: Constants.passwordKey.appending(server))
+		mmkv.setData(Data(referencing: certificate), forKey: Constants.certificateKey.appending(server))
+		mmkv.setString(password, forKey: Constants.passwordKey.appending(server))
 	}
 	
     @objc func migrate() {
-        // Note: Migration disabled - MMKV no longer available in Swift
-        // This functionality needs to be handled via React Native layer
-        /*
         guard let serversQuery = database.query("SELECT * FROM servers") else {
             print("No servers found")
             return
@@ -45,14 +40,9 @@ final class SSLPinning: NSObject {
                 clientSSL.password
             )
         }
-        */
     }
 	
 	func getCertificate(server: String) -> (certificate: Data, password: String)? {
-		// Note: MMKV disabled - certificates now managed via JS layer
-		// This is only used by Watch app which needs to be updated
-		return nil
-		/*
 		guard let certificate = mmkv.data(forKey: Constants.certificateKey.appending(server)) else {
 			return nil
 		}
@@ -62,6 +52,5 @@ final class SSLPinning: NSObject {
 		}
 		
 		return (certificate, password)
-		*/
 	}
 }
