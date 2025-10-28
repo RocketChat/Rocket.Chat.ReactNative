@@ -14,12 +14,10 @@ import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { getCurrentPositionOnce } from '../../../../views/LocationShare/services/staticLocation';
-import { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
+import type { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 import {
 	MAP_PROVIDER_PREFERENCE_KEY,
-	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
-	OSM_API_KEY_PREFERENCE_KEY,
 	MAP_PROVIDER_DEFAULT
 } from '../../../../lib/constants/keys';
 
@@ -40,8 +38,6 @@ export const ActionsButton = () => {
 	const userId = useAppSelector(state => state.login.user.id);
 
 	const [mapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
-	const [googleApiKey] = useUserPreferences<string>(`${GOOGLE_MAPS_API_KEY_PREFERENCE_KEY}_${userId}`, '');
-	const [osmApiKey] = useUserPreferences<string>(`${OSM_API_KEY_PREFERENCE_KEY}_${userId}`, '');
 
 	// --- Sheet transition helpers ---
 	const sheetBusyRef = React.useRef(false);
@@ -100,9 +96,7 @@ export const ActionsButton = () => {
 				rid,
 				tmid,
 				provider,
-				coords,
-				googleKey: provider === 'google' ? googleApiKey : undefined,
-				osmKey: provider === 'osm' ? osmApiKey : undefined
+				coords
 			};
 
 			InteractionManager.runAfterInteractions(() => {
@@ -144,9 +138,7 @@ export const ActionsButton = () => {
 			const params = {
 				rid,
 				tmid,
-				provider,
-				googleKey: provider === 'google' ? googleApiKey : undefined,
-				osmKey: provider === 'osm' ? osmApiKey : undefined
+				provider
 			};
 
 			// Defer navigation until after sheets/animations are done
@@ -261,17 +253,6 @@ export const ActionsButton = () => {
 			title: I18n.t('Share_Location'),
 			icon: 'pin-map',
 			onPress: () => {
-				// Check if the user has configured API keys for their preferred provider
-				const needsApiKey = (mapProvider === 'google' && !googleApiKey) || (mapProvider === 'osm' && !osmApiKey);
-
-				if (needsApiKey) {
-					showErrorAlert(
-						I18n.t('API_key_required', { provider: mapProvider === 'google' ? 'Google Maps' : 'OpenStreetMap' }),
-						I18n.t('Please_configure_API_key_in_settings')
-					);
-					return;
-				}
-
 				openSheetSafely(() => openModeSheetForProvider(mapProvider));
 			}
 		});

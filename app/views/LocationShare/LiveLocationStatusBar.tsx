@@ -20,6 +20,7 @@ import {
 import { handleLiveLocationUrl, isLiveMessageLink } from './services/handleLiveLocationUrl';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
+import I18n from '../../i18n';
 
 type Props = { onPress?: () => void };
 
@@ -40,7 +41,7 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 		if (mounted.current) fn();
 	};
 
-	// subscribe to global live-location minimized status
+	// subscribe to global minimized status
 	useEffect(() => {
 		safeSet(() => setIsActive(isLiveLocationMinimized()));
 		const handleStatusChange = (minimized: boolean) => safeSet(() => setIsActive(minimized));
@@ -48,14 +49,14 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 		return () => removeMinimizedStatusListener(handleStatusChange);
 	}, []);
 
-	// GLOBAL DEEPLINK LISTENER (works around openLink.ts)
+	// Handle live-location deep links
 	useEffect(() => {
 		const sub = Linking.addEventListener('url', ({ url }) => {
 			if (isLiveMessageLink(url)) {
 				handleLiveLocationUrl(url);
 			}
 		});
-		// also handle the case when app is cold-started by the link
+		// also handle cold-start by link
 		Linking.getInitialURL().then(url => {
 			if (url && isLiveMessageLink(url)) {
 				handleLiveLocationUrl(url);
@@ -64,7 +65,7 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 		return () => sub.remove();
 	}, []);
 
-	// pulse animation lifecycle
+	// pulse animation
 	useEffect(() => {
 		if (!isActive) return;
 		const pulse = Animated.loop(
@@ -112,8 +113,8 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 					<Text style={styles.icon}>📍</Text>
 				</Animated.View>
 				<View style={styles.textContainer}>
-					<Text style={styles.title}>Live Location Active</Text>
-					<Text style={styles.subtitle}>Tap to view • Updates every 10s</Text>
+					<Text style={styles.title}>{I18n.t('Live_Location_Active')}</Text>
+					<Text style={styles.subtitle}>{I18n.t('Tap_to_view_Updates_every_10s')}</Text>
 				</View>
 			</TouchableOpacity>
 			<TouchableOpacity onPress={handleStop} style={styles.stopButton}>

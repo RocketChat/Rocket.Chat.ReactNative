@@ -2,7 +2,8 @@ import * as Location from 'expo-location';
 
 import { sendMessage } from '../../../lib/methods/sendMessage';
 import { LiveLocationApi, mobileToServerCoords } from './liveLocationApi';
-import { MapProviderName } from './mapProviders';
+import type { MapProviderName } from './mapProviders';
+import I18n from '../../../i18n';
 
 export type LiveLocationState = {
 	coords: {
@@ -49,7 +50,7 @@ export class LiveLocationTracker {
 	}
 
 	async startTracking(): Promise<void> {
-		// Check location permissions
+		// Permissions
 		let { status } = await Location.getForegroundPermissionsAsync();
 		if (status !== 'granted') {
 			const r = await Location.requestForegroundPermissionsAsync();
@@ -59,13 +60,13 @@ export class LiveLocationTracker {
 			throw new Error('Location permission not granted');
 		}
 
-		// Check GPS is enabled
+		// Ensure services are on
 		const servicesOn = await Location.hasServicesEnabledAsync();
 		if (!servicesOn) {
 			throw new Error('Location services are turned off');
 		}
 
-		// Get initial position
+		// Initial position
 		const first = await Location.getCurrentPositionAsync({
 			accuracy: Location.Accuracy.High,
 			mayShowUserSettingsDialog: true
@@ -77,7 +78,7 @@ export class LiveLocationTracker {
 			accuracy: first.coords.accuracy ?? undefined
 		};
 
-		// Start server-side live location
+		// Start on server
 		try {
 			const response = await LiveLocationApi.start(this.rid, {
 				durationSec: this.durationSec,
@@ -86,16 +87,16 @@ export class LiveLocationTracker {
 			this.msgId = response.msgId;
 			this.useServerApi = true;
 		} catch (error: any) {
-		this.useServerApi = false;
-		this.msgId = null;
+			this.useServerApi = false;
+			this.msgId = null;
 
-		this.emit?.({
-			coords: initialCoords,
-			timestamp: Date.now(),
-			isActive: false,
-			msgId: undefined
-		});
-		return;
+			this.emit?.({
+				coords: initialCoords,
+				timestamp: Date.now(),
+				isActive: false,
+				msgId: undefined
+			});
+			return;
 		}
 
 		this.emit({
@@ -105,7 +106,7 @@ export class LiveLocationTracker {
 			msgId: this.msgId ?? undefined
 		});
 
-		// Start position tracking
+		// Watch position
 		this.watchSub = await Location.watchPositionAsync(
 			{
 				accuracy: Location.Accuracy.High,
@@ -126,7 +127,7 @@ export class LiveLocationTracker {
 			}
 		);
 
-		// Sync with server every 10 seconds
+		// Sync every 10s
 		this.tickInterval = setInterval(async () => {
 			if (!this.tickInterval || !this.currentState || !this.msgId) {
 				if (this.tickInterval) {
@@ -147,7 +148,6 @@ export class LiveLocationTracker {
 							this.msgId,
 							serverCoords
 						);
-						
 					} catch (error: any) {
 						if (error?.error === 'error-live-location-not-found' || 
 							error?.message?.includes('live-location-not-found')) {
@@ -170,7 +170,7 @@ export class LiveLocationTracker {
 	}
 
 	async stopTracking(): Promise<void> {
-		// Stop watching position updates
+		// Stop watch
 		if (this.watchSub) {
 			this.watchSub.remove();
 			this.watchSub = null;
@@ -181,7 +181,7 @@ export class LiveLocationTracker {
 			this.tickInterval = null;
 		}
 
-		// Stop live location on server
+		// Stop on server
 		if (this.msgId && this.currentState) {
 			if (this.useServerApi) {
 				try {
@@ -191,20 +191,20 @@ export class LiveLocationTracker {
 						mobileToServerCoords(this.currentState.coords)
 					);
 				} catch (error) {
-					// Failed to stop on server
+					// ignore
 				}
 			} else {
-				// Send stop message for fallback mode
+				// Fallback: send stop message
 				const stopMessage = this.createLiveLocationMessage(this.currentState.coords, 'stop');
 				try {
 					await sendMessage(this.rid, stopMessage, this.tmid, this.user, false);
 				} catch (error) {
-					// Failed to send stop message
+					// ignore
 				}
 			}
 		}
 		
-		// Reset all state
+		// Reset
 		this.useServerApi = false;
 		this.msgId = null;
 		
@@ -213,7 +213,6 @@ export class LiveLocationTracker {
 				...this.currentState,
 				isActive: false,
 				msgId: undefined
-				// Keep the original timestamp from when location was last received
 			});
 		}
 	}
@@ -240,13 +239,13 @@ export class LiveLocationTracker {
 		const appDeepLink = `rocketchat://live-location?${params.toString()}`;
 
 		if (type === 'start') {
-			return `📍 **Live Location Start**
+			return `📍 **${I18n.t('Live_Location_Start_Title')}**
 
-[🔴 View Live Location](${appDeepLink})
+[🔴 ${I18n.t('View_Live_Location')}](${appDeepLink})
 
-Coordinates: ${coords.latitude.toFixed(6)}, ${coords.longitude.toFixed(6)}`;
+${I18n.t('Coordinates', { lat: coords.latitude.toFixed(6), lon: coords.longitude.toFixed(6) })}`;
 		}
-		return `📍 **Live Location Ended** (ID: ${this.liveLocationId})`;
+		return `📍 **${I18n.t('Live_Location_Ended_Title')}** (ID: ${this.liveLocationId})`;
 	}
 }
 
@@ -271,9 +270,9 @@ export function createLiveLocationMessage(
 	});
 	const appDeepLink = `rocketchat://live-location?${params.toString()}`;
 
-	return `📍 **Live Location Start**
+	return `📍 **${I18n.t('Live_Location_Start_Title')}**
 
-[🔴 View Live Location](${appDeepLink})`;
+[🔴 ${I18n.t('View_Live_Location')}](${appDeepLink})`;
 }
 
 export function createLiveLocationStopMessage(
@@ -281,5 +280,5 @@ export function createLiveLocationStopMessage(
 	_provider: MapProviderName,
 	_lastCoords: { latitude: number; longitude: number }
 ): string {
-	return `📍 **Live Location Ended** (ID: ${liveLocationId})`;
+	return `📍 **${I18n.t('Live_Location_Ended_Title')}** (ID: ${liveLocationId})`;
 }

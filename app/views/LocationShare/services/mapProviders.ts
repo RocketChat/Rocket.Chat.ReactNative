@@ -1,9 +1,7 @@
-// maps.ts
 import { Linking, Platform } from 'react-native';
 
-/* =========================
- * Types
- * ========================= */
+import I18n from '../../../i18n';
+
 export type MapProviderName = 'google' | 'osm';
 type AppleProvider = 'apple';
 type AnyProvider = MapProviderName | AppleProvider;
@@ -12,19 +10,14 @@ type GoogleMapType = 'roadmap' | 'satellite' | 'hybrid' | 'terrain';
 export type Coords = { latitude: number; longitude: number };
 
 export type StaticOpts = {
-  zoom?: number; // default: 15
-  size?: `${number}x${number}`; // e.g., '640x320'
-  scale?: 1 | 2 | 3; // Google only (default: 2)
-  mapType?: GoogleMapType; // Google only
-  googleApiKey?: string; // prefer server-signed URLs in prod
-  osmServer?: string; // (unused here) custom OSM static server base
-  osmApiKey?: string; // LocationIQ key
-  markerColor?: string; // default: 'red'
+  zoom?: number;
+  size?: `${number}x${number}`;
+  scale?: 1 | 2 | 3;
+  mapType?: GoogleMapType;
+  googleApiKey?: string;
+  markerColor?: string;
 };
 
-/* =========================
- * Constants
- * ========================= */
 const DEFAULT_ZOOM = 15;
 const DEFAULT_SIZE = '640x320';
 const DEFAULT_GOOGLE_SCALE: 1 | 2 | 3 = 2;
@@ -32,12 +25,8 @@ const DEFAULT_GOOGLE_MAPTYPE: GoogleMapType = 'roadmap';
 const DEFAULT_MARKER_COLOR = 'red';
 
 const GOOGLE_STATIC_BASE = 'https://maps.googleapis.com/maps/api/staticmap';
-// LocationIQ Static Maps docs: https://locationiq.com/docs#static-maps
-const OSM_STATIC_BASE = 'https://maps.locationiq.com/v3/staticmap';
+const OSM_TILE_BASE = 'https://tile.openstreetmap.org';
 
-/* =========================
- * Helpers
- * ========================= */
 function parseSize(size: StaticOpts['size'] | undefined) {
   const [wStr, hStr] = (size ?? DEFAULT_SIZE).split('x');
   const width = Number(wStr) || 640;
@@ -49,9 +38,14 @@ function enc(s: string | number) {
   return encodeURIComponent(String(s));
 }
 
-/* =========================
- * Static Map URL (by provider)
- * ========================= */
+function lonLatToTile(lon: number, lat: number, zoom: number) {
+  const latRad = (lat * Math.PI) / 180;
+  const n = Math.pow(2, zoom);
+  const x = Math.floor(((lon + 180) / 360) * n);
+  const y = Math.floor(((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2) * n);
+  return { x, y };
+}
+
 function buildGoogleStaticUrl(
   { latitude, longitude }: Coords,
   { zoom, size, scale, mapType, googleApiKey, markerColor }: StaticOpts
@@ -71,20 +65,14 @@ function buildGoogleStaticUrl(
 
 function buildOsmStaticUrl(
   { latitude, longitude }: Coords,
-  { zoom, size, osmApiKey }: StaticOpts
+  { zoom }: StaticOpts
 ): { url: string; width: number; height: number } {
   const z = zoom ?? DEFAULT_ZOOM;
-  const { width, height } = parseSize(size);
-  const marker = `icon:large-red-cutout|${latitude},${longitude}`;
-
-  const qp = `${osmApiKey ? `key=${enc(osmApiKey)}` : ''}&center=${latitude},${longitude}&zoom=${z}&size=${width}x${height}&markers=${enc(marker)}`;
-
-  return { url: `${OSM_STATIC_BASE}?${qp}`, width, height };
+  const { x, y } = lonLatToTile(longitude, latitude, z);
+  const url = `${OSM_TILE_BASE}/${z}/${x}/${y}.png`;
+  return { url, width: 256, height: 256 };
 }
 
-/**
- * Public API: build a static map image URL for a provider.
- */
 export function staticMapUrl(
   provider: MapProviderName,
   coords: Coords,
@@ -102,10 +90,7 @@ export function staticMapUrl(
   }
 }
 
-/* =========================
- * Deep Links (by platform x provider)
- * ========================= */
-// --- iOS builders ---
+// iOS
 async function iosGoogleLink({ latitude, longitude }: Coords): Promise<string> {
   const query = `${latitude},${longitude}`;
   const appScheme = `comgooglemaps://?q=${enc(query)}`;
@@ -113,7 +98,7 @@ async function iosGoogleLink({ latitude, longitude }: Coords): Promise<string> {
   try {
     if (await Linking.canOpenURL(appScheme)) return appScheme;
   } catch {
-    // ignore and fall back to web
+    // fall back to web
   }
   return `https://www.google.com/maps/search/?api=1&query=${enc(query)}`;
 }
@@ -127,7 +112,7 @@ function iosAppleLink({ latitude, longitude }: Coords): string {
   return `https://maps.apple.com/?ll=${query}&q=${enc(query)}`;
 }
 
-// --- Android builders ---
+// Android
 function androidGoogleLikeLink({ latitude, longitude }: Coords): string {
   const query = `${latitude},${longitude}`;
   return `geo:${query}?q=${enc(query)}`;
@@ -137,9 +122,6 @@ function androidOsmLink({ latitude, longitude }: Coords): string {
   return `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=${DEFAULT_ZOOM}/${latitude}/${longitude}`;
 }
 
-/**
- * Public API: build a deep link for maps, grouped by platform and provider.
- */
 export async function mapsDeepLink(provider: AnyProvider, coords: Coords): Promise<string> {
   if (Platform.OS === 'ios') {
     switch (provider) {
@@ -155,7 +137,7 @@ export async function mapsDeepLink(provider: AnyProvider, coords: Coords): Promi
     }
   }
 
-  // ANDROID
+  // Android
   switch (provider) {
     case 'google':
     case 'apple':
@@ -167,8 +149,5 @@ export async function mapsDeepLink(provider: AnyProvider, coords: Coords): Promi
   }
 }
 
-/* =========================
- * Labels / Attributions
- * ========================= */
-export const providerLabel = (p: MapProviderName) => (p === 'google' ? 'Google Maps' : 'OpenStreetMap');
-export const providerAttribution = (p: MapProviderName) => (p === 'google' ? undefined : '© OpenStreetMap contributors');
+export const providerLabel = (p: MapProviderName) => (p === 'google' ? I18n.t('Google_Maps') : I18n.t('OpenStreetMap'));
+export const providerAttribution = (p: MapProviderName) => (p === 'google' ? undefined : I18n.t('OSM_Attribution'));

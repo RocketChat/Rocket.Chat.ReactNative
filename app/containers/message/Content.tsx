@@ -11,7 +11,7 @@ import MessageContext from './Context';
 import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
-import { MessageTypesValues, IUserMessage } from '../../definitions';
+import type { MessageTypesValues, IUserMessage } from '../../definitions';
 
 
 const Content = React.memo(

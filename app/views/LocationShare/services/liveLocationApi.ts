@@ -2,7 +2,7 @@ import sdk from '../../../lib/services/sdk';
 
 export type Coordinates = {
 	lat: number;
-	lng: number;
+	lng: number; // internal client representation uses `lng`
 	acc?: number;
 };
 
@@ -34,7 +34,7 @@ export type LiveLocationGetResponse = {
 	startedAt: Date;
 	lastUpdateAt: Date;
 	stoppedAt?: Date;
-	coords: Coordinates;
+	coords: { lat: number; lon: number };
 	expiresAt?: Date;
 	version: number;
 };
@@ -49,8 +49,23 @@ export class LiveLocationApi {
 	 * @param options Start options including duration and initial coordinates
 	 * @returns Promise with message ID
 	 */
-	static start(rid: string, options: LiveLocationStartOptions = {}): Promise<LiveLocationStartResponse> {
-		return sdk.methodCallWrapper('liveLocation.start', rid, options);
+	static async start(rid: string, options: LiveLocationStartOptions = {}): Promise<LiveLocationStartResponse> {
+		const payload: {
+			rid: string;
+			durationSec?: number;
+			initial?: { lat: number; lon: number };
+		} = {
+			rid,
+			...(typeof options.durationSec === 'number' && { durationSec: options.durationSec }),
+			...(options.initial && { initial: { lat: options.initial.lat, lon: options.initial.lng } })
+		};
+		try {
+			const res = await (sdk.post as any)('liveLocation.start', payload);
+			return { msgId: res.msgId };
+		} catch (e: any) {
+			// Common case: server returns plain text "Not Found" if route isn't deployed
+			throw e;
+		}
 	}
 
 	/**
@@ -60,8 +75,14 @@ export class LiveLocationApi {
 	 * @param coords Current coordinates
 	 * @returns Promise with update result
 	 */
-	static update(rid: string, msgId: string, coords: Coordinates): Promise<LiveLocationUpdateResponse> {
-		return sdk.methodCallWrapper('liveLocation.update', rid, msgId, coords);
+	static async update(rid: string, msgId: string, coords: Coordinates): Promise<LiveLocationUpdateResponse> {
+		const payload = {
+			rid,
+			msgId,
+			coords: { lat: coords.lat, lon: coords.lng }
+		};
+		const res = await (sdk.post as any)('liveLocation.update', payload);
+		return { updated: res.updated, ignored: res.ignored, reason: res.reason };
 	}
 
 	/**
@@ -71,8 +92,14 @@ export class LiveLocationApi {
 	 * @param finalCoords Optional final coordinates
 	 * @returns Promise with stop result
 	 */
-	static stop(rid: string, msgId: string, finalCoords?: Coordinates): Promise<LiveLocationStopResponse> {
-		return sdk.methodCallWrapper('liveLocation.stop', rid, msgId, finalCoords);
+	static async stop(rid: string, msgId: string, finalCoords?: Coordinates): Promise<LiveLocationStopResponse> {
+		const payload: { rid: string; msgId: string; finalCoords?: { lat: number; lon: number } } = {
+			rid,
+			msgId,
+			...(finalCoords && { finalCoords: { lat: finalCoords.lat, lon: finalCoords.lng } })
+		};
+		const res = await (sdk.post as any)('liveLocation.stop', payload);
+		return { stopped: !!res.stopped };
 	}
 
 	/**
@@ -82,7 +109,7 @@ export class LiveLocationApi {
 	 * @returns Promise with live location data
 	 */
 	static get(rid: string, msgId: string): Promise<LiveLocationGetResponse> {
-		return sdk.methodCallWrapper('liveLocation.get', rid, msgId);
+		return (sdk.get as any)('liveLocation.get', { rid, msgId });
 	}
 
 
@@ -102,10 +129,13 @@ export function mobileToServerCoords(coords: { latitude: number; longitude: numb
 /**
  * Convert from server coordinate format to mobile format
  */
-export function serverToMobileCoords(coords: Coordinates): { latitude: number; longitude: number; accuracy?: number } {
+export function serverToMobileCoords(
+	coords: Coordinates | { lat: number; lon: number; acc?: number }
+): { latitude: number; longitude: number; accuracy?: number } {
+	const longitude = (coords as any).lng ?? (coords as any).lon;
 	return {
 		latitude: coords.lat,
-		longitude: coords.lng,
-		accuracy: coords.acc
+		longitude,
+		accuracy: (coords as any).acc
 	};
 }

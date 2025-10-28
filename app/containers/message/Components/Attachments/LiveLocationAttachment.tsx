@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 import { useTheme } from '../../../../theme';
-import { IAttachment } from '../../../../definitions';
+import type { IAttachment } from '../../../../definitions';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { reopenLiveLocationModal, isLiveLocationActive } from '../../../../views/LocationShare/LiveLocationPreviewModal';

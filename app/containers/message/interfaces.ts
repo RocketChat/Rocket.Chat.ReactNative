@@ -23,6 +23,9 @@ export interface IMessageAttachments {
 	author?: IUserMessage;
 	messageId?: string;
 	roomId?: string;
+	// Optional styling and reply context passed through some Attachment renderers
+	style?: any;
+	isReply?: boolean;
 }
 
 export interface IMessageAvatar {

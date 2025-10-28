@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { useActionSheet } from '../../containers/ActionSheet';
+import type { TActionSheetOptionsItem } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import { MapProviderName } from '../LocationShare/services/mapProviders';
+import type { MapProviderName } from '../LocationShare/services/mapProviders';
 
 const styles = StyleSheet.create({
 	title: { ...sharedStyles.textRegular, fontSize: 16 }
@@ -34,12 +35,8 @@ interface IListPickerProps {
 const ListPicker = ({ title, value, onChangeValue, testID }: IListPickerProps) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const [option, setOption] = useState(value ? OPTIONS.find(option => option.value === value) : OPTIONS[0]);
 
-	useEffect(() => {
-		const next = OPTIONS.find(item => item.value === value) || OPTIONS[0];
-		setOption(next);
-	}, [value]);
+	const option = useMemo(() => OPTIONS.find(item => item.value === value) || OPTIONS[0], [value]);
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS.map(i => ({
@@ -47,7 +44,6 @@ const ListPicker = ({ title, value, onChangeValue, testID }: IListPickerProps) =
 			onPress: () => {
 				hideActionSheet();
 				onChangeValue(i.value);
-				setOption(i);
 			},
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.fontHint} /> : undefined
 		}));

@@ -8,7 +8,8 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { sendMessage } from '../../lib/methods/sendMessage';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
-import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
+import { staticMapUrl, providerLabel, mapsDeepLink, providerAttribution } from './services/mapProviders';
+import type { MapProviderName } from './services/mapProviders';
 
 type Coords = { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
 
@@ -17,12 +18,10 @@ type RouteParams = {
 	tmid?: string;
 	provider: MapProviderName; // 'osm' | 'google'
 	coords: Coords;
-	googleKey?: string; // optional; omit to use OSM
-	osmKey?: string;
 };
 
 export default function LocationPreviewModal({ route }: { route: { params: RouteParams } }) {
-	const { rid, tmid, provider, coords, googleKey, osmKey } = route.params;
+	const { rid, tmid, provider, coords } = route.params;
 	const [submitting, setSubmitting] = useState(false);
 
 	// mounted guard
@@ -45,12 +44,26 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 		shallowEqual
 	);
 
+	// Always use OSM raster tiles for the preview (keyless)
 	const mapInfo = useMemo(() => {
-		const opts: any = { size: '640x320', zoom: 15 };
-		if (provider === 'google' && googleKey) opts.googleApiKey = googleKey;
-		if (provider === 'osm' && osmKey) opts.osmApiKey = osmKey;
-		return staticMapUrl(provider, { latitude: coords.latitude, longitude: coords.longitude }, opts);
-	}, [provider, coords.latitude, coords.longitude, googleKey, osmKey]);
+		const opts: any = { zoom: 15 };
+		return staticMapUrl('osm', { latitude: coords.latitude, longitude: coords.longitude }, opts);
+	}, [coords.latitude, coords.longitude]);
+
+	// OSM tile servers require a descriptive User-Agent and Referer per usage policy
+	const OSM_HEADERS = useMemo(
+		() => ({
+			'User-Agent': 'RocketChatMobile/1.0 (+https://rocket.chat) contact: mobile@rocket.chat',
+			Referer: 'https://rocket.chat'
+		}),
+		[]
+	);
+
+	// Ensure we bypass any previously cached blocked image on Android
+	const cacheKey = useMemo(
+		() => `osm-${coords.latitude.toFixed(5)}-${coords.longitude.toFixed(5)}-z15-v2`,
+		[coords.latitude, coords.longitude]
+	);
 
 	useEffect(() => {
 		if (mapInfo?.url) {
@@ -63,7 +76,7 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 			const deep = await mapsDeepLink(provider, coords);
 			await Linking.openURL(deep);
 		} catch (error) {
-			Alert.alert('Error', 'Could not open maps application');
+			Alert.alert(I18n.t('error-open-maps-application'));
 		}
 	};
 
@@ -76,7 +89,7 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 			const deep = await mapsDeepLink(provider, coords);
 			const providerName = providerLabel(provider);
 
-			const message = `📍 **Location**
+			const message = `📍 **${I18n.t('Location')}**
 
 [🗺️ Open in ${providerName}](${deep})`;
 
@@ -92,7 +105,7 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
-				<Text style={styles.title}>📍 Share Location</Text>
+				<Text style={styles.title}>📍 {I18n.t('Share_Location')}</Text>
 
 				<View style={styles.infoContainer}>
 					<Text style={styles.coordsLine}>
@@ -107,7 +120,7 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 
 				<View style={styles.mapContainer}>
 					<ExpoImage
-						source={{ uri: mapInfo.url }}
+						source={{ uri: mapInfo.url, headers: OSM_HEADERS, cacheKey }}
 						style={styles.mapImage}
 						contentFit='cover'
 						// Smooth fade + disk cache avoids Android flicker
@@ -118,15 +131,21 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 							// Image failed to load
 						}}
 					/>
+					{/* Center pin overlay */}
+					<View style={styles.pinOverlay} pointerEvents='none'>
+						<Text style={styles.pinText}>📍</Text>
+					</View>
 				</View>
+				{/* OSM attribution (required) */}
+				<Text style={styles.attribution}>{providerAttribution('osm')}</Text>
 
 				<View style={styles.buttons}>
 					<TouchableOpacity style={styles.btn} onPress={onCancel}>
-						<Text style={styles.btnText}>Cancel</Text>
+						<Text style={styles.btnText}>{I18n.t('Cancel')}</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={onShare} disabled={submitting}>
-						<Text style={[styles.btnText, styles.btnTextPrimary]}>{submitting ? 'Sharing...' : 'Share Location'}</Text>
+						<Text style={[styles.btnText, styles.btnTextPrimary]}>{submitting ? I18n.t('Sharing_Loading') : I18n.t('Share_Location')}</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -155,6 +174,9 @@ const styles = StyleSheet.create({
 	mapLinkText: { color: '#1d74f5', fontSize: 16, fontWeight: '600', textAlign: 'center', marginBottom: 16 },
 	mapContainer: { borderRadius: 8, overflow: 'hidden', marginBottom: 12 },
 	mapImage: { width: '100%', height: 200 },
+	pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
+	pinText: { fontSize: 24 },
+	attribution: { fontSize: 10, color: '#666', textAlign: 'center', marginBottom: 12 },
 	buttons: { flexDirection: 'row', gap: 12 },
 	btn: {
 		flex: 1,

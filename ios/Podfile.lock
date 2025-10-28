@@ -1639,8 +1639,6 @@ PODS:
     - Yoga
   - react-native-cookies (6.2.1):
     - React-Core
-  - react-native-geolocation-service (5.3.1):
-    - React
   - react-native-keyboard-controller (1.17.1):
     - DoubleConversion
     - glog
@@ -2710,7 +2708,6 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
-  - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -2933,8 +2930,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-cookies:
     :path: "../node_modules/@react-native-cookies/cookies"
-  react-native-geolocation-service:
-    :path: "../node_modules/react-native-geolocation-service"
   react-native-keyboard-controller:
     :path: "../node_modules/react-native-keyboard-controller"
   react-native-mmkv-storage:
@@ -3146,7 +3141,6 @@ SPEC CHECKSUMS:
   react-native-background-timer: 4638ae3bee00320753647900b21260b10587b6f7
   react-native-cameraroll: 23d28040c32ca8b20661e0c41b56ab041779244b
   react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
-  react-native-geolocation-service: 32b2c2a3b91e70ce2a8d0c684801aaeb0a07e0ec
   react-native-keyboard-controller: 9ec7ee23328c30251a399cffd8b54324a00343bf
   react-native-mmkv-storage: 9afc38c25213482f668c80bf2f0a50f75dda1777
   react-native-netinfo: 2e3c27627db7d49ba412bfab25834e679db41e21
@@ -3215,7 +3209,7 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   WatermelonDB: 4c846c8cb94eef3cba90fa034d15310163226703
-  Yoga: dfabf1234ccd5ac41d1b1d43179f024366ae9831
+  Yoga: 2a3a4c38a8441b6359d5e5914d35db7b2b67aebd
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: 4c73563b34520b90c036817cdb9ccf65fea5f5c5

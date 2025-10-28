@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, Linking, InteractionManager } from 'react-native';
 import { Image as ExpoImage, type ImageErrorEventData } from 'expo-image';
 import * as Location from 'expo-location';
@@ -8,11 +8,10 @@ import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
-import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
-import {
-	LiveLocationTracker,
-	LiveLocationState
-} from './services/liveLocation';
+import { staticMapUrl, providerLabel, mapsDeepLink, providerAttribution } from './services/mapProviders';
+import type { MapProviderName } from './services/mapProviders';
+import { LiveLocationTracker } from './services/liveLocation';
+import type { LiveLocationState } from './services/liveLocation';
 import { 
 	markLiveLocationAsEnded,
 	isLiveLocationEnded,
@@ -24,8 +23,6 @@ type RouteParams = {
 	rid: string;
 	tmid?: string;
 	provider: MapProviderName;
-	googleKey?: string;
-	osmKey?: string;
 	liveLocationId?: string;
 	ownerName?: string;
 	isTracking?: boolean;
@@ -36,8 +33,6 @@ let globalTrackerParams: {
 	rid?: string;
 	tmid?: string;
 	provider: MapProviderName;
-	googleKey?: string;
-	osmKey?: string;
 	liveLocationId?: string;
 	ownerName?: string;
 	isTracking?: boolean;
@@ -54,28 +49,27 @@ const minimizedStatusListeners = new Set<(isMinimized: boolean) => void>();
 export function getCurrentLiveParams() {
 	return globalTrackerParams;
 }
-
 export function isLiveLocationMinimized(): boolean {
-	return isModalMinimized && isLiveLocationActive();
+    return isModalMinimized && isLiveLocationActive();
 }
 
 export function addMinimizedStatusListener(listener: (isMinimized: boolean) => void) {
-	minimizedStatusListeners.add(listener);
+    minimizedStatusListeners.add(listener);
 }
 
 export function removeMinimizedStatusListener(listener: (isMinimized: boolean) => void) {
-	minimizedStatusListeners.delete(listener);
+    minimizedStatusListeners.delete(listener);
 }
 
 function emitMinimizedStatusChange(minimized?: boolean) {
-	const value = typeof minimized === 'boolean' ? minimized : isLiveLocationMinimized();
-	minimizedStatusListeners.forEach(fn => {
-		try {
-			fn(value);
-		} catch (e) {
-			// Error in minimized status listener
-		}
-	});
+    const value = typeof minimized === 'boolean' ? minimized : isLiveLocationMinimized();
+    minimizedStatusListeners.forEach(fn => {
+        try {
+            fn(value);
+        } catch (e) {
+            // Error in minimized status listener
+        }
+    });
 }
 export function addStatusChangeListener(listener: (isActive: boolean) => void) {
 	statusChangeListeners.add(listener);
@@ -95,7 +89,7 @@ function emitStatusChange(active?: boolean) {
 }
 
 export default function LiveLocationPreviewModal({ route }: { route: { params: RouteParams } }) {
-	const { rid, tmid, provider = 'google', googleKey, osmKey, liveLocationId, ownerName, isTracking = false } = route.params;
+	const { rid, tmid, provider = 'google', liveLocationId, ownerName, isTracking = false } = route.params;
 	const [submitting, setSubmitting] = useState(false);
 	const [locationState, setLocationState] = useState<LiveLocationState | null>(null);
 	const [mapImageUrl, setMapImageUrl] = useState<string>('');
@@ -121,9 +115,9 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		},
 		[]
 	);
-	const safeSet = (fn: () => void) => {
+	const safeSet = React.useCallback((fn: () => void) => {
 		if (mounted.current) fn();
-	};
+	}, []);
 
 	useEffect(() => {
 		if (mapImageUrl) {
@@ -131,57 +125,44 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		}
 	}, [mapImageUrl]);
 
+	// OSM tile servers require a descriptive User-Agent and Referer per usage policy
+	const OSM_HEADERS = useMemo(
+		() => ({
+			'User-Agent': 'RocketChatMobile/1.0 (+https://rocket.chat) contact: mobile@rocket.chat',
+			Referer: 'https://rocket.chat'
+		}),
+		[]
+	);
+
+	const cacheKey = useMemo(() => {
+		const lat = locationState?.coords?.latitude;
+		const lon = locationState?.coords?.longitude;
+		return lat && lon ? `osm-${lat.toFixed(5)}-${lon.toFixed(5)}-z15-v2` : undefined;
+	}, [locationState?.coords?.latitude, locationState?.coords?.longitude]);
+
 	const { id, username } = useAppSelector(getUserSelector, shallowEqual);
 	
-	const handleLocationUpdate = (state: LiveLocationState) => {
+	const handleLocationUpdate = React.useCallback((state: LiveLocationState) => {
 		
 		safeSet(() => setLocationState(state));
 
 		if (state.coords) {
-			const opts: { size: `${number}x${number}`; zoom: number; googleApiKey?: string; osmApiKey?: string } = {
-				size: '640x320',
-				zoom: 15
-			};
-			
-			let mapUrl = '';
-			
-			// Try to generate map URL with API keys if available
-		if (provider === 'google' && googleKey) {
-			opts.googleApiKey = googleKey;
-			const { url } = staticMapUrl(provider, state.coords, opts);
-			mapUrl = url;
-		} else if (provider === 'osm' && osmKey) {
-			opts.osmApiKey = osmKey;
-			const { url } = staticMapUrl(provider, state.coords, opts);
-			mapUrl = url;
-		} else {
-			try {
-				const { url } = staticMapUrl('google', state.coords, opts);
-				mapUrl = url;
-			} catch (error) {
-				mapUrl = '';
-			}
-		}			safeSet(() => setMapImageUrl(mapUrl));
+			// Always use OSM tiles for preview (no keys)
+			const { url } = staticMapUrl('osm', state.coords, { zoom: 15 });
+			safeSet(() => setMapImageUrl(url));
 		}
 
 		emitStatusChange();
-	};
+	}, [safeSet]);
 
 	useEffect(() => {
 		if (!isTracking && liveLocationId) {
+			// If already ended, close immediately
 			isLiveLocationEnded(liveLocationId).then(ended => {
 				if (ended) {
-					const inactiveState = {
-						coords: {
-							latitude: 37.78583,
-							longitude: -122.40642,
-							accuracy: 5
-						},
-						timestamp: Date.now() - (5 * 60 * 1000), // 5 minutes ago to show it's old
-						isActive: false
-					};
-					handleLocationUpdate(inactiveState);
+					Navigation.back();
 				} else {
+					// Initialize with a temporary active state while viewing
 					const activeState = {
 						coords: {
 							latitude: 37.78583,
@@ -197,16 +178,8 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 
 			const handleLiveLocationEnded = (endedLocationId: string) => {
 				if (endedLocationId === liveLocationId) {
-					const inactiveState = {
-						coords: {
-							latitude: 37.78583,
-							longitude: -122.40642,
-							accuracy: 5
-						},
-						timestamp: Date.now() - (5 * 60 * 1000),
-						isActive: false
-					};
-					handleLocationUpdate(inactiveState);
+					// Owner stopped sharing while viewer is watching -> force close
+					Navigation.back();
 				}
 			};
 
@@ -270,7 +243,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 				handleLocationUpdate(defaultState);
 			});
 		}
-	}, [provider, googleKey, osmKey, isTracking, liveLocationId]);
+	}, [isTracking, liveLocationId, handleLocationUpdate, id, rid, tmid, username]);
 
 	const openInMaps = async () => {
 		if (!locationState?.coords) return;
@@ -278,7 +251,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			const deep = await mapsDeepLink(provider, locationState.coords);
 			await Linking.openURL(deep);
 		} catch (error) {
-			Alert.alert('Error', 'Could not open maps application');
+			Alert.alert(I18n.t("error-open-maps-application"));
 		}
 	};
 
@@ -325,23 +298,23 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 
 			if (trackerRef.current) {
 				const msgId = trackerRef.current.getMsgId();
+				if (!msgId) {
+					Alert.alert(I18n.t('Error'), 'Could not start live location. Please ensure your server has the liveLocation API routes and is reachable.');
+					return;
+				}
 
 				globalTracker = trackerRef.current;
 				globalTrackerParams = {
 					rid,
 					tmid,
 					provider,
-					googleKey,
-					osmKey,
-					liveLocationId: msgId || undefined, // Use tracker's message ID
+					liveLocationId: msgId, // Use tracker's message ID
 					ownerName: username || 'You',
 					isTracking: true,
 					userId: id,
 					username
 				};
 				emitStatusChange(true);
-
-
 			}
 
 			safeSet(() => {
@@ -425,7 +398,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 						{submitting ? (
 							<ActivityIndicator color='#fff' />
 						) : (
-							<Text style={[styles.btnText, styles.btnTextPrimary]}>Start</Text>
+							<Text style={[styles.btnText, styles.btnTextPrimary]}>{I18n.t('Start')}</Text>
 						)}
 					</TouchableOpacity>
 				</>
@@ -435,14 +408,14 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		if (isOwner() && !(!isTracking && liveLocationId)) {
 			return (
 				<TouchableOpacity onPress={onStopSharing} style={[styles.btn, styles.btnDanger]}>
-					<Text style={[styles.btnText, styles.btnTextDanger]}>Stop Sharing</Text>
+					<Text style={[styles.btnText, styles.btnTextDanger]}>{I18n.t('Stop_Sharing')}</Text>
 				</TouchableOpacity>
 			);
 		}
 
 		return (
 			<TouchableOpacity onPress={() => Navigation.back()} style={[styles.btn]}>
-				<Text style={[styles.btnText]}>Close</Text>
+				<Text style={[styles.btnText]}>{I18n.t('Close')}</Text>
 			</TouchableOpacity>
 		);
 	};
@@ -453,8 +426,8 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 				{/* Header with minimize button */}
 				<View style={styles.header}>
 					<View style={styles.titleContainer}>
-						<Text style={styles.title}>📍 Live Location</Text>
-						{currentOwnerName && <Text style={styles.ownerName}>Shared by {currentOwnerName}</Text>}
+						<Text style={styles.title}>📍 {I18n.t('Live_Location')}</Text>
+						{currentOwnerName && <Text style={styles.ownerName}>{I18n.t('Shared_By')} {currentOwnerName}</Text>}
 					</View>
 					{(isShared || isTracking) && isOwner() && (
 						<TouchableOpacity onPress={onMinimize} style={styles.minimizeButton} activeOpacity={0.7}>
@@ -474,7 +447,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 						]}
 					/>
 					<Text style={styles.statusText}>
-						{((isShared || isTracking) || (!isTracking && liveLocationId)) && locationState?.isActive ? 'Live Location Active' : 'Live Location Inactive'}
+						{((isShared || isTracking) || (!isTracking && liveLocationId)) && locationState?.isActive ? I18n.t('Live_Location_Active') : I18n.t('Live_Location_Inactive')}
 					</Text>
 				</View>
 
@@ -485,7 +458,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 							{locationState.coords.latitude.toFixed(5)}, {locationState.coords.longitude.toFixed(5)}
 							{locationState.coords.accuracy ? ` (±${Math.round(locationState.coords.accuracy)}m)` : ''}
 						</Text>
-						<Text style={styles.timestamp}>Last updated: {formatTimestamp(locationState.timestamp)}</Text>
+						<Text style={styles.timestamp}>{I18n.t('Last_updated_at')} {formatTimestamp(locationState.timestamp)}</Text>
 					</View>
 				)}
 
@@ -499,8 +472,9 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 				{/* Map image (expo-image) */}
 				<View style={styles.mapContainer}>
 					{mapImageUrl ? (
+						<>
 						<ExpoImage
-							source={{ uri: mapImageUrl }}
+							source={{ uri: mapImageUrl, headers: OSM_HEADERS, cacheKey }}
 							style={styles.mapImage}
 							contentFit='cover'
 							transition={200}
@@ -511,22 +485,30 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 								safeSet(() => setMapImageUrl(''));
 							}}
 						/>
+						{/* Center pin overlay */}
+						<View style={styles.pinOverlay} pointerEvents='none'>
+							<Text style={styles.pinText}>📍</Text>
+						</View>
+						</>
 					) : (
 						<View style={styles.mapPlaceholder}>
-							<Text style={[styles.loadingText, { fontSize: 16, fontWeight: 'bold', marginBottom: 8 }]}>ðŸ“ Map Preview</Text>
+							<Text style={[styles.loadingText, { fontSize: 16, fontWeight: 'bold', marginBottom: 8 }]}>📍 {I18n.t('Map_Preview')}</Text>
 							{locationState?.coords && (
 								<Text style={[styles.loadingText, { fontSize: 14, marginBottom: 8 }]}>
 									{locationState.coords.latitude.toFixed(5)}, {locationState.coords.longitude.toFixed(5)}
 								</Text>
 							)}
-							<Text style={[styles.loadingText, { fontSize: 12, fontStyle: 'italic', textAlign: 'center' }]}>
+							<Text style={[styles.loadingText, { fontSize: 12, fontStyle: 'italic', textAlign: 'center' }] }>
 								Map preview unavailable{'\n'}Tap "Open in Maps" below to view location
 							</Text>
 						</View>
 					)}
 				</View>
 
-				{((isShared || isTracking) || (!isTracking && liveLocationId)) && <Text style={styles.liveIndicator}>🔴 Updates every 10 seconds</Text>}
+				{/* OSM attribution (required) */}
+				<Text style={styles.attribution}>{providerAttribution('osm')}</Text>
+
+				{((isShared || isTracking) || (!isTracking && liveLocationId)) && <Text style={styles.liveIndicator}>🔴 {I18n.t('Updates_every_10_seconds')}</Text>}
 
 				{/* Buttons */}
 				<View style={styles.buttons}>
@@ -673,6 +655,9 @@ const styles = StyleSheet.create({
 	mapImage: { width: '100%', height: 220 },
 	mapPlaceholder: { width: '100%', height: 220, backgroundColor: '#f8f9fa', justifyContent: 'center', alignItems: 'center' },
 	loadingText: { marginTop: 12, fontSize: 14, color: '#6c757d', fontWeight: '500' },
+	attribution: { fontSize: 10, color: '#6c757d', textAlign: 'center', marginBottom: 12 },
+	pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
+	pinText: { fontSize: 24 },
 	liveIndicator: {
 		fontSize: 13,
 		color: '#e74c3c',

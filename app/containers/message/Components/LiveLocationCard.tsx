@@ -4,8 +4,6 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useTheme } from '../../../theme';
 import {
 	MAP_PROVIDER_PREFERENCE_KEY,
-	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
-	OSM_API_KEY_PREFERENCE_KEY,
 	MAP_PROVIDER_DEFAULT
 } from '../../../lib/constants/keys';
 import { themes } from '../../../lib/constants/colors';
@@ -24,7 +22,8 @@ import {
 	addLiveLocationEndedListener,
 	removeLiveLocationEndedListener
 } from '../../../views/LocationShare/services/handleLiveLocationUrl';
-import { MapProviderName } from '../../../views/LocationShare/services/mapProviders';
+import type { MapProviderName } from '../../../views/LocationShare/services/mapProviders';
+import I18n from '../../../i18n';
 
 interface LiveLocationCardProps {
 	msg: string;
@@ -45,13 +44,10 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 	// Get viewer's own API keys from user preferences
 	const userId = useAppSelector(state => state.login.user.id);
 	const [viewerMapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
-	const [viewerGoogleApiKey] = useUserPreferences<string>(`${GOOGLE_MAPS_API_KEY_PREFERENCE_KEY}_${userId}`, '');
-	const [viewerOsmApiKey] = useUserPreferences<string>(`${OSM_API_KEY_PREFERENCE_KEY}_${userId}`, '');
 
-	// Consider messages without a timestamp as *recent* (not old)
+	// Treat missing timestamps as recent
 	const isMessageTooOld = (timestamp?: string | Date | number | any) => {
 		if (timestamp == null) {
-			console.log('[LiveLocationCard] No timestamp provided, assuming recent (active)');
 			return false;
 		}
 
@@ -72,7 +68,6 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 			}
 
 			if (Number.isNaN(t) || t <= 0) {
-				console.log('[LiveLocationCard] Could not parse timestamp, assuming recent (active)');
 				return false;
 			}
 
@@ -81,18 +76,8 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 			const ageMs = now - t;
 			const isTooOld = ageMs > TEN_MINUTES_MS;
 
-			console.log('[LiveLocationCard] Age check:', {
-				originalTimestamp: timestamp,
-				parsedTime: t,
-				messageTime: new Date(t).toISOString(),
-				now: new Date(now).toISOString(),
-				ageMinutes: Math.floor(ageMs / (60 * 1000)),
-				isTooOld
-			});
-
 			return isTooOld;
 		} catch (error) {
-			console.log('[LiveLocationCard] Error parsing timestamp, assuming recent (active):', error);
 			return false;
 		}
 	};
@@ -113,20 +98,19 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 			return;
 		}
 
-		// Check if this is the current user's own live location session
+		// Is this the user's own session?
 		const currentParams = getCurrentLiveParams();
 		const isOwnLiveLocation = currentParams && currentParams.liveLocationId === thisCardLiveLocationId;
 
 		if (isOwnLiveLocation) {
-			// For own live location, use the global tracker status
+			// Use global tracker status
 			setCardIsActive(isLiveLocationActive());
 		} else {
-			// For other users' live locations: check if it should be considered old
-			// Use a simple heuristic: extract timestamp from the live location ID if possible
+			// For others, mark stale by id timestamp when possible
 			const now = Date.now();
 			let shouldBeActive = true;
 			
-			// Try to extract timestamp from live location ID (format: live_TIMESTAMP_randomstring)
+			// live_TIMESTAMP_randomstring
 			const idMatch = thisCardLiveLocationId.match(/^live_(\d+)_/);
 			if (idMatch) {
 				const messageTime = parseInt(idMatch[1], 10);
@@ -149,7 +133,7 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 			});
 		}
 
-		// Listen for status changes (owner only)
+		// Owner-only status changes
 		const handleStatusChange = (active: boolean) => {
 			const current = getCurrentLiveParams();
 			if (current && current.liveLocationId === thisCardLiveLocationId) {
@@ -157,7 +141,7 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 			}
 		};
 
-		// Listen for explicit end of this specific live location
+		// Explicit end for this id
 		const handleLiveLocationEnded = (endedId: string) => {
 			if (endedId === thisCardLiveLocationId) {
 				setCardIsActive(false);
@@ -167,7 +151,7 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 		addStatusChangeListener(handleStatusChange);
 		addLiveLocationEndedListener(handleLiveLocationEnded);
 
-		// Periodic stale check every 5 minutes
+		// Stale check every 5 minutes
 		const staleCheck = setInterval(() => {
 			if (isMessageTooOld(messageTimestamp) && cardIsActive) {
 				setCardIsActive(false);
@@ -184,48 +168,46 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 
 	const handleCardPress = () => {
 		if (!cardIsActive) {
-			Alert.alert('Live Location Ended', 'This live location session has ended.');
+			Alert.alert(I18n.t('Live_Location_Ended_Title'), I18n.t('Live_Location_Ended_Message'));
 			onPress?.();
 			return;
 		}
 
-		// Check if this card matches the currently active live location
+		// If this card matches the active session, reopen it
 		const linkMatch = msg.match(/rocketchat:\/\/live-location\?([^)]+)/);
 		const thisCardLiveLocationId = linkMatch ? new URLSearchParams(linkMatch[1]).get('liveLocationId') : null;
 		const currentParams = getCurrentLiveParams();
 
 		if (currentParams && currentParams.liveLocationId === thisCardLiveLocationId) {
-			// This card matches the current active session, reopen it
+			// Reopen current session
 			reopenLiveLocationModal();
 		} else if (isLiveLocationActive()) {
-			// User is already sharing their own live location; block viewing others
+			// Block viewing others while sharing
 			Alert.alert(
-				'Live Location Active',
-				'You are currently sharing your live location. Please stop your current live location sharing before viewing others.'
+				I18n.t('Live_Location_Active'),
+				I18n.t('Live_Location_Active_Block_Message')
 			);
 		} else if (linkMatch) {
-			// Navigate to viewer mode (not tracking)
+			// Navigate to viewer mode
 			const params = new URLSearchParams(linkMatch[1]);
 			const liveLocationId = params.get('liveLocationId');
 			const rid = params.get('rid');
 			const tmid = params.get('tmid') || undefined;
 			const ownerProvider = params.get('provider') as MapProviderName;
 			
-			// Use viewer's preferred provider and API keys, not the owner's
+			// Use viewer's preferred provider
 			const finalProvider = viewerMapProvider || ownerProvider || 'google';
 
 			Navigation.navigate('LiveLocationPreviewModal', {
 				rid: rid!,
 				tmid,
 				provider: finalProvider,
-				googleKey: finalProvider === 'google' ? viewerGoogleApiKey : undefined,
-				osmKey: finalProvider === 'osm' ? viewerOsmApiKey : undefined,
 				liveLocationId: liveLocationId!,
 				isTracking: false,
-				ownerName: author?.name || author?.username || 'Other User'
+				ownerName: author?.name || author?.username || I18n.t('Other_User')
 			});
 		} else {
-			Alert.alert('Error', 'Could not open live location');
+			Alert.alert(I18n.t('Error'), I18n.t('Could_not_open_live_location'));
 		}
 
 		onPress?.();
@@ -254,14 +236,14 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 					/>
 				</View>
 				<View style={styles.textContainer}>
-					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>Live Location</Text>
+					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Live_Location')}</Text>
 					<Text
 						style={[
 							styles.status,
 							{ color: cardIsActive ? '#27ae60' : '#e74c3c' }
 						]}
 					>
-						{cardIsActive ? 'Active • Tap to view' : 'Inactive'}
+						{cardIsActive ? I18n.t('Active_Tap_to_view') : I18n.t('Inactive')}
 					</Text>
 				</View>
 				{cardIsActive && (

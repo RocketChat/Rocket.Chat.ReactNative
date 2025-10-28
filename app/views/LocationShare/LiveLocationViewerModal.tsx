@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { View, StyleSheet, Alert, ActivityIndicator, Text, TouchableOpacity, Linking } from 'react-native';
 import { Image as ExpoImage, type ImageErrorEventData } from 'expo-image';
 
@@ -7,15 +7,12 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import Navigation from '../../lib/navigation/appNavigation';
 import { LiveLocationApi, serverToMobileCoords } from './services/liveLocationApi';
-import { staticMapUrl, MapProviderName, providerLabel, mapsDeepLink } from './services/mapProviders';
+import { addLiveLocationEndedListener, removeLiveLocationEndedListener } from './services/handleLiveLocationUrl';
+import { staticMapUrl, providerLabel, mapsDeepLink, providerAttribution } from './services/mapProviders';
+import type { MapProviderName } from './services/mapProviders';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
-import {
-	MAP_PROVIDER_PREFERENCE_KEY,
-	GOOGLE_MAPS_API_KEY_PREFERENCE_KEY,
-	OSM_API_KEY_PREFERENCE_KEY,
-	MAP_PROVIDER_DEFAULT
-} from '../../lib/constants/keys';
+import { MAP_PROVIDER_PREFERENCE_KEY, MAP_PROVIDER_DEFAULT } from '../../lib/constants/keys';
 
 export interface LiveLocationViewerModalProps {
 	navigation: any;
@@ -24,8 +21,6 @@ export interface LiveLocationViewerModalProps {
 			rid: string;
 			msgId: string;
 			provider?: 'osm' | 'google';
-			googleKey?: string;
-			osmKey?: string;
 		};
 	};
 }
@@ -61,12 +56,9 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 
 	const currentUserId = useAppSelector(state => state.login.user.id);
 	const [viewerMapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${currentUserId}`, MAP_PROVIDER_DEFAULT);
-	const [viewerGoogleApiKey] = useUserPreferences<string>(`${GOOGLE_MAPS_API_KEY_PREFERENCE_KEY}_${currentUserId}`, '');
-	const [viewerOsmApiKey] = useUserPreferences<string>(`${OSM_API_KEY_PREFERENCE_KEY}_${currentUserId}`, '');
 
 	const provider = viewerMapProvider || routeProvider || 'osm';
-	const googleKey = viewerGoogleApiKey;
-	const osmKey = viewerOsmApiKey;
+
 
 	const styles = StyleSheet.create({
 		container: {
@@ -198,6 +190,22 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 			color: '#6c757d',
 			fontWeight: '500'
 		},
+		attribution: {
+			fontSize: 10,
+			color: '#6c757d',
+			textAlign: 'center',
+			marginBottom: 12
+		},
+		pinOverlay: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			alignItems: 'center',
+			justifyContent: 'center'
+		},
+		pinText: { fontSize: 24 },
 		liveIndicator: {
 			fontSize: 13,
 			color: '#e74c3c',
@@ -238,6 +246,7 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 		}
 	});
 
+	// Normalize assorted date shapes to epoch ms
 	const convertTimestamp = (value: any): number | undefined => {
 		if (value && typeof value === 'object') {
 			if (typeof value.date === 'number') return value.date;
@@ -291,44 +300,18 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 			setLiveLocationData(liveData);
 			setError(null);
 
-			// Generate map image URL using viewer's own API keys
+			// Build static preview (OSM tile)
 			if (mobileCoords) {
-				let mapUrl = '';
-				try {
-					if (provider === 'google' && googleKey) {
-
-						const mapResult = staticMapUrl('google', mobileCoords, {
-							size: '350x220',
-							googleApiKey: googleKey
-						});
-						mapUrl = mapResult.url;
-					} else if (provider === 'osm' && osmKey) {
-
-						const mapResult = staticMapUrl('osm', mobileCoords, {
-							size: '350x220',
-							osmApiKey: osmKey
-						});
-						mapUrl = mapResult.url;
-					} else {
-						const mapResult = staticMapUrl('google', mobileCoords, {
-							size: '350x220'
-						});
-						mapUrl = mapResult.url;
-					}
-				} catch (error) {
-
-					mapUrl = '';
-				}
-
-				setMapImageUrl(mapUrl);
+				const mapResult = staticMapUrl('osm', mobileCoords, { zoom: 15 });
+				setMapImageUrl(mapResult.url);
 			}
 		} catch (err: any) {
-
+			// Keep generic error message
 			setError(err.message || 'Failed to load live location');
 		} finally {
 			setLoading(false);
 		}
-	}, [rid, msgId, provider, googleKey, osmKey]);
+	}, [rid, msgId]);
 
 	const startPeriodicUpdates = useCallback(() => {
 		if (liveLocationData?.isActive) {
@@ -346,6 +329,21 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 		}
 	}, []);
 
+	// OSM requires descriptive User-Agent and Referer
+	const OSM_HEADERS = useMemo(
+		() => ({
+			'User-Agent': 'RocketChatMobile/1.0 (+https://rocket.chat) contact: mobile@rocket.chat',
+			Referer: 'https://rocket.chat'
+		}),
+		[]
+	);
+
+	const cacheKey = useMemo(() => {
+		const lat = liveLocationData?.coords?.latitude;
+		const lon = liveLocationData?.coords?.longitude;
+		return lat && lon ? `osm-${lat.toFixed(5)}-${lon.toFixed(5)}-z15-v2` : undefined;
+	}, [liveLocationData?.coords?.latitude, liveLocationData?.coords?.longitude]);
+
 	const openInMaps = async () => {
 		if (!liveLocationData?.coords) return;
 
@@ -355,10 +353,22 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 				await Linking.openURL(mapUrl);
 			}
 		} catch (err) {
-
-			Alert.alert(I18n.t('Error'), 'Could not open maps application');
+			// Show a friendly error if maps can't be opened
+			Alert.alert(I18n.t('error-open-maps-application'));
 		}
 	};
+
+	// Close as soon as the owner ends sharing
+	useEffect(() => {
+		const onEnded = (endedId: string) => {
+			if (endedId === msgId) {
+				stopPeriodicUpdates();
+				Navigation.back();
+			}
+		};
+		addLiveLocationEndedListener(onEnded);
+		return () => removeLiveLocationEndedListener(onEnded);
+	}, [msgId, stopPeriodicUpdates]);
 
 	useEffect(() => {
 		setLiveLocationData(null);
@@ -368,7 +378,6 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 
 		fetchLiveLocation();
 		return () => {
-
 			stopPeriodicUpdates();
 		};
 	}, [fetchLiveLocation, stopPeriodicUpdates]);
@@ -379,22 +388,10 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 				startPeriodicUpdates();
 				previousActiveState.current = true;
 			} else {
+				// Owner stopped sharing
 				stopPeriodicUpdates();
-				
 				if (previousActiveState.current === true) {
-					Alert.alert(
-						'Live Location Ended',
-						`${liveLocationData.ownerName || liveLocationData.ownerUsername} has stopped sharing their location.`,
-						[
-							{
-								text: 'OK',
-								onPress: () => {
-									Navigation.back();
-								}
-							}
-						],
-						{ cancelable: false }
-					);
+					Navigation.back();
 				}
 				previousActiveState.current = false;
 			}
@@ -432,7 +429,7 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 				<View style={styles.content}>
 					<ActivityIndicator size='large' color='#3498db' />
 					<Text style={styles.loadingText}>
-						Loading live location...
+						{I18n.t('Loading_live_location')}
 					</Text>
 				</View>
 			</SafeAreaView>
@@ -445,10 +442,10 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 				<StatusBar />
 				<View style={styles.content}>
 					<Text style={styles.errorText}>
-						{error || 'Live location not found'}
+						{error || I18n.t('Live_location_not_found')}
 					</Text>
 					<TouchableOpacity onPress={handleClose} style={[styles.btn]}>
-						<Text style={styles.btnText}>Close</Text>
+						<Text style={styles.btnText}>{I18n.t('Close')}</Text>
 					</TouchableOpacity>
 				</View>
 			</SafeAreaView>
@@ -458,16 +455,13 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
-				{/* Header - NO minimize button for other users */}
 				<View style={styles.header}>
 					<View style={styles.titleContainer}>
-						<Text style={styles.title}>📍 Live Location</Text>
-						<Text style={styles.ownerName}>Shared by {liveLocationData.ownerUsername}</Text>
+						<Text style={styles.title}>📍 {I18n.t('Live_Location')}</Text>
+						<Text style={styles.ownerName}>{I18n.t('Shared_By')} {liveLocationData.ownerUsername}</Text>
 					</View>
-					{/* No minimize button for other users */}
 				</View>
 
-				{/* Status indicator */}
 				<View style={styles.statusContainer}>
 					<View
 						style={[
@@ -476,11 +470,10 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 						]}
 					/>
 					<Text style={styles.statusText}>
-						{liveLocationData.isActive ? 'Live Location Active' : 'Live Location Inactive'}
+						{liveLocationData.isActive ? I18n.t('Live_Location_Active') : I18n.t('Live_Location_Inactive')}
 					</Text>
 				</View>
 
-				{/* Coordinates and timestamp */}
 				{liveLocationData.coords && (
 					<View style={styles.infoContainer}>
 						<Text style={styles.coordsLine}>
@@ -488,55 +481,58 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 							{liveLocationData.coords.accuracy ? ` (±${Math.round(liveLocationData.coords.accuracy)}m)` : ''}
 						</Text>
 						<Text style={styles.timestamp}>
-							Last updated: {formatTimestamp(liveLocationData.lastUpdateAt)}
+							{I18n.t('Last_updated_at')} {formatTimestamp(liveLocationData.lastUpdateAt)}
 						</Text>
 					</View>
 				)}
 
-				{/* Clickable link to open in maps */}
 				<TouchableOpacity onPress={openInMaps} disabled={!liveLocationData.coords}>
 					<Text style={[styles.mapLinkText, !liveLocationData.coords && styles.disabledLink]}>
-						🗺️ Open in {providerLabel(provider as MapProviderName)}
+						🗺️ {I18n.t('Open_in_provider', { provider: providerLabel(provider as MapProviderName) })}
 					</Text>
 				</TouchableOpacity>
 
-				{/* Map image */}
 				<View style={styles.mapContainer}>
 					{mapImageUrl ? (
-						<ExpoImage
-							source={{ uri: mapImageUrl }}
+						<>
+								<ExpoImage
+											source={{ uri: mapImageUrl, headers: OSM_HEADERS, cacheKey }}
 							style={styles.mapImage}
 							contentFit='cover'
 							transition={200}
 							cachePolicy='disk'
 							placeholder={BLURHASH_PLACEHOLDER}
 							onError={(_e: ImageErrorEventData) => {
-								// Map image failed to load, clear URL to show fallback
+									// Clear URL to show fallback
 								setMapImageUrl('');
 							}}
 						/>
+						<View style={styles.pinOverlay} pointerEvents='none'>
+							<Text style={styles.pinText}>📍</Text>
+						</View>
+						</>
 					) : (
 						<View style={styles.mapPlaceholder}>
-							<Text style={[styles.loadingText, { fontSize: 16, fontWeight: 'bold', marginBottom: 8 }]}>📍 Map Preview</Text>
+							<Text style={[styles.loadingText, { fontSize: 16, fontWeight: 'bold', marginBottom: 8 }]}>📍 {I18n.t('Map_Preview')}</Text>
 							{liveLocationData.coords && (
 								<Text style={[styles.loadingText, { fontSize: 14, marginBottom: 8 }]}>
 									{liveLocationData.coords.latitude.toFixed(5)}, {liveLocationData.coords.longitude.toFixed(5)}
 								</Text>
 							)}
 							<Text style={[styles.loadingText, { fontSize: 12, fontStyle: 'italic', textAlign: 'center' }]}>
-								Map preview unavailable{'\n'}Tap "Open in Maps" below to view location
+								{I18n.t('Map_preview_unavailable_open_below')}
 							</Text>
 						</View>
 					)}
 				</View>
+				{/* OSM attribution */}
+				<Text style={styles.attribution}>{providerAttribution('osm')}</Text>
 
-				{/* Live indicator */}
-				{liveLocationData.isActive && <Text style={styles.liveIndicator}>🔴 Updates every 10 seconds</Text>}
+				{liveLocationData.isActive && <Text style={styles.liveIndicator}>🔴 {I18n.t('Updates_every_10_seconds')}</Text>}
 
-				{/* Buttons - ONLY Close button for other users */}
 				<View style={styles.buttons}>
 					<TouchableOpacity onPress={handleClose} style={styles.btn}>
-						<Text style={styles.btnText}>Close</Text>
+						<Text style={styles.btnText}>{I18n.t('Close')}</Text>
 					</TouchableOpacity>
 				</View>
 			</View>

@@ -18,28 +18,15 @@ const removeQuote = (file?: IAttachment) =>
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
   
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author, messageId, roomId }: IMessageAttachments) => {
+		({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author, messageId, roomId }: IMessageAttachments) => {
 		'use memo';
-  
-		const { translateLanguage } = useContext(MessageContext);
 
-		console.log('🔍 [Attachments] Processing attachments:', attachments?.length || 0);
-		if (attachments) {
-			attachments.forEach((att, idx) => {
-				console.log(`🔍 [Attachments] Attachment ${idx}:`, {
-					type: att.type,
-					hasLive: !!(att as any).live,
-					keys: Object.keys(att)
-				});
-			});
-		}
+		const { translateLanguage } = useContext(MessageContext);
 
 		const nonQuoteAttachments = attachments?.filter(removeQuote);
 
-		console.log('🔍 [Attachments] Non-quote attachments:', nonQuoteAttachments?.length || 0);
 
 		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
-			console.log('🔍 [Attachments] No attachments to render');
 			return null;
 		}
 
@@ -85,9 +72,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 
 			// Handle live location attachments
-			console.log('🔍 [Attachments] Checking file:', { type: file.type, hasLive: !!(file as any).live });
 			if (file.type === 'live-location' && (file as any).live) {
-				console.log('✅ [Attachments] Rendering LiveLocationAttachment!');
 				return (
 					<LiveLocationAttachment
 						key={`live-location-${index}`}
