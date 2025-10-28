@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+
 import type { Coords } from './mapProviders';
 
 const LOCATION_TIMEOUT_MS = 15_000;
