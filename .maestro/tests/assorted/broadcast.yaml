@@ -132,7 +132,7 @@ tags:
 
 # should have the message created earlier
 - assertVisible:
-    text: 'message'
+    id: 'message-content-message'
 
 # should tap on reply button and navigate to direct room
 - assertVisible:

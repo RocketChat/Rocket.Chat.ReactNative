@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IUserMention, IUserChannel } from '../interfaces';
+import { type IUserMention, type IUserChannel } from '../interfaces';
 
 interface IMarkdownContext {
 	mentions?: IUserMention[];

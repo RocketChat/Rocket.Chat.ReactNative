@@ -1,11 +1,11 @@
-import { AVPlaybackStatus, Audio } from 'expo-av';
+import { type AVPlaybackStatus, Audio } from 'expo-av';
 import { Q } from '@nozbe/watermelondb';
 
 import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
-import { TMessageModel } from '../../definitions';
+import { type TMessageModel } from '../../definitions';
 import { AUDIO_MODE } from '../constants/audio';
 import { emitter } from './helpers';
 

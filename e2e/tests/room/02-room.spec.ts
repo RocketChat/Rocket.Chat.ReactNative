@@ -7,13 +7,13 @@ import {
 	sleep,
 	tryTapping,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	mockMessage,
 	navigateToRoom,
 	navigateToRecentRoom,
 	checkMessage
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, deleteCreatedUsers, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, deleteCreatedUsers, type ITestUser, sendMessage } from '../../helpers/data_setup';
 import data from '../../data';
 
 describe('Room screen', () => {

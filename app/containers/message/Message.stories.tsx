@@ -980,6 +980,128 @@ export const WithFileLargeFont = () => (
 	</>
 );
 
+export const FileAttachmentsWithFilenames = () => (
+	<>
+		<Message
+			msg='Check out this Python file'
+			attachments={[
+				{
+					type: 'file',
+					title: 'test.py',
+					title_link: '/file-upload/abc123/test.py'
+				}
+			]}
+		/>
+		<Message
+			msg='TypeScript component'
+			attachments={[
+				{
+					type: 'file',
+					title: 'Component.tsx',
+					title_link: '/file-upload/def456/Component.tsx'
+				}
+			]}
+		/>
+		<Message
+			msg='Configuration file'
+			attachments={[
+				{
+					type: 'file',
+					title: 'config.json',
+					title_link: '/file-upload/ghi789/config.json'
+				}
+			]}
+		/>
+		<Message
+			msg='File with description'
+			attachments={[
+				{
+					type: 'file',
+					title: 'main.go',
+					text: 'This is the **main** entry point for the application',
+					title_link: '/file-upload/jkl012/main.go'
+				}
+			]}
+		/>
+		<Message
+			attachments={[
+				{
+					type: 'file',
+					title: 'document.pdf',
+					title_link: '/file-upload/mno345/document.pdf'
+				},
+				{
+					type: 'file',
+					title: 'image.png',
+					title_link: '/file-upload/pqr678/image.png'
+				}
+			]}
+			isHeader={false}
+		/>
+	</>
+);
+
+export const FileAttachmentsWithFilenamesLargeFont = () => (
+	<>
+		<MessageLargeFont
+			msg='Check out this Python file'
+			attachments={[
+				{
+					type: 'file',
+					title: 'test.py',
+					title_link: '/file-upload/abc123/test.py'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='TypeScript component'
+			attachments={[
+				{
+					type: 'file',
+					title: 'Component.tsx',
+					title_link: '/file-upload/def456/Component.tsx'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Configuration file'
+			attachments={[
+				{
+					type: 'file',
+					title: 'config.json',
+					title_link: '/file-upload/ghi789/config.json'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='File with description'
+			attachments={[
+				{
+					type: 'file',
+					title: 'main.go',
+					text: 'This is the **main** entry point for the application',
+					title_link: '/file-upload/jkl012/main.go'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			attachments={[
+				{
+					type: 'file',
+					title: 'document.pdf',
+					title_link: '/file-upload/mno345/document.pdf'
+				},
+				{
+					type: 'file',
+					title: 'image.png',
+					title_link: '/file-upload/pqr678/image.png'
+				}
+			]}
+			isHeader={false}
+		/>
+	</>
+);
+
 export const MessageWithReply = () => (
 	<>
 		<Message
@@ -1050,6 +1172,59 @@ export const MessageWithReply = () => (
 	</>
 );
 
+export const MessageWithReplyAndFile = () => (
+	<>
+		<Message
+			msg='Here is the file'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'script.sh',
+					title_link: '/file-upload/xyz789/script.sh'
+				}
+			]}
+		/>
+		<Message
+			msg='Got it!'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'config.yaml',
+					text: 'This is a configuration file with **important** settings',
+					title_link: '/file-upload/abc123/config.yaml'
+				}
+			]}
+		/>
+		<Message
+			msg='Multiple files'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'index.ts',
+					title_link: '/file-upload/def456/index.ts'
+				},
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'styles.css',
+					title_link: '/file-upload/ghi789/styles.css'
+				}
+			]}
+		/>
+	</>
+);
+
 export const MessageWithReplyLargeFont = () => (
 	<>
 		<MessageLargeFont
@@ -1107,6 +1282,59 @@ export const MessageWithReplyLargeFont = () => (
 						}
 					],
 					text: ''
+				}
+			]}
+		/>
+	</>
+);
+
+export const MessageWithReplyAndFileLargeFont = () => (
+	<>
+		<MessageLargeFont
+			msg='Here is the file'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'script.sh',
+					title_link: '/file-upload/xyz789/script.sh'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Got it!'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'config.yaml',
+					text: 'This is a configuration file with **important** settings',
+					title_link: '/file-upload/abc123/config.yaml'
+				}
+			]}
+		/>
+		<MessageLargeFont
+			msg='Multiple files'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'index.ts',
+					title_link: '/file-upload/def456/index.ts'
+				},
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					type: 'file',
+					title: 'styles.css',
+					title_link: '/file-upload/ghi789/styles.css'
 				}
 			]}
 		/>

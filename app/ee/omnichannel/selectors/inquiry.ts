@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { IApplicationState } from '../../../definitions';
+import { type IApplicationState } from '../../../definitions';
 
 const getInquiryQueue = (state: IApplicationState) => state.inquiry.queued;
 

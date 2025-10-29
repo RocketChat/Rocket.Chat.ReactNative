@@ -2,7 +2,7 @@ import coerce from 'semver/functions/coerce';
 import satisfies from 'semver/functions/satisfies';
 
 import dayjs from '../dayjs';
-import { ISupportedVersionsData, TSVDictionary, TSVMessage, TSVStatus } from '../../definitions';
+import { type ISupportedVersionsData, type TSVDictionary, type TSVMessage, type TSVStatus } from '../../definitions';
 import builtInSupportedVersions from '../../../app-supportedversions.json';
 
 export const getMessage = ({
