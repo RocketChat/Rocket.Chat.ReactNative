@@ -1,4 +1,6 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules } from 'react-native';
+
+import { isAndroid } from './deviceInfo';
 
 interface ISecureStorage {
 	getSecureKey: (alias: string) => Promise<string | null>;
@@ -41,10 +43,11 @@ export async function setSecureKey(alias: string, value: string): Promise<void> 
 export async function getAppGroupPath(): Promise<string | null> {
 	try {
 		// Android doesn't have app groups, only iOS
-		if (Platform.OS === 'android') {
+		if (isAndroid) {
 			return null;
 		}
-		return await SecureStorage.getAppGroupPath?.();
+		const appGroupPath = await SecureStorage.getAppGroupPath?.();
+		return appGroupPath || null;
 	} catch (error) {
 		console.error('[getAppGroupPath] Error:', error);
 		return null;
