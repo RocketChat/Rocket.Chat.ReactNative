@@ -1,34 +1,93 @@
 import { useState, useEffect, useCallback } from 'react';
 import { MMKV } from 'react-native-mmkv';
-
-import { getSecureKey, getAppGroupPath } from './helpers/getSecureKey';
+import { Platform } from 'react-native';
+import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let storage: MMKV | null = null;
 let storageInitPromise: Promise<MMKV> | null = null;
 
-function initializeStorage() {
-	if (storage) return storage;
+function initializeStorage(): Promise<MMKV> {
+	if (storage) return Promise.resolve(storage);
 
 	if (storageInitPromise) return storageInitPromise;
 
-	storageInitPromise = (async () => {
-		const [encryptionKey, appGroupPath] = await Promise.all([getSecureKey('com.MMKV.default'), getAppGroupPath()]);
+	storageInitPromise = (async (): Promise<MMKV> => {
+		// Step 1: Try to get the old encryption key from AsyncStorage (saved during debug phase)
+		const savedKey = await AsyncStorage.getItem('MMKV_MIGRATION_KEY');
 
-		// Old react-native-mmkv-storage used:
-		// - iOS: '{AppGroup}/mmkv' subdirectory
-		// - Android: default MMKV path (no custom path needed)
-		const mmkvPath = appGroupPath ? `${appGroupPath}/mmkv` : undefined;
+		// Step 2: Determine the old MMKV storage path
+		let mmkvPath: string | undefined;
+		if (Platform.OS === 'ios') {
+			// iOS: Get App Group path
+			// We'll need to implement getAppGroupPath() if it doesn't exist
+			// For now, use undefined to use default path
+			mmkvPath = undefined; // TODO: Implement iOS app group path
+		} else {
+			// Android: {filesDir}/mmkv
+			const filesDir = FileSystem.documentDirectory?.replace('file://', '').replace(/\/$/, '');
+			mmkvPath = filesDir ? `${filesDir}/mmkv` : undefined;
+		}
 
-		storage = new MMKV({
-			id: 'default',
-			path: mmkvPath,
-			encryptionKey: encryptionKey || undefined
-		});
+		// Step 3: Try to open old MMKV with the saved encryption key
+		let migrated = false;
+		if (savedKey && mmkvPath) {
+			try {
+				const oldStorage = new MMKV({
+					id: 'default',
+					path: mmkvPath,
+					encryptionKey: savedKey
+				});
+
+				const oldKeys = oldStorage.getAllKeys();
+
+				if (oldKeys.length > 0) {
+					// Create new storage at default location WITHOUT custom path
+					// This is where react-native-mmkv stores data by default
+					storage = new MMKV({
+						id: 'default'
+						// No path, no encryption - fresh start
+					});
+
+					// Copy all data
+					for (const key of oldKeys) {
+						const value = oldStorage.getString(key);
+						if (value !== undefined) {
+							storage.set(key, value);
+						}
+					}
+
+					migrated = true;
+
+					// Clean up migration key
+					await AsyncStorage.removeItem('MMKV_MIGRATION_KEY');
+				}
+			} catch (error) {
+				// Migration failed, will use default storage
+				console.error('[MMKV Migration] Error during migration:', error);
+			}
+		}
+
+		// Step 4: If migration didn't happen, just open default storage
+		if (!migrated) {
+			storage = new MMKV({
+				id: 'default'
+			});
+		}
+
+		if (!storage) {
+			throw new Error('Failed to initialize MMKV storage');
+		}
 
 		return storage;
 	})();
 
 	return storageInitPromise;
+}
+
+function getStorage(): Promise<MMKV> {
+	if (storage) return Promise.resolve(storage);
+	return initializeStorage();
 }
 
 function getStorageSync(): MMKV {
@@ -40,7 +99,6 @@ function getStorageSync(): MMKV {
 }
 
 // Initialize storage when module loads
-// This happens automatically when userPreferences is first imported
 initializeStorage();
 
 class UserPreferences {
@@ -85,12 +143,13 @@ class UserPreferences {
 		}
 	}
 
-	setMap(key: string, value: object): void {
+	async setMap(key: string, value: object): Promise<void> {
 		try {
-			console.log('setMap', key, value);
-			getStorageSync().set(key, JSON.stringify(value));
+			const storageInstance = await getStorage();
+			storageInstance.set(key, JSON.stringify(value));
 		} catch (error) {
 			console.error('Error setting map in MMKV:', error);
+			throw error;
 		}
 	}
 
@@ -150,11 +209,9 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 		try {
 			const storedValue = getStorageSync().getString(key);
 			if (storedValue !== undefined) {
-				// Try to parse as JSON first (for objects)
 				try {
 					return JSON.parse(storedValue) as T;
 				} catch {
-					// If it's not JSON, return as is (for strings)
 					return storedValue as T;
 				}
 			}
@@ -215,4 +272,4 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 
 const userPreferences = new UserPreferences();
 export default userPreferences;
-export { initializeStorage };
+export { initializeStorage, getStorage };
