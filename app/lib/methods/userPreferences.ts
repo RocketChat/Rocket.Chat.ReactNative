@@ -14,7 +14,9 @@ function initializeStorage() {
 	storageInitPromise = (async () => {
 		const [encryptionKey, appGroupPath] = await Promise.all([getSecureKey('com.MMKV.default'), getAppGroupPath()]);
 
-		// Old react-native-mmkv-storage used a 'mmkv' subdirectory in the app group
+		// Old react-native-mmkv-storage used:
+		// - iOS: '{AppGroup}/mmkv' subdirectory
+		// - Android: default MMKV path (no custom path needed)
 		const mmkvPath = appGroupPath ? `${appGroupPath}/mmkv` : undefined;
 
 		storage = new MMKV({

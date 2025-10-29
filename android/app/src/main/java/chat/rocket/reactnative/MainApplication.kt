@@ -36,6 +36,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
             PackageList(this).packages.apply {
               add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
+              add(SecureStoragePackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
