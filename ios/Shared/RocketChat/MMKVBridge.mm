@@ -91,4 +91,17 @@
     _mmkvInstance->removeValueForKey(keyStr);
 }
 
+- (NSArray<NSString *> *)allKeys {
+    if (!_mmkvInstance) return @[];
+    
+    auto cppKeys = _mmkvInstance->allKeys();
+    NSMutableArray<NSString *> *keys = [NSMutableArray arrayWithCapacity:cppKeys.size()];
+    
+    for (const auto& key : cppKeys) {
+        [keys addObject:[NSString stringWithUTF8String:key.c_str()]];
+    }
+    
+    return keys;
+}
+
 @end

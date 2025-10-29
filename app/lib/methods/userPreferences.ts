@@ -85,6 +85,7 @@ class UserPreferences {
 
 	setMap(key: string, value: object): void {
 		try {
+			console.log('setMap', key, value);
 			getStorageSync().set(key, JSON.stringify(value));
 		} catch (error) {
 			console.error('Error setting map in MMKV:', error);

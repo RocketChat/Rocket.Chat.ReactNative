@@ -8,13 +8,60 @@
 
 #import <objc/runtime.h>
 #import "SSLPinning.h"
-#import "MMKV.h"
+#import "Shared/RocketChat/MMKVBridge.h"
 #import <SDWebImage/SDWebImageDownloader.h>
 #import "SecureStorage.h"
 #import "SRWebSocket.h"
 #import "EXSessionTaskDispatcher.h"
+#import <os/log.h>
+
+// Helper function to log to Xcode console (writes to stderr)
+static void SSLPinningLog(NSString *format, ...) {
+    va_list args;
+    va_start(args, format);
+    NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    fprintf(stderr, "%s\n", [message UTF8String]);
+}
 
 @implementation Challenge : NSObject
+
+// Helper method to get MMKVBridge instance with proper initialization
++(MMKVBridge *)getMMKVInstance {
+  SecureStorage *secureStorage = [[SecureStorage alloc] init];
+  NSString *hexKey = [self stringToHex:@"com.MMKV.default"];
+  SSLPinningLog(@"[SSL Pinning] Looking for secure key with hex: %@", hexKey);
+  
+  NSString *key = [secureStorage getSecureKey:hexKey];
+  
+  // Get app group path
+  NSString *appGroupPath = nil;
+  if (NSString *suite = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]) {
+    if (NSURL *directory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:suite]) {
+      appGroupPath = [directory path];
+    }
+  }
+  
+  // Create MMKV path matching userPreferences.ts logic: appGroupPath/mmkv
+  NSString *mmkvPath = appGroupPath ? [appGroupPath stringByAppendingPathComponent:@"mmkv"] : nil;
+  
+  if (key == NULL || [key length] == 0) {
+    SSLPinningLog(@"[SSL Pinning] No encryption key found in keychain, initializing MMKV without encryption");
+    SSLPinningLog(@"[SSL Pinning] Path: %@", mmkvPath ?: @"(null)");
+    // Initialize without encryption key - this should still work
+    MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:nil rootPath:mmkvPath];
+    return mmkvBridge;
+  }
+  
+  SSLPinningLog(@"[SSL Pinning] Found encryption key (length: %lu), initializing MMKVBridge with path: %@", 
+                (unsigned long)[key length], mmkvPath ?: @"(null)");
+  
+  NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
+  MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:cryptKey rootPath:mmkvPath];
+  
+  return mmkvBridge;
+}
+
 +(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
 {
   NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
@@ -84,31 +131,29 @@
   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
   NSString *host = challenge.protectionSpace.host;
-
-  // Read the clientSSL info from MMKV
-  SecureStorage *secureStorage = [[SecureStorage alloc] init];
-
-  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
-  NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
   NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 
-  if (key != NULL) {
-    NSData *cryptKeyData = [key dataUsingEncoding:NSUTF8StringEncoding];
-    std::string cryptKeyStr((const char*)[cryptKeyData bytes], [cryptKeyData length]);
-    auto mmkv = MMKV::mmkvWithID("default", MMKV_MULTI_PROCESS, &cryptKeyStr);
-    if (mmkv) {
-      std::string hostStr = [host UTF8String];
-      std::string valueStr;
-      bool hasValue = mmkv->getString(hostStr, valueStr);
-      if (hasValue && !valueStr.empty()) {
-        NSString *clientSSL = [NSString stringWithUTF8String:valueStr.c_str()];
-        NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
-        id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSString *path = [dict objectForKey:@"path"];
-        NSString *password = [dict objectForKey:@"password"];
-        credential = [self getUrlCredential:challenge path:path password:password];
-      }
-    }
+  // Read the clientSSL info from MMKV using MMKVBridge
+  MMKVBridge *mmkvBridge = [self getMMKVInstance];
+  
+  if (!mmkvBridge) {
+    SSLPinningLog(@"[SSL Pinning] WARNING: MMKVBridge instance is nil, using default credentials");
+    return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
+  }
+
+  NSString *clientSSL = [mmkvBridge stringForKey:host];
+  SSLPinningLog(@"[SSL Pinning] Host: %@, clientSSL: %@", host, clientSSL ?: @"(null)");
+  
+  // Debug: Log all MMKV keys
+  NSArray *allKeys = [mmkvBridge allKeys];
+  SSLPinningLog(@"[SSL Pinning] MMKV contains %lu keys: %@", (unsigned long)[allKeys count], allKeys);
+  
+  if (clientSSL) {
+    NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
+    id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    NSString *path = [dict objectForKey:@"path"];
+    NSString *password = [dict objectForKey:@"password"];
+    credential = [self getUrlCredential:challenge path:path password:password];
   }
 
   completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
@@ -175,33 +220,30 @@
 - (void)xxx_updateSecureStreamOptions {
     [self xxx_updateSecureStreamOptions];
   
-    // Read the clientSSL info from MMKV
+    // Read the clientSSL info from MMKV using MMKVBridge
     NSMutableDictionary<NSString *, id> *SSLOptions = [NSMutableDictionary new];
-    SecureStorage *secureStorage = [[SecureStorage alloc] init];
-
-    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
-    NSString *key = [secureStorage getSecureKey:[Challenge stringToHex:@"com.MMKV.default"]];
-
-    if (key != NULL) {
-      NSData *cryptKeyData = [key dataUsingEncoding:NSUTF8StringEncoding];
-      std::string cryptKeyStr((const char*)[cryptKeyData bytes], [cryptKeyData length]);
-      auto mmkv = MMKV::mmkvWithID("default", MMKV_MULTI_PROCESS, &cryptKeyStr);
-      if (mmkv) {
-        NSURLRequest *_urlRequest = [self valueForKey:@"_urlRequest"];
-        std::string hostStr = [_urlRequest.URL.host UTF8String];
-        std::string valueStr;
-        bool hasValue = mmkv->getString(hostStr, valueStr);
-        if (hasValue && !valueStr.empty()) {
-          NSString *clientSSL = [NSString stringWithUTF8String:valueStr.c_str()];
-          NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
-          id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-          NSString *path = [dict objectForKey:@"path"];
-          NSString *password = [dict objectForKey:@"password"];
-          [self setClientSSL:path password:password options:SSLOptions];
-          if (SSLOptions) {
-            id _outputStream = [self valueForKey:@"_outputStream"];
-            [_outputStream setProperty:SSLOptions forKey:(__bridge id)kCFStreamPropertySSLSettings];
-          }
+    
+    MMKVBridge *mmkvBridge = [Challenge getMMKVInstance];
+    
+    if (mmkvBridge) {
+      NSURLRequest *_urlRequest = [self valueForKey:@"_urlRequest"];
+      NSString *host = _urlRequest.URL.host;
+      NSString *clientSSL = [mmkvBridge stringForKey:host];
+      SSLPinningLog(@"[SSL Pinning WebSocket] Host: %@, clientSSL: %@", host, clientSSL ?: @"(null)");
+      
+      // Debug: Log all MMKV keys
+      NSArray *allKeys = [mmkvBridge allKeys];
+      SSLPinningLog(@"[SSL Pinning WebSocket] MMKV contains %lu keys: %@", (unsigned long)[allKeys count], allKeys);
+      
+      if (clientSSL) {
+        NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSString *path = [dict objectForKey:@"path"];
+        NSString *password = [dict objectForKey:@"password"];
+        [self setClientSSL:path password:password options:SSLOptions];
+        if (SSLOptions) {
+          id _outputStream = [self valueForKey:@"_outputStream"];
+          [_outputStream setProperty:SSLOptions forKey:(__bridge id)kCFStreamPropertySSLSettings];
         }
       }
     }
