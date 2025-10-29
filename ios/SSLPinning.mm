@@ -13,16 +13,6 @@
 #import "SecureStorage.h"
 #import "SRWebSocket.h"
 #import "EXSessionTaskDispatcher.h"
-#import <os/log.h>
-
-// Helper function to log to Xcode console (writes to stderr)
-static void SSLPinningLog(NSString *format, ...) {
-    va_list args;
-    va_start(args, format);
-    NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
-    va_end(args);
-    fprintf(stderr, "%s\n", [message UTF8String]);
-}
 
 @implementation Challenge : NSObject
 
@@ -30,8 +20,6 @@ static void SSLPinningLog(NSString *format, ...) {
 +(MMKVBridge *)getMMKVInstance {
   SecureStorage *secureStorage = [[SecureStorage alloc] init];
   NSString *hexKey = [self stringToHex:@"com.MMKV.default"];
-  SSLPinningLog(@"[SSL Pinning] Looking for secure key with hex: %@", hexKey);
-  
   NSString *key = [secureStorage getSecureKey:hexKey];
   
   // Get app group path
@@ -45,18 +33,7 @@ static void SSLPinningLog(NSString *format, ...) {
   // Create MMKV path matching userPreferences.ts logic: appGroupPath/mmkv
   NSString *mmkvPath = appGroupPath ? [appGroupPath stringByAppendingPathComponent:@"mmkv"] : nil;
   
-  if (key == NULL || [key length] == 0) {
-    SSLPinningLog(@"[SSL Pinning] No encryption key found in keychain, initializing MMKV without encryption");
-    SSLPinningLog(@"[SSL Pinning] Path: %@", mmkvPath ?: @"(null)");
-    // Initialize without encryption key - this should still work
-    MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:nil rootPath:mmkvPath];
-    return mmkvBridge;
-  }
-  
-  SSLPinningLog(@"[SSL Pinning] Found encryption key (length: %lu), initializing MMKVBridge with path: %@", 
-                (unsigned long)[key length], mmkvPath ?: @"(null)");
-  
-  NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
+  NSData *cryptKey = (key && [key length] > 0) ? [key dataUsingEncoding:NSUTF8StringEncoding] : nil;
   MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:cryptKey rootPath:mmkvPath];
   
   return mmkvBridge;
@@ -137,16 +114,10 @@ static void SSLPinningLog(NSString *format, ...) {
   MMKVBridge *mmkvBridge = [self getMMKVInstance];
   
   if (!mmkvBridge) {
-    SSLPinningLog(@"[SSL Pinning] WARNING: MMKVBridge instance is nil, using default credentials");
     return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
   }
 
   NSString *clientSSL = [mmkvBridge stringForKey:host];
-  SSLPinningLog(@"[SSL Pinning] Host: %@, clientSSL: %@", host, clientSSL ?: @"(null)");
-  
-  // Debug: Log all MMKV keys
-  NSArray *allKeys = [mmkvBridge allKeys];
-  SSLPinningLog(@"[SSL Pinning] MMKV contains %lu keys: %@", (unsigned long)[allKeys count], allKeys);
   
   if (clientSSL) {
     NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
@@ -229,11 +200,6 @@ static void SSLPinningLog(NSString *format, ...) {
       NSURLRequest *_urlRequest = [self valueForKey:@"_urlRequest"];
       NSString *host = _urlRequest.URL.host;
       NSString *clientSSL = [mmkvBridge stringForKey:host];
-      SSLPinningLog(@"[SSL Pinning WebSocket] Host: %@, clientSSL: %@", host, clientSSL ?: @"(null)");
-      
-      // Debug: Log all MMKV keys
-      NSArray *allKeys = [mmkvBridge allKeys];
-      SSLPinningLog(@"[SSL Pinning WebSocket] MMKV contains %lu keys: %@", (unsigned long)[allKeys count], allKeys);
       
       if (clientSSL) {
         NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
