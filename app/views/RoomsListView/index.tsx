@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { memo, useContext } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import React, { memo, useContext, useEffect } from 'react';
+import { BackHandler, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 
@@ -50,6 +50,18 @@ const RoomsListView = memo(function RoomsListView() {
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
+
+    useEffect(() => {
+        const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (searchEnabled) {
+                stopSearch();
+                navigation.goBack();
+                return true;
+            }
+            return false;
+        });
+        return () => subscription.remove();
+    }, [searchEnabled]);
 
 	const onPressItem = (item = {} as IRoomItem) => {
 		if (!navigation.isFocused()) {
