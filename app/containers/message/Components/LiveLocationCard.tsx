@@ -2,13 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 import { useTheme, type TColors } from '../../../theme';
-import {
-	MAP_PROVIDER_PREFERENCE_KEY,
-	MAP_PROVIDER_DEFAULT
-} from '../../../lib/constants/keys';
 import Navigation from '../../../lib/navigation/appNavigation';
-import { useAppSelector } from '../../../lib/hooks/useAppSelector';
-import { useUserPreferences } from '../../../lib/methods/userPreferences';
 import {
 	addStatusChangeListener,
 	removeStatusChangeListener,
@@ -21,7 +15,6 @@ import {
 	addLiveLocationEndedListener,
 	removeLiveLocationEndedListener
 } from '../../../views/LocationShare/services/handleLiveLocationUrl';
-import type { MapProviderName } from '../../../views/LocationShare/services/mapProviders';
 import I18n from '../../../i18n';
 
 interface LiveLocationCardProps {
@@ -36,18 +29,28 @@ interface LiveLocationCardProps {
 	onPress?: () => void;
 }
 
-const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = true, messageTimestamp, author, onPress }) => {
+const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = true, messageTimestamp, author: _author, onPress }) => {
 	const { colors } = useTheme();
-	const [cardIsActive, setCardIsActive] = useState(isActive);
+	
+	// Calculate initial active state
+	const initialActiveState = useMemo(() => {
+		const linkMatch = msg?.match(/rocketchat:\/\/live-location\?([^)]+)/);
+		if (!linkMatch) return isActive;
+		
+		const params = new URLSearchParams(linkMatch[1]);
+		const liveLocationId = params.get('liveLocationId');
+		if (!liveLocationId) return isActive;
+		
+		return isActive;
+	}, [msg, isActive]);
+	
+	const [cardIsActive, setCardIsActive] = useState(initialActiveState);
+	
 	// Keep latest active state accessible inside closures (e.g., setInterval)
 	const cardIsActiveRef = useRef(cardIsActive);
 	useEffect(() => {
 		cardIsActiveRef.current = cardIsActive;
 	}, [cardIsActive]);
-	
-	// Get viewer's own API keys from user preferences
-	const userId = useAppSelector(state => state.login.user.id);
-	const [viewerMapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
 
 	const styles = useMemo(() => createStyles(colors, cardIsActive), [colors, cardIsActive]);
 
@@ -91,18 +94,12 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 	useEffect(() => {
 		// Parse deep link and extract params
 		const linkMatch = msg?.match(/rocketchat:\/\/live-location\?([^)]+)/);
-		if (!linkMatch) {
-			setCardIsActive(isActive);
-			return;
-		}
+		if (!linkMatch) return;
 
 		const params = new URLSearchParams(linkMatch[1]);
 		const thisCardLiveLocationId = params.get('liveLocationId') || null;
 
-		if (!thisCardLiveLocationId) {
-			setCardIsActive(isActive);
-			return;
-		}
+		if (!thisCardLiveLocationId) return;
 
 		// Is this the user's own session?
 		const currentParams = getCurrentLiveParams();
@@ -198,20 +195,15 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 			const params = new URLSearchParams(linkMatch[1]);
 			const liveLocationId = params.get('liveLocationId');
 			const rid = params.get('rid');
-			const tmid = params.get('tmid') || undefined;
-			const ownerProvider = params.get('provider') as MapProviderName;
-			
-			// Use viewer's preferred provider
-			const finalProvider = viewerMapProvider || ownerProvider || 'google';
-
-			Navigation.navigate('LiveLocationPreviewModal', {
-				rid: rid!,
-				tmid,
-				provider: finalProvider,
-				liveLocationId: liveLocationId!,
-				isTracking: false,
-				ownerName: author?.name || author?.username || I18n.t('Other_User')
-			});
+			const msgId = params.get('msgId');
+ 			if (!rid || !(msgId || liveLocationId)) {
+				Alert.alert(I18n.t('Error'), I18n.t('Could_not_open_live_location'));
+				return;
+			}
+			Navigation.navigate('LiveLocationViewerModal', {
+				rid,
+   				msgId: msgId || (liveLocationId as string)
+ 			});
 		} else {
 			Alert.alert(I18n.t('Error'), I18n.t('Could_not_open_live_location'));
 		}

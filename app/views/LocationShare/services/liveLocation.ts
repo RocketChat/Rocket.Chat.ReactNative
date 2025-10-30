@@ -1,7 +1,7 @@
 import * as Location from 'expo-location';
 
 import { sendMessage } from '../../../lib/methods/sendMessage';
-import { LiveLocationApi, mobileToServerCoords } from './liveLocationApi';
+import { LiveLocationApi } from './liveLocationApi';
 import type { MapProviderName } from './mapProviders';
 import I18n from '../../../i18n';
 
@@ -85,7 +85,11 @@ export class LiveLocationTracker {
 		try {
 			const response = await LiveLocationApi.start(this.rid, {
 				durationSec: this.durationSec,
-				initial: mobileToServerCoords(initialCoords)
+				initial: {
+					lat: initialCoords.latitude,
+					lng: initialCoords.longitude,
+					acc: initialCoords.accuracy
+				}
 			});
 			this.msgId = response.msgId;
 			this.useServerApi = true;
@@ -144,12 +148,15 @@ export class LiveLocationTracker {
 				const now = Date.now();
 				
 				if (this.useServerApi) {
-					const serverCoords = mobileToServerCoords(this.currentState.coords);
 					try {
 						await LiveLocationApi.update(
 							this.rid,
 							this.msgId,
-							serverCoords
+							{
+								lat: this.currentState.coords.latitude,
+								lng: this.currentState.coords.longitude,
+								acc: this.currentState.coords.accuracy
+							}
 						);
 					} catch (error: any) {
 						if (error?.error === 'error-live-location-not-found' || 
@@ -191,7 +198,11 @@ export class LiveLocationTracker {
 					await LiveLocationApi.stop(
 						this.rid, 
 						this.msgId, 
-						mobileToServerCoords(this.currentState.coords)
+						{
+							lat: this.currentState.coords.latitude,
+							lng: this.currentState.coords.longitude,
+							acc: this.currentState.coords.accuracy
+						}
 					);
 				} catch (error) {
 					// ignore

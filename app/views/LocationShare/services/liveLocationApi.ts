@@ -66,10 +66,14 @@ export class LiveLocationApi {
 /**
  * Convert from mobile coordinate format to server format
  */
-export function mobileToServerCoords(coords: { latitude: number; longitude: number; accuracy?: number }): Coordinates {
+export function mobileToServerCoords(coords: { latitude: number; longitude: number; accuracy?: number }): {
+	lat: number;
+	lon: number;
+	acc?: number;
+} {
 	return {
 		lat: coords.latitude,
-		lng: coords.longitude,
+		lon: coords.longitude,
 		acc: coords.accuracy
 	};
 }

@@ -58,18 +58,6 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 	}, []);
 
 	useEffect(() => {
-		if (isActive) {
-			pulseAnim.value = withRepeat(
-				withTiming(1.3, { duration: 800, easing: Easing.inOut(Easing.ease) }),
-				-1,
-				true
-			);
-		} else {
-			pulseAnim.value = withTiming(1, { duration: 300 });
-		}
-	}, [isActive, pulseAnim]);
-
-	useEffect(() => {
 		const sub = Linking.addEventListener('url', ({ url }) => {
 			if (isLiveMessageLink(url)) {
 				handleLiveLocationUrl(url);
