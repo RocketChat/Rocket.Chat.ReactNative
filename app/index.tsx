@@ -39,7 +39,7 @@ import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 import StatusBar from './containers/StatusBar';
-import MMKVReaderAndroid from './lib/native/NativeMMKVReaderAndroid';
+import { performFullMigration } from './lib/methods/migrateMMKVStorage';
 
 enableScreens();
 initStore(store);
@@ -127,6 +127,7 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
+		await performFullMigration();
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
@@ -151,8 +152,6 @@ export default class Root extends React.Component<{}, IState> {
 
 		// Open app from app icon
 		store.dispatch(appInit());
-
-		MMKVReaderAndroid?.readAndDecryptMMKV('default').then(console.log);
 	};
 
 	getMasterDetail = (width: number) => {
