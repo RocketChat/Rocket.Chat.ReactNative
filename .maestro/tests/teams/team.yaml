@@ -2,7 +2,7 @@ appId: chat.rocket.reactnative
 name: Team
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
+onFlowComplete:
   - evalScript: ${output.utils.cleanUp()}
 tags:
   - test-4
