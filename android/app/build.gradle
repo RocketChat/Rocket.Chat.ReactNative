@@ -155,6 +155,9 @@ dependencies {
     androidTestImplementation('com.wix:detox:+')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.facebook.soloader:soloader:0.10.4'
+    
+    // For SecureKeystore (EncryptedSharedPreferences)
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
 }
 
 apply plugin: 'com.google.gms.google-services'

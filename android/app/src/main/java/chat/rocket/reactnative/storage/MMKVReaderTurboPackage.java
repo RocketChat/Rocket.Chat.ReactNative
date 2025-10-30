@@ -1,4 +1,4 @@
-package chat.rocket.reactnative.networking;
+package chat.rocket.reactnative.storage;
 
 import androidx.annotation.Nullable;
 
@@ -11,14 +11,14 @@ import com.facebook.react.TurboReactPackage;
 
 import java.util.HashMap;
 import java.util.Map;
- 
-public class SSLPinningTurboPackage extends TurboReactPackage {
+
+public class MMKVReaderTurboPackage extends TurboReactPackage {
 
     @Nullable
     @Override
     public NativeModule getModule(String name, ReactApplicationContext reactContext) {
-        if (name.equals(NativeSSLPinningSpec.NAME)) {
-            return new SSLPinningTurboModule(reactContext);
+        if (name.equals(NativeMMKVReaderSpec.NAME)) {
+            return new MMKVReaderTurboModule(reactContext);
         } else {
             return null;
         }
@@ -29,10 +29,10 @@ public class SSLPinningTurboPackage extends TurboReactPackage {
         return () -> {
             final Map<String, ReactModuleInfo> moduleInfos = new HashMap<>();
             moduleInfos.put(
-                    NativeSSLPinningSpec.NAME,
+                    NativeMMKVReaderSpec.NAME,
                     new ReactModuleInfo(
-                            NativeSSLPinningSpec.NAME,
-                            NativeSSLPinningSpec.NAME,
+                            NativeMMKVReaderSpec.NAME,
+                            NativeMMKVReaderSpec.NAME,
                             false, // canOverrideExistingModule
                             false, // needsEagerInit
                             true, // hasConstants
@@ -43,3 +43,4 @@ public class SSLPinningTurboPackage extends TurboReactPackage {
         };
     }
 }
+

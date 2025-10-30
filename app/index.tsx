@@ -39,6 +39,7 @@ import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 import StatusBar from './containers/StatusBar';
+import MMKVReaderAndroid from './lib/native/NativeMMKVReaderAndroid';
 
 enableScreens();
 initStore(store);
@@ -150,6 +151,8 @@ export default class Root extends React.Component<{}, IState> {
 
 		// Open app from app icon
 		store.dispatch(appInit());
+
+		MMKVReaderAndroid?.readAndDecryptMMKV('default').then(console.log);
 	};
 
 	getMasterDetail = (width: number) => {
