@@ -1,91 +1,43 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, type StyleProp, type ViewStyle } from 'react-native';
 
-import { useTheme } from '../../../../theme';
+import { useTheme, type TColors } from '../../../../theme';
 import type { IAttachment } from '../../../../definitions';
+import type { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { reopenLiveLocationModal, isLiveLocationActive } from '../../../../views/LocationShare/LiveLocationPreviewModal';
+import I18n from '../../../../i18n';
 
 interface ILiveLocationAttachment {
-	attachment: IAttachment & {
-		live?: {
-			isActive: boolean;
-			ownerId: string;
-			coords?: { lat: number; lng: number; acc?: number };
-			startedAt: Date;
-			lastUpdateAt: Date;
-			expiresAt?: Date;
-		};
-	};
-	getCustomEmoji: Function;
-	showAttachment?: Function;
-	style?: any;
+	attachment: IAttachment;
+	getCustomEmoji: TGetCustomEmoji;
+	showAttachment?: (attachment: IAttachment) => void;
+	style?: StyleProp<ViewStyle>;
 	isReply?: boolean;
-	author?: any;
+	author?: {
+		_id: string;
+		username?: string;
+		name?: string;
+	};
 	messageId?: string;
 	roomId?: string;
 }
 
-const LiveLocationAttachment: React.FC<ILiveLocationAttachment> = ({
-	attachment,
-	getCustomEmoji: _getCustomEmoji,
-	showAttachment: _showAttachment,
-	style: _style,
-	isReply: _isReply,
-	author: _author,
-	messageId,
-	roomId
-}) => {
-
-	
-	const { colors } = useTheme();
-	const currentUserId = useAppSelector(state => state.login.user.id);
-
-	const { live } = attachment;
-	
-	if (!live) {
-		return null;
-	}
-
-	const handlePress = () => {
-		if (!messageId || !roomId) {
-			return;
-		}
-
-		const isOwner = currentUserId === live?.ownerId;
-		
-		if (isOwner) {
-			reopenLiveLocationModal();
-		} else {
-			if (isLiveLocationActive()) {
-				Alert.alert(
-					'Cannot View Live Location',
-					'You cannot view others\' live locations while sharing your own. Please stop sharing your location first.',
-					[{ text: 'OK' }]
-				);
-				return;
-			}
-			
-			Navigation.navigate('LiveLocationViewerModal', {
-				rid: roomId,
-				msgId: messageId
-			});
-		}
-	};
-
-	const styles = StyleSheet.create({
+/* eslint-disable react-native/no-unused-styles */
+const createStyles = (colors: TColors, isActive: boolean) =>
+	StyleSheet.create({
 		container: {
 			backgroundColor: colors.surfaceNeutral,
 			borderRadius: 8,
 			padding: 12,
 			marginVertical: 4,
 			borderLeftWidth: 4,
-			borderLeftColor: live.isActive ? '#27ae60' : '#e74c3c'
+			borderLeftColor: isActive ? colors.statusFontSuccess : colors.statusFontDanger
 		},
 		disabledContainer: {
 			opacity: 0.6,
-			backgroundColor: colors.surfaceDisabled || colors.surfaceNeutral
+			backgroundColor: colors.surfaceDisabled
 		},
 		header: {
 			flexDirection: 'row',
@@ -105,7 +57,7 @@ const LiveLocationAttachment: React.FC<ILiveLocationAttachment> = ({
 		status: {
 			fontSize: 12,
 			fontWeight: '500',
-			color: live.isActive ? '#27ae60' : '#e74c3c'
+			color: isActive ? colors.statusFontSuccess : colors.statusFontDanger
 		},
 		footer: {
 			flexDirection: 'row',
@@ -123,6 +75,53 @@ const LiveLocationAttachment: React.FC<ILiveLocationAttachment> = ({
 		}
 	});
 
+const LiveLocationAttachment: React.FC<ILiveLocationAttachment> = ({
+	attachment,
+	getCustomEmoji: _getCustomEmoji,
+	showAttachment: _showAttachment,
+	style: _style,
+	isReply: _isReply,
+	author: _author,
+	messageId,
+	roomId
+}) => {
+
+	const { colors } = useTheme();
+	const currentUserId = useAppSelector(state => state.login.user.id);
+	const styles = React.useMemo(() => createStyles(colors, !!attachment.live?.isActive), [colors, attachment.live?.isActive]);
+
+	const { live } = attachment;
+	
+	if (!live) {
+		return null;
+	}
+
+	const handlePress = () => {
+		if (!messageId || !roomId) {
+			return;
+		}
+
+		const isOwner = currentUserId === live?.ownerId;
+		
+		if (isOwner) {
+			reopenLiveLocationModal();
+		} else {
+			if (isLiveLocationActive()) {
+				Alert.alert(
+					I18n.t('Cannot_View_Live_Location'),
+					I18n.t('Cannot_View_Live_Location_Message'),
+					[{ text: I18n.t('OK') }]
+				);
+				return;
+			}
+			
+			Navigation.navigate('LiveLocationViewerModal', {
+				rid: roomId,
+				msgId: messageId
+			});
+		}
+	};
+
 	return (
 		<TouchableOpacity 
 			style={[styles.container, !live.isActive && styles.disabledContainer]} 
@@ -131,15 +130,15 @@ const LiveLocationAttachment: React.FC<ILiveLocationAttachment> = ({
 		>
 			<View style={styles.header}>
 				<Text style={styles.icon}>📍</Text>
-				<Text style={styles.title}>Live Location</Text>
+				<Text style={styles.title}>{I18n.t('Live_Location')}</Text>
 				<Text style={styles.status}>
-					{live.isActive ? '🔴 Active' : '⚫ Ended'}
+					{live.isActive ? `🔴 ${I18n.t('Active')}` : `⚫ ${I18n.t('Ended')}`}
 				</Text>
 			</View>
 			
 			<View style={styles.footer}>
 				<Text style={[styles.action, !live.isActive && styles.disabledAction]}>
-					{live.isActive ? 'Tap to view live location' : 'Location sharing ended'}
+					{live.isActive ? I18n.t('Tap_to_view_live_location') : I18n.t('Location_sharing_ended')}
 				</Text>
 			</View>
 		</TouchableOpacity>

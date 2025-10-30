@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
-import { useTheme } from '../../../theme';
+import { useTheme, type TColors } from '../../../theme';
 import {
 	MAP_PROVIDER_PREFERENCE_KEY,
 	MAP_PROVIDER_DEFAULT
 } from '../../../lib/constants/keys';
-import { themes } from '../../../lib/constants/colors';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useUserPreferences } from '../../../lib/methods/userPreferences';
@@ -38,7 +37,7 @@ interface LiveLocationCardProps {
 }
 
 const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = true, messageTimestamp, author, onPress }) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const [cardIsActive, setCardIsActive] = useState(isActive);
 	// Keep latest active state accessible inside closures (e.g., setInterval)
 	const cardIsActiveRef = useRef(cardIsActive);
@@ -50,8 +49,10 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 	const userId = useAppSelector(state => state.login.user.id);
 	const [viewerMapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
 
+	const styles = useMemo(() => createStyles(colors, cardIsActive), [colors, cardIsActive]);
+
 	// Treat missing timestamps as recent
-	const isMessageTooOld = (timestamp?: string | Date | number | any) => {
+	const isMessageTooOld = (timestamp?: string | Date | number | { $date?: number; valueOf?: () => number; getTime?: () => number }) => {
 		if (timestamp == null) {
 			return false;
 		}
@@ -67,9 +68,9 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 				t = timestamp.getTime();
 			} else if (typeof timestamp === 'object') {
 				// Try to extract timestamp from object
-				t = timestamp.$date || timestamp.valueOf?.() || timestamp.getTime?.() || new Date(timestamp).getTime();
+				t = timestamp.$date || timestamp.valueOf?.() || timestamp.getTime?.() || new Date(timestamp as unknown as string | number).getTime();
 			} else {
-				t = new Date(timestamp).getTime();
+				t = new Date(timestamp as unknown as string | number).getTime();
 			}
 
 			if (Number.isNaN(t) || t <= 0) {
@@ -220,34 +221,18 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 
 	return (
 		<TouchableOpacity
-			style={[
-				styles.card,
-				{
-					backgroundColor: cardIsActive ? themes[theme].surfaceLight : themes[theme].surfaceDisabled,
-					borderColor: cardIsActive ? '#27ae60' : themes[theme].strokeLight
-				}
-			]}
+			style={styles.card}
 			onPress={handleCardPress}
 			activeOpacity={cardIsActive ? 0.7 : 1}
 		>
 			<View style={styles.cardContent}>
 				<View style={styles.iconContainer}>
 					<Text style={styles.icon}>📍</Text>
-					<View
-						style={[
-							styles.statusDot,
-							{ backgroundColor: cardIsActive ? '#27ae60' : '#e74c3c' }
-						]}
-					/>
+					<View style={styles.statusDot} />
 				</View>
 				<View style={styles.textContainer}>
-					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Live_Location')}</Text>
-					<Text
-						style={[
-							styles.status,
-							{ color: cardIsActive ? '#27ae60' : '#e74c3c' }
-						]}
-					>
+					<Text style={styles.title}>{I18n.t('Live_Location')}</Text>
+					<Text style={styles.status}>
 						{cardIsActive ? I18n.t('Active_Tap_to_view') : I18n.t('Inactive')}
 					</Text>
 				</View>
@@ -263,67 +248,74 @@ const LiveLocationCard: React.FC<LiveLocationCardProps> = ({ msg, isActive = tru
 	);
 };
 
-const styles = StyleSheet.create({
-	card: {
-		borderRadius: 12,
-		borderWidth: 1,
-		padding: 16,
-		marginVertical: 4,
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.1,
-		shadowRadius: 4,
-		elevation: 3
-	},
-	cardContent: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	iconContainer: {
-		position: 'relative',
-		marginRight: 12
-	},
-	icon: {
-		fontSize: 24
-	},
-	statusDot: {
-		position: 'absolute',
-		top: -2,
-		right: -2,
-		width: 8,
-		height: 8,
-		borderRadius: 4
-	},
-	textContainer: {
-		flex: 1
-	},
-	title: {
-		fontSize: 16,
-		fontWeight: '600',
-		marginBottom: 2
-	},
-	status: {
-		fontSize: 14,
-		fontWeight: '500'
-	},
-	pulseContainer: {
-		position: 'relative',
-		width: 20,
-		height: 20,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	pulse: {
-		position: 'absolute',
-		width: 12,
-		height: 12,
-		borderRadius: 6,
-		opacity: 0.6,
-		backgroundColor: '#27ae60'
-	},
-	pulse1: { transform: [{ scale: 1 }] },
-	pulse2: { transform: [{ scale: 1.4 }], opacity: 0.4 },
-	pulse3: { transform: [{ scale: 1.8 }], opacity: 0.2 }
-});
+/* eslint-disable react-native/no-unused-styles */
+const createStyles = (colors: TColors, isActive: boolean) =>
+	StyleSheet.create({
+		card: {
+			borderRadius: 12,
+			borderWidth: 1,
+			padding: 16,
+			marginVertical: 4,
+			backgroundColor: isActive ? colors.surfaceLight : colors.surfaceDisabled,
+			borderColor: isActive ? colors.statusFontSuccess : colors.strokeLight,
+			shadowColor: colors.fontDefault,
+			shadowOffset: { width: 0, height: 2 },
+			shadowOpacity: 0.1,
+			shadowRadius: 4,
+			elevation: 3
+		},
+		cardContent: {
+			flexDirection: 'row',
+			alignItems: 'center'
+		},
+		iconContainer: {
+			position: 'relative',
+			marginRight: 12
+		},
+		icon: {
+			fontSize: 24
+		},
+		statusDot: {
+			position: 'absolute',
+			top: -2,
+			right: -2,
+			width: 8,
+			height: 8,
+			borderRadius: 4,
+			backgroundColor: isActive ? colors.statusFontSuccess : colors.statusFontDanger
+		},
+		textContainer: {
+			flex: 1
+		},
+		title: {
+			fontSize: 16,
+			fontWeight: '600',
+			marginBottom: 2,
+			color: colors.fontTitlesLabels
+		},
+		status: {
+			fontSize: 14,
+			fontWeight: '500',
+			color: isActive ? colors.statusFontSuccess : colors.statusFontDanger
+		},
+		pulseContainer: {
+			position: 'relative',
+			width: 20,
+			height: 20,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		pulse: {
+			position: 'absolute',
+			width: 12,
+			height: 12,
+			borderRadius: 6,
+			opacity: 0.6,
+			backgroundColor: colors.statusFontSuccess
+		},
+		pulse1: { transform: [{ scale: 1 }] },
+		pulse2: { transform: [{ scale: 1.4 }], opacity: 0.4 },
+		pulse3: { transform: [{ scale: 1.8 }], opacity: 0.2 }
+	});
 
 export default LiveLocationCard;

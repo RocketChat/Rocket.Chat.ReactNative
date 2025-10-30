@@ -52,8 +52,6 @@ const LocationPreferencesView = () => {
 					<List.Separator />
 					<List.Info info='Map_Provider_Info' />
 				</List.Section>
-
-				{/* API key inputs removed */}
 			</List.Container>
 
 			{/* No API key modals */}

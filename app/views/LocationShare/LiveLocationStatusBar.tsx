@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
 	View,
 	Text,
 	TouchableOpacity,
 	StyleSheet,
-	Animated,
 	InteractionManager,
 	Linking
 } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 
 import {
 	reopenLiveLocationModal,
@@ -21,13 +21,21 @@ import { handleLiveLocationUrl, isLiveMessageLink } from './services/handleLiveL
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import I18n from '../../i18n';
+import { useTheme, type TColors } from '../../theme';
 
 type Props = { onPress?: () => void };
 
 export default function LiveLocationStatusBar({ onPress }: Props) {
 	const [isActive, setIsActive] = useState(false);
-	const [pulseAnim] = useState(new Animated.Value(1));
+	const pulseAnim = useSharedValue(1);
 	const username = useAppSelector(state => getUserSelector(state).username);
+	const { colors } = useTheme();
+
+	const styles = useMemo(() => createStyles(colors), [colors]);
+
+	const animatedStyle = useAnimatedStyle(() => ({
+		transform: [{ scale: pulseAnim.value }]
+	}));
 
 	// mounted guard
 	const mounted = useRef(true);
@@ -49,7 +57,18 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 		return () => removeMinimizedStatusListener(handleStatusChange);
 	}, []);
 
-	// Handle live-location deep links
+	useEffect(() => {
+		if (isActive) {
+			pulseAnim.value = withRepeat(
+				withTiming(1.3, { duration: 800, easing: Easing.inOut(Easing.ease) }),
+				-1,
+				true
+			);
+		} else {
+			pulseAnim.value = withTiming(1, { duration: 300 });
+		}
+	}, [isActive, pulseAnim]);
+
 	useEffect(() => {
 		const sub = Linking.addEventListener('url', ({ url }) => {
 			if (isLiveMessageLink(url)) {
@@ -67,15 +86,15 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 
 	// pulse animation
 	useEffect(() => {
-		if (!isActive) return;
-		const pulse = Animated.loop(
-			Animated.sequence([
-				Animated.timing(pulseAnim, { toValue: 1.3, duration: 1000, useNativeDriver: true }),
-				Animated.timing(pulseAnim, { toValue: 1, duration: 1000, useNativeDriver: true })
-			])
-		);
-		pulse.start();
-		return () => pulse.stop();
+		if (isActive) {
+			pulseAnim.value = withRepeat(
+				withTiming(1.3, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+				-1,
+				true
+			);
+		} else {
+			pulseAnim.value = withTiming(1, { duration: 300 });
+		}
 	}, [isActive, pulseAnim]);
 
 	const handlePress = () => {
@@ -109,7 +128,7 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={handlePress} style={styles.statusBar}>
-				<Animated.View style={[styles.iconContainer, { transform: [{ scale: pulseAnim }] }]}>
+				<Animated.View style={[styles.iconContainer, animatedStyle]}>
 					<Text style={styles.icon}>📍</Text>
 				</Animated.View>
 				<View style={styles.textContainer}>
@@ -124,38 +143,46 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: '#FF5722',
-		paddingHorizontal: 16,
-		paddingVertical: 12,
-		shadowColor: '#000',
-		shadowOpacity: 0.15,
-		shadowRadius: 4,
-		shadowOffset: { width: 0, height: 2 },
-		elevation: 5,
-		zIndex: 1000
-	},
-	statusBar: { flex: 1, flexDirection: 'row', alignItems: 'center' },
-	iconContainer: { marginRight: 12 },
-	icon: { fontSize: 18 },
-	textContainer: { flex: 1 },
-	title: { color: '#fff', fontSize: 15, fontWeight: '600', marginBottom: 2 },
-	subtitle: { color: 'rgba(255,255,255,0.8)', fontSize: 12 },
-	stopButton: {
-		width: 28,
-		height: 28,
-		borderRadius: 14,
-		backgroundColor: 'rgba(255,255,255,0.2)',
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginLeft: 12
-	},
-	stopText: { color: '#fff', fontSize: 14, fontWeight: 'bold' }
-});
+/* eslint-disable react-native/no-unused-styles */
+const createStyles = (colors: TColors) =>
+	StyleSheet.create({
+		container: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			right: 0,
+			flexDirection: 'row',
+			alignItems: 'center',
+			backgroundColor: colors.buttonBackgroundDangerDefault,
+			paddingHorizontal: 16,
+			paddingVertical: 12,
+			shadowColor: colors.fontDefault,
+			shadowOpacity: 0.15,
+			shadowRadius: 4,
+			shadowOffset: { width: 0, height: 2 },
+			elevation: 5,
+			zIndex: 1000
+		},
+		statusBar: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+		iconContainer: { marginRight: 12 },
+		icon: { fontSize: 18 },
+		textContainer: { flex: 1 },
+		title: { color: colors.fontWhite, fontSize: 15, fontWeight: '600', marginBottom: 2 },
+		subtitle: { color: colors.fontWhite, fontSize: 12, opacity: 0.8 },
+		stopButton: {
+			width: 28,
+			height: 28,
+			borderRadius: 14,
+			backgroundColor: colors.fontWhite,              // theme token
+			alignItems: 'center',
+			justifyContent: 'center',
+			marginLeft: 12,
+			borderWidth: 1,
+			borderColor: colors.strokeLight || colors.surfaceTint 
+		},
+		stopText: {
+			color: colors.buttonBackgroundDangerDefault,
+			fontSize: 16,
+			fontWeight: '700'
+		}
+	});

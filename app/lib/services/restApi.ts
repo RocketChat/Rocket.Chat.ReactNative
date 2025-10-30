@@ -1105,3 +1105,59 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+
+// Live Location API methods
+export const liveLocationStart = (
+	rid: string,
+	durationSec?: number,
+	initial?: { lat: number; lon: number }
+): Promise<{ msgId: string }> => {
+	const body: { rid: string; durationSec?: number; initial?: { lat: number; lon: number } } = { rid };
+	if (durationSec !== undefined) body.durationSec = durationSec;
+	if (initial !== undefined) body.initial = initial;
+	return (sdk.post as unknown as (endpoint: string, data: unknown) => Promise<{ msgId: string }>)('liveLocation.start', body);
+};
+
+export const liveLocationUpdate = (
+	rid: string,
+	msgId: string,
+	coords: { lat: number; lon: number }
+): Promise<{ updated?: boolean; ignored?: boolean; reason?: string }> =>
+	(sdk.post as unknown as (endpoint: string, data: unknown) => Promise<{ updated?: boolean; ignored?: boolean; reason?: string }>)('liveLocation.update', { rid, msgId, coords });
+
+export const liveLocationStop = (
+	rid: string,
+	msgId: string,
+	finalCoords?: { lat: number; lon: number }
+): Promise<{ stopped?: boolean }> => {
+	const body: { rid: string; msgId: string; finalCoords?: { lat: number; lon: number } } = { rid, msgId };
+	if (finalCoords !== undefined) body.finalCoords = finalCoords;
+	return (sdk.post as unknown as (endpoint: string, data: unknown) => Promise<{ stopped?: boolean }>)('liveLocation.stop', body);
+};
+
+export const liveLocationGet = (rid: string, msgId: string): Promise<{
+	messageId: string;
+	ownerId: string;
+	ownerUsername: string;
+	ownerName: string;
+	isActive: boolean;
+	startedAt: Date;
+	lastUpdateAt: Date;
+	stoppedAt?: Date;
+	coords: { lat: number; lon: number };
+	expiresAt?: Date;
+	version: number;
+}> =>
+	(sdk.get as unknown as (endpoint: string, params: unknown) => Promise<{
+		messageId: string;
+		ownerId: string;
+		ownerUsername: string;
+		ownerName: string;
+		isActive: boolean;
+		startedAt: Date;
+		lastUpdateAt: Date;
+		stoppedAt?: Date;
+		coords: { lat: number; lon: number };
+		expiresAt?: Date;
+		version: number;
+	}>)('liveLocation.get', { rid, msgId });

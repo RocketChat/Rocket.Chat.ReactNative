@@ -28,19 +28,22 @@ export class LiveLocationTracker {
 	private durationSec?: number;
 	private useServerApi = false;
 	private liveLocationId: string;
+	private provider: MapProviderName;
 
 	constructor(
 		rid: string,
 		tmid: string | undefined,
 		user: { id: string; username: string },
 		onUpdate: (state: LiveLocationState) => void, 
-		durationSec?: number
+		durationSec?: number,
+		provider: MapProviderName = 'google'
 	) {
 		this.rid = rid;
 		this.tmid = tmid;
 		this.user = user;
 		this.onLocationUpdate = onUpdate;
 		this.durationSec = durationSec;
+		this.provider = provider;
 		this.liveLocationId = `live_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
 	}
 
@@ -86,7 +89,7 @@ export class LiveLocationTracker {
 			});
 			this.msgId = response.msgId;
 			this.useServerApi = true;
-		} catch (error: any) {
+		} catch (error) {
 			this.useServerApi = false;
 			this.msgId = null;
 
@@ -233,7 +236,7 @@ export class LiveLocationTracker {
 			liveLocationId: this.liveLocationId,
 			rid: this.rid,
 			tmid: this.tmid || '',
-			provider: 'osm' as MapProviderName,
+			provider: this.provider,
 			action: 'reopen'
 		});
 		const appDeepLink = `rocketchat://live-location?${params.toString()}`;

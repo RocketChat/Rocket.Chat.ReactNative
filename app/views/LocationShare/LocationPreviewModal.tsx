@@ -10,6 +10,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import { staticMapUrl, providerLabel, mapsDeepLink, providerAttribution } from './services/mapProviders';
 import type { MapProviderName } from './services/mapProviders';
+import { useTheme, type TColors } from '../../theme';
 
 type Coords = { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
 
@@ -23,6 +24,9 @@ type RouteParams = {
 export default function LocationPreviewModal({ route }: { route: { params: RouteParams } }) {
 	const { rid, tmid, provider, coords } = route.params;
 	const [submitting, setSubmitting] = useState(false);
+	const { colors } = useTheme();
+
+	const styles = useMemo(() => createStyles(colors), [colors]);
 
 	// mounted guard
 	const mounted = useRef(true);
@@ -67,7 +71,9 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 
 	useEffect(() => {
 		if (mapInfo?.url) {
-			ExpoImage.prefetch(mapInfo.url).catch(() => {});
+			ExpoImage.prefetch(mapInfo.url).catch(() => {
+				// Ignore prefetch errors
+			});
 		}
 	}, [mapInfo?.url]);
 
@@ -89,9 +95,11 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 			const deep = await mapsDeepLink(provider, coords);
 			const providerName = providerLabel(provider);
 
-			const message = `📍 **${I18n.t('Location')}**
-
-[🗺️ Open in ${providerName}](${deep})`;
+			const message = I18n.t('Share_Location_Message', {
+				location: I18n.t('Location'),
+				openText: I18n.t('Open_in_provider', { provider: providerName }),
+				link: deep
+			});
 
 			await sendMessage(rid, message, tmid, { id, username }, false);
 			Navigation.back();
@@ -155,39 +163,41 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 
 const BLURHASH_PLACEHOLDER = 'LKO2?U%2Tw=w]~RBVZRi};RPxuwH';
 
-const styles = StyleSheet.create({
-	container: { flex: 1, padding: 16, justifyContent: 'center', backgroundColor: '#f5f5f5' },
-	content: {
-		backgroundColor: '#fff',
-		borderRadius: 12,
-		padding: 16,
-		shadowColor: '#000',
-		shadowOpacity: 0.1,
-		shadowRadius: 10,
-		shadowOffset: { width: 0, height: 4 },
-		elevation: 3
-	},
-	title: { fontSize: 18, fontWeight: '600', textAlign: 'center', marginBottom: 12 },
-	infoContainer: { marginBottom: 16, alignItems: 'center' },
-	coordsLine: { fontSize: 14, fontWeight: '500', textAlign: 'center', marginBottom: 4 },
-	accuracyText: { fontSize: 12, color: '#666', textAlign: 'center' },
-	mapLinkText: { color: '#1d74f5', fontSize: 16, fontWeight: '600', textAlign: 'center', marginBottom: 16 },
-	mapContainer: { borderRadius: 8, overflow: 'hidden', marginBottom: 12 },
-	mapImage: { width: '100%', height: 200 },
-	pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
-	pinText: { fontSize: 24 },
-	attribution: { fontSize: 10, color: '#666', textAlign: 'center', marginBottom: 12 },
-	buttons: { flexDirection: 'row', gap: 12 },
-	btn: {
-		flex: 1,
-		paddingVertical: 12,
-		borderRadius: 10,
-		alignItems: 'center',
-		borderWidth: 1,
-		borderColor: '#ccc',
-		backgroundColor: '#fff'
-	},
-	btnPrimary: { backgroundColor: '#1d74f5', borderColor: '#1d74f5' },
-	btnText: { fontWeight: '600' },
-	btnTextPrimary: { color: '#fff' }
-});
+/* eslint-disable react-native/no-unused-styles */
+const createStyles = (colors: TColors) =>
+	StyleSheet.create({
+		container: { flex: 1, padding: 16, justifyContent: 'center', backgroundColor: colors.surfaceNeutral },
+		content: {
+			backgroundColor: colors.surfaceLight,
+			borderRadius: 12,
+			padding: 16,
+			shadowColor: colors.fontDefault,
+			shadowOpacity: 0.1,
+			shadowRadius: 10,
+			shadowOffset: { width: 0, height: 4 },
+			elevation: 3
+		},
+		title: { fontSize: 18, fontWeight: '600', textAlign: 'center', marginBottom: 12, color: colors.fontTitlesLabels },
+		infoContainer: { marginBottom: 16, alignItems: 'center' },
+		coordsLine: { fontSize: 14, fontWeight: '500', textAlign: 'center', marginBottom: 4, color: colors.fontDefault },
+		accuracyText: { fontSize: 12, color: colors.fontSecondaryInfo, textAlign: 'center' },
+		mapLinkText: { color: colors.buttonBackgroundPrimaryDefault, fontSize: 16, fontWeight: '600', textAlign: 'center', marginBottom: 16 },
+		mapContainer: { borderRadius: 8, overflow: 'hidden', marginBottom: 12 },
+		mapImage: { width: '100%', height: 200 },
+		pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
+		pinText: { fontSize: 24 },
+		attribution: { fontSize: 10, color: colors.fontSecondaryInfo, textAlign: 'center', marginBottom: 12 },
+		buttons: { flexDirection: 'row', gap: 12 },
+		btn: {
+			flex: 1,
+			paddingVertical: 12,
+			borderRadius: 10,
+			alignItems: 'center',
+			borderWidth: 1,
+			borderColor: colors.strokeLight,
+			backgroundColor: colors.surfaceLight
+		},
+		btnPrimary: { backgroundColor: colors.buttonBackgroundPrimaryDefault, borderColor: colors.buttonBackgroundPrimaryDefault },
+		btnText: { fontWeight: '600', color: colors.fontDefault },
+		btnTextPrimary: { color: colors.fontWhite }
+	});

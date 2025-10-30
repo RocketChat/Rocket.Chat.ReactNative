@@ -1,4 +1,4 @@
-import sdk from '../../../lib/services/sdk';
+import { liveLocationStart, liveLocationUpdate, liveLocationStop, liveLocationGet } from '../../../lib/services/restApi';
 
 export type Coordinates = {
 	lat: number;
@@ -39,80 +39,28 @@ export type LiveLocationGetResponse = {
 	version: number;
 };
 
-/**
- * Live Location API service for communicating with server-side methods
- */
 export class LiveLocationApi {
-	/**
-	 * Start a live location session
-	 * @param rid Room ID
-	 * @param options Start options including duration and initial coordinates
-	 * @returns Promise with message ID
-	 */
 	static async start(rid: string, options: LiveLocationStartOptions = {}): Promise<LiveLocationStartResponse> {
-		const payload: {
-			rid: string;
-			durationSec?: number;
-			initial?: { lat: number; lon: number };
-		} = {
-			rid,
-			...(typeof options.durationSec === 'number' && { durationSec: options.durationSec }),
-			...(options.initial && { initial: { lat: options.initial.lat, lon: options.initial.lng } })
-		};
-		try {
-			const res = await (sdk.post as any)('liveLocation.start', payload);
-			return { msgId: res.msgId };
-		} catch (e: any) {
-			// Common case: server returns plain text "Not Found" if route isn't deployed
-			throw e;
-		}
+		const initial = options.initial ? { lat: options.initial.lat, lon: options.initial.lng } : undefined;
+		const res = await liveLocationStart(rid, options.durationSec, initial);
+		return { msgId: res.msgId };
 	}
 
-	/**
-	 * Update live location coordinates
-	 * @param rid Room ID
-	 * @param msgId Message ID returned from start
-	 * @param coords Current coordinates
-	 * @returns Promise with update result
-	 */
 	static async update(rid: string, msgId: string, coords: Coordinates): Promise<LiveLocationUpdateResponse> {
-		const payload = {
-			rid,
-			msgId,
-			coords: { lat: coords.lat, lon: coords.lng }
-		};
-		const res = await (sdk.post as any)('liveLocation.update', payload);
+		const serverCoords = { lat: coords.lat, lon: coords.lng };
+		const res = await liveLocationUpdate(rid, msgId, serverCoords);
 		return { updated: res.updated, ignored: res.ignored, reason: res.reason };
 	}
 
-	/**
-	 * Stop live location session
-	 * @param rid Room ID
-	 * @param msgId Message ID returned from start
-	 * @param finalCoords Optional final coordinates
-	 * @returns Promise with stop result
-	 */
 	static async stop(rid: string, msgId: string, finalCoords?: Coordinates): Promise<LiveLocationStopResponse> {
-		const payload: { rid: string; msgId: string; finalCoords?: { lat: number; lon: number } } = {
-			rid,
-			msgId,
-			...(finalCoords && { finalCoords: { lat: finalCoords.lat, lon: finalCoords.lng } })
-		};
-		const res = await (sdk.post as any)('liveLocation.stop', payload);
+		const serverCoords = finalCoords ? { lat: finalCoords.lat, lon: finalCoords.lng } : undefined;
+		const res = await liveLocationStop(rid, msgId, serverCoords);
 		return { stopped: !!res.stopped };
 	}
 
-	/**
-	 * Get live location data for viewing by other users
-	 * @param rid Room ID
-	 * @param msgId Message ID of the live location
-	 * @returns Promise with live location data
-	 */
 	static get(rid: string, msgId: string): Promise<LiveLocationGetResponse> {
-		return (sdk.get as any)('liveLocation.get', { rid, msgId });
+		return liveLocationGet(rid, msgId);
 	}
-
-
 }
 
 /**
@@ -132,10 +80,11 @@ export function mobileToServerCoords(coords: { latitude: number; longitude: numb
 export function serverToMobileCoords(
 	coords: Coordinates | { lat: number; lon: number; acc?: number }
 ): { latitude: number; longitude: number; accuracy?: number } {
-	const longitude = (coords as any).lng ?? (coords as any).lon;
+	const coordsWithLng = coords as unknown as { lat: number; lng?: number; lon?: number; acc?: number };
+	const longitude = coordsWithLng.lng ?? coordsWithLng.lon ?? 0;
 	return {
 		latitude: coords.lat,
 		longitude,
-		accuracy: (coords as any).acc
+		accuracy: coordsWithLng.acc
 	};
 }

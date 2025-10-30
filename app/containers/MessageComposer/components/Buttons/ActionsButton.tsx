@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Platform, PermissionsAndroid, InteractionManager } from 'react-native';
+import { Platform, PermissionsAndroid, InteractionManager, Alert } from 'react-native';
 import * as Location from 'expo-location';
 
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
@@ -15,6 +15,7 @@ import { useRoomContext } from '../../../../views/RoomView/context';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { getCurrentPositionOnce } from '../../../../views/LocationShare/services/staticLocation';
 import type { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
+import { isLiveLocationActive, reopenLiveLocationModal } from '../../../../views/LocationShare/LiveLocationPreviewModal';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 import {
 	MAP_PROVIDER_PREFERENCE_KEY,
@@ -22,7 +23,7 @@ import {
 } from '../../../../lib/constants/keys';
 
 export const ActionsButton = () => {
-	// no-op
+	'use memo';
 
 	const { rid, tmid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
@@ -113,6 +114,17 @@ export const ActionsButton = () => {
 
 	const openLivePreview = async (provider: MapProviderName) => {
 		try {
+			// Prevent starting a new session if one is already active
+			if (isLiveLocationActive()) {
+				return Alert.alert(
+					I18n.t('Live_Location_Active'),
+					I18n.t('Live_Location_Active_Block_Message'),
+					[
+						{ text: I18n.t('View_Current_Session'), onPress: () => reopenLiveLocationModal() },
+						{ text: I18n.t('Cancel'), style: 'cancel' }
+					]
+				);
+			}
 			if (!rid) {
 				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
 				return;

@@ -8,7 +8,6 @@ import { isLiveLocationActive, reopenLiveLocationModal, getCurrentLiveParams } f
 const ENDED_KEY = 'live_location_ended_ids_v1';
 let endedIds: Set<string> | null = null;
 
-// Listener system for when live locations are ended
 const endedListeners = new Set<(liveLocationId: string) => void>();
 
 export function addLiveLocationEndedListener(listener: (liveLocationId: string) => void) {
@@ -24,7 +23,7 @@ function notifyLiveLocationEnded(liveLocationId: string) {
 		try {
 			listener(liveLocationId);
 		} catch (e) {
-			// Error in listener
+			// Ignore listener errors
 		}
 	});
 }
@@ -45,7 +44,7 @@ async function saveEndedSet() {
 	try {
 		await AsyncStorage.setItem(ENDED_KEY, JSON.stringify(Array.from(endedIds)));
 	} catch (_e) {
-		// Failed to save ended set to storage
+		// Ignore storage errors
 	}
 }
 
@@ -54,7 +53,6 @@ export async function markLiveLocationAsEnded(id: string) {
 	if (!set.has(id)) {
 		set.add(id);
 		await saveEndedSet();
-		// Notify listeners that this live location has ended
 		notifyLiveLocationEnded(id);
 	}
 }
@@ -75,8 +73,7 @@ export async function handleLiveLocationUrl(url: string) {
 		const u = new URL(url);
 		if (u.protocol !== 'rocketchat:' || u.host !== 'live-location') return;
 
-		// msgId is now the server message ID instead of custom liveLocationId
-		const msgId = u.searchParams.get('msgId') || u.searchParams.get('liveLocationId') || undefined; // Support both for backward compatibility
+		const msgId = u.searchParams.get('msgId') || u.searchParams.get('liveLocationId') || undefined;
 		const provider = (u.searchParams.get('provider') || 'osm') as 'google' | 'osm';
 		const rid = u.searchParams.get('rid') || undefined;
 		const tmid = u.searchParams.get('tmid') || undefined;
@@ -87,12 +84,11 @@ export async function handleLiveLocationUrl(url: string) {
 		}
 
 		if (!isLiveLocationActive()) {
-			// Handle cold start - navigate to live location viewer
 			Navigation.navigate('LiveLocationPreviewModal', {
 				provider,
 				...(rid ? { rid } : {}),
 				...(tmid ? { tmid } : {}),
-				liveLocationId: msgId, // Use msgId as the tracking identifier
+				liveLocationId: msgId,
 				isTracking: false
 			});
 			return true;

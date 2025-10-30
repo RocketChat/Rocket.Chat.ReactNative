@@ -9,6 +9,7 @@ import { MAP_PROVIDER_DEFAULT, MAP_PROVIDER_PREFERENCE_KEY } from '../../../lib/
 import { mapsDeepLink, staticMapUrl, providerAttribution, providerLabel } from '../../../views/LocationShare/services/mapProviders';
 import type { MapProviderName } from '../../../views/LocationShare/services/mapProviders';
 import I18n from '../../../i18n';
+import { useTheme, type TColors } from '../../../theme';
 
 type Props = {
   msg?: string | null;
@@ -33,7 +34,7 @@ function extractCoordsFromMessage(msg?: string | null): Coords | null {
   if (m) return { latitude: Number(m[1]), longitude: Number(m[2]) };
 
   // Google Maps: comgooglemaps://?q=lat,lon or ...?center=lat,lon (allow %2C)
-  m = msg.match(/comgooglemaps:\/\/\?(?:[^\s)]*?)(?:^|[?&])(?:q|center)=([+-]?\d+\.?\d*)(?:,|%2C)([+-]?\d+\.?\d*)/i);
+  m = msg.match(/comgooglemaps:\/\/\?(?:[^\s)]*?)(?:[?&])(?:q|center)=([+-]?\d+\.?\d*)(?:,|%2C)([+-]?\d+\.?\d*)/i);
   if (m) return { latitude: Number(m[1]), longitude: Number(m[2]) };
   // https://www.google.com/maps/... with query|q|center
   m = msg.match(/google\.com\/maps\/(?:[^\s)]*?)(?:[?&](?:query|q|center)=)([+-]?\d+\.?\d*)(?:,|%2C)([+-]?\d+\.?\d*)/i);
@@ -58,40 +59,46 @@ function extractCoordsFromMessage(msg?: string | null): Coords | null {
 export function isCurrentLocationMessage(msg?: string | null): boolean {
   return !!extractCoordsFromMessage(msg);
 }
-const styles = StyleSheet.create({
-  card: {
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-    backgroundColor: '#fff',
-    overflow: 'hidden'
-  },
-  header: {
-    paddingHorizontal: 12,
-    paddingTop: 12,
-    paddingBottom: 4
-  },
-  title: { fontSize: 16, fontWeight: '700', color: '#2c3e50' },
-  coords: { fontSize: 13, color: '#6c757d', marginTop: 2 },
-  link: {
-    color: '#3498db',
-    fontSize: 14,
-    fontWeight: '700',
-    paddingHorizontal: 12,
-    paddingVertical: 8
-  },
-  mapContainer: { borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#e9ecef' },
-  mapImage: { width: '100%', height: 180 },
-  pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
-  pinText: { fontSize: 22 },
-  pressed: { opacity: 0.92 },
-  attribution: { fontSize: 10, color: '#6c757d', textAlign: 'center', paddingVertical: 6 }
-});
+
+/* eslint-disable react-native/no-unused-styles */
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    card: {
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.strokeLight,
+      backgroundColor: colors.surfaceLight,
+      overflow: 'hidden'
+    },
+    header: {
+      paddingHorizontal: 12,
+      paddingTop: 12,
+      paddingBottom: 4
+    },
+    title: { fontSize: 16, fontWeight: '700', color: colors.fontTitlesLabels },
+    coords: { fontSize: 13, color: colors.fontSecondaryInfo, marginTop: 2 },
+    link: {
+      color: colors.buttonBackgroundPrimaryDefault,
+      fontSize: 14,
+      fontWeight: '700',
+      paddingHorizontal: 12,
+      paddingVertical: 8
+    },
+    mapContainer: { borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.strokeLight },
+    mapImage: { width: '100%', height: 180 },
+    pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
+    pinText: { fontSize: 22 },
+    pressed: { opacity: 0.92 },
+    attribution: { fontSize: 10, color: colors.fontSecondaryInfo, textAlign: 'center', paddingVertical: 6 }
+  });
 
 const CurrentLocationCard: React.FC<Props> = ({ msg }) => {
+  const { colors } = useTheme();
   const coords = useMemo(() => extractCoordsFromMessage(msg), [msg]);
   const userId = useAppSelector(state => state.login.user.id);
   const [viewerProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
+  
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const mapUrl = useMemo(() => {
     if (!coords) return undefined;

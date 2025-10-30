@@ -79,9 +79,9 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload photos to share with other users or to change your avatar</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Rocket.Chat uses your location to share your current position in conversations. Location data is only shared when you explicitly choose to share it and is not stored by the app.</string>
+	<string>Rocket.Chat uses your location to share your current position in conversations. Location data is only sent to the server when you explicitly choose to share it and is not stored locally on your device.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Rocket.Chat needs background location access to continue sharing live location updates while the app is minimized. You control when live sharing starts and stops, and can end it anytime from the notification banner.</string>
+	<string>Rocket.Chat needs background location access to continue sharing live location updates while the app is minimized. You control when live sharing starts and stops, and can end it anytime from the status bar.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>

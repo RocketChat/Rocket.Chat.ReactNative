@@ -12,6 +12,7 @@ import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import type { MessageTypesValues, IUserMessage } from '../../definitions';
+import LiveLocationCard from './Components/LiveLocationCard';
 
 
 const Content = React.memo(
@@ -42,6 +43,24 @@ const Content = React.memo(
 		const isPreview = props.tmid && !props.isThreadRoom;
 		let content = null;
 
+		// Live location deep-link message rendering
+		const isLiveLocationMessage = typeof props.msg === 'string' && /rocketchat:\/\/live-location\?/.test(props.msg);
+		if (isLiveLocationMessage && props.msg) {
+			// Derive a timestamp for aging checks (best-effort from common fields)
+			const anyProps = props as any;
+			const messageTs: string | Date | number | undefined =
+				anyProps?.ts ?? anyProps?._updatedAt ?? anyProps?.updatedAt ?? undefined;
+
+			content = (
+				<LiveLocationCard
+					msg={props.msg}
+					isActive={true}
+					messageTimestamp={messageTs}
+					author={props.author}
+				/>
+			);
+		}
+
 		if (props.isEncrypted) {
 			content = (
 				<Text
@@ -51,9 +70,9 @@ const Content = React.memo(
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);
-		} else if (isPreview) {
+		} else if (!content && isPreview) {
 			content = <MarkdownPreview testID={`message-preview-${props.msg}`} msg={props.msg} />;
-		} else if (props.msg) {
+		} else if (!content && props.msg) {
 			content = (
 				<Markdown
 					msg={props.msg}

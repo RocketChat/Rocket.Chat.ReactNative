@@ -25,7 +25,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 
 		const nonQuoteAttachments = attachments?.filter(removeQuote);
 
-
 		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
 			return null;
 		}
@@ -71,24 +70,22 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 			}
 
-			// Handle live location attachments
-			if (file.type === 'live-location' && (file as any).live) {
-				return (
-					<LiveLocationAttachment
-						key={`live-location-${index}`}
-						attachment={file as any}
-						getCustomEmoji={getCustomEmoji}
-						showAttachment={showAttachment}
-						style={style}
-						isReply={isReply}
-						author={author}
-						messageId={messageId}
-						roomId={roomId}
-					/>
-				);
-			}
-
-			return null;
+		// Handle live location attachments
+		if (file.type === 'live-location' && file.live) {
+			return (
+				<LiveLocationAttachment
+					key={`live-location-${index}`}
+					attachment={file}
+					getCustomEmoji={getCustomEmoji}
+					showAttachment={showAttachment}
+					style={style}
+					isReply={isReply}
+					author={author}
+					messageId={messageId}
+					roomId={roomId}
+				/>
+			);
+		}			return null;
 		});
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},

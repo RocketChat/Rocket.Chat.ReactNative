@@ -12,6 +12,7 @@ import { staticMapUrl, providerLabel, mapsDeepLink, providerAttribution } from '
 import type { MapProviderName } from './services/mapProviders';
 import { LiveLocationTracker } from './services/liveLocation';
 import type { LiveLocationState } from './services/liveLocation';
+import { LiveLocationApi, serverToMobileCoords } from './services/liveLocationApi';
 import { 
 	markLiveLocationAsEnded,
 	isLiveLocationEnded,
@@ -83,7 +84,7 @@ function emitStatusChange(active?: boolean) {
 		try {
 			fn(value);
 		} catch (e) {
-			// Error in live location listener
+			// Ignore listener errors
 		}
 	});
 }
@@ -161,19 +162,46 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			isLiveLocationEnded(liveLocationId).then(ended => {
 				if (ended) {
 					Navigation.back();
-				} else {
-					// Initialize with a temporary active state while viewing
-					const activeState = {
-						coords: {
-							latitude: 37.78583,
-							longitude: -122.40642,
-							accuracy: 5
-						},
-						timestamp: Date.now(),
-						isActive: true
-					};
-					handleLocationUpdate(activeState);
+					return;
 				}
+
+				// Begin polling latest coordinates for viewers (every 10s)
+				const poll = async () => {
+					try {
+						const data = await LiveLocationApi.get(rid, liveLocationId);
+					// If the session has stopped, mark as ended and close
+					if (!data?.isActive || (data as any)?.stoppedAt) {
+						try {
+							await markLiveLocationAsEnded(liveLocationId);
+						} catch {
+							// Ignore cleanup errors
+						}
+						Navigation.back();
+						return;
+					}						// Update owner name if not known
+						safeSet(() => setCurrentOwnerName(prev => prev || data.ownerName || data.ownerUsername));
+
+						// Convert and emit state
+						const mobile = serverToMobileCoords(data.coords as any);
+						const ts = data.lastUpdateAt ? new Date(data.lastUpdateAt as any).getTime() : Date.now();
+						const next: LiveLocationState = {
+							coords: {
+								latitude: mobile.latitude,
+								longitude: mobile.longitude,
+								accuracy: mobile.accuracy
+							},
+							timestamp: ts,
+							isActive: true
+						};
+						handleLocationUpdate(next);
+					} catch (_e) {
+						// Ignore transient failures; keep last good state
+					}
+				};
+
+				// Kick off immediately and then schedule interval
+				poll();
+				viewerUpdateIntervalRef.current = setInterval(poll, 10_000);
 			});
 
 			const handleLiveLocationEnded = (endedLocationId: string) => {
@@ -188,6 +216,10 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			// Cleanup listener on unmount
 			return () => {
 				removeLiveLocationEndedListener(handleLiveLocationEnded);
+				if (viewerUpdateIntervalRef.current) {
+					clearInterval(viewerUpdateIntervalRef.current);
+					viewerUpdateIntervalRef.current = null;
+				}
 			};
 		}
 
@@ -206,14 +238,15 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					globalLocationUpdateCallbacks.forEach(callback => {
 						if (callback) callback(state);
 					});
-				}
+				},
+				undefined,
+				provider
 			);
 
 			trackerRef.current = tracker;
 			globalLocationUpdateCallbacks.add(handleLocationUpdate);
 
 			tracker.startTracking().catch(error => {
-				// Failed to start live location
 				Alert.alert(I18n.t('Error'), error.message || I18n.t('Could_not_get_location'));
 			});
 		} else {
@@ -230,17 +263,11 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					isActive: false
 				};
 				handleLocationUpdate(previewState);
-			}).catch((_error: any) => {
-				const defaultState: LiveLocationState = {
-					coords: {
-						latitude: 37.78583,
-						longitude: -122.40642,
-						accuracy: 5
-					},
-					timestamp: Date.now(),
-					isActive: false
-				};
-				handleLocationUpdate(defaultState);
+			}).catch((_error: unknown) => {
+				// Do not fallback to hard-coded coordinates; inform the user instead
+				Alert.alert(I18n.t('Error'), I18n.t('Could_not_get_location'));
+				// Leave locationState untouched so Start button stays disabled and
+				// the map shows the neutral placeholder.
 			});
 		}
 	}, [isTracking, liveLocationId, handleLocationUpdate, id, rid, tmid, username]);
@@ -272,6 +299,19 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			return;
 		}
 
+		// Guard: prevent starting a new session if one is already active globally
+		if (globalTracker && globalTracker.getCurrentState()?.isActive) {
+			Alert.alert(
+				I18n.t('Live_Location_Active'),
+				I18n.t('Live_Location_Active_Block_Message'),
+				[
+					{ text: I18n.t('View_Current_Session'), onPress: () => reopenLiveLocationModal() },
+					{ text: I18n.t('Cancel'), style: 'cancel' }
+				]
+			);
+			return;
+		}
+
 		try {
 			safeSet(() => setSubmitting(true));
 
@@ -286,7 +326,9 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 						globalLocationUpdateCallbacks.forEach(callback => {
 							if (callback) callback(state);
 						});
-					}
+					},
+					undefined,
+					provider
 				);
 
 				trackerRef.current = tracker;
@@ -353,14 +395,14 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			try {
 				await trackerRef.current.stopTracking();
 			} catch (error) {
-				// Failed to stop tracker
+				// Ignore stop errors
 			}
 			
 			if (msgId) {
 				try {
 					await markLiveLocationAsEnded(msgId);
 				} catch (e) {
-					// Failed to mark live location as ended
+					// Ignore cleanup errors
 				}
 			}
 			emitStatusChange(false);
@@ -551,17 +593,8 @@ export async function stopGlobalLiveLocation() {
 		if (params?.liveLocationId) {
 			try {
 				await markLiveLocationAsEnded(params.liveLocationId);
-			} catch {
-				// Failed to mark live location as ended
-			}
-		}
-
-		// No need to send manual stop message - server handles this via LiveLocationApi.stop
-		if (params?.liveLocationId) {
-			try {
-				await markLiveLocationAsEnded(params.liveLocationId);
 			} catch (e) {
-				// best-effort cleanup
+				// Ignore cleanup errors
 			}
 		}
 	} finally {
