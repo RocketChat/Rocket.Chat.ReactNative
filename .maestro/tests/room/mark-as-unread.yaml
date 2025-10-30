@@ -53,7 +53,7 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      id: 'message-content-1'
+      id: 'unread-badge-1'
       childOf:
         id: 'rooms-list-view-item-${output.otherUser.username}'
     timeout: 60000

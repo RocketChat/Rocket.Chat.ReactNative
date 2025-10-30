@@ -101,7 +101,9 @@ const UnreadBadge = React.memo(
 					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
 					{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
 					style
-				]}>
+				]}
+                testID={tunread ? `unread-badge-${text}` : `mention-badge-${text}`}
+                >
 				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
 					{text}
 				</Text>
