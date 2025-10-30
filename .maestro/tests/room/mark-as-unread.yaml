@@ -3,7 +3,7 @@ name: Mark as unread
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
+  - evalScript: ${output.utils.cleanUp()}
 tags:
   - test-11
 
@@ -53,7 +53,7 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*1.*'
+      id: 'message-content-1'
       childOf:
         id: 'rooms-list-view-item-${output.otherUser.username}'
     timeout: 60000

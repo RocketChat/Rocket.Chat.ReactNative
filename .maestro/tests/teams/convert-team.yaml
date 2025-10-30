@@ -3,7 +3,7 @@ name: Convert Team
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
+  - evalScript: ${output.utils.cleanUp()}
 tags:
   - test-4
 
