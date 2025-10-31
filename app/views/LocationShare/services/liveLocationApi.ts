@@ -1,8 +1,9 @@
 import { liveLocationStart, liveLocationUpdate, liveLocationStop, liveLocationGet } from '../../../lib/services/restApi';
+import I18n from '../../../i18n';
 
 export type Coordinates = {
 	lat: number;
-	lng: number; // internal client representation uses `lng`
+	lng: number;
 	acc?: number;
 };
 
@@ -31,41 +32,68 @@ export type LiveLocationGetResponse = {
 	ownerUsername: string;
 	ownerName: string;
 	isActive: boolean;
-	startedAt: Date;
-	lastUpdateAt: Date;
-	stoppedAt?: Date;
+	startedAt: string;
+	lastUpdateAt: string;
+	stoppedAt?: string;
 	coords: { lat: number; lon: number };
-	expiresAt?: Date;
+	expiresAt?: string;
 	version: number;
 };
 
 export class LiveLocationApi {
 	static async start(rid: string, options: LiveLocationStartOptions = {}): Promise<LiveLocationStartResponse> {
-		const initial = options.initial ? { lat: options.initial.lat, lon: options.initial.lng } : undefined;
+		const initial = options.initial
+			? { lat: options.initial.lat, lon: options.initial.lng, acc: options.initial.acc }
+			: undefined;
 		const res = await liveLocationStart(rid, options.durationSec, initial);
+		if ('success' in res && !res.success) {
+			throw new Error(typeof res.error === 'string' ? res.error : I18n.t('Live_Location_Start_Failed'));
+		}
 		return { msgId: res.msgId };
 	}
 
 	static async update(rid: string, msgId: string, coords: Coordinates): Promise<LiveLocationUpdateResponse> {
-		const serverCoords = { lat: coords.lat, lon: coords.lng };
+		const serverCoords = { lat: coords.lat, lon: coords.lng, acc: coords.acc };
 		const res = await liveLocationUpdate(rid, msgId, serverCoords);
+		if ('success' in res && !res.success) {
+			throw new Error(typeof res.error === 'string' ? res.error : I18n.t('Live_Location_Update_Error'));
+		}
 		return { updated: res.updated, ignored: res.ignored, reason: res.reason };
 	}
 
 	static async stop(rid: string, msgId: string, finalCoords?: Coordinates): Promise<LiveLocationStopResponse> {
-		const serverCoords = finalCoords ? { lat: finalCoords.lat, lon: finalCoords.lng } : undefined;
+		const serverCoords = finalCoords ? { lat: finalCoords.lat, lon: finalCoords.lng, acc: finalCoords.acc } : undefined;
 		const res = await liveLocationStop(rid, msgId, serverCoords);
+		if ('success' in res && !res.success) {
+			throw new Error(typeof res.error === 'string' ? res.error : I18n.t('Live_Location_Stop_Error'));
+		}
 		return { stopped: !!res.stopped };
 	}
 
-	static get(rid: string, msgId: string): Promise<LiveLocationGetResponse> {
-		return liveLocationGet(rid, msgId);
+	static async get(rid: string, msgId: string): Promise<LiveLocationGetResponse> {
+		const res = await liveLocationGet(rid, msgId);
+		if ('success' in res && !res.success) {
+			throw new Error(typeof res.error === 'string' ? res.error : I18n.t('Live_Location_Get_Error'));
+		}
+		if (!res.startedAt || !res.lastUpdateAt || !res.coords) {
+			throw new Error(I18n.t('Live_Location_Invalid_Response'));
+		}
+		return {
+			messageId: res.messageId,
+			ownerId: res.ownerId,
+			ownerUsername: res.ownerUsername ?? '',
+			ownerName: res.ownerName ?? '',
+			isActive: res.isActive,
+			startedAt: res.startedAt,
+			lastUpdateAt: res.lastUpdateAt,
+			stoppedAt: res.stoppedAt,
+			coords: res.coords,
+			expiresAt: res.expiresAt,
+			version: res.version
+		};
 	}
 }
 
-/**
- * Convert from mobile coordinate format to server format
- */
 export function mobileToServerCoords(coords: { latitude: number; longitude: number; accuracy?: number }): {
 	lat: number;
 	lon: number;
@@ -78,12 +106,11 @@ export function mobileToServerCoords(coords: { latitude: number; longitude: numb
 	};
 }
 
-/**
- * Convert from server coordinate format to mobile format
- */
-export function serverToMobileCoords(
-	coords: Coordinates | { lat: number; lon: number; acc?: number }
-): { latitude: number; longitude: number; accuracy?: number } {
+export function serverToMobileCoords(coords: Coordinates | { lat: number; lon: number; acc?: number }): {
+	latitude: number;
+	longitude: number;
+	accuracy?: number;
+} {
 	const coordsWithLng = coords as unknown as { lat: number; lng?: number; lon?: number; acc?: number };
 	const longitude = coordsWithLng.lng ?? coordsWithLng.lon ?? 0;
 	return {

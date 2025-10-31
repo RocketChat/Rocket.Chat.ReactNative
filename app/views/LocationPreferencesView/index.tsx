@@ -2,7 +2,6 @@ import React, { useLayoutEffect } from 'react';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-// no local styles needed
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
@@ -28,7 +27,6 @@ const LocationPreferencesView = () => {
 		`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`,
 		MAP_PROVIDER_DEFAULT
 	);
-	// Only provider selection (no API keys)
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -40,12 +38,9 @@ const LocationPreferencesView = () => {
 		setMapProvider(provider);
 	};
 
-	// No API key handlers
-
 	return (
 		<SafeAreaView>
 			<List.Container>
-				{/* Pass translation KEYS to List components (they call I18n.t internally) */}
 				<List.Section title='Map_Provider'>
 					<List.Separator />
 					<ListPicker title='Default_Map_Provider' value={mapProvider} onChangeValue={onProviderChange} />
@@ -53,12 +48,8 @@ const LocationPreferencesView = () => {
 					<List.Info info='Map_Provider_Info' />
 				</List.Section>
 			</List.Container>
-
-			{/* No API key modals */}
 		</SafeAreaView>
 	);
 };
-
-// No local styles needed
 
 export default LocationPreferencesView;

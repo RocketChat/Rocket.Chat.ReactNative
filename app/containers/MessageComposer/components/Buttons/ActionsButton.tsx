@@ -17,10 +17,7 @@ import { getCurrentPositionOnce } from '../../../../views/LocationShare/services
 import type { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
 import { isLiveLocationActive, reopenLiveLocationModal } from '../../../../views/LocationShare/LiveLocationPreviewModal';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
-import {
-	MAP_PROVIDER_PREFERENCE_KEY,
-	MAP_PROVIDER_DEFAULT
-} from '../../../../lib/constants/keys';
+import { MAP_PROVIDER_PREFERENCE_KEY, MAP_PROVIDER_DEFAULT } from '../../../../lib/constants/keys';
 
 export const ActionsButton = () => {
 	'use memo';
@@ -40,9 +37,7 @@ export const ActionsButton = () => {
 
 	const [mapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
 
-	// --- Sheet transition helpers ---
 	const sheetBusyRef = React.useRef(false);
-	/** Safely close the current ActionSheet and then run `fn` (open next sheet) */
 	const openSheetSafely = (fn: () => void, delayMs = 350) => {
 		if (sheetBusyRef.current) return;
 		sheetBusyRef.current = true;
@@ -107,23 +102,19 @@ export const ActionsButton = () => {
 					Navigation.navigate('LocationPreviewModal', params);
 				}
 			});
-		} catch (e: any) {
-			showErrorAlert(e?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
+		} catch (e) {
+			const error = e as Error;
+			showErrorAlert(error?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
 		}
 	};
 
 	const openLivePreview = async (provider: MapProviderName) => {
 		try {
-			// Prevent starting a new session if one is already active
 			if (isLiveLocationActive()) {
-				return Alert.alert(
-					I18n.t('Live_Location_Active'),
-					I18n.t('Live_Location_Active_Block_Message'),
-					[
-						{ text: I18n.t('View_Current_Session'), onPress: () => reopenLiveLocationModal() },
-						{ text: I18n.t('Cancel'), style: 'cancel' }
-					]
-				);
+				return Alert.alert(I18n.t('Live_Location_Active'), I18n.t('Live_Location_Active_Block_Message'), [
+					{ text: I18n.t('View_Current_Session'), onPress: () => reopenLiveLocationModal() },
+					{ text: I18n.t('Cancel'), style: 'cancel' }
+				]);
 			}
 			if (!rid) {
 				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
@@ -153,7 +144,6 @@ export const ActionsButton = () => {
 				provider
 			};
 
-			// Defer navigation until after sheets/animations are done
 			InteractionManager.runAfterInteractions(() => {
 				// @ts-ignore
 				if (isMasterDetail) {
@@ -162,8 +152,9 @@ export const ActionsButton = () => {
 					Navigation.navigate('LiveLocationPreviewModal', params);
 				}
 			});
-		} catch (e: any) {
-			showErrorAlert(e?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
+		} catch (e) {
+			const error = e as Error;
+			showErrorAlert(error?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
 		}
 	};
 
@@ -173,7 +164,6 @@ export const ActionsButton = () => {
 				title: I18n.t('Share_current_location'),
 				icon: 'pin-map',
 				onPress: () => {
-					// sheet -> navigation: close current sheet safely, then start flow
 					openSheetSafely(() => openCurrentPreview(provider));
 				}
 			},
@@ -181,7 +171,6 @@ export const ActionsButton = () => {
 				title: I18n.t('Start_live_location'),
 				icon: 'live',
 				onPress: () => {
-					// sheet -> navigation: close current sheet safely, then start flow
 					openSheetSafely(() => openLivePreview(provider));
 				}
 			}

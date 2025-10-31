@@ -14,11 +14,25 @@ import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
-	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed || file?.type === 'live-location';
+	file?.image_url ||
+	file?.audio_url ||
+	file?.video_url ||
+	(file?.actions?.length || 0) > 0 ||
+	file?.collapsed ||
+	file?.type === 'live-location';
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-  
-		({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author, messageId, roomId }: IMessageAttachments) => {
+	({
+		attachments,
+		timeFormat,
+		showAttachment,
+		style: _style,
+		getCustomEmoji,
+		isReply: _isReply,
+		author,
+		id,
+		rid
+	}: IMessageAttachments) => {
 		'use memo';
 
 		const { translateLanguage } = useContext(MessageContext);
@@ -70,22 +84,10 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 			}
 
-		// Handle live location attachments
-		if (file.type === 'live-location' && file.live) {
-			return (
-				<LiveLocationAttachment
-					key={`live-location-${index}`}
-					attachment={file}
-					getCustomEmoji={getCustomEmoji}
-					showAttachment={showAttachment}
-					style={style}
-					isReply={isReply}
-					author={author}
-					messageId={messageId}
-					roomId={roomId}
-				/>
-			);
-		}			return null;
+			if (file.type === 'live-location' && file.live) {
+				return <LiveLocationAttachment key={`live-location-${index}`} attachment={file} messageId={id} roomId={rid} />;
+			}
+			return null;
 		});
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},

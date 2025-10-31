@@ -1,4 +1,4 @@
 {
-  "name": "RocketChatRN",
-  "plugins": ["expo-web-browser"]
+	"name": "RocketChatRN",
+	"plugins": ["expo-web-browser"]
 }

@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import {
-	View,
-	Text,
-	TouchableOpacity,
-	StyleSheet,
-	InteractionManager,
-	Linking
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, InteractionManager, Linking } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 
 import {
@@ -75,11 +68,7 @@ export default function LiveLocationStatusBar({ onPress }: Props) {
 	// pulse animation
 	useEffect(() => {
 		if (isActive) {
-			pulseAnim.value = withRepeat(
-				withTiming(1.3, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
-				-1,
-				true
-			);
+			pulseAnim.value = withRepeat(withTiming(1.3, { duration: 1000, easing: Easing.inOut(Easing.ease) }), -1, true);
 		} else {
 			pulseAnim.value = withTiming(1, { duration: 300 });
 		}
@@ -161,12 +150,12 @@ const createStyles = (colors: TColors) =>
 			width: 28,
 			height: 28,
 			borderRadius: 14,
-			backgroundColor: colors.fontWhite,              // theme token
+			backgroundColor: colors.fontWhite, // theme token
 			alignItems: 'center',
 			justifyContent: 'center',
 			marginLeft: 12,
 			borderWidth: 1,
-			borderColor: colors.strokeLight || colors.surfaceTint 
+			borderColor: colors.strokeLight || colors.surfaceTint
 		},
 		stopText: {
 			color: colors.buttonBackgroundDangerDefault,

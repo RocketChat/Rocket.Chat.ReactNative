@@ -10,14 +10,19 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
 import { staticMapUrl, providerLabel, mapsDeepLink, providerAttribution } from './services/mapProviders';
 import type { MapProviderName } from './services/mapProviders';
-import { useTheme, type TColors } from '../../theme';
+import { useTheme } from '../../theme';
+
+const OSM_HEADERS = {
+	'User-Agent': 'RocketChatMobile/1.0 (+https://rocket.chat) contact: mobile@rocket.chat',
+	Referer: 'https://rocket.chat'
+};
 
 type Coords = { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
 
 type RouteParams = {
 	rid: string;
 	tmid?: string;
-	provider: MapProviderName; // 'osm' | 'google'
+	provider: MapProviderName;
 	coords: Coords;
 };
 
@@ -26,9 +31,6 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 	const [submitting, setSubmitting] = useState(false);
 	const { colors } = useTheme();
 
-	const styles = useMemo(() => createStyles(colors), [colors]);
-
-	// mounted guard
 	const mounted = useRef(true);
 	useEffect(
 		() => () => {
@@ -48,22 +50,11 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 		shallowEqual
 	);
 
-	// Always use OSM raster tiles for the preview (keyless)
 	const mapInfo = useMemo(() => {
-		const opts: any = { zoom: 15 };
+		const opts = { zoom: 15 };
 		return staticMapUrl('osm', { latitude: coords.latitude, longitude: coords.longitude }, opts);
 	}, [coords.latitude, coords.longitude]);
 
-	// OSM tile servers require a descriptive User-Agent and Referer per usage policy
-	const OSM_HEADERS = useMemo(
-		() => ({
-			'User-Agent': 'RocketChatMobile/1.0 (+https://rocket.chat) contact: mobile@rocket.chat',
-			Referer: 'https://rocket.chat'
-		}),
-		[]
-	);
-
-	// Ensure we bypass any previously cached blocked image on Android
 	const cacheKey = useMemo(
 		() => `osm-${coords.latitude.toFixed(5)}-${coords.longitude.toFixed(5)}-z15-v2`,
 		[coords.latitude, coords.longitude]
@@ -103,35 +94,38 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 
 			await sendMessage(rid, message, tmid, { id, username }, false);
 			Navigation.back();
-		} catch (e: any) {
-			Alert.alert(I18n.t('Oops'), e?.message || I18n.t('Could_not_send_message'));
+		} catch (e) {
+			const error = e as Error;
+			Alert.alert(I18n.t('Oops'), error?.message || I18n.t('Could_not_send_message'));
 		} finally {
 			safeSet(() => setSubmitting(false));
 		}
 	};
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.content}>
-				<Text style={styles.title}>📍 {I18n.t('Share_Location')}</Text>
-
+		<View style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
+			<View style={[styles.content, { backgroundColor: colors.surfaceLight, shadowColor: colors.fontDefault }]}>
+				<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>📍 {I18n.t('Share_Location')}</Text>
 				<View style={styles.infoContainer}>
-					<Text style={styles.coordsLine}>
+					<Text style={[styles.coordsLine, { color: colors.fontDefault }]}>
 						{coords.latitude.toFixed(5)}, {coords.longitude.toFixed(5)}
 					</Text>
-					{coords.accuracy ? <Text style={styles.accuracyText}>Accuracy: ±{Math.round(coords.accuracy)}m</Text> : null}
+					{coords.accuracy ? (
+						<Text style={[styles.accuracyText, { color: colors.fontSecondaryInfo }]}>
+							{I18n.t('Accuracy', { meters: Math.round(coords.accuracy) })}
+						</Text>
+					) : null}
 				</View>
-
 				<TouchableOpacity onPress={openInMaps}>
-					<Text style={styles.mapLinkText}>🗺️ Open in {providerLabel(provider)}</Text>
-				</TouchableOpacity>
-
+					<Text style={[styles.mapLinkText, { color: colors.buttonBackgroundPrimaryDefault }]}>
+						🗺️ {I18n.t('Open_in_provider', { provider: providerLabel(provider) })}
+					</Text>
+				</TouchableOpacity>{' '}
 				<View style={styles.mapContainer}>
 					<ExpoImage
 						source={{ uri: mapInfo.url, headers: OSM_HEADERS, cacheKey }}
 						style={styles.mapImage}
 						contentFit='cover'
-						// Smooth fade + disk cache avoids Android flicker
 						transition={200}
 						cachePolicy='disk'
 						placeholder={BLURHASH_PLACEHOLDER}
@@ -139,21 +133,29 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 							// Image failed to load
 						}}
 					/>
-					{/* Center pin overlay */}
 					<View style={styles.pinOverlay} pointerEvents='none'>
 						<Text style={styles.pinText}>📍</Text>
 					</View>
 				</View>
-				{/* OSM attribution (required) */}
-				<Text style={styles.attribution}>{providerAttribution('osm')}</Text>
-
+				<Text style={[styles.attribution, { color: colors.fontSecondaryInfo }]}>{providerAttribution('osm')}</Text>
 				<View style={styles.buttons}>
-					<TouchableOpacity style={styles.btn} onPress={onCancel}>
-						<Text style={styles.btnText}>{I18n.t('Cancel')}</Text>
+					<TouchableOpacity
+						style={[styles.btn, { borderColor: colors.strokeLight, backgroundColor: colors.surfaceLight }]}
+						onPress={onCancel}>
+						<Text style={[styles.btnText, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>
 					</TouchableOpacity>
 
-					<TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={onShare} disabled={submitting}>
-						<Text style={[styles.btnText, styles.btnTextPrimary]}>{submitting ? I18n.t('Sharing_Loading') : I18n.t('Share_Location')}</Text>
+					<TouchableOpacity
+						style={[
+							styles.btn,
+							styles.btnPrimary,
+							{ backgroundColor: colors.buttonBackgroundPrimaryDefault, borderColor: colors.buttonBackgroundPrimaryDefault }
+						]}
+						onPress={onShare}
+						disabled={submitting}>
+						<Text style={[styles.btnText, styles.btnTextPrimary, { color: colors.fontWhite }]}>
+							{submitting ? I18n.t('Sharing_Loading') : I18n.t('Share_Location')}
+						</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -163,41 +165,40 @@ export default function LocationPreviewModal({ route }: { route: { params: Route
 
 const BLURHASH_PLACEHOLDER = 'LKO2?U%2Tw=w]~RBVZRi};RPxuwH';
 
-/* eslint-disable react-native/no-unused-styles */
-const createStyles = (colors: TColors) =>
-	StyleSheet.create({
-		container: { flex: 1, padding: 16, justifyContent: 'center', backgroundColor: colors.surfaceNeutral },
-		content: {
-			backgroundColor: colors.surfaceLight,
-			borderRadius: 12,
-			padding: 16,
-			shadowColor: colors.fontDefault,
-			shadowOpacity: 0.1,
-			shadowRadius: 10,
-			shadowOffset: { width: 0, height: 4 },
-			elevation: 3
-		},
-		title: { fontSize: 18, fontWeight: '600', textAlign: 'center', marginBottom: 12, color: colors.fontTitlesLabels },
-		infoContainer: { marginBottom: 16, alignItems: 'center' },
-		coordsLine: { fontSize: 14, fontWeight: '500', textAlign: 'center', marginBottom: 4, color: colors.fontDefault },
-		accuracyText: { fontSize: 12, color: colors.fontSecondaryInfo, textAlign: 'center' },
-		mapLinkText: { color: colors.buttonBackgroundPrimaryDefault, fontSize: 16, fontWeight: '600', textAlign: 'center', marginBottom: 16 },
-		mapContainer: { borderRadius: 8, overflow: 'hidden', marginBottom: 12 },
-		mapImage: { width: '100%', height: 200 },
-		pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
-		pinText: { fontSize: 24 },
-		attribution: { fontSize: 10, color: colors.fontSecondaryInfo, textAlign: 'center', marginBottom: 12 },
-		buttons: { flexDirection: 'row', gap: 12 },
-		btn: {
-			flex: 1,
-			paddingVertical: 12,
-			borderRadius: 10,
-			alignItems: 'center',
-			borderWidth: 1,
-			borderColor: colors.strokeLight,
-			backgroundColor: colors.surfaceLight
-		},
-		btnPrimary: { backgroundColor: colors.buttonBackgroundPrimaryDefault, borderColor: colors.buttonBackgroundPrimaryDefault },
-		btnText: { fontWeight: '600', color: colors.fontDefault },
-		btnTextPrimary: { color: colors.fontWhite }
-	});
+const styles = StyleSheet.create({
+	container: { flex: 1, padding: 16, justifyContent: 'center' },
+	content: {
+		borderRadius: 12,
+		padding: 16,
+		shadowOpacity: 0.1,
+		shadowRadius: 10,
+		shadowOffset: { width: 0, height: 4 },
+		elevation: 3
+	},
+	title: { fontSize: 18, fontWeight: '600', textAlign: 'center', marginBottom: 12 },
+	infoContainer: { marginBottom: 16, alignItems: 'center' },
+	coordsLine: { fontSize: 14, fontWeight: '500', textAlign: 'center', marginBottom: 4 },
+	accuracyText: { fontSize: 12, textAlign: 'center' },
+	mapLinkText: {
+		fontSize: 16,
+		fontWeight: '600',
+		textAlign: 'center',
+		marginBottom: 16
+	},
+	mapContainer: { borderRadius: 8, overflow: 'hidden', marginBottom: 12 },
+	mapImage: { width: '100%', height: 200 },
+	pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
+	pinText: { fontSize: 24 },
+	attribution: { fontSize: 10, textAlign: 'center', marginBottom: 12 },
+	buttons: { flexDirection: 'row', gap: 12 },
+	btn: {
+		flex: 1,
+		paddingVertical: 12,
+		borderRadius: 10,
+		alignItems: 'center',
+		borderWidth: 1
+	},
+	btnPrimary: {},
+	btnText: { fontWeight: '600' },
+	btnTextPrimary: {}
+});

@@ -21,11 +21,10 @@ export interface IMessageAttachments {
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
-	messageId?: string;
-	roomId?: string;
-	// Optional styling and reply context passed through some Attachment renderers
 	style?: any;
 	isReply?: boolean;
+	id: string;
+	rid: string;
 }
 
 export interface IMessageAvatar {

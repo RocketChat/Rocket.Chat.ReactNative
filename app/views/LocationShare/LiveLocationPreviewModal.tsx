@@ -3,17 +3,19 @@ import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, Lin
 import { Image as ExpoImage, type ImageErrorEventData } from 'expo-image';
 import * as Location from 'expo-location';
 import { shallowEqual } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
+import { useTheme } from '../../theme';
 import { staticMapUrl, providerLabel, mapsDeepLink, providerAttribution } from './services/mapProviders';
 import type { MapProviderName } from './services/mapProviders';
 import { LiveLocationTracker } from './services/liveLocation';
 import type { LiveLocationState } from './services/liveLocation';
 import { LiveLocationApi, serverToMobileCoords } from './services/liveLocationApi';
-import { 
+import {
 	markLiveLocationAsEnded,
 	isLiveLocationEnded,
 	addLiveLocationEndedListener,
@@ -47,30 +49,35 @@ const statusChangeListeners = new Set<(isActive: boolean) => void>();
 let isModalMinimized = false;
 const minimizedStatusListeners = new Set<(isMinimized: boolean) => void>();
 
+const OSM_HEADERS = {
+	'User-Agent': 'RocketChatMobile/1.0 (+https://rocket.chat) contact: mobile@rocket.chat',
+	Referer: 'https://rocket.chat'
+};
+
 export function getCurrentLiveParams() {
 	return globalTrackerParams;
 }
 export function isLiveLocationMinimized(): boolean {
-    return isModalMinimized && isLiveLocationActive();
+	return isModalMinimized && isLiveLocationActive();
 }
 
 export function addMinimizedStatusListener(listener: (isMinimized: boolean) => void) {
-    minimizedStatusListeners.add(listener);
+	minimizedStatusListeners.add(listener);
 }
 
 export function removeMinimizedStatusListener(listener: (isMinimized: boolean) => void) {
-    minimizedStatusListeners.delete(listener);
+	minimizedStatusListeners.delete(listener);
 }
 
 function emitMinimizedStatusChange(minimized?: boolean) {
-    const value = typeof minimized === 'boolean' ? minimized : isLiveLocationMinimized();
-    minimizedStatusListeners.forEach(fn => {
-        try {
-            fn(value);
-        } catch (e) {
-            // Error in minimized status listener
-        }
-    });
+	const value = typeof minimized === 'boolean' ? minimized : isLiveLocationMinimized();
+	minimizedStatusListeners.forEach(fn => {
+		try {
+			fn(value);
+		} catch (e) {
+			// Error in minimized status listener
+		}
+	});
 }
 export function addStatusChangeListener(listener: (isActive: boolean) => void) {
 	statusChangeListeners.add(listener);
@@ -89,8 +96,109 @@ function emitStatusChange(active?: boolean) {
 	});
 }
 
+const styles = StyleSheet.create({
+	container: { flex: 1, padding: 20, justifyContent: 'center' },
+	content: {
+		borderRadius: 16,
+		padding: 20,
+		shadowOpacity: 0.15,
+		shadowRadius: 12,
+		shadowOffset: { width: 0, height: 6 },
+		elevation: 8,
+		borderWidth: 1
+	},
+	header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, paddingHorizontal: 4 },
+	titleContainer: { flex: 1, alignItems: 'center' },
+	title: { fontSize: 20, fontWeight: '700', textAlign: 'center' },
+	ownerName: { fontSize: 14, marginTop: 4, fontWeight: '500' },
+	minimizeButton: {
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		justifyContent: 'center',
+		alignItems: 'center',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+		elevation: 3,
+		borderWidth: 1
+	},
+	minimizeIcon: { width: 20, height: 20, justifyContent: 'center', alignItems: 'center' },
+	minimizeLine: { width: 14, height: 2, borderRadius: 1 },
+	statusContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 16,
+		paddingVertical: 8,
+		paddingHorizontal: 16,
+		borderRadius: 20,
+		borderWidth: 1
+	},
+	statusDot: { width: 8, height: 8, borderRadius: 4, marginRight: 8 },
+	statusText: { fontSize: 14, fontWeight: '600' },
+	infoContainer: {
+		marginBottom: 20,
+		alignItems: 'center',
+		padding: 16,
+		borderRadius: 12,
+		borderWidth: 1
+	},
+	coordsLine: { fontSize: 15, fontWeight: '600', textAlign: 'center', marginBottom: 6 },
+	timestamp: { fontSize: 12, textAlign: 'center', fontWeight: '500' },
+	mapLinkText: {
+		fontSize: 16,
+		fontWeight: '700',
+		textAlign: 'center',
+		marginBottom: 16,
+		paddingVertical: 8
+	},
+	mapContainer: {
+		borderRadius: 12,
+		overflow: 'hidden',
+		marginBottom: 16,
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.1,
+		shadowRadius: 8,
+		elevation: 4,
+		borderWidth: 1
+	},
+	mapImage: { width: '100%', height: 220 },
+	mapPlaceholder: { width: '100%', height: 220, justifyContent: 'center', alignItems: 'center' },
+	loadingText: { marginTop: 12, fontSize: 14, fontWeight: '500' },
+	attribution: { fontSize: 10, textAlign: 'center', marginBottom: 12 },
+	pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
+	pinText: { fontSize: 24 },
+	liveIndicator: {
+		fontSize: 13,
+		textAlign: 'center',
+		marginBottom: 20,
+		fontStyle: 'italic',
+		fontWeight: '600'
+	},
+	buttons: { flexDirection: 'row', gap: 16, marginTop: 8 },
+	btn: {
+		flex: 1,
+		paddingVertical: 16,
+		borderRadius: 12,
+		alignItems: 'center',
+		borderWidth: 2,
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.05,
+		shadowRadius: 4,
+		elevation: 2
+	},
+	btnPrimary: {},
+	btnDanger: {},
+	btnText: { fontWeight: '700', fontSize: 16 },
+	btnTextPrimary: {},
+	btnTextDanger: {}
+});
+
 export default function LiveLocationPreviewModal({ route }: { route: { params: RouteParams } }) {
 	const { rid, tmid, provider = 'google', liveLocationId, ownerName, isTracking = false } = route.params;
+	const navigation = useNavigation();
+	const { colors } = useTheme();
 	const [submitting, setSubmitting] = useState(false);
 	const [locationState, setLocationState] = useState<LiveLocationState | null>(null);
 	const [mapImageUrl, setMapImageUrl] = useState<string>('');
@@ -98,24 +206,49 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	const [currentOwnerName, setCurrentOwnerName] = useState<string | undefined>(ownerName);
 	const trackerRef = useRef<LiveLocationTracker | null>(null);
 	const viewerUpdateIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+	const isMinimizingRef = useRef(false);
 
 	useEffect(() => {
 		isModalMinimized = false;
 		emitMinimizedStatusChange(false);
 	}, []);
 
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('beforeRemove', e => {
+			if (isMinimizingRef.current) {
+				return;
+			}
+
+			const globalTrackerActive = globalTracker !== null && globalTracker.getCurrentState()?.isActive === true;
+
+			const shouldMinimize = globalTrackerActive || (!isTracking && liveLocationId && locationState?.isActive);
+
+			if (shouldMinimize) {
+				e.preventDefault();
+				isMinimizingRef.current = true;
+				onMinimize();
+			}
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, [navigation, isShared, isTracking, liveLocationId, locationState?.isActive]);
+
 	const mounted = useRef(true);
-	useEffect(
-		() => () => {
+	useEffect(() => {
+		isMinimizingRef.current = false;
+
+		return () => {
 			mounted.current = false;
+			isMinimizingRef.current = false;
 			globalLocationUpdateCallbacks.delete(handleLocationUpdate);
 			if (viewerUpdateIntervalRef.current) {
 				clearInterval(viewerUpdateIntervalRef.current);
 				viewerUpdateIntervalRef.current = null;
 			}
-		},
-		[]
-	);
+		};
+	}, []);
 	const safeSet = React.useCallback((fn: () => void) => {
 		if (mounted.current) fn();
 	}, []);
@@ -126,15 +259,6 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		}
 	}, [mapImageUrl]);
 
-	// OSM tile servers require a descriptive User-Agent and Referer per usage policy
-	const OSM_HEADERS = useMemo(
-		() => ({
-			'User-Agent': 'RocketChatMobile/1.0 (+https://rocket.chat) contact: mobile@rocket.chat',
-			Referer: 'https://rocket.chat'
-		}),
-		[]
-	);
-
 	const cacheKey = useMemo(() => {
 		const lat = locationState?.coords?.latitude;
 		const lon = locationState?.coords?.longitude;
@@ -142,48 +266,45 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	}, [locationState?.coords?.latitude, locationState?.coords?.longitude]);
 
 	const { id, username } = useAppSelector(getUserSelector, shallowEqual);
-	
-	const handleLocationUpdate = React.useCallback((state: LiveLocationState) => {
-		
-		safeSet(() => setLocationState(state));
 
-		if (state.coords) {
-			// Always use OSM tiles for preview (no keys)
-			const { url } = staticMapUrl('osm', state.coords, { zoom: 15 });
-			safeSet(() => setMapImageUrl(url));
-		}
+	const handleLocationUpdate = React.useCallback(
+		(state: LiveLocationState) => {
+			safeSet(() => setLocationState(state));
 
-		emitStatusChange();
-	}, [safeSet]);
+			if (state.coords) {
+				const { url } = staticMapUrl('osm', state.coords, { zoom: 15 });
+				safeSet(() => setMapImageUrl(url));
+			}
+
+			emitStatusChange();
+		},
+		[safeSet]
+	);
 
 	useEffect(() => {
 		if (!isTracking && liveLocationId) {
-			// If already ended, close immediately
 			isLiveLocationEnded(liveLocationId).then(ended => {
 				if (ended) {
 					Navigation.back();
 					return;
 				}
 
-				// Begin polling latest coordinates for viewers (every 10s)
 				const poll = async () => {
 					try {
 						const data = await LiveLocationApi.get(rid, liveLocationId);
-					// If the session has stopped, mark as ended and close
-					if (!data?.isActive || (data as any)?.stoppedAt) {
-						try {
-							await markLiveLocationAsEnded(liveLocationId);
-						} catch {
-							// Ignore cleanup errors
+						if (!data?.isActive || data?.stoppedAt) {
+							try {
+								await markLiveLocationAsEnded(liveLocationId);
+							} catch {
+								// Ignore cleanup errors
+							}
+							Navigation.back();
+							return;
 						}
-						Navigation.back();
-						return;
-					}						// Update owner name if not known
 						safeSet(() => setCurrentOwnerName(prev => prev || data.ownerName || data.ownerUsername));
 
-						// Convert and emit state
-						const mobile = serverToMobileCoords(data.coords as any);
-						const ts = data.lastUpdateAt ? new Date(data.lastUpdateAt as any).getTime() : Date.now();
+						const mobile = serverToMobileCoords(data.coords);
+						const ts = data.lastUpdateAt ? new Date(data.lastUpdateAt).getTime() : Date.now();
 						const next: LiveLocationState = {
 							coords: {
 								latitude: mobile.latitude,
@@ -198,22 +319,17 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 						// Ignore transient failures; keep last good state
 					}
 				};
-
-				// Kick off immediately and then schedule interval
 				poll();
 				viewerUpdateIntervalRef.current = setInterval(poll, 10_000);
 			});
 
 			const handleLiveLocationEnded = (endedLocationId: string) => {
 				if (endedLocationId === liveLocationId) {
-					// Owner stopped sharing while viewer is watching -> force close
 					Navigation.back();
 				}
 			};
-
 			addLiveLocationEndedListener(handleLiveLocationEnded);
 
-			// Cleanup listener on unmount
 			return () => {
 				removeLiveLocationEndedListener(handleLiveLocationEnded);
 				if (viewerUpdateIntervalRef.current) {
@@ -252,23 +368,22 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		} else {
 			Location.getCurrentPositionAsync({
 				accuracy: Location.Accuracy.High
-			}).then((location: Location.LocationObject) => {
-				const previewState: LiveLocationState = {
-					coords: {
-						latitude: location.coords.latitude,
-						longitude: location.coords.longitude,
-						accuracy: location.coords.accuracy ?? undefined
-					},
-					timestamp: Date.now(),
-					isActive: false
-				};
-				handleLocationUpdate(previewState);
-			}).catch((_error: unknown) => {
-				// Do not fallback to hard-coded coordinates; inform the user instead
-				Alert.alert(I18n.t('Error'), I18n.t('Could_not_get_location'));
-				// Leave locationState untouched so Start button stays disabled and
-				// the map shows the neutral placeholder.
-			});
+			})
+				.then((location: Location.LocationObject) => {
+					const previewState: LiveLocationState = {
+						coords: {
+							latitude: location.coords.latitude,
+							longitude: location.coords.longitude,
+							accuracy: location.coords.accuracy ?? undefined
+						},
+						timestamp: Date.now(),
+						isActive: false
+					};
+					handleLocationUpdate(previewState);
+				})
+				.catch((_error: unknown) => {
+					Alert.alert(I18n.t('Error'), I18n.t('Could_not_get_location'));
+				});
 		}
 	}, [isTracking, liveLocationId, handleLocationUpdate, id, rid, tmid, username]);
 
@@ -278,11 +393,16 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			const deep = await mapsDeepLink(provider, locationState.coords);
 			await Linking.openURL(deep);
 		} catch (error) {
-			Alert.alert(I18n.t("error-open-maps-application"));
+			Alert.alert(I18n.t('error-open-maps-application'));
 		}
 	};
 
 	const onCancel = () => {
+		if (trackerRef.current && (isShared || isTracking)) {
+			onMinimize();
+			return;
+		}
+
 		if (trackerRef.current) {
 			trackerRef.current.stopTracking();
 			globalTracker = null;
@@ -299,30 +419,23 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			return;
 		}
 
-		// Guard: prevent starting a new session if one is already active globally
 		if (globalTracker && globalTracker.getCurrentState()?.isActive) {
-			Alert.alert(
-				I18n.t('Live_Location_Active'),
-				I18n.t('Live_Location_Active_Block_Message'),
-				[
-					{ text: I18n.t('View_Current_Session'), onPress: () => reopenLiveLocationModal() },
-					{ text: I18n.t('Cancel'), style: 'cancel' }
-				]
-			);
+			Alert.alert(I18n.t('Live_Location_Active'), I18n.t('Live_Location_Active_Block_Message'), [
+				{ text: I18n.t('View_Current_Session'), onPress: () => reopenLiveLocationModal() },
+				{ text: I18n.t('Cancel'), style: 'cancel' }
+			]);
 			return;
 		}
 
 		try {
 			safeSet(() => setSubmitting(true));
 
-			// If no tracker exists, create one and start tracking
 			if (!trackerRef.current) {
 				const tracker = new LiveLocationTracker(
 					rid,
 					tmid,
 					{ id, username },
 					(state: LiveLocationState) => {
-						// Notify all registered callbacks (owner and viewers)
 						globalLocationUpdateCallbacks.forEach(callback => {
 							if (callback) callback(state);
 						});
@@ -334,14 +447,13 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 				trackerRef.current = tracker;
 				globalLocationUpdateCallbacks.add(handleLocationUpdate);
 
-				// Start tracking immediately when sharing
 				await tracker.startTracking();
 			}
 
 			if (trackerRef.current) {
 				const msgId = trackerRef.current.getMsgId();
 				if (!msgId) {
-					Alert.alert(I18n.t('Error'), 'Could not start live location. Please ensure your server has the liveLocation API routes and is reachable.');
+					Alert.alert(I18n.t('Error'), I18n.t('Live_Location_Start_Error'));
 					return;
 				}
 
@@ -350,7 +462,7 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					rid,
 					tmid,
 					provider,
-					liveLocationId: msgId, // Use tracker's message ID
+					liveLocationId: msgId,
 					ownerName: username || 'You',
 					isTracking: true,
 					userId: id,
@@ -363,22 +475,20 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 				setIsShared(true);
 				setCurrentOwnerName(username || 'You');
 			});
-		} catch (e: any) {
-			Alert.alert(I18n.t('Oops'), e?.message || I18n.t('Could_not_send_message'));
+		} catch (e) {
+			Alert.alert(I18n.t('Oops'), (e as Error)?.message || I18n.t('Could_not_send_message'));
 		} finally {
 			safeSet(() => setSubmitting(false));
 		}
 	};
 
 	const onMinimize = () => {
-		// Keep tracking; just remove this component's callback but keep status updates
 		globalLocationUpdateCallbacks.delete(handleLocationUpdate);
 		globalLocationUpdateCallbacks.add(() => emitStatusChange(true));
-		
-		// Set minimized state to show status bar
+
 		isModalMinimized = true;
 		emitMinimizedStatusChange(true);
-		
+
 		Navigation.back();
 	};
 
@@ -391,13 +501,12 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 		if (trackerRef.current) {
 			const msgId = trackerRef.current.getMsgId();
 
-			// stopTracking() now handles server communication
 			try {
 				await trackerRef.current.stopTracking();
 			} catch (error) {
 				// Ignore stop errors
 			}
-			
+
 			if (msgId) {
 				try {
 					await markLiveLocationAsEnded(msgId);
@@ -405,11 +514,15 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 					// Ignore cleanup errors
 				}
 			}
+
 			emitStatusChange(false);
 
 			globalTracker = null;
 			globalTrackerParams = null;
 			globalLocationUpdateCallbacks.clear();
+
+			isModalMinimized = false;
+			emitMinimizedStatusChange(false);
 		}
 
 		safeSet(() => setIsShared(false));
@@ -425,22 +538,39 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	const isOwner = () => isTracking || (currentOwnerName && username ? currentOwnerName === username : Boolean(isShared));
 
 	const renderActionButtons = () => {
-		const shouldShowActiveButtons = (isShared || isTracking) || (!isTracking && liveLocationId);
+		const shouldShowActiveButtons = isShared || isTracking || (!isTracking && liveLocationId);
 
 		if (!shouldShowActiveButtons) {
 			return (
 				<>
-					<TouchableOpacity onPress={onCancel} style={styles.btn}>
-						<Text style={styles.btnText}>{I18n.t('Cancel')}</Text>
+					<TouchableOpacity
+						onPress={onCancel}
+						style={[
+							styles.btn,
+							{ borderColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight, shadowColor: colors.fontDefault }
+						]}>
+						<Text style={[styles.btnText, { color: colors.fontTitlesLabels }]}>{I18n.t('Cancel')}</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						disabled={submitting || !locationState?.coords}
 						onPress={onShare}
-						style={[styles.btn, styles.btnPrimary, !locationState?.coords && styles.btnDisabled]}>
+						style={[
+							styles.btn,
+							styles.btnPrimary,
+							{
+								backgroundColor: colors.buttonBackgroundPrimaryDefault,
+								borderColor: colors.buttonBackgroundPrimaryDefault,
+								shadowColor: colors.fontDefault
+							},
+							!locationState?.coords && {
+								backgroundColor: colors.buttonBackgroundPrimaryDisabled,
+								borderColor: colors.strokeLight
+							}
+						]}>
 						{submitting ? (
-							<ActivityIndicator color='#fff' />
+							<ActivityIndicator color={colors.buttonFontPrimary} />
 						) : (
-							<Text style={[styles.btnText, styles.btnTextPrimary]}>{I18n.t('Start')}</Text>
+							<Text style={[styles.btnText, styles.btnTextPrimary, { color: colors.buttonFontPrimary }]}>{I18n.t('Start')}</Text>
 						)}
 					</TouchableOpacity>
 				</>
@@ -449,113 +579,159 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 
 		if (isOwner() && !(!isTracking && liveLocationId)) {
 			return (
-				<TouchableOpacity onPress={onStopSharing} style={[styles.btn, styles.btnDanger]}>
-					<Text style={[styles.btnText, styles.btnTextDanger]}>{I18n.t('Stop_Sharing')}</Text>
+				<TouchableOpacity
+					onPress={onStopSharing}
+					style={[
+						styles.btn,
+						styles.btnDanger,
+						{
+							backgroundColor: colors.buttonBackgroundDangerDefault,
+							borderColor: colors.buttonBackgroundDangerDefault,
+							shadowColor: colors.fontDefault
+						}
+					]}>
+					<Text style={[styles.btnText, styles.btnTextDanger, { color: colors.buttonFontDanger }]}>{I18n.t('Stop_Sharing')}</Text>
 				</TouchableOpacity>
 			);
 		}
 
 		return (
-			<TouchableOpacity onPress={() => Navigation.back()} style={[styles.btn]}>
-				<Text style={[styles.btnText]}>{I18n.t('Close')}</Text>
+			<TouchableOpacity
+				onPress={onMinimize}
+				style={[
+					styles.btn,
+					{ borderColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight, shadowColor: colors.fontDefault }
+				]}>
+				<Text style={[styles.btnText, { color: colors.fontTitlesLabels }]}>{I18n.t('Close')}</Text>
 			</TouchableOpacity>
 		);
 	};
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.content}>
-				{/* Header with minimize button */}
+		<View style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
+			<View
+				style={[
+					styles.content,
+					{ backgroundColor: colors.surfaceLight, shadowColor: colors.fontDefault, borderColor: colors.strokeExtraLight }
+				]}>
 				<View style={styles.header}>
 					<View style={styles.titleContainer}>
-						<Text style={styles.title}>📍 {I18n.t('Live_Location')}</Text>
-						{currentOwnerName && <Text style={styles.ownerName}>{I18n.t('Shared_By')} {currentOwnerName}</Text>}
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>📍 {I18n.t('Live_Location')}</Text>
+						{currentOwnerName && (
+							<Text style={[styles.ownerName, { color: colors.fontSecondaryInfo }]}>
+								{I18n.t('Shared_By')} {currentOwnerName}
+							</Text>
+						)}
 					</View>
 					{(isShared || isTracking) && isOwner() && (
-						<TouchableOpacity onPress={onMinimize} style={styles.minimizeButton} activeOpacity={0.7}>
+						<TouchableOpacity
+							onPress={onMinimize}
+							style={[
+								styles.minimizeButton,
+								{ backgroundColor: colors.surfaceTint, shadowColor: colors.fontDefault, borderColor: colors.strokeExtraLight }
+							]}
+							activeOpacity={0.7}>
 							<View style={styles.minimizeIcon}>
-								<View style={styles.minimizeLine} />
+								<View style={[styles.minimizeLine, { backgroundColor: colors.strokeDark }]} />
 							</View>
 						</TouchableOpacity>
 					)}
 				</View>
 
-				{/* Status indicator */}
-				<View style={styles.statusContainer}>
+				<View style={[styles.statusContainer, { backgroundColor: colors.surfaceTint, borderColor: colors.strokeExtraLight }]}>
 					<View
 						style={[
 							styles.statusDot,
-							{ backgroundColor: ((isShared || isTracking) || (!isTracking && liveLocationId)) && locationState?.isActive ? '#27ae60' : '#e74c3c' }
+							{
+								backgroundColor:
+									(isShared || isTracking || (!isTracking && liveLocationId)) && locationState?.isActive
+										? colors.userPresenceOnline
+										: colors.buttonBackgroundDangerDefault
+							}
 						]}
 					/>
-					<Text style={styles.statusText}>
-						{((isShared || isTracking) || (!isTracking && liveLocationId)) && locationState?.isActive ? I18n.t('Live_Location_Active') : I18n.t('Live_Location_Inactive')}
+					<Text style={[styles.statusText, { color: colors.fontHint }]}>
+						{(isShared || isTracking || (!isTracking && liveLocationId)) && locationState?.isActive
+							? I18n.t('Live_Location_Active')
+							: I18n.t('Live_Location_Inactive')}
 					</Text>
 				</View>
 
-				{/* Coordinates and timestamp */}
 				{locationState?.coords && (
-					<View style={styles.infoContainer}>
-						<Text style={styles.coordsLine}>
+					<View style={[styles.infoContainer, { backgroundColor: colors.surfaceLight, borderColor: colors.strokeExtraLight }]}>
+						<Text style={[styles.coordsLine, { color: colors.fontTitlesLabels }]}>
 							{locationState.coords.latitude.toFixed(5)}, {locationState.coords.longitude.toFixed(5)}
 							{locationState.coords.accuracy ? ` (±${Math.round(locationState.coords.accuracy)}m)` : ''}
 						</Text>
-						<Text style={styles.timestamp}>{I18n.t('Last_updated_at')} {formatTimestamp(locationState.timestamp)}</Text>
+						<Text style={[styles.timestamp, { color: colors.fontSecondaryInfo }]}>
+							{I18n.t('Last_updated_at')} {formatTimestamp(locationState.timestamp)}
+						</Text>
 					</View>
 				)}
 
-				{/* Clickable link to open in maps */}
 				<TouchableOpacity onPress={openInMaps} disabled={!locationState?.coords}>
-					<Text style={[styles.mapLinkText, !locationState?.coords && styles.disabledLink]}>
+					<Text
+						style={[
+							styles.mapLinkText,
+							{ color: colors.buttonBackgroundPrimaryDefault },
+							!locationState?.coords && { color: colors.fontDisabled }
+						]}>
 						🗺️ Open in {providerLabel(provider)}
 					</Text>
 				</TouchableOpacity>
 
-				{/* Map image (expo-image) */}
-				<View style={styles.mapContainer}>
+				<View style={[styles.mapContainer, { shadowColor: colors.fontDefault, borderColor: colors.strokeExtraLight }]}>
 					{mapImageUrl ? (
 						<>
-						<ExpoImage
-							source={{ uri: mapImageUrl, headers: OSM_HEADERS, cacheKey }}
-							style={styles.mapImage}
-							contentFit='cover'
-							transition={200}
-							cachePolicy='disk'
-							placeholder={BLURHASH_PLACEHOLDER}
-							onError={(_e: ImageErrorEventData) => {
-								// Map image failed to load, clear URL to show fallback
-								safeSet(() => setMapImageUrl(''));
-							}}
-						/>
-						{/* Center pin overlay */}
-						<View style={styles.pinOverlay} pointerEvents='none'>
-							<Text style={styles.pinText}>📍</Text>
-						</View>
+							<ExpoImage
+								source={{ uri: mapImageUrl, headers: OSM_HEADERS, cacheKey }}
+								style={styles.mapImage}
+								contentFit='cover'
+								transition={200}
+								cachePolicy='disk'
+								placeholder={BLURHASH_PLACEHOLDER}
+								onError={(_e: ImageErrorEventData) => {
+									safeSet(() => setMapImageUrl(''));
+								}}
+							/>
+							<View style={styles.pinOverlay} pointerEvents='none'>
+								<Text style={styles.pinText}>📍</Text>
+							</View>
 						</>
 					) : (
-						<View style={styles.mapPlaceholder}>
-							<Text style={[styles.loadingText, { fontSize: 16, fontWeight: 'bold', marginBottom: 8 }]}>📍 {I18n.t('Map_Preview')}</Text>
+						<View style={[styles.mapPlaceholder, { backgroundColor: colors.surfaceTint }]}>
+							<Text
+								style={[
+									styles.loadingText,
+									{ fontSize: 16, fontWeight: 'bold', marginBottom: 8, color: colors.fontSecondaryInfo }
+								]}>
+								📍 {I18n.t('Map_Preview')}
+							</Text>
 							{locationState?.coords && (
-								<Text style={[styles.loadingText, { fontSize: 14, marginBottom: 8 }]}>
+								<Text style={[styles.loadingText, { fontSize: 14, marginBottom: 8, color: colors.fontSecondaryInfo }]}>
 									{locationState.coords.latitude.toFixed(5)}, {locationState.coords.longitude.toFixed(5)}
 								</Text>
 							)}
-							<Text style={[styles.loadingText, { fontSize: 12, fontStyle: 'italic', textAlign: 'center' }] }>
-								Map preview unavailable{'\n'}Tap "Open in Maps" below to view location
+							<Text
+								style={[
+									styles.loadingText,
+									{ fontSize: 12, fontStyle: 'italic', textAlign: 'center', color: colors.fontSecondaryInfo }
+								]}>
+								{I18n.t('Map_preview_unavailable_open_below')}
 							</Text>
 						</View>
 					)}
 				</View>
 
-				{/* OSM attribution (required) */}
-				<Text style={styles.attribution}>{providerAttribution('osm')}</Text>
+				<Text style={[styles.attribution, { color: colors.fontSecondaryInfo }]}>{providerAttribution('osm')}</Text>
 
-				{((isShared || isTracking) || (!isTracking && liveLocationId)) && <Text style={styles.liveIndicator}>🔴 {I18n.t('Updates_every_10_seconds')}</Text>}
+				{(isShared || isTracking || (!isTracking && liveLocationId)) && (
+					<Text style={[styles.liveIndicator, { color: colors.buttonBackgroundDangerDefault }]}>
+						🔴 {I18n.t('Updates_every_10_seconds')}
+					</Text>
+				)}
 
-				{/* Buttons */}
-				<View style={styles.buttons}>
-					{renderActionButtons()}
-				</View>
+				<View style={styles.buttons}>{renderActionButtons()}</View>
 			</View>
 		</View>
 	);
@@ -567,11 +743,10 @@ export function isLiveLocationActive(): boolean {
 
 export function reopenLiveLocationModal() {
 	if (!globalTracker || !globalTrackerParams) return;
-	
-	// Clear minimized state when reopening modal
+
 	isModalMinimized = false;
 	emitMinimizedStatusChange(false);
-	
+
 	InteractionManager.runAfterInteractions(() => {
 		Navigation.navigate('LiveLocationPreviewModal', {
 			...globalTrackerParams,
@@ -601,8 +776,7 @@ export async function stopGlobalLiveLocation() {
 		globalTracker = null;
 		globalTrackerParams = null;
 		globalLocationUpdateCallbacks.clear();
-		
-		// Clear minimized state when stopping
+
 		isModalMinimized = false;
 		emitMinimizedStatusChange(false);
 		emitStatusChange(false);
@@ -610,115 +784,3 @@ export async function stopGlobalLiveLocation() {
 }
 
 const BLURHASH_PLACEHOLDER = 'LKO2?U%2Tw=w]~RBVZRi};RPxuwH';
-
-const styles = StyleSheet.create({
-	container: { flex: 1, padding: 20, justifyContent: 'center', backgroundColor: '#ecf0f1' },
-	content: {
-		backgroundColor: '#ffffff',
-		borderRadius: 16,
-		padding: 20,
-		shadowColor: '#000',
-		shadowOpacity: 0.15,
-		shadowRadius: 12,
-		shadowOffset: { width: 0, height: 6 },
-		elevation: 8,
-		borderWidth: 1,
-		borderColor: '#e9ecef'
-	},
-	header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, paddingHorizontal: 4 },
-	titleContainer: { flex: 1, alignItems: 'center' },
-	title: { fontSize: 20, fontWeight: '700', textAlign: 'center', color: '#2c3e50' },
-	ownerName: { fontSize: 14, color: '#7f8c8d', marginTop: 4, fontWeight: '500' },
-	minimizeButton: {
-		width: 40,
-		height: 40,
-		borderRadius: 20,
-		backgroundColor: '#f8f9fa',
-		justifyContent: 'center',
-		alignItems: 'center',
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.1,
-		shadowRadius: 4,
-		elevation: 3,
-		borderWidth: 1,
-		borderColor: '#e9ecef'
-	},
-	minimizeIcon: { width: 20, height: 20, justifyContent: 'center', alignItems: 'center' },
-	minimizeLine: { width: 14, height: 2, backgroundColor: '#6c757d', borderRadius: 1 },
-	statusContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginBottom: 16,
-		paddingVertical: 8,
-		paddingHorizontal: 16,
-		backgroundColor: '#f8f9fa',
-		borderRadius: 20,
-		borderWidth: 1,
-		borderColor: '#e9ecef'
-	},
-	statusDot: { width: 8, height: 8, borderRadius: 4, marginRight: 8 },
-	statusText: { fontSize: 14, fontWeight: '600', color: '#495057' },
-	infoContainer: {
-		marginBottom: 20,
-		alignItems: 'center',
-		backgroundColor: '#ffffff',
-		padding: 16,
-		borderRadius: 12,
-		borderWidth: 1,
-		borderColor: '#e9ecef'
-	},
-	coordsLine: { fontSize: 15, fontWeight: '600', textAlign: 'center', marginBottom: 6, color: '#2c3e50' },
-	timestamp: { fontSize: 12, color: '#6c757d', textAlign: 'center', fontWeight: '500' },
-	mapLinkText: { color: '#3498db', fontSize: 16, fontWeight: '700', textAlign: 'center', marginBottom: 16, paddingVertical: 8 },
-	disabledLink: { color: '#ccc' },
-	mapContainer: {
-		borderRadius: 12,
-		overflow: 'hidden',
-		marginBottom: 16,
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.1,
-		shadowRadius: 8,
-		elevation: 4,
-		borderWidth: 1,
-		borderColor: '#e9ecef'
-	},
-	mapImage: { width: '100%', height: 220 },
-	mapPlaceholder: { width: '100%', height: 220, backgroundColor: '#f8f9fa', justifyContent: 'center', alignItems: 'center' },
-	loadingText: { marginTop: 12, fontSize: 14, color: '#6c757d', fontWeight: '500' },
-	attribution: { fontSize: 10, color: '#6c757d', textAlign: 'center', marginBottom: 12 },
-	pinOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
-	pinText: { fontSize: 24 },
-	liveIndicator: {
-		fontSize: 13,
-		color: '#e74c3c',
-		textAlign: 'center',
-		marginBottom: 20,
-		fontStyle: 'italic',
-		fontWeight: '600'
-	},
-
-	buttons: { flexDirection: 'row', gap: 16, marginTop: 8 },
-	btn: {
-		flex: 1,
-		paddingVertical: 16,
-		borderRadius: 12,
-		alignItems: 'center',
-		borderWidth: 2,
-		borderColor: '#e9ecef',
-		backgroundColor: '#ffffff',
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.05,
-		shadowRadius: 4,
-		elevation: 2
-	},
-	btnPrimary: { backgroundColor: '#3498db', borderColor: '#3498db' },
-	btnDanger: { backgroundColor: '#e74c3c', borderColor: '#e74c3c' },
-	btnDisabled: { backgroundColor: '#ecf0f1', borderColor: '#bdc3c7' },
-	btnText: { fontWeight: '700', fontSize: 16, color: '#2c3e50' },
-	btnTextPrimary: { color: '#ffffff' },
-	btnTextDanger: { color: '#ffffff' }
-});

@@ -13,7 +13,7 @@ export type LiveLocationState = {
 	};
 	timestamp: number;
 	isActive: boolean;
-	msgId?: string; // Server message ID for tracking
+	msgId?: string;
 };
 
 export class LiveLocationTracker {
@@ -34,7 +34,7 @@ export class LiveLocationTracker {
 		rid: string,
 		tmid: string | undefined,
 		user: { id: string; username: string },
-		onUpdate: (state: LiveLocationState) => void, 
+		onUpdate: (state: LiveLocationState) => void,
 		durationSec?: number,
 		provider: MapProviderName = 'google'
 	) {
@@ -114,25 +114,44 @@ export class LiveLocationTracker {
 		});
 
 		// Watch position
-		this.watchSub = await Location.watchPositionAsync(
-			{
-				accuracy: Location.Accuracy.High,
-				timeInterval: 10_000,
-				distanceInterval: 5
-			},
-			pos => {
-				this.currentState = {
-					coords: {
-						latitude: pos.coords.latitude,
-						longitude: pos.coords.longitude,
-						accuracy: pos.coords.accuracy ?? undefined
-					},
-					timestamp: Date.now(),
-					isActive: true,
-					msgId: this.msgId ?? undefined
-				};
+		try {
+			this.watchSub = await Location.watchPositionAsync(
+				{
+					accuracy: Location.Accuracy.High,
+					timeInterval: 10_000,
+					distanceInterval: 5
+				},
+				pos => {
+					this.currentState = {
+						coords: {
+							latitude: pos.coords.latitude,
+							longitude: pos.coords.longitude,
+							accuracy: pos.coords.accuracy ?? undefined
+						},
+						timestamp: Date.now(),
+						isActive: true,
+						msgId: this.msgId ?? undefined
+					};
+				}
+			);
+		} catch (error) {
+			if (this.msgId && this.useServerApi) {
+				try {
+					await LiveLocationApi.stop(this.rid, this.msgId);
+				} catch {
+					// best-effort cleanup
+				}
 			}
-		);
+			this.useServerApi = false;
+			this.msgId = null;
+			this.emit({
+				coords: initialCoords,
+				timestamp: Date.now(),
+				isActive: false,
+				msgId: undefined
+			});
+			throw error;
+		}
 
 		// Sync every 10s
 		this.tickInterval = setInterval(async () => {
@@ -143,31 +162,29 @@ export class LiveLocationTracker {
 				}
 				return;
 			}
-			
+
 			if (this.currentState && this.msgId) {
 				const now = Date.now();
-				
+
 				if (this.useServerApi) {
 					try {
-						await LiveLocationApi.update(
-							this.rid,
-							this.msgId,
-							{
-								lat: this.currentState.coords.latitude,
-								lng: this.currentState.coords.longitude,
-								acc: this.currentState.coords.accuracy
-							}
-						);
-					} catch (error: any) {
-						if (error?.error === 'error-live-location-not-found' || 
-							error?.message?.includes('live-location-not-found')) {
+						await LiveLocationApi.update(this.rid, this.msgId, {
+							lat: this.currentState.coords.latitude,
+							lng: this.currentState.coords.longitude,
+							acc: this.currentState.coords.accuracy
+						});
+					} catch (error) {
+						if (
+							error instanceof Error &&
+							(error.message === 'error-live-location-not-found' || error.message.includes('live-location-not-found'))
+						) {
 							this.useServerApi = false;
 							this.stopTracking().catch(_e => {});
 							return;
 						}
 					}
 				}
-				
+
 				const emittedState = {
 					...this.currentState,
 					timestamp: now,
@@ -185,7 +202,7 @@ export class LiveLocationTracker {
 			this.watchSub.remove();
 			this.watchSub = null;
 		}
-		
+
 		if (this.tickInterval) {
 			clearInterval(this.tickInterval);
 			this.tickInterval = null;
@@ -195,15 +212,11 @@ export class LiveLocationTracker {
 		if (this.msgId && this.currentState) {
 			if (this.useServerApi) {
 				try {
-					await LiveLocationApi.stop(
-						this.rid, 
-						this.msgId, 
-						{
-							lat: this.currentState.coords.latitude,
-							lng: this.currentState.coords.longitude,
-							acc: this.currentState.coords.accuracy
-						}
-					);
+					await LiveLocationApi.stop(this.rid, this.msgId, {
+						lat: this.currentState.coords.latitude,
+						lng: this.currentState.coords.longitude,
+						acc: this.currentState.coords.accuracy
+					});
 				} catch (error) {
 					// ignore
 				}
@@ -217,11 +230,11 @@ export class LiveLocationTracker {
 				}
 			}
 		}
-		
+
 		// Reset
 		this.useServerApi = false;
 		this.msgId = null;
-		
+
 		if (this.currentState) {
 			this.emit({
 				...this.currentState,
