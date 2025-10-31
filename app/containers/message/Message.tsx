@@ -40,7 +40,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<>
 					<Quote {...props} />
 					<Content {...props} />
-					<Attachments {...props} />
+					<Attachments {...props} id={props.id} rid={props.rid} />
 				</>
 				<Urls {...props} />
 			</>
@@ -91,7 +91,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 					{!isLocation ? <Content {...props} /> : null}
 					{/* Render a card for "current location" messages; returns null otherwise */}
 					<CurrentLocationCard msg={props.msg as string} />
-					<Attachments {...props} />
+					<Attachments {...props} id={props.id} rid={props.rid} />
 					{!isLocation ? <Urls {...props} /> : null}
 					<Thread {...props} />
 					<Reactions {...props} />
@@ -165,7 +165,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 						<Content {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
-								<Attachments {...props} />
+								<Attachments {...props} id={props.id} rid={props.rid} />
 							</View>
 						) : null}
 					</View>

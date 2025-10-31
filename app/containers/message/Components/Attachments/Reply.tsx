@@ -210,7 +210,7 @@ const Reply = React.memo(
 
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
-		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
+		const { baseUrl, user, id, rid, e2e, isEncrypted } = useContext(MessageContext);
 
 		if (!attachment || (isEncrypted && !e2e)) {
 			return null;
@@ -258,6 +258,8 @@ const Reply = React.memo(
 								getCustomEmoji={getCustomEmoji}
 								timeFormat={timeFormat}
 								showAttachment={showAttachment}
+								id={id}
+								rid={rid}
 							/>
 							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 							{loading ? (

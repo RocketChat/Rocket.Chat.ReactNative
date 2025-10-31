@@ -3,7 +3,7 @@ import I18n from '../../../i18n';
 
 export type Coordinates = {
 	lat: number;
-		lon: number;
+	lon: number;
 	acc?: number;
 };
 
