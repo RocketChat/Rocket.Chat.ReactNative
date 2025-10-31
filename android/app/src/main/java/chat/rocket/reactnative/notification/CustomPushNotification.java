@@ -43,7 +43,7 @@ public class CustomPushNotification extends PushNotification {
     private static final String TAG = "RocketChat.CustomPush";
     private static final boolean ENABLE_VERBOSE_LOGS = BuildConfig.DEBUG;
     
-    public static ReactApplicationContext reactApplicationContext;
+    public static volatile ReactApplicationContext reactApplicationContext;
     final NotificationManager notificationManager;
     
     // Create a single Gson instance
