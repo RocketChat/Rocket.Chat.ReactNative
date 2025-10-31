@@ -3,7 +3,7 @@ import I18n from '../../../i18n';
 
 export type Coordinates = {
 	lat: number;
-	lng: number;
+		lon: number;
 	acc?: number;
 };
 
@@ -43,7 +43,7 @@ export type LiveLocationGetResponse = {
 export class LiveLocationApi {
 	static async start(rid: string, options: LiveLocationStartOptions = {}): Promise<LiveLocationStartResponse> {
 		const initial = options.initial
-			? { lat: options.initial.lat, lon: options.initial.lng, acc: options.initial.acc }
+			? { lat: options.initial.lat, lon: options.initial.lon, acc: options.initial.acc }
 			: undefined;
 		const res = await liveLocationStart(rid, options.durationSec, initial);
 		if ('success' in res && !res.success) {
@@ -53,7 +53,7 @@ export class LiveLocationApi {
 	}
 
 	static async update(rid: string, msgId: string, coords: Coordinates): Promise<LiveLocationUpdateResponse> {
-		const serverCoords = { lat: coords.lat, lon: coords.lng, acc: coords.acc };
+		const serverCoords = { lat: coords.lat, lon: coords.lon, acc: coords.acc };
 		const res = await liveLocationUpdate(rid, msgId, serverCoords);
 		if ('success' in res && !res.success) {
 			throw new Error(typeof res.error === 'string' ? res.error : I18n.t('Live_Location_Update_Error'));
@@ -62,7 +62,7 @@ export class LiveLocationApi {
 	}
 
 	static async stop(rid: string, msgId: string, finalCoords?: Coordinates): Promise<LiveLocationStopResponse> {
-		const serverCoords = finalCoords ? { lat: finalCoords.lat, lon: finalCoords.lng, acc: finalCoords.acc } : undefined;
+		const serverCoords = finalCoords ? { lat: finalCoords.lat, lon: finalCoords.lon, acc: finalCoords.acc } : undefined;
 		const res = await liveLocationStop(rid, msgId, serverCoords);
 		if ('success' in res && !res.success) {
 			throw new Error(typeof res.error === 'string' ? res.error : I18n.t('Live_Location_Stop_Error'));
@@ -111,8 +111,8 @@ export function serverToMobileCoords(coords: Coordinates | { lat: number; lon: n
 	longitude: number;
 	accuracy?: number;
 } {
-	const coordsWithLng = coords as unknown as { lat: number; lng?: number; lon?: number; acc?: number };
-	const longitude = coordsWithLng.lng ?? coordsWithLng.lon ?? 0;
+	const coordsWithLng = coords as unknown as { lat: number; lon?: number; acc?: number };
+	const longitude = coordsWithLng.lon ?? 0;
 	return {
 		latitude: coords.lat,
 		longitude,

@@ -87,7 +87,7 @@ export class LiveLocationTracker {
 				durationSec: this.durationSec,
 				initial: {
 					lat: initialCoords.latitude,
-					lng: initialCoords.longitude,
+					lon: initialCoords.longitude,
 					acc: initialCoords.accuracy
 				}
 			});
@@ -103,7 +103,7 @@ export class LiveLocationTracker {
 				isActive: false,
 				msgId: undefined
 			});
-			return;
+			throw error;
 		}
 
 		this.emit({
@@ -170,7 +170,7 @@ export class LiveLocationTracker {
 					try {
 						await LiveLocationApi.update(this.rid, this.msgId, {
 							lat: this.currentState.coords.latitude,
-							lng: this.currentState.coords.longitude,
+							lon: this.currentState.coords.longitude,
 							acc: this.currentState.coords.accuracy
 						});
 					} catch (error) {
@@ -214,7 +214,7 @@ export class LiveLocationTracker {
 				try {
 					await LiveLocationApi.stop(this.rid, this.msgId, {
 						lat: this.currentState.coords.latitude,
-						lng: this.currentState.coords.longitude,
+						lon: this.currentState.coords.longitude,
 						acc: this.currentState.coords.accuracy
 					});
 				} catch (error) {
