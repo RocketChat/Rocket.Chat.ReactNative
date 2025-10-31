@@ -943,7 +943,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
-      testID="badge-1"
+      testID="unread-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1118,7 +1118,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
-      testID="badge-1"
+      testID="unread-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1293,7 +1293,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
-      testID="badge-1"
+      testID="unread-badge-1"
     >
       <Text
         numberOfLines={1}

@@ -46,7 +46,10 @@ function getTestId(userMentions: number | undefined, groupMentions: number | und
 	if (groupMentions) {
 		return `group-mention-badge-${unread}`;
 	}
-	return `unread-badge-${unread}`;
+    if(unread){
+        return `unread-badge-${unread}`;
+    }
+    return '';
 }
 
 const UnreadBadge = React.memo(
@@ -105,7 +108,7 @@ const UnreadBadge = React.memo(
 			minWidth = 11 + text.length * 5;
 		}
 		const borderRadius = 10.5 * fontScale;
-		const testId = getTestId(userMentions, groupMentions, unread);
+		const testId = getTestId(userMentions, groupMentions, text);
 
 		return (
 			<View
