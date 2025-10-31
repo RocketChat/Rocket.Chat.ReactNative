@@ -1288,7 +1288,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="mention-badge-1"
+                    testID="unread-badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -1967,7 +1967,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="mention-badge-+999"
+                    testID="unread-badge-+999"
                   >
                     <Text
                       numberOfLines={1}
@@ -3325,7 +3325,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="mention-badge-1"
+                    testID="group-mention-badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -4004,7 +4004,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="unread-badge-1"
+                    testID="badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -4683,7 +4683,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="unread-badge-1"
+                    testID="badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -5362,7 +5362,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="unread-badge-1"
+                    testID="badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -6041,7 +6041,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="unread-badge-1"
+                    testID="mention-badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -6720,7 +6720,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="unread-badge-1"
+                    testID="group-mention-badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -8709,7 +8709,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="unread-badge-1"
+                    testID="badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -9388,7 +9388,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                         undefined,
                       ]
                     }
-                    testID="mention-badge-+999"
+                    testID="unread-badge-+999"
                   >
                     <Text
                       numberOfLines={1}
@@ -10675,7 +10675,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                         undefined,
                       ]
                     }
-                    testID="unread-badge-1"
+                    testID="badge-1"
                   >
                     <Text
                       numberOfLines={1}
@@ -12520,7 +12520,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       undefined,
                     ]
                   }
-                  testID="unread-badge-1"
+                  testID="badge-1"
                 >
                   <Text
                     numberOfLines={1}
@@ -13189,7 +13189,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                       undefined,
                     ]
                   }
-                  testID="unread-badge-1"
+                  testID="badge-1"
                 >
                   <Text
                     numberOfLines={1}
@@ -17148,7 +17148,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       undefined,
                     ]
                   }
-                  testID="mention-badge-1"
+                  testID="unread-badge-1"
                 >
                   <Text
                     numberOfLines={1}
@@ -17858,7 +17858,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       undefined,
                     ]
                   }
-                  testID="mention-badge-+999"
+                  testID="unread-badge-+999"
                 >
                   <Text
                     numberOfLines={1}
@@ -18568,7 +18568,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       undefined,
                     ]
                   }
-                  testID="unread-badge-1"
+                  testID="badge-1"
                 >
                   <Text
                     numberOfLines={1}
