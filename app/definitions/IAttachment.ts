@@ -48,7 +48,7 @@ export interface IAttachment {
 	live?: {
 		isActive: boolean;
 		ownerId: string;
-		coords?: { lat: number; lng: number; acc?: number };
+		coords?: { lat: number; log: number; acc?: number };
 		startedAt: string;
 		lastUpdateAt: string;
 		expiresAt?: string;
