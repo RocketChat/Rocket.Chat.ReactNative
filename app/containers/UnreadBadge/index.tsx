@@ -39,6 +39,16 @@ export interface IUnreadBadge {
 	hideMentionStatus?: boolean;
 }
 
+function getTestId(userMentions: number | undefined, groupMentions: number | undefined, unread: number | undefined) {
+	if (userMentions) {
+		return `mention-badge-${unread}`;
+	}
+	if (groupMentions) {
+		return `group-mention-badge-${unread}`;
+	}
+	return `unread-badge-${unread}`;
+}
+
 const UnreadBadge = React.memo(
 	({
 		unread,
@@ -95,11 +105,7 @@ const UnreadBadge = React.memo(
 			minWidth = 11 + text.length * 5;
 		}
 		const borderRadius = 10.5 * fontScale;
-		const testId = userMentions
-			? `mention-badge-${text}`
-			: groupMentions
-			? `group-mention-badge-${text}`
-			: `unread-badge-${text}`;
+		const testId = getTestId(userMentions, groupMentions, unread);
 
 		return (
 			<View
