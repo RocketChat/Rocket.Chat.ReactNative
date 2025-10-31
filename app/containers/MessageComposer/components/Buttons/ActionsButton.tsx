@@ -111,10 +111,11 @@ export const ActionsButton = () => {
 	const openLivePreview = async (provider: MapProviderName) => {
 		try {
 			if (isLiveLocationActive()) {
-				return Alert.alert(I18n.t('Live_Location_Active'), I18n.t('Live_Location_Active_Block_Message'), [
+				Alert.alert(I18n.t('Live_Location_Active'), I18n.t('Live_Location_Active_Block_Message'), [
 					{ text: I18n.t('View_Current_Session'), onPress: () => reopenLiveLocationModal() },
 					{ text: I18n.t('Cancel'), style: 'cancel' }
 				]);
+				return;
 			}
 			if (!rid) {
 				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));

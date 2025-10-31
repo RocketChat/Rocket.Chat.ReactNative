@@ -49,9 +49,11 @@ export interface IAttachment {
 		isActive: boolean;
 		ownerId: string;
 		coords?: { lat: number; lng: number; acc?: number };
-		startedAt: Date;
-		lastUpdateAt: Date;
-		expiresAt?: Date;
+		startedAt: string;
+		lastUpdateAt: string;
+		expiresAt?: string;
+		stoppedAt?: string;
+		version: number;
 	};
 }
 

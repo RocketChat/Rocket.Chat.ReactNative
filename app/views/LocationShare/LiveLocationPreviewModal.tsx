@@ -242,16 +242,16 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	useEffect(() => {
 		isMinimizingRef.current = false;
 
-			return () => {
-				mounted.current = false;
-				isMinimizingRef.current = false;
-				globalLocationUpdateCallbacks.delete(handleLocationUpdate);
-				globalLocationUpdateCallbacks.delete(statusEmitCallback.current);
-				if (viewerUpdateIntervalRef.current) {
-					clearInterval(viewerUpdateIntervalRef.current);
-					viewerUpdateIntervalRef.current = null;
-				}
-			};
+		return () => {
+			mounted.current = false;
+			isMinimizingRef.current = false;
+			globalLocationUpdateCallbacks.delete(handleLocationUpdate);
+			globalLocationUpdateCallbacks.delete(statusEmitCallback.current);
+			if (viewerUpdateIntervalRef.current) {
+				clearInterval(viewerUpdateIntervalRef.current);
+				viewerUpdateIntervalRef.current = null;
+			}
+		};
 	}, []);
 	const safeSet = React.useCallback((fn: () => void) => {
 		if (mounted.current) fn();
@@ -487,9 +487,9 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 	};
 
 	const onMinimize = () => {
-			globalLocationUpdateCallbacks.delete(handleLocationUpdate);
-			globalLocationUpdateCallbacks.delete(statusEmitCallback.current);
-			globalLocationUpdateCallbacks.add(statusEmitCallback.current);
+		globalLocationUpdateCallbacks.delete(handleLocationUpdate);
+		globalLocationUpdateCallbacks.delete(statusEmitCallback.current);
+		globalLocationUpdateCallbacks.add(statusEmitCallback.current);
 
 		isModalMinimized = true;
 		emitMinimizedStatusChange(true);
@@ -600,16 +600,16 @@ export default function LiveLocationPreviewModal({ route }: { route: { params: R
 			);
 		}
 
-			return (
-				<TouchableOpacity
-					onPress={isOwner() ? onMinimize : onCancel}
-					style={[
-						styles.btn,
-						{ borderColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight, shadowColor: colors.fontDefault }
-					]}>
-					<Text style={[styles.btnText, { color: colors.fontTitlesLabels }]}>{I18n.t('Close')}</Text>
-				</TouchableOpacity>
-			);
+		return (
+			<TouchableOpacity
+				onPress={isOwner() ? onMinimize : onCancel}
+				style={[
+					styles.btn,
+					{ borderColor: colors.strokeExtraLight, backgroundColor: colors.surfaceLight, shadowColor: colors.fontDefault }
+				]}>
+				<Text style={[styles.btnText, { color: colors.fontTitlesLabels }]}>{I18n.t('Close')}</Text>
+			</TouchableOpacity>
+		);
 	};
 
 	return (

@@ -22,17 +22,7 @@ const removeQuote = (file?: IAttachment) =>
 	file?.type === 'live-location';
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({
-		attachments,
-		timeFormat,
-		showAttachment,
-		style: _style,
-		getCustomEmoji,
-		isReply: _isReply,
-		author,
-		id,
-		rid
-	}: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, getCustomEmoji, author, id, rid }: IMessageAttachments) => {
 		'use memo';
 
 		const { translateLanguage } = useContext(MessageContext);

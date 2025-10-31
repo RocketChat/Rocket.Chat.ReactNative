@@ -75,12 +75,12 @@ export class LiveLocationApi {
 		if ('success' in res && !res.success) {
 			throw new Error(typeof res.error === 'string' ? res.error : I18n.t('Live_Location_Get_Error'));
 		}
-		   if (!res.startedAt || !res.lastUpdateAt || !res.coords) {
-			   throw new Error(I18n.t('Live_Location_Invalid_Response'));
-		   }
-		   if (!res.messageId || !res.ownerId || typeof res.isActive !== 'boolean' || typeof res.version !== 'number') {
-			   throw new Error(I18n.t('Live_Location_Invalid_Response'));
-		   }
+		if (!res.startedAt || !res.lastUpdateAt || !res.coords) {
+			throw new Error(I18n.t('Live_Location_Invalid_Response'));
+		}
+		if (!res.messageId || !res.ownerId || typeof res.isActive !== 'boolean' || typeof res.version !== 'number') {
+			throw new Error(I18n.t('Live_Location_Invalid_Response'));
+		}
 		return {
 			messageId: res.messageId,
 			ownerId: res.ownerId,
@@ -115,11 +115,11 @@ export function serverToMobileCoords(coords: Coordinates | { lat: number; lon: n
 	accuracy?: number;
 } {
 	if (coords.lon == null) {
-	    throw new Error(I18n.t('Live_Location_Invalid_Coordinates'));
+		throw new Error(I18n.t('Live_Location_Invalid_Coordinates'));
 	}
 	return {
-	    latitude: coords.lat,
-	    longitude: coords.lon,
-	    accuracy: coords.acc
+		latitude: coords.lat,
+		longitude: coords.lon,
+		accuracy: coords.acc
 	};
 }
