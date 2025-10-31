@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
+import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.R;
 
 public class CustomPushNotification extends PushNotification {
