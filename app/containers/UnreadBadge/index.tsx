@@ -95,7 +95,6 @@ const UnreadBadge = React.memo(
 			minWidth = 11 + text.length * 5;
 		}
 		const borderRadius = 10.5 * fontScale;
-
 		return (
 			<View
 				style={[
