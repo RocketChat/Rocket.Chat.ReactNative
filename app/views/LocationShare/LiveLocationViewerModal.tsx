@@ -269,6 +269,9 @@ const LiveLocationViewerModal = ({ route }: LiveLocationViewerModalProps): React
 
 			const liveData: LiveLocationData = {
 				...response,
+				ownerUsername: response.ownerUsername ?? '',
+				ownerName: response.ownerName ?? '',
+				version: response.version ?? 0,
 				coords: mobileCoords,
 				startedAt,
 				lastUpdateAt,

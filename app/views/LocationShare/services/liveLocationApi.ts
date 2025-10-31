@@ -29,15 +29,15 @@ export type LiveLocationStopResponse = {
 export type LiveLocationGetResponse = {
 	messageId: string;
 	ownerId: string;
-	ownerUsername: string;
-	ownerName: string;
+	ownerUsername?: string;
+	ownerName?: string;
 	isActive: boolean;
 	startedAt: string;
 	lastUpdateAt: string;
 	stoppedAt?: string;
 	coords: { lat: number; lon: number };
 	expiresAt?: string;
-	version: number;
+	version?: number;
 };
 
 export class LiveLocationApi {
@@ -75,9 +75,12 @@ export class LiveLocationApi {
 		if ('success' in res && !res.success) {
 			throw new Error(typeof res.error === 'string' ? res.error : I18n.t('Live_Location_Get_Error'));
 		}
-		if (!res.startedAt || !res.lastUpdateAt || !res.coords) {
-			throw new Error(I18n.t('Live_Location_Invalid_Response'));
-		}
+		   if (!res.startedAt || !res.lastUpdateAt || !res.coords) {
+			   throw new Error(I18n.t('Live_Location_Invalid_Response'));
+		   }
+		   if (!res.messageId || !res.ownerId || typeof res.isActive !== 'boolean' || typeof res.version !== 'number') {
+			   throw new Error(I18n.t('Live_Location_Invalid_Response'));
+		   }
 		return {
 			messageId: res.messageId,
 			ownerId: res.ownerId,
@@ -111,11 +114,12 @@ export function serverToMobileCoords(coords: Coordinates | { lat: number; lon: n
 	longitude: number;
 	accuracy?: number;
 } {
-	const coordsWithLng = coords as unknown as { lat: number; lon?: number; acc?: number };
-	const longitude = coordsWithLng.lon ?? 0;
+	if (coords.lon == null) {
+	    throw new Error(I18n.t('Live_Location_Invalid_Coordinates'));
+	}
 	return {
-		latitude: coords.lat,
-		longitude,
-		accuracy: coordsWithLng.acc
+	    latitude: coords.lat,
+	    longitude: coords.lon,
+	    accuracy: coords.acc
 	};
 }
