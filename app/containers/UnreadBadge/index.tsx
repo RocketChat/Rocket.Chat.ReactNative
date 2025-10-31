@@ -46,10 +46,10 @@ function getTestId(userMentions: number | undefined, groupMentions: number | und
 	if (groupMentions) {
 		return `group-mention-badge-${unread}`;
 	}
-    if(unread){
-        return `unread-badge-${unread}`;
-    }
-    return '';
+	if (unread) {
+		return `unread-badge-${unread}`;
+	}
+	return '';
 }
 
 const UnreadBadge = React.memo(
