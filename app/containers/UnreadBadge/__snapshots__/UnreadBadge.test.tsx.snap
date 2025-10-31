@@ -26,6 +26,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-9"
   >
     <Text
       numberOfLines={1}
@@ -65,6 +66,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-+99"
   >
     <Text
       numberOfLines={1}
@@ -107,6 +109,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-9"
   >
     <Text
       numberOfLines={1}
@@ -147,6 +150,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-+999"
   >
     <Text
       numberOfLines={1}
@@ -187,6 +191,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-9"
   >
     <Text
       numberOfLines={1}
@@ -227,6 +232,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-9"
   >
     <Text
       numberOfLines={1}
@@ -267,6 +273,7 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="unread-badge-9"
   >
     <Text
       numberOfLines={1}
@@ -321,6 +328,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-1"
   >
     <Text
       numberOfLines={1}
@@ -361,6 +369,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-1"
   >
     <Text
       numberOfLines={1}
@@ -401,6 +410,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-1"
   >
     <Text
       numberOfLines={1}
@@ -441,6 +451,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-1"
   >
     <Text
       numberOfLines={1}
@@ -481,6 +492,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="unread-badge-1"
   >
     <Text
       numberOfLines={1}
@@ -521,6 +533,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-1"
   >
     <Text
       numberOfLines={1}
@@ -561,6 +574,7 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-1"
   >
     <Text
       numberOfLines={1}
@@ -615,6 +629,7 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-9"
   >
     <Text
       numberOfLines={1}
@@ -655,6 +670,7 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-+999"
   >
     <Text
       numberOfLines={1}
@@ -706,6 +722,7 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-9"
   >
     <Text
       numberOfLines={1}
@@ -745,6 +762,7 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
         undefined,
       ]
     }
+    testID="mention-badge-+99"
   >
     <Text
       numberOfLines={1}
@@ -802,6 +820,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -842,6 +861,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -882,6 +902,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -922,6 +943,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="unread-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -973,6 +995,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1013,6 +1036,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1053,6 +1077,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1093,6 +1118,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="unread-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1144,6 +1170,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1184,6 +1211,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1224,6 +1252,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="mention-badge-1"
     >
       <Text
         numberOfLines={1}
@@ -1264,6 +1293,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           undefined,
         ]
       }
+      testID="unread-badge-1"
     >
       <Text
         numberOfLines={1}
