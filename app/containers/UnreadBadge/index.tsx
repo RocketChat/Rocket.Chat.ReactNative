@@ -126,4 +126,4 @@ const UnreadBadge = React.memo(
 	}
 );
 
-export default UnreadBadge;
+export default UnreadBadge; 
