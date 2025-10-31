@@ -107,10 +107,32 @@ public class Ejson {
     }
 
     public String getAvatarUri() {
-        if (type == null) {
+        if (sender == null || sender.username == null || sender.username.isEmpty()) {
+            Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
             return null;
         }
-        return serverURL() + "/avatar/" + this.sender.username + "?rc_token=" + token() + "&rc_uid=" + userId();
+        
+        String server = serverURL();
+        if (server == null || server.isEmpty()) {
+            Log.w(TAG, "Cannot generate avatar URI: serverURL is null");
+            return null;
+        }
+        
+        String userToken = token();
+        String uid = userId();
+        
+        if (userToken.isEmpty() || uid.isEmpty()) {
+            Log.w(TAG, "Cannot generate avatar URI: missing auth credentials (token=" + !userToken.isEmpty() + ", uid=" + !uid.isEmpty() + ")");
+            return null;
+        }
+        
+        String uri = server + "/avatar/" + sender.username + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+        
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Generated avatar URI for user: " + sender.username);
+        }
+        
+        return uri;
     }
 
     public String token() {

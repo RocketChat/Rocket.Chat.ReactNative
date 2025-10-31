@@ -37,11 +37,22 @@ class JsonResponse {
                 String notificationType;
                 String name;
                 String messageType;
+                String senderName;
+                String msg;
+                String tmid;
+                Content content;
 
                 class Sender {
                     String _id;
                     String username;
                     String name;
+                }
+                
+                class Content {
+                    String algorithm;
+                    String ciphertext;
+                    String kid;
+                    String iv;
                 }
             }
         }
@@ -173,6 +184,15 @@ public class LoadNotification {
             if (json == null || json.data == null || json.data.notification == null) {
                 Log.e(TAG, "Invalid response structure: missing required fields");
                 throw new IllegalStateException("Invalid response structure");
+            }
+            
+            // Log encryption fields if present
+            if (json.data.notification.payload != null) {
+                boolean hasEncryption = json.data.notification.payload.msg != null || json.data.notification.payload.content != null;
+                if (hasEncryption) {
+                    Log.d(TAG, "Notification contains encrypted content: msg=" + (json.data.notification.payload.msg != null) + 
+                               ", content=" + (json.data.notification.payload.content != null));
+                }
             }
 
             Bundle bundle = new Bundle();
