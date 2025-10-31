@@ -99,9 +99,7 @@ const UnreadBadge = React.memo(
 			? `mention-badge-${text}`
 			: groupMentions
 			? `group-mention-badge-${text}`
-			: unread
-			? `unread-badge-${text}`
-			: `badge-${text}`;
+			: `unread-badge-${text}`;
 
 		return (
 			<View
