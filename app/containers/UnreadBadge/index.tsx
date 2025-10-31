@@ -95,13 +95,22 @@ const UnreadBadge = React.memo(
 			minWidth = 11 + text.length * 5;
 		}
 		const borderRadius = 10.5 * fontScale;
+		const testId = userMentions
+			? `mention-badge-${text}`
+			: groupMentions
+			? `group-mention-badge-${text}`
+			: unread
+			? `unread-badge-${text}`
+			: `badge-${text}`;
+
 		return (
 			<View
 				style={[
 					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
 					{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
 					style
-				]}>
+				]}
+				testID={testId}>
 				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
 					{text}
 				</Text>
