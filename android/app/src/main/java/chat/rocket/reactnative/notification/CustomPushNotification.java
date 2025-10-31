@@ -31,10 +31,10 @@ import com.wix.reactnativenotifications.core.notification.PushNotification;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 import chat.rocket.reactnative.R;
@@ -58,7 +58,7 @@ public class CustomPushNotification extends PushNotification {
         reactApplicationContext = context;
     }
 
-    private static Map<String, List<Bundle>> notificationMessages = new HashMap<String, List<Bundle>>();
+    private static Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
     public static String KEY_REPLY = "KEY_REPLY";
     public static String NOTIFICATION_ID = "NOTIFICATION_ID";
 
@@ -173,9 +173,7 @@ public class CustomPushNotification extends PushNotification {
             android.util.Log.d(TAG, "[onReceived processing] loadedEjson.sender=" + (loadedEjson != null && loadedEjson.sender != null ? loadedEjson.sender.username : "null"));
         }
 
-        if (notificationMessages.get(notId) == null) {
-            notificationMessages.put(notId, new ArrayList<Bundle>());
-        }
+        notificationMessages.putIfAbsent(notId, new ArrayList<Bundle>());
 
         boolean hasSender = loadedEjson != null && loadedEjson.sender != null;
         String title = bundle.getString("title");
