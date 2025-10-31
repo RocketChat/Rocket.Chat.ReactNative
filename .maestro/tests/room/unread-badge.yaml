@@ -60,3 +60,51 @@ tags:
       childOf:
         id: 'rooms-list-view-item-${output.otherUser.username}'
     timeout: 60000
+
+# send normal message first and mention in next message and it should show mentioned unread indicator
+- evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, 'message-mark-as-unread')}
+- evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, '@' + output.user.username)}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'mention-badge-2'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-item-${output.otherUser.username}'
+- tapOn:
+    id: header-back
+- extendedWaitUntil:
+    notVisible:
+      id: 'mention-badge-2'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+
+# send mention message first and normal message in next message and it should show mentioned unread indicator
+- evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, '@' + output.user.username)}
+- evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, 'message-mark-as-unread')}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'mention-badge-2'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-item-${output.otherUser.username}'
+- tapOn:
+    id: header-back
+- extendedWaitUntil:
+    notVisible:
+      id: 'mention-badge-2'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
