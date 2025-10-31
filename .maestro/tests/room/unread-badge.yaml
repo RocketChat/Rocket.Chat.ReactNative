@@ -1,0 +1,62 @@
+appId: chat.rocket.reactnative
+name: Unread badge
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+tags:
+  - test-13
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.otherUser = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# Should have normal unread indicator on normal message
+- evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, 'message-mark-as-unread')}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'unread-badge-1'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-item-${output.otherUser.username}'
+- tapOn:
+    id: header-back
+- extendedWaitUntil:
+    notVisible:
+      id: 'unread-badge-1'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+
+# Should have mention unread indicator on mentioned message
+- evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, '@' + output.user.username)}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'mention-badge-1'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-item-${output.otherUser.username}'
+- tapOn:
+    id: header-back
+- extendedWaitUntil:
+    notVisible:
+      id: 'mention-badge-1'
+      childOf:
+        id: 'rooms-list-view-item-${output.otherUser.username}'
+    timeout: 60000
