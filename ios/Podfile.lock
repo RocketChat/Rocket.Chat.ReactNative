@@ -258,6 +258,31 @@ PODS:
     - nanopb/encode (= 3.30910.0)
   - nanopb/decode (3.30910.0)
   - nanopb/encode (3.30910.0)
+  - NitroModules (0.31.4):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
@@ -2630,6 +2655,34 @@ PODS:
   - simdjson (3.9.4)
   - SocketRocket (0.7.1)
   - TOCropViewController (2.7.4)
+  - Unistyles (3.0.17):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - NitroModules
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-jsinspector
+    - React-jsinspectortracing
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererconsistency
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - WatermelonDB (0.28.1-0):
     - React
     - simdjson
@@ -2668,6 +2721,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - "MobileCrypto (from `../node_modules/@rocket.chat/mobile-crypto`)"
+  - NitroModules (from `../node_modules/react-native-nitro-modules`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -2766,6 +2820,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - "simdjson (from `../node_modules/@nozbe/simdjson`)"
+  - Unistyles (from `../node_modules/react-native-unistyles`)
   - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -2855,6 +2910,8 @@ EXTERNAL SOURCES:
     :tag: hermes-2025-06-04-RNv0.79.3-7f9a871eefeb2c3852365ee80f0b6733ec12ac3b
   MobileCrypto:
     :path: "../node_modules/@rocket.chat/mobile-crypto"
+  NitroModules:
+    :path: "../node_modules/react-native-nitro-modules"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -3047,6 +3104,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-vector-icons"
   simdjson:
     :path: "../node_modules/@nozbe/simdjson"
+  Unistyles:
+    :path: "../node_modules/react-native-unistyles"
   WatermelonDB:
     :path: "../node_modules/@nozbe/watermelondb"
   Yoga:
@@ -3098,6 +3157,7 @@ SPEC CHECKSUMS:
   MMKVCore: 3f40b896e9ab522452df9df3ce983471aa2449ba
   MobileCrypto: 101b85a7b88b0a370f35a775e3be75ce8dd6fbd9
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
+  NitroModules: 66e45644924c365023242bfbfb39bd7fbfdd9cfc
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
@@ -3202,6 +3262,7 @@ SPEC CHECKSUMS:
   simdjson: 7bb9e33d87737cec966e7b427773c67baa4458fe
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
+  Unistyles: 9e808134aaed9c44f87474642c4df0d3002d26ef
   WatermelonDB: 4c846c8cb94eef3cba90fa034d15310163226703
   Yoga: dfabf1234ccd5ac41d1b1d43179f024366ae9831
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
