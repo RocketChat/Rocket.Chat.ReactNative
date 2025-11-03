@@ -1,6 +1,7 @@
 module.exports = {
 	presets: ['babel-preset-expo'],
 	plugins: [
+        ['react-native-unistyles/plugin', { root: 'app' }],
 		[
 			'babel-plugin-react-compiler',
 			{
@@ -11,7 +12,6 @@ module.exports = {
 		'react-native-reanimated/plugin',
 		'@babel/plugin-transform-named-capturing-groups-regex',
 		['module:react-native-dotenv'],
-		['react-native-unistyles/plugin', { root: 'app' }]
 	],
 	env: {
 		production: {
