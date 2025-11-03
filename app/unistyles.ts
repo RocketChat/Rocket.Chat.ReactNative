@@ -15,8 +15,6 @@ const settings = {
     initialTheme: initialTheme().currentTheme as keyof UnistylesThemes
 }
 
-console.log(settings)
-
 StyleSheet.configure({
     themes,
     settings
