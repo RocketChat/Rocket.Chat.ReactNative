@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
-import { NavigationContainerProps } from '@react-navigation/core';
+import { type NavigationContainerProps } from '@react-navigation/core';
 import { useKeyboard } from '@react-native-community/hooks';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
-import { TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
 import { isAndroid } from '../../lib/methods/helpers';
 
 const MODAL_MARGIN = 32;
@@ -30,6 +30,8 @@ const styles = StyleSheet.create({
 });
 
 export const ModalContainer = ({ navigation, children, theme }: IModalContainer): JSX.Element => {
+	'use memo';
+
 	const { keyboardHeight, keyboardShown } = useKeyboard();
 	const { height } = useWindowDimensions();
 	const modalHeight = sharedStyles.modalFormSheet.height;

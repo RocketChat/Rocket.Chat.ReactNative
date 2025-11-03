@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SwitchProps } from 'react-native';
+import { StyleSheet, Text, View, type SwitchProps } from 'react-native';
 
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';

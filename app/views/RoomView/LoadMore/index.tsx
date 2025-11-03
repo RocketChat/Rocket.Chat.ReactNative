@@ -1,9 +1,9 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { type ReactElement, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
-import { MessageType, RoomType } from '../../../definitions';
+import { type MessageType, type RoomType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import MessageSeparator from '../../../containers/MessageSeparator';

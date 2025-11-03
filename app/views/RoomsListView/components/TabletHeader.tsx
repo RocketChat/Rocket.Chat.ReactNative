@@ -6,6 +6,8 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useHeader } from '../hooks/useHeader';
 
 const TabletHeader = () => {
+	'use memo';
+
 	const navigation = useNavigation<any>();
 	const route = useRoute<any>();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);

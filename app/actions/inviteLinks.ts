@@ -1,6 +1,6 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
-import { TInvite } from '../reducers/inviteLinks';
+import { type TInvite } from '../reducers/inviteLinks';
 import { INVITE_LINKS } from './actionsTypes';
 
 interface IInviteLinksGeneric extends Action {

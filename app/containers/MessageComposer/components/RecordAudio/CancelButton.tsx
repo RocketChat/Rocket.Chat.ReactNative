@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 
-import { BaseButton, IBaseButton } from '../Buttons';
+import { BaseButton, type IBaseButton } from '../Buttons';
 
 export const CancelButton = ({
 	onPress,

@@ -1,4 +1,4 @@
-import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
+import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
 
 export interface IFormData {
 	name: string;

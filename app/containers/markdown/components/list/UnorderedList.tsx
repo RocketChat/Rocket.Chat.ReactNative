@@ -1,5 +1,5 @@
 import React from 'react';
-import { UnorderedList as UnorderedListProps } from '@rocket.chat/message-parser';
+import { type UnorderedList as UnorderedListProps } from '@rocket.chat/message-parser';
 import { View, Text } from 'react-native';
 
 import Inline from '../Inline';

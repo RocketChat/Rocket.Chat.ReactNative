@@ -11,4 +11,11 @@ tags:
       visible: '.*Open in.*'
       platform: iOS
     commands:
-      - tapOn: Open
+      - tapOn:
+          text: Open
+          index: 0
+          optional: true
+      - tapOn:
+          text: Open
+          index: 1
+          optional: true

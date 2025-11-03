@@ -1,8 +1,8 @@
 import React from 'react';
-import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { Pressable, type StyleProp, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 
 import Avatar from './Avatar';
-import { CustomIcon, TIconsName } from './CustomIcon';
+import { CustomIcon, type TIconsName } from './CustomIcon';
 import sharedStyles from '../views/Styles';
 import { isIOS } from '../lib/methods/helpers';
 import { useTheme } from '../theme';

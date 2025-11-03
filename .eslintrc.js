@@ -11,10 +11,21 @@ module.exports = {
 		},
 		'import/parsers': {
 			'@typescript-eslint/parser': ['.ts', '.tsx']
+			// plugins: ['@typescript-eslint'],
+			// rules: {
+			// 	'@typescript-eslint/consistent-type-imports': [
+			// 		'error',
+			// 		{
+			// 			prefer: 'type-imports', // enforce `import type`
+			// 			disallowTypeAnnotations: true // disallow `import { type Foo }`
+			// 			// fixStyle: 'inline-type-imports' // keeps type imports inline rather than grouped
+			// 		}
+			// 	]
+			// }
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier'],
+	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier', 'plugin:react-hooks/recommended'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
@@ -36,6 +47,9 @@ module.exports = {
 		'jest/globals': true
 	},
 	rules: {
+		'react-hooks/set-state-in-effect': 1,
+		'react-hooks/immutability': 1,
+		'react-hooks/refs': 1,
 		'import/named': 'error',
 		'import/no-unresolved': 'error',
 		'import/extensions': [
@@ -214,6 +228,14 @@ module.exports = {
 					{
 						argsIgnorePattern: '^_',
 						ignoreRestSiblings: true
+					}
+				],
+				'@typescript-eslint/consistent-type-imports': [
+					'error',
+					{
+						prefer: 'type-imports',
+						disallowTypeAnnotations: true,
+						fixStyle: 'inline-type-imports'
 					}
 				],
 				'new-cap': 'off',
