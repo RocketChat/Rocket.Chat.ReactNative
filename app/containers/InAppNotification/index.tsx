@@ -11,7 +11,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { setInAppFeedback } from '../../actions/inAppFeedback';
 import I18n from '../../i18n';
 
-export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
+export const INAPP_NOTIFICATION_EMITTER = 'Notifica	tionInApp';
 
 const InAppNotification = memo(() => {
 	const { appState, subscribedRoom } = useAppSelector(state => ({
@@ -47,7 +47,7 @@ const InAppNotification = memo(() => {
 			if (payload?.name && payload?.message) {
 				AccessibilityInfo.announceForAccessibility(
 					I18n.t('A11y_in_app_notification', {
-						name: payload?.name || '',
+						name: payload?.name || payload?.sender?.username || '',
 						message: payload?.message?.message || payload?.message?.msg || ''
 					})
 				);

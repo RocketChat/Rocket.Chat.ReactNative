@@ -44,12 +44,14 @@ const IncomingCallHeader = React.memo(
 		const insets = useSafeAreaInsets();
 
 		useEffect(() => {
-			setTimeout(() => {
+			const focusOnIncomingCall = setTimeout(() => {
 				const node = findNodeHandle(componentRef.current);
 				if (node) {
 					AccessibilityInfo.setAccessibilityFocus(node);
 				}
 			}, 300);
+
+			return () => clearTimeout(focusOnIncomingCall);
 		}, [uid, callId, avatar, roomName]);
 
 		return (
