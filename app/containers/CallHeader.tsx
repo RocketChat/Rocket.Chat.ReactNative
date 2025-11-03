@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import Touchable from 'react-native-platform-touchable';
 
 import { useAppSelector } from '../lib/hooks/useAppSelector';

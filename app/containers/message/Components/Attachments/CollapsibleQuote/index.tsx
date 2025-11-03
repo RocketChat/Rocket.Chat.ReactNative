@@ -1,7 +1,8 @@
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { themes } from '../../../../../lib/constants/colors';
 import { type IAttachment } from '../../../../../definitions/IAttachment';

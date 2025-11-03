@@ -1,7 +1,8 @@
 import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { forwardRoom, type ITransferData } from '../actions/room';
 import OrSeparator from '../containers/OrSeparator';

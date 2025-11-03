@@ -2,13 +2,13 @@ import React, { useMemo } from 'react';
 import {
 	I18nManager,
 	type StyleProp,
-	StyleSheet,
 	Text,
 	type TextStyle,
 	View,
 	type AccessibilityRole,
 	type ViewStyle
 } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Touch from '../Touch';
 import sharedStyles from '../../views/Styles';

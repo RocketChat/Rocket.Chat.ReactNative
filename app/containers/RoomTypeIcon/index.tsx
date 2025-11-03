@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, type ViewStyle } from 'react-native';
+import { type ViewStyle } from 'react-native';
 import { type ImageStyle } from 'expo-image';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 import { CustomIcon, type TIconsName } from '../CustomIcon';

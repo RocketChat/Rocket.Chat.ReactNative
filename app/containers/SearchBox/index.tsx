@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, type TextInputProps, View } from 'react-native';
+import { View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';

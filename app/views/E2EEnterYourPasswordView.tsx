@@ -1,8 +1,9 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, AccessibilityInfo } from 'react-native';
+import { ScrollView, Text, AccessibilityInfo } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { encryptionDecodeKey } from '../actions/encryption';
 import Button from '../containers/Button';

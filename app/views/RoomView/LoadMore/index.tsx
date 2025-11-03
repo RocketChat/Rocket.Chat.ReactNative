@@ -1,6 +1,7 @@
 import React, { type ReactElement, useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
 import { type MessageType, type RoomType } from '../../../definitions';

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type ISubscription } from '../../definitions';
 import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';

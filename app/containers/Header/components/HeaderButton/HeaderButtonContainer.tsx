@@ -1,5 +1,6 @@
 import React from 'react';
-import { type StyleProp, StyleSheet, View, type ViewProps, type ViewStyle } from 'react-native';
+import { type StyleProp, View, type ViewProps, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { isAndroid, isTablet } from '../../../../lib/methods/helpers/deviceInfo';
 

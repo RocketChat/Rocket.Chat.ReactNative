@@ -1,5 +1,6 @@
 import { memo, type ReactElement, type RefObject } from 'react';
-import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { type LayoutChangeEvent, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type TMessageAction } from '../../../views/RoomView/context';
 import { type IComposerInput } from '../interfaces';

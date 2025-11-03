@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
 import Touchable from 'react-native-platform-touchable';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';

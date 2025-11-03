@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useContext } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 import {
 	UiKitParserMessage,
 	UiKitParserModal,
@@ -10,6 +10,7 @@ import {
 	type Markdown as IMarkdown,
 	type PlainText
 } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';

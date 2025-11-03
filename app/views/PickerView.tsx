@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
+import { FlatList, Text, type TextInputProps } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
 import * as List from '../containers/List';

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, Text, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, View, Text, type StyleProp, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';

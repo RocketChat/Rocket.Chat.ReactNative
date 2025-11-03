@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
+import { Text, unstable_batchedUpdates, View } from 'react-native';
 import DateTimePicker, { type BaseProps } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import moment from 'moment';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Button from '../Button';
 import { textParser } from './utils';
