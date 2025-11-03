@@ -2,27 +2,18 @@ import React from 'react';
 import { Pressable, View, Text, type StyleProp, type ViewStyle } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
+import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import Avatar from '../Avatar';
 
-const styles = StyleSheet.create(theme => ({
+const styles = StyleSheet.create({
 	pressable: {
 		paddingHorizontal: 8,
 		marginRight: 8,
 		borderRadius: 4,
 		justifyContent: 'center',
-		maxWidth: 192,
-		variants: {
-			pressed: {
-				true: {
-					backgroundColor: theme.surfaceNeutral
-				},
-				false: {
-					backgroundColor: theme.surfaceHover
-				}
-			}
-		}
+		maxWidth: 192
 	},
 	container: {
 		flexDirection: 'row',
@@ -38,13 +29,9 @@ const styles = StyleSheet.create(theme => ({
 	},
 	name: {
 		fontSize: 16,
-		color: theme.fontDefault,
 		...sharedStyles.textMedium
-	},
-	ripple: {
-		color: theme.surfaceNeutral
 	}
-}));
+});
 
 export interface IChip {
 	avatar?: string;
@@ -55,21 +42,27 @@ export interface IChip {
 }
 
 const Chip = ({ avatar, text, onPress, testID, style }: IChip) => {
+	const { colors } = useTheme();
+
 	return (
 		<Pressable
 			testID={testID}
-			style={({ pressed }) => {
-				styles.useVariants({ pressed });
-
-				return [styles.pressable, style];
-			}}
+			style={({ pressed }) => [
+				styles.pressable,
+				{
+					backgroundColor: pressed ? colors.surfaceNeutral : colors.surfaceHover
+				},
+				style
+			]}
 			disabled={!onPress}
 			onPress={() => onPress?.()}
-			android_ripple={styles.ripple}>
+			android_ripple={{
+				color: colors.surfaceNeutral
+			}}>
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				<View style={styles.textContainer}>
-					<Text style={styles.name} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 						{text}
 					</Text>
 				</View>

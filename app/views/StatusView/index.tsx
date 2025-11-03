@@ -1,11 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { StyleSheet } from 'react-native-unistyles';
 
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
@@ -22,6 +21,7 @@ import { setUserStatus } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
 import Check from '../../containers/Check';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
@@ -127,6 +127,7 @@ const StatusView = (): React.ReactElement => {
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
+	const { colors } = useTheme();
 
 	const submit = async () => {
 		const { status } = inputValues;
@@ -212,16 +213,10 @@ const StatusView = (): React.ReactElement => {
 					</>
 				}
 				ListFooterComponent={FooterComponent}
-				style={style.list}
+				style={{ backgroundColor: colors.surfaceTint }}
 			/>
 		</SafeAreaView>
 	);
 };
-
-const style = StyleSheet.create((theme) => ({
-    list: {
-        backgroundColor: theme.surfaceTint
-    }
-}));
 
 export default StatusView;

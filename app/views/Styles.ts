@@ -3,17 +3,17 @@ import { StyleSheet } from 'react-native-unistyles';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 
-const defaultTextStyle = StyleSheet.create((theme, rt) => ({
-	defaultTextStyle: {
-		textAlign: 'left',
-		backgroundColor: 'transparent',
-		...Platform.select({
-			android: {
-				includeFontPadding: false
-			}
-		})
-	}
-}))
+const defaultTextStyle = StyleSheet.create({
+	text: {
+        textAlign: 'left',
+        backgroundColor: 'transparent',
+        ...Platform.select({
+            android: {
+                includeFontPadding: false
+            }
+        })
+    }
+});
 
 export default StyleSheet.create({
 	container: {
@@ -77,7 +77,7 @@ export default StyleSheet.create({
 		borderLeftWidth: StyleSheet.hairlineWidth
 	},
 	textRegular: {
-		...defaultTextStyle.defaultTextStyle,
+		...defaultTextStyle.text,
 		...Platform.select({
 			ios: {
 				fontFamily: 'Inter',
@@ -89,7 +89,7 @@ export default StyleSheet.create({
 		})
 	},
 	textMedium: {
-		...defaultTextStyle.defaultTextStyle,
+		...defaultTextStyle.text,
 		...Platform.select({
 			ios: {
 				fontFamily: 'Inter',
@@ -101,7 +101,7 @@ export default StyleSheet.create({
 		})
 	},
 	textSemibold: {
-		...defaultTextStyle.defaultTextStyle,
+		...defaultTextStyle.text,
 		...Platform.select({
 			ios: {
 				fontFamily: 'Inter',
@@ -113,7 +113,7 @@ export default StyleSheet.create({
 		})
 	},
 	textBold: {
-		...defaultTextStyle.defaultTextStyle,
+		...defaultTextStyle.text,
 		...Platform.select({
 			ios: {
 				fontFamily: 'Inter',
