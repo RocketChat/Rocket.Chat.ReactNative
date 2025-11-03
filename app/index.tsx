@@ -39,7 +39,7 @@ import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 import StatusBar from './containers/StatusBar';
-import { performFullMigration } from './lib/methods/migrateMMKVStorage';
+import migrateFromOldMMKV from './lib/methods/migrateMMKVStorage';
 
 enableScreens();
 initStore(store);
@@ -127,7 +127,9 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		await performFullMigration();
+		// migrate data from react-native-mmkv-storage to react-native-mmkv on android;
+		await migrateFromOldMMKV();
+
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification

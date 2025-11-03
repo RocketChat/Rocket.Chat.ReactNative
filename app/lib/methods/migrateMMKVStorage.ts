@@ -1,16 +1,19 @@
 import { MMKV } from 'react-native-mmkv';
+import { Platform } from 'react-native';
 
-import MMKVReader from '../native/NativeMMKVReaderAndroid';
-import { isAndroid } from './helpers';
+import { isIOS } from './helpers';
+import NativeMMKVReaderAndroid from '../native/NativeMMKVReaderAndroid';
+
+const MMKVReader = Platform.select({
+	android: NativeMMKVReaderAndroid,
+	ios: null
+});
 
 export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newStorage?: MMKV) {
-	console.log('=== Starting MMKV Migration ===');
-	console.log(`Old instance ID: ${oldInstanceId}`);
-
 	const errors: string[] = [];
 
 	try {
-		if (!isAndroid) {
+		if (isIOS || !MMKVReader) {
 			return;
 		}
 
@@ -94,37 +97,4 @@ export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newS
 	}
 }
 
-/**
- * Complete migration with logging and verification
- */
-export async function performFullMigration(): Promise<void> {
-	console.log('\n');
-	console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-	console.log('🔄 MMKV Storage Migration');
-	console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-	console.log('\n');
-
-	try {
-		// Perform migration
-		const result: any = await migrateFromOldMMKV();
-
-		console.log('\n📊 Migration Results:');
-		console.log(`  ✓ Success: ${result.success}`);
-		console.log(`  ✓ Keys found: ${result.keysFound}`);
-		console.log(`  ✓ Keys migrated: ${result.keysMigrated}`);
-		console.log(`  ✓ Errors: ${result.errors.length}`);
-
-		if (result.errors.length > 0) {
-			console.error('\n❌ Errors during migration:');
-			result.errors.forEach((err: any) => console.error(`  - ${err}`));
-		}
-	} catch (error: any) {
-		console.error('Migration failed:', error.message);
-		throw error;
-	}
-}
-
-export default {
-	migrateFromOldMMKV,
-	performFullMigration
-};
+export default migrateFromOldMMKV;
