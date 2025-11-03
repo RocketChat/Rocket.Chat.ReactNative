@@ -11,9 +11,9 @@ import { isAndroid } from './deviceInfo';
 
 let themeListener: { remove: () => void } | null;
 
-export const initialTheme = (): IThemePreference => {
+export const initialTheme = () => {
 	const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
-	const initialTheme: IThemePreference = {
+	const initialTheme = {
 		currentTheme: defaultTheme(),
 		darkLevel: 'black'
 	};
