@@ -13,11 +13,11 @@ let themeListener: { remove: () => void } | null;
 
 export const initialTheme = () => {
 	const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
-	if(theme.currentTheme){
-        console.log('theme.currentTheme', theme)
-        return theme.currentTheme === 'dark' ? theme?.darkLevel || 'black' : theme.currentTheme;
-    }
-	return defaultTheme();
+	const initialTheme = {
+		currentTheme: defaultTheme(),
+		darkLevel: 'black'
+	};
+	return theme || initialTheme;
 };
 
 export const defaultTheme = (): TThemeMode => {
