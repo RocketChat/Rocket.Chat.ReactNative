@@ -187,7 +187,7 @@ public class Ejson {
         String userId = mmkv.decodeString(key);
         
         if (userId == null || userId.isEmpty()) {
-            Log.w(TAG, "No userId found in MMKV for server: " + sanitizeUrl(serverURL));
+            Log.w(TAG, "No userId found in MMKV for server: " + NotificationHelper.sanitizeUrl(serverURL));
             
             // Only list keys in debug builds for diagnostics
             if (BuildConfig.DEBUG) {
@@ -243,30 +243,5 @@ public class Ejson {
         String ciphertext;
         String kid;
         String iv;
-    }
-    
-    /**
-     * Sanitize URL for logging by removing sensitive information
-     * @param url The URL to sanitize
-     * @return Sanitized URL showing only the protocol and host
-     */
-    private String sanitizeUrl(String url) {
-        if (url == null) {
-            return "[null]";
-        }
-        try {
-            // Simple sanitization - just show protocol and host
-            if (url.startsWith("http://") || url.startsWith("https://")) {
-                int protocolEnd = url.indexOf("://") + 3;
-                int pathStart = url.indexOf("/", protocolEnd);
-                if (pathStart != -1) {
-                    return url.substring(0, pathStart);
-                }
-                return url;
-            }
-        } catch (Exception e) {
-            // If parsing fails, just return a generic placeholder
-        }
-        return "[url]";
     }
 }

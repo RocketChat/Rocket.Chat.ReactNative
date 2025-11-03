@@ -78,7 +78,7 @@ public class LoadNotification {
         final String serverURL = ejson.serverURL();
         final String messageId = ejson.messageId;
         
-        Log.d(TAG, "Notification payload - serverURL: " + sanitizeUrl(serverURL) + ", messageId: " + (messageId != null ? "[present]" : "[null]"));
+        Log.d(TAG, "Notification payload - serverURL: " + NotificationHelper.sanitizeUrl(serverURL) + ", messageId: " + (messageId != null ? "[present]" : "[null]"));
         
         // Validate required fields
         if (serverURL == null || serverURL.isEmpty()) {
@@ -119,7 +119,7 @@ public class LoadNotification {
         try {
             urlBuilder = HttpUrl.parse(serverURL.concat("/api/v1/push.get")).newBuilder();
         } catch (Exception e) {
-            Log.e(TAG, "Failed to parse server URL: " + sanitizeUrl(serverURL), e);
+            Log.e(TAG, "Failed to parse server URL: " + NotificationHelper.sanitizeUrl(serverURL), e);
             callback.call(null);
             return;
         }
@@ -130,7 +130,7 @@ public class LoadNotification {
                 .url(urlBuilder.addQueryParameter("id", messageId).build())
                 .build();
         
-        String sanitizedEndpoint = sanitizeUrl(serverURL) + "/api/v1/push.get";
+        String sanitizedEndpoint = NotificationHelper.sanitizeUrl(serverURL) + "/api/v1/push.get";
         Log.d(TAG, "Built request to endpoint: " + sanitizedEndpoint);
 
         runRequest(client, request, callback, sanitizedEndpoint);
@@ -230,25 +230,5 @@ public class LoadNotification {
             Log.e(TAG, "All retry attempts exhausted (" + TIMEOUT.length + " attempts). Notification load failed.");
             callback.call(null);
         }
-    }
-    
-    /**
-     * Sanitize URL for logging by removing sensitive information
-     * @param url The URL to sanitize
-     * @return Sanitized URL showing only the protocol and host
-     */
-    private String sanitizeUrl(String url) {
-        if (url == null) {
-            return "[null]";
-        }
-        try {
-            HttpUrl httpUrl = HttpUrl.parse(url);
-            if (httpUrl != null) {
-                return httpUrl.scheme() + "://" + httpUrl.host();
-            }
-        } catch (Exception e) {
-            // If parsing fails, just return a generic placeholder
-        }
-        return "[url]";
     }
 }
