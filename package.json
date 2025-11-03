@@ -116,7 +116,7 @@
 		"react-native-mime-types": "2.3.0",
 		"react-native-mmkv-storage": "^12.0.0",
 		"react-native-modal": "13.0.1",
-		"react-native-nitro-modules": "^0.31.4",
+		"react-native-nitro-modules": "0.31.4",
 		"react-native-notifications": "5.1.0",
 		"react-native-notifier": "1.6.1",
 		"react-native-picker-select": "9.0.1",
