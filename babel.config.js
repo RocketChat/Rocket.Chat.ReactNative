@@ -11,7 +11,7 @@ module.exports = {
 		'react-native-reanimated/plugin',
 		'@babel/plugin-transform-named-capturing-groups-regex',
 		['module:react-native-dotenv'],
-		['react-native-unistyles/babel-plugin', { root: 'app' }],
+		['react-native-unistyles/plugin', { root: 'app' }],
 	],
 	env: {
 		production: {
