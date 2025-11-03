@@ -12,7 +12,7 @@ declare module 'react-native-unistyles' {
 }
 
 const settings = {
-	initialTheme: initialTheme().currentTheme as keyof UnistylesThemes
+	initialTheme: 'black' as keyof UnistylesThemes
 };
 
 StyleSheet.configure({
