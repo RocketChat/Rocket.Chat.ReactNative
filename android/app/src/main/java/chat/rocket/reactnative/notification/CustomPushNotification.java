@@ -69,6 +69,20 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
+        // Validate notification ID at entry point - fail fast if invalid
+        Bundle bundle = mNotificationProps.asBundle();
+        String notId = bundle.getString("notId");
+        
+        if (notId == null || notId.isEmpty()) {
+            throw new InvalidNotificationException("Missing notification ID");
+        }
+        
+        try {
+            Integer.parseInt(notId); // Validate format
+        } catch (NumberFormatException e) {
+            throw new InvalidNotificationException("Invalid notification ID format: " + notId);
+        }
+        
         // Check if React is ready - needed for MMKV access (avatars, encryption, message-id-only)
         if (!mAppLifecycleFacade.isReactInitialized()) {
             android.util.Log.w(TAG, "React not initialized yet, waiting before processing notification...");
@@ -208,6 +222,8 @@ public class CustomPushNotification extends PushNotification {
             if (ENABLE_VERBOSE_LOGS) {
                 android.util.Log.d(TAG, "[After add] notificationMessages[" + notId + "].size=" + notificationMessages.get(notId).size());
             }
+            
+            // notId validated at entry point, safe to parse
             postNotification(Integer.parseInt(notId));
             notifyReceivedToJS();
         }
@@ -250,7 +266,9 @@ public class CustomPushNotification extends PushNotification {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
 
+        // notId validated at entry point in onReceived(), safe to parse
         Integer notificationId = Integer.parseInt(notId);
+        
         notificationColor(notification);
         notificationChannel(notification);
         notificationIcons(notification, bundle);
@@ -278,9 +296,13 @@ public class CustomPushNotification extends PushNotification {
                     if (ejson != null && notEjson != null && ejson.serverURL().equals(notEjson.serverURL())) {
                         String id = not.getString("notId");
                         // cancel this notification
-                        notificationManager.cancel(Integer.parseInt(id));
-                        if (ENABLE_VERBOSE_LOGS) {
-                            android.util.Log.d(TAG, "Cancelled previous fallback notification from same server");
+                        try {
+                            notificationManager.cancel(Integer.parseInt(id));
+                            if (ENABLE_VERBOSE_LOGS) {
+                                android.util.Log.d(TAG, "Cancelled previous fallback notification from same server");
+                            }
+                        } catch (NumberFormatException e) {
+                            android.util.Log.e(TAG, "Invalid notification ID for cancel: " + id, e);
                         }
                     }
                 }
