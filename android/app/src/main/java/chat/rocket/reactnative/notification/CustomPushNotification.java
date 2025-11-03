@@ -69,7 +69,6 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
-        // Validate notification ID at entry point - fail fast if invalid
         Bundle bundle = mNotificationProps.asBundle();
         String notId = bundle.getString("notId");
         
@@ -78,7 +77,7 @@ public class CustomPushNotification extends PushNotification {
         }
         
         try {
-            Integer.parseInt(notId); // Validate format
+            Integer.parseInt(notId);
         } catch (NumberFormatException e) {
             throw new InvalidNotificationException("Invalid notification ID format: " + notId);
         }
@@ -109,10 +108,18 @@ public class CustomPushNotification extends PushNotification {
                 
                 if (mAppLifecycleFacade.isReactInitialized()) {
                     android.util.Log.i(TAG, "React initialized after " + (attempts * 100) + "ms, proceeding with notification");
-                    handleNotification();
+                    try {
+                        handleNotification();
+                    } catch (Exception e) {
+                        android.util.Log.e(TAG, "Failed to process notification after React initialization", e);
+                    }
                 } else {
                     android.util.Log.e(TAG, "Timeout waiting for React initialization after " + (maxAttempts * 100) + "ms, processing without MMKV");
-                    handleNotification();
+                    try {
+                        handleNotification();
+                    } catch (Exception e) {
+                        android.util.Log.e(TAG, "Failed to process notification without React context", e);
+                    }
                 }
             }).start();
             
@@ -122,7 +129,13 @@ public class CustomPushNotification extends PushNotification {
         if (ENABLE_VERBOSE_LOGS) {
             android.util.Log.d(TAG, "React already initialized, proceeding with notification");
         }
-        handleNotification();
+        
+        try {
+            handleNotification();
+        } catch (Exception e) {
+            android.util.Log.e(TAG, "Failed to process notification on main thread", e);
+            throw new InvalidNotificationException("Notification processing failed: " + e.getMessage());
+        }
     }
     
     private void handleNotification() {
@@ -222,8 +235,6 @@ public class CustomPushNotification extends PushNotification {
             if (ENABLE_VERBOSE_LOGS) {
                 android.util.Log.d(TAG, "[After add] notificationMessages[" + notId + "].size=" + notificationMessages.get(notId).size());
             }
-            
-            // notId validated at entry point, safe to parse
             postNotification(Integer.parseInt(notId));
             notifyReceivedToJS();
         }
@@ -266,9 +277,7 @@ public class CustomPushNotification extends PushNotification {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
 
-        // notId validated at entry point in onReceived(), safe to parse
         Integer notificationId = Integer.parseInt(notId);
-        
         notificationColor(notification);
         notificationChannel(notification);
         notificationIcons(notification, bundle);
