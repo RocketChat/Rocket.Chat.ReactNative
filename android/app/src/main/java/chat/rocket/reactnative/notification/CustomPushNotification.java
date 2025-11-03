@@ -167,7 +167,9 @@ public class CustomPushNotification extends PushNotification {
                         android.util.Log.d(TAG, "[BEFORE createProps] bundle has ejson=" + (bundle.getString("ejson") != null));
                     }
                     
-                    mNotificationProps = createProps(bundle);
+                    synchronized(CustomPushNotification.this) {
+                        mNotificationProps = createProps(bundle);
+                    }
                     
                     if (ENABLE_VERBOSE_LOGS) {
                         // AFTER createProps - verify it worked
@@ -305,13 +307,15 @@ public class CustomPushNotification extends PushNotification {
                     if (ejson != null && notEjson != null && ejson.serverURL().equals(notEjson.serverURL())) {
                         String id = not.getString("notId");
                         // cancel this notification
-                        try {
-                            notificationManager.cancel(Integer.parseInt(id));
-                            if (ENABLE_VERBOSE_LOGS) {
-                                android.util.Log.d(TAG, "Cancelled previous fallback notification from same server");
+                        if (notificationManager != null) {
+                            try {
+                                notificationManager.cancel(Integer.parseInt(id));
+                                if (ENABLE_VERBOSE_LOGS) {
+                                    android.util.Log.d(TAG, "Cancelled previous fallback notification from same server");
+                                }
+                            } catch (NumberFormatException e) {
+                                android.util.Log.e(TAG, "Invalid notification ID for cancel: " + id, e);
                             }
-                        } catch (NumberFormatException e) {
-                            android.util.Log.e(TAG, "Invalid notification ID for cancel: " + id, e);
                         }
                     }
                 }
@@ -407,7 +411,11 @@ public class CustomPushNotification extends PushNotification {
                     NotificationManager.IMPORTANCE_HIGH);
 
             final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            } else {
+                android.util.Log.e(TAG, "NotificationManager is null, cannot create notification channel");
+            }
 
             notification.setChannelId(CHANNEL_ID);
         }

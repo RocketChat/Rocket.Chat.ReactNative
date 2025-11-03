@@ -66,7 +66,7 @@ public class Ejson {
      * needs access to React-specific keystore resources. This means MMKV cannot be initialized
      * before React Native starts.
      */
-    private void ensureMMKVInitialized() {
+    private synchronized void ensureMMKVInitialized() {
         if (initializationAttempted) {
             return;
         }
