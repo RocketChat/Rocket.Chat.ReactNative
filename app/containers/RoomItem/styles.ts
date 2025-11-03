@@ -6,7 +6,7 @@ export const ACTION_WIDTH = 80;
 export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 2.5;
 
-export default StyleSheet.create(() => ({
+export default StyleSheet.create({
 	flex: {
 		flex: 1
 	},
@@ -107,4 +107,4 @@ export default StyleSheet.create(() => ({
 	typeIcon: {
 		justifyContent: 'center'
 	}
-}));
+});
