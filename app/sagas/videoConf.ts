@@ -148,7 +148,6 @@ function* handleVideoConfIncomingWebsocketMessages({ data }: { data: any }) {
 			yield call(onDirectCall, prop);
 			break;
 		case 'canceled':
-			console.log('CANCELLED', prop);
 			yield call(onDirectCallCanceled, prop);
 			break;
 		case 'accepted':

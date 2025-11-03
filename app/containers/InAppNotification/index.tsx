@@ -11,7 +11,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { setInAppFeedback } from '../../actions/inAppFeedback';
 import I18n from '../../i18n';
 
-export const INAPP_NOTIFICATION_EMITTER = 'Notifica	tionInApp';
+export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
 const InAppNotification = memo(() => {
 	const { appState, subscribedRoom } = useAppSelector(state => ({
