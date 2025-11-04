@@ -55,7 +55,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	const handlePress = () => {
 		logEvent(events.ROOM_MENTION_GO_USER_INFO);
 		const navParam = {
-			t: atMentioned?.type === 'user' ? 'd' : 'team',
+			t: 'd',
 			rid: atMentioned && atMentioned._id,
 			itsMe
 		};
@@ -73,7 +73,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		}
 
 		return (
-			<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
+			// not enough information on mentions to navigate to team info, so we don't handle onPress
+			<Text style={[styles.mention, mentionStyle, ...style]} onPress={atMentioned?.type === 'team' ? undefined : handlePress}>
 				{preffix}
 				{text}
 			</Text>
