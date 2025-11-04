@@ -17,27 +17,27 @@ const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
 		const timestamp = parseInt(value.timestamp) * 1000;
 
 		if (value.format === 't') {
-			return moment(timestamp).format('LT');
+			return moment(timestamp).format('hh:mm A');
 		}
 
 		if (value.format === 'T') {
-			return moment(timestamp).format('LTS');
+			return moment(timestamp).format('hh:mm:ss A');
 		}
 
 		if (value.format === 'd') {
-			return moment(timestamp).format('L');
+			return moment(timestamp).format('MM/DD/YYYY');
 		}
 
 		if (value.format === 'D') {
-			return moment(timestamp).format('LL');
+			return moment(timestamp).format('dddd, MMM DD, YYYY');
 		}
 
 		if (value.format === 'f') {
-			return moment(timestamp).format('LLL');
+			return moment(timestamp).format('dddd, MMM DD, YYYY hh:mm A');
 		}
 
 		if (value.format === 'F') {
-			return moment(timestamp).format('LLLL');
+			return moment(timestamp).format('dddd, MMM DD, YYYY hh:mm:ss A');
 		}
 
 		if (value.format === 'R') {
