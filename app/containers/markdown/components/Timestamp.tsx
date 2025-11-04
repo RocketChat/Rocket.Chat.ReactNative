@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from 'react-native';
 import moment from 'moment';
 
-import styles from '../styles';
 import { useTheme } from '../../../theme';
 import { LISTENER } from '../../../containers/Toast';
 import EventEmitter from '../../../lib/methods/helpers/events';
@@ -48,15 +47,15 @@ const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
         return "Invalid Date";
     }, [value]);
 
-    const handlePress = () => {
+    const handlePress = React.useCallback(() => {
         const message = moment(parseInt(value.timestamp) * 1000).format('dddd, MMM DD, YYYY hh:mm A');
         EventEmitter.emit(LISTENER, { message });
-    }
+    }, [value.timestamp]);
 
     return (
-            <Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault, lineHeight: 22 }} onPress={handlePress}>
-                {` ${formatDate} `}
-            </Text>
+        <Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault, lineHeight: 22 }} onPress={handlePress}>
+            {` ${formatDate} `}
+        </Text>
     )
 }
 
