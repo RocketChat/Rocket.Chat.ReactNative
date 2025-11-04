@@ -714,6 +714,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -866,6 +867,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -1025,6 +1027,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -1540,6 +1543,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -1692,6 +1696,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -1851,6 +1856,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -2200,6 +2206,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -2638,6 +2645,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -2790,6 +2798,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -2949,6 +2958,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -3464,6 +3474,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -3616,6 +3627,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -3775,6 +3787,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -4124,6 +4137,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#E4E7EA",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -4562,6 +4576,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -4714,6 +4729,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -4873,6 +4889,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -5388,6 +5405,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -5540,6 +5558,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -5699,6 +5718,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -6048,6 +6068,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }

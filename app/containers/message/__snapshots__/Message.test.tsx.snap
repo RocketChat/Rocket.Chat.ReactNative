@@ -309,6 +309,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -664,6 +665,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -1122,6 +1124,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -1770,6 +1773,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -2315,6 +2319,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -2657,6 +2662,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -2991,6 +2997,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -3329,6 +3336,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -3667,6 +3675,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -4022,6 +4031,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -4364,6 +4374,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -4719,6 +4730,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -5061,6 +5073,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -5445,6 +5458,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                               },
                               {
                                 "color": "#2F343D",
+                                "marginTop": 0,
                               },
                             ]
                           }
@@ -5820,6 +5834,7 @@ Testing block quote"
                               },
                               {
                                 "color": "#2F343D",
+                                "marginTop": 0,
                               },
                             ]
                           }
@@ -5869,6 +5884,7 @@ Testing block quote"
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -6253,6 +6269,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                               },
                               {
                                 "color": "#2F343D",
+                                "marginTop": 0,
                               },
                             ]
                           }
@@ -6628,6 +6645,7 @@ Testing block quote"
                               },
                               {
                                 "color": "#2F343D",
+                                "marginTop": 0,
                               },
                             ]
                           }
@@ -6677,6 +6695,7 @@ Testing block quote"
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -7032,6 +7051,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -7502,6 +7522,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -7972,6 +7993,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -8563,6 +8585,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -8658,6 +8681,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -8744,6 +8768,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -8809,6 +8834,7 @@ exports[`Story Snapshots: CollapsedAttachments should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -9164,6 +9190,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -9755,6 +9782,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -9850,6 +9878,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -9936,6 +9965,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -10001,6 +10031,7 @@ exports[`Story Snapshots: CollapsedAttachmentsLargeFont should match snapshot 1`
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -10479,6 +10510,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -10565,6 +10597,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -10745,6 +10778,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -10831,6 +10865,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -11011,6 +11046,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -11097,6 +11133,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -11581,6 +11618,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -11667,6 +11705,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -11847,6 +11886,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -11933,6 +11973,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -12113,6 +12154,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -12199,6 +12241,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -12664,6 +12707,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -12759,6 +12803,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -12845,6 +12890,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -12910,6 +12956,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -13356,6 +13403,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -13451,6 +13499,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -13537,6 +13586,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -13623,6 +13673,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -13709,6 +13760,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -13795,6 +13847,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -13860,6 +13913,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -14319,6 +14373,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -14414,6 +14469,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -14500,6 +14556,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -14565,6 +14622,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -15011,6 +15069,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -15106,6 +15165,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -15192,6 +15252,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -15278,6 +15339,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -15364,6 +15426,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -15450,6 +15513,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -15515,6 +15579,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -15870,6 +15935,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -16274,6 +16340,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -16470,6 +16537,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -16819,6 +16887,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -17218,6 +17287,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -17573,6 +17643,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -17977,6 +18048,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -18173,6 +18245,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -18522,6 +18595,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -18921,6 +18995,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -23014,6 +23089,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -23166,6 +23242,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -23600,6 +23677,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -23752,6 +23830,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -24150,6 +24229,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -24505,6 +24585,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -26611,6 +26692,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -28774,6 +28856,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -29257,6 +29340,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -29409,6 +29493,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -29900,6 +29985,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -31048,6 +31134,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -31461,6 +31548,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -31910,6 +31998,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -32353,6 +32442,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -32505,6 +32595,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -33039,6 +33130,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -33191,6 +33283,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -33682,6 +33775,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -34830,6 +34924,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -35243,6 +35338,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -35692,6 +35788,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -36135,6 +36232,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -36287,6 +36385,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -36787,6 +36886,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -36905,6 +37005,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -37375,6 +37476,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -37493,6 +37595,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -38060,6 +38163,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -38536,6 +38640,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -39012,6 +39117,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -39457,6 +39563,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -39565,6 +39672,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenames should match snapshot 1`]
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -40414,6 +40522,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -40890,6 +40999,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -41366,6 +41476,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -41811,6 +41922,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -41919,6 +42031,7 @@ exports[`Story Snapshots: FileAttachmentsWithFilenamesLargeFont should match sna
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -42634,6 +42747,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -42989,6 +43103,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -43344,6 +43459,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -43686,6 +43802,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -43838,6 +43955,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -43997,6 +44115,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -44346,6 +44465,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -44701,6 +44821,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -45043,6 +45164,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -45195,6 +45317,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -45354,6 +45477,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -45703,6 +45827,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -46476,6 +46601,7 @@ exports[`Story Snapshots: InlineKatex should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -46817,6 +46943,7 @@ exports[`Story Snapshots: InlineKatexLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -50978,6 +51105,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -51356,6 +51484,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -51733,6 +51862,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -52146,6 +52276,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -52525,6 +52656,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -52898,6 +53030,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -53341,6 +53474,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -53889,6 +54023,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -54007,6 +54142,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -54372,6 +54508,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -54974,6 +55111,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -55352,6 +55490,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -55729,6 +55868,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -56142,6 +56282,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -56521,6 +56662,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -56894,6 +57036,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -57337,6 +57480,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -57885,6 +58029,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -58003,6 +58148,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -58368,6 +58514,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -58970,6 +59117,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -59456,6 +59604,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -59972,6 +60121,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -60458,6 +60608,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -61300,6 +61451,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -61452,6 +61604,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -61863,6 +62016,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -62015,6 +62169,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -62439,6 +62594,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -62591,6 +62747,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -63002,6 +63159,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -63154,6 +63312,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -63651,6 +63810,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -63714,6 +63874,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -64160,6 +64321,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -64351,6 +64513,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -64441,6 +64604,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -64501,6 +64665,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -64961,6 +65126,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -65184,6 +65350,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -65644,6 +65811,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -65916,6 +66084,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -66425,6 +66594,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -66890,6 +67060,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -66998,6 +67169,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -67640,6 +67812,7 @@ exports[`Story Snapshots: MessageWithReplyAndFile should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -68149,6 +68322,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -68614,6 +68788,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -68722,6 +68897,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -69364,6 +69540,7 @@ exports[`Story Snapshots: MessageWithReplyAndFileLargeFont should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -69823,6 +70000,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -69886,6 +70064,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -70332,6 +70511,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -70427,6 +70607,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -70887,6 +71068,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -71110,6 +71292,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -71570,6 +71753,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -71842,6 +72026,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -72197,6 +72382,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -74701,6 +74887,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -77235,6 +77422,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -77387,6 +77575,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -77809,6 +77998,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -77961,6 +78151,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -78353,6 +78544,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -79204,6 +79396,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -80496,6 +80689,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -81347,6 +81541,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -82639,6 +82834,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -83841,6 +84037,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -86859,6 +87056,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -87267,6 +87465,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -87370,6 +87569,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -87432,6 +87632,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -87853,6 +88054,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -88261,6 +88463,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -88364,6 +88567,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -88426,6 +88630,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -88843,6 +89048,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -89198,6 +89404,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -98326,6 +98533,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -98686,6 +98894,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -99144,6 +99353,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -99247,6 +99457,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -99705,6 +99916,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -99808,6 +100020,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -100163,6 +100376,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -100518,6 +100732,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -100908,6 +101123,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -101298,6 +101514,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -101757,6 +101974,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -101852,6 +102070,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -101938,6 +102157,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -102102,6 +102322,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -102197,6 +102418,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -102283,6 +102505,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -102359,6 +102582,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -102818,6 +103042,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -102913,6 +103138,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -102999,6 +103225,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -103163,6 +103390,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -103258,6 +103486,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -103344,6 +103573,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                       },
                                       {
                                         "color": "#2F343D",
+                                        "marginTop": 0,
                                       },
                                     ]
                                   }
@@ -103420,6 +103650,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -104252,6 +104483,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -106820,6 +107052,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -107512,6 +107745,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -107873,6 +108107,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -108247,6 +108482,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -108608,6 +108844,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -108974,6 +109211,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -109402,6 +109640,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -109572,6 +109811,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -110596,6 +110836,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -111496,6 +111737,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -111924,6 +112166,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -112094,6 +112337,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -113501,6 +113745,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -113559,6 +113804,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -113827,6 +114073,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -113885,6 +114132,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -114052,6 +114300,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -114110,6 +114359,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -114588,6 +114838,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -114646,6 +114897,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -114914,6 +115166,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                                   },
                                   {
                                     "color": "#2F343D",
+                                    "marginTop": 0,
                                   },
                                 ]
                               }
@@ -114972,6 +115225,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -115378,6 +115632,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -115879,6 +116134,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -115949,6 +116205,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -116202,6 +116459,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -116904,6 +117162,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -117448,6 +117707,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -117960,6 +118220,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -118504,6 +118765,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -119048,6 +119310,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -119678,6 +119941,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -120321,6 +120585,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                             },
                             {
                               "color": "#2F343D",
+                              "marginTop": 0,
                             },
                           ]
                         }
@@ -121054,6 +121319,7 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
@@ -121226,6 +121492,7 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
                           },
                           {
                             "color": "#2F343D",
+                            "marginTop": 0,
                           },
                         ]
                       }
