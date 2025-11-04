@@ -202,10 +202,10 @@ RCT_EXPORT_METHOD(readAndDecryptMMKV:(NSString *)mmkvId
                     RCTLogInfo(@"   Value: %@", displayValue);
                 } else {
                     // Try as int
-                    int32_t intValue;
-                    bool hasInt = mmkv->getInt32(keyStr, intValue, INT32_MIN);
+                    int32_t intValue = 0;
+                    bool hasInt = mmkv->getInt32(keyStr, intValue);
                     
-                    if (hasInt && intValue != INT32_MIN) {
+                    if (hasInt) {
                         result[key] = @(intValue);
                         intCount++;
                         RCTLogInfo(@"🔢 Int Key: %@ = %d", key, intValue);

@@ -1,6 +1,6 @@
-import { type TurboModule, TurboModuleRegistry } from 'react-native';
+import { NativeModules } from 'react-native';
 
-export interface Spec extends TurboModule {
+export interface Spec {
 	getStoragePath(): Promise<{
 		filesDir: string;
 		mmkvDir: string;
@@ -17,4 +17,4 @@ export interface Spec extends TurboModule {
 	readAndDecryptMMKV(mmkvId: string): Promise<Record<string, string>>;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('MMKVReader');
+export default NativeModules.MMKVReader as Spec;
