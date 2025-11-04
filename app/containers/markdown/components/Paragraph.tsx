@@ -6,7 +6,6 @@ import Inline from './Inline';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants/colors';
-import Timestamp from './Timestamp';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
@@ -31,14 +30,6 @@ const Paragraph = ({ value }: IParagraphProps) => {
 			return null;
 		}
 		forceTrim = true;
-	}
-
-	if (value?.[0]?.type === 'TIMESTAMP') {
-		return (
-			<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
-				<Timestamp value={value?.[0]?.value} />
-			</Text>
-		);
 	}
 
 	return (
