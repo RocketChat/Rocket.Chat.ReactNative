@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import moment from 'moment';
 
 import { useTheme } from '../../../theme';
-import { LISTENER } from "../../Toast";
+import { LISTENER } from '../../Toast';
 import EventEmitter from '../../../lib/methods/helpers/events';
 
 interface ITimestampProps {
