@@ -1,8 +1,8 @@
 import { device, waitFor, element, by } from 'detox';
 
 import data from '../../data';
-import { sleep, navigateToLogin, login, checkServer, platformTypes, TTextMatcher, signup } from '../../helpers/app';
-import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
+import { sleep, navigateToLogin, login, checkServer, platformTypes, type TTextMatcher, signup } from '../../helpers/app';
+import { createRandomUser, deleteCreatedUsers, type IDeleteCreateUser, type ITestUser } from '../../helpers/data_setup';
 
 describe('Delete server', () => {
 	let alertButtonType: string;
@@ -29,7 +29,7 @@ describe('Delete server', () => {
 	it('should add server', async () => {
 		await sleep(5000);
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-servers-list')))
+		await waitFor(element(by.id('rooms-list-header-server-add')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id('rooms-list-header-server-add')).tap();
@@ -56,14 +56,14 @@ describe('Delete server', () => {
 
 	it('should delete server', async () => {
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-servers-list')))
+		await waitFor(element(by.id(`server-item-${data.server}`)))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id(`server-item-${data.server}`)).longPress(1500);
 		await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(5000);
 		await waitFor(element(by.id(`server-item-${data.server}`)))
 			.toBeNotVisible()

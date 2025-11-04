@@ -1,0 +1,108 @@
+name: Build Android And Upload
+
+on:
+  workflow_call:
+    inputs:
+      type:
+        type: string
+        required: true
+      trigger:
+        type: string
+        required: false
+        default: pr
+
+jobs:
+  build-hold:
+    name: Hold
+    runs-on: ubuntu-latest
+    if: ${{ inputs.trigger == 'pr' }}
+    environment: official_android_build
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  build-android:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: build-hold
+    if: ${{ inputs.type == 'official' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
+    outputs:
+      BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Fetch supported versions from Cloud
+        uses: ./.github/actions/fetch-supported-versions
+        with:
+          build_name: 'android-official'
+
+      - name: Generate Build Version
+        id: version
+        uses: ./.github/actions/generate-build-version
+        with:
+          RN_VARIABLES_PAT: ${{ secrets.RN_VARIABLES_PAT }}
+
+      - name: Build Android
+        uses: ./.github/actions/build-android
+        timeout-minutes: 40
+        with:
+          type: official
+          GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
+          KEYSTORE_OFFICIAL_BASE64: ${{ secrets.KEYSTORE_OFFICIAL_BASE64 }}
+          KEYSTORE_OFFICIAL: ${{ secrets.KEYSTORE_OFFICIAL }}
+          KEYSTORE_OFFICIAL_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
+          KEYSTORE_OFFICIAL_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
+          BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
+          BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
+
+  upload-hold:
+    name: Upload Hold
+    runs-on: ubuntu-latest
+    if: ${{ inputs.trigger == 'pr' }}
+    environment: upload_official_android
+    needs: [build-android]
+    outputs:
+      BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  upload-android:
+    name: Upload
+    runs-on: ubuntu-latest
+    needs: [upload-hold]
+    if: ${{ inputs.type == 'official' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped')) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Upload Android
+        uses: ./.github/actions/upload-android
+        with:
+          type: official
+          trigger: ${{ inputs.trigger }}
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_VERSION: ${{ needs.upload-hold.outputs.BUILD_VERSION }}
+        
+  upload-internal:
+    name: Internal Sharing
+    runs-on: ubuntu-latest
+    needs: [build-android]
+    if: ${{ inputs.type == 'official' && inputs.trigger == 'pr' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+      
+      - name: Upload Internal Sharing
+        uses: ./.github/actions/upload-internal-android
+        with:
+          type: official
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_VERSION: ${{ needs.build-android.outputs.BUILD_VERSION }}

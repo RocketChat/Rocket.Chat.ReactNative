@@ -6,9 +6,9 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
-import { ICreateDiscussionViewSelectUsers } from './interfaces';
-import { SubscriptionType, IUser } from '../../definitions';
-import { search } from '../../lib/methods';
+import { type ICreateDiscussionViewSelectUsers } from './interfaces';
+import { SubscriptionType, type IUser } from '../../definitions';
+import { search } from '../../lib/methods/search';
 import { getRoomAvatar, getRoomTitle } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 
@@ -72,6 +72,7 @@ const SelectUsers = ({
 				placeholder={{ text: I18n.t('Select_Users') }}
 				context={BlockContext.FORM}
 				multiselect
+				testID='create-discussion-select-users'
 			/>
 		</View>
 	);

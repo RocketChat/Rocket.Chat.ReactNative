@@ -1,4 +1,4 @@
-import { IShareAttachment } from '../../../definitions';
+import { type IShareAttachment } from '../../../definitions';
 
 export const canUploadFile = ({
 	file,
@@ -24,7 +24,7 @@ export const canUploadFile = ({
 	if (!allowList || allowList === '*') {
 		return { success: true };
 	}
-	const allowedMime = allowList.split(',');
+	const allowedMime = allowList.replaceAll(' ', '').split(',');
 	if (allowedMime.includes(file.mime!)) {
 		return { success: true };
 	}

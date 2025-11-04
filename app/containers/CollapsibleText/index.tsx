@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { TextStyle, Text, StyleSheet } from 'react-native';
+import { type TextStyle, Text, StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { previewFormatText } from '../../lib/helpers/previewFormatText';
+import usePreviewFormatText from '../../lib/hooks/usePreviewFormatText';
 
 interface ICollapsibleText {
 	msg?: string;
@@ -29,12 +29,13 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 	const [showTruncated, setShowTruncated] = useState(true);
 
 	const { colors } = useTheme();
+	const formattedText = usePreviewFormatText(msg ?? '');
 
 	if (!msg) {
 		return null;
 	}
 
-	const m = previewFormatText(msg);
+	const m = formattedText;
 
 	if (truncatedText && showTruncated) {
 		return (

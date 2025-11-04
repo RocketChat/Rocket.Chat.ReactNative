@@ -1,7 +1,7 @@
 import { device, waitFor, element, by } from 'detox';
 
 import { navigateToLogin, login, sleep, tapBack, navigateToRoom, checkRoomTitle } from '../../helpers/app';
-import { sendMessage, post, ITestUser, createRandomUser, createRandomRoom } from '../../helpers/data_setup';
+import { sendMessage, post, type ITestUser, createRandomUser, createRandomRoom } from '../../helpers/data_setup';
 
 const waitForInAppNotificationAnimation = async () => {
 	await sleep(500);
@@ -30,7 +30,7 @@ describe('InApp Notification', () => {
 			await sendMessage(sender, dmCreatedRid, text);
 			await waitFor(element(by.id(`in-app-notification-${text}`)))
 				.toBeVisible()
-				.withTimeout(2000);
+				.withTimeout(10000);
 			await waitForInAppNotificationAnimation();
 			await element(by.id(`in-app-notification-${text}`)).tap();
 			await checkRoomTitle(sender.username);

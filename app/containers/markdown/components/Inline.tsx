@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
+import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
@@ -63,7 +63,7 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 							/>
 						);
 					case 'EMOJI':
-						return <Emoji block={block} />;
+						return <Emoji block={block} index={index} />;
 					case 'MENTION_CHANNEL':
 						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':

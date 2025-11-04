@@ -1,7 +1,7 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, login, sleep, platformTypes, TTextMatcher, navigateToRoom } from '../../helpers/app';
-import { createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { navigateToLogin, login, sleep, platformTypes, type TTextMatcher, navigateToRoom } from '../../helpers/app';
+import { createRandomUser, type ITestUser, sendMessage } from '../../helpers/data_setup';
 
 describe('Mark as unread', () => {
 	let user: ITestUser;
@@ -32,6 +32,7 @@ describe('Mark as unread', () => {
 					.toBeVisible()
 					.withTimeout(3000);
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300);
 				await element(by[textMatcher]('Mark unread')).atIndex(0).tap();
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()

@@ -4,12 +4,12 @@ import { useTheme } from '../../../../theme';
 const MAX_HEIGHT = 216;
 
 export const useStyle = () => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const styles = {
 		root: {
 			maxHeight: MAX_HEIGHT,
-			left: 8,
-			right: 8,
 			backgroundColor: colors.surfaceNeutral,
 			position: 'absolute',
 			borderRadius: 4,
@@ -49,6 +49,7 @@ export const useStyle = () => {
 		cannedTitleText: { ...sharedStyles.textRegular, flex: 1, fontSize: 14, color: colors.fontHint },
 		cannedSubtitle: { flex: 1, flexDirection: 'row', alignItems: 'center', paddingTop: 2 },
 		cannedSubtitleText: { ...sharedStyles.textRegular, fontSize: 14, color: colors.fontSecondaryInfo, flex: 1 },
+		userRoomContainer: { flex: 1, justifyContent: 'center', flexDirection: 'row' },
 		userRoom: { flex: 1, justifyContent: 'center' },
 		userRoomHeader: { flex: 1, flexDirection: 'row', alignItems: 'center' },
 		userRoomTitleText: { ...sharedStyles.textBold, fontSize: 14, color: colors.fontDefault },

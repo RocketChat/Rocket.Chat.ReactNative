@@ -1,33 +1,43 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { Observable, Subscription } from 'rxjs';
+import { type Dispatch } from 'redux';
+import { type Observable, type Subscription } from 'rxjs';
 
-import { TActionSheetOptionsItem } from '../../containers/ActionSheet';
-import * as HeaderButton from '../../containers/HeaderButton';
-import { IApplicationState, ISubscription, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { type TActionSheetOptionsItem } from '../../containers/ActionSheet';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
+import {
+	type IApplicationState,
+	type ISubscription,
+	type SubscriptionType,
+	type TMessageModel,
+	type TSubscriptionModel,
+	type TUserStatus
+} from '../../definitions';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import i18n from '../../i18n';
 import database from '../../lib/database';
 import { hasPermission, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
-import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
+import { getDepartmentInfo, getTagsList, onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
-import { TNavigation } from '../../stacks/stackType';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type TNavigation } from '../../stacks/stackType';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { HeaderCallButton } from './components';
-import { TColors, TSupportedThemes, withTheme } from '../../theme';
+import { type TColors, type TSupportedThemes, withTheme } from '../../theme';
+import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
 	threadsEnabled: boolean;
 	tmid?: string;
 	teamId?: string;
+	roomName?: string;
+	teamMain?: boolean;
+	isGroupChat?: boolean;
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
 	joined: boolean;
@@ -50,7 +60,6 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	notificationsDisabled?: boolean;
 	hasE2EEWarning: boolean;
 	toggleRoomE2EEncryptionPermission?: string[];
-	onLayout: Function;
 }
 
 interface IRigthButtonsState {
@@ -266,14 +275,14 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			let tagsList: ILivechatTag[] | undefined;
 
 			if (departmentId) {
-				const result = await Services.getDepartmentInfo(departmentId);
+				const result = await getDepartmentInfo(departmentId);
 				if (result.success) {
 					departmentInfo = result.department as ILivechatDepartment;
 				}
 			}
 
 			if (departmentInfo?.requestTagBeforeClosingChat) {
-				tagsList = await Services.getTagsList();
+				tagsList = await getTagsList();
 			}
 
 			if (rid) {
@@ -429,15 +438,43 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return status === 'queued';
 	};
 
-	onLayout = (l: any) => {
-		const { onLayout } = this.props;
-		onLayout(l);
+	threadsAccessibilityLabel = () => {
+		const { tunreadGroup, tunreadUser, tunread } = this.state;
+
+		if (!tunread.length) {
+			return i18n.t('Threads');
+		}
+		if (tunreadUser?.length) {
+			return i18n.t('Threads_dm_unread', { unread: tunreadUser?.length });
+		}
+		if (tunreadGroup?.length) {
+			return i18n.t('Threads_group_unread', { unread: tunreadGroup?.length });
+		}
+		return i18n.t('Threads_unread', { unread: tunread?.length });
 	};
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } = this.props;
+		const {
+			t,
+			tmid,
+			threadsEnabled,
+			rid,
+			colors,
+			issuesWithNotifications,
+			notificationsDisabled,
+			hasE2EEWarning,
+			roomName,
+			userId,
+			isGroupChat,
+			status,
+			teamMain
+		} = this.props;
 
+		const accessibilityRoomName =
+			!isGroupChat && t === 'd' && !!userId
+				? roomName
+				: getRoomAccessibilityLabel({ type: t, userId, isGroupChat, status: status as TUserStatus, teamMain });
 		if (!rid) {
 			return null;
 		}
@@ -445,7 +482,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
 				return (
-					<HeaderButton.Container onLayout={this.onLayout}>
+					<HeaderButton.Container>
 						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
 					</HeaderButton.Container>
 				);
@@ -454,8 +491,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		if (tmid) {
 			return (
-				<HeaderButton.Container onLayout={this.onLayout}>
+				<HeaderButton.Container>
 					<HeaderButton.Item
+						accessibilityLabel={i18n.t(isFollowingThread ? 'Unfollow_thread' : 'Follow_thread')}
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
@@ -464,7 +502,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			);
 		}
 		return (
-			<HeaderButton.Container onLayout={this.onLayout}>
+			<HeaderButton.Container>
 				{hasE2EEWarning ? (
 					<HeaderButton.Item
 						iconName='encrypted'
@@ -482,9 +520,14 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				{rid ? <HeaderCallButton rid={rid} disabled={hasE2EEWarning} /> : null}
+				<HeaderCallButton
+					accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
+					rid={rid}
+					disabled={hasE2EEWarning}
+				/>
 				{threadsEnabled ? (
 					<HeaderButton.Item
+						accessibilityLabel={this.threadsAccessibilityLabel()}
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
@@ -492,7 +535,13 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' disabled={hasE2EEWarning} />
+				<HeaderButton.Item
+					accessibilityLabel={i18n.t('Search_Messages')}
+					iconName='search'
+					onPress={this.goSearchView}
+					testID='room-view-search'
+					disabled={hasE2EEWarning}
+				/>
 			</HeaderButton.Container>
 		);
 	}

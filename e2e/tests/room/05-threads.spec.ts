@@ -6,11 +6,12 @@ import {
 	tapBack,
 	sleep,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapAndWaitFor,
 	navigateToRoom,
 	mockMessage,
-	tryTapping
+	tryTapping,
+	checkRoomTitle
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser } from '../../helpers/data_setup';
 
@@ -58,6 +59,7 @@ describe('Threads', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300);
 				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
@@ -177,14 +179,10 @@ describe('Threads', () => {
 					.withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${thread}`))).toExist();
 				await tapBack();
-				await waitFor(element(by.id('thread-messages-view')))
-					.toExist()
-					.withTimeout(5000);
-				await expect(element(by.id('thread-messages-view'))).toExist();
-				await tapBack();
 			});
 
 			it('should draft thread message', async () => {
+				await checkRoomTitle(room);
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
@@ -207,6 +205,7 @@ describe('Threads', () => {
 				await element(by[textMatcher](thread)).atIndex(0).tap();
 				await element(by[textMatcher](thread)).atIndex(0).longPress();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300);
 				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
 				await waitFor(element(by.id(`room-view-title-thread-message-count`)))
 					.toExist()

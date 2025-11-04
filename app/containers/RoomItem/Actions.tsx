@@ -12,12 +12,12 @@ import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
 import { CustomIcon } from '../CustomIcon';
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
-import { ILeftActionsProps, IRightActionsProps } from './interfaces';
+import { type ILeftActionsProps, type IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { useRowHeight } from '../../lib/hooks/useRowHeight';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
@@ -25,7 +25,7 @@ const EXPANDED_ICON_SIZE = 28;
 export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const { colors } = useTheme();
 
-	const { rowHeight, rowHeightCondensed } = useRowHeight();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
@@ -44,7 +44,11 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 					animatedStyles
 				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
-					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
+					<RectButton
+						accessible
+						accessibilityLabel={I18n.t(isRead ? 'Mark_unread' : 'Mark_read')}
+						style={styles.actionButton}
+						onPress={onToggleReadPress}>
 						<CustomIcon
 							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 							name={isRead ? 'flag' : 'check'}
@@ -60,7 +64,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
 	const { colors } = useTheme();
 
-	const { rowHeight, rowHeightCondensed } = useRowHeight();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
@@ -128,7 +132,11 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					viewHeight,
 					animatedFavStyles
 				]}>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]} onPress={toggleFav}>
+				<RectButton
+					accessible
+					accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
+					style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]}
+					onPress={toggleFav}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name={favorite ? 'star-filled' : 'star'}
@@ -144,10 +152,12 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 						backgroundColor: colors.buttonBackgroundSecondaryPress,
 						left: '100%'
 					},
-					isCondensed && { height: rowHeightCondensed },
+					viewHeight,
 					animatedHideStyles
 				]}>
 				<RectButton
+					accessible
+					accessibilityLabel={I18n.t('Hide')}
 					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
 					onPress={onHidePress}>
 					<CustomIcon

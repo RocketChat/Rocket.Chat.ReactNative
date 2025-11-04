@@ -1,5 +1,5 @@
 import { VIDEO_CONF } from '../actions/actionsTypes';
-import { TActionVideoConf } from '../actions/videoConf';
+import { type TActionVideoConf } from '../actions/videoConf';
 
 export type TSupportedCallStatus = 'call' | 'canceled' | 'accepted' | 'rejected' | 'confirmed' | 'join' | 'end' | 'calling';
 
@@ -22,7 +22,7 @@ export default (state = initialState, action: TActionVideoConf): IVideoConf => {
 		case VIDEO_CONF.SET:
 			return {
 				...state,
-				calls: [...state.calls, action.payload]
+				calls: [...state.calls.filter(call => call.callId !== action.payload.callId), action.payload]
 			};
 		case VIDEO_CONF.REMOVE:
 			return {

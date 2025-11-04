@@ -1,29 +1,45 @@
-import React, { ReactElement } from 'react';
-import { View, FlatList } from 'react-native';
+import React, { type ReactElement } from 'react';
+import { FlatList, type ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAutocompleteParams, useKeyboardHeight, useTrackingViewHeight } from '../../context';
+import { useAutocompleteParams } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
 import { useAutocomplete } from '../../hooks';
-import { IAutocompleteItemProps } from '../../interfaces';
+import { type IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useStyle } from './styles';
 
-export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
-	const { rid } = useRoomContext();
-	const trackingViewHeight = useTrackingViewHeight();
-	const keyboardHeight = useKeyboardHeight();
-	const { bottom } = useSafeAreaInsets();
+export const Autocomplete = ({
+	onPress,
+	style,
+	accessibilityFocusOnInput
+}: {
+	onPress: IAutocompleteItemProps['onPress'];
+	style: ViewStyle;
+	accessibilityFocusOnInput: () => void;
+}): ReactElement | null => {
+	'use memo';
+
+	const { rid, updateAutocompleteVisible } = useRoomContext();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
 		text,
 		type,
+		updateAutocompleteVisible,
+		accessibilityFocusOnInput,
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();
-	const viewBottom = trackingViewHeight + keyboardHeight + (keyboardHeight > 0 ? 0 : bottom) - 4;
+	let { left, right } = useSafeAreaInsets();
+	if (left === 0) {
+		left = 8;
+	}
+	if (right === 0) {
+		right = 8;
+	}
 
 	if (items.length === 0 || !type) {
 		return null;
@@ -31,13 +47,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 
 	if (type !== '/preview') {
 		return (
-			<View
-				style={[
-					styles.root,
-					{
-						bottom: viewBottom
-					}
-				]}>
+			<Animated.View style={[styles.root, { right, left }, style]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					data={items}
@@ -45,13 +55,13 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					keyboardShouldPersistTaps='always'
 					testID='autocomplete'
 				/>
-			</View>
+			</Animated.View>
 		);
 	}
 
 	if (type === '/preview') {
 		return (
-			<View style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: viewBottom }]}>
+			<Animated.View style={[styles.root, { backgroundColor: colors.surfaceLight, right, left }, style]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					style={styles.list}
@@ -61,7 +71,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					keyboardShouldPersistTaps='always'
 					testID='autocomplete'
 				/>
-			</View>
+			</Animated.View>
 		);
 	}
 

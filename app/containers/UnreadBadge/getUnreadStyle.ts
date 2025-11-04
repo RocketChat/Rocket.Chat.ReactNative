@@ -1,6 +1,6 @@
-import { IUnreadBadge } from '.';
+import { type IUnreadBadge } from '.';
 import { themes } from '../../lib/constants/colors';
-import { TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
 
 interface IGetUnreadStyle extends Omit<IUnreadBadge, 'small' | 'style'> {
 	theme: TSupportedThemes;

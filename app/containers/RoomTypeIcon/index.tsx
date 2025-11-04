@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, type ViewStyle } from 'react-native';
+import { type ImageStyle } from 'expo-image';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
-import { CustomIcon, TIconsName } from '../CustomIcon';
-import { themes } from '../../lib/constants';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
+import { themes } from '../../lib/constants/colors';
 import Status from '../Status';
 import { useTheme } from '../../theme';
-import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { type TUserStatus, type IOmnichannelSource } from '../../definitions';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -36,11 +37,14 @@ const RoomTypeIcon = React.memo(
 		const iconStyle = [styles.icon, style];
 
 		if (type === 'd' && !isGroupChat && userId) {
+			// @ts-ignore
 			return <Status id={userId} style={iconStyle} size={size} status={status} />;
 		}
 
 		if (type === 'l') {
-			return <OmnichannelRoomIcon style={iconStyle} size={size} type={type} status={status} sourceType={sourceType} />;
+			return (
+				<OmnichannelRoomIcon style={iconStyle as ImageStyle} size={size} type={type} status={status} sourceType={sourceType} />
+			);
 		}
 
 		// TODO: move this to a separate function
@@ -55,6 +59,7 @@ const RoomTypeIcon = React.memo(
 			icon = 'message';
 		}
 
+		// @ts-ignore
 		return <CustomIcon name={icon} size={size} color={themes[theme].fontTitlesLabels} style={iconStyle} />;
 	}
 );

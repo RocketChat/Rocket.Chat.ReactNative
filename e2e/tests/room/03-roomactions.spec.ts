@@ -7,12 +7,12 @@ import {
 	sleep,
 	searchRoom,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapAndWaitFor,
 	tryTapping,
 	mockMessage
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser, post } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser, post } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const { sendMessage } = require('../../helpers/data_setup');
@@ -26,6 +26,7 @@ async function starMessage(message: string) {
 		.toExist()
 		.withTimeout(2000);
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await sleep(300);
 	await element(by[textMatcher]('Star')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet')))
 		.not.toExist()
@@ -41,6 +42,7 @@ async function pinMessage(message: string) {
 		.toExist()
 		.withTimeout(2000);
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await sleep(300);
 	await element(by[textMatcher]('Pin')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet')))
 		.not.toExist()
@@ -165,8 +167,10 @@ describe('Room actions screen', () => {
 					.withTimeout(5000);
 
 				// Go to starred messages
-				await element(by.id('room-actions-view')).swipe('up');
+				await element(by.id('room-actions-view')).swipe('up', 'fast', 0.5);
+				await sleep(300);
 				await waitFor(element(by.id('room-actions-starred'))).toExist();
+				await sleep(500);
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view')))
 					.toExist()
@@ -374,7 +378,8 @@ describe('Room actions screen', () => {
 								.toExist()
 								.withTimeout(5000);
 							await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-							await element(by.id('action-sheet-handle')).swipe('up');
+							await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+							await sleep(300);
 							return;
 						} catch (e) {
 							n += 1;
@@ -384,6 +389,7 @@ describe('Room actions screen', () => {
 
 				const closeActionSheet = async () => {
 					await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+					await sleep(300);
 					await waitFor(element(by.id('action-sheet')))
 						.toBeNotVisible()
 						.withTimeout(1000);

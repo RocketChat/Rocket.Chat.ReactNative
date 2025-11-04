@@ -1,8 +1,16 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, tapBack, platformTypes, TTextMatcher, mockMessage, navigateToRoom } from '../../helpers/app';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import {
+	navigateToLogin,
+	login,
+	tapBack,
+	platformTypes,
+	type TTextMatcher,
+	mockMessage,
+	navigateToRoom
+} from '../../helpers/app';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 const room = data.channels.detoxpublic.name;
@@ -131,7 +139,7 @@ describe('Join public room', () => {
 		});
 
 		it('should send message', async () => {
-			await mockMessage(`${random()}message`);
+			await mockMessage(random(5));
 		});
 
 		it('should have notifications and leave channel', async () => {

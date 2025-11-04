@@ -1,4 +1,5 @@
-import Detox, { device, waitFor, element, by, expect } from 'detox';
+import type Detox from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import {
 	navigateToLogin,
@@ -6,12 +7,12 @@ import {
 	tapBack,
 	sleep,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	checkRoomTitle,
 	tapAndWaitFor,
 	navigateToRoom
 } from '../../helpers/app';
-import { createRandomRoom, createRandomTeam, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomTeam, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 async function openActionSheet(username: string) {
@@ -20,7 +21,8 @@ async function openActionSheet(username: string) {
 		.withTimeout(5000);
 	await tapAndWaitFor(element(by.id(`room-members-view-item-${username}`)), element(by.id('action-sheet')), 2000);
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-	await element(by.id('action-sheet-handle')).swipe('up');
+	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await sleep(500);
 }
 
 async function navigateToRoomActions() {
@@ -41,6 +43,7 @@ async function backToActions() {
 }
 async function closeActionSheet() {
 	await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+	await sleep(300);
 	await waitFor(element(by.id('action-sheet-handle')))
 		.toBeNotVisible()
 		.withTimeout(3000);
@@ -436,6 +439,9 @@ describe('Team', () => {
 
 				it('should set member as owner', async () => {
 					await openActionSheet(otherUser.username);
+					await waitFor(element(by.id('action-sheet-set-owner')))
+						.toBeVisible()
+						.withTimeout(2000);
 					await element(by.id('action-sheet-set-owner')).tap();
 					await waitForToast();
 

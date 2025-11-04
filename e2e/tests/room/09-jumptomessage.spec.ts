@@ -7,7 +7,7 @@ import {
 	login,
 	sleep,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	navigateToRoom,
 	jumpToQuotedMessage
 } from '../../helpers/app';
@@ -121,6 +121,7 @@ describe('Room', () => {
 			try {
 				const direction = device.getPlatform() === 'android' ? 'down' : 'up';
 				await element(by.id('room-view-messages')).scroll(500, direction);
+				await sleep(300);
 				await expect(element(by[textMatcher]('249'))).toExist();
 				found = true;
 			} catch {
@@ -163,6 +164,7 @@ describe('Room', () => {
 			try {
 				// it doesn't recognize this list
 				await element(by.id('room-view-messages')).scroll(500, 'up');
+				await sleep(300);
 				await expect(element(by[textMatcher]('Load older'))).toBeVisible();
 				await expect(element(by[textMatcher]('5'))).toExist();
 				found = true;
@@ -175,20 +177,23 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('down', 'fast', 0.5);
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('1')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'fast', 0.5);
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('25')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'fast', 0.5);
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('50')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.3);
-		// 104
 		await sleep(300);
+		// 104
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);

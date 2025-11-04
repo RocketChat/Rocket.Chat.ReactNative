@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 
 import data from '../data';
 import random from './random';
@@ -93,38 +93,16 @@ export const createRandomTeam = async (user: { username: string; password: strin
 	}
 };
 
-export const sendRandomMessage = async ({
-	user,
-	room,
-	messageEnd,
-	tmid
-}: {
-	user: { username: string; password: string };
-	room: string;
-	messageEnd: string;
-	tmid?: string;
-}) => {
-	try {
-		const msg = `${random()}${messageEnd}`;
-		console.log(`Sending message ${msg} to ${room}`);
-		await login(user.username, user.password);
-		const response = await rocketchat.post('chat.postMessage', { channel: room, msg, tmid });
-		return response.data;
-	} catch (infoError) {
-		console.log(JSON.stringify(infoError));
-		throw new Error('Failed to find or create private group');
-	}
-};
-
 export const sendMessage = async (user: { username: string; password: string }, channel: string, msg: string, tmid?: string) => {
 	console.log(`Sending message to ${channel}`);
 	try {
 		await login(user.username, user.password);
-		const response = await rocketchat.post('chat.postMessage', { channel, msg, tmid });
+		const channelParam = tmid ? { roomId: channel } : { channel };
+		const response = await rocketchat.post('chat.postMessage', { ...channelParam, text: msg, tmid });
 		return response.data;
 	} catch (infoError) {
 		console.log(JSON.stringify(infoError));
-		throw new Error('Failed to find or create private group');
+		throw new Error('Failed to send a message');
 	}
 };
 

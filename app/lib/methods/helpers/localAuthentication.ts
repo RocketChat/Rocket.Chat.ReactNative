@@ -15,10 +15,10 @@ import {
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
 	PASSCODE_KEY
-} from '../../constants';
+} from '../../constants/localAuthentication';
 import I18n from '../../../i18n';
 import { setLocalAuthenticated } from '../../../actions/login';
-import { TServerModel } from '../../../definitions';
+import { type TServerModel } from '../../../definitions';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
@@ -108,7 +108,7 @@ const hideSplashScreen = async () => {
 	} catch {
 		// Do nothing
 	}
-}
+};
 
 export const handleLocalAuthentication = async (canCloseModal = false) => {
 	// let hasBiometry = false;

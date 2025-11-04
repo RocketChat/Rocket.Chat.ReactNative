@@ -3,10 +3,10 @@ import { FlatList } from 'react-native';
 
 import * as List from '.';
 import SafeAreaView from '../SafeAreaView';
-import { longText } from '../../../.storybook/utils';
-import { ThemeContext, TSupportedThemes } from '../../theme';
+import { longText } from '../../../.rnstorybook/utils';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { DimensionsContext } from '../../dimensions';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 
 export default {
 	title: 'List'
@@ -102,6 +102,17 @@ export const SectionAndInfo = () => (
 			</List.Section>
 		</List.Container>
 	</SafeAreaView>
+);
+
+export const ListItemWithRightContainerStyle = () => (
+	<List.Item
+		title='Chats'
+		subtitle='All'
+		onPress={() => alert('Hi')}
+		left={() => <List.Icon name='emoji' />}
+		right={() => <List.Icon name='emoji' />}
+		rightContainerStyle={{ borderWidth: 2, borderRadius: 4 }}
+	/>
 );
 
 export const WithIcon = () => (

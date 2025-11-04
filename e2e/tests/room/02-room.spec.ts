@@ -7,13 +7,13 @@ import {
 	sleep,
 	tryTapping,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	mockMessage,
 	navigateToRoom,
 	navigateToRecentRoom,
 	checkMessage
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, deleteCreatedUsers, ITestUser, sendMessage } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, deleteCreatedUsers, type ITestUser, sendMessage } from '../../helpers/data_setup';
 import data from '../../data';
 
 describe('Room screen', () => {
@@ -150,6 +150,7 @@ describe('Room screen', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by.id('add-reaction')).tap();
 			await sleep(300); // wait for animation
 			await waitFor(element(by.id('emoji-picker-tab-emoji')))
@@ -173,6 +174,7 @@ describe('Room screen', () => {
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by.id('add-reaction')).tap();
 			await waitFor(element(by.id('emoji-searchbar-input')))
 				.toBeVisible()
@@ -219,6 +221,7 @@ describe('Room screen', () => {
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 1);
+			await sleep(300);
 			await waitFor(element(by.id('emoji-grinning')))
 				.toExist()
 				.withTimeout(4000);
@@ -242,6 +245,7 @@ describe('Room screen', () => {
 				.withTimeout(4000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
+			await sleep(300);
 		});
 
 		it('should open the profile view tapping on his username', async () => {
@@ -307,6 +311,7 @@ describe('Room screen', () => {
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by[textMatcher]('Quote')).atIndex(0).tap();
 			await element(by.id('message-composer-input')).replaceText(quotedMessage);
 			await waitFor(element(by.id('message-composer-send')))
@@ -344,6 +349,7 @@ describe('Room screen', () => {
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			// Fix android flaky test. Close the action sheet, then re-open again
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by.id('action-sheet')).swipe('up', 'fast', 0.5);
 			await sleep(300); // wait for animation
 			await waitFor(element(by[textMatcher]('Delete')))
@@ -465,6 +471,7 @@ describe('Room screen', () => {
 				.withTimeout(5000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by[textMatcher]('Quote')).atIndex(0).tap();
 			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)))
 				.toBeVisible()
@@ -518,6 +525,7 @@ describe('Room screen', () => {
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by[textMatcher]('Quote')).atIndex(0).tap();
 			await element(by.id('message-composer-actions')).tap();
 			await waitFor(element(by.id('action-sheet')))
@@ -525,6 +533,9 @@ describe('Room screen', () => {
 				.withTimeout(2000);
 			await element(by[textMatcher]('Choose from library')).atIndex(0).tap();
 			await sleep(500); // wait for animation
+			await waitFor(element(by.id('message-composer-input-share')))
+				.toHaveText(draftShareMessage + originalMessage)
+				.withTimeout(2000);
 			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)).atIndex(0))
 				.toExist()
 				.withTimeout(20000);

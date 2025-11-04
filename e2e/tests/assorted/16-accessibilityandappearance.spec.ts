@@ -1,24 +1,34 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import { login, mockMessage, navigateToLogin, navigateToRoom } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 const navigateToAccessibilityAndAppearance = async () => {
-	await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
+	await waitFor(element(by.id('rooms-list-view-sidebar')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
-	await expect(element(by.id('sidebar-accessibility'))).toBeVisible();
+	await waitFor(element(by.id('sidebar-accessibility')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('sidebar-accessibility')).tap();
 };
 
 const navigateToRoomListView = async () => {
-	await expect(element(by.id('accessibility-view-drawer'))).toBeVisible();
+	await waitFor(element(by.id('accessibility-view-drawer')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('accessibility-view-drawer')).tap();
-	await expect(element(by.id('sidebar-chats'))).toBeVisible();
+	await waitFor(element(by.id('sidebar-chats')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('sidebar-chats')).tap();
 };
 
 const goBackToRoomList = async () => {
-	await expect(element(by.id('header-back'))).toBeVisible();
+	await waitFor(element(by.id('header-back')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('header-back')).tap();
 };
 
@@ -52,18 +62,24 @@ describe('Accessibility and Appearance', () => {
 			await expect(element(by.id('accessibility-display-button'))).toBeVisible();
 		});
 
+		it('should have rooms with hashtag symbol switch', async () => {
+			await expect(element(by.id('accessibility-rooms-with-hashtag-symbol-switch'))).toBeVisible();
+		});
+
 		it('should have mentions with at symbol switch', async () => {
 			await expect(element(by.id('accessibility-mentions-with-at-symbol-switch'))).toBeVisible();
 		});
 
-		it('should have rooms with hashtag symbol switch', async () => {
-			await expect(element(by.id('accessibility-rooms-with-hashtag-symbol-switch'))).toBeVisible();
+		it('should have autoplay gifs switch', async () => {
+			await expect(element(by.id('accessibility-autoplay-gifs-switch'))).toBeVisible();
 		});
 	});
 
 	describe('Usage', () => {
 		it('should enable mentions with @ symbol', async () => {
-			await expect(element(by.id('accessibility-mentions-with-at-symbol-switch'))).toBeVisible();
+			await waitFor(element(by.id('accessibility-mentions-with-at-symbol-switch')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('accessibility-mentions-with-at-symbol-switch')).tap();
 			await navigateToRoomListView();
 			await navigateToRoom(room);
@@ -76,7 +92,9 @@ describe('Accessibility and Appearance', () => {
 		it('should disable mentions with @ symbol', async () => {
 			await goBackToRoomList();
 			await navigateToAccessibilityAndAppearance();
-			await expect(element(by.id('accessibility-mentions-with-at-symbol-switch'))).toBeVisible();
+			await waitFor(element(by.id('accessibility-mentions-with-at-symbol-switch')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('accessibility-mentions-with-at-symbol-switch')).tap();
 			await navigateToRoomListView();
 			await navigateToRoom(room);
@@ -88,7 +106,9 @@ describe('Accessibility and Appearance', () => {
 		it('should enable rooms with # symbol', async () => {
 			await goBackToRoomList();
 			await navigateToAccessibilityAndAppearance();
-			await expect(element(by.id('accessibility-rooms-with-hashtag-symbol-switch'))).toBeVisible();
+			await waitFor(element(by.id('accessibility-rooms-with-hashtag-symbol-switch')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('accessibility-rooms-with-hashtag-symbol-switch')).tap();
 			await navigateToRoomListView();
 			await navigateToRoom(room);
@@ -101,7 +121,9 @@ describe('Accessibility and Appearance', () => {
 		it('should disable rooms with # symbol', async () => {
 			await goBackToRoomList();
 			await navigateToAccessibilityAndAppearance();
-			await expect(element(by.id('accessibility-rooms-with-hashtag-symbol-switch'))).toBeVisible();
+			await waitFor(element(by.id('accessibility-rooms-with-hashtag-symbol-switch')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('accessibility-rooms-with-hashtag-symbol-switch')).tap();
 			await navigateToRoomListView();
 			await navigateToRoom(room);

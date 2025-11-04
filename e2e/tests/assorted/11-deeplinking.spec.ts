@@ -12,7 +12,7 @@ import {
 	sleep
 } from '../../helpers/app';
 import {
-	IDeleteCreateUser,
+	type IDeleteCreateUser,
 	createRandomRoom,
 	createRandomUser,
 	deleteCreatedUsers,
@@ -94,7 +94,7 @@ describe('Deep linking', () => {
 			await authAndNavigate();
 		});
 
-		it('should authenticate while logged in another server', async () => {
+		it('should create a new account on another server', async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToRegister(data.alternateServer);
 			const randomUser = data.randomUser();
@@ -110,7 +110,9 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-confirm-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
 			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
+		});
 
+		it('should authenticate and navigate back to the previous server', async () => {
 			await authAndNavigate();
 		});
 	});
@@ -220,7 +222,7 @@ describe('Deep linking', () => {
 					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('rooms-list-header-servers-list-button')).tap();
-				await waitFor(element(by.id('rooms-list-header-servers-list')))
+				await waitFor(element(by.id(`server-item-${data.alternateServer}`)))
 					.toBeVisible()
 					.withTimeout(5000);
 				await element(by.id(`server-item-${data.alternateServer}`)).tap();
@@ -286,9 +288,9 @@ describe('Deep linking', () => {
 				.toBeVisible()
 				.withTimeout(10000);
 			await element(by.id('rooms-list-header-servers-list-button')).tap();
-			await waitFor(element(by.id('rooms-list-header-servers-list')))
+			await waitFor(element(by.id(`server-item-${data.alternateServer}`)))
 				.toBeVisible()
-				.withTimeout(5000);
+				.withTimeout(2000);
 			await element(by.id(`server-item-${data.alternateServer}`)).tap();
 			await checkServer(data.alternateServer);
 

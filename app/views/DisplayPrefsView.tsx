@@ -1,23 +1,22 @@
 import React, { useLayoutEffect } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
-import { DisplayMode, SortBy } from '../lib/constants';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import Radio from '../containers/Radio';
-import { IPreferences } from '../definitions';
+import { type IPreferences } from '../definitions';
 import I18n from '../i18n';
-import { SettingsStackParamList } from '../stacks/types';
+import { type SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { saveSortPreference } from '../lib/methods';
-import { useAppSelector } from '../lib/hooks';
+import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const DisplayPrefsView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
@@ -91,7 +90,6 @@ const DisplayPrefsView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container testID='display-view-list'>
 				<List.Section title='Display'>
 					<List.Separator />

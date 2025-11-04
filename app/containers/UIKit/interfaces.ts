@@ -1,6 +1,6 @@
-import { BlockContext } from '@rocket.chat/ui-kit';
+import { type BlockContext } from '@rocket.chat/ui-kit';
 
-import { TSupportedThemes } from '../../theme';
+import { type TSupportedThemes } from '../../theme';
 
 export enum ElementTypes {
 	IMAGE = 'image',
@@ -77,7 +77,7 @@ export interface IElement {
 	options?: Option[];
 	text?: IText;
 	value?: string;
-	initial_date?: any;
+	initialDate?: any;
 	imageUrl?: string;
 	appId?: string;
 	blockId?: string;

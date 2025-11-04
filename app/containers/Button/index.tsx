@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
-import Touchable, { PlatformTouchableProps } from 'react-native-platform-touchable';
+import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import Touchable, { type PlatformTouchableProps } from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
+// @ts-ignore
 interface IButtonProps extends PlatformTouchableProps {
 	title: string;
 	onPress: () => void;
@@ -90,6 +91,7 @@ const Button: React.FC<IButtonProps> = ({
 		<Touchable
 			onPress={onPress}
 			disabled={isDisabled}
+			// @ts-ignore
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'

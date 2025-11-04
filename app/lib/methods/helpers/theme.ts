@@ -1,11 +1,12 @@
-import { Appearance, StatusBar } from 'react-native';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import setRootViewColor from 'rn-root-view';
+import { Appearance } from 'react-native';
+import * as NavigationBar from 'expo-navigation-bar';
+import * as SystemUI from 'expo-system-ui';
 
-import { IThemePreference, TThemeMode } from '../../../definitions/ITheme';
-import { themes, THEME_PREFERENCES_KEY } from '../../constants';
+import { type IThemePreference, type TThemeMode } from '../../../definitions/ITheme';
+import { themes } from '../../constants/colors';
+import { THEME_PREFERENCES_KEY } from '../../constants/keys';
 import UserPreferences from '../userPreferences';
-import { TSupportedThemes } from '../../../theme';
+import { type TSupportedThemes } from '../../../theme';
 import { isAndroid } from './deviceInfo';
 
 let themeListener: { remove: () => void } | null;
@@ -47,19 +48,17 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
-export const setNativeTheme = async (themePreferences: IThemePreference) => {
+export const setNativeTheme = (themePreferences: IThemePreference) => {
 	const theme = getTheme(themePreferences);
 	const isLightTheme = theme === 'light';
 	if (isAndroid) {
 		try {
-			StatusBar.setBackgroundColor(themes[theme].surfaceNeutral);
-			StatusBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content', true);
-			await changeNavigationBarColor(themes[theme].surfaceLight, isLightTheme, true);
+			NavigationBar.setStyle(isLightTheme ? 'dark' : 'light');
 		} catch (error) {
 			// Do nothing
 		}
 	}
-	setRootViewColor(themes[theme].surfaceRoom);
+	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
 };
 
 export const unsubscribeTheme = () => {

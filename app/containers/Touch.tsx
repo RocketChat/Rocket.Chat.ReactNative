@@ -1,6 +1,6 @@
 import React from 'react';
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
-import { View } from 'react-native';
+import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
+import { View, StyleSheet, type ViewStyle, type StyleProp } from 'react-native';
 
 import { useTheme } from '../theme';
 
@@ -9,12 +9,42 @@ export interface ITouchProps extends RectButtonProps {
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	testID?: string;
+	rectButtonStyle?: StyleProp<ViewStyle>;
 }
 
 const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
-	({ children, onPress, underlayColor, accessible, accessibilityLabel, style, ...props }, ref) => {
+	({ children, onPress, underlayColor, accessible, accessibilityLabel, style, rectButtonStyle, ...props }, ref) => {
 		const { colors } = useTheme();
-
+		// The background color must be applied to the RectButton, not the View.
+		// If set on the View, the touch opacity animation won't work properly.
+		const flattenedStyle = StyleSheet.flatten(style) || {};
+		const {
+			borderRadius,
+			backgroundColor,
+			marginBottom,
+			margin,
+			marginLeft,
+			marginVertical,
+			marginHorizontal,
+			marginEnd,
+			marginRight,
+			marginStart,
+			marginTop,
+			...viewStyle
+		} = flattenedStyle;
+		// The margin should be applied to the parent component.
+		// If set on the View, it will create an internal margin inside the RectButton.
+		const marginStyles = {
+			margin,
+			marginBottom,
+			marginLeft,
+			marginVertical,
+			marginHorizontal,
+			marginEnd,
+			marginRight,
+			marginStart,
+			marginTop
+		};
 		return (
 			<RectButton
 				ref={ref}
@@ -22,8 +52,9 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				activeOpacity={1}
 				underlayColor={underlayColor || colors.surfaceNeutral}
 				rippleColor={colors.surfaceNeutral}
+				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...props}>
-				<View accessible={accessible} accessibilityLabel={accessibilityLabel} accessibilityRole='button' style={style}>
+				<View accessible={accessible} accessibilityLabel={accessibilityLabel} style={viewStyle}>
 					{children}
 				</View>
 			</RectButton>

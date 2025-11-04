@@ -1,8 +1,14 @@
-import React from 'react';
-import Animated from 'react-native-reanimated';
+import type React from 'react';
+import type Animated from 'react-native-reanimated';
 
-import { TSupportedThemes } from '../../theme';
-import { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource } from '../../definitions';
+import { type TSupportedThemes } from '../../theme';
+import {
+	type TUserStatus,
+	type ILastMessage,
+	type SubscriptionType,
+	type IOmnichannelSource,
+	type ISubscription
+} from '../../definitions';
 
 export interface ILeftActionsProps {
 	transX: Animated.SharedValue<number>;
@@ -117,6 +123,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	size?: number;
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
+	accessibilityDate: string;
 }
 
 export interface ILastMessageProps {
@@ -154,4 +161,9 @@ export interface IIconOrAvatar {
 	teamMain: boolean;
 	showLastMessage: boolean;
 	sourceType: IOmnichannelSource;
+}
+
+export interface IRoomItem extends ISubscription {
+	search?: boolean;
+	outside?: boolean;
 }

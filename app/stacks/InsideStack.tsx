@@ -36,6 +36,7 @@ import CannedResponseDetail from '../views/CannedResponseDetail';
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
 import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
+import ChangePasswordView from '../views/ChangePasswordView';
 // Display Preferences View
 import DisplayPrefsView from '../views/DisplayPrefsView';
 // Settings Stack
@@ -75,24 +76,26 @@ import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import LegalView from '../views/LegalView';
 import {
-	AdminPanelStackParamList,
-	ChatsStackParamList,
-	DrawerParamList,
-	E2EEnterYourPasswordStackParamList,
-	E2ESaveYourPasswordStackParamList,
-	InsideStackParamList,
-	NewMessageStackParamList,
-	ProfileStackParamList,
-	SettingsStackParamList,
-	AccessibilityStackParamList
+	type AdminPanelStackParamList,
+	type ChatsStackParamList,
+	type DrawerParamList,
+	type E2EEnterYourPasswordStackParamList,
+	type E2ESaveYourPasswordStackParamList,
+	type InsideStackParamList,
+	type NewMessageStackParamList,
+	type ProfileStackParamList,
+	type SettingsStackParamList,
+	type AccessibilityStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
-import { TNavigation } from './stackType';
+import { type TNavigation } from './stackType';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
 const ChatsStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -158,10 +161,13 @@ const ChatsStackNavigator = () => {
 // ProfileStackNavigator
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList & TNavigation>();
 const ProfileStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
+			<ProfileStack.Screen name='ProfileView' component={ProfileView} />
+			<ProfileStack.Screen name='ChangePasswordView' component={ChangePasswordView} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
@@ -174,6 +180,8 @@ const ProfileStackNavigator = () => {
 // SettingsStackNavigator
 const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 const SettingsStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -201,6 +209,8 @@ const SettingsStackNavigator = () => {
 // AdminPanelStackNavigator
 const AdminPanelStack = createNativeStackNavigator<AdminPanelStackParamList>();
 const AdminPanelStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -213,6 +223,8 @@ const AdminPanelStackNavigator = () => {
 // AccessibilityStackNavigator
 const AccessibilityStack = createNativeStackNavigator<AccessibilityStackParamList>();
 const AccessibilityStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<AccessibilityStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -226,6 +238,8 @@ const AccessibilityStackNavigator = () => {
 // DrawerNavigator
 const Drawer = createDrawerNavigator<DrawerParamList>();
 const DrawerNavigator = () => {
+	'use memo';
+
 	const { colors } = React.useContext(ThemeContext);
 
 	return (
@@ -252,6 +266,8 @@ const DrawerNavigator = () => {
 // NewMessageStackNavigator
 const NewMessageStack = createNativeStackNavigator<NewMessageStackParamList>();
 const NewMessageStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -269,6 +285,8 @@ const NewMessageStackNavigator = () => {
 // E2ESaveYourPasswordStackNavigator
 const E2ESaveYourPasswordStack = createNativeStackNavigator<E2ESaveYourPasswordStackParamList>();
 const E2ESaveYourPasswordStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -282,6 +300,8 @@ const E2ESaveYourPasswordStackNavigator = () => {
 // E2EEnterYourPasswordStackNavigator
 const E2EEnterYourPasswordStack = createNativeStackNavigator<E2EEnterYourPasswordStackParamList>();
 const E2EEnterYourPasswordStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -294,6 +314,8 @@ const E2EEnterYourPasswordStackNavigator = () => {
 // InsideStackNavigator
 const InsideStack = createNativeStackNavigator<InsideStackParamList & TNavigation>();
 const InsideStackNavigator = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -308,14 +330,10 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='E2EEnterYourPasswordStackNavigator'
 				component={E2EEnterYourPasswordStackNavigator}
-				options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }}
+				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
-			<InsideStack.Screen
-				name='StatusView'
-				component={StatusView}
-				options={{ presentation: 'transparentModal', animation: 'slide_from_bottom' }}
-			/>
+			<InsideStack.Screen name='StatusView' component={StatusView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}

@@ -1,8 +1,8 @@
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
-import { TUserStatus } from './TUserStatus';
-import { IRocketChatRecord } from './IRocketChatRecord';
-import { ILoggedUser } from './ILoggedUser';
+import { type TUserStatus } from './TUserStatus';
+import { type IRocketChatRecord } from './IRocketChatRecord';
+import { type ILoggedUser } from './ILoggedUser';
 
 export interface ILoginToken {
 	hashedToken: string;
@@ -98,7 +98,7 @@ export interface IUserEmail {
 }
 
 export interface IUserSettings {
-	profile: any;
+	profile?: any;
 	preferences: {
 		[key: string]: any;
 	};
@@ -114,10 +114,13 @@ export interface INotificationPreferences {
 	language?: string;
 }
 
+export interface IMessagePreferences {
+	convertAsciiEmoji: boolean;
+}
 export interface IUserPreferences {
 	user: Pick<IUser, '_id'>;
 	settings: {
-		preferences: INotificationPreferences;
+		preferences: INotificationPreferences & IMessagePreferences;
 	};
 }
 
@@ -146,7 +149,11 @@ export interface IUser extends IRocketChatRecord, ILoggedUser {
 	ldap?: boolean;
 	muted?: boolean;
 }
-
+export interface IRoleUser {
+	_id: string;
+	username: string;
+	roles: string[];
+}
 export interface IRegisterUser extends IUser {
 	username: string;
 	name: string;

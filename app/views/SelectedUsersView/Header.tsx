@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import SearchBox from '../../containers/SearchBox';
 import I18n from '../../i18n';
-import { ISelectedUser } from '../../reducers/selectedUsers';
+import { type ISelectedUser } from '../../reducers/selectedUsers';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Chip from '../../containers/Chip';
 
 const styles = StyleSheet.create({
@@ -32,7 +32,7 @@ const Header = ({
 	onChangeText: (text: string) => void;
 	onPressItem: (userItem: ISelectedUser) => void;
 }) => {
-	const flatlist = useRef<FlatList>();
+	const flatlist = useRef<FlatList<ISelectedUser>>(null);
 	const { theme } = useTheme();
 	const { users } = useAppSelector(state => ({
 		users: state.selectedUsers.users
@@ -50,7 +50,9 @@ const Header = ({
 					</Text>
 					<FlatList
 						data={users}
-						ref={(ref: FlatList) => (flatlist.current = ref)}
+						ref={(ref: FlatList<ISelectedUser> | null) => {
+							flatlist.current = ref;
+						}}
 						onContentSizeChange={onContentSizeChange}
 						keyExtractor={item => item._id}
 						renderItem={({ item }) => {

@@ -1,5 +1,5 @@
-import React, { useContext, useMemo } from 'react';
-import { View } from 'react-native';
+import React, { useContext } from 'react';
+import { View, type ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -16,19 +16,28 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
-import { themes } from '../../lib/constants';
-import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
+import { type IMessage, type IMessageInner, type IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
+import { WidthAwareView } from './Components/WidthAwareView';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
+import MessageTime from './Time';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import Quote from './Components/Attachments/Quote';
 
 const MessageInner = React.memo((props: IMessageInner) => {
+	const { isLargeFontScale } = useResponsiveLayout();
+	const showTimeLarge = isLargeFontScale && props.isHeader;
+
+	let content;
 	if (props.isPreview) {
-		return (
+		content = (
 			<>
 				<User {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<>
+					<Quote {...props} />
 					<Content {...props} />
 					<Attachments {...props} />
 				</>
@@ -38,48 +47,57 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	if (props.type === 'discussion-created') {
-		return (
+		content = (
 			<>
 				<User {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<Discussion {...props} />
 			</>
 		);
 	}
 
 	if (props.type === 'jitsi_call_started') {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
 
 	if (props.blocks && props.blocks.length) {
-		return (
+		content = (
 			<>
 				<User {...props} />
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
 
-	return (
-		<>
-			<User {...props} />
+	if (!content) {
+		content = (
 			<>
-				<Content {...props} />
-				<Attachments {...props} />
+				<User {...props} />
+				{showTimeLarge ? <MessageTime {...props} /> : null}
+				<View style={{ gap: 4 }}>
+					<Quote {...props} />
+					<Content {...props} />
+					<Attachments {...props} />
+					<Urls {...props} />
+					<Thread {...props} />
+					<Reactions {...props} />
+					<Broadcast {...props} />
+				</View>
 			</>
-			<Urls {...props} />
-			<Thread {...props} />
-			<Reactions {...props} />
-			<Broadcast {...props} />
-		</>
-	);
+		);
+	}
+
+	return <WidthAwareView>{content}</WidthAwareView>;
 });
 MessageInner.displayName = 'MessageInner';
 
@@ -103,7 +121,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	};
 
 	// temp accessibilityLabel
-	const accessibilityLabel = useMemo(() => {
+	const accessibilityLabel = () => {
 		let label = '';
 		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
 		if (props.isThreadReply) {
@@ -123,29 +141,23 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
-		return `${user} ${hour} ${label}`;
-	}, [
-		props.msg,
-		props.tmid,
-		props.isThreadReply,
-		props.isThreadSequential,
-		props.isEncrypted,
-		props.isInfo,
-		props.ts,
-		props.useRealName,
-		props.author,
-		props.mentions,
-		props.channels
-	]);
+		const readOrUnreadLabel =
+			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
+		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
+		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
+		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
+	};
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
+		// Prevent misalignment of info when the font size is increased.
+		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
-			<View style={[styles.container, props.style]}>
+			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
-				<View accessible accessibilityLabel={accessibilityLabel} style={styles.flex}>
+				<View accessible accessibilityLabel={accessibilityLabel()} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
-					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+					<View style={styles.messageContent}>
 						<Content {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
@@ -159,10 +171,10 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
+		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel()} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
-				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+				<View style={styles.messageContent}>
 					<MessageInner {...props} />
 				</View>
 				{!props.isHeader ? (
@@ -185,17 +197,17 @@ Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
-		backgroundColor = themes[theme].statusBackgroundWarning2;
+		backgroundColor = colors.statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
-		backgroundColor = themes[theme].surfaceNeutral;
+		backgroundColor = colors.surfaceNeutral;
 	}
 
-	if (props.hasError) {
+	if (props.hasError || props.isInfo) {
 		return (
 			<View>
 				<Message {...props} />

@@ -1,14 +1,14 @@
-import Model from '@nozbe/watermelondb/Model';
-import Relation from '@nozbe/watermelondb/Relation';
+import type Model from '@nozbe/watermelondb/Model';
+import type Relation from '@nozbe/watermelondb/Relation';
 
-import { ILastMessage, TMessageModel } from './IMessage';
-import { IRocketChatRecord } from './IRocketChatRecord';
-import { IOmnichannelSource, RoomID, RoomType, TUserWaitingForE2EKeys } from './IRoom';
-import { IServedBy } from './IServedBy';
-import { TThreadModel } from './IThread';
-import { TThreadMessageModel } from './IThreadMessage';
-import { TUploadModel } from './IUpload';
-import { IUser } from './IUser';
+import { type ILastMessage, type TMessageModel } from './IMessage';
+import { type IRocketChatRecord } from './IRocketChatRecord';
+import { type IOmnichannelSource, type RoomID, type RoomType, type TUserWaitingForE2EKeys } from './IRoom';
+import { type IServedBy } from './IServedBy';
+import { type TThreadModel } from './IThread';
+import { type TThreadMessageModel } from './IThreadMessage';
+import { type TUploadModel } from './IUpload';
+import { type IUser } from './IUser';
 
 export enum SubscriptionType {
 	GROUP = 'p',
@@ -115,6 +115,7 @@ export interface ISubscription {
 	threadMessages: RelationModified<TThreadMessageModel>;
 	uploads: RelationModified<TUploadModel>;
 	disableNotifications?: boolean;
+	federated?: boolean;
 }
 
 export type TSubscriptionModel = ISubscription &

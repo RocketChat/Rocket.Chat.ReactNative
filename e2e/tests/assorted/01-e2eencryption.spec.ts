@@ -6,14 +6,14 @@ import {
 	sleep,
 	tapBack,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	tapAndWaitFor,
 	mockMessage,
 	tryTapping,
 	navigateToRoom,
 	checkRoomTitle
 } from '../../helpers/app';
-import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, deleteCreatedUsers, type IDeleteCreateUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 let alertButtonType: string;
@@ -120,7 +120,7 @@ describe('E2E Encryption', () => {
 		await changeE2EEPassword();
 		await loginAs(UserA, false);
 		await changeE2EEPassword();
-	});
+	}, 180000);
 
 	afterAll(async () => {
 		await deleteCreatedUsers(deleteUsersAfterAll);
@@ -172,6 +172,7 @@ describe('E2E Encryption', () => {
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by[textMatcher]('Quote')).atIndex(0).tap();
 			await element(by.id('message-composer-input')).replaceText(quotedMessage);
 			await waitFor(element(by.id('message-composer-send')))
@@ -192,18 +193,41 @@ describe('E2E Encryption', () => {
 		});
 	});
 
-	describe('Login as UserB, get keys and send a message', () => {
-		beforeAll(async () => {
-			await loginAs(UserB);
-		});
-
-		it('should be able to read other messages', async () => {
+	describe('If session is not encrypted, it shouldnt trigger read messages', () => {
+		it('should login as UserB, dont set e2ee password and dont read messages', async () => {
+			await loginAs(UserB, false);
 			await navigateToRoom(room);
-			await readMessages(3);
+			await waitFor(element(by.id('room-view-encrypted-room')))
+				.toBeVisible()
+				.withTimeout(2000);
 		});
 
-		it('should send message and be able to read it', async () => {
+		it('should login as UserA and check message is not read', async () => {
+			await loginAs(UserA);
+			await navigateToRoom(room);
+			await waitFor(element(by.id('read-receipt-unread')).atIndex(0))
+				.toExist()
+				.withTimeout(2000);
+		});
+
+		it('should login as UserB, set e2ee password and read messages', async () => {
+			await loginAs(UserB);
+			await navigateToRoom(room);
+
+			// Since we're already in the right place with the right user, check we can read and send messages
+			await readMessages(3);
 			await mockMessage(getMessage(3));
+		});
+
+		it('should login as UserA and check message is read', async () => {
+			await loginAs(UserA);
+			await navigateToRoom(room);
+			await waitFor(element(by.id('read-receipt-read')).atIndex(0))
+				.toExist()
+				.withTimeout(2000);
+
+			// Since we're already in the right place with the right user, check we can read messages
+			await readMessages(4);
 		});
 	});
 
@@ -221,6 +245,7 @@ describe('E2E Encryption', () => {
 		it('should reset room E2EE key', async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
 			await navigateToRoom(room);
+			await sleep(500);
 			await waitFor(element(by.id('room-view-header-encryption')))
 				.toBeVisible()
 				.withTimeout(2000);
@@ -255,6 +280,23 @@ describe('E2E Encryption', () => {
 			await navigateToRoom(room);
 			await mockMessage(getMessage(5));
 			await readMessages(4);
+		});
+
+		it('should send a message, edit it and be able to read it', async () => {
+			await mockMessage(getMessage(99));
+			await element(by[textMatcher](getMessage(99)))
+				.atIndex(0)
+				.longPress();
+			await waitFor(element(by.id('action-sheet')))
+				.toExist()
+				.withTimeout(2000);
+			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
+			await element(by[textMatcher]('Edit')).atIndex(0).tap();
+			await element(by.id('message-composer-input')).replaceText(getMessage(6));
+			await element(by.id('message-composer-send')).tap();
+			await readMessages(5);
 		});
 	});
 

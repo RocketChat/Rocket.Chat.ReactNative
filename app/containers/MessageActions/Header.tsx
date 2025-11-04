@@ -1,16 +1,17 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
-import { TSupportedThemes, useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { type TSupportedThemes, useTheme } from '../../theme';
+import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../CustomIcon';
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
-import { addFrequentlyUsed } from '../../lib/methods';
-import { useFrequentlyUsedEmoji } from '../../lib/hooks';
+import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
+import { addFrequentlyUsed } from '../../lib/methods/emojis';
+import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import sharedStyles from '../../views/Styles';
-import { IEmoji, TAnyMessageModel } from '../../definitions';
+import { type IEmoji, type TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
+import I18n from '../../i18n';
 
 export interface IHeader {
 	handleReaction: (emoji: IEmoji | null, message: TAnyMessageModel) => void;
@@ -61,22 +62,29 @@ const styles = StyleSheet.create({
 	}
 });
 
-const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => (
-	<Touch
-		testID={`message-actions-emoji-${item}`}
-		onPress={() => onReaction({ emoji: item })}
-		style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
-		{typeof item === 'string' ? (
-			<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item}:`)}</Text>
-		) : (
-			<CustomEmoji style={styles.customEmoji} emoji={item} />
-		)}
-	</Touch>
-);
-
+const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(`:${item}:`);
+	return (
+		<Touch
+			testID={`message-actions-emoji-${item}`}
+			accessible
+			accessibilityLabel={I18n.t('React_with_emojjname', { emojiName: item })}
+			onPress={() => onReaction({ emoji: item })}
+			style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
+			{typeof item === 'string' ? (
+				<Text style={styles.headerIcon}>{unicodeEmoji}</Text>
+			) : (
+				<CustomEmoji style={styles.customEmoji} emoji={item} />
+			)}
+		</Touch>
+	);
+};
 const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Touch
 		testID='add-reaction'
+		accessible
+		accessibilityLabel={I18n.t('Select_emoji_reaction')}
 		onPress={(param: any) => onReaction(param)}
 		style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
 		<CustomIcon name='reaction-add' size={24} />

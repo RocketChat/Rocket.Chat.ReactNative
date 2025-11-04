@@ -4,6 +4,8 @@ import Touchable from 'react-native-platform-touchable';
 import MessageContext from './Context';
 
 const RCTouchable: any = React.memo(({ children, ...props }: any) => {
+	'use memo';
+
 	const { onLongPress } = useContext(MessageContext);
 
 	return (

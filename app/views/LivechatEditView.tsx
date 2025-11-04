@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import log from '../lib/methods/helpers/log';
-import { TSupportedThemes, withTheme } from '../theme';
-import { themes } from '../lib/constants';
+import { type TSupportedThemes, withTheme } from '../theme';
+import { themes } from '../lib/constants/colors';
 import { FormTextInput } from '../containers/TextInput';
 import KeyboardView from '../containers/KeyboardView';
 import I18n from '../i18n';
@@ -18,12 +18,18 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
-import { IApplicationState, IUser } from '../definitions';
-import { ChatsStackParamList } from '../stacks/types';
+import {
+	type ICustomFields,
+	type IInputsRefs,
+	type TParams,
+	type ITitle,
+	type ILivechat
+} from '../definitions/ILivechatEditView';
+import { type IApplicationState, type IUser } from '../definitions';
+import { type ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { Services } from '../lib/services';
-import { usePermissions } from '../lib/hooks';
+import { getAgentDepartments, getCustomFields, editLivechat, getTagsList } from '../lib/services/restApi';
+import { usePermissions } from '../lib/hooks/usePermissions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -71,8 +77,8 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		livechat.rid
 	);
 
-	const getCustomFields = async () => {
-		const result = await Services.getCustomFields();
+	const handleGetCustomFields = async () => {
+		const result = await getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
@@ -103,7 +109,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	}, [availableUserTags]);
 
 	const handleGetTagsList = async (agentDepartments: string[]) => {
-		const tags = await Services.getTagsList();
+		const tags = await getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles?.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
@@ -113,7 +119,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 	const handleGetAgentDepartments = async () => {
 		try {
-			const result = await Services.getAgentDepartments(visitor?._id);
+			const result = await getAgentDepartments(visitor?._id);
 			if (result.success) {
 				const agentDepartments = result.departments.map(dept => dept.departmentId);
 				handleGetTagsList(agentDepartments);
@@ -166,7 +172,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 				delete userData.phone;
 			}
 
-			const { error } = await Services.editLivechat(userData, roomData);
+			const { error } = await editLivechat(userData, roomData);
 			if (error) {
 				EventEmitter.emit(LISTENER, { message: error });
 			} else {
@@ -187,14 +193,11 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 			title: I18n.t('Edit')
 		});
 		handleGetAgentDepartments();
-		getCustomFields();
+		handleGetCustomFields();
 	}, []);
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: themes[theme].surfaceHover }}
-			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}>
+		<KeyboardView backgroundColor={themes[theme].surfaceHover}>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<Title title={visitor?.username} theme={theme} />

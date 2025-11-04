@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
-import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
+import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
 import { RootEnum } from './definitions';
@@ -17,7 +17,7 @@ import MasterDetailStack from './stacks/MasterDetailStack';
 import ShareExtensionStack from './stacks/ShareExtensionStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
-import { themes } from './lib/constants';
+import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 
 const createStackNavigator = createNativeStackNavigator;

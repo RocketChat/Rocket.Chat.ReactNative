@@ -1,14 +1,8 @@
 import React from 'react';
-import { StyleProp } from 'react-native';
-import { Image, ImageStyle } from 'expo-image';
+import { Image } from 'expo-image';
 
-import { useAppSelector } from '../../lib/hooks';
-import { ICustomEmoji } from '../../definitions';
-
-interface ICustomEmojiProps {
-	emoji: ICustomEmoji;
-	style: StyleProp<ImageStyle>;
-}
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { type ICustomEmojiProps } from './interfaces';
 
 const CustomEmoji = React.memo(
 	({ emoji, style }: ICustomEmojiProps) => {

@@ -17,7 +17,7 @@ default_platform :ios
 
 platform :ios do
   before_all do
-    setup_circle_ci	
+    setup_ci	
     create_keychain(	
       name: ENV["MATCH_KEYCHAIN_NAME"],	
       password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
@@ -34,14 +34,14 @@ platform :ios do
       in_house: false
     )
     pilot(
-      ipa: 'ios/Rocket.Chat.ipa',
+      ipa: 'Rocket.Chat.ipa',
       app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
       skip_waiting_for_build_processing: true
     )
-    upload_symbols_to_crashlytics(dsym_path: "./ios/Rocket.Chat.app.dSYM.zip")
+    upload_symbols_to_crashlytics(dsym_path: "Rocket.Chat.app.dSYM.zip")
     upload_symbols_to_bugsnag(
-      config_file: "./RocketChatRN/Info.plist",
-      dsym_path: "./ios/Rocket.Chat.app.dSYM.zip",
+      config_file: "RocketChatRN/Info.plist",
+      dsym_path: "Rocket.Chat.app.dSYM.zip",
       api_key: options[:official] ? ENV["BUGSNAG_KEY_OFFICIAL"] : ENV["BUGSNAG_KEY"]
     )
   end
@@ -109,6 +109,21 @@ platform :ios do
   desc "Build fork app"
   lane :build_fork do
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
+  end
+
+  desc "Build Experimental app for Simulator"
+  lane :build_experimental_simulator do
+    gym(
+      scheme: "RocketChatRN",
+      workspace: "RocketChatRN.xcworkspace",
+      destination: "generic/platform=iOS Simulator",
+      skip_package_ipa: true,
+      output_directory: "./fastlane/output",
+      build_path: "./fastlane/build",
+      configuration: "Release",
+      derived_data_path: "./fastlane/derived_data",
+      xcargs: "-parallelizeTargets -jobs 4"
+    )
   end
 
   after_all do |lane|

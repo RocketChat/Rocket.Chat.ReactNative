@@ -1,16 +1,16 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import { useTheme } from '../../theme';
 import IconOrAvatar from './IconOrAvatar';
-import { IWrapperProps } from './interfaces';
+import { type IWrapperProps } from './interfaces';
 import styles from './styles';
-import { useRowHeight } from '../../lib/hooks/useRowHeight';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapperProps): React.ReactElement => {
 	const { colors } = useTheme();
-	const { rowHeight, rowHeightCondensed } = useRowHeight();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 	return (
 		<View
 			style={[styles.container, { height: displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight }]}

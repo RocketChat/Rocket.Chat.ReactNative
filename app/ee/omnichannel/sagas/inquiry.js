@@ -1,17 +1,17 @@
 import { put, select, takeLatest } from 'redux-saga/effects';
 
 import * as types from '../../../actions/actionsTypes';
-import { Services } from '../../../lib/services';
+import { getRoutingConfig } from '../../../lib/services/restApi';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { inquiryFailure, inquirySetEnabled, inquirySuccess } from '../actions/inquiry';
 import { getInquiriesQueued, isOmnichannelStatusAvailable } from '../lib';
 
 const handleRequest = function* handleRequest() {
 	try {
-		const routingConfig = yield Services.getRoutingConfig();
+		const routingConfig = yield getRoutingConfig();
 		const user = yield select(state => state.login.user);
 		// if routingConfig showQueue is enabled and omnichannel is enabled
-		const showQueue = routingConfig.showQueue && isOmnichannelStatusAvailable(user);
+		const showQueue = routingConfig.showQueue && isOmnichannelStatusAvailable(user.statusLivechat);
 
 		if (showQueue) {
 			const serverVersion = yield select(state => state.server.version);

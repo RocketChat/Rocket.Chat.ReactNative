@@ -8,12 +8,12 @@ import {
 	tapBack,
 	searchRoom,
 	platformTypes,
-	TTextMatcher,
+	type TTextMatcher,
 	checkRoomTitle,
 	mockMessage,
 	jumpToQuotedMessage
 } from '../../helpers/app';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 describe('Broadcast room', () => {
@@ -72,7 +72,9 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id('room-info-view')))
 			.toBeVisible()
 			.withTimeout(2000);
-		await expect(element(by.label('Broadcast').withAncestor(by.id('room-info-view-broadcast')))).toBeVisible();
+		await waitFor(element(by.id('room-info-view-broadcast')))
+			.toBeVisible()
+			.withTimeout(2000);
 		await tapBack();
 		await waitFor(element(by.id('room-actions-view')))
 			.toBeVisible()

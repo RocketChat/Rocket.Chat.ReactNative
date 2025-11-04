@@ -1,4 +1,4 @@
-import { create, MMKVLoader, MMKVInstance, ProcessingModes, IOSAccessibleStates } from 'react-native-mmkv-storage';
+import { create, MMKVLoader, type MMKVInstance, ProcessingModes, IOSAccessibleStates } from 'react-native-mmkv-storage';
 
 const MMKV = new MMKVLoader()
 	// MODES.MULTI_PROCESS = ACCESSIBLE BY APP GROUP (iOS)
@@ -52,7 +52,10 @@ class UserPreferences {
 	}
 
 	removeItem(key: string): boolean | undefined {
-		return this.mmkv.removeItem(key) ?? undefined;
+		if (this.getString(key) !== null) {
+			return this.mmkv.removeItem(key) ?? undefined;
+		}
+		return false;
 	}
 }
 

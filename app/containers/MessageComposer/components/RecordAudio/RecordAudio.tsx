@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import React, { ReactElement, useEffect, useRef } from 'react';
+import React, { type ReactElement, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import { getInfoAsync } from 'expo-file-system';
 import { useKeepAwake } from 'expo-keep-awake';
@@ -11,21 +11,21 @@ import { CustomIcon } from '../../../CustomIcon';
 import sharedStyles from '../../../../views/Styles';
 import { ReviewButton } from './ReviewButton';
 import { useMessageComposerApi } from '../../context';
-import { sendFileMessage } from '../../../../lib/methods';
-import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../../../lib/constants';
-import { useAppSelector } from '../../../../lib/hooks';
+import { sendFileMessage } from '../../../../lib/methods/sendFileMessage';
+import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../../../lib/constants/audio';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import log from '../../../../lib/methods/helpers/log';
-import { IUpload } from '../../../../definitions';
+import { type IUpload } from '../../../../definitions';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useCanUploadFile } from '../../hooks';
-import { Duration, IDurationRef } from './Duration';
+import { Duration, type IDurationRef } from './Duration';
 import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
-	const recordingRef = useRef<Audio.Recording>();
+	const recordingRef = useRef<Audio.Recording | null>(null);
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
@@ -48,7 +48,7 @@ export const RecordAudio = (): ReactElement | null => {
 				// error only occurs on iOS devices
 				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
 					if (numberOfTriesRef.current <= 5) {
-						recordingRef.current = undefined;
+						recordingRef.current = null;
 						numberOfTriesRef.current += 1;
 						setTimeout(() => {
 							record();
@@ -132,7 +132,7 @@ export const RecordAudio = (): ReactElement | null => {
 					<BaseButton
 						onPress={sendAudio}
 						testID='message-composer-send'
-						accessibilityLabel='Send_message'
+						accessibilityLabel='Send_audio_message'
 						icon='send-filled'
 						color={colors.buttonBackgroundPrimaryDefault}
 					/>
@@ -148,8 +148,8 @@ export const RecordAudio = (): ReactElement | null => {
 				<Duration ref={durationRef} />
 			</View>
 			<View style={styles.buttons}>
-				<CancelButton onPress={cancelRecording} />
-				<View style={styles.recordingNote}>
+				<CancelButton onPress={cancelRecording} cancelAndDelete />
+				<View accessible accessibilityLabel={i18n.t('Recording_audio_in_progress')} style={styles.recordingNote}>
 					<Text style={styles.recordingNoteText}>{i18n.t('Recording_audio_in_progress')}</Text>
 				</View>
 				<ReviewButton onPress={goReview} />

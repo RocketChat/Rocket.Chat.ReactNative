@@ -1,24 +1,36 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, ViewStyle, Image } from 'react-native';
-import { Image as ExpoImage } from 'expo-image';
+import { View, type ViewStyle } from 'react-native';
+import { Image } from 'expo-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
 import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
-import { IMessageImage } from './definitions';
+import { type IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
+import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
+import ImageBadge from './ImageBadge';
+import log from '../../../../../lib/methods/helpers/log';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const maxSize = useContext(WidthAwareContext);
 	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
+	const isGif = imageType === 'image/gif';
 
 	useEffect(() => {
 		if (status === 'downloaded') {
-			Image.getSize(uri, (width, height) => {
-				setImageDimensions({ width, height });
+			Image.loadAsync(uri, {
+				onError: e => {
+					log(e);
+				}
+			}).then(image => {
+				setImageDimensions({ width: image.width, height: image.height });
 			});
 		}
 	}, [uri, status]);
@@ -57,13 +69,18 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<ExpoImage style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
+					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
 				<>
 					{imagePreview && imageType && !encrypted ? (
-						<ExpoImage style={styles.image} source={{ uri: `data:${imageType};base64,${imagePreview}` }} contentFit='cover' />
+						<Image
+							autoplay={autoplayGifs}
+							style={styles.image}
+							source={{ uri: `data:${imageType};base64,${imagePreview}` }}
+							contentFit='cover'
+						/>
 					) : (
 						<View style={[styles.image, borderStyle]} />
 					)}
@@ -75,6 +92,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 					/>
 				</>
 			) : null}
+			<View style={styles.badgeContainer}>{isGif ? <ImageBadge title='GIF' /> : null}</View>
 		</>
 	);
 });

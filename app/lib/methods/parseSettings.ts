@@ -1,4 +1,4 @@
-import { defaultSettings } from '../constants';
+import { defaultSettings } from '../constants/defaultSettings';
 
 export function parseSettings(settings: any) {
 	return settings.reduce((ret: any, item: any) => {

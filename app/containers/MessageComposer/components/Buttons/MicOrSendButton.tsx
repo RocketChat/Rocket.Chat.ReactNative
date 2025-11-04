@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import { PermissionStatus } from 'expo-camera';
 
 import i18n from '../../../../i18n';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { openAppSettings } from '../../../../lib/methods/helpers/openAppSettings';
 import { useTheme } from '../../../../theme';
 import { useRoomContext } from '../../../../views/RoomView/context';
@@ -13,6 +13,8 @@ import { useCanUploadFile } from '../../hooks';
 import { BaseButton } from './BaseButton';
 
 export const MicOrSendButton = (): React.ReactElement | null => {
+	'use memo';
+
 	const { rid, sharing } = useRoomContext();
 	const micOrSend = useMicOrSend();
 	const { sendMessage } = useContext(MessageInnerContext);
@@ -66,7 +68,7 @@ export const MicOrSendButton = (): React.ReactElement | null => {
 			<BaseButton
 				onPress={startRecording}
 				testID='message-composer-send-audio'
-				accessibilityLabel='Send_audio_message'
+				accessibilityLabel='Record_audio_message'
 				icon='microphone'
 			/>
 		);

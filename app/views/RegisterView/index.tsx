@@ -1,43 +1,51 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { Keyboard, Text, TextInput, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, Text, type TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
-import { FormTextInput } from '../../containers/TextInput';
-import { IBaseScreen } from '../../definitions';
+import { ControlledFormTextInput } from '../../containers/TextInput';
+import { type IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { getShowLoginButton } from '../../selectors/login';
-import { OutsideParamList } from '../../stacks/types';
+import { type OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
-import { showErrorAlert, isValidEmail } from '../../lib/methods/helpers';
+import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpers';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
+import { register } from '../../lib/services/restApi';
 import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks';
-import PasswordPolicies from './PasswordPolicies';
-import getCustomFields from './methods/getCustomFields';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import PasswordPolicies from '../../containers/PasswordPolicies';
+import getCustomFields from '../../lib/methods/getCustomFields';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import CustomFields from '../../containers/CustomFields';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
-const validationSchema = yup.object().shape({
-	name: yup.string().min(1).required(),
-	email: yup.string().email().required(),
-	username: yup.string().min(1).required()
-});
-
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
 const RegisterView = ({ navigation, route }: IProps) => {
+	const validationSchema = yup.object().shape({
+		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
+		email: yup
+			.string()
+			.email(I18n.t('Email_must_be_a_valid_email'))
+			.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
+		username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
+		password: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Password') })),
+		confirmPassword: yup
+			.string()
+			.oneOf([yup.ref('password'), null], I18n.t('Passwords_do_not_match'))
+			.required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
+	});
+
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 	const { Accounts_CustomFields, Site_Url, Accounts_EmailVerification, Accounts_ManuallyApproveNewUsers, showLoginButton } =
@@ -51,9 +59,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		control,
 		handleSubmit,
 		setFocus,
+		setError,
 		getValues,
 		watch,
-		formState: { isValid, dirtyFields }
+		formState: { isValid, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -65,8 +74,8 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const password = watch('password');
-	const confirmPassword = watch('confirmPassword');
+	const inputValues = watch();
+	const { password, confirmPassword } = inputValues;
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
@@ -85,8 +94,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
-		if (!parsedCustomFields) return true;
 		const isValid = validationSchema.isValidSync(getValues());
+		if (!parsedCustomFields) {
+			return isValid;
+		}
 		let requiredCheck = true;
 		let minLengthCheck = true;
 		Object.keys(parsedCustomFields).forEach((key: string) => {
@@ -119,7 +130,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		Keyboard.dismiss();
 
 		try {
-			const response = await Services.register({ name, email, pass: password, username });
+			const response = await register({ name, email, pass: password, username });
 
 			if (response.success) {
 				if (Accounts_EmailVerification) {
@@ -129,13 +140,20 @@ const RegisterView = ({ navigation, route }: IProps) => {
 					showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
 					navigation.goBack();
 				} else {
-					dispatch(loginRequest({ user: email, password }, false, false, customFields));
+					dispatch(loginRequest({ user: email, password }, false, customFields));
 				}
 			}
 		} catch (error: any) {
 			if (error.data?.errorType === 'username-invalid') {
 				return dispatch(loginRequest({ user: email, password }));
 			}
+
+			if (error.data.error === 'Username is already in use') {
+				setError('username', { message: `${I18n.t('Username_is_already_in_use')}`, type: 'validate' });
+				AccessibilityInfo.announceForAccessibility(I18n.t('Username_is_already_in_use'));
+				return;
+			}
+
 			if (error.data?.error) {
 				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
 				showErrorAlert(error.data.error, I18n.t('Oops'));
@@ -165,115 +183,88 @@ const RegisterView = ({ navigation, route }: IProps) => {
 				</View>
 
 				<View style={styles.inputs}>
-					<Controller
+					<ControlledFormTextInput
+						required
+						control={control}
 						name='name'
-						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-name'
-								textContentType='name'
-								autoComplete='name'
-								returnKeyType='next'
-								required
-								label={I18n.t('Full_name')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => setFocus('username')}
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						label={I18n.t('Full_name')}
+						testID='register-view-name'
+						textContentType='name'
+						autoComplete='name'
+						returnKeyType='next'
+						error={errors.name?.message}
+						containerStyle={styles.inputContainer}
+						onSubmitEditing={() => {
+							setFocus('username');
+						}}
 					/>
-					<Controller
+
+					<ControlledFormTextInput
+						required
+						control={control}
 						name='username'
-						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-username'
-								textContentType='username'
-								autoComplete='username'
-								returnKeyType='next'
-								required
-								label={I18n.t('Username')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => {
-									setFocus('email');
-								}}
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						label={I18n.t('Username')}
+						testID='register-view-username'
+						textContentType='username'
+						autoComplete='username'
+						returnKeyType='next'
+						error={errors.username?.message}
+						containerStyle={styles.inputContainer}
+						onSubmitEditing={() => {
+							setFocus('email');
+						}}
 					/>
-					<Controller
+
+					<ControlledFormTextInput
+						required
+						control={control}
 						name='email'
-						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-email'
-								keyboardType='email-address'
-								textContentType='emailAddress'
-								autoComplete='email'
-								returnKeyType='next'
-								required
-								label={I18n.t('Email')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => {
-									setFocus('password');
-								}}
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						label={I18n.t('Email')}
+						testID='register-view-email'
+						keyboardType='email-address'
+						textContentType='emailAddress'
+						autoComplete='email'
+						returnKeyType='next'
+						error={errors.email?.message}
+						containerStyle={styles.inputContainer}
+						onSubmitEditing={() => {
+							setFocus('password');
+						}}
 					/>
-					<Controller
+
+					<ControlledFormTextInput
 						name='password'
 						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-password'
-								textContentType='newPassword'
-								autoComplete='password-new'
-								returnKeyType='next'
-								required
-								label={I18n.t('Password')}
-								value={value}
-								onChangeText={onChange}
-								secureTextEntry
-								onSubmitEditing={() => {
-									setFocus('confirmPassword');
-								}}
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						testID='register-view-password'
+						returnKeyType='next'
+						error={errors.confirmPassword?.message}
+						required
+						label={I18n.t('Password')}
+						secureTextEntry
+						textContentType={isAndroid ? 'newPassword' : undefined}
+						autoComplete={isAndroid ? 'password-new' : undefined}
+						onSubmitEditing={() => setFocus('confirmPassword')}
+						containerStyle={styles.inputContainer}
+						showErrorMessage={false}
 					/>
-					<Controller
+					<ControlledFormTextInput
 						name='confirmPassword'
 						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								accessibilityLabel={`${I18n.t('Confirm_Password')}`}
-								inputRef={ref}
-								testID='register-view-confirm-password'
-								textContentType='newPassword'
-								autoComplete='password-new'
-								returnKeyType='next'
-								required
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => {
-									if (parsedCustomFields) {
-										focusOnCustomFields();
-										return;
-									}
-									handleSubmit(onSubmit)();
-								}}
-								secureTextEntry
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						testID='register-view-confirm-password'
+						returnKeyType='done'
+						required
+						textContentType={isAndroid ? 'newPassword' : undefined}
+						autoComplete={isAndroid ? 'password-new' : undefined}
+						secureTextEntry
+						error={errors.confirmPassword?.message}
+						onSubmitEditing={() => {
+							if (parsedCustomFields) {
+								focusOnCustomFields();
+								return;
+							}
+							handleSubmit(onSubmit)();
+						}}
+						containerStyle={styles.inputContainer}
 					/>
 					<CustomFields
 						customFieldsRef={customFieldsRef}

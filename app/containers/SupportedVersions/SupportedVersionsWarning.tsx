@@ -1,4 +1,4 @@
-import React, { ReactElement, useLayoutEffect } from 'react';
+import React, { type ReactElement, useLayoutEffect } from 'react';
 import { View, Text, Linking } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -6,7 +6,7 @@ import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
 import { useSupportedVersionMessage } from './useSupportedVersionMessage';
-import * as HeaderButton from '../HeaderButton';
+import * as HeaderButton from '../Header/components/HeaderButton';
 import I18n from '../../i18n';
 import { LEARN_MORE_URL } from './constants';
 
@@ -32,7 +32,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
-			<View style={styles.iconContainer}>
+			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
 			{message.title ? (

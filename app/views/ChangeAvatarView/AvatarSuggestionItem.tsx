@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { IAvatar } from '../../definitions';
+import { type IAvatar } from '../../definitions';
 import Avatar from '../../containers/Avatar';
 import { useTheme } from '../../theme';
-import i18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,24 +21,20 @@ const AvatarSuggestionItem = ({
 	item,
 	onPress,
 	text,
-	testID
+	testID,
+	accessibilityLabel
 }: {
 	item?: IAvatar;
 	testID?: string;
 	onPress: Function;
 	text?: string;
+	accessibilityLabel?: string;
 }) => {
 	const { colors } = useTheme();
 
 	return (
 		<View key={item?.service} testID={testID} style={[styles.container, { backgroundColor: colors.strokeLight }]}>
-			<Avatar
-				accessibilityLabel={i18n.t('Select_Uploaded_Image')}
-				avatar={item?.url}
-				text={text}
-				size={64}
-				onPress={() => onPress(item)}
-			/>
+			<Avatar accessibilityLabel={accessibilityLabel} avatar={item?.url} text={text} size={64} onPress={() => onPress(item)} />
 		</View>
 	);
 };

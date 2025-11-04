@@ -10,32 +10,20 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	tabsContainer: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		width: '100%'
 	},
 	tab: {
+		flexDirection: 'column',
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingVertical: 10,
-		width: EMOJI_BUTTON_SIZE
+		alignItems: 'center'
 	},
 	tabEmoji: {
-		fontSize: 20,
-		color: 'black'
-	},
-	activeTabLine: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		height: 2,
-		bottom: 0
+		paddingVertical: 4
 	},
 	tabLine: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		height: 2,
-		bottom: 0
+		width: '100%',
+		height: 2
 	},
 	categoryContainer: {
 		flex: 1,
@@ -79,5 +67,14 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	emojiPickerContainer: { flex: 1 }
+	emojiPickerContainer: { flex: 1 },
+	input: {
+		height: 32,
+		borderWidth: 0,
+		paddingVertical: 0,
+		borderRadius: 4
+	},
+	textInputContainer: {
+		marginBottom: 0
+	}
 });

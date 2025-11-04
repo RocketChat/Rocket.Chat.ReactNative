@@ -1,17 +1,17 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { StyleSheet, ScrollView, Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../i18n';
-import { ChatsStackParamList } from '../stacks/types';
+import { type ChatsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
 import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import sharedStyles from './Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
@@ -76,10 +76,7 @@ const CloseLivechatView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceHover }}
-			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}>
+		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<FormTextInput

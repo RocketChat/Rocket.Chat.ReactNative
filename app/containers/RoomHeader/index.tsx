@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor } from '../../definitions';
-import { useDimensions } from '../../dimensions';
+import { type IApplicationState, type TUserStatus, type IOmnichannelSource, type IVisitor } from '../../definitions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomHeaderContainerProps {
 	title?: string;
@@ -21,7 +21,6 @@ interface IRoomHeaderContainerProps {
 	sourceType?: IOmnichannelSource;
 	visitor?: IVisitor;
 	disabled?: boolean;
-	rightButtonsWidth?: number;
 }
 
 const RoomHeaderContainer = React.memo(
@@ -39,13 +38,12 @@ const RoomHeaderContainer = React.memo(
 		type,
 		sourceType,
 		visitor,
-		disabled,
-		rightButtonsWidth
+		disabled
 	}: IRoomHeaderContainerProps) => {
 		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
-		const { width, height } = useDimensions();
+		const { width, height } = useResponsiveLayout();
 
 		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
 		const usersTyping = useSelector((state: IApplicationState) => state.usersTyping, shallowEqual);
@@ -91,7 +89,6 @@ const RoomHeaderContainer = React.memo(
 				onPress={onPress}
 				sourceType={sourceType}
 				disabled={disabled}
-				rightButtonsWidth={rightButtonsWidth}
 			/>
 		);
 	}

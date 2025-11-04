@@ -1,33 +1,34 @@
 import { Q } from '@nozbe/watermelondb';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React from 'react';
 import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
-import { DisplayMode, textInputDebounceTime, themes } from '../lib/constants';
-import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
+import { type DisplayMode } from '../lib/constants/constantDisplayMode';
+import { textInputDebounceTime } from '../lib/constants/debounceConfig';
+import { themes } from '../lib/constants/colors';
+import { type TActionSheetOptions, type TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
-import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen, TSubscriptionModel } from '../definitions';
+import { type IApplicationState, type IBaseScreen, type TSubscriptionModel } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem from '../containers/RoomItem';
-import { ChatsStackParamList } from '../stacks/types';
+import { type ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS, compareServerVersion } from '../lib/methods/helpers';
-import { Services } from '../lib/services';
+import { getRoomInfo, getTeamListRoom, updateTeamRoom, removeTeamRoom } from '../lib/services/restApi';
 
 const API_FETCH_COUNT = 25;
 
@@ -183,7 +184,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 		this.setState({ loadingMore: true });
 		try {
-			const result = await Services.getTeamListRoom({
+			const result = await getTeamListRoom({
 				teamId: this.teamId,
 				offset: length,
 				count: API_FETCH_COUNT,
@@ -338,7 +339,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			const { isMasterDetail } = this.props;
 			try {
 				let params = {};
-				const result = await Services.getRoomInfo(item._id);
+				const result = await getRoomInfo(item._id);
 				if (result.success) {
 					params = {
 						rid: item._id,
@@ -348,7 +349,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 						teamId: result.room.teamId
 					};
 				}
-				goRoom({ item: params, isMasterDetail, popToRoot: !!isMasterDetail });
+				goRoom({ item: params, isMasterDetail });
 			} catch (e: any) {
 				if (e.data.error === 'not-allowed') {
 					showErrorAlert(I18n.t('error-not-allowed'));
@@ -365,7 +366,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
-			const result = await Services.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
+			const result = await updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
 				const newData = data.map(i => {
 					if (i._id === item._id) {
@@ -404,7 +405,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
-			const result = await Services.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId as string });
+			const result = await removeTeamRoom({ roomId: item._id, teamId: this.team.teamId as string });
 			if (result.success) {
 				const newData = data.filter(room => result.room._id !== room._id);
 				this.setState({ data: newData });
@@ -571,12 +572,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		return (
-			<SafeAreaView testID='team-channels-view'>
-				<StatusBar />
-				{this.renderScroll()}
-			</SafeAreaView>
-		);
+		return <SafeAreaView testID='team-channels-view'>{this.renderScroll()}</SafeAreaView>;
 	}
 }
 

@@ -2,7 +2,7 @@ import { device, waitFor, element, by, expect } from 'detox';
 
 import { login, navigateToLogin, logout, tapBack } from '../../helpers/app';
 import data from '../../data';
-import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomUser, type ITestUser } from '../../helpers/data_setup';
 
 describe('Server history', () => {
 	let user: ITestUser;
@@ -22,14 +22,14 @@ describe('Server history', () => {
 		});
 
 		it('should show servers history', async () => {
-			await element(by.id('new-server-view-input')).tap();
-			await waitFor(element(by.id(`server-history-${data.server}`)))
+			await element(by.id('servers-history-button')).tap();
+			await waitFor(element(by.id(`servers-history-${data.server}`)))
 				.toExist()
 				.withTimeout(2000);
 		});
 
 		it('should tap on a server history and navigate to login', async () => {
-			await element(by.id(`server-history-${data.server}`)).tap();
+			await element(by.id(`servers-history-${data.server}`)).tap();
 			await waitFor(element(by.id('login-view-email')))
 				.toExist()
 				.withTimeout(5000);
@@ -45,13 +45,16 @@ describe('Server history', () => {
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(2000);
-			await element(by.id('new-server-view-input')).tap();
-			await waitFor(element(by.id(`server-history-${data.server}`)))
+			await element(by.id('servers-history-button')).tap();
+			await waitFor(element(by.id(`servers-history-${data.server}`)))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.id(`server-history-delete-${data.server}`)).tap();
-			await element(by.id('new-server-view-input')).tap();
-			await waitFor(element(by.id(`server-history-${data.server}`)))
+			await waitFor(element(by.id(`servers-history-delete-${data.server}`)))
+				.toExist()
+				.withTimeout(2000);
+			await element(by.id(`servers-history-delete-${data.server}`)).tap();
+
+			await waitFor(element(by.id('servers-history-button')))
 				.not.toExist()
 				.withTimeout(2000);
 		});

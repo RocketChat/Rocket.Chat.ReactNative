@@ -1,7 +1,7 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
 import {
-	TTextMatcher,
+	type TTextMatcher,
 	navigateToLogin,
 	login,
 	tapBack,
@@ -11,7 +11,7 @@ import {
 	sleep,
 	checkRoomTitle
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
+import { createRandomRoom, createRandomUser, type ITestUser } from '../../helpers/data_setup';
 import random from '../../helpers/random';
 
 describe('Discussion', () => {
@@ -177,11 +177,13 @@ describe('Discussion', () => {
 
 		it('should have starred', async () => {
 			await element(by.id('room-actions-scrollview')).swipe('up', 'slow', 0.5);
+			await sleep(300);
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 		});
 
 		it('should have share', async () => {
-			await element(by.id('room-actions-scrollview')).swipe('up');
+			await element(by.id('room-actions-scrollview')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 		});
 
@@ -198,7 +200,8 @@ describe('Discussion', () => {
 		});
 
 		it('should navigate to RoomActionView', async () => {
-			await element(by.id('room-actions-scrollview')).swipe('down');
+			await element(by.id('room-actions-scrollview')).swipe('down', 'fast', 0.5);
+			await sleep(300);
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			await element(by.id('room-actions-info')).tap();
 			await waitFor(element(by.id('room-info-view')))

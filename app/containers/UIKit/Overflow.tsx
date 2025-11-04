@@ -5,11 +5,11 @@ import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
-import { IOption, IOptions, IOverflow } from './interfaces';
+import { type IOption, type IOptions, type IOverflow } from './interfaces';
 
 const keyExtractor = (item: any) => item.value;
 
@@ -60,7 +60,9 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	return (
 		<>
 			<Touchable
-				ref={ref => (touchable[blockId] = ref)}
+				ref={ref => {
+					touchable[blockId] = ref;
+				}}
 				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}

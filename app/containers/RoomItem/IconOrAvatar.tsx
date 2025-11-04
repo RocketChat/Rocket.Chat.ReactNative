@@ -2,11 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 
 import Avatar from '../Avatar';
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
-import { IIconOrAvatar } from './interfaces';
-import { useRowHeight } from '../../lib/hooks/useRowHeight';
+import { type IIconOrAvatar } from './interfaces';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const IconOrAvatar = ({
 	avatar,
@@ -22,7 +22,7 @@ const IconOrAvatar = ({
 	displayMode,
 	sourceType
 }: IIconOrAvatar): React.ReactElement | null => {
-	const { rowHeight } = useRowHeight();
+	const { rowHeight } = useResponsiveLayout();
 
 	if (showAvatar) {
 		return (

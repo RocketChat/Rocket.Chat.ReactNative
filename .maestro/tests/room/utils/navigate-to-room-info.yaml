@@ -1,0 +1,30 @@
+appId: chat.rocket.reactnative
+name: Check Server
+tags:
+  - 'util'
+
+---
+- runFlow:
+    file: '../../../helpers/search-and-navigate-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- extendedWaitUntil:
+    visible:
+      id: 'room-header'
+    timeout: 60000
+- tapOn:
+    id: 'room-header'
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-info'
+    timeout: 60000
+- tapOn:
+    id: 'room-actions-info'
+- extendedWaitUntil:
+    visible:
+      id: 'room-info-view'
+    timeout: 60000

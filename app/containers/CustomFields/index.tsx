@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput } from 'react-native';
+import { type TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import { FormTextInput } from '../TextInput';
@@ -12,10 +12,16 @@ interface ICustomFields {
 	customFieldsRef: React.MutableRefObject<{
 		[key: string]: TextInput | undefined;
 	}>;
-	onSubmit: () => void;
+	onSubmit?: () => void;
 }
 
-const CustomFields = ({ Accounts_CustomFields, customFields, onCustomFieldChange, customFieldsRef, onSubmit }: ICustomFields) => {
+const CustomFields = ({
+	Accounts_CustomFields,
+	customFields,
+	onCustomFieldChange,
+	customFieldsRef,
+	onSubmit = () => null
+}: ICustomFields) => {
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	if (!parsedCustomFields) {
 		return null;
