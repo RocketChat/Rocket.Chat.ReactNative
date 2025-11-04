@@ -1,5 +1,5 @@
-import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
+// This file is a fallback for TypeScript.
+import { type TurboModule } from 'react-native';
 
 export interface Spec extends TurboModule {
 	getStoragePath(): Promise<{
@@ -18,4 +18,6 @@ export interface Spec extends TurboModule {
 	readAndDecryptMMKV(mmkvId: string): Promise<Record<string, string>>;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('MMKVReader');
+declare const MMKVReader: Spec | null;
+
+export default MMKVReader;

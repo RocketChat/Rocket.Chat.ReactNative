@@ -1,13 +1,7 @@
 import { MMKV } from 'react-native-mmkv';
-import { Platform } from 'react-native';
 
 import { isIOS } from './helpers';
-import NativeMMKVReaderAndroid from '../native/NativeMMKVReaderAndroid';
-
-const MMKVReader = Platform.select({
-	android: NativeMMKVReaderAndroid,
-	ios: null
-});
+import MMKVReader from '../native/NativeMMKVReader';
 
 export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newStorage?: MMKV) {
 	const errors: string[] = [];
