@@ -5,6 +5,7 @@ import moment from 'moment';
 import { useTheme } from '../../../theme';
 import { LISTENER } from '../../Toast';
 import EventEmitter from '../../../lib/methods/helpers/events';
+import styles from '../styles';
 
 interface ITimestampProps {
 	value: { timestamp: string; format: 't' | 'T' | 'd' | 'D' | 'f' | 'F' | 'R' };
@@ -53,7 +54,7 @@ const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
 	}, [value.timestamp]);
 
 	return (
-		<Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault }} onPress={handlePress}>
+		<Text style={[styles.plainText, { backgroundColor: colors.surfaceSelected, color: colors.fontDefault, fontWeight: 900 }]} onPress={handlePress}>
 			{` ${formatDate} `}
 		</Text>
 	);
