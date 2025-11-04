@@ -45,7 +45,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		<Text
 			style={[
 				styles.text,
-				{ color: themes[theme].fontDefault, marginTop: value?.map(x => x.type).includes('TIMESTAMP') ? 2 : 0 }
+				{ color: themes[theme].fontDefault }
 			]}>
 			<Inline value={value} forceTrim={forceTrim} />
 		</Text>

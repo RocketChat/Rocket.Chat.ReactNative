@@ -53,7 +53,7 @@ const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
 	}, [value.timestamp]);
 
 	return (
-		<Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault, lineHeight: 22 }} onPress={handlePress}>
+		<Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault }} onPress={handlePress}>
 			{` ${formatDate} `}
 		</Text>
 	);
