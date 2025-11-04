@@ -3,6 +3,7 @@
 //
 
 #import "SecureStorage.h"
+#import "MMKVReader.h"
 #import "Shared/RocketChat/MMKVBridge.h"
 #import <react-native-notifications/RNNotificationEventHandler.h>
 #import <react-native-notifications/RNNotificationCenter.h>

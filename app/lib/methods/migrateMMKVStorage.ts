@@ -1,13 +1,13 @@
 import { MMKV } from 'react-native-mmkv';
 
-import { isIOS } from './helpers';
 import MMKVReader from '../native/NativeMMKVReader';
 
 export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newStorage?: MMKV) {
 	const errors: string[] = [];
 
 	try {
-		if (isIOS || !MMKVReader) {
+		if (!MMKVReader) {
+			console.log('MMKVReader module not available - skipping migration');
 			return;
 		}
 
