@@ -45,7 +45,7 @@ jobs:
 
       - name: Build iOS
         uses: ./.github/actions/build-ios
-        timeout-minutes: 60
+        timeout-minutes: 90
         with:
           type: official
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
