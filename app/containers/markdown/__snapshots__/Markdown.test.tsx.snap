@@ -4267,10 +4267,18 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         <Text
           onPress={[Function]}
           style={
-            {
-              "backgroundColor": "#D7DBE0",
-              "color": "#2F343D",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            12:00 PM 
@@ -4333,10 +4341,18 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         <Text
           onPress={[Function]}
           style={
-            {
-              "backgroundColor": "#D7DBE0",
-              "color": "#2F343D",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            12:00:00 PM 
@@ -4399,10 +4415,18 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         <Text
           onPress={[Function]}
           style={
-            {
-              "backgroundColor": "#D7DBE0",
-              "color": "#2F343D",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            01/01/2025 
@@ -4465,10 +4489,18 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         <Text
           onPress={[Function]}
           style={
-            {
-              "backgroundColor": "#D7DBE0",
-              "color": "#2F343D",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            Wednesday, Jan 01, 2025 
@@ -4531,10 +4563,18 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         <Text
           onPress={[Function]}
           style={
-            {
-              "backgroundColor": "#D7DBE0",
-              "color": "#2F343D",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            Wednesday, Jan 01, 2025 12:00 PM 
@@ -4597,10 +4637,18 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         <Text
           onPress={[Function]}
           style={
-            {
-              "backgroundColor": "#D7DBE0",
-              "color": "#2F343D",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            Wednesday, Jan 01, 2025 12:00:00 PM 
@@ -4663,10 +4711,18 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         <Text
           onPress={[Function]}
           style={
-            {
-              "backgroundColor": "#D7DBE0",
-              "color": "#2F343D",
-            }
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            10 months ago 
