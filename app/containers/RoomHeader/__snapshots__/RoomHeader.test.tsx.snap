@@ -1575,6 +1575,266 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
       </RNGestureHandlerButton>
     </View>
   </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel classified ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={13}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="classified"
+            >
+              classified
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private team classified ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        exclusive={true}
+        handlerTag={14}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        rippleColor="transparent"
+        style={
+          [
+            undefined,
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="room-header"
+        touchSoundDisabled={false}
+      >
+        <View
+          accessible={true}
+          collapsable={false}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                  [
+                    {
+                      "lineHeight": 16,
+                    },
+                    [
+                      {
+                        "marginRight": 4,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="classified"
+            >
+              classified
+            </Text>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>,
 ]
 `;
 
@@ -1611,7 +1871,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={13}
+        handlerTag={15}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1774,7 +2034,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={14}
+        handlerTag={16}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1937,7 +2197,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={15}
+        handlerTag={17}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2105,7 +2365,7 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={16}
+        handlerTag={18}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2280,7 +2540,7 @@ preview
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={17}
+        handlerTag={19}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2460,7 +2720,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={18}
+        handlerTag={20}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2590,7 +2850,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={19}
+        handlerTag={21}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2720,7 +2980,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={20}
+        handlerTag={22}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2883,7 +3143,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={21}
+        handlerTag={23}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3046,7 +3306,7 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={22}
+        handlerTag={24}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3215,7 +3475,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={23}
+        handlerTag={25}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3378,7 +3638,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={24}
+        handlerTag={26}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3541,7 +3801,7 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         delayLongPress={600}
         enabled={true}
         exclusive={true}
-        handlerTag={25}
+        handlerTag={27}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {

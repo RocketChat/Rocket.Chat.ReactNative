@@ -67,6 +67,7 @@ export interface ITypeIconProps {
 	size?: number;
 	style?: object;
 	sourceType: IOmnichannelSource;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 interface IRoomItemTouchables {
@@ -124,6 +125,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
 	accessibilityDate: string;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 export interface ILastMessageProps {
@@ -161,6 +163,7 @@ export interface IIconOrAvatar {
 	teamMain: boolean;
 	showLastMessage: boolean;
 	sourceType: IOmnichannelSource;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 export interface IRoomItem extends ISubscription {

@@ -34,6 +34,7 @@ export const merge = (
 			mergedSubscription.jitsiTimeout = room.jitsiTimeout;
 			mergedSubscription.usernames = room.usernames;
 			mergedSubscription.uids = room.uids;
+			mergedSubscription.abacAttributes = ['Classified', 'Top Secret', 'Confidential']; // TODO: remove this once we have the actual abac attributes
 		}
 
 		if (compareServerVersion(serverVersion, 'lowerThan', '3.7.0')) {

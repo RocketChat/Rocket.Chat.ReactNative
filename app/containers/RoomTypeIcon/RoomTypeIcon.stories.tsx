@@ -18,6 +18,8 @@ export const All = () => (
 		<RoomTypeIcon size={30} type='p' teamMain />
 		<RoomTypeIcon size={30} type='discussion' />
 		<RoomTypeIcon size={30} type='l' status='away' sourceType={{ type: OmnichannelSourceType.SMS }} />
+		<RoomTypeIcon size={30} type='p' abacAttributes={['Classified']} />
+		<RoomTypeIcon size={30} type='p' abacAttributes={['Classified']} teamMain />
 		<RoomTypeIcon size={30} type='p' style={{ margin: 10 }} />
 	</>
 );

@@ -795,6 +795,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										teamMain={room.teamMain}
 										status={room.visitor?.status}
 										sourceType={source}
+										abacAttributes={room.abacAttributes}
 									/>
 									<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 										{getRoomTitle(room)}

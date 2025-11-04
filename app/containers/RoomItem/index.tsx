@@ -94,6 +94,7 @@ const RoomItemContainer = React.memo(
 				displayMode={displayMode}
 				status={item.t === 'l' ? item?.visitor?.status : null}
 				sourceType={item.t === 'l' ? item.source : null}
+				abacAttributes={item.abacAttributes}
 			/>
 		);
 	},
