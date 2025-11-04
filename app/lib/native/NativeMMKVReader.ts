@@ -1,7 +1,6 @@
-// This file is a fallback for TypeScript.
-import { type TurboModule } from 'react-native';
-
-export interface Spec extends TurboModule {
+// This file is a fallback for TypeScript. Metro will use platform-specific files at runtime.
+// iOS doesn't need MMKV migration, so we export null
+export interface MMKVReaderModule {
 	getStoragePath(): Promise<{
 		filesDir: string;
 		mmkvDir: string;
@@ -18,6 +17,6 @@ export interface Spec extends TurboModule {
 	readAndDecryptMMKV(mmkvId: string): Promise<Record<string, string>>;
 }
 
-declare const MMKVReader: Spec | null;
+declare const MMKVReader: MMKVReaderModule | null;
 
 export default MMKVReader;
