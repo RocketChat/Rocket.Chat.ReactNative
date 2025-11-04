@@ -3,60 +3,60 @@ import { Text } from 'react-native';
 import moment from 'moment';
 
 import { useTheme } from '../../../theme';
-import { LISTENER } from '../../../containers/Toast';
+import { LISTENER } from "../../Toast";
 import EventEmitter from '../../../lib/methods/helpers/events';
 
 interface ITimestampProps {
-	value: { timestamp: string; format: "t" | "T" | "d" | "D" | "f" | "F" | "R"; }
+	value: { timestamp: string; format: 't' | 'T' | 'd' | 'D' | 'f' | 'F' | 'R' };
 }
 
 const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
-    const { colors } = useTheme();
-    
-    const formatDate = React.useMemo(()=>{
-        const timestamp = parseInt(value.timestamp) * 1000;
+	const { colors } = useTheme();
 
-        if(value.format === "t"){
-            return moment(timestamp).format('hh:mm A');
-        }
+	const formatDate = React.useMemo(() => {
+		const timestamp = parseInt(value.timestamp) * 1000;
 
-        if(value.format === "T"){
-            return moment(timestamp).format('hh:mm:ss A');
-        }
+		if (value.format === 't') {
+			return moment(timestamp).format('hh:mm A');
+		}
 
-        if(value.format === "d"){
-            return moment(timestamp).format('MM/DD/YYYY');
-        }
+		if (value.format === 'T') {
+			return moment(timestamp).format('hh:mm:ss A');
+		}
 
-        if(value.format === "D"){
-            return moment(timestamp).format('dddd, MMM DD, YYYY');
-        }
+		if (value.format === 'd') {
+			return moment(timestamp).format('MM/DD/YYYY');
+		}
 
-        if(value.format === "f"){
-            return moment(timestamp).format('dddd, MMM DD, YYYY hh:mm A');
-        }
+		if (value.format === 'D') {
+			return moment(timestamp).format('dddd, MMM DD, YYYY');
+		}
 
-        if(value.format === "F"){
-            return moment(timestamp).format('dddd, MMM DD, YYYY hh:mm:ss A');
-        }
+		if (value.format === 'f') {
+			return moment(timestamp).format('dddd, MMM DD, YYYY hh:mm A');
+		}
 
-        if(value.format === "R"){
-            return moment(timestamp).fromNow();
-        }
+		if (value.format === 'F') {
+			return moment(timestamp).format('dddd, MMM DD, YYYY hh:mm:ss A');
+		}
 
-        return "Invalid Date";
-    }, [value]);
+		if (value.format === 'R') {
+			return moment(timestamp).fromNow();
+		}
 
-    const handlePress = React.useCallback(() => {
-        const message = moment(parseInt(value.timestamp) * 1000).format('dddd, MMM DD, YYYY hh:mm A');
-        EventEmitter.emit(LISTENER, { message });
-    }, [value.timestamp]);
+		return 'Invalid Date';
+	}, [value]);
 
-    return (
-        <Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault, lineHeight: 22 }} onPress={handlePress}>
-            {` ${formatDate} `}
-        </Text>
-    )
-}
+	const handlePress = React.useCallback(() => {
+		const message = moment(parseInt(value.timestamp) * 1000).format('dddd, MMM DD, YYYY hh:mm A');
+		EventEmitter.emit(LISTENER, { message });
+	}, [value.timestamp]);
+
+	return (
+		<Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault, lineHeight: 22 }} onPress={handlePress}>
+			{` ${formatDate} `}
+		</Text>
+	);
+};
 
 export default Timestamp;
