@@ -50,13 +50,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		};
 	}
 
-	const user = mentions?.find?.((m: any) => m && m.username === mention);
+	const atMentioned = mentions?.find?.((m: any) => m && (m.username === mention || m.name === mention));
 
 	const handlePress = () => {
 		logEvent(events.ROOM_MENTION_GO_USER_INFO);
 		const navParam = {
-			t: 'd',
-			rid: user && user._id,
+			t: atMentioned?.type === 'user' ? 'd' : 'team',
+			rid: atMentioned && atMentioned._id,
 			itsMe
 		};
 		if (navToRoomInfo) {
@@ -64,11 +64,18 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		}
 	};
 
-	if (user) {
+	if (atMentioned) {
+		let text;
+		if (atMentioned.type === 'user') {
+			text = useRealName && atMentioned.name ? atMentioned.name : atMentioned.username;
+		} else {
+			text = atMentioned.name;
+		}
+
 		return (
 			<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
 				{preffix}
-				{useRealName && user.name ? user.name : user.username}
+				{text}
 			</Text>
 		);
 	}
