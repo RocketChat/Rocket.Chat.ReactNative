@@ -20,7 +20,7 @@ export default {
 
 const Story = () => (
 	<>
-		<RoomInfoABAC abacAttributes={[{ name: 'Chat sensitivity', values: ['Classified', 'Top Secret'] }]} />
+		<RoomInfoABAC abacAttributes={[{ name: 'Chat sensitivity', values: ['Classified', 'Top Secret'] }]} teamMain />
 		<RoomInfoABAC
 			abacAttributes={[
 				{ name: 'Attribute', values: Array.from({ length: 10 }, (_, index) => `Value ${index + 1}`) },

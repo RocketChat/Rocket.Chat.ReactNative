@@ -91,7 +91,7 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
                   ]
                 }
               >
-                
+                
               </Text>
               <Text
                 style={
@@ -1009,7 +1009,7 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
                   ]
                 }
               >
-                
+                
               </Text>
               <Text
                 style={
@@ -1927,7 +1927,7 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
                   ]
                 }
               >
-                
+                
               </Text>
               <Text
                 style={

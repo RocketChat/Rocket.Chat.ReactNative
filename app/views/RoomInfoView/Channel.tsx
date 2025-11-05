@@ -16,7 +16,7 @@ const Channel = ({ room }: { room?: ISubscription }): React.ReactElement => {
 			<Item label={I18n.t('Topic')} content={topic} testID='room-info-view-topic' />
 			<Item label={I18n.t('Announcement')} content={announcement} testID='room-info-view-announcement' />
 			<Item label={I18n.t('Broadcast')} content={broadcast} testID='room-info-view-broadcast' />
-			<RoomInfoABAC abacAttributes={room?.abacAttributes} />
+			<RoomInfoABAC abacAttributes={room?.abacAttributes} teamMain={room?.teamMain} />
 		</>
 	);
 };

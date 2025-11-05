@@ -8,7 +8,13 @@ import { ItemLabel } from './ItemLabel';
 import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
 
-export const RoomInfoABAC = ({ abacAttributes }: { abacAttributes?: ISubscription['abacAttributes'] }) => {
+export const RoomInfoABAC = ({
+	abacAttributes,
+	teamMain
+}: {
+	abacAttributes?: ISubscription['abacAttributes'];
+	teamMain?: boolean;
+}) => {
 	const { colors } = useTheme();
 
 	if (!abacAttributes?.length) {
@@ -20,7 +26,7 @@ export const RoomInfoABAC = ({ abacAttributes }: { abacAttributes?: ISubscriptio
 			<List.Separator style={{ marginBottom: 20 }} />
 			<View style={{ gap: 16 }}>
 				<RoomInfoTagContainer>
-					<RoomInfoTag name={I18n.t('ABAC_managed')} icon='hash-shield' />
+					<RoomInfoTag name={I18n.t('ABAC_managed')} icon={teamMain ? 'team-shield' : 'hash-shield'} />
 				</RoomInfoTagContainer>
 
 				<Text style={[styles.abacDescription, { color: colors.fontSecondaryInfo }]}>{I18n.t('ABAC_managed_description')}</Text>
