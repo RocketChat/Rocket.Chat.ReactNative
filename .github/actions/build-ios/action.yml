@@ -120,6 +120,7 @@ runs:
         retry_wait_seconds: 60
         timeout_minutes: 30
         shell: bash
+        retry_on: timeout
         command: |
           cd ios
           if [[ ${{ inputs.type }} == "official" ]]; then
