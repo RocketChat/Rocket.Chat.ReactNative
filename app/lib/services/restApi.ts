@@ -112,7 +112,7 @@ export const sendConfirmationEmail = (email: string): Promise<{ message: string;
 export const spotlight = (
 	search: string,
 	usernames: string[],
-	type: { users: boolean; rooms: boolean },
+	type: { users: boolean; rooms: boolean; mentions: boolean },
 	rid?: string
 ): Promise<ISpotlight> =>
 	// RC 0.51.0
