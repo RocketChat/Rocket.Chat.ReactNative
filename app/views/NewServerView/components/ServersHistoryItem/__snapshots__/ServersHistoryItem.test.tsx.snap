@@ -193,6 +193,18 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           }
         />
         <View
+          accessibilityActions={
+            [
+              {
+                "label": "Delete",
+                "name": "delete",
+              },
+            ]
+          }
+          accessibilityHint="Activate to select server. Available actions: delete"
+          accessibilityLabel="https://open.rocket.chat, john.doe"
+          accessible={true}
+          onAccessibilityAction={[Function]}
           style={{}}
         >
           <View
@@ -485,6 +497,18 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           }
         />
         <View
+          accessibilityActions={
+            [
+              {
+                "label": "Delete",
+                "name": "delete",
+              },
+            ]
+          }
+          accessibilityHint="Activate to select server. Available actions: delete"
+          accessibilityLabel="https://superlongservername.tologintoasuperlongservername.rocket.chat, very.long.username.here"
+          accessible={true}
+          onAccessibilityAction={[Function]}
           style={{}}
         >
           <View
@@ -777,6 +801,18 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           }
         />
         <View
+          accessibilityActions={
+            [
+              {
+                "label": "Delete",
+                "name": "delete",
+              },
+            ]
+          }
+          accessibilityHint="Activate to select server. Available actions: delete"
+          accessibilityLabel="https://stable.rocket.chat, admin"
+          accessible={true}
+          onAccessibilityAction={[Function]}
           style={{}}
         >
           <View
@@ -1074,6 +1110,18 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           }
         />
         <View
+          accessibilityActions={
+            [
+              {
+                "label": "Delete",
+                "name": "delete",
+              },
+            ]
+          }
+          accessibilityHint="Activate to select server. Available actions: delete"
+          accessibilityLabel="https://open.rocket.chat, john.doe"
+          accessible={true}
+          onAccessibilityAction={[Function]}
           style={{}}
         >
           <View
@@ -1366,6 +1414,18 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
           }
         />
         <View
+          accessibilityActions={
+            [
+              {
+                "label": "Delete",
+                "name": "delete",
+              },
+            ]
+          }
+          accessibilityHint="Activate to select server. Available actions: delete"
+          accessibilityLabel="https://example.com, user123"
+          accessible={true}
+          onAccessibilityAction={[Function]}
           style={{}}
         >
           <View
@@ -1663,6 +1723,18 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         />
         <View
+          accessibilityActions={
+            [
+              {
+                "label": "Delete",
+                "name": "delete",
+              },
+            ]
+          }
+          accessibilityHint="Activate to select server. Available actions: delete"
+          accessibilityLabel="https://open.rocket.chat, john.doe"
+          accessible={true}
+          onAccessibilityAction={[Function]}
           style={{}}
         >
           <View
@@ -1955,6 +2027,18 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         />
         <View
+          accessibilityActions={
+            [
+              {
+                "label": "Delete",
+                "name": "delete",
+              },
+            ]
+          }
+          accessibilityHint="Activate to select server. Available actions: delete"
+          accessibilityLabel="https://open.rocket.chat, john.doe"
+          accessible={true}
+          onAccessibilityAction={[Function]}
           style={{}}
         >
           <View
@@ -2247,6 +2331,18 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         />
         <View
+          accessibilityActions={
+            [
+              {
+                "label": "Delete",
+                "name": "delete",
+              },
+            ]
+          }
+          accessibilityHint="Activate to select server. Available actions: delete"
+          accessibilityLabel="https://open.rocket.chat, john.doe"
+          accessible={true}
+          onAccessibilityAction={[Function]}
           style={{}}
         >
           <View
