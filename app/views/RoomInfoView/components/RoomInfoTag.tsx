@@ -6,7 +6,7 @@ import styles from '../styles';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import type { TIconsName } from '../../../containers/CustomIcon';
 
-export const RoomInfoTag = ({ name, icon, testID }: { name: string; icon?: TIconsName; testID: string }) => {
+export const RoomInfoTag = ({ name, icon, testID }: { name: string; icon?: TIconsName; testID?: string }) => {
 	const { colors } = useTheme();
 
 	return (

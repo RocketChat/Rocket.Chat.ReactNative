@@ -13,7 +13,8 @@ export default StyleSheet.create({
 	item: {
 		paddingVertical: 10,
 		paddingHorizontal: 20,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		gap: 8
 	},
 	avatarContainer: {
 		minHeight: 320,
@@ -48,7 +49,6 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	itemLabel: {
-		marginBottom: 10,
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
@@ -93,5 +93,10 @@ export default StyleSheet.create({
 		paddingTop: 16,
 		paddingHorizontal: 20,
 		alignItems: 'center'
+	},
+	abacDescription: {
+		lineHeight: 22,
+		fontSize: 16,
+		...sharedStyles.textRegular
 	}
 });

@@ -1,0 +1,2755 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Black should match snapshot 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        {
+          "backgroundColor": "#000000",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 8,
+            "justifyContent": "center",
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              {
+                "marginBottom": 20,
+              },
+              {
+                "backgroundColor": "#1f2329",
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "gap": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 4,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 4,
+                    "flexDirection": "row",
+                    "gap": 2,
+                    "padding": 4,
+                  },
+                  {
+                    "backgroundColor": "#3C3F44",
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#E4E7EA",
+                      "fontSize": 16,
+                    },
+                    [
+                      {
+                        "lineHeight": 16,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#E4E7EA",
+                    },
+                  ]
+                }
+              >
+                ABAC managed
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9EA2A8",
+                },
+              ]
+            }
+          >
+            Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.
+          </Text>
+          <Text
+            accessibilityLabel="Room attributes"
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Room attributes
+          </Text>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                  },
+                ]
+              }
+            >
+              Chat sensitivity
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Classified
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Top Secret
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "gap": 8,
+            "justifyContent": "center",
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              {
+                "marginBottom": 20,
+              },
+              {
+                "backgroundColor": "#1f2329",
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "gap": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 4,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 4,
+                    "flexDirection": "row",
+                    "gap": 2,
+                    "padding": 4,
+                  },
+                  {
+                    "backgroundColor": "#3C3F44",
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#E4E7EA",
+                      "fontSize": 16,
+                    },
+                    [
+                      {
+                        "lineHeight": 16,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#E4E7EA",
+                    },
+                  ]
+                }
+              >
+                ABAC managed
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9EA2A8",
+                },
+              ]
+            }
+          >
+            Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.
+          </Text>
+          <Text
+            accessibilityLabel="Room attributes"
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Room attributes
+          </Text>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                  },
+                ]
+              }
+            >
+              Attribute
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 1
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 2
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 3
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 4
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 5
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 6
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 7
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 8
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 9
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 10
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                  },
+                ]
+              }
+            >
+              Chat sensitivity
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Classified
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Top Secret
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Dark should match snapshot 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        {
+          "backgroundColor": "#1F2329",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 8,
+            "justifyContent": "center",
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              {
+                "marginBottom": 20,
+              },
+              {
+                "backgroundColor": "#333842",
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "gap": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 4,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 4,
+                    "flexDirection": "row",
+                    "gap": 2,
+                    "padding": 4,
+                  },
+                  {
+                    "backgroundColor": "#3C3F44",
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#E4E7EA",
+                      "fontSize": 16,
+                    },
+                    [
+                      {
+                        "lineHeight": 16,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#E4E7EA",
+                    },
+                  ]
+                }
+              >
+                ABAC managed
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9EA2A8",
+                },
+              ]
+            }
+          >
+            Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.
+          </Text>
+          <Text
+            accessibilityLabel="Room attributes"
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Room attributes
+          </Text>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                  },
+                ]
+              }
+            >
+              Chat sensitivity
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Classified
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Top Secret
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "gap": 8,
+            "justifyContent": "center",
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              {
+                "marginBottom": 20,
+              },
+              {
+                "backgroundColor": "#333842",
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "gap": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 4,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 4,
+                    "flexDirection": "row",
+                    "gap": 2,
+                    "padding": 4,
+                  },
+                  {
+                    "backgroundColor": "#3C3F44",
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#E4E7EA",
+                      "fontSize": 16,
+                    },
+                    [
+                      {
+                        "lineHeight": 16,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#E4E7EA",
+                    },
+                  ]
+                }
+              >
+                ABAC managed
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#9EA2A8",
+                },
+              ]
+            }
+          >
+            Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.
+          </Text>
+          <Text
+            accessibilityLabel="Room attributes"
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                },
+              ]
+            }
+          >
+            Room attributes
+          </Text>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                  },
+                ]
+              }
+            >
+              Attribute
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 1
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 2
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 3
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 4
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 5
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 6
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 7
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 8
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 9
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Value 10
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                  },
+                ]
+              }
+            >
+              Chat sensitivity
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Classified
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#3C3F44",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#E4E7EA",
+                      },
+                    ]
+                  }
+                >
+                  Top Secret
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Light should match snapshot 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "gap": 8,
+            "justifyContent": "center",
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              {
+                "marginBottom": 20,
+              },
+              {
+                "backgroundColor": "#CBCED1",
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "gap": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 4,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 4,
+                    "flexDirection": "row",
+                    "gap": 2,
+                    "padding": 4,
+                  },
+                  {
+                    "backgroundColor": "#D7DBE0",
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 16,
+                    },
+                    [
+                      {
+                        "lineHeight": 16,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#1F2329",
+                    },
+                  ]
+                }
+              >
+                ABAC managed
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.
+          </Text>
+          <Text
+            accessibilityLabel="Room attributes"
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Room attributes
+          </Text>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Chat sensitivity
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Classified
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Top Secret
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "gap": 8,
+            "justifyContent": "center",
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              {
+                "marginBottom": 20,
+              },
+              {
+                "backgroundColor": "#CBCED1",
+              },
+            ]
+          }
+        />
+        <View
+          style={
+            {
+              "gap": 16,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "gap": 4,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 4,
+                    "flexDirection": "row",
+                    "gap": 2,
+                    "padding": 4,
+                  },
+                  {
+                    "backgroundColor": "#D7DBE0",
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 16,
+                    },
+                    [
+                      {
+                        "lineHeight": 16,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#1F2329",
+                    },
+                  ]
+                }
+              >
+                ABAC managed
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.
+          </Text>
+          <Text
+            accessibilityLabel="Room attributes"
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                },
+              ]
+            }
+          >
+            Room attributes
+          </Text>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Attribute
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 1
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 2
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 3
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 4
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 5
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 6
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 7
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 8
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 9
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Value 10
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "gap": 8,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Chat sensitivity
+            </Text>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "gap": 4,
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Classified
+                </Text>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 4,
+                      "flexDirection": "row",
+                      "gap": 2,
+                      "padding": 4,
+                    },
+                    {
+                      "backgroundColor": "#D7DBE0",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                        "lineHeight": 16,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  Top Secret
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

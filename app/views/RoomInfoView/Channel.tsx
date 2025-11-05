@@ -3,6 +3,7 @@ import React from 'react';
 import I18n from '../../i18n';
 import { type ISubscription } from '../../definitions';
 import Item from './Item';
+import { RoomInfoABAC } from './components/RoomInfoABAC';
 
 const Channel = ({ room }: { room?: ISubscription }): React.ReactElement => {
 	const description = room?.description || `__${I18n.t('No_label_provided', { label: 'description' })}__`;
@@ -15,6 +16,7 @@ const Channel = ({ room }: { room?: ISubscription }): React.ReactElement => {
 			<Item label={I18n.t('Topic')} content={topic} testID='room-info-view-topic' />
 			<Item label={I18n.t('Announcement')} content={announcement} testID='room-info-view-announcement' />
 			<Item label={I18n.t('Broadcast')} content={broadcast} testID='room-info-view-broadcast' />
+			<RoomInfoABAC abacAttributes={room?.abacAttributes} />
 		</>
 	);
 };
