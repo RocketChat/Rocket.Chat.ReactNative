@@ -69,29 +69,19 @@ export const Preview = () => (
 	</View>
 );
 
+const msgMentions = '@rocket.cat @name1 @all @here @unknown @team';
+const mentions = [
+	{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat', type: 'user' },
+	{ _id: 'random2', name: 'Name', username: 'name1', type: 'user' },
+	{ _id: 'here', username: 'here', type: 'user' },
+	{ _id: 'all', username: 'all', type: 'user' },
+	{ _id: 'team', name: 'team', type: 'team' }
+];
+
 export const Mentions = () => (
 	<ScrollView style={styles.container}>
-		<Markdown
-			msg='@rocket.cat @name1 @all @here @unknown'
-			mentions={[
-				{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
-				{ _id: 'random2', name: 'Name', username: 'name1' },
-				{ _id: 'here', username: 'here' },
-				{ _id: 'all', username: 'all' }
-			]}
-			username='rocket.cat'
-		/>
-		<Markdown
-			msg='@rocket.cat @name1 @all @here @unknown'
-			mentions={[
-				{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
-				{ _id: 'random2', name: 'Name', username: 'name1' },
-				{ _id: 'here', username: 'here' },
-				{ _id: 'all', username: 'all' }
-			]}
-			username='rocket.cat'
-			useRealName
-		/>
+		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' />
+		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' useRealName />
 	</ScrollView>
 );
 
