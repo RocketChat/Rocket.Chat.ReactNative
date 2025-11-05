@@ -178,8 +178,12 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 
 	return (
 		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel()} style={styles.container}>
-			<A11y.Index accessible={props.isTranslated} index={2}>
-				<View accessible={props.isTranslated} accessibilityLanguage={props.autoTranslateLanguage} style={styles.flex}>
+			<A11y.Index
+				accessible={props.isTranslated}
+				accessibilityLabel={props?.msg || ''}
+				accessibilityLanguage={props.autoTranslateLanguage}
+				index={2}>
+				<View accessible style={styles.flex}>
 					<MessageAvatar {...props} />
 					<View style={styles.messageContent}>
 						<MessageInner {...props} />
