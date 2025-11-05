@@ -71,8 +71,8 @@ export const Type = () => (
 		<RoomItem type='l' />
 		<RoomItem type='discussion' />
 		<RoomItem type='d' isGroupChat />
-		<RoomItem type='p' abacAttributes={['Classified']} />
-		<RoomItem type='p' abacAttributes={['Classified']} teamMain />
+		<RoomItem type='p' abacAttributes={[{ name: 'Attribute', values: ['Value 1', 'Value 2'] }]} />
+		<RoomItem type='p' abacAttributes={[{ name: 'Attribute', values: ['Value 1', 'Value 2'] }]} teamMain />
 		<RoomItem type='&' />
 	</>
 );

@@ -854,5 +854,8 @@
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
   "Your_Password_Must_Have": "Salasanasi on oltava:",
-  "Your_workspace": "Työtilasi"
+  "Your_workspace": "Työtilasi",
+  "ABAC_room_attributes": "Huoneen attribuutit",
+  "ABAC_managed": "ABAC-hallittu",
+  "ABAC_managed_description": "Vain yhteensopivilla käyttäjillä on pääsy attribuuttipohjaisesti hallittuihin huoneisiin. Attribuutit määrittävät huoneen pääsyn."
 }

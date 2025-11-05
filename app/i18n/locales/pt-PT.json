@@ -509,5 +509,8 @@
   "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
-  "Your_Password_Must_Have": "Sua senha deve ter:"
+  "Your_Password_Must_Have": "Sua senha deve ter:",
+  "ABAC_room_attributes": "Atributos da sala",
+  "ABAC_managed": "Gerido por ABAC",
+  "ABAC_managed_description": "Apenas utilizadores compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala."
 }

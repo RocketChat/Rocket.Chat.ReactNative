@@ -995,5 +995,8 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_Password_Must_Have": "Your password must have:",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
+  "ABAC_room_attributes": "Room attributes",
+  "ABAC_managed": "ABAC managed",
+  "ABAC_managed_description": "Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access."
 }
