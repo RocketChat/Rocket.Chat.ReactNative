@@ -621,5 +621,8 @@
   "Your_invite_link_will_never_expire": "您的邀请链接永久有效。",
   "Your_password_is": "您的密码",
   "Your_Password_Must_Have": "您的密码必须具有：",
-  "Your_workspace": "您的工作区"
+  "Your_workspace": "您的工作区",
+  "ABAC_room_attributes": "房间属性",
+  "ABAC_managed": "ABAC 管理",
+  "ABAC_managed_description": "只有符合条件的用户才能访问基于属性的访问控制房间。属性决定房间访问权限。"
 }

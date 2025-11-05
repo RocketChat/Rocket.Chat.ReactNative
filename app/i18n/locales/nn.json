@@ -396,5 +396,8 @@
   "You_will_not_be_able_to_recover_this_message": "Du vil ikke kunne gjenopprette denne meldingen!",
   "Your_invite_link_will_expire_after__usesLeft__uses": "Invitasjonslenken din utløper etter {{usesLeft}} anvendelser.",
   "Your_invite_link_will_expire_on__date__": "Invitasjonslenken din utløper {{date}}.",
-  "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Invitasjonskoblingen din utløper {{date}} eller etter  {{usesLeft}} anvendelser."
+  "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Invitasjonskoblingen din utløper {{date}} eller etter  {{usesLeft}} anvendelser.",
+  "ABAC_room_attributes": "Romattributt",
+  "ABAC_managed": "ABAC-administrert",
+  "ABAC_managed_description": "Berre kompatible brukarar har tilgang til attributtbaserte tilgangskontrollerte rom. Attributta bestemmer romtilgangen."
 }

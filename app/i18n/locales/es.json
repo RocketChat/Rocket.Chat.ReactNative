@@ -448,5 +448,8 @@
   "you_were_mentioned": "has sido mencionado",
   "You_will_not_be_able_to_recover_this_message": "¡No podrás recuperar este mensaje!",
   "Your_certificate": "Tu certificado",
-  "Your_Password_Must_Have": "Su contraseña debe tener:"
+  "Your_Password_Must_Have": "Su contraseña debe tener:",
+  "ABAC_room_attributes": "Atributos de la sala",
+  "ABAC_managed": "Gestionado por ABAC",
+  "ABAC_managed_description": "Solo los usuarios compatibles tienen acceso a las salas controladas por acceso basado en atributos. Los atributos determinan el acceso a la sala."
 }

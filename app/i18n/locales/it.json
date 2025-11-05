@@ -678,5 +678,8 @@
   "Your_invite_link_will_never_expire": "Il tuo link di invito non scadrà mai.",
   "Your_password_is": "La tua password è",
   "Your_Password_Must_Have": "La tua password deve avere:",
-  "Your_workspace": "Il tuo workspace"
+  "Your_workspace": "Il tuo workspace",
+  "ABAC_room_attributes": "Attributi della stanza",
+  "ABAC_managed": "Gestito da ABAC",
+  "ABAC_managed_description": "Solo gli utenti conformi hanno accesso alle stanze controllate da accesso basato su attributi. Gli attributi determinano l'accesso alla stanza."
 }

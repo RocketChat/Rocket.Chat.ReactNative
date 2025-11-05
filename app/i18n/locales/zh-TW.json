@@ -650,5 +650,8 @@
   "Your_invite_link_will_never_expire": "您的邀請連結永久有效。",
   "Your_password_is": "您的密碼",
   "Your_Password_Must_Have": "您的密碼必須具有：",
-  "Your_workspace": "您的工作區"
+  "Your_workspace": "您的工作區",
+  "ABAC_room_attributes": "房間屬性",
+  "ABAC_managed": "ABAC 管理",
+  "ABAC_managed_description": "只有符合條件的使用者才能存取基於屬性的存取控制房間。屬性決定房間存取權限。"
 }

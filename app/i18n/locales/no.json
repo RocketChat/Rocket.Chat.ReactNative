@@ -941,5 +941,9 @@
   "Your_invite_link_will_never_expire": "Invitasjonslenken din vil aldri utløpe.",
   "Your_password_is": "Passordet ditt er",
   "Your_Password_Must_Have": "Passordet ditt må inneholde:",
-  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter"
+  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter",
+  "Your_workspace": "Arbeidsområdet ditt",
+  "ABAC_room_attributes": "Romattributter",
+  "ABAC_managed": "ABAC-administrert",
+  "ABAC_managed_description": "Kun kompatible brukere har tilgang til attributtbaserte tilgangskontrollerte rom. Attributter bestemmer romtilgang."
 }

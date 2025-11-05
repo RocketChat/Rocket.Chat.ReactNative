@@ -891,5 +891,8 @@
   "Your_invite_link_will_never_expire": "మీ ఆహ్వాన లింక్ ఎప్పుడూ కనబడదు.",
   "Your_password_is": "మీ సంకేతపదం",
   "Your_Password_Must_Have": "మీ పాస్‌వర్డ్ తప్పనిసరిగా ఉండాలి:",
-  "Your_workspace": "మీ వర్క్‌స్పేస్"
+  "Your_workspace": "మీ వర్క్‌స్పేస్",
+  "ABAC_room_attributes": "గది లక్షణాలు",
+  "ABAC_managed": "ABAC నిర్వహించబడింది",
+  "ABAC_managed_description": "అట్రిబ్యూట్ ఆధారిత యాక్సెస్ నియంత్రిత గదులకు అనుకూలమైన వినియోగదారులు మాత్రమే ప్రాప్యతను కలిగి ఉంటారు. లక్షణాలు గది ప్రాప్యతను నిర్ణయిస్తాయి."
 }

@@ -775,5 +775,8 @@
   "Your_invite_link_will_never_expire": "Votre lien d'invitation n'expirera jamais.",
   "Your_password_is": "Votre mot de passe est",
   "Your_Password_Must_Have": "Votre mot de passe doit avoir:",
-  "Your_workspace": "Votre espace de travail"
+  "Your_workspace": "Votre espace de travail",
+  "ABAC_room_attributes": "Attributs de la salle",
+  "ABAC_managed": "Géré par ABAC",
+  "ABAC_managed_description": "Seuls les utilisateurs conformes ont accès aux salles contrôlées par accès basé sur les attributs. Les attributs déterminent l'accès à la salle."
 }

@@ -548,5 +548,8 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
+  "ABAC_room_attributes": "部屋の属性",
+  "ABAC_managed": "ABAC管理",
+  "ABAC_managed_description": "準拠しているユーザーのみが属性ベースのアクセス制御された部屋にアクセスできます。属性によって部屋へのアクセスが決まります。"
 }

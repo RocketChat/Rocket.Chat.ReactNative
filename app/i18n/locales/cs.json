@@ -967,5 +967,8 @@
   "Your_password_is": "Vaše heslo je",
   "Your_Password_Must_Have": "Vaše heslo musí mít:",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor"
+  "Your_workspace": "Váš pracovní prostor",
+  "ABAC_room_attributes": "Atributy místnosti",
+  "ABAC_managed": "Spravováno ABAC",
+  "ABAC_managed_description": "Pouze vyhovující uživatelé mají přístup k místnostem řízeným přístupem na základě atributů. Atributy určují přístup k místnosti."
 }

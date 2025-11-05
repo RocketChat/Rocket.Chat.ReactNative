@@ -979,5 +979,8 @@
   "Your_password_is": "Sua senha é",
   "Your_Password_Must_Have": "Sua senha deve conter:",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace"
+  "Your_workspace": "Sua workspace",
+  "ABAC_room_attributes": "Atributos da sala",
+  "ABAC_managed": "Gerenciado por ABAC",
+  "ABAC_managed_description": "Apenas usuários compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala."
 }

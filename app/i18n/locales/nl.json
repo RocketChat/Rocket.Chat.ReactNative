@@ -775,5 +775,8 @@
   "Your_invite_link_will_never_expire": "Je uitnodigingslink zal nooit verlopen.",
   "Your_password_is": "Jouw wachtwoord is",
   "Your_Password_Must_Have": "Uw wachtwoord moet hebben:",
-  "Your_workspace": "Jouw werkruimte"
+  "Your_workspace": "Jouw werkruimte",
+  "ABAC_room_attributes": "Kamerattributen",
+  "ABAC_managed": "ABAC beheerd",
+  "ABAC_managed_description": "Alleen conforme gebruikers hebben toegang tot op attributen gebaseerde toegangsgecontroleerde kamers. Attributen bepalen de toegang tot de kamer."
 }
