@@ -93624,6 +93624,348 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
         </View>
       </View>
     </View>
+    <View>
+      <View
+        style={
+          [
+            {
+              "flexDirection": "column",
+              "gap": 8,
+              "paddingHorizontal": 12,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        <View
+          accessibilityLabel="diego.mello 10:00:00 AM was removed by ABAC.  "
+          accessible={true}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 20,
+                    "width": 20,
+                  },
+                  undefined,
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={20}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=40",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 20,
+                      "width": 20,
+                    }
+                  }
+                  transition={null}
+                  width={20}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <Text>
+              <Text
+                onPress={[Function]}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#1F2329",
+                    },
+                  ]
+                }
+              >
+                diego.mello
+              </Text>
+               
+              <Text
+                accessibilityLabel="was removed by ABAC"
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                was removed by ABAC
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        style={
+          [
+            {
+              "flexDirection": "column",
+              "gap": 8,
+              "paddingHorizontal": 12,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        <View
+          accessibilityLabel="diego.mello 10:00:00 AM Unsupported system message.  "
+          accessible={true}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 36,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 20,
+                    "width": 20,
+                  },
+                  undefined,
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={20}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=40",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 20,
+                      "width": 20,
+                    }
+                  }
+                  transition={null}
+                  width={20}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Unsupported system message"
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Unsupported system message
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
   </View>
 </RCTScrollView>
 `;
@@ -98003,6 +98345,348 @@ exports[`Story Snapshots: SystemMessagesLargeFont should match snapshot 1`] = `
               >
                 removed #channel-name from this team
               </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        style={
+          [
+            {
+              "flexDirection": "column",
+              "gap": 8,
+              "paddingHorizontal": 12,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        <View
+          accessibilityLabel="diego.mello 10:00:00 AM was removed by ABAC.  "
+          accessible={true}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 46.800000000000004,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 26,
+                    "width": 26,
+                  },
+                  undefined,
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={26}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=52",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 26,
+                      "width": 26,
+                    }
+                  }
+                  transition={null}
+                  width={26}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <Text>
+              <Text
+                onPress={[Function]}
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#1F2329",
+                    },
+                  ]
+                }
+              >
+                diego.mello
+              </Text>
+               
+              <Text
+                accessibilityLabel="was removed by ABAC"
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#6C727A",
+                    },
+                  ]
+                }
+              >
+                was removed by ABAC
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        style={
+          [
+            {
+              "flexDirection": "column",
+              "gap": 8,
+              "paddingHorizontal": 12,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        <View
+          accessibilityLabel="diego.mello 10:00:00 AM Unsupported system message.  "
+          accessible={true}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              {
+                "alignItems": "center",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "flex-end",
+                "width": 46.800000000000004,
+              }
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 26,
+                    "width": 26,
+                  },
+                  undefined,
+                ]
+              }
+              testID="avatar"
+            >
+              <View
+                accessibilityLabel="diego.mello's avatar"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  borderRadius={4}
+                  containerViewRef={"[React.ref]"}
+                  contentFit="cover"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={26}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  priority="high"
+                  source={
+                    [
+                      {
+                        "headers": {
+                          "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                        },
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=52",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "borderRadius": 4,
+                      "height": 26,
+                      "width": 26,
+                    }
+                  }
+                  transition={null}
+                  width={26}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "flex": 1,
+                "marginLeft": 10,
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Unsupported system message"
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              Unsupported system message
             </Text>
           </View>
         </View>

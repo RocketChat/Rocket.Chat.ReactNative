@@ -1962,6 +1962,8 @@ export const SystemMessages = () => (
 		<Message type='user-converted-to-channel' isInfo msg='channel-name' />
 		<Message type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<Message type='user-removed-room-from-team' isInfo msg='channel-name' />
+		<Message type='abac-removed-user-from-room' isInfo />
+		<Message type='unsupported' isInfo />
 	</>
 );
 
@@ -2003,6 +2005,8 @@ export const SystemMessagesLargeFont = () => (
 		<MessageLargeFont type='user-converted-to-channel' isInfo msg='channel-name' />
 		<MessageLargeFont type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<MessageLargeFont type='user-removed-room-from-team' isInfo msg='channel-name' />
+		<MessageLargeFont type='abac-removed-user-from-room' isInfo />
+		<MessageLargeFont type='unsupported' isInfo />
 	</>
 );
 
