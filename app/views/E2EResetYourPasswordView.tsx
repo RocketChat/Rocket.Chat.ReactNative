@@ -1,9 +1,9 @@
 import React, { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { E2EEnterYourPasswordStackParamList } from '../stacks/types';
+import { type E2EEnterYourPasswordStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { e2eResetOwnKey } from '../lib/services/restApi';
 import { showConfirmationAlert, showErrorAlert } from '../lib/methods/helpers';
