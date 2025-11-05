@@ -389,24 +389,20 @@ export const FullNameLargeFont = () => (
 	/>
 );
 
+const msgMentions = '@rocket.cat @diego.mello @all @here #general @team';
+const mentions = [
+	{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat', type: 'user' },
+	{ _id: 'random2', name: 'Diego Mello', username: 'diego.mello', type: 'user' },
+	{ _id: 'here', username: 'here', type: 'user' },
+	{ _id: 'all', username: 'all', type: 'user' },
+	{ _id: 'team', name: 'team', type: 'team' }
+];
+
 export const Mentions = () => (
 	<>
 		<Message
-			msg='@rocket.cat @diego.mello @all @here #general'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			msg={msgMentions}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -415,20 +411,7 @@ export const Mentions = () => (
 		/>
 		<Message
 			msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -441,21 +424,8 @@ export const Mentions = () => (
 export const MentionsLargeFont = () => (
 	<>
 		<MessageLargeFont
-			msg='@rocket.cat @diego.mello @all @here #general'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			msg={msgMentions}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
@@ -464,20 +434,7 @@ export const MentionsLargeFont = () => (
 		/>
 		<MessageLargeFont
 			msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
-			mentions={[
-				{
-					username: 'rocket.cat'
-				},
-				{
-					username: 'diego.mello'
-				},
-				{
-					username: 'all'
-				},
-				{
-					username: 'here'
-				}
-			]}
+			mentions={mentions}
 			channels={[
 				{
 					name: 'general'
