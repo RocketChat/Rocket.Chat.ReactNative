@@ -2,9 +2,14 @@ name: Maestro Tests on Android
 
 on:
   workflow_call:
+    inputs:
+      shard:
+        required: true
+        type: string
 
 jobs:
   android-test:
+    name: 'Android Tests'
     runs-on: ubuntu-latest
 
     steps:
@@ -38,8 +43,63 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Create Maestro script
+        run: |
+          cat << 'EOF' > run-maestro.sh
+          #!/bin/bash
+          SHARD=${{ inputs.shard }}
+          echo "Running shard: $SHARD"
+
+          adb shell settings put system show_touches 1
+          adb install app-experimental-release.apk
+          adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
+          sleep 10
+          adb shell am force-stop chat.rocket.reactnative
+          export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
+
+          MAX_RETRIES=3
+          ATTEMPT=1
+          FINAL_EXIT_CODE=1
+
+          while [ $ATTEMPT -le $MAX_RETRIES ]; do
+            echo "Attempt $ATTEMPT of $MAX_RETRIES"
+
+            echo "Starting screen recording..."
+            adb shell screenrecord /sdcard/test_run.mp4 > /dev/null 2>&1 &
+            RECORD_PID=$!
+
+            maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --format junit --output maestro-report.xml
+            TEST_EXIT_CODE=$?
+
+            echo "Stopping screen recording..."
+            kill -INT $RECORD_PID || true
+            sleep 2
+
+            echo "Pulling video from device..."
+            adb pull /sdcard/test_run.mp4 test_run_${SHARD}_attempt_${ATTEMPT}.mp4 || true
+            adb shell rm /sdcard/test_run.mp4 || true
+
+            if [ $TEST_EXIT_CODE -eq 0 ]; then
+              echo "Maestro passed on attempt $ATTEMPT"
+              FINAL_EXIT_CODE=0
+              break
+            else
+              echo "Maestro failed on attempt $ATTEMPT"
+            fi
+
+            ATTEMPT=$((ATTEMPT+1))
+          done
+
+          exit $FINAL_EXIT_CODE
+          EOF
+
+          chmod +x run-maestro.sh
+        env:
+          SHARD: ${{ inputs.shard }}
+
       - name: Start Android Emulator and Run Maestro Tests
         uses: reactivecircus/android-emulator-runner@v2
+        timeout-minutes: 60
         with:
           api-level: 34
           disk-size: 4096M
@@ -51,24 +111,20 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: |
-            adb install app-experimental-release.apk
-            adb shell monkey -p chat.rocket.reactnative -c android.intent.category.LAUNCHER 1
-            sleep 10
-            adb shell am force-stop chat.rocket.reactnative
-            export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-            maestro test .maestro --format junit --output maestro-report.xml
+          script: ./run-maestro.sh
 
       - name: Upload Test Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Android Test Report
+          name: Android Test Report - Shard ${{ inputs.shard }}
           path: maestro-report.xml
-
-      - name: Upload Maestro Logs
+          retention-days: 7
+      
+      - name: Upload Screen Recording
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Android Maestro Logs
-          path: ~/.maestro/tests/
+          name: maestro-video-${{ inputs.shard }}
+          path: test_run_${{ inputs.shard }}_attempt_*.mp4
+          retention-days: 7

@@ -1,7 +1,7 @@
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { Keyboard, ScrollView, View, TextInput } from 'react-native';
+import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,7 +18,7 @@ import KeyboardView from '../../containers/KeyboardView';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
-import { IProfileParams } from '../../definitions';
+import { type IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
 import { compareServerVersion } from '../../lib/methods/helpers';
@@ -28,7 +28,7 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { saveUserProfile } from '../../lib/services/restApi';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { getUserSelector } from '../../selectors/login';
-import { ProfileStackParamList } from '../../stacks/types';
+import { type ProfileStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
@@ -168,7 +168,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		const { name, username, email, currentPassword, bio, nickname } = getValues();
 		const params = {} as IProfileParams;
 
-		if (user.name !== name) params.realname = name;
+		if (user.name !== name) params.name = name;
 		if (user.username !== username) params.username = username;
 		if (user.emails?.[0].address !== email) params.email = email;
 		if (user.bio !== bio) params.bio = bio;
@@ -198,10 +198,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
-				if ('realname' in params) {
-					params.name = params.realname;
-					delete params.realname;
-				}
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
 					setCustomFields(customFields);

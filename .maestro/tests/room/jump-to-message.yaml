@@ -4,11 +4,12 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-11
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.account.adminUser}
       PASSWORD: ${output.account.adminPassword}
@@ -24,10 +25,11 @@ onFlowComplete:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*Quote first message.*'
+      id: '.*Quote first message.*'
     timeout: 60000
 - longPressOn:
-    text: '.*Quote first message.*'
+    id: '.*Quote first message.*'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
@@ -99,7 +101,8 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: 'search-message-view-input'
-- inputText: '30'
+- inputText: '3'
+- inputText: '0'
 - extendedWaitUntil:
     visible:
       id: 'message-content-30'
@@ -152,7 +155,8 @@ onFlowComplete:
     direction: DOWN
     timeout: 60000
 - tapOn:
-    text: '.*Load newer.*'
+    text: 'Load newer'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'message-content-104'
@@ -162,7 +166,8 @@ onFlowComplete:
       text: '.*Load newer.*'
     timeout: 60000
 - tapOn:
-    text: '.*Load newer.*'
+    text: 'Load newer'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'message-content-154'
@@ -172,7 +177,8 @@ onFlowComplete:
       text: '.*Load newer.*'
     timeout: 60000
 - tapOn:
-    text: '.*Load newer.*'
+    text: 'Load newer'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'message-content-202'
@@ -191,6 +197,7 @@ onFlowComplete:
     timeout: 60000
 - longPressOn:
     text: .*Go to jumping-thread's thread.*
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
@@ -214,7 +221,8 @@ onFlowComplete:
       text: '.*thread message sent to main room.*'
     timeout: 60000
 - tapOn:
-    text: '.*thread message sent to main room.*'
+    text: 'thread message sent to main room'
+    retryTapIfNoChange: true
 - runFlow:
     file: './utils/expect-thread-messages.yaml'
     env:
@@ -232,7 +240,7 @@ onFlowComplete:
       text: '.*quoted.*'
     timeout: 60000
 - longPressOn:
-    text: '.*quoted.*'
+    text: 'quoted'
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'

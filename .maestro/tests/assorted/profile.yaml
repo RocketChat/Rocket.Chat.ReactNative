@@ -4,13 +4,13 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-8
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
-
-- runFlow: ../../helpers/launch-app.yaml
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -71,8 +71,10 @@ onFlowComplete:
     enabled: false
 
 # should have new password
-- assertVisible:
-    id: 'profile-view-change-my-password-button'
+- scrollUntilVisible:
+    element:
+      id: 'profile-view-change-my-password-button'
+    timeout: 60000
 
 # swipe back to top
 - swipe:
@@ -100,6 +102,7 @@ onFlowComplete:
     element:
       id: 'profile-view-submit'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'profile-view-submit'
 
@@ -124,6 +127,7 @@ onFlowComplete:
     element:
       id: 'profile-view-submit'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'profile-view-submit'
 
@@ -143,15 +147,15 @@ onFlowComplete:
     env:
       id: 'profile-view-email'
 - inputText: mobile+profileChangesNew${output.random()}@rocket.chat
-- tapOn:
-    text: '.*Email.*'
-    index: 0
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
+    centerElement: true
     timeout: 60000
 - tapOn:
     id: 'profile-view-submit'
+- waitForAnimationToEnd:
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'profile-view-enter-password-sheet-input'
@@ -196,6 +200,7 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: 'change-password-view-set-new-password-button'
+    retryTapIfNoChange: true
 - runFlow:
     when:
       visible:

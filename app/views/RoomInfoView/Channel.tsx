@@ -1,7 +1,7 @@
 import React from 'react';
 
 import I18n from '../../i18n';
-import { ISubscription } from '../../definitions';
+import { type ISubscription } from '../../definitions';
 import Item from './Item';
 
 const Channel = ({ room }: { room?: ISubscription }): React.ReactElement => {

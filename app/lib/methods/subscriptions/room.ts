@@ -16,14 +16,14 @@ import { debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import {
-	IMessage,
-	TMessageModel,
-	TSubscriptionModel,
-	TThreadMessageModel,
-	TThreadModel,
-	IDeleteMessageBulkParams
+	type IMessage,
+	type TMessageModel,
+	type TSubscriptionModel,
+	type TThreadMessageModel,
+	type TThreadModel,
+	type IDeleteMessageBulkParams
 } from '../../../definitions';
-import { IDDPMessage } from '../../../definitions/IDDPMessage';
+import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
@@ -134,10 +134,10 @@ export default class RoomSubscription {
 			const [name, activities] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (activities.includes('user-typing')) {
+				if (!!activities && activities.includes('user-typing')) {
 					reduxStore.dispatch(addUserTyping(name));
 				}
-				if (!activities.length) {
+				if (!activities?.length) {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}

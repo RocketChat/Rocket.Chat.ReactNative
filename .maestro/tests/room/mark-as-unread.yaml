@@ -4,16 +4,16 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-11
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.otherUser = output.utils.createUser()}
 - evalScript: ${output.message = output.utils.sendMessage(output.otherUser.username, output.otherUser.password, '@' + output.user.username, 'message-mark-as-unread')}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}

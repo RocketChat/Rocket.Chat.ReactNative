@@ -6,6 +6,8 @@ import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 
 export const Handle = React.memo(() => {
+	'use memo';
+
 	const { theme } = useTheme();
 	return (
 		<View style={styles.handle} testID='action-sheet-handle'>

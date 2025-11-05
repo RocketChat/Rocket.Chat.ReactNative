@@ -12,7 +12,7 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
-import { IRoomItemProps } from './interfaces';
+import { type IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -55,6 +55,8 @@ const RoomItem = ({
 	hideMentionStatus,
 	accessibilityDate
 }: IRoomItemProps) => {
+	'use memo';
+
 	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),

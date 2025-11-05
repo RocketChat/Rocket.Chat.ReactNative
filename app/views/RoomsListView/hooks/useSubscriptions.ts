@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
-import { Subscription } from 'rxjs';
+import type { Subscription } from 'rxjs';
 
 import { type TSubscriptionModel } from '../../../definitions';
 import { SortBy } from '../../../lib/constants/constantDisplayMode';
@@ -36,6 +36,8 @@ const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSub
 };
 
 export const useSubscriptions = () => {
+	'use memo';
+
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server);
 	const subscriptionRef = useRef<Subscription>(null);

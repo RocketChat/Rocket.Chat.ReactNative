@@ -16,18 +16,23 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-sidebar'
+- waitForAnimationToEnd:
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
     timeout: 60000
 - tapOn:
     id: 'sidebar-settings'
+- waitForAnimationToEnd:
+    timeout: 60000
 - extendedWaitUntil:
     visible:
       id: 'settings-view-clear-cache'
     timeout: 60000
 - tapOn:
     id: 'settings-view-clear-cache'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: '.*This will clear all your offline data.*'

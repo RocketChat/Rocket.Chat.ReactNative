@@ -1,5 +1,14 @@
 import React, { useMemo } from 'react';
-import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View, AccessibilityRole, ViewStyle } from 'react-native';
+import {
+	I18nManager,
+	type StyleProp,
+	StyleSheet,
+	Text,
+	type TextStyle,
+	View,
+	type AccessibilityRole,
+	type ViewStyle
+} from 'react-native';
 
 import Touch from '../Touch';
 import sharedStyles from '../../views/Styles';
@@ -56,6 +65,8 @@ const styles = StyleSheet.create({
 interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle'> {}
 
 const ListTitle = ({ title, color, styleTitle, translateTitle }: IListTitle) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	switch (typeof title) {
 		case 'string':
@@ -114,6 +125,8 @@ const Content = React.memo(
 		accessibilityRole,
 		accessibilityLabel
 	}: IListItemContent) => {
+		'use memo';
+
 		const { fontScale } = useResponsiveLayout();
 		const { colors } = useTheme();
 
@@ -187,6 +200,8 @@ interface IListItemButton {
 }
 
 const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => {
+	'use memo';
+
 	const { colors } = useTheme();
 
 	return (
@@ -206,6 +221,8 @@ interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButto
 }
 
 const ListItem = React.memo(({ ...props }: IListItem) => {
+	'use memo';
+
 	const { colors } = useTheme();
 
 	if (props.onPress) {

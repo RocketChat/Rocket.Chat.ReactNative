@@ -5,16 +5,16 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-12
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 - evalScript: ${output.randomMessage = 'random-message'}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -82,20 +82,20 @@ onFlowComplete:
     visible:
       id: message-composer-input
     timeout: 60000
-- inputText: '#general'
+- inputText: '#translation-test'
 - extendedWaitUntil:
     visible:
-      id: 'autocomplete-item-general'
+      id: 'autocomplete-item-translation-test'
     timeout: 60000
 - tapOn:
-    id: 'autocomplete-item-general'
+    id: 'autocomplete-item-translation-test'
 - extendedWaitUntil:
     visible:
-      text: '#general '
+      text: '#translation-test '
     timeout: 60000
 - extendedWaitUntil:
     notVisible:
-      id: 'autocomplete-item-general'
+      id: 'autocomplete-item-translation-test'
     timeout: 60000
 - tapOn:
     id: message-composer-input
@@ -107,7 +107,7 @@ onFlowComplete:
       text: .*${output.randomMessage}.*
     timeout: 60000
 - longPressOn:
-    text: .*${output.randomMessage}.*
+    id: 'message-content-${output.randomMessage}'
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
@@ -142,7 +142,7 @@ onFlowComplete:
       text: .*${output.randomMessage}.*
     timeout: 60000
 - longPressOn:
-    text: .*${output.randomMessage}.*
+    id: 'message-content-${output.randomMessage}'
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
@@ -191,7 +191,7 @@ onFlowComplete:
       text: .*${output.randomMessage}.*
     timeout: 60000
 - longPressOn:
-    text: .*${output.randomMessage}.*
+    id: 'message-content-${output.randomMessage}'
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
@@ -317,7 +317,7 @@ onFlowComplete:
       text: '.*edit.*'
     timeout: 60000
 - longPressOn:
-    text: '.*edit.*'
+    id: 'message-content-edit'
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -355,7 +355,7 @@ onFlowComplete:
       text: '.*quote.*'
     timeout: 60000
 - longPressOn:
-    text: '.*quote.*'
+    id: 'message-content-quote'
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -407,7 +407,7 @@ onFlowComplete:
       text: '.*message to delete.*'
     timeout: 60000
 - longPressOn:
-    text: '.*message to delete.*'
+    id: 'message-content-message to delete'
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -463,7 +463,7 @@ onFlowComplete:
       id: 'room-view-join-button'
     timeout: 60000
 - longPressOn:
-    text: .*${output.originalMessage}.*
+    id: 'message-content-${output.originalMessage}'
 - extendedWaitUntil:
     visible:
       id: action-sheet
@@ -578,7 +578,7 @@ onFlowComplete:
       text: .*${output.draftMessage}.*
     timeout: 60000
 - longPressOn:
-    text: .*${output.originalMessage}.*
+    id: 'message-content-${output.originalMessage}'
 - extendedWaitUntil:
     visible:
       id: action-sheet

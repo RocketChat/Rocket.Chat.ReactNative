@@ -7,7 +7,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import * as List from '../../List';
 import { textParser } from '../utils';
 import styles from './styles';
-import { IItemData } from '.';
+import { type IItemData } from '.';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
 

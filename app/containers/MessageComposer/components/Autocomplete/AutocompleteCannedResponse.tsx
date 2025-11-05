@@ -2,13 +2,15 @@ import React from 'react';
 import { View, Text } from 'react-native';
 
 import sharedStyles from '../../../../views/Styles';
-import { IAutocompleteCannedResponse } from '../../interfaces';
+import { type IAutocompleteCannedResponse } from '../../interfaces';
 import I18n from '../../../../i18n';
 import { CustomIcon } from '../../../CustomIcon';
 import { NO_CANNED_RESPONSES } from '../../constants';
 import { useStyle } from './styles';
 
 export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCannedResponse }) => {
+	'use memo';
+
 	const [styles] = useStyle();
 	if (item.id === NO_CANNED_RESPONSES) {
 		return (

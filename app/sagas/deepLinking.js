@@ -2,7 +2,7 @@ import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effe
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
-import { appInit, appStart } from '../actions/app';
+import { appInit, appStart, appReady } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
@@ -19,7 +19,8 @@ import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
-import { loginOAuthOrSso, notifyUser } from '../lib/services/restApi';
+import { loginOAuthOrSso } from '../lib/services/connect';
+import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation from '../lib/navigation/appNavigation';
 
@@ -45,7 +46,7 @@ const waitForNavigation = () => {
 	if (Navigation.navigationRef.current) {
 		return Promise.resolve();
 	}
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		const listener = () => {
 			emitter.off('navigationReady', listener);
 			resolve();
@@ -205,6 +206,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield take(types.SERVER.SELECT_SUCCESS);
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
+			yield put(appReady({}));
 			yield navigate({ params });
 		} else {
 			yield handleInviteLink({ params, requireLogin: true });

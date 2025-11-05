@@ -2,16 +2,16 @@ appId: chat.rocket.reactnative
 name: Ignore User
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
+tags:
+  - test-11
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.otherUser = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -86,22 +86,19 @@ onFlowStart:
 - evalScript: ${output.utils.sendMessage(output.otherUser.username, output.otherUser.password, output.room._id, 'message-02')}
 - extendedWaitUntil:
     visible:
-      text: ${output.otherUser.username}
-      index: 0
+      id: 'username-header-${output.otherUser.username}'
     timeout: 60000
-- tapOn: ${output.otherUser.username}
+- tapOn:
+    id: 'username-header-${output.otherUser.username}'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Ignore'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - tapOn: 'Ignore'
 - extendedWaitUntil:
     visible:
       text: 'Unignore'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 
@@ -115,35 +112,44 @@ onFlowStart:
       text: .*Message ignored. Tap to display it.*
       index: 0
     timeout: 60000
-- tapOn: .*Message ignored. Tap to display it.*
+- tapOn:
+    text: .*Message ignored. Tap to display it.*
+    index: 0
 - extendedWaitUntil:
     visible:
-      text: ${output.otherUser.username}
-      index: 0
+      id: 'username-header-${output.otherUser.username}'
     timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'message-content-message-01'
+          timeout: 60000
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'message-content-message-02'
+          timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: 'message-02'
-      index: 0
+      id: 'username-header-${output.otherUser.username}'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      text: ${output.otherUser.username}
-      index: 0
-    timeout: 60000
-- tapOn: ${output.otherUser.username}
+- tapOn:
+    id: 'username-header-${output.otherUser.username}'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Unignore'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - tapOn: 'Unignore'
 - extendedWaitUntil:
     visible:
       text: 'Ignore'
-      childOf:
-        id: room-info-view-ignore
     timeout: 60000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
@@ -152,7 +158,7 @@ onFlowStart:
       ROOM: ${output.room.name}
 - extendedWaitUntil:
     visible:
-      text: 'message-02'
+      id: 'message-content-message-02'
       index: 0
     timeout: 60000
 
@@ -168,8 +174,6 @@ onFlowStart:
 - extendedWaitUntil:
     visible:
       text: 'Report'
-      childOf:
-        id: room-info-view-warning
     timeout: 60000
 - tapOn: 'Report'
 - extendedWaitUntil:
@@ -190,6 +194,7 @@ onFlowStart:
 - hideKeyboard
 - tapOn:
     id: 'report-user-view-submit'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.otherUser.username}'
@@ -215,8 +220,6 @@ onFlowStart:
 - extendedWaitUntil:
     visible:
       text: 'Report'
-      childOf:
-        id: room-info-view-warning
 - tapOn: 'Report'
 - extendedWaitUntil:
     visible:
@@ -236,6 +239,7 @@ onFlowStart:
     timeout: 60000
 - tapOn:
     id: 'report-user-view-submit'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'

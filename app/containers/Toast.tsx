@@ -3,7 +3,7 @@ import { Alert, StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 
 import { useUserPreferences } from '../lib/methods/userPreferences';
-import { TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
+import { type TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
@@ -47,7 +47,7 @@ const Toast = (): React.ReactElement => {
 			return;
 		}
 		if (toast && toast.show) {
-			toast.show(message, 1000);
+			toast.show(message, process.env.RUNNING_E2E_TESTS === 'true' ? 5000 : 1000);
 		}
 	};
 

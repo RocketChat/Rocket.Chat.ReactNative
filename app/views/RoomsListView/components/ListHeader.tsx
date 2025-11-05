@@ -13,6 +13,8 @@ import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
 
 const ListHeader = () => {
+	'use memo';
+
 	const { theme } = useTheme();
 	const { searchEnabled } = useContext(RoomsSearchContext);
 	const encryptionBanner = useAppSelector(state => state.encryption.banner);

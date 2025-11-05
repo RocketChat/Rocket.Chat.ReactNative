@@ -5,7 +5,7 @@ import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
-import { TActionSheetOptionsItem } from './Provider';
+import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import { LISTENER } from '../Toast';
 import Touch from '../Touch';
@@ -16,6 +16,8 @@ export interface IActionSheetItem {
 }
 
 export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
+	'use memo';
+
 	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();

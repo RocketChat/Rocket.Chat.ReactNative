@@ -1,7 +1,7 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { createRef, ForwardedRef, forwardRef, useContext } from 'react';
+import React, { createRef, type ForwardedRef, forwardRef, useContext } from 'react';
 
-import { TIconsName } from '../CustomIcon';
+import { type TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {
@@ -54,6 +54,8 @@ export const withActionSheet = (Component: React.ComponentType<any>): typeof Com
 const actionSheetRef: React.Ref<IActionSheetProvider> = createRef();
 
 export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
+	'use memo';
+
 	const getContext = (): IActionSheetProvider => ({
 		showActionSheet: options => {
 			actionSheetRef.current?.showActionSheet(options);

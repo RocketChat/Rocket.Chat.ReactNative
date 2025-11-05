@@ -4,16 +4,16 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-11
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.otherUser = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -127,6 +127,10 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     text: 'Star'
+- extendedWaitUntil:
+    notVisible:
+      text: '.*Message Starred.*'
+    timeout: 60000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
@@ -134,7 +138,8 @@ onFlowComplete:
       id: 'room-actions-view'
     timeout: 60000
 - tapOn:
-    text: 'Starred'
+    id: 'room-actions-starred'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: starred-messages-view
@@ -172,6 +177,10 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     text: 'Unstar'
+- extendedWaitUntil:
+    notVisible:
+      text: '.*Message Unstarred.*'
+    timeout: 60000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
@@ -179,7 +188,8 @@ onFlowComplete:
       id: 'room-actions-view'
     timeout: 60000
 - tapOn:
-    text: 'Starred'
+    id: 'room-actions-starred'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: starred-messages-view

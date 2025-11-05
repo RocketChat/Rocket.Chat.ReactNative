@@ -3,7 +3,7 @@ import React from 'react';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 
 import I18n from '../../../../i18n';
-import { CustomIcon, TIconsName } from '../../../CustomIcon';
+import { CustomIcon, type TIconsName } from '../../../CustomIcon';
 
 export interface IBaseButton {
 	testID: string;
@@ -21,6 +21,8 @@ export const hitSlop = {
 };
 
 export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
+	'use memo';
+
 	const { fontScale } = useWindowDimensions();
 	const size = 24 * fontScale;
 

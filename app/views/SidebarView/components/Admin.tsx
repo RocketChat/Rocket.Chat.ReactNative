@@ -7,6 +7,8 @@ import { useTheme } from '../../../theme';
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
 const Admin = ({ currentScreen }: { currentScreen: string | null }) => {
+	'use memo';
+
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { colors } = useTheme();
 	const [

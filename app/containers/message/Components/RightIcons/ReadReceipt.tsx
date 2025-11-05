@@ -5,6 +5,8 @@ import styles from '../../styles';
 import { useTheme } from '../../../../theme';
 
 const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const isUnread = unread || unread === null;
 	const iconName = isUnread ? 'check-single' : 'check-double';

@@ -4,15 +4,15 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-12
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password, 'p')}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -141,15 +141,19 @@ onFlowComplete:
     timeout: 60000
 
 # should reset form
-- scrollUntilVisible:
-    element:
+- tapOn:
+    id: custom-header-back
+- tapOn:
+    id: room-info-view-edit-button
+- extendedWaitUntil:
+    visible:
       id: 'room-info-edit-view-name'
-    direction: UP
     timeout: 60000
 - tapOn:
     id: room-info-edit-view-name
 - eraseText
 - inputText: abc
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'
@@ -157,6 +161,7 @@ onFlowComplete:
 - tapOn:
     id: 'room-info-edit-view-topic'
 - inputText: abc
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-announcement'
@@ -164,6 +169,7 @@ onFlowComplete:
 - tapOn:
     id: 'room-info-edit-view-announcement'
 - inputText: abc
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-description'
@@ -171,6 +177,7 @@ onFlowComplete:
 - tapOn:
     id: 'room-info-edit-view-description'
 - inputText: abc
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-password'
@@ -178,17 +185,19 @@ onFlowComplete:
 - tapOn:
     id: 'room-info-edit-view-password'
 - inputText: abc
-- pressKey: Enter
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-t'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-t'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-ro'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'room-info-edit-view-ro'
 - scrollUntilVisible:
@@ -206,13 +215,13 @@ onFlowComplete:
 
 - scrollUntilVisible:
     element:
-      id: 'room-info-edit-view-name'
-    direction: UP
+      id: 'avatar-edit-button'
     timeout: 60000
-- assertVisible:
-    text: '.*${output.room.name}.*'
-    childOf:
-      id: 'room-info-edit-view-name'
+    direction: UP
+- scrollUntilVisible:
+    element:
+      text: '.*${output.room.name}.*'
+    timeout: 60000
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'
@@ -269,12 +278,11 @@ onFlowComplete:
     id: 'room-info-edit-view-react-when-ro'
 
 # should change room name
+- tapOn:
+    id: custom-header-back
+- tapOn:
+    id: room-info-view-edit-button
 - evalScript: ${output.newroomname = output.room.name + 'new'}
-- scrollUntilVisible:
-    element:
-      id: 'room-info-edit-view-name'
-    direction: UP
-    timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-name'
 - runFlow:
@@ -289,10 +297,14 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-submit'
-- extendedWaitUntil:
-    visible:
-      text: '.*Settings succesfully changed.*'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '.*Settings succesfully changed.*'
+          timeout: 60000
 - tapOn:
     id: custom-header-back
 - extendedWaitUntil:
@@ -316,6 +328,7 @@ onFlowComplete:
 - tapOn:
     id: 'room-info-edit-view-topic'
 - inputText: 'new topic'
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-announcement'
@@ -323,6 +336,7 @@ onFlowComplete:
 - tapOn:
     id: 'room-info-edit-view-announcement'
 - inputText: 'new announcement'
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-description'
@@ -330,17 +344,21 @@ onFlowComplete:
 - tapOn:
     id: 'room-info-edit-view-description'
 - inputText: 'new description'
-- pressKey: Enter
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-submit'
     timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-submit'
-- extendedWaitUntil:
-    visible:
-      text: '.*Settings succesfully changed.*'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '.*Settings succesfully changed.*'
+          timeout: 60000
 - tapOn:
     id: custom-header-back
 - extendedWaitUntil:
@@ -373,10 +391,14 @@ onFlowComplete:
     timeout: 60000
 - tapOn:
     id: 'room-info-edit-view-submit'
-- extendedWaitUntil:
-    visible:
-      text: '.*Settings succesfully changed.*'
-    timeout: 60000
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            text: '.*Settings succesfully changed.*'
+          timeout: 60000
 
 # should archive room
 - scrollUntilVisible:

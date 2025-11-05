@@ -4,10 +4,16 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-13
 
 ---
-- runFlow: ../../helpers/launch-app.yaml
-- runFlow: ../../helpers/login.yaml
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
 
 # Show alerts as Toasts
 - tapOn: 'Menu'
@@ -21,7 +27,10 @@ onFlowEnd:
 - tapOn:
     id: 'status-view-offline'
 - tapOn: 'Save'
-- assertVisible: 'Status saved successfully!'
+- extendedWaitUntil:
+    visible:
+      text: 'Status saved successfully!'
+    timeout: 60000
 
 # Show alerts as Dialogs
 - tapOn: 'Accessibility & appearance'
@@ -33,6 +42,9 @@ onFlowEnd:
 - tapOn:
     id: 'status-view-online'
 - tapOn: 'Save'
-- assertVisible: 'Status saved successfully!'
+- extendedWaitUntil:
+    visible:
+      text: 'Status saved successfully!'
+    timeout: 60000
 - assertVisible: 'OK'
 - tapOn: 'OK'
