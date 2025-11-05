@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "{{name}} থেকে নতুন বার্তা: {{message}}",
   "A11y_incoming_call_dismiss": "বন্ধ করুন",
   "A11y_incoming_call_swipe_down_to_view_options": "নির্বাচনগুলি দেখতে নিচে সোয়াইপ করুন",
+  "abac_removed_user_from_the_room": "ABAC দ্বারা সরানো হয়েছে",
   "accept": "গ্রহণ করুন",
   "Accessibility": "অ্যাক্সেসিবিলিটি",
   "Accessibility_and_Appearance": "অ্যাক্সেসিবিলিটি ও চেহারা",

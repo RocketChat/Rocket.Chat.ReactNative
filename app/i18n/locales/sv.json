@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Nytt meddelande från {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Avvisa",
   "A11y_incoming_call_swipe_down_to_view_options": "Svep nedåt för att se alternativ",
+  "abac_removed_user_from_the_room": "togs bort av ABAC",
   "Accessibility": "Tillgänglighet",
   "Accessibility_and_Appearance": "Tillgänglighet och utseende",
   "Accessibility_statement": "Tillgänglighetsredogörelse",
