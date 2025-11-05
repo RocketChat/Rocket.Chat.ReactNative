@@ -8,6 +8,8 @@
   "A11y_in_app_notification": "Nouveau message de {{name}} : {{message}}",
   "A11y_incoming_call_dismiss": "Ignorer",
   "A11y_incoming_call_swipe_down_to_view_options": "Faites glisser vers le bas pour voir les options",
+  "Activate_to_select_server": "Activer pour sélectionner le serveur",
+  "Activate_to_select_server_Available_actions_delete": "Activer pour sélectionner le serveur. Actions disponibles : supprimer",
   "Accessibility": "Accessibilité",
   "Accessibility_and_Appearance": "Accessibilité et apparence",
   "Accessibility_statement": "Déclaration d'accessibilité",

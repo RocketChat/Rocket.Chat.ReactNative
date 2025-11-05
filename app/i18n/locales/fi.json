@@ -12,6 +12,8 @@
   "A11y_in_app_notification": "Uusi viesti {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Hylkää",
   "A11y_incoming_call_swipe_down_to_view_options": "Pyyhkäise alas nähdäksesi vaihtoehdot",
+  "Activate_to_select_server": "Aktivoi valitaksesi palvelimen",
+  "Activate_to_select_server_Available_actions_delete": "Aktivoi valitaksesi palvelimen. Käytettävissä olevat toiminnot: poista",
   "Accessibility": "Saavutettavuus",
   "Accessibility_and_Appearance": "Saavutettavuus ja ulkonäkö",
   "Accessibility_statement": "Saavutettavuusilmoitus",

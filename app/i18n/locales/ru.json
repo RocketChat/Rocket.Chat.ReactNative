@@ -12,6 +12,8 @@
   "A11y_in_app_notification": "Новое сообщение от {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Отклонить",
   "A11y_incoming_call_swipe_down_to_view_options": "Проведите вниз, чтобы просмотреть варианты действий",
+  "Activate_to_select_server": "Активировать для выбора сервера",
+  "Activate_to_select_server_Available_actions_delete": "Активировать для выбора сервера. Доступные действия: удалить",
   "Accessibility": "Доступность",
   "Accessibility_and_Appearance": "Доступность и внешний вид",
   "Accessibility_statement": "Заявление о доступности",

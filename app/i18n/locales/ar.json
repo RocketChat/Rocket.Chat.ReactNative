@@ -8,6 +8,8 @@
   "A11y_in_app_notification": "رسالة جديدة من {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "تجاهل",
   "A11y_incoming_call_swipe_down_to_view_options": "اسحب لأسفل لعرض الخيارات",
+  "Activate_to_select_server": "تفعيل لاختيار الخادم",
+  "Activate_to_select_server_Available_actions_delete": "تفعيل لاختيار الخادم. الإجراءات المتاحة: حذف",
   "Accessibility": "إمكانية الوصول",
   "Accessibility_and_Appearance": "إمكانية الوصول والمظهر",
   "Accessibility_statement": "بيان الوصول",

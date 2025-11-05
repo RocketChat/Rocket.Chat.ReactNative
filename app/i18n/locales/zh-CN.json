@@ -8,6 +8,8 @@
   "A11y_in_app_notification": "来自{{name}}的新消息：{{message}}",
   "A11y_incoming_call_dismiss": "关闭",
   "A11y_incoming_call_swipe_down_to_view_options": "向下滑动以查看选项",
+  "Activate_to_select_server": "激活以选择服务器",
+  "Activate_to_select_server_Available_actions_delete": "激活以选择服务器。可用操作：删除",
   "Accessibility": "无障碍性",
   "Accessibility_and_Appearance": "辅助功能和外观",
   "Accessibility_statement": "无障碍声明",

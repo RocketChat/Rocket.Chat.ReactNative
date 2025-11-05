@@ -8,6 +8,8 @@
   "A11y_in_app_notification": "Yeni mesaj {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dismiss et.",
   "A11y_incoming_call_swipe_down_to_view_options": "Aşağı kaydırarak seçenekleri görüntüle",
+  "Activate_to_select_server": "Sunucu seçmek için etkinleştir",
+  "Activate_to_select_server_Available_actions_delete": "Sunucu seçmek için etkinleştir. Mevcut işlemler: sil",
   "Accessibility": "Erişilebilirlik",
   "Accessibility_and_Appearance": "Erişilebilirlik ve görünüm",
   "Accessibility_statement": "Erişilebilirlik beyanı",
