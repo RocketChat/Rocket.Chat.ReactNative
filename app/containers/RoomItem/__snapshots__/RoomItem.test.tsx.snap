@@ -32458,6 +32458,1252 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                     ]
                   }
                 >
+                  
+                </Text>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flex": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 17,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  rocket.cat
+                </Text>
+                <View
+                  style={
+                    {
+                      "alignItems": "flex-end",
+                    }
+                  }
+                >
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "400",
+                          "marginLeft": 4,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    10:00
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          },
+          {
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "justifyContent": "center",
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            {
+              "backgroundColor": "#1D74F5",
+              "right": "100%",
+              "width": 1500,
+            },
+            {
+              "height": 75,
+            },
+            {
+              "transform": [
+                {
+                  "translateX": 0,
+                },
+              ],
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "justifyContent": "center",
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              {
+                "height": 75,
+              },
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            accessibilityLabel="Mark read"
+            accessible={true}
+            activeOpacity={0.105}
+            collapsable={false}
+            delayLongPress={600}
+            handlerTag={287}
+            handlerType="NativeViewGestureHandler"
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onPress={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "height": "100%",
+                  "justifyContent": "center",
+                  "width": 80,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+            underlayColor="black"
+          >
+            <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "black",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#FFFFFF",
+                    "fontSize": 28,
+                  },
+                  [
+                    {
+                      "lineHeight": 28,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          },
+          {
+            "height": 75,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "justifyContent": "center",
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "backgroundColor": "#8E6300",
+              "left": "100%",
+              "width": 750,
+            },
+            {
+              "height": 75,
+            },
+            {
+              "transform": [
+                {
+                  "translateX": 0,
+                },
+              ],
+            },
+          ]
+        }
+      >
+        <RNGestureHandlerButton
+          accessibilityLabel="Favorite"
+          accessible={true}
+          activeOpacity={0.105}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={288}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#8E6300",
+                "height": "100%",
+                "justifyContent": "center",
+                "width": 80,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+          underlayColor="black"
+        >
+          <View
+            collapsable={false}
+            style={
+              {
+                "backgroundColor": "black",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#FFFFFF",
+                  "fontSize": 28,
+                },
+                [
+                  {
+                    "lineHeight": 28,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </RNGestureHandlerButton>
+      </View>
+      <View
+        style={
+          [
+            {
+              "justifyContent": "center",
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "backgroundColor": "#9EA2A8",
+              "left": "100%",
+              "width": 1500,
+            },
+            {
+              "height": 75,
+            },
+            {
+              "transform": [
+                {
+                  "translateX": 80,
+                },
+              ],
+            },
+          ]
+        }
+      >
+        <RNGestureHandlerButton
+          accessibilityLabel="Hide"
+          accessible={true}
+          activeOpacity={0.105}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={289}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#9EA2A8",
+                "height": "100%",
+                "justifyContent": "center",
+                "width": 80,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+          underlayColor="black"
+        >
+          <View
+            collapsable={false}
+            style={
+              {
+                "backgroundColor": "black",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#FFFFFF",
+                  "fontSize": 28,
+                },
+                [
+                  {
+                    "lineHeight": 28,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </RNGestureHandlerButton>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "transform": [
+            {
+              "translateX": 0,
+            },
+          ],
+        }
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={290}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={{}}
+        >
+          <View
+            accessibilityLabel="rocket.cat. private team. undefined. "
+            accessibilityRole="button"
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "paddingLeft": 14,
+                },
+                {
+                  "height": 75,
+                },
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="rocket.cat's avatar"
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 48,
+                    "width": 48,
+                  },
+                  {
+                    "marginRight": 10,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={"[React.ref]"}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={48}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                source={
+                  [
+                    {
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/@rocket.cat?format=png&size=96",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "borderRadius": 4,
+                    "height": 48,
+                    "width": 48,
+                  }
+                }
+                transition={null}
+                width={48}
+              />
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "borderBottomWidth": 0.5,
+                    "flex": 1,
+                    "paddingRight": 14,
+                    "paddingVertical": 10,
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "justifyContent": "center",
+                      "width": "100%",
+                    },
+                    {
+                      "flex": 1,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#1F2329",
+                        "fontSize": 22,
+                      },
+                      [
+                        {
+                          "lineHeight": 22,
+                        },
+                        [
+                          {
+                            "marginRight": 4,
+                          },
+                          {
+                            "marginRight": 8,
+                          },
+                        ],
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flex": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 17,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      undefined,
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  rocket.cat
+                </Text>
+                <View
+                  style={
+                    {
+                      "alignItems": "flex-end",
+                    }
+                  }
+                >
+                  <Text
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "400",
+                          "marginLeft": 4,
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                        undefined,
+                      ]
+                    }
+                  >
+                    10:00
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>,
+  <View
+    collapsable={false}
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          },
+          {
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "justifyContent": "center",
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            {
+              "backgroundColor": "#1D74F5",
+              "right": "100%",
+              "width": 1500,
+            },
+            {
+              "height": 75,
+            },
+            {
+              "transform": [
+                {
+                  "translateX": 0,
+                },
+              ],
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "justifyContent": "center",
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              },
+              {
+                "height": 75,
+              },
+            ]
+          }
+        >
+          <RNGestureHandlerButton
+            accessibilityLabel="Mark read"
+            accessible={true}
+            activeOpacity={0.105}
+            collapsable={false}
+            delayLongPress={600}
+            handlerTag={291}
+            handlerType="NativeViewGestureHandler"
+            innerRef={null}
+            onActiveStateChange={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onPress={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "height": "100%",
+                  "justifyContent": "center",
+                  "width": 80,
+                },
+                {
+                  "cursor": undefined,
+                },
+              ]
+            }
+            underlayColor="black"
+          >
+            <View
+              collapsable={false}
+              style={
+                {
+                  "backgroundColor": "black",
+                  "borderBottomLeftRadius": undefined,
+                  "borderBottomRightRadius": undefined,
+                  "borderRadius": undefined,
+                  "borderTopLeftRadius": undefined,
+                  "borderTopRightRadius": undefined,
+                  "bottom": 0,
+                  "left": 0,
+                  "opacity": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#FFFFFF",
+                    "fontSize": 28,
+                  },
+                  [
+                    {
+                      "lineHeight": 28,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </RNGestureHandlerButton>
+        </View>
+      </View>
+    </View>
+    <View
+      pointerEvents="box-none"
+      style={
+        [
+          {
+            "flexDirection": "row",
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          },
+          {
+            "height": 75,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "justifyContent": "center",
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "backgroundColor": "#8E6300",
+              "left": "100%",
+              "width": 750,
+            },
+            {
+              "height": 75,
+            },
+            {
+              "transform": [
+                {
+                  "translateX": 0,
+                },
+              ],
+            },
+          ]
+        }
+      >
+        <RNGestureHandlerButton
+          accessibilityLabel="Favorite"
+          accessible={true}
+          activeOpacity={0.105}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={292}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#8E6300",
+                "height": "100%",
+                "justifyContent": "center",
+                "width": 80,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+          underlayColor="black"
+        >
+          <View
+            collapsable={false}
+            style={
+              {
+                "backgroundColor": "black",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#FFFFFF",
+                  "fontSize": 28,
+                },
+                [
+                  {
+                    "lineHeight": 28,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </RNGestureHandlerButton>
+      </View>
+      <View
+        style={
+          [
+            {
+              "justifyContent": "center",
+              "position": "absolute",
+              "top": 0,
+            },
+            {
+              "backgroundColor": "#9EA2A8",
+              "left": "100%",
+              "width": 1500,
+            },
+            {
+              "height": 75,
+            },
+            {
+              "transform": [
+                {
+                  "translateX": 80,
+                },
+              ],
+            },
+          ]
+        }
+      >
+        <RNGestureHandlerButton
+          accessibilityLabel="Hide"
+          accessible={true}
+          activeOpacity={0.105}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={293}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#9EA2A8",
+                "height": "100%",
+                "justifyContent": "center",
+                "width": 80,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
+          }
+          underlayColor="black"
+        >
+          <View
+            collapsable={false}
+            style={
+              {
+                "backgroundColor": "black",
+                "borderBottomLeftRadius": undefined,
+                "borderBottomRightRadius": undefined,
+                "borderRadius": undefined,
+                "borderTopLeftRadius": undefined,
+                "borderTopRightRadius": undefined,
+                "bottom": 0,
+                "left": 0,
+                "opacity": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#FFFFFF",
+                  "fontSize": 28,
+                },
+                [
+                  {
+                    "lineHeight": 28,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </RNGestureHandlerButton>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "transform": [
+            {
+              "translateX": 0,
+            },
+          ],
+        }
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={1}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={294}
+        handlerType="NativeViewGestureHandler"
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        rippleColor="#E4E7EA"
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": undefined,
+              "margin": undefined,
+              "marginBottom": undefined,
+              "marginEnd": undefined,
+              "marginHorizontal": undefined,
+              "marginLeft": undefined,
+              "marginRight": undefined,
+              "marginStart": undefined,
+              "marginTop": undefined,
+              "marginVertical": undefined,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        underlayColor="#E4E7EA"
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E4E7EA",
+              "borderBottomLeftRadius": undefined,
+              "borderBottomRightRadius": undefined,
+              "borderRadius": undefined,
+              "borderTopLeftRadius": undefined,
+              "borderTopRightRadius": undefined,
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+        <View
+          style={{}}
+        >
+          <View
+            accessibilityLabel="rocket.cat. private channel. undefined. "
+            accessibilityRole="button"
+            accessible={true}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "paddingLeft": 14,
+                },
+                {
+                  "height": 75,
+                },
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="rocket.cat's avatar"
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 48,
+                    "width": 48,
+                  },
+                  {
+                    "marginRight": 10,
+                  },
+                ]
+              }
+              testID="avatar"
+            >
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={"[React.ref]"}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={48}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                source={
+                  [
+                    {
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/@rocket.cat?format=png&size=96",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "borderRadius": 4,
+                    "height": 48,
+                    "width": 48,
+                  }
+                }
+                transition={null}
+                width={48}
+              />
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "borderBottomWidth": 0.5,
+                    "flex": 1,
+                    "paddingRight": 14,
+                    "paddingVertical": 10,
+                  },
+                  {
+                    "borderColor": "#CBCED1",
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "justifyContent": "center",
+                      "width": "100%",
+                    },
+                    {
+                      "flex": 1,
+                    },
+                  ]
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#1F2329",
+                        "fontSize": 22,
+                      },
+                      [
+                        {
+                          "lineHeight": 22,
+                        },
+                        [
+                          {
+                            "marginRight": 4,
+                          },
+                          {
+                            "marginRight": 8,
+                          },
+                        ],
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
                   
                 </Text>
                 <Text
@@ -32593,7 +33839,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={301}
+            handlerTag={313}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -32712,7 +33958,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={302}
+          handlerTag={314}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -32814,7 +34060,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={303}
+          handlerTag={315}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -32900,7 +34146,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={304}
+        handlerTag={316}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}
@@ -33223,7 +34469,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             activeOpacity={0.105}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={305}
+            handlerTag={317}
             handlerType="NativeViewGestureHandler"
             innerRef={null}
             onActiveStateChange={[Function]}
@@ -33342,7 +34588,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={306}
+          handlerTag={318}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -33444,7 +34690,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
           activeOpacity={0.105}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={307}
+          handlerTag={319}
           handlerType="NativeViewGestureHandler"
           innerRef={null}
           onActiveStateChange={[Function]}
@@ -33530,7 +34776,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
         activeOpacity={1}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={308}
+        handlerTag={320}
         handlerType="NativeViewGestureHandler"
         innerRef={null}
         onActiveStateChange={[Function]}

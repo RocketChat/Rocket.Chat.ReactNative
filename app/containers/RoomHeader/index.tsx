@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import { type IApplicationState, type TUserStatus, type IOmnichannelSource, type IVisitor } from '../../definitions';
+import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '../../definitions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -21,6 +21,7 @@ interface IRoomHeaderContainerProps {
 	sourceType?: IOmnichannelSource;
 	visitor?: IVisitor;
 	disabled?: boolean;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 const RoomHeaderContainer = React.memo(
@@ -38,7 +39,8 @@ const RoomHeaderContainer = React.memo(
 		type,
 		sourceType,
 		visitor,
-		disabled
+		disabled,
+		abacAttributes
 	}: IRoomHeaderContainerProps) => {
 		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
@@ -89,6 +91,7 @@ const RoomHeaderContainer = React.memo(
 				onPress={onPress}
 				sourceType={sourceType}
 				disabled={disabled}
+				abacAttributes={abacAttributes}
 			/>
 		);
 	}
