@@ -61,17 +61,20 @@ export default StyleSheet.create({
 	},
 	rolesContainer: {
 		flexDirection: 'row',
-		flexWrap: 'wrap'
+		flexWrap: 'wrap',
+		gap: 4
 	},
 	roleBadge: {
-		padding: 6,
-		borderRadius: 4,
-		marginRight: 6,
-		marginBottom: 6
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 2,
+		padding: 4,
+		borderRadius: 4
 	},
 	role: {
-		fontSize: 14,
-		...sharedStyles.textRegular
+		fontSize: 12,
+		lineHeight: 16,
+		...sharedStyles.textBold
 	},
 	roomButtonsContainer: {
 		flexDirection: 'row',
