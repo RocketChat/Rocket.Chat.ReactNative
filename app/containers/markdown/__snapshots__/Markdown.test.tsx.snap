@@ -2999,6 +2999,41 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
           >
             @unknown
           </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#8E6300",
+                },
+              ]
+            }
+          >
+            team
+          </Text>
         </Text>
       </Text>
     </View>
@@ -3197,6 +3232,41 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
             }
           >
             @unknown
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#8E6300",
+                },
+              ]
+            }
+          >
+            team
           </Text>
         </Text>
       </Text>

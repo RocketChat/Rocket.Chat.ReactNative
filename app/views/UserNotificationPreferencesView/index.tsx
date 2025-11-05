@@ -89,7 +89,7 @@ const UserNotificationPreferencesView = () => {
 					<ActivityIndicator />
 				) : (
 					<>
-						<List.Section title='Desktop_Notifications'>
+						<List.Section title='In_App_Notification'>
 							<List.Separator />
 							<ListPicker
 								onChangeValue={onValueChangePicker}
@@ -99,7 +99,13 @@ const UserNotificationPreferencesView = () => {
 								value={preferences.desktopNotifications}
 							/>
 							<List.Separator />
-							<List.Info info='Desktop_Alert_info' />
+							<List.Item
+								title='Notifications_vibrate_from_new_messages'
+								testID='user-notification-preference-view-in-app-vibration'
+								right={() => <Switch value={inAppVibration} onValueChange={toggleInAppVibration} />}
+							/>
+							<List.Separator />
+							<List.Info info='In_App_Alert_info' />
 						</List.Section>
 
 						<List.Section title='Push_Notifications'>
@@ -120,16 +126,6 @@ const UserNotificationPreferencesView = () => {
 							/>
 							<List.Separator />
 							<List.Info info='Push_Notifications_Alert_Info' />
-						</List.Section>
-
-						<List.Section title='In_app_message_notifications'>
-							<List.Separator />
-							<List.Item
-								title='Vibrate'
-								testID='user-notification-preference-view-in-app-vibration'
-								right={() => <Switch value={inAppVibration} onValueChange={toggleInAppVibration} />}
-							/>
-							<List.Separator />
 						</List.Section>
 
 						<List.Section title='Email'>
