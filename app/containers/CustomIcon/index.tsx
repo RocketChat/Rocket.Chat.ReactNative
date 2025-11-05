@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
-import { StyleProp, TextStyle } from 'react-native';
+import type { StyleProp, TextStyle } from 'react-native';
 
 import { mappedIcons } from './mappedIcons';
 import { useTheme } from '../../theme';
