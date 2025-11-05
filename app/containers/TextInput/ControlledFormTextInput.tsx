@@ -1,7 +1,7 @@
 import React from 'react';
-import { Control, Controller } from 'react-hook-form';
+import { type Control, Controller } from 'react-hook-form';
 
-import { FormTextInput, IRCTextInputProps } from './FormTextInput';
+import { FormTextInput, type IRCTextInputProps } from './FormTextInput';
 
 interface IControlledFormTextInputProps extends Omit<IRCTextInputProps, 'inputRef'> {
 	control: Control<any>;

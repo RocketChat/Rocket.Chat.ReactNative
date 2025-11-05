@@ -14,7 +14,7 @@ tags:
 - evalScript: ${output.otherUser = output.utils.createUser()}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -40,10 +40,10 @@ tags:
 # should navigate to create DM
 - extendedWaitUntil:
     visible:
-      text: '.*Direct message.*'
+      id: 'new-message-view-create-direct-message'
     timeout: 60000
 - tapOn:
-    text: '.*Direct message.*'
+    id: 'new-message-view-create-direct-message'
 
 # should add users
 - extendedWaitUntil:

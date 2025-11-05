@@ -11,7 +11,7 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useRoomContext } from '../../../views/RoomView/context';
-import ImagePicker, { ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
+import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 
 export const useChooseMedia = ({
 	rid,
@@ -22,6 +22,8 @@ export const useChooseMedia = ({
 	tmid?: string;
 	permissionToUpload: boolean;
 }) => {
+	'use memo';
+
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 	const { action, setQuotesAndText, selectedMessages, getText } = useRoomContext();
 	const allowList = FileUpload_MediaTypeWhiteList as string;

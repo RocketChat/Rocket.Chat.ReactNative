@@ -15,9 +15,8 @@ tags:
 - evalScript: ${output.result = output.utils.sendMessage(output.user.username, output.user.password, 'join-from-directory', output.thread)}
 - evalScript: ${output.threadReply = output.utils.sendMessage(output.user.username, output.user.password, output.result.message.rid, 'insidethread', output.result.message._id)}
 
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -42,6 +41,7 @@ tags:
 - tapOn:
     id: 'directory-view-search'
 - inputText: join-from-directory
+- pressKey: Enter
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-join-from-directory'
@@ -103,11 +103,7 @@ tags:
 - tapOn:
     id: 'directory-view-search'
 - inputText: ${output.otherUser.username}
-
-# This is to handle debouncing on search
-- eraseText: 1
-- inputText: ${output.otherUser.username.slice(-1)}
-
+- pressKey: Enter
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-${output.otherUser.username}'
@@ -151,6 +147,7 @@ tags:
 - tapOn:
     id: 'directory-view-search'
 - inputText: ${output.team}
+- pressKey: Enter
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-${output.team}'

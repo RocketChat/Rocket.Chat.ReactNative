@@ -4,8 +4,8 @@ import { View } from 'react-native';
 
 import { Reply } from './components';
 import MessageContext from '../../Context';
-import { IMessageAttachments } from '../../interfaces';
-import { IAttachment } from '../../../../definitions';
+import { type IMessageAttachments } from '../../interfaces';
+import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const isQuoteAttachment = (file?: IAttachment): boolean => {
@@ -24,6 +24,8 @@ const isQuoteAttachment = (file?: IAttachment): boolean => {
 
 const Quote: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
+		'use memo';
+
 		const { translateLanguage } = useContext(MessageContext);
 
 		const quotes = attachments?.filter(isQuoteAttachment);

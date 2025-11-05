@@ -1,4 +1,4 @@
-import { useDebouncedCallback, Options } from 'use-debounce';
+import { useDebouncedCallback, type Options } from 'use-debounce';
 
 export function debounce(func: Function, wait?: number, immediate?: boolean) {
 	let timeout: ReturnType<typeof setTimeout> | null;

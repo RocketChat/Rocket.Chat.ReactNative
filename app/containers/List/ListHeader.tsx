@@ -25,6 +25,8 @@ interface IListHeader {
 }
 
 const ListHeader = React.memo(({ title, translateTitle = true, numberOfLines }: IListHeader) => {
+	'use memo';
+
 	const { theme } = useTheme();
 
 	return (

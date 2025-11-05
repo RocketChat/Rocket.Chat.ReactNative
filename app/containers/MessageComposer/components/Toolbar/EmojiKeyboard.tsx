@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { MicOrSendButton, ActionsButton, BaseButton } from '..';
@@ -8,6 +8,8 @@ import { Gap } from '../Gap';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const EmojiKeyboard = (): ReactElement => {
+	'use memo';
+
 	const { closeEmojiKeyboard } = useEmojiKeyboard();
 
 	const close = async () => {

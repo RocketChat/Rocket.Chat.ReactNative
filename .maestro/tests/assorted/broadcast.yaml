@@ -12,9 +12,8 @@ tags:
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.otherUser = output.utils.createUser()}
 
-- runFlow: ../../helpers/launch-app.yaml
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -108,12 +107,12 @@ tags:
       message: 'message'
 
 # should login as user without write message authorization and enter room
-- runFlow: '../../helpers/launch-app.yaml'
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.otherUser.username}
       PASSWORD: ${output.otherUser.password}
+      CLEAR_STATE: true
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
@@ -133,7 +132,7 @@ tags:
 
 # should have the message created earlier
 - assertVisible:
-    text: 'message'
+    id: 'message-content-message'
 
 # should tap on reply button and navigate to direct room
 - assertVisible:
