@@ -6,7 +6,7 @@ import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import updateMessages from './updateMessages';
-import { TMessageModel } from '../../definitions';
+import { type TMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 

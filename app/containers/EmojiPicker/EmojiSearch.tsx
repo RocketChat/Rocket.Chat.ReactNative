@@ -4,7 +4,7 @@ import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { isIOS } from '../../lib/methods/helpers';
-import { IEmojiSearchBarProps } from './interfaces';
+import { type IEmojiSearchBarProps } from './interfaces';
 import styles from './styles';
 
 export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps): React.ReactElement => {

@@ -1,19 +1,19 @@
-import { RouteProp } from '@react-navigation/core';
+import { type RouteProp } from '@react-navigation/core';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useLayoutEffect, useState } from 'react';
-import { WebView, WebViewNavigation } from 'react-native-webview';
-import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
+import { WebView, type WebViewNavigation } from 'react-native-webview';
+import { type WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { ICredentials } from '../definitions';
+import { type ICredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers';
 import { loginOAuthOrSso } from '../lib/services/connect';
-import { OutsideModalParamList } from '../stacks/types';
+import { type OutsideModalParamList } from '../stacks/types';
 import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
 
 // iframe uses a postMessage to send the token to the client
@@ -40,9 +40,12 @@ window.addEventListener('popstate', function() {
 });
 `;
 
+const SSO_AUTH_TYPES = ['saml', 'cas', 'iframe'];
+
 const AuthenticationWebView = () => {
 	const [logging, setLogging] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [headerTitle, setHeaderTitle] = useState<string | null>(null);
 
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 	const {
@@ -91,6 +94,15 @@ const AuthenticationWebView = () => {
 
 	const onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
 		const url = decodeURIComponent(webViewState.url);
+
+		if (SSO_AUTH_TYPES.includes(authType)) {
+			try {
+				const parsed = parse(url, true);
+				setHeaderTitle(parsed.host || url);
+			} catch {
+				setHeaderTitle(url);
+			}
+		}
 		if (authType === 'saml' || authType === 'cas') {
 			const parsedUrl = parse(url, true);
 			// ticket -> cas / validate & saml_idp_credentialToken -> saml
@@ -136,11 +148,15 @@ const AuthenticationWebView = () => {
 	const isIframe = authType === 'iframe';
 
 	useLayoutEffect(() => {
+		const urlTitle = headerTitle || parse(url, true).host;
+		const isSSOType = SSO_AUTH_TYPES.includes(authType);
+		const staticFallback = isSSOType ? 'SSO' : 'OAuth';
+
 		navigation.setOptions({
 			headerLeft: () => <HeaderButton.CloseModal />,
-			title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
+			title: urlTitle || staticFallback
 		});
-	}, [authType, navigation]);
+	}, [authType, navigation, headerTitle, url]);
 
 	return (
 		<>

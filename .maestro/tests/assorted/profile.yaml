@@ -9,7 +9,6 @@ tags:
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
-
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
     env:
@@ -103,6 +102,7 @@ tags:
     element:
       id: 'profile-view-submit'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'profile-view-submit'
 
@@ -127,6 +127,7 @@ tags:
     element:
       id: 'profile-view-submit'
     timeout: 60000
+    centerElement: true
 - tapOn:
     id: 'profile-view-submit'
 
@@ -146,12 +147,10 @@ tags:
     env:
       id: 'profile-view-email'
 - inputText: mobile+profileChangesNew${output.random()}@rocket.chat
-- tapOn:
-    text: '.*Email.*'
-    index: 0
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
+    centerElement: true
     timeout: 60000
 - tapOn:
     id: 'profile-view-submit'

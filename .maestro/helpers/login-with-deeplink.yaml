@@ -4,13 +4,8 @@ tags:
   - 'util'
 
 ---
-- runFlow:
-    when:
-      true: CLEAR_STATE
-      platform: android
-    commands:
-      - clearState
-      - stopApp: chat.rocket.reactnative
+- clearState
+- stopApp: chat.rocket.reactnative
 - evalScript: ${output.login = output.utils.login(USERNAME, PASSWORD)}
 - runFlow:
     file: 'open-deeplink.yaml'
@@ -36,6 +31,13 @@ tags:
       - assertNotVisible:
           text: '.*Allow.*'
           optional: true
+- runFlow:
+    when:
+      visible: '.*Would like to send you notifications.*'
+      platform: iOS
+    commands:
+      - tapOn:
+          point: 65%,60%
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

@@ -1,10 +1,10 @@
 // @ts-nocheck
 import React from 'react';
-import { StyleProp, TextStyle, useWindowDimensions } from 'react-native';
+import { type StyleProp, type TextStyle, useWindowDimensions } from 'react-native';
 
 import { useTheme } from '../../theme';
-import { CustomIcon, hasIcon, TIconsName } from '../CustomIcon';
-import { IStatusComponentProps } from './definition';
+import { CustomIcon, IconSet, type TIconsName } from '../CustomIcon';
+import { type IStatusComponentProps } from './definition';
 import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
 
 const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {

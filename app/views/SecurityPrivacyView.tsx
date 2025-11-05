@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 
 import * as List from '../containers/List';
@@ -8,7 +8,7 @@ import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
-import { SettingsStackParamList } from '../stacks/types';
+import { type SettingsStackParamList } from '../stacks/types';
 import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
 import {
 	events,
