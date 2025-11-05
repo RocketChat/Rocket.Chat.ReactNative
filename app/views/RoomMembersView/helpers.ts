@@ -2,11 +2,11 @@ import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 
 import { LISTENER } from '../../containers/Toast';
-import { IGetRoomRoles, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
+import { type IGetRoomRoles, type IUser, SubscriptionType, type TSubscriptionModel, type TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import log from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
 import {
@@ -21,7 +21,7 @@ import {
 	teamListRoomsOfUser
 } from '../../lib/services/restApi';
 import database from '../../lib/database';
-import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
+import { type RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;

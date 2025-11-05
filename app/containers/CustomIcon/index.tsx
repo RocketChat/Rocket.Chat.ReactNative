@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
 import type { StyleProp, TextStyle } from 'react-native';
 
-import { mappedIcons } from './mappedIcons';
+import { type mappedIcons } from './mappedIcons';
 import { useTheme } from '../../theme';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import icoMoonConfig from './selection.json';

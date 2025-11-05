@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { OutsideParamList } from '../stacks/types';
+import { type OutsideParamList } from '../stacks/types';
 import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
 import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
