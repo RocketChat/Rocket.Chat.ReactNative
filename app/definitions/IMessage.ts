@@ -1,12 +1,12 @@
-import Model from '@nozbe/watermelondb/Model';
-import { Root } from '@rocket.chat/message-parser';
+import type Model from '@nozbe/watermelondb/Model';
+import { type Root } from '@rocket.chat/message-parser';
 
-import { MessageTypeLoad } from '../lib/constants';
-import { IAttachment } from './IAttachment';
-import { IReaction } from './IReaction';
-import { TThreadMessageModel } from './IThreadMessage';
-import { TThreadModel } from './IThread';
-import { IUrl, IUrlFromServer } from './IUrl';
+import { type MessageTypeLoad } from '../lib/constants/messageTypeLoad';
+import { type IAttachment } from './IAttachment';
+import { type IReaction } from './IReaction';
+import { type TThreadMessageModel } from './IThreadMessage';
+import { type TThreadModel } from './IThread';
+import { type IUrl, type IUrlFromServer } from './IUrl';
 
 export type TMessageAction = 'quote' | 'edit' | 'react' | null;
 

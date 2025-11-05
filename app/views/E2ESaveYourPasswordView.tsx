@@ -3,7 +3,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
@@ -11,13 +11,13 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import { LISTENER } from '../containers/Toast';
 import I18n from '../i18n';
-import { E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
-import { useAppSelector } from '../lib/hooks';
+import { E2E_RANDOM_PASSWORD_KEY } from '../lib/constants/keys';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import EventEmitter from '../lib/methods/helpers/events';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import UserPreferences from '../lib/methods/userPreferences';
-import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import { type E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
 		...sharedStyles.textBold
 	},
 	copyButton: {
-		width: 72,
-		height: 32
+		paddingHorizontal: 20,
+		paddingVertical: 8
 	},
 	info: {
 		fontSize: 16,

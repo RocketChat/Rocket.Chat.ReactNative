@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import i18n from '../../../../i18n';
@@ -8,6 +8,8 @@ import { CustomIcon } from '../../../CustomIcon';
 import { hitSlop } from '../Buttons';
 
 export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement => {
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<BorderlessButton

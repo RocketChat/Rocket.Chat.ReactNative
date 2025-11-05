@@ -1,7 +1,7 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StyleSheet, Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
 import { useRoomContext } from '../../../views/RoomView/context';
@@ -10,12 +10,14 @@ import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import I18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 export const SendThreadToChannel = (): React.ReactElement | null => {
+	'use memo';
+
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { setAlsoSendThreadToChannel } = useMessageComposerApi();
 	const { showEmojiSearchbar } = useEmojiKeyboard();

@@ -1,11 +1,11 @@
-import { KaTeX as KaTeXProps } from '@rocket.chat/message-parser';
+import { type KaTeX as KaTeXProps } from '@rocket.chat/message-parser';
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
 import Katex from 'react-native-katex';
 // eslint-disable-next-line import/no-unresolved
 import MathView, { MathText } from 'react-native-math-view';
 
-import { isAndroid } from '../../../lib/methods/helpers';
+import { isAndroid } from '../../../lib/methods/helpers/deviceInfo';
 import { useTheme } from '../../../theme';
 import { DEFAULT_MESSAGE_HEIGHT } from '../../message/utils';
 

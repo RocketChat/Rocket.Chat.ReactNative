@@ -1,13 +1,14 @@
 appId: chat.rocket.reactnative
 name: Navigate to room
-jsEngine: graaljs
 tags:
   - 'util'
 
 ---
+- waitForAnimationToEnd
 - scrollUntilVisible:
     element:
       id: 'rooms-list-view-item-${ROOM}'
+- waitForAnimationToEnd
 - tapOn:
     id: 'rooms-list-view-item-${ROOM}'
 - extendedWaitUntil:

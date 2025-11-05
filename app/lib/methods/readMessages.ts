@@ -1,6 +1,6 @@
 import database from '../database';
 import log from './helpers/log';
-import { TSubscriptionModel } from '../../definitions';
+import { type TSubscriptionModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { hasE2EEWarning } from '../encryption/utils';
 import { store } from '../store/auxStore';

@@ -113,6 +113,10 @@ jest.mock('./app/containers/CustomIcon', () => {
 	};
 });
 
+jest.mock('./app/lib/encryption', () => ({
+	encryptMessage: jest.fn(() => ({ rid: 'test', msg: 'test' }))
+}));
+
 jest.mock('@react-navigation/native', () => {
 	const actualNav = jest.requireActual('@react-navigation/native');
 	const { useEffect } = require('react');
@@ -165,3 +169,11 @@ jest.mock('react-native-math-view', () => {
 });
 
 jest.mock('react-native-keyboard-controller');
+
+jest.mock('react-native-webview', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const WebView = React.forwardRef(() => <View />);
+	WebView.defaultProps = {};
+	return { WebView };
+});

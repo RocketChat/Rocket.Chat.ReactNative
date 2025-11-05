@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
 
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { ICON_SIZE } from './constants';
 import { useTheme } from '../../theme';
 
@@ -21,6 +21,8 @@ const styles = StyleSheet.create({
 });
 
 const ListIcon = ({ name, color, style, testID, size }: IListIcon): React.ReactElement => {
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.icon, style]}>

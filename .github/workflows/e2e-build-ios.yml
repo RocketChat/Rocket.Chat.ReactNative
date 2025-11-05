@@ -79,6 +79,7 @@ jobs:
       - name: Build iOS app
         run: |
           cd ios
+          export RUNNING_E2E_TESTS=true
           bundle exec fastlane ios build_experimental_simulator \
             disable_xcpretty:false \
             skip_package_ipa:true \
@@ -90,6 +91,7 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
+          RUNNING_E2E_TESTS: true
 
       - name: Find latest xcarchive path
         id: find_xcarchive

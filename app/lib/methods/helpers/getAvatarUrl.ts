@@ -1,7 +1,7 @@
 import { PixelRatio } from 'react-native';
 
 import { SubscriptionType } from '../../../definitions';
-import { IAvatar } from '../../../containers/Avatar/interfaces';
+import { type IAvatar } from '../../../containers/Avatar/interfaces';
 import { compareServerVersion } from './compareServerVersion';
 
 export const formatUrl = (url: string, size: number, query?: string) => {

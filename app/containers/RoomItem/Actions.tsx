@@ -12,9 +12,9 @@ import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
 import { CustomIcon } from '../CustomIcon';
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
-import { ILeftActionsProps, IRightActionsProps } from './interfaces';
+import { type ILeftActionsProps, type IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';

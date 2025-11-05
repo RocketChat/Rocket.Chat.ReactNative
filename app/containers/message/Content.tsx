@@ -8,13 +8,15 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
-import { IMessageContent } from './interfaces';
+import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
-import { MessageTypesValues } from '../../definitions';
+import { themes } from '../../lib/constants/colors';
+import { type MessageTypesValues } from '../../definitions';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { user, onLinkPress } = useContext(MessageContext);
 
@@ -45,24 +47,23 @@ const Content = React.memo(
 			content = (
 				<Text
 					style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
-					accessibilityLabel={I18n.t('Encrypted_message')}>
+					accessibilityLabel={I18n.t('Encrypted_message')}
+					testID='message-encrypted'>
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);
 		} else if (isPreview) {
-			content = <MarkdownPreview msg={props.msg} />;
+			content = <MarkdownPreview testID={`message-preview-${props.msg}`} msg={props.msg} />;
 		} else if (props.msg) {
 			content = (
 				<Markdown
 					msg={props.msg}
 					md={props.type !== 'e2e' ? props.md : undefined}
 					getCustomEmoji={props.getCustomEmoji}
-					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}
-					tmid={props.tmid}
 					useRealName={props.useRealName}
 					onLinkPress={onLinkPress}
 					isTranslated={props.isTranslated}
@@ -71,10 +72,18 @@ const Content = React.memo(
 		}
 
 		if (props.isIgnored) {
-			content = <Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Message_Ignored')}</Text>;
+			content = (
+				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} testID={`message-ignored-${props.msg}`}>
+					{I18n.t('Message_Ignored')}
+				</Text>
+			);
 		}
 
-		return content ? <View style={props.isTemp && styles.temp}>{content}</View> : null;
+		return content ? (
+			<View style={props.isTemp && styles.temp} testID={`message-content-${props.msg || ''}`}>
+				{content}
+			</View>
+		) : null;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.isTemp !== nextProps.isTemp) {

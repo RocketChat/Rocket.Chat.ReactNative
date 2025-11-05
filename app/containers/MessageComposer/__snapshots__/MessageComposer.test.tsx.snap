@@ -82,7 +82,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={206}
+        handlerTag={259}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -177,7 +177,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={207}
+        handlerTag={260}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -299,7 +299,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={193}
+          handlerTag={246}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -373,6 +373,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -414,7 +415,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={194}
+          handlerTag={247}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -586,7 +587,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={195}
+                handlerTag={248}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -743,7 +744,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={196}
+          handlerTag={249}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -817,6 +818,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -858,7 +860,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={197}
+          handlerTag={250}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1031,7 +1033,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={198}
+                handlerTag={251}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1212,7 +1214,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={199}
+                handlerTag={252}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1369,7 +1371,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={200}
+          handlerTag={253}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1443,6 +1445,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -1484,7 +1487,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={201}
+          handlerTag={254}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1657,7 +1660,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={202}
+                handlerTag={255}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1838,7 +1841,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={203}
+                handlerTag={256}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1990,6 +1993,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -2030,7 +2034,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={49}
+        handlerTag={46}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2106,7 +2110,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={50}
+        handlerTag={47}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2182,7 +2186,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={51}
+        handlerTag={48}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2258,7 +2262,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={52}
+        handlerTag={49}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2334,7 +2338,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={53}
+        handlerTag={50}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2410,7 +2414,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={54}
+        handlerTag={51}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2486,7 +2490,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={48}
+        handlerTag={45}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2602,6 +2606,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -2642,7 +2647,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={127}
+        handlerTag={124}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2718,7 +2723,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={128}
+        handlerTag={125}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2794,7 +2799,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={129}
+        handlerTag={126}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2870,7 +2875,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={130}
+        handlerTag={127}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2946,7 +2951,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={131}
+        handlerTag={128}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3022,7 +3027,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={132}
+        handlerTag={129}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3098,7 +3103,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={126}
+        handlerTag={123}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3214,6 +3219,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -3254,7 +3260,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={153}
+        handlerTag={150}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3330,7 +3336,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={154}
+        handlerTag={151}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3406,7 +3412,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={155}
+        handlerTag={152}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3482,7 +3488,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={156}
+        handlerTag={153}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3558,7 +3564,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={157}
+        handlerTag={154}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3634,7 +3640,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={158}
+        handlerTag={155}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3710,7 +3716,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={152}
+        handlerTag={149}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3826,6 +3832,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -3866,7 +3873,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={75}
+        handlerTag={72}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3942,7 +3949,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={76}
+        handlerTag={73}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4018,7 +4025,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={77}
+        handlerTag={74}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4094,7 +4101,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={78}
+        handlerTag={75}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4170,7 +4177,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={79}
+        handlerTag={76}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4246,7 +4253,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={80}
+        handlerTag={77}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4322,7 +4329,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={74}
+        handlerTag={71}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4438,6 +4445,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -4478,7 +4486,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={36}
+        handlerTag={33}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4554,7 +4562,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={37}
+        handlerTag={34}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4630,7 +4638,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={38}
+        handlerTag={35}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4706,7 +4714,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={39}
+        handlerTag={36}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4782,7 +4790,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={40}
+        handlerTag={37}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4858,7 +4866,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={41}
+        handlerTag={38}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4934,7 +4942,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={35}
+        handlerTag={32}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5050,6 +5058,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -5090,7 +5099,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={101}
+        handlerTag={98}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5166,7 +5175,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={102}
+        handlerTag={99}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5242,7 +5251,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={103}
+        handlerTag={100}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5318,7 +5327,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={104}
+        handlerTag={101}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5394,7 +5403,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={105}
+        handlerTag={102}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5470,7 +5479,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={106}
+        handlerTag={103}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5546,7 +5555,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={100}
+        handlerTag={97}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5662,6 +5671,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -5702,7 +5712,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={62}
+        handlerTag={59}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5778,7 +5788,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={63}
+        handlerTag={60}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5854,7 +5864,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={64}
+        handlerTag={61}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5930,7 +5940,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={65}
+        handlerTag={62}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6006,7 +6016,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={66}
+        handlerTag={63}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6082,7 +6092,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={67}
+        handlerTag={64}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6158,7 +6168,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={61}
+        handlerTag={58}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6274,6 +6284,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -6314,7 +6325,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={140}
+        handlerTag={137}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6390,7 +6401,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={141}
+        handlerTag={138}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6466,7 +6477,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={142}
+        handlerTag={139}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6542,7 +6553,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={143}
+        handlerTag={140}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6618,7 +6629,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={144}
+        handlerTag={141}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6694,7 +6705,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={145}
+        handlerTag={142}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6770,7 +6781,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={139}
+        handlerTag={136}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6886,6 +6897,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -6926,7 +6938,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={166}
+        handlerTag={163}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7002,7 +7014,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={167}
+        handlerTag={164}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7078,7 +7090,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={168}
+        handlerTag={165}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7154,7 +7166,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={169}
+        handlerTag={166}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7230,7 +7242,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={170}
+        handlerTag={167}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7306,7 +7318,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={171}
+        handlerTag={168}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7382,7 +7394,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={165}
+        handlerTag={162}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7498,6 +7510,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -7538,7 +7551,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={88}
+        handlerTag={85}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7614,7 +7627,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={89}
+        handlerTag={86}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7690,7 +7703,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={90}
+        handlerTag={87}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7766,7 +7779,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={91}
+        handlerTag={88}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7842,7 +7855,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={92}
+        handlerTag={89}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7918,7 +7931,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={93}
+        handlerTag={90}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7994,7 +8007,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={87}
+        handlerTag={84}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8110,6 +8123,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -8150,7 +8164,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={114}
+        handlerTag={111}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8226,7 +8240,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={115}
+        handlerTag={112}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8302,7 +8316,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={116}
+        handlerTag={113}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8378,7 +8392,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={117}
+        handlerTag={114}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8454,7 +8468,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={118}
+        handlerTag={115}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8530,7 +8544,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={119}
+        handlerTag={116}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8606,7 +8620,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={113}
+        handlerTag={110}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8722,6 +8736,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -9182,6 +9197,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -9222,7 +9238,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={15}
+        handlerTag={10}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9298,7 +9314,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={16}
+        handlerTag={11}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9327,10 +9343,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             },
           ]
         }
-        testID="message-composer-close-emoji"
+        testID="message-composer-open-emoji"
       >
         <View
-          accessibilityLabel="Back to keyboard"
+          accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9358,7 +9374,159 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               ]
             }
           >
-            
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          {
+            "width": 12,
+          }
+        }
+      />
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={12}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 10,
+            "left": 10,
+            "right": 10,
+            "top": 10,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 24,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 24,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="message-composer-open-markdown"
+      >
+        <View
+          accessibilityLabel="Markdown tools"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+      <View
+        style={
+          {
+            "width": 12,
+          }
+        }
+      />
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        handlerTag={13}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 10,
+            "left": 10,
+            "right": 10,
+            "top": 10,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 24,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 24,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="message-composer-mention"
+      >
+        <View
+          accessibilityLabel="Mention user"
+          accessibilityRole="button"
+          accessible={true}
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
           </Text>
         </View>
       </RNGestureHandlerButton>
@@ -9374,7 +9542,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={17}
+        handlerTag={14}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9501,7 +9669,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={18}
+              handlerTag={15}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9595,7 +9763,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={19}
+              handlerTag={16}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9689,7 +9857,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={20}
+              handlerTag={17}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9783,7 +9951,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={21}
+              handlerTag={18}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9877,7 +10045,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={22}
+              handlerTag={19}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9971,7 +10139,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={23}
+              handlerTag={20}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10065,7 +10233,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={24}
+              handlerTag={21}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10159,7 +10327,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={25}
+              handlerTag={22}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10253,7 +10421,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={26}
+              handlerTag={23}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10347,7 +10515,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={27}
+              handlerTag={24}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -11065,6 +11233,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
+        onTouchStart={[Function]}
         placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
@@ -11105,7 +11274,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={174}
+        handlerTag={171}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -11181,7 +11350,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={175}
+        handlerTag={172}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -11257,7 +11426,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={176}
+        handlerTag={173}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -11333,7 +11502,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={177}
+        handlerTag={174}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -11409,7 +11578,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={178}
+        handlerTag={175}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {

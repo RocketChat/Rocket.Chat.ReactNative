@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { MessageType, MessageTypesValues, SubscriptionType } from '../../definitions';
+import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
-import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
@@ -80,6 +80,8 @@ const User = React.memo(
 		isTranslated,
 		...props
 	}: IMessageUser) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
 		const { isLargeFontScale } = useResponsiveLayout();

@@ -5,11 +5,13 @@ import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import I18n from '../../i18n';
 import { MarkdownPreview } from '../markdown';
-import { IMessageRepliedThread } from './interfaces';
+import { type IMessageRepliedThread } from './interfaces';
 import { useTheme } from '../../theme';
 import { AvatarContainer } from './MessageAvatar';
 
 const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted }: IMessageRepliedThread) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
 
