@@ -473,12 +473,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Hey!"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r0:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -833,12 +835,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r1:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -1010,12 +1014,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Older message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r2:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -1353,12 +1359,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r3:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -1713,12 +1721,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the third message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r4:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -1890,12 +1900,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the second message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r5:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -2067,12 +2079,14 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the first message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r6:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -2523,12 +2537,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Hey!"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r7:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -2883,12 +2899,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r8:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -3060,12 +3078,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Older message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":r9:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -3403,12 +3423,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":ra:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -3763,12 +3785,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the third message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":rb:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -3940,12 +3964,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the second message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":rc:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -4117,12 +4143,14 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the first message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":rd:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -4573,12 +4601,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Hey!"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":re:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -4933,12 +4963,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":rf:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -5110,12 +5142,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Older message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":rg:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -5453,12 +5487,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":rh:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -5813,12 +5849,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the third message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":ri:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -5990,12 +6028,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the second message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":rj:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
@@ -6167,12 +6207,14 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             testID="message-undefined"
           >
             <A11yIndexView
+              accessibilityLabel="This is the first message"
               importantForAccessibility="yes"
               orderFocusType={0}
               orderIndex={2}
               orderKey=":rk:"
             >
               <View
+                accessible={true}
                 style={
                   {
                     "flexDirection": "row",
