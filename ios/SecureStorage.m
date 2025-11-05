@@ -1,199 +1,208 @@
-//
-//  SecureStorage.m
-//  RocketChatRN
-//
-//  Extracted from react-native-mmkv-storage for standalone use
-//  Manages encryption keys in iOS Keychain
-//
-
-#import "SecureStorage.h"
-#import <Security/Security.h>
-#import <UIKit/UIKit.h>
 #import <React/RCTBridgeModule.h>
+#import "SecureStorage.h"
+#import <UIKit/UIKit.h>
 
-static NSString *serviceName = nil;
+@implementation SecureStorage : NSObject
 
-@implementation SecureStorage
+NSString *serviceName = nil;
 
-RCT_EXPORT_MODULE();
-
-+ (BOOL)requiresMainQueueSetup {
-    return NO;
-}
-
-RCT_EXPORT_METHOD(getSecureKey:(NSString *)key
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
+- (void) setSecureKey: (NSString *)key value:(NSString *)value
+              options: (NSDictionary *)options
+{
     @try {
-        NSString *value = [self getSecureKey:key];
-        resolve(value);
-    } @catch (NSException *exception) {
-        reject(@"GET_SECURE_KEY_ERROR", exception.reason, nil);
-    }
-}
-
-RCT_EXPORT_METHOD(setSecureKey:(NSString *)key
-                  value:(NSString *)value
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
-    @try {
-        BOOL success = [self setSecureKey:key value:value];
-        resolve(@(success));
-    } @catch (NSException *exception) {
-        reject(@"SET_SECURE_KEY_ERROR", exception.reason, nil);
-    }
-}
-
-RCT_EXPORT_METHOD(getAppGroupPath:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
-    @try {
-        NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
-        if (appGroup) {
-            NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
-            if (groupURL) {
-                resolve([groupURL path]);
-                return;
-            }
+        [self handleAppUninstallation];
+        BOOL status = [self createKeychainValue: value forIdentifier: key options: options];
+        if (!status) {
+            [self updateKeychainValue: value forIdentifier: key options: options];
         }
-        resolve(nil);
-    } @catch (NSException *exception) {
-        reject(@"GET_APP_GROUP_PATH_ERROR", exception.reason, nil);
+    }
+    @catch (NSException *exception) {
+        // Handle exception
     }
 }
 
-- (NSString *)getSecureKey:(NSString *)key {
+- (NSString *) getSecureKey:(NSString *)key
+{
     @try {
         [self handleAppUninstallation];
         NSString *value = [self searchKeychainCopyMatching:key];
-        
-        // Removed the dispatch_sync block that was causing issues
-        // as per the patch from react-native-mmkv-storage+12.0.0.patch
-        
         if (value == nil) {
-            NSString* errorMessage = @"key does not present";
-            return nil;
+            return NULL;
+        } else {
+            return value;
         }
-        
-        return value;
     }
     @catch (NSException *exception) {
-        return nil;
+        return NULL;
     }
 }
 
-- (BOOL)setSecureKey:(NSString *)key value:(NSString *)value {
+- (bool) secureKeyExists:(NSString *)key
+{
     @try {
         [self handleAppUninstallation];
-        
-        NSMutableDictionary *dictionary = [self newSearchDictionary:key];
-        
-        // Delete any existing key before inserting
-        SecItemDelete((__bridge CFDictionaryRef)dictionary);
-        
-        // Set the new value
-        NSData *valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
-        [dictionary setObject:valueData forKey:(__bridge id)kSecValueData];
-        [dictionary setObject:(__bridge id)kSecAttrAccessibleAfterFirstUnlock forKey:(__bridge id)kSecAttrAccessible];
-        
-        OSStatus status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
-        
-        if (status == errSecSuccess) {
-            return YES;
-        }
-        
-        return NO;
+        BOOL exists = [self searchKeychainCopyMatchingExists:key];
+        return exists;
     }
-    @catch (NSException *exception) {
+    @catch(NSException *exception) {
         return NO;
     }
 }
 
-- (BOOL)secureKeyExists:(NSString *)key {
-    NSString *value = [self getSecureKey:key];
-    return value != nil;
-}
-
-- (BOOL)removeSecureKey:(NSString *)key {
+- (void) removeSecureKey:(NSString *)key
+{
     @try {
-        NSMutableDictionary *dictionary = [self newSearchDictionary:key];
-        OSStatus status = SecItemDelete((__bridge CFDictionaryRef)dictionary);
-        
-        if (status == errSecSuccess) {
-            return YES;
-        }
-        
-        return NO;
+        [self deleteKeychainValue:key];
     }
-    @catch (NSException *exception) {
-        return NO;
+    @catch(NSException *exception) {
+        // Handle exception
     }
-}
-
-- (NSString *)searchKeychainCopyMatching:(NSString *)identifier {
-    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
-    
-    // Add search attributes
-    [searchDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
-    [searchDictionary setObject:@YES forKey:(__bridge id)kSecReturnData];
-    
-    CFTypeRef foundDict = NULL;
-    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)searchDictionary, &foundDict);
-    
-    if (status == noErr) {
-        NSData *data = (__bridge_transfer NSData *)foundDict;
-        NSString *value = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        return value;
-    }
-    
-    return nil;
 }
 
 - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
     NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
-    
-    // Use AppGroup as serviceName for sharing between main app and extensions
-    // This matches the patch applied to react-native-mmkv-storage
+
+    // this value is shared by main app and extensions, so, is the best to be used here
     serviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
     
     if(serviceName == nil){
         serviceName = [[NSBundle mainBundle] bundleIdentifier];
     }
     
-    [searchDictionary setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
-    [searchDictionary setObject:serviceName forKey:(__bridge id)kSecAttrService];
-    [searchDictionary setObject:identifier forKey:(__bridge id)kSecAttrAccount];
+    [searchDictionary setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+    
+    NSData *encodedIdentifier = [identifier dataUsingEncoding:NSUTF8StringEncoding];
+    [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrGeneric];
+    [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
+    [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
     
     return searchDictionary;
 }
 
-- (void)handleAppUninstallation {
-    // Check if this is the first launch after installation
-    NSString *key = @"RNMMKVStorage_Installed";
-    BOOL hasBeenLaunched = [[NSUserDefaults standardUserDefaults] boolForKey:key];
+- (NSString *)searchKeychainCopyMatching:(NSString *)identifier {
+    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
     
-    if (!hasBeenLaunched) {
-        // Clear all keychain items for this app
-        [self clearAllKeychainItems];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:key];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+    // Add search attributes
+    [searchDictionary setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
+    
+    // Add search return types
+    [searchDictionary setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
+    
+    NSDictionary *found = nil;
+    CFTypeRef result = NULL;
+    OSStatus status = SecItemCopyMatching((CFDictionaryRef)searchDictionary,
+                                          (CFTypeRef *)&result);
+    
+    NSString *value = nil;
+    found = (__bridge NSDictionary*)(result);
+    if (found) {
+        value = [[NSString alloc] initWithData:found encoding:NSUTF8StringEncoding];
     }
+    return value;
 }
 
-- (void)clearAllKeychainItems {
-    NSArray *secItemClasses = @[
-        (__bridge id)kSecClassGenericPassword,
-        (__bridge id)kSecClassInternetPassword,
-        (__bridge id)kSecClassCertificate,
-        (__bridge id)kSecClassKey,
-        (__bridge id)kSecClassIdentity
-    ];
+- (BOOL)searchKeychainCopyMatchingExists:(NSString *)identifier {
+    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
     
+    // Add search attributes
+    [searchDictionary setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
+    
+    // Add search return types
+    [searchDictionary setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
+    
+    CFTypeRef result = NULL;
+    OSStatus status = SecItemCopyMatching((CFDictionaryRef)searchDictionary,
+                                          (CFTypeRef *)&result);
+    
+    if (status != errSecItemNotFound) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)createKeychainValue:(NSString *)value forIdentifier:(NSString *)identifier options: (NSDictionary * __nullable)options {
+    CFStringRef accessibleVal = _accessibleValue(options);
+    NSMutableDictionary *dictionary = [self newSearchDictionary:identifier];
+    
+    NSData *valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
+    [dictionary setObject:valueData forKey:(id)kSecValueData];
+    dictionary[(__bridge NSString *)kSecAttrAccessible] = (__bridge id)accessibleVal;
+    
+    OSStatus status = SecItemAdd((CFDictionaryRef)dictionary, NULL);
+    
+    if (status == errSecSuccess) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)updateKeychainValue:(NSString *)password forIdentifier:(NSString *)identifier options:(NSDictionary * __nullable)options {
+    CFStringRef accessibleVal = _accessibleValue(options);
+    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
+    NSMutableDictionary *updateDictionary = [[NSMutableDictionary alloc] init];
+    NSData *passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
+    [updateDictionary setObject:passwordData forKey:(id)kSecValueData];
+    updateDictionary[(__bridge NSString *)kSecAttrAccessible] = (__bridge id)accessibleVal;
+    OSStatus status = SecItemUpdate((CFDictionaryRef)searchDictionary,
+                                    (CFDictionaryRef)updateDictionary);
+    
+    if (status == errSecSuccess) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)deleteKeychainValue:(NSString *)identifier {
+    NSMutableDictionary *searchDictionary = [self newSearchDictionary:identifier];
+    OSStatus status = SecItemDelete((CFDictionaryRef)searchDictionary);
+    if (status == errSecSuccess) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)clearSecureKeyStore
+{
+    NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
+                                (__bridge id)kSecAttrGeneric,
+                                (__bridge id)kSecAttrAccount,
+                                (__bridge id)kSecClassKey,
+                                (__bridge id)kSecAttrService];
     for (id secItemClass in secItemClasses) {
         NSDictionary *spec = @{(__bridge id)kSecClass: secItemClass};
         SecItemDelete((__bridge CFDictionaryRef)spec);
     }
 }
 
+- (void)handleAppUninstallation
+{
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void) setServiceName:(NSString *)_serviceName
+{
+    serviceName = _serviceName;
+}
+
+CFStringRef _accessibleValue(NSDictionary *options)
+{
+    if (options && options[@"accessible"] != nil) {
+        NSDictionary *keyMap = @{
+            @"AccessibleWhenUnlocked": (__bridge NSString *)kSecAttrAccessibleWhenUnlocked,
+            @"AccessibleAfterFirstUnlock": (__bridge NSString *)kSecAttrAccessibleAfterFirstUnlock,
+            @"AccessibleAlways": (__bridge NSString *)kSecAttrAccessibleAlways,
+            @"AccessibleWhenPasscodeSetThisDeviceOnly": (__bridge NSString *)kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+            @"AccessibleWhenUnlockedThisDeviceOnly": (__bridge NSString *)kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+            @"AccessibleAfterFirstUnlockThisDeviceOnly": (__bridge NSString *)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
+            @"AccessibleAlwaysThisDeviceOnly": (__bridge NSString *)kSecAttrAccessibleAlwaysThisDeviceOnly
+        };
+        
+        NSString *result = keyMap[options[@"accessible"]];
+        if (result) {
+            return (__bridge CFStringRef)result;
+        }
+    }
+    return kSecAttrAccessibleAfterFirstUnlock;
+}
+
 @end
-
-
