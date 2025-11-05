@@ -3,7 +3,7 @@ import React from 'react';
 import { type StyleProp, type TextStyle, useWindowDimensions } from 'react-native';
 
 import { useTheme } from '../../theme';
-import { CustomIcon, IconSet, type TIconsName } from '../CustomIcon';
+import { CustomIcon, hasIcon, type TIconsName } from '../CustomIcon';
 import { type IStatusComponentProps } from './definition';
 import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
 
