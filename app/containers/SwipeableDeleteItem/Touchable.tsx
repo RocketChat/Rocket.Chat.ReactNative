@@ -6,7 +6,7 @@ import {
 	type GestureUpdateEvent,
 	type PanGestureHandlerEventPayload
 } from 'react-native-gesture-handler';
-import { View } from 'react-native';
+import { View, type AccessibilityActionEvent } from 'react-native';
 
 import Touch from '../Touch';
 import { DeleteAction } from './Actions';
@@ -24,6 +24,8 @@ export interface ISwipeableDeleteTouchableProps {
 	backgroundColor: string;
 	onPress(): void;
 	onDeletePress(): void;
+	accessibilityLabel?: string;
+	accessibilityHint?: string;
 }
 
 const SwipeableDeleteTouchable = ({
@@ -36,7 +38,9 @@ const SwipeableDeleteTouchable = ({
 	smallSwipe,
 	backgroundColor,
 	onPress,
-	onDeletePress
+	onDeletePress,
+	accessibilityLabel,
+	accessibilityHint
 }: ISwipeableDeleteTouchableProps): React.ReactElement => {
 	const { colors } = useTheme();
 
@@ -67,6 +71,14 @@ const SwipeableDeleteTouchable = ({
 		close();
 		if (onDeletePress) {
 			onDeletePress();
+		}
+	};
+
+	const onAccessibilityAction = (event: AccessibilityActionEvent) => {
+		switch (event.nativeEvent.actionName) {
+			case 'delete':
+				handleDeletePress();
+				break;
 		}
 	};
 
@@ -154,7 +166,12 @@ const SwipeableDeleteTouchable = ({
 						testID={testID}
 						style={{
 							backgroundColor: backgroundColor || colors.surfaceLight
-						}}>
+						}}
+						accessible
+						accessibilityLabel={accessibilityLabel}
+						accessibilityHint={accessibilityHint}
+						accessibilityActions={[{ name: 'delete', label: I18n.t('Delete') }]}
+						onAccessibilityAction={onAccessibilityAction}>
 						{children}
 					</Touch>
 				</Animated.View>

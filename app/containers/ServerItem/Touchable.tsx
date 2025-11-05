@@ -10,9 +10,19 @@ export interface IServerItemTouchableProps {
 	width: number;
 	onPress(): void;
 	onDeletePress(): void;
+	accessibilityLabel?: string;
+	accessibilityHint?: string;
 }
 
-const Touchable = ({ width, children, testID, onPress, onDeletePress }: IServerItemTouchableProps): React.ReactElement => {
+const Touchable = ({
+	width,
+	children,
+	testID,
+	onPress,
+	onDeletePress,
+	accessibilityLabel,
+	accessibilityHint
+}: IServerItemTouchableProps): React.ReactElement => {
 	const { colors } = useTheme();
 
 	return (
@@ -25,7 +35,9 @@ const Touchable = ({ width, children, testID, onPress, onDeletePress }: IServerI
 			smallSwipe={SMALL_SWIPE}
 			backgroundColor={colors.surfaceLight}
 			onPress={onPress}
-			onDeletePress={onDeletePress}>
+			onDeletePress={onDeletePress}
+			accessibilityLabel={accessibilityLabel}
+			accessibilityHint={accessibilityHint}>
 			{children}
 		</SwipeableDeleteTouchable>
 	);

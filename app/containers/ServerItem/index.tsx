@@ -6,8 +6,11 @@ import Radio from '../Radio';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';
+import I18n from '../../i18n';
 
 export { ROW_HEIGHT };
+export { default as ServerItemTouchable } from './Touchable';
+export type { IServerItemTouchableProps } from './Touchable';
 
 export interface IServerItem {
 	item: {
@@ -27,8 +30,20 @@ const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServ
 	const { colors } = useTheme();
 	const { width } = Dimensions.get('window');
 
+	const serverName = item.name || item.id;
+	const accessibilityLabel = `${serverName}, ${item.id}`;
+	const accessibilityHint = onDeletePress
+		? I18n.t('Activate_to_select_server_Available_actions_delete')
+		: I18n.t('Activate_to_select_server');
+
 	return (
-		<Touchable onPress={onPress} onDeletePress={onDeletePress || (() => {})} testID={`server-item-${item.id}`} width={width}>
+		<Touchable
+			onPress={onPress}
+			onDeletePress={onDeletePress || (() => {})}
+			testID={`server-item-${item.id}`}
+			width={width}
+			accessibilityLabel={accessibilityLabel}
+			accessibilityHint={accessibilityHint}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<Image

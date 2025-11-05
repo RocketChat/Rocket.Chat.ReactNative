@@ -4,8 +4,9 @@ import { Image } from 'expo-image';
 
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../../../theme';
-import Touchable from './Touchable';
+import { ServerItemTouchable as Touchable } from '../../../../containers/ServerItem';
 import { type TServerHistoryModel } from '../../../../definitions';
+import I18n from '../../../../i18n';
 
 export { ROW_HEIGHT };
 
@@ -21,8 +22,17 @@ const ServersHistoryItem = React.memo(({ item, onPress, onDeletePress }: IServer
 	const { colors } = useTheme();
 	const { width } = Dimensions.get('window');
 
+	const accessibilityLabel = item.username ? `${item.url}, ${item.username}` : item.url;
+	const accessibilityHint = I18n.t('Activate_to_select_server_Available_actions_delete');
+
 	return (
-		<Touchable onPress={onPress} onDeletePress={onDeletePress} testID={`servers-history-${item.url}`} width={width}>
+		<Touchable
+			onPress={onPress}
+			onDeletePress={onDeletePress}
+			testID={`servers-history-${item.url}`}
+			width={width}
+			accessibilityLabel={accessibilityLabel}
+			accessibilityHint={accessibilityHint}>
 			<View style={styles.container}>
 				<Image source={item.iconURL ? { uri: item.iconURL } : defaultLogo} style={styles.serverIcon} contentFit='contain' />
 
