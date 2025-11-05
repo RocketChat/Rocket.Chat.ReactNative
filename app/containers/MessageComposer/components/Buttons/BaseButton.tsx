@@ -1,6 +1,7 @@
 import { BorderlessButton } from 'react-native-gesture-handler';
 import React from 'react';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
+import { View, useWindowDimensions } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../../../../i18n';
 import { CustomIcon, type TIconsName } from '../../../CustomIcon';

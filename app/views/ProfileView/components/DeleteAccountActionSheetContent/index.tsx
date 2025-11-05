@@ -1,8 +1,9 @@
 import React from 'react';
-import { AccessibilityInfo, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, Text, View } from 'react-native';
 import { sha256 } from 'js-sha256';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';

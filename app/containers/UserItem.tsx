@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable, type StyleProp, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Pressable, type StyleProp, Text, View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Avatar from './Avatar';
 import { CustomIcon, type TIconsName } from './CustomIcon';

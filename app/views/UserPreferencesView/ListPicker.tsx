@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';

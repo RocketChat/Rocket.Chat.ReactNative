@@ -40,7 +40,9 @@ const useKeyboardAnimation = () => {
 	'use memo';
 
 	const height = useSharedValue(0);
+	const { bottom } = useSafeAreaInsets();
 
+    //TODO: subtraction is currently temporary, i am looking for a better solution
 	useKeyboardHandler(
 		{
 			onStart: e => {
@@ -49,17 +51,17 @@ const useKeyboardAnimation = () => {
 				if (e.duration === 0) {
 					return;
 				}
-				height.value = e.height;
+				height.value = e.height - (Platform.OS === 'android' ? bottom : 0);
 			},
 			onInteractive: e => {
 				'worklet';
 
-				height.value = e.height;
+				height.value = e.height - (Platform.OS === 'android' ? bottom : 0);
 			},
 			onEnd: e => {
 				'worklet';
 
-				height.value = Math.max(e.height, 0);
+				height.value = Math.max(e.height - (Platform.OS === 'android' ? bottom : 0), 0);
 			}
 		},
 		[]

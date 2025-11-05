@@ -1,5 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../i18n';
 import { useTheme } from '../theme';

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../../../../i18n';
 import { type TCertificatePicker } from '../../definitions';

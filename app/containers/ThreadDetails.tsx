@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Text, View, type ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon } from './CustomIcon';
 import { themes } from '../lib/constants/colors';

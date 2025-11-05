@@ -1,8 +1,9 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { createChannelRequest } from '../../actions/createChannel';
 import { themes } from '../../lib/constants/colors';

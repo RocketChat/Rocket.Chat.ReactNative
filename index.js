@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry, LogBox } from 'react-native';
 
+import './app/unistyles';
 import { name as appName } from './app.json';
 import { isAndroid } from './app/lib/methods/helpers';
 

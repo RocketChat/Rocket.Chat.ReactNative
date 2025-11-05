@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -210,39 +210,41 @@ export default class Root extends React.Component<{}, IState> {
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{
-							theme,
-							themePreferences,
-							setTheme: this.setTheme,
-							colors: colors[theme]
-						}}>
-						<ResponsiveLayoutProvider>
-							<DimensionsContext.Provider
-								value={{
-									width,
-									height,
-									scale,
-									fontScale,
-									setDimensions: this.setDimensions
-								}}>
-								<GestureHandlerRootView>
-									<KeyboardProvider>
-										<ActionSheetProvider>
-											<StatusBar />
-											<AppContainer />
-											<TwoFactor />
-											<ScreenLockedView />
-											<ChangePasscodeView />
-											<InAppNotification />
-											<Toast />
-											<Loading />
-										</ActionSheetProvider>
-									</KeyboardProvider>
-								</GestureHandlerRootView>
-							</DimensionsContext.Provider>
-						</ResponsiveLayoutProvider>
-					</ThemeContext.Provider>
+                    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+                        <ThemeContext.Provider
+                            value={{
+                                theme,
+                                themePreferences,
+                                setTheme: this.setTheme,
+                                colors: colors[theme]
+                            }}>
+                            <ResponsiveLayoutProvider>
+                                <DimensionsContext.Provider
+                                    value={{
+                                        width,
+                                        height,
+                                        scale,
+                                        fontScale,
+                                        setDimensions: this.setDimensions
+                                    }}>
+                                    <GestureHandlerRootView>
+                                        <KeyboardProvider>
+                                            <ActionSheetProvider>
+                                                <StatusBar />
+                                                <AppContainer />
+                                                <TwoFactor />
+                                                <ScreenLockedView />
+                                                <ChangePasscodeView />
+                                                <InAppNotification />
+                                                <Toast />
+                                                <Loading />
+                                            </ActionSheetProvider>
+                                        </KeyboardProvider>
+                                    </GestureHandlerRootView>
+                                </DimensionsContext.Provider>
+                            </ResponsiveLayoutProvider>
+                        </ThemeContext.Provider>
+                    </SafeAreaView>
 				</Provider>
 			</SafeAreaProvider>
 		);

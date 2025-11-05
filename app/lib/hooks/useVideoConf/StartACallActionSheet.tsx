@@ -1,8 +1,9 @@
 import { CameraView } from 'expo-camera';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useAppSelector } from '../useAppSelector';
 import { cancelCall, initVideoCall } from '../../../actions/videoConf';

@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { FlatList, Text, View, useWindowDimensions } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';

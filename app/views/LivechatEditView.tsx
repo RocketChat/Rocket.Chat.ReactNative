@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { StyleSheet } from 'react-native-unistyles';
 
 import log from '../lib/methods/helpers/log';
 import { type TSupportedThemes, withTheme } from '../theme';

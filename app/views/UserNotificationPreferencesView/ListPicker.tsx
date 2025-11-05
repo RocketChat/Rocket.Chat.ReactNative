@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';

@@ -1,8 +1,9 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useRoomContext } from '../../../views/RoomView/context';
 import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';

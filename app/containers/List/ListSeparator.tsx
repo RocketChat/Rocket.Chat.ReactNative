@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, type ViewStyle } from 'react-native';
+import { View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';

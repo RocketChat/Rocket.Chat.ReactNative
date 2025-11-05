@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';

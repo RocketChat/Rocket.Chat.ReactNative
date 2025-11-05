@@ -1,5 +1,6 @@
 import React from 'react';
-import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { type StyleProp, Text, useWindowDimensions, View, type ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
