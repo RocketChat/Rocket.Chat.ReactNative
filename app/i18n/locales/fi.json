@@ -854,5 +854,6 @@
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
   "Your_Password_Must_Have": "Salasanasi on oltava:",
-  "Your_workspace": "Työtilasi"
+  "Your_workspace": "Työtilasi",
+  "abac_removed_user_from_the_room": "poistettiin ABAC:n toimesta"
 }

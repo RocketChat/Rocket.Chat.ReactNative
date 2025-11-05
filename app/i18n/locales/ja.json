@@ -548,5 +548,6 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
+  "abac_removed_user_from_the_room": "ABACによって削除されました"
 }

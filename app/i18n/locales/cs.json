@@ -967,5 +967,6 @@
   "Your_password_is": "Vaše heslo je",
   "Your_Password_Must_Have": "Vaše heslo musí mít:",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor"
+  "Your_workspace": "Váš pracovní prostor",
+  "abac_removed_user_from_the_room": "byl odstraněn pomocí ABAC"
 }
