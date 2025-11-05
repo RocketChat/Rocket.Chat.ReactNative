@@ -3,9 +3,11 @@ import React from 'react';
 import Message from './index';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
-import { TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
+import { type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
 
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
+	'use memo';
+
 	const { user, baseUrl, Message_TimeFormat, customEmojis, useRealName } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		baseUrl: state.server.server,

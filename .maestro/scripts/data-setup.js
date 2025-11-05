@@ -192,7 +192,6 @@ const createDM = (username, password, otherUsername) => {
         })
     });
 
-    console.log(JSON.stringify(json(result.body), null, 2));
     return json(result.body);
 }
 

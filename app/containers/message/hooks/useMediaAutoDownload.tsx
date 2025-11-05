@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { IAttachment, IUserMessage } from '../../../definitions';
+import { type IAttachment, type IUserMessage } from '../../../definitions';
 import { isImageBase64 } from '../../../lib/methods/isImageBase64';
 import { fetchAutoDownloadEnabled } from '../../../lib/methods/autoDownloadPreference';
 import {
@@ -8,8 +8,8 @@ import {
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
-	MediaTypes,
-	TDownloadState
+	type MediaTypes,
+	type TDownloadState
 } from '../../../lib/methods/handleMediaDownload';
 import { emitter } from '../../../lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
@@ -57,6 +57,8 @@ export const useMediaAutoDownload = ({
 	author?: IUserMessage;
 	showAttachment?: Function;
 }) => {
+	'use memo';
+
 	const fileType = getFileType(file) ?? 'image';
 	const { id, baseUrl, user } = useContext(MessageContext);
 	const [status, setStatus] = useState<TDownloadState>('to-download');

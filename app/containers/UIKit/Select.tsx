@@ -9,7 +9,7 @@ import { textParser } from './utils';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import ActivityIndicator from '../ActivityIndicator';
 import { useTheme } from '../../theme';
-import { IText, Option } from './interfaces';
+import { type IText, type Option } from './interfaces';
 
 const styles = StyleSheet.create({
 	iosPadding: {
@@ -60,7 +60,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 			placeholder && !items.some(item => item.label === textParser([placeholder]))
 				? { label: textParser([placeholder]), value: null }
 				: {},
-		[items.length, placeholder?.text]
+		[items, placeholder]
 	);
 
 	const Icon = () =>

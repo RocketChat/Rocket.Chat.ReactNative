@@ -8,8 +8,12 @@ tags:
   - test-10
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-- runFlow: '../../helpers/login.yaml'
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
 
 - extendedWaitUntil:
     visible:

@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-index 34703df..80b4ae7 100644
+index 34703df..a754918 100644
 --- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 +++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-@@ -40,14 +40,14 @@ - (NSString *) getSecureKey:(NSString *)key
+@@ -40,14 +40,14 @@ NSString *serviceName = nil;
      @try {
          [self handleAppUninstallation];
          NSString *value = [self searchKeychainCopyMatching:key];
@@ -14,25 +14,25 @@ index 34703df..80b4ae7 100644
 -                usleep(25000);
 -            }
 -        });
-+//        dispatch_sync(dispatch_get_main_queue(), ^{
-+//            int readAttempts = 0;
-+//            // See: https://github.com/ammarahm-ed/react-native-mmkv-storage/issues/195
-+//            while (![[UIApplication sharedApplication] isProtectedDataAvailable] && readAttempts++ < 100) {
-+//                // sleep 25ms before another attempt
-+//                usleep(25000);
-+//            }
-+//        });
++        // dispatch_sync(dispatch_get_main_queue(), ^{
++        //     int readAttempts = 0;
++        //     // See: https://github.com/ammarahm-ed/react-native-mmkv-storage/issues/195
++        //     while (![[UIApplication sharedApplication] isProtectedDataAvailable] && readAttempts++ < 100) {
++        //         // sleep 25ms before another attempt
++        //         usleep(25000);
++        //     }
++        // });
          if (value == nil) {
              NSString* errorMessage = @"key does not present";
            
-@@ -100,6 +100,10 @@ - (void) removeSecureKey:(NSString *)key
+@@ -100,6 +100,10 @@ NSString *serviceName = nil;
  
  - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
 +
 +    // this value is shared by main app and extensions, so, is the best to be used here
 +    serviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
-+
++    
      if(serviceName == nil){
          serviceName = [[NSBundle mainBundle] bundleIdentifier];
      }

@@ -6,6 +6,8 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export const useGetItemLayout = () => {
+	'use memo';
+
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 	const { displayMode } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;

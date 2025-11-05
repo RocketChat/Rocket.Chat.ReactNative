@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
-import { ISubscription, SubscriptionType } from '../../../definitions';
+import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
+import { type ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { useTheme } from '../../../theme';

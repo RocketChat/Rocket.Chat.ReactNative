@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
-import { TNavigationOptions } from './definitions/navigationTypes';
+import { type TNavigationOptions } from './definitions/navigationTypes';
 
 export interface IDimensionsContextProps {
 	width: number;

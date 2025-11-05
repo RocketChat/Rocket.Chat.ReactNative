@@ -4,7 +4,7 @@ import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
 import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
@@ -26,7 +26,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
-import { SettingsStackParamList } from '../../stacks/types';
+import { type SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { disconnect } from '../../lib/services/connect';
 import SidebarView from '../SidebarView';
@@ -34,6 +34,8 @@ import SidebarView from '../SidebarView';
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
 const SettingsView = (): React.ReactElement => {
+	'use memo';
+
 	const { colors, theme } = useTheme();
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();

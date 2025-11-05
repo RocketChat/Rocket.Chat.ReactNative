@@ -13,6 +13,8 @@ import RoomsListHeaderView from '../components/Header';
 import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 
 export const useHeader = () => {
+	'use memo';
+
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);

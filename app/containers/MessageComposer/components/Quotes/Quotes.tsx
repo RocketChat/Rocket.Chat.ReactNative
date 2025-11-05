@@ -5,6 +5,8 @@ import { Quote } from './Quote';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const Quotes = (): React.ReactElement | null => {
+	'use memo';
+
 	const { selectedMessages, action } = useRoomContext();
 	const nQuotesRef = useRef(0);
 	const listRef = useRef<FlatList>(null);

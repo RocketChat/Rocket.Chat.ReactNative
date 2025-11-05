@@ -8,8 +8,6 @@ tags:
   - test-10
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 - evalScript: ${output.discussionFromNewMessage = output.random() + ' Discussion NewMessageView'}
@@ -17,7 +15,7 @@ tags:
 - evalScript: ${output.selectUser = 'rocket.cat'}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -45,7 +43,8 @@ tags:
     visible:
       id: 'create-discussion-view'
     timeout: 60000
-- tapOn: 'Select a channel'
+- tapOn:
+    id: 'create-discussion-select-channel'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
@@ -143,7 +142,7 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: ${output.room.name}
+      text: .*${output.room.name}.*
     timeout: 60000
 - tapOn:
     id: multi-select-discussion-name
@@ -315,10 +314,10 @@ tags:
 # should navigate to discussion
 - extendedWaitUntil:
     visible:
-      text: .*${output.discussionFromNewMessage}.*
+      id: 'discussions-view-${output.discussionFromNewMessage}'
     timeout: 60000
 - tapOn:
-    text: .*${output.discussionFromNewMessage}.*
+    id: 'discussions-view-${output.discussionFromNewMessage}'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.discussionFromNewMessage}'
