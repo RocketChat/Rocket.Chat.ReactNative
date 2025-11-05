@@ -28,6 +28,7 @@ const AutoTranslateView = (): React.ReactElement => {
 	const [languages, setLanguages] = useState<{ language: string; name: string }[]>([]);
 	const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(room?.autoTranslateLanguage);
 	const [enableAutoTranslate, setEnableAutoTranslate] = useState<boolean | undefined>(room?.autoTranslate);
+
 	const subscription = useRef<Subscription | null>(null);
 
 	useLayoutEffect(() => {
@@ -50,6 +51,7 @@ const AutoTranslateView = (): React.ReactElement => {
 	useEffect(() => {
 		let letSelectedLanguage = selectedLanguage;
 		let letAutoTranslate = enableAutoTranslate;
+
 		subscription.current = room.observe().subscribe((changes: ISubscription) => {
 			if (letSelectedLanguage !== changes.autoTranslateLanguage) {
 				setSelectedLanguage(changes.autoTranslateLanguage);
@@ -108,7 +110,6 @@ const AutoTranslateView = (): React.ReactElement => {
 			additionalAcessibilityLabelCheck
 		/>
 	));
-
 	return (
 		<SafeAreaView>
 			<FlatList
