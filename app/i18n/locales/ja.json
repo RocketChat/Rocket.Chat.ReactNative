@@ -8,6 +8,7 @@
   "A11y_in_app_notification": "{{name}} からの新しいメッセージ: {{message}}",
   "A11y_incoming_call_dismiss": "閉じる",
   "A11y_incoming_call_swipe_down_to_view_options": "オプションを見るには下にスワイプしてください",
+  "abac_removed_user_from_the_room": "ABACによって削除されました",
   "Accessibility": "アクセシビリティ",
   "Accessibility_and_Appearance": "アクセシビリティと外観",
   "Accessibility_statement": "アクセシビリティ声明",
@@ -548,6 +549,5 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
-  "abac_removed_user_from_the_room": "ABACによって削除されました"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
 }

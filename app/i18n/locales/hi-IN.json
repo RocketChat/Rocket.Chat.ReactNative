@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "{{name}} से नया संदेश: {{message}}",
   "A11y_incoming_call_dismiss": "खारिज करें",
   "A11y_incoming_call_swipe_down_to_view_options": "विकल्प देखने के लिए नीचे स्वाइप करें",
+  "abac_removed_user_from_the_room": "ABAC द्वारा हटाया गया",
   "accept": "स्वीकार करें",
   "Accessibility": "प्रवेशयोग्यता",
   "Accessibility_and_Appearance": "प्रवेशयोग्यता और दृश्यता",
@@ -892,6 +893,5 @@
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
   "Your_Password_Must_Have": "आपका पासवर्ड होना चाहिए:",
-  "Your_workspace": "आपका कार्यस्थान",
-  "abac_removed_user_from_the_room": "ABAC द्वारा हटाया गया"
+  "Your_workspace": "आपका कार्यस्थान"
 }

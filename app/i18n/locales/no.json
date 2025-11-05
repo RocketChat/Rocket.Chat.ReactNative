@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Ny melding fra {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Avvis",
   "A11y_incoming_call_swipe_down_to_view_options": "Dra ned for å se alternativer",
+  "abac_removed_user_from_the_room": "ble fjernet av ABAC",
   "accept": "Aksepter",
   "Accessibility": "Tilgjengelighet",
   "Accessibility_and_Appearance": "Tilgjengelighet og utseende",
@@ -941,6 +942,5 @@
   "Your_invite_link_will_never_expire": "Invitasjonslenken din vil aldri utløpe.",
   "Your_password_is": "Passordet ditt er",
   "Your_Password_Must_Have": "Passordet ditt må inneholde:",
-  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter",
-  "abac_removed_user_from_the_room": "ble fjernet av ABAC"
+  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter"
 }

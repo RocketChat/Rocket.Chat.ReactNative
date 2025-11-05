@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "{{name}}-இருந்து புதிய செய்தி: {{message}}",
   "A11y_incoming_call_dismiss": "தள்ளு",
   "A11y_incoming_call_swipe_down_to_view_options": "விருப்பங்களைப் பார்க்க கீழே நகர்த்தவும்",
+  "abac_removed_user_from_the_room": "ABAC மூலம் அகற்றப்பட்டது",
   "accept": "ஏற்றுக்கொள்",
   "Accessibility": "அணுகல் மேம்பாடு",
   "Accessibility_and_Appearance": "நுகர்வுத்திறன் மற்றும் தோற்றம்",
@@ -892,6 +893,5 @@
   "Your_invite_link_will_never_expire": "உங்கள் அழைத்துக்கொள்ளும் இணைய கணக்கு எப்போதும் காலாவதியாகின்றதுமில்லை.",
   "Your_password_is": "உங்கள் கடவுச்சொல் உள்ளது",
   "Your_Password_Must_Have": "உங்கள் கடவுச்சொல் இருக்க வேண்டும்:",
-  "Your_workspace": "உங்கள் பணிகள்",
-  "abac_removed_user_from_the_room": "ABAC மூலம் அகற்றப்பட்டது"
+  "Your_workspace": "உங்கள் பணிகள்"
 }

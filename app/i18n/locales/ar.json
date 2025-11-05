@@ -8,6 +8,7 @@
   "A11y_in_app_notification": "رسالة جديدة من {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "تجاهل",
   "A11y_incoming_call_swipe_down_to_view_options": "اسحب لأسفل لعرض الخيارات",
+  "abac_removed_user_from_the_room": "تمت إزالته بواسطة ABAC",
   "Accessibility": "إمكانية الوصول",
   "Accessibility_and_Appearance": "إمكانية الوصول والمظهر",
   "Accessibility_statement": "بيان الوصول",
@@ -629,6 +630,5 @@
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
   "Your_Password_Must_Have": "يجب أن تحتوي كلمة المرور الخاصة بك على:",
-  "Your_workspace": "مساحة عملك",
-  "abac_removed_user_from_the_room": "تمت إزالته بواسطة ABAC"
+  "Your_workspace": "مساحة عملك"
 }

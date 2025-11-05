@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "New message from {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dismiss",
   "A11y_incoming_call_swipe_down_to_view_options": "Swipe down to view options",
+  "abac_removed_user_from_the_room": "was removed by ABAC",
   "accept": "Accept",
   "Accessibility": "Accessibility",
   "Accessibility_and_Appearance": "Accessibility & appearance",
@@ -995,6 +996,5 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_Password_Must_Have": "Your password must have:",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "abac_removed_user_from_the_room": "was removed by ABAC"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
 }

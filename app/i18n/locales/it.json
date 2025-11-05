@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Nuovo messaggio da {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Ignora",
   "A11y_incoming_call_swipe_down_to_view_options": "Scorri verso il basso per visualizzare le opzioni",
+  "abac_removed_user_from_the_room": "è stato rimosso da ABAC",
   "Accessibility": "Accessibilità",
   "Accessibility_and_Appearance": "Accessibilità e aspetto",
   "Accessibility_statement": "Dichiarazione di accessibilità",
@@ -678,6 +679,5 @@
   "Your_invite_link_will_never_expire": "Il tuo link di invito non scadrà mai.",
   "Your_password_is": "La tua password è",
   "Your_Password_Must_Have": "La tua password deve avere:",
-  "Your_workspace": "Il tuo workspace",
-  "abac_removed_user_from_the_room": "è stato rimosso da ABAC"
+  "Your_workspace": "Il tuo workspace"
 }

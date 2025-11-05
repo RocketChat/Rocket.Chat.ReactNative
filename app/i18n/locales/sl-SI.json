@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Novo sporočilo od {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Opusti",
   "A11y_incoming_call_swipe_down_to_view_options": "Podrsnite navzdol za ogled možnosti",
+  "abac_removed_user_from_the_room": "je bil odstranjen s strani ABAC",
   "Accessibility": "Dostopnost",
   "Accessibility_and_Appearance": "Dostopnost in videz",
   "Accessibility_statement": "Izjava o dostopnosti",
@@ -790,6 +791,5 @@
   "Your_invite_link_will_never_expire": "Vaša povezava za povabilo ne bo nikoli potekala.",
   "Your_password_is": "Vaše geslo je",
   "Your_Password_Must_Have": "Vaše geslo mora imeti:",
-  "Your_workspace": "Vaš delovni prostor",
-  "abac_removed_user_from_the_room": "je bil odstranjen s strani ABAC"
+  "Your_workspace": "Vaš delovni prostor"
 }

@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "{{name}} থেকে নতুন বার্তা: {{message}}",
   "A11y_incoming_call_dismiss": "বন্ধ করুন",
   "A11y_incoming_call_swipe_down_to_view_options": "নির্বাচনগুলি দেখতে নিচে সোয়াইপ করুন",
+  "abac_removed_user_from_the_room": "ABAC দ্বারা সরানো হয়েছে",
   "accept": "গ্রহণ করুন",
   "Accessibility": "অ্যাক্সেসিবিলিটি",
   "Accessibility_and_Appearance": "অ্যাক্সেসিবিলিটি ও চেহারা",
@@ -892,6 +893,5 @@
   "Your_invite_link_will_never_expire": "আপনার আমন্ত্রণ লিঙ্কটি কখনও মেয়াদ শেষ হবে না।",
   "Your_password_is": "আপনার পাসওয়ার্ড হল",
   "Your_Password_Must_Have": "আপনার পাসওয়ার্ড থাকতে হবে:",
-  "Your_workspace": "আপনার ওয়ার্কস্পেস",
-  "abac_removed_user_from_the_room": "ABAC দ্বারা সরানো হয়েছে"
+  "Your_workspace": "আপনার ওয়ার্কস্পেস"
 }

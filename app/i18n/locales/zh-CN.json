@@ -8,6 +8,7 @@
   "A11y_in_app_notification": "来自{{name}}的新消息：{{message}}",
   "A11y_incoming_call_dismiss": "关闭",
   "A11y_incoming_call_swipe_down_to_view_options": "向下滑动以查看选项",
+  "abac_removed_user_from_the_room": "被ABAC删除",
   "Accessibility": "无障碍性",
   "Accessibility_and_Appearance": "辅助功能和外观",
   "Accessibility_statement": "无障碍声明",
@@ -621,6 +622,5 @@
   "Your_invite_link_will_never_expire": "您的邀请链接永久有效。",
   "Your_password_is": "您的密码",
   "Your_Password_Must_Have": "您的密码必须具有：",
-  "Your_workspace": "您的工作区",
-  "abac_removed_user_from_the_room": "被ABAC删除"
+  "Your_workspace": "您的工作区"
 }

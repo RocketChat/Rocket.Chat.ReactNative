@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Новое сообщение от {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Отклонить",
   "A11y_incoming_call_swipe_down_to_view_options": "Проведите вниз, чтобы просмотреть варианты действий",
+  "abac_removed_user_from_the_room": "был удалён ABAC'ом",
   "Accessibility": "Доступность",
   "Accessibility_and_Appearance": "Доступность и внешний вид",
   "Accessibility_statement": "Заявление о доступности",
@@ -822,6 +823,5 @@
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
   "Your_Password_Must_Have": "Ваш пароль должен иметь:",
-  "Your_workspace": "Ваш сервер",
-  "abac_removed_user_from_the_room": "был удалён ABAC'ом"
+  "Your_workspace": "Ваш сервер"
 }

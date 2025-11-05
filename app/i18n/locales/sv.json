@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Nytt meddelande från {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Avvisa",
   "A11y_incoming_call_swipe_down_to_view_options": "Svep nedåt för att se alternativ",
+  "abac_removed_user_from_the_room": "togs bort av ABAC",
   "Accessibility": "Tillgänglighet",
   "Accessibility_and_Appearance": "Tillgänglighet och utseende",
   "Accessibility_statement": "Tillgänglighetsredogörelse",
@@ -852,6 +853,5 @@
   "Your_invite_link_will_never_expire": "Inbjudningslänken upphör aldrig att gälla.",
   "Your_password_is": "Ditt lösenord är",
   "Your_Password_Must_Have": "Ditt lösenord måste ha:",
-  "Your_workspace": "Din arbetsyta",
-  "abac_removed_user_from_the_room": "togs bort av ABAC"
+  "Your_workspace": "Din arbetsyta"
 }

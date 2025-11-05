@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Uusi viesti {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Hylkää",
   "A11y_incoming_call_swipe_down_to_view_options": "Pyyhkäise alas nähdäksesi vaihtoehdot",
+  "abac_removed_user_from_the_room": "poistettiin ABAC:n toimesta",
   "Accessibility": "Saavutettavuus",
   "Accessibility_and_Appearance": "Saavutettavuus ja ulkonäkö",
   "Accessibility_statement": "Saavutettavuusilmoitus",
@@ -854,6 +855,5 @@
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
   "Your_Password_Must_Have": "Salasanasi on oltava:",
-  "Your_workspace": "Työtilasi",
-  "abac_removed_user_from_the_room": "poistettiin ABAC:n toimesta"
+  "Your_workspace": "Työtilasi"
 }

@@ -8,6 +8,7 @@
   "A11y_in_app_notification": "Nieuw bericht van {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Afwijzen",
   "A11y_incoming_call_swipe_down_to_view_options": "Veeg omlaag om opties te bekijken",
+  "abac_removed_user_from_the_room": "werd verwijderd door ABAC",
   "Accessibility": "Toegankelijkheid",
   "Accessibility_and_Appearance": "Toegankelijkheid & uiterlijk",
   "Accessibility_statement": "Toegankelijkheidsverklaring",
@@ -775,6 +776,5 @@
   "Your_invite_link_will_never_expire": "Je uitnodigingslink zal nooit verlopen.",
   "Your_password_is": "Jouw wachtwoord is",
   "Your_Password_Must_Have": "Uw wachtwoord moet hebben:",
-  "Your_workspace": "Jouw werkruimte",
-  "abac_removed_user_from_the_room": "werd verwijderd door ABAC"
+  "Your_workspace": "Jouw werkruimte"
 }

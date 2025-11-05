@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Nová zpráva od {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Zavřít",
   "A11y_incoming_call_swipe_down_to_view_options": "Přejetím dolů zobrazíte možnosti",
+  "abac_removed_user_from_the_room": "byl odstraněn pomocí ABAC",
   "accept": "Akceptovat",
   "Accessibility": "Přístupnost",
   "Accessibility_and_Appearance": "Přístupnost a vzhled",
@@ -967,6 +968,5 @@
   "Your_password_is": "Vaše heslo je",
   "Your_Password_Must_Have": "Vaše heslo musí mít:",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor",
-  "abac_removed_user_from_the_room": "byl odstraněn pomocí ABAC"
+  "Your_workspace": "Váš pracovní prostor"
 }

@@ -8,6 +8,7 @@
   "A11y_in_app_notification": "Yeni mesaj {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dismiss et.",
   "A11y_incoming_call_swipe_down_to_view_options": "Aşağı kaydırarak seçenekleri görüntüle",
+  "abac_removed_user_from_the_room": "ABAC tarafından kaldırıldı",
   "Accessibility": "Erişilebilirlik",
   "Accessibility_and_Appearance": "Erişilebilirlik ve görünüm",
   "Accessibility_statement": "Erişilebilirlik beyanı",
@@ -661,6 +662,5 @@
   "Your_invite_link_will_never_expire": "Davet bağlantınızın geçerlilik süresi asla dolmayacak.",
   "Your_password_is": "Şifreniz",
   "Your_Password_Must_Have": "Şifreniz:",
-  "Your_workspace": "Çalışma alanınız",
-  "abac_removed_user_from_the_room": "ABAC tarafından kaldırıldı"
+  "Your_workspace": "Çalışma alanınız"
 }

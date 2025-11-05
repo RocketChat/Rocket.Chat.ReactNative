@@ -8,6 +8,7 @@
   "A11y_in_app_notification": "Nuevo mensaje de {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Descartar",
   "A11y_incoming_call_swipe_down_to_view_options": "Desliza hacia abajo para ver opciones",
+  "abac_removed_user_from_the_room": "fue eliminado por ABAC",
   "Accessibility": "Accesibilidad",
   "Accessibility_and_Appearance": "Accesibilidad y apariencia",
   "Accessibility_statement": "Declaración de accesibilidad",
@@ -448,6 +449,5 @@
   "you_were_mentioned": "has sido mencionado",
   "You_will_not_be_able_to_recover_this_message": "¡No podrás recuperar este mensaje!",
   "Your_certificate": "Tu certificado",
-  "Your_Password_Must_Have": "Su contraseña debe tener:",
-  "abac_removed_user_from_the_room": "fue eliminado por ABAC"
+  "Your_Password_Must_Have": "Su contraseña debe tener:"
 }
