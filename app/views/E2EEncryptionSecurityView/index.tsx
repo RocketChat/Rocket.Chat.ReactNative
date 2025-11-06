@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { Text, View } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,7 +13,7 @@ import Button from '../../containers/Button';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import { e2eResetOwnKey } from '../../lib/services/restApi';
-import { SettingsStackParamList } from '../../stacks/types';
+import { type SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
 import { styles } from './styles';
 

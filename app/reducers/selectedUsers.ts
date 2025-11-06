@@ -1,4 +1,4 @@
-import { TApplicationActions } from '../definitions';
+import { type TApplicationActions } from '../definitions';
 import { SELECTED_USERS } from '../actions/actionsTypes';
 
 export interface ISelectedUser {

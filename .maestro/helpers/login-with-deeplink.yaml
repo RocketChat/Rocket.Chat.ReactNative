@@ -35,6 +35,13 @@ tags:
       - assertNotVisible:
           text: '.*Allow.*'
           optional: true
+- runFlow:
+    when:
+      visible: '.*Would like to send you notifications.*'
+      platform: iOS
+    commands:
+      - tapOn:
+          point: 65%,60%
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'

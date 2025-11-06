@@ -1,5 +1,5 @@
-import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import React, { type ReactElement, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
 import { dequal } from 'dequal';
@@ -14,7 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
-import { IUrl } from '../../definitions';
+import { type IUrl } from '../../definitions';
 import { WidthAwareContext } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({
@@ -123,33 +123,33 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
-	const [imageUrl, setImageUrl] = useState(url.image);
+	const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+	const getImageUrl = useCallback(() => {
+		const _imageUrl = url.image || url.url;
+
+		if (!_imageUrl) return null;
+		if (_imageUrl.startsWith('http')) return _imageUrl;
+		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
+	}, [url.image, url.url, baseUrl, user.id, user.token]);
 
 	useEffect(() => {
 		const verifyUrlIsImage = async () => {
 			try {
-				const imageUrl = getImageUrl();
-				if (!imageUrl || !API_Embed) return;
+				const _imageUrl = getImageUrl();
+				if (!_imageUrl || !API_Embed) return;
 
-				const response = await axios.head(imageUrl);
+				const response = await axios.head(_imageUrl);
 				const contentType = response.headers['content-type'];
 				if (contentType?.startsWith?.('image/')) {
-					setImageUrl(imageUrl);
+					setImageUrl(_imageUrl);
 				}
 			} catch {
 				// do nothing
 			}
 		};
 		verifyUrlIsImage();
-	}, [url.image, url.url, API_Embed]);
-
-	const getImageUrl = () => {
-		const _imageUrl = url.image || url.url;
-
-		if (!_imageUrl) return null;
-		if (_imageUrl.includes('http')) return _imageUrl;
-		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
-	};
+	}, [url.image, url.url, API_Embed, getImageUrl]);
 
 	const onPress = () => openLink(url.url, theme);
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, type TextInput, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { useTheme } from '../../theme';

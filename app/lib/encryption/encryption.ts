@@ -1,4 +1,4 @@
-import { Model, Q } from '@nozbe/watermelondb';
+import { type Model, Q } from '@nozbe/watermelondb';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system';
 import {
@@ -9,7 +9,7 @@ import {
 	rsaGenerateKeys,
 	rsaImportKey,
 	rsaExportKey,
-	JWK,
+	type JWK,
 	calculateFileChecksum,
 	aesGcmDecrypt,
 	aesGcmEncrypt
@@ -17,14 +17,14 @@ import {
 import { sampleSize } from 'lodash';
 
 import {
-	IMessage,
-	IServerAttachment,
-	ISubscription,
-	TMessageModel,
-	TSendFileMessageFileInfo,
-	TSubscriptionModel,
-	TThreadMessageModel,
-	TThreadModel
+	type IMessage,
+	type IServerAttachment,
+	type ISubscription,
+	type TMessageModel,
+	type TSendFileMessageFileInfo,
+	type TSubscriptionModel,
+	type TThreadMessageModel,
+	type TThreadModel
 } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
@@ -50,7 +50,7 @@ import {
 } from '../services/restApi';
 import { store } from '../store/auxStore';
 import { MAX_CONCURRENT_QUEUE } from './constants';
-import { IDecryptionFileQueue, TDecryptFile } from './definitions';
+import type { IDecryptionFileQueue, TDecryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
 import {

@@ -16,7 +16,7 @@ import {
 } from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import {
+import type {
 	IAttachment,
 	IMessage,
 	IUpload,
@@ -63,7 +63,7 @@ import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getMessageById } from '../database/services/Message';
-import { TEncryptFileResult, TGetContent } from './definitions';
+import { type TEncryptFileResult, type TGetContent } from './definitions';
 import { store } from '../store/auxStore';
 
 type TAlgorithm = 'A128CBC' | 'A256GCM' | '';
