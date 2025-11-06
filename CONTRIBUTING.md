@@ -92,12 +92,6 @@ To check for test issues on your code, run this on your terminal:
 yarn test
 ```
 
-### E2E tests
-
-We use [Detox](https://github.com/wix/Detox) framework to end-to-end test our app and ensure everything is working properly.
-
-[Follow this documentation to learn how to run it](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/e2e).
-
 ### Pull request
 
 As soon as your changes are ready, you can open a Pull Request.
