@@ -129,7 +129,7 @@ const Url = ({ url }: { url: IUrl }) => {
 		const _imageUrl = url.image || url.url;
 
 		if (!_imageUrl) return null;
-		if (_imageUrl.includes('http')) return _imageUrl;
+		if (_imageUrl.startsWith('http')) return _imageUrl;
 		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
 	}, [url.image, url.url, baseUrl, user.id, user.token]);
 
