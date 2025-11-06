@@ -83,9 +83,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 	}));
 
-	// logs
-	console.log('logging ', user);
-
 	const {
 		control,
 		handleSubmit,
