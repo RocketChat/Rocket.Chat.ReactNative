@@ -2,8 +2,8 @@ import { StyleSheet, Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
+import { Pressable } from 'react-native-gesture-handler'
 
-import TouchableOpacity from '../../TouchableOpacity';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
 import { CustomIcon } from '../../CustomIcon';
@@ -70,7 +70,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 	}
 
 	return (
-		<TouchableOpacity
+		<Pressable
 			style={styles.container}
 			onPress={() => setAlsoSendThreadToChannel(!alsoSendThreadToChannel)}
 			testID='message-composer-send-to-channel'>
@@ -81,7 +81,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.fontDefault}
 			/>
 			<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
-		</TouchableOpacity>
+		</Pressable>
 	);
 };
 
