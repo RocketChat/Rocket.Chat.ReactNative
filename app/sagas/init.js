@@ -26,37 +26,60 @@ export const initLocalSettings = function* initLocalSettings() {
 const restore = function* restore() {
 	const isIOS = Platform.OS === 'ios';
 
-	// Use native logger for TestFlight debugging on iOS
+	// Check if MMKVLogger is available (only after native build includes it)
+	const hasNativeLogger = isIOS && MMKVLogger && typeof MMKVLogger.info === 'function';
+
+	// Use native logger for TestFlight debugging on iOS when available
 	const logger = {
 		info: (msg) => {
 			console.log(msg);
-			if (isIOS) {
-				MMKVLogger.info('AppInit', msg);
+			if (hasNativeLogger) {
+				try {
+					MMKVLogger.info('AppInit', msg);
+				} catch (e) {
+					// Silent fail - native logger not critical
+				}
 			}
 		},
 		error: (msg) => {
 			console.error(msg);
-			if (isIOS) {
-				MMKVLogger.error('AppInit', msg);
+			if (hasNativeLogger) {
+				try {
+					MMKVLogger.error('AppInit', msg);
+				} catch (e) {
+					// Silent fail
+				}
 			}
 		},
 		warn: (msg) => {
 			console.warn(msg);
-			if (isIOS) {
-				MMKVLogger.warning('AppInit', msg);
+			if (hasNativeLogger) {
+				try {
+					MMKVLogger.warning('AppInit', msg);
+				} catch (e) {
+					// Silent fail
+				}
 			}
 		},
 		debug: (msg, obj) => {
 			if (obj) {
 				const formatted = `${msg} ${JSON.stringify(obj, null, 2)}`;
 				console.log(formatted);
-				if (isIOS) {
-					MMKVLogger.info('AppInit', formatted);
+				if (hasNativeLogger) {
+					try {
+						MMKVLogger.info('AppInit', formatted);
+					} catch (e) {
+						// Silent fail
+					}
 				}
 			} else {
 				console.log(msg);
-				if (isIOS) {
-					MMKVLogger.debug('AppInit', msg);
+				if (hasNativeLogger) {
+					try {
+						MMKVLogger.debug('AppInit', msg);
+					} catch (e) {
+						// Silent fail
+					}
 				}
 			}
 		}
@@ -73,42 +96,54 @@ const restore = function* restore() {
 		logger.info('MMKV storage initialized');
 
 		// Debug: Check migration status (useful for TestFlight debugging)
-		try {
-			const MMKVMigrationStatus = require('../lib/native/NativeMMKVMigrationStatus').default;
-			if (MMKVMigrationStatus) {
-				const status = yield call([MMKVMigrationStatus, MMKVMigrationStatus.getMigrationStatus]);
-				logger.info('=== MIGRATION STATUS ===');
-				logger.debug('Migration status', status);
+		if (isIOS) {
+			try {
+				const MMKVMigrationStatus = require('../lib/native/NativeMMKVMigrationStatus').default;
+				if (MMKVMigrationStatus && typeof MMKVMigrationStatus.getMigrationStatus === 'function') {
+					const status = yield call([MMKVMigrationStatus, MMKVMigrationStatus.getMigrationStatus]);
+					logger.info('=== MIGRATION STATUS ===');
+					logger.debug('Migration status', status);
 
-				// Check storage health
-				const health = yield call([MMKVMigrationStatus, MMKVMigrationStatus.checkStorageHealth]);
-				logger.info('=== STORAGE HEALTH ===');
-				logger.debug('Storage health', health);
+					// Check storage health
+					if (typeof MMKVMigrationStatus.checkStorageHealth === 'function') {
+						const health = yield call([MMKVMigrationStatus, MMKVMigrationStatus.checkStorageHealth]);
+						logger.info('=== STORAGE HEALTH ===');
+						logger.debug('Storage health', health);
 
-				if (health.isProblemState) {
-					logger.warn('⚠️  STORAGE HEALTH WARNING:');
-					logger.warn(`   ${health.recommendation}`);
-					logger.warn('   This might explain why user is not logged in after update.');
+						if (health.isProblemState) {
+							logger.warn('⚠️  STORAGE HEALTH WARNING:');
+							logger.warn(`   ${health.recommendation}`);
+							logger.warn('   This might explain why user is not logged in after update.');
+						}
+					}
+				} else {
+					logger.info('MMKVMigrationStatus not available (needs native rebuild)');
 				}
+			} catch (error) {
+				const errorMsg = error && error.message ? error.message : String(error || 'Unknown');
+				logger.error(`Could not get migration status: ${errorMsg}`);
 			}
-		} catch (error) {
-			logger.error(`Could not get migration status: ${error}`);
 		}
 
 		// Debug: Log STORAGE PATH and FILES (critical for TestFlight debugging)
-		try {
-			const { MMKVReader } = require('react-native').NativeModules;
-			if (MMKVReader) {
-				logger.info('=== CHECKING MMKV STORAGE ===');
-				const storagePath = yield call([MMKVReader, MMKVReader.getStoragePath]);
-				logger.debug('Storage path', storagePath);
+		if (isIOS) {
+			try {
+				const { MMKVReader } = require('react-native').NativeModules;
+				if (MMKVReader && typeof MMKVReader.getStoragePath === 'function') {
+					logger.info('=== CHECKING MMKV STORAGE ===');
+					const storagePath = yield call([MMKVReader, MMKVReader.getStoragePath]);
+					logger.debug('Storage path', storagePath);
 
-				const mmkvFiles = yield call([MMKVReader, MMKVReader.listMMKVFiles]);
-				logger.info(`Found ${mmkvFiles.length} MMKV files`);
-				logger.debug('MMKV files', mmkvFiles);
+					const mmkvFiles = yield call([MMKVReader, MMKVReader.listMMKVFiles]);
+					logger.info(`Found ${mmkvFiles.length} MMKV files`);
+					logger.debug('MMKV files', mmkvFiles);
+				} else {
+					logger.info('MMKVReader not available (needs native rebuild)');
+				}
+			} catch (error) {
+				const errorMsg = error && error.message ? error.message : String(error || 'Unknown');
+				logger.error(`Could not get storage info: ${errorMsg}`);
 			}
-		} catch (error) {
-			logger.error(`Could not get storage info: ${error}`);
 		}
 
 		// Debug: Log all keys in storage
@@ -191,7 +226,8 @@ const restore = function* restore() {
 
 		logger.info('=== APP RESTORE COMPLETE ===');
 	} catch (e) {
-		logger.error(`Restore error: ${e.message || e}`);
+		const errorMsg = e && e.message ? e.message : String(e || 'Unknown error');
+		logger.error(`Restore error: ${errorMsg}`);
 		log(e);
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}

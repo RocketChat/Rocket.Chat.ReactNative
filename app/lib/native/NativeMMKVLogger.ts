@@ -14,7 +14,12 @@ class MMKVLogger {
 
 	constructor() {
 		if (Platform.OS === 'ios') {
-			this.nativeLogger = NativeModules.MMKVLogger as IMMKVLogger;
+			try {
+				this.nativeLogger = NativeModules.MMKVLogger as IMMKVLogger;
+			} catch (error) {
+				// Native module not available yet - will be available after native build
+				console.log('[MMKVLogger] Native logger not available, using console only');
+			}
 		}
 	}
 
@@ -29,7 +34,11 @@ class MMKVLogger {
 		console.log(`[${category}] ${message}`);
 
 		if (this.nativeLogger && Platform.OS === 'ios') {
-			this.nativeLogger.info(category, formatted);
+			try {
+				this.nativeLogger.info(category, formatted);
+			} catch (error) {
+				// Silent fail - native logger is optional
+			}
 		}
 	}
 
@@ -38,7 +47,11 @@ class MMKVLogger {
 		console.error(`[${category}] ${message}`);
 
 		if (this.nativeLogger && Platform.OS === 'ios') {
-			this.nativeLogger.error(category, formatted);
+			try {
+				this.nativeLogger.error(category, formatted);
+			} catch (error) {
+				// Silent fail
+			}
 		}
 	}
 
@@ -47,7 +60,11 @@ class MMKVLogger {
 		console.debug(`[${category}] ${message}`);
 
 		if (this.nativeLogger && Platform.OS === 'ios') {
-			this.nativeLogger.debug(category, formatted);
+			try {
+				this.nativeLogger.debug(category, formatted);
+			} catch (error) {
+				// Silent fail
+			}
 		}
 	}
 
@@ -56,7 +73,11 @@ class MMKVLogger {
 		console.warn(`[${category}] ${message}`);
 
 		if (this.nativeLogger && Platform.OS === 'ios') {
-			this.nativeLogger.warning(category, formatted);
+			try {
+				this.nativeLogger.warning(category, formatted);
+			} catch (error) {
+				// Silent fail
+			}
 		}
 	}
 
@@ -65,7 +86,11 @@ class MMKVLogger {
 		console.error(`[${category}] FAULT: ${message}`);
 
 		if (this.nativeLogger && Platform.OS === 'ios') {
-			this.nativeLogger.fault(category, formatted);
+			try {
+				this.nativeLogger.fault(category, formatted);
+			} catch (error) {
+				// Silent fail
+			}
 		}
 	}
 
