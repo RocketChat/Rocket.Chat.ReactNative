@@ -28,19 +28,19 @@ const restore = function* restore() {
 
 	// Use native logger for TestFlight debugging on iOS
 	const logger = {
-		info: msg => {
+		info: (msg) => {
 			console.log(msg);
 			if (isIOS) {
 				MMKVLogger.info('AppInit', msg);
 			}
 		},
-		error: msg => {
+		error: (msg) => {
 			console.error(msg);
 			if (isIOS) {
 				MMKVLogger.error('AppInit', msg);
 			}
 		},
-		warn: msg => {
+		warn: (msg) => {
 			console.warn(msg);
 			if (isIOS) {
 				MMKVLogger.warning('AppInit', msg);
@@ -127,7 +127,7 @@ const restore = function* restore() {
 					key.includes('SERVER')
 			);
 			logger.info(`Important keys found: ${importantKeys.length}`);
-			importantKeys.forEach(key => {
+			importantKeys.forEach((key) => {
 				const value = UserPreferences.getString(key);
 				logger.info(`  ${key}: ${value}`);
 			});
