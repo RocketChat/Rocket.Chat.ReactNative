@@ -128,7 +128,7 @@ export default class Root extends React.Component<{}, IState> {
 	init = async () => {
 		// Note: MMKV migration now happens in native code (iOS: AppDelegate, Android: TBD)
 		// Migration is complete before JavaScript starts
-		
+
 		// Initialize MMKV storage
 		const { initializeStorage } = await import('./lib/methods/userPreferences');
 		await initializeStorage();
