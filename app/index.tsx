@@ -126,14 +126,10 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		// Note: MMKV migration now happens in native code (iOS: AppDelegate, Android: TBD)
+		// Note: MMKV migration happens in native code (iOS: AppDelegate, Android: TBD)
 		// Migration is complete before JavaScript starts
-
-		// Initialize MMKV storage
-		const { initializeStorage } = await import('./lib/methods/userPreferences');
-		await initializeStorage();
-		console.log('MMKV storage initialized and ready');
-
+		// MMKV initialization happens in the restore saga before data is accessed
+		
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification

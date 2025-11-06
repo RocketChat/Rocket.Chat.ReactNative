@@ -3,7 +3,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
-import UserPreferences from '../lib/methods/userPreferences';
+import UserPreferences, { initializeStorage } from '../lib/methods/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
@@ -24,7 +24,15 @@ export const initLocalSettings = function* initLocalSettings() {
 const restore = function* restore() {
 	console.log('RESTORE');
 	try {
+		// IMPORTANT: Initialize MMKV storage FIRST
+		// Native migration has already completed in AppDelegate
+		// This connects JavaScript to the migrated data
+		console.log('Initializing MMKV storage...');
+		yield call(initializeStorage);
+		console.log('MMKV storage initialized');
+
 		const server = UserPreferences.getString(CURRENT_SERVER);
+		console.log('Current server from storage:', server);
 		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
 		if (!server) {
