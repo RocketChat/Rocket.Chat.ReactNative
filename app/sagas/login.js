@@ -92,15 +92,27 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			// Saves username on server history
 			const serversDB = database.servers;
 			const serversHistoryCollection = serversDB.get('servers_history');
+			const serversCollection = serversDB.get('servers');
 			yield serversDB.write(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (serversHistory?.length) {
 						const serverHistoryRecord = serversHistory[0];
+						// Get server iconURL from servers table
+						let iconURL = null;
+						try {
+							const serverRecord = await serversCollection.find(server);
+							iconURL = serverRecord.iconURL;
+						} catch (e) {
+							// Server record might not exist yet
+						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
 						await serverHistoryRecord.update((s) => {
 							s.username = result.username;
+							if (iconURL) {
+								s.iconURL = iconURL;
+							}
 						});
 					}
 				} catch (e) {

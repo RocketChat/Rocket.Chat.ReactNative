@@ -18,6 +18,8 @@
   "Accessibility_statement": "Barrierefreiheits-Erklärung",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Nutzern erlauben das Verhalten für \"auch an den Kanal senden\" zu bestimmen.",
   "Actions": "Aktionen",
+  "Activate_to_select_server": "Aktivieren, um den Server auszuwählen",
+  "Activate_to_select_server_Available_actions_delete": "Aktivieren, um Server auszuwählen. Verfügbare Aktionen: löschen",
   "Activity": "Aktivität",
   "Add_Channel_to_Team": "Kanal zum Team hinzufügen",
   "Add_Existing": "Vorhandenes hinzufügen",
