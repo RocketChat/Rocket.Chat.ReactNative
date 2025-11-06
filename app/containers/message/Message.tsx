@@ -16,6 +16,7 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
+import CurrentLocationCard, { isCurrentLocationMessage } from './Components/CurrentLocationCard';
 import { type IMessage, type IMessageInner, type IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
@@ -39,7 +40,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<>
 					<Quote {...props} />
 					<Content {...props} />
-					<Attachments {...props} />
+					<Attachments {...props} id={props.id} rid={props.rid} />
 				</>
 				<Urls {...props} />
 			</>
@@ -80,15 +81,18 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	if (!content) {
+		const isLocation = isCurrentLocationMessage(props.msg as string);
 		content = (
 			<>
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<View style={{ gap: 4 }}>
 					<Quote {...props} />
-					<Content {...props} />
-					<Attachments {...props} />
-					<Urls {...props} />
+					{!isLocation ? <Content {...props} /> : null}
+					{/* Render a card for "current location" messages; returns null otherwise */}
+					<CurrentLocationCard msg={props.msg as string} />
+					<Attachments {...props} id={props.id} rid={props.rid} />
+					{!isLocation ? <Urls {...props} /> : null}
 					<Thread {...props} />
 					<Reactions {...props} />
 					<Broadcast {...props} />
@@ -161,7 +165,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 						<Content {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
-								<Attachments {...props} />
+								<Attachments {...props} id={props.id} rid={props.rid} />
 							</View>
 						) : null}
 					</View>

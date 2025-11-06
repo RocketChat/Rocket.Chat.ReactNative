@@ -1105,3 +1105,22 @@ export const getUsersRoles = async (): Promise<boolean | IRoleUser[]> => {
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
+
+// Live Location API methods
+export const liveLocationStart = (rid: string, durationSec?: number, initial?: { lat: number; lon: number; acc?: number }) => {
+	const body: { rid: string; durationSec?: number; initial?: { lat: number; lon: number; acc?: number } } = { rid };
+	if (durationSec !== undefined) body.durationSec = durationSec;
+	if (initial !== undefined) body.initial = initial;
+	return sdk.post('liveLocation.start', body);
+};
+
+export const liveLocationUpdate = (rid: string, msgId: string, coords: { lat: number; lon: number; acc?: number }) =>
+	sdk.post('liveLocation.update', { rid, msgId, coords });
+
+export const liveLocationStop = (rid: string, msgId: string, finalCoords?: { lat: number; lon: number; acc?: number }) => {
+	const body: { rid: string; msgId: string; finalCoords?: { lat: number; lon: number; acc?: number } } = { rid, msgId };
+	if (finalCoords !== undefined) body.finalCoords = finalCoords;
+	return sdk.post('liveLocation.stop', body);
+};
+
+export const liveLocationGet = (rid: string, msgId: string) => sdk.get('liveLocation.get', { rid, msgId });

@@ -11,12 +11,32 @@ import MessageContext from './Context';
 import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
-import { type MessageTypesValues } from '../../definitions';
+import type { MessageTypesValues, IUserMessage } from '../../definitions';
+import LiveLocationCard from './Components/LiveLocationCard';
+
+type MaybeTimestampProps = {
+	ts?: Date | string | number;
+	_updatedAt?: Date | string | number;
+	updatedAt?: Date | string | number;
+};
+
+const LIVE_LOCATION_REGEX = /rocketchat:\/\/live-location\?/;
+
+function coerceToDate(v: unknown): Date | undefined {
+	if (v instanceof Date) return v;
+	if (typeof v === 'string' || typeof v === 'number') {
+		const d = new Date(v);
+		return isNaN(d.getTime()) ? undefined : d;
+	}
+	return undefined;
+}
+
+function deriveMessageTimestamp(p: Partial<IMessageContent> & MaybeTimestampProps): Date | undefined {
+	return coerceToDate(p.ts) ?? coerceToDate(p._updatedAt) ?? coerceToDate(p.updatedAt);
+}
 
 const Content = React.memo(
-	(props: IMessageContent) => {
-		'use memo';
-
+	(props: IMessageContent & { author?: IUserMessage }) => {
 		const { theme } = useTheme();
 		const { user, onLinkPress } = useContext(MessageContext);
 
@@ -41,7 +61,14 @@ const Content = React.memo(
 		}
 
 		const isPreview = props.tmid && !props.isThreadRoom;
-		let content = null;
+		let content: React.ReactNode | null = null;
+
+		const isLiveLocationMessage = typeof props.msg === 'string' && LIVE_LOCATION_REGEX.test(props.msg);
+		if (isLiveLocationMessage && props.msg) {
+			const messageTs = deriveMessageTimestamp(props);
+
+			content = <LiveLocationCard msg={props.msg} isActive={true} messageTimestamp={messageTs} />;
+		}
 
 		if (props.isEncrypted) {
 			content = (
@@ -52,9 +79,9 @@ const Content = React.memo(
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);
-		} else if (isPreview) {
+		} else if (!content && isPreview) {
 			content = <MarkdownPreview testID={`message-preview-${props.msg}`} msg={props.msg} />;
-		} else if (props.msg) {
+		} else if (!content && props.msg) {
 			content = (
 				<Markdown
 					msg={props.msg}

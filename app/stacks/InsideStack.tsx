@@ -3,6 +3,7 @@ import { I18nManager } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import I18n from '../i18n';
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import Sidebar from '../views/SidebarView';
@@ -75,6 +76,10 @@ import SelectListView from '../views/SelectListView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import LegalView from '../views/LegalView';
+import LocationPreferencesView from '../views/LocationPreferencesView';
+import LocationPreviewModal from '../views/LocationShare/LocationPreviewModal';
+import LiveLocationPreviewModal from '../views/LocationShare/LiveLocationPreviewModal';
+import LiveLocationViewerModal from '../views/LocationShare/LiveLocationViewerModal';
 import {
 	type AdminPanelStackParamList,
 	type ChatsStackParamList,
@@ -169,6 +174,7 @@ const ProfileStackNavigator = () => {
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} />
 			<ProfileStack.Screen name='ChangePasswordView' component={ChangePasswordView} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
+			<ProfileStack.Screen name='LocationPreferencesView' component={LocationPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			<ProfileStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
@@ -338,6 +344,21 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
+			<InsideStack.Screen
+				name='LocationPreviewModal'
+				component={LocationPreviewModal}
+				options={{ presentation: 'modal', title: I18n.t('Share_Location') }}
+			/>
+			<InsideStack.Screen
+				name='LiveLocationPreviewModal'
+				component={LiveLocationPreviewModal}
+				options={{ presentation: 'modal', title: I18n.t('Live_Location') }}
+			/>
+			<InsideStack.Screen
+				name='LiveLocationViewerModal'
+				component={LiveLocationViewerModal}
+				options={{ presentation: 'modal', title: I18n.t('Live_Location') }}
+			/>
 		</InsideStack.Navigator>
 	);
 };

@@ -21,6 +21,7 @@ import { type PushEndpoints } from './push';
 import { type DirectoryEndpoint } from './directory';
 import { type AutoTranslateEndpoints } from './autotranslate';
 import { type ModerationEndpoints } from './moderation';
+import { type LiveLocationEndpoints } from './liveLocation';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
@@ -44,4 +45,5 @@ export type Endpoints = ChannelsEndpoints &
 	PushEndpoints &
 	DirectoryEndpoint &
 	AutoTranslateEndpoints &
-	ModerationEndpoints;
+	ModerationEndpoints &
+	LiveLocationEndpoints;

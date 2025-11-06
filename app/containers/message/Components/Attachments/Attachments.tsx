@@ -7,16 +7,22 @@ import Audio from './Audio';
 import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
+import LiveLocationAttachment from './LiveLocationAttachment';
 import MessageContext from '../../Context';
 import { type IMessageAttachments } from '../../interfaces';
 import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
-	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed;
+	file?.image_url ||
+	file?.audio_url ||
+	file?.video_url ||
+	(file?.actions?.length || 0) > 0 ||
+	file?.collapsed ||
+	file?.type === 'live-location';
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, getCustomEmoji, author, id, rid }: IMessageAttachments) => {
 		'use memo';
 
 		const { translateLanguage } = useContext(MessageContext);
@@ -68,6 +74,9 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 			}
 
+			if (file.type === 'live-location' && file.live) {
+				return <LiveLocationAttachment key={`live-location-${index}`} attachment={file} messageId={id} roomId={rid} />;
+			}
 			return null;
 		});
 		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;

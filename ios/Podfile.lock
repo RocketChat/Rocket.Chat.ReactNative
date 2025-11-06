@@ -86,6 +86,8 @@ PODS:
     - ExpoModulesCore
   - ExpoLocalAuthentication (16.0.3):
     - ExpoModulesCore
+  - ExpoLocation (19.0.7):
+    - ExpoModulesCore
   - ExpoModulesCore (2.3.12):
     - DoubleConversion
     - glog
@@ -2658,6 +2660,7 @@ DEPENDENCIES:
   - ExpoImage (from `../node_modules/expo-image/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
+  - ExpoLocation (from `../node_modules/expo-location/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
@@ -2834,6 +2837,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoLocalAuthentication:
     :path: "../node_modules/expo-local-authentication/ios"
+  ExpoLocation:
+    :path: "../node_modules/expo-location/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
   ExpoSystemUI:
@@ -3070,6 +3075,7 @@ SPEC CHECKSUMS:
   ExpoImage: 785f7673cfecd97045cf333fd6486b57ccab4b71
   ExpoKeepAwake: 213acedecafb6fda8c0ffedad22ee9e2903400c5
   ExpoLocalAuthentication: f69863a1822e42db67a311ce839ecbac70e7fa65
+  ExpoLocation: 93d7faa0c2adbd5a04686af0c1a61bc6ed3ee2f7
   ExpoModulesCore: b4fdeaceca6a4360d4a75fbae335907427c1df6b
   ExpoSystemUI: 82c970cf8495449698e7343b4f78a0d04bcec9ee
   ExpoVideoThumbnails: 2a448a23eb4eeb860d92ded372fec6e6a7a0cdcb
@@ -3203,9 +3209,9 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   WatermelonDB: 4c846c8cb94eef3cba90fa034d15310163226703
-  Yoga: dfabf1234ccd5ac41d1b1d43179f024366ae9831
+  Yoga: 2a3a4c38a8441b6359d5e5914d35db7b2b67aebd
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: 4c73563b34520b90c036817cdb9ccf65fea5f5c5
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

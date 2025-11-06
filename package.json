@@ -67,6 +67,7 @@
 		"expo-image": "^2.3.2",
 		"expo-keep-awake": "14.1.3",
 		"expo-local-authentication": "16.0.3",
+		"expo-location": "^19.0.7",
 		"expo-navigation-bar": "^4.2.4",
 		"expo-status-bar": "^2.2.3",
 		"expo-system-ui": "^5.0.7",

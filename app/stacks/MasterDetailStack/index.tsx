@@ -45,6 +45,7 @@ import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import UserPreferencesView from '../../views/UserPreferencesView';
+import LocationPreferencesView from '../../views/LocationPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 import LegalView from '../../views/LegalView';
 import SecurityPrivacyView from '../../views/SecurityPrivacyView';
@@ -195,6 +196,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='E2EHowItWorksView' component={E2EHowItWorksView} />
 				<ModalStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
 				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
+				<ModalStack.Screen name='LocationPreferencesView' component={LocationPreferencesView} />
 				<ModalStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 				<ModalStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />

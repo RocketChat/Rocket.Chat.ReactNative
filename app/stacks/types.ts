@@ -191,6 +191,7 @@ export type ProfileStackParamList = {
 	ProfileView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
+	LocationPreferencesView: undefined;
 	PushTroubleshootView: undefined;
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
@@ -293,6 +294,30 @@ export type InsideStackParamList = {
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
+	};
+	LocationPreviewModal: {
+		rid: string;
+		tmid?: string;
+		provider: 'osm' | 'google';
+		coords: { latitude: number; longitude: number; accuracy?: number; timestamp?: number };
+		googleKey?: string;
+	};
+	LiveLocationPreviewModal: {
+		rid: string;
+		tmid?: string;
+		provider: 'osm' | 'google';
+		googleKey?: string;
+		osmKey?: string;
+		liveLocationId?: string;
+		ownerName?: string;
+		isTracking?: boolean;
+	};
+	LiveLocationViewerModal: {
+		rid: string;
+		msgId: string;
+		provider?: 'osm' | 'google';
+		googleKey?: string;
+		osmKey?: string;
 	};
 };
 

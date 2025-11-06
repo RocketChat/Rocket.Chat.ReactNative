@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { Platform, PermissionsAndroid, InteractionManager, Alert } from 'react-native';
+import * as Location from 'expo-location';
 
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
@@ -10,6 +12,12 @@ import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../../../lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
+import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { getCurrentPositionOnce } from '../../../../views/LocationShare/services/staticLocation';
+import type { MapProviderName } from '../../../../views/LocationShare/services/mapProviders';
+import { isLiveLocationActive, reopenLiveLocationModal } from '../../../../views/LocationShare/LiveLocationPreviewModal';
+import { useUserPreferences } from '../../../../lib/methods/userPreferences';
+import { MAP_PROVIDER_PREFERENCE_KEY, MAP_PROVIDER_DEFAULT } from '../../../../lib/constants/keys';
 
 export const ActionsButton = () => {
 	'use memo';
@@ -25,6 +33,26 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const userId = useAppSelector(state => state.login.user.id);
+
+	const [mapProvider] = useUserPreferences<MapProviderName>(`${MAP_PROVIDER_PREFERENCE_KEY}_${userId}`, MAP_PROVIDER_DEFAULT);
+
+	const sheetBusyRef = React.useRef(false);
+	const openSheetSafely = (fn: () => void, delayMs = 350) => {
+		if (sheetBusyRef.current) return;
+		sheetBusyRef.current = true;
+
+		hideActionSheet();
+		InteractionManager.runAfterInteractions(() => {
+			setTimeout(() => {
+				try {
+					fn();
+				} finally {
+					sheetBusyRef.current = false;
+				}
+			}, delayMs);
+		});
+	};
 
 	const createDiscussion = async () => {
 		if (!rid) return;
@@ -37,15 +65,136 @@ export const ActionsButton = () => {
 		}
 	};
 
+	const openCurrentPreview = async (provider: MapProviderName) => {
+		try {
+			if (!rid) {
+				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
+				return;
+			}
+
+			if (Platform.OS === 'android') {
+				const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+				if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+					showErrorAlert(I18n.t('Location_permission_required'), I18n.t('Oops'));
+					return;
+				}
+			} else {
+				const { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== 'granted') {
+					showErrorAlert(I18n.t('Location_permission_required'), I18n.t('Oops'));
+					return;
+				}
+			}
+
+			const coords = await getCurrentPositionOnce();
+
+			const params = {
+				rid,
+				tmid,
+				provider,
+				coords
+			};
+
+			InteractionManager.runAfterInteractions(() => {
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'LocationPreviewModal', params });
+				} else {
+					Navigation.navigate('LocationPreviewModal', params);
+				}
+			});
+		} catch (e) {
+			const error = e as Error;
+			showErrorAlert(error?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
+		}
+	};
+
+	const openLivePreview = async (provider: MapProviderName) => {
+		try {
+			if (isLiveLocationActive()) {
+				Alert.alert(I18n.t('Live_Location_Active'), I18n.t('Live_Location_Active_Block_Message'), [
+					{ text: I18n.t('View_Current_Session'), onPress: () => reopenLiveLocationModal() },
+					{ text: I18n.t('Cancel'), style: 'cancel' }
+				]);
+				return;
+			}
+			if (!rid) {
+				showErrorAlert(I18n.t('Room_not_available'), I18n.t('Oops'));
+				return;
+			}
+
+			if (Platform.OS === 'android') {
+				const res = await PermissionsAndroid.requestMultiple([
+					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+					PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+				]);
+				const fine = res[PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION];
+				const coarse = res[PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION];
+				if (fine !== PermissionsAndroid.RESULTS.GRANTED && coarse !== PermissionsAndroid.RESULTS.GRANTED) {
+					throw new Error(I18n.t('Permission_denied'));
+				}
+			} else {
+				const { status } = await Location.requestForegroundPermissionsAsync();
+				if (status !== 'granted') {
+					throw new Error(I18n.t('Location_permission_required'));
+				}
+			}
+
+			const params = {
+				rid,
+				tmid,
+				provider
+			};
+
+			InteractionManager.runAfterInteractions(() => {
+				// @ts-ignore
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'LiveLocationPreviewModal', params });
+				} else {
+					Navigation.navigate('LiveLocationPreviewModal', params);
+				}
+			});
+		} catch (e) {
+			const error = e as Error;
+			showErrorAlert(error?.message || I18n.t('Could_not_get_location'), I18n.t('Oops'));
+		}
+	};
+
+	const openModeSheetForProvider = (provider: MapProviderName) => {
+		const modeOptions: TActionSheetOptionsItem[] = [
+			{
+				title: I18n.t('Share_current_location'),
+				icon: 'pin-map',
+				onPress: () => {
+					openSheetSafely(() => openCurrentPreview(provider));
+				}
+			},
+			{
+				title: I18n.t('Start_live_location'),
+				icon: 'live',
+				onPress: () => {
+					openSheetSafely(() => openLivePreview(provider));
+				}
+			}
+		];
+		showActionSheet({ options: modeOptions });
+	};
+
 	const onPress = () => {
 		const options: TActionSheetOptionsItem[] = [];
+
 		if (t === 'l' && permissionToViewCannedResponses) {
 			options.push({
 				title: I18n.t('Canned_Responses'),
 				icon: 'canned-response',
-				onPress: () => Navigation.navigate('CannedResponsesListView', { rid })
+				onPress: () => {
+					hideActionSheet();
+					InteractionManager.runAfterInteractions(() => {
+						Navigation.navigate('CannedResponsesListView', { rid });
+					});
+				}
 			});
 		}
+
 		if (permissionToUpload) {
 			options.push(
 				{
@@ -53,10 +202,9 @@ export const ActionsButton = () => {
 					icon: 'camera-photo',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
+						InteractionManager.runAfterInteractions(() => {
 							takePhoto();
-						}, 250);
+						});
 					}
 				},
 				{
@@ -64,10 +212,9 @@ export const ActionsButton = () => {
 					icon: 'camera',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
+						InteractionManager.runAfterInteractions(() => {
 							takeVideo();
-						}, 250);
+						});
 					}
 				},
 				{
@@ -75,16 +222,20 @@ export const ActionsButton = () => {
 					icon: 'image',
 					onPress: () => {
 						hideActionSheet();
-						// This is necessary because the action sheet does not close properly on Android
-						setTimeout(() => {
+						InteractionManager.runAfterInteractions(() => {
 							chooseFromLibrary();
-						}, 250);
+						});
 					}
 				},
 				{
 					title: I18n.t('Choose_file'),
 					icon: 'attach',
-					onPress: () => chooseFile()
+					onPress: () => {
+						hideActionSheet();
+						InteractionManager.runAfterInteractions(() => {
+							chooseFile();
+						});
+					}
 				}
 			);
 		}
@@ -92,7 +243,20 @@ export const ActionsButton = () => {
 		options.push({
 			title: I18n.t('Create_Discussion'),
 			icon: 'discussions',
-			onPress: () => createDiscussion()
+			onPress: () => {
+				hideActionSheet();
+				InteractionManager.runAfterInteractions(() => {
+					createDiscussion();
+				});
+			}
+		});
+
+		options.push({
+			title: I18n.t('Share_Location'),
+			icon: 'pin-map',
+			onPress: () => {
+				openSheetSafely(() => openModeSheetForProvider(mapProvider));
+			}
 		});
 
 		closeEmojiKeyboardAndAction(showActionSheet, { options });

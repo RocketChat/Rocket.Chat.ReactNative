@@ -45,6 +45,16 @@ export interface IAttachment {
 	hashes?: {
 		sha256: string;
 	};
+	live?: {
+		isActive: boolean;
+		ownerId: string;
+		coords?: { lat: number; lon: number; acc?: number };
+		startedAt: string;
+		lastUpdateAt: string;
+		expiresAt?: string;
+		stoppedAt?: string;
+		version: number;
+	};
 }
 
 export interface IServerAttachment {

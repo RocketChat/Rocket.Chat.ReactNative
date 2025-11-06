@@ -8423,6 +8423,11 @@ expo-local-authentication@16.0.3:
   dependencies:
     invariant "^2.2.4"
 
+expo-location@^19.0.7:
+  version "19.0.7"
+  resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-19.0.7.tgz#58ab5b9b59db3a26d0495c19e719d5f559948b1c"
+  integrity sha512-YNkh4r9E6ECbPkBCAMG5A5yHDgS0pw+Rzyd0l2ZQlCtjkhlODB55nMCKr5CZnUI0mXTkaSm8CwfoCO8n2MpYfg==
+
 expo-modules-autolinking@2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/expo-modules-autolinking/-/expo-modules-autolinking-2.1.9.tgz#7bf8338d4b7a1b6e8eccab51634de9b339e90c04"

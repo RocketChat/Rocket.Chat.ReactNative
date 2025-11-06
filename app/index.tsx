@@ -77,8 +77,6 @@ const parseDeepLinking = (url: string) => {
 			}
 		}
 	}
-
-	// Return null if the URL doesn't match or is not valid
 	return null;
 };
 

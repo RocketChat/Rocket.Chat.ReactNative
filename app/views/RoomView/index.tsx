@@ -54,6 +54,7 @@ import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
+import LiveLocationStatusBar from '../LocationShare/LiveLocationStatusBar';
 import {
 	type IApplicationState,
 	type IAttachment,
@@ -1534,6 +1535,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getText: this.getText
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
+					<LiveLocationStatusBar />
 					{!this.tmid ? (
 						<Banner
 							title={I18n.t('Announcement')}

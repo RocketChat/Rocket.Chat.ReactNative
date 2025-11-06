@@ -19,6 +19,14 @@
     <!-- android 13 media permission -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
+    <!-- Location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- If you stream/live share or track in background -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
     <application
         android:name="chat.rocket.reactnative.MainApplication"
         android:allowBackup="false"
@@ -87,6 +95,12 @@
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="${BugsnagAPIKey}" />
+
+        <!-- Foreground location service declaration for Android 10+ compliance -->
+        <service
+            android:name=".LocationService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
     </application>
 
     <queries>
