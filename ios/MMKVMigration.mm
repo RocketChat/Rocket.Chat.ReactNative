@@ -9,15 +9,22 @@
 #import "MMKVMigration.h"
 #import "SecureStorage.h"
 #import "Shared/RocketChat/MMKVBridge.h"
+#import <os/log.h>
 
-// Helper function to log to Xcode console (writes to stderr)
+// Helper function to log to Xcode console (writes to stderr AND os_log)
 static void MMKVMigrationLog(NSString *format, ...) {
     va_list args;
     va_start(args, format);
     NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
     va_end(args);
+    
+    // Write to stderr (visible in Xcode console during debug)
     fprintf(stderr, "[MMKVMigration] %s\n", [message UTF8String]);
     fflush(stderr);
+    
+    // Write to os_log (persists for TestFlight/production debugging)
+    os_log_t log = os_log_create("chat.rocket.reactnative", "MMKVMigration");
+    os_log(log, "%{public}s", [message UTF8String]);
 }
 
 // Convert string to hexadecimal (same as SSLPinning)
@@ -109,16 +116,27 @@ static NSString *toHex(NSString *str) {
         SecureStorage *secureStorage = [[SecureStorage alloc] init];
         
         for (NSString *instanceId in instanceIds) {
-            MMKVMigrationLog(@"\nReading instance: %@", instanceId);
+            MMKVMigrationLog(@"\n========================================");
+            MMKVMigrationLog(@"Reading instance: %@", instanceId);
+            
+            // Check file size first
+            NSString *instanceFile = [mmkvPath stringByAppendingPathComponent:instanceId];
+            NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:instanceFile error:nil];
+            unsigned long long fileSize = [attrs fileSize];
+            MMKVMigrationLog(@"  File path: %@", instanceFile);
+            MMKVMigrationLog(@"  File size: %llu bytes", fileSize);
             
             // Get encryption key from keychain
             NSString *alias = toHex([NSString stringWithFormat:@"com.MMKV.%@", instanceId]);
+            MMKVMigrationLog(@"  Keychain alias (hex): %@", alias);
+            
             NSString *password = [secureStorage getSecureKey:alias];
             
             if (password) {
-                MMKVMigrationLog(@"  Found encryption key (length: %lu)", (unsigned long)password.length);
+                MMKVMigrationLog(@"  ✅ Found encryption key (length: %lu)", (unsigned long)password.length);
+                MMKVMigrationLog(@"  Encryption key preview: %@...", [password substringToIndex:MIN(16, password.length)]);
             } else {
-                MMKVMigrationLog(@"  No encryption key found");
+                MMKVMigrationLog(@"  ⚠️ No encryption key found in keychain");
             }
             
             // Try with encryption first
@@ -135,12 +153,31 @@ static NSString *toHex(NSString *str) {
             }
             
             if (instanceData && instanceData.count > 0) {
-                MMKVMigrationLog(@"✅ Found %lu keys in %@", (unsigned long)instanceData.count, instanceId);
+                MMKVMigrationLog(@"  ✅✅✅ SUCCESS! Found %lu keys in %@", (unsigned long)instanceData.count, instanceId);
                 totalKeysFound += (int)instanceData.count;
+                
+                // Log ALL keys found in this instance
+                MMKVMigrationLog(@"  Keys found in %@:", instanceId);
+                for (NSString *key in instanceData) {
+                    id value = instanceData[key];
+                    if ([value isKindOfClass:[NSString class]]) {
+                        NSString *strValue = (NSString *)value;
+                        NSString *display = strValue.length > 50 
+                            ? [[strValue substringToIndex:50] stringByAppendingString:@"..."]
+                            : strValue;
+                        MMKVMigrationLog(@"    - %@ = %@", key, display);
+                    } else if ([value isKindOfClass:[NSData class]]) {
+                        MMKVMigrationLog(@"    - %@ = <Data: %lu bytes>", key, (unsigned long)[(NSData *)value length]);
+                    } else {
+                        MMKVMigrationLog(@"    - %@ = <%@>", key, [value class]);
+                    }
+                }
+                
                 [allData addEntriesFromDictionary:instanceData];
             } else {
-                MMKVMigrationLog(@"No data in %@", instanceId);
+                MMKVMigrationLog(@"  ❌❌❌ No data in %@", instanceId);
             }
+            MMKVMigrationLog(@"========================================");
         }
         
         if (allData.count == 0) {
