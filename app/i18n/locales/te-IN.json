@@ -18,6 +18,8 @@
   "Accessibility_statement": "పేరుబట్టి వివరణ",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "వాడాకు 'కూడా చానల్‌కు పంపండి' పనికి అనుమతిస్తుంది",
   "Actions": "చర్యలు",
+  "Activate_to_select_server": "సర్వర్‌ను ఎంచుకోవడానికి యాక్టివేట్ చేయండి",
+  "Activate_to_select_server_Available_actions_delete": "సర్వర్‌ను ఎంచుకోవడానికి ఆಕ್ಟివేట్ చేయండి. లభ్యమయ్యే చర్యలు: {{delete}}",
   "Activity": "చట్టం",
   "Add_Channel_to_Team": "ఛానల్‌ను టీమ్‌కు జోడించండి",
   "Add_Existing": "ఇప్పటికే ఉన్నవిని జోడించండి",

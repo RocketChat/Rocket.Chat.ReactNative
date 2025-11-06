@@ -18,6 +18,8 @@
   "Accessibility_statement": "पहुंच उपलब्धता विवरण",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "उपयोगकर्ताओं को 'चैनल में भी भेजें' व्यवहार का चयन करने की अनुमति दें",
   "Actions": "क्रियाएँ",
+  "Activate_to_select_server": "सर्वर चयन करने के लिए सक्रिय करें",
+  "Activate_to_select_server_Available_actions_delete": "सर्वर का चयन करने के लिए सक्रिय करें। उपलब्ध क्रियाएँ: हटाएं",
   "Activity": "गतिविधि",
   "Add_Channel_to_Team": "टीम में चैनल जोड़ें",
   "Add_Existing": "मौजूद को जोड़ें",

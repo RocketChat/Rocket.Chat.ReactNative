@@ -18,6 +18,8 @@
   "Accessibility_statement": "அணுகல் கூற்று",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "பயனர்களுக்கு 'சேனலுக்கும் அனுப்புக' செய்தி நடவடிக்கையை தேர்ந்தெடுத்துக் கொள்ள அனுமதிக்கு",
   "Actions": "செயல்கள்",
+  "Activate_to_select_server": "சேவையகத்தைத் தேர்ந்தெடுக்க செயல்படுத்தவும்",
+  "Activate_to_select_server_Available_actions_delete": "சர்வரை தேர்ந்தெடுக்க செயல்படுத்தவும். கிடைப்பில் செயல்கள்: delete",
   "Activity": "செயல்திருத்தம்",
   "Add_Channel_to_Team": "குழுக்கு சேனல் சேர்க்க",
   "Add_Existing": "ஏற்கனவே உள்ளதைச் சேர்க்கவும்",

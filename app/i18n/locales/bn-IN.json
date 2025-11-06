@@ -18,6 +18,8 @@
   "Accessibility_statement": "অ্যাক্সেসিবিলিটি বিবৃতি",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "ব্যবহারকারীদের 'সেইমসঙ্গে চ্যানেলে প্রেরণ করুন' আচরণ নির্ধারণ করার অনুমতি দিন",
   "Actions": "ক্রিয়াবলী",
+  "Activate_to_select_server": "সার্ভার নির্বাচন করতে সক্রিয় করুন",
+  "Activate_to_select_server_Available_actions_delete": "সার্ভার নির্বাচন করতে সক্রিয় করুন। উপলব্ধ ক্রিয়াকলাপ: {{delete}}",
   "Activity": "ক্রিয়া",
   "Add_Channel_to_Team": "দলে চ্যানেল যোগ করুন",
   "Add_Existing": "বিদ্যমান যোগ করুন",
