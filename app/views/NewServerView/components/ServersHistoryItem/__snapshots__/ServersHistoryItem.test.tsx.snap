@@ -28,18 +28,20 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         style={
           [
             {
+              "alignItems": "flex-end",
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
-              "alignItems": "flex-end",
               "width": 750,
             },
             {
               "height": 68,
             },
             {
+              "left": undefined,
+              "right": 0,
               "transform": [
                 {
                   "translateX": 80,
@@ -332,18 +334,20 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         style={
           [
             {
+              "alignItems": "flex-end",
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
-              "alignItems": "flex-end",
               "width": 750,
             },
             {
               "height": 68,
             },
             {
+              "left": undefined,
+              "right": 0,
               "transform": [
                 {
                   "translateX": 80,
@@ -636,18 +640,20 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
         style={
           [
             {
+              "alignItems": "flex-end",
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
-              "alignItems": "flex-end",
               "width": 750,
             },
             {
               "height": 68,
             },
             {
+              "left": undefined,
+              "right": 0,
               "transform": [
                 {
                   "translateX": 80,
@@ -945,18 +951,20 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
         style={
           [
             {
+              "alignItems": "flex-end",
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
-              "alignItems": "flex-end",
               "width": 750,
             },
             {
               "height": 68,
             },
             {
+              "left": undefined,
+              "right": 0,
               "transform": [
                 {
                   "translateX": 80,
@@ -1249,18 +1257,20 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
         style={
           [
             {
+              "alignItems": "flex-end",
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
-              "alignItems": "flex-end",
               "width": 750,
             },
             {
               "height": 68,
             },
             {
+              "left": undefined,
+              "right": 0,
               "transform": [
                 {
                   "translateX": 80,
@@ -1558,18 +1568,20 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         style={
           [
             {
+              "alignItems": "flex-end",
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
-              "alignItems": "flex-end",
               "width": 750,
             },
             {
               "height": 68,
             },
             {
+              "left": undefined,
+              "right": 0,
               "transform": [
                 {
                   "translateX": 80,
@@ -1862,18 +1874,20 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         style={
           [
             {
+              "alignItems": "flex-end",
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
-              "alignItems": "flex-end",
               "width": 750,
             },
             {
               "height": 68,
             },
             {
+              "left": undefined,
+              "right": 0,
               "transform": [
                 {
                   "translateX": 80,
@@ -2166,18 +2180,20 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         style={
           [
             {
+              "alignItems": "flex-end",
               "justifyContent": "center",
               "position": "absolute",
               "top": 0,
             },
             {
-              "alignItems": "flex-end",
               "width": 750,
             },
             {
               "height": 68,
             },
             {
+              "left": undefined,
+              "right": 0,
               "transform": [
                 {
                   "translateX": 80,
