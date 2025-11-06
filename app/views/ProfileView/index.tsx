@@ -58,6 +58,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
+
 	const {
 		Accounts_AllowDeleteOwnAccount,
 		Accounts_AllowEmailChange,
@@ -81,6 +82,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		serverVersion: state.server.version,
 		Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 	}));
+
+	// logs
+	console.log('logging ', user);
+
 	const {
 		control,
 		handleSubmit,
@@ -282,8 +287,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	useFocusEffect(
 		useCallback(() => {
-			reset();
-		}, [])
+			reset({
+				name: user?.name || '',
+				username: user?.username || '',
+				email: user?.emails?.[0]?.address || '',
+				bio: user?.bio || '',
+				nickname: user?.nickname || ''
+			});
+		}, [user, reset])
 	);
 
 	return (
