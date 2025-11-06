@@ -129,7 +129,7 @@ export default class Root extends React.Component<{}, IState> {
 		// Note: MMKV migration happens in native code (iOS: AppDelegate, Android: TBD)
 		// Migration is complete before JavaScript starts
 		// MMKV initialization happens in the restore saga before data is accessed
-		
+
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
