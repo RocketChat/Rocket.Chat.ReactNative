@@ -63,21 +63,21 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		maxWidth.value = width;
 	};
 
-    const panGesture = Gesture.Pan()
-        .enabled(loaded)
-        .activeOffsetX([-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X])
-        .onStart(() => {
-            isPanning.value = true;
-        })
-        .onUpdate((event) => {
-            translateX.value = clamp(translateX.value + event.translationX, 0, maxWidth.value);
-            scale.value = 1.3;
-        })
-        .onEnd(() => {
-            scale.value = 1;
-            isPanning.value = false;
-            runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
-        });
+	const panGesture = Gesture.Pan()
+		.enabled(loaded)
+		.activeOffsetX([-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X])
+		.onStart(() => {
+			isPanning.value = true;
+		})
+		.onUpdate(event => {
+			translateX.value = clamp(translateX.value + event.translationX, 0, maxWidth.value);
+			scale.value = 1.3;
+		})
+		.onEnd(() => {
+			scale.value = 1;
+			isPanning.value = false;
+			runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
+		});
 
 	useDerivedValue(() => {
 		if (isPanning.value) {
