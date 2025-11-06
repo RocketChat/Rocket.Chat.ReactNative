@@ -1,11 +1,11 @@
 const path = require('path');
 const withStorybook = require('@storybook/react-native/metro/withStorybook');
-const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
-// eslint-disable-next-line import/no-unresolved
+
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config');
+const defaultConfig = getDefaultConfig(__dirname);
 
-const sourceExts = [...defaultSourceExts, 'mjs'];
+const sourceExts = [...defaultConfig.resolver.sourceExts, 'mjs'];
 
 const config = {
 	transformer: {
