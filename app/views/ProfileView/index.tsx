@@ -1,12 +1,11 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useFocusEffect } from '@react-navigation/native';
 
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
@@ -58,7 +57,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-
 	const {
 		Accounts_AllowDeleteOwnAccount,
 		Accounts_AllowEmailChange,
@@ -282,17 +280,15 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		navigation.setOptions(options);
 	}, []);
 
-	useFocusEffect(
-		useCallback(() => {
-			reset({
-				name: user?.name || '',
-				username: user?.username || '',
-				email: user?.emails?.[0]?.address || '',
-				bio: user?.bio || '',
-				nickname: user?.nickname || ''
-			});
-		}, [user, reset])
-	);
+	useEffect(() => {
+		reset({
+			name: user?.name || '',
+			username: user?.username || '',
+			email: user?.emails?.[0]?.address || '',
+			bio: user?.bio || '',
+			nickname: user?.nickname || ''
+		});
+	}, [user, reset]);
 
 	return (
 		<KeyboardView>
