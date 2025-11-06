@@ -36,6 +36,8 @@ const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSub
 };
 
 export const useSubscriptions = () => {
+	'use memo';
+
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server);
 	const subscriptionRef = useRef<Subscription>(null);

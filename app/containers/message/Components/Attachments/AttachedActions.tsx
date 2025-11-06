@@ -14,6 +14,8 @@ export type TElement = {
 };
 
 const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
+	'use memo';
+
 	const { onAnswerButtonPress } = useContext(MessageContext);
 
 	if (!attachment.actions) {
