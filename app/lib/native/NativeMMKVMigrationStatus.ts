@@ -8,6 +8,12 @@ interface IMMKVMigrationStatus {
 		bundleId: string;
 	}>;
 	resetMigration(): Promise<{ reset: boolean }>;
+	checkStorageHealth(): Promise<{
+		migrationCompleted: boolean;
+		keysMigrated: number;
+		isProblemState: boolean;
+		recommendation: string;
+	}>;
 }
 
 export default NativeModules.MMKVMigrationStatus as IMMKVMigrationStatus;

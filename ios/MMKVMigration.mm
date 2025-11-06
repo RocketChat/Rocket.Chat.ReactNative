@@ -11,7 +11,10 @@
 #import "Shared/RocketChat/MMKVBridge.h"
 #import <os/log.h>
 
-// Helper function to log to Xcode console (writes to stderr AND os_log)
+// Helper function to log to os_log for TestFlight debugging
+// View these logs in Console.app by filtering for:
+// - Subsystem: chat.rocket.reactnative
+// - Category: MMKVMigration
 static void MMKVMigrationLog(NSString *format, ...) {
     va_list args;
     va_start(args, format);
@@ -23,8 +26,18 @@ static void MMKVMigrationLog(NSString *format, ...) {
     fflush(stderr);
     
     // Write to os_log (persists for TestFlight/production debugging)
-    os_log_t log = os_log_create("chat.rocket.reactnative", "MMKVMigration");
-    os_log(log, "%{public}s", [message UTF8String]);
+    // Use os_log_create with a persistent subsystem
+    static os_log_t migrationLog;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        migrationLog = os_log_create("chat.rocket.reactnative", "MMKVMigration");
+    });
+    
+    // Use %{public}s to ensure the message is visible even in Release builds
+    os_log_with_type(migrationLog, OS_LOG_TYPE_DEFAULT, "%{public}s", [message UTF8String]);
+    
+    // Also write to NSLog as a fallback (visible in device logs)
+    NSLog(@"[MMKVMigration] %@", message);
 }
 
 // Convert string to hexadecimal (same as SSLPinning)
@@ -59,8 +72,60 @@ static NSString *toHex(NSString *str) {
     
     // Check if migration already completed
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"MMKV_MIGRATION_COMPLETED"]) {
-        MMKVMigrationLog(@"Migration already completed previously");
+    BOOL migrationCompleted = [defaults boolForKey:@"MMKV_MIGRATION_COMPLETED"];
+    NSNumber *keysMigrated = [defaults objectForKey:@"MMKV_MIGRATION_KEYS_COUNT"];
+    NSString *timestamp = [defaults objectForKey:@"MMKV_MIGRATION_TIMESTAMP"];
+    
+    if (migrationCompleted) {
+        MMKVMigrationLog(@"Migration flag is set to COMPLETED");
+        MMKVMigrationLog(@"  Keys migrated: %@", keysMigrated ?: @"UNKNOWN");
+        MMKVMigrationLog(@"  Timestamp: %@", timestamp ?: @"UNKNOWN");
+        
+        // CRITICAL: If migration was marked complete but 0 keys were migrated,
+        // this might be a false positive - the migration ran but found no data
+        // when it should have. Let's check if new MMKV storage is also empty.
+        if ([keysMigrated intValue] == 0 || !keysMigrated) {
+            MMKVMigrationLog(@"⚠️  WARNING: Migration was marked complete but 0 keys were migrated!");
+            MMKVMigrationLog(@"⚠️  This might indicate the old data wasn't found");
+            MMKVMigrationLog(@"⚠️  Checking current storage state...");
+            
+            // Check if current storage has data
+            @try {
+                NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+                if (appGroup) {
+                    NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
+                    NSString *groupDir = [groupURL path];
+                    NSString *mmkvPath = [groupDir stringByAppendingPathComponent:@"mmkv"];
+                    
+                    SecureStorage *secureStorage = [[SecureStorage alloc] init];
+                    NSString *newAlias = toHex(@"com.MMKV.default");
+                    NSString *newPassword = [secureStorage getSecureKey:newAlias];
+                    NSData *newCryptKey = newPassword ? [newPassword dataUsingEncoding:NSUTF8StringEncoding] : nil;
+                    
+                    MMKVBridge *newMMKV = [[MMKVBridge alloc] initWithID:@"default" 
+                                                                cryptKey:newCryptKey 
+                                                                rootPath:mmkvPath];
+                    
+                    if (newMMKV) {
+                        NSArray *currentKeys = [newMMKV allKeys];
+                        MMKVMigrationLog(@"⚠️  Current storage has %lu keys", (unsigned long)currentKeys.count);
+                        
+                        if (currentKeys.count == 0) {
+                            MMKVMigrationLog(@"❌ PROBLEM DETECTED: Migration completed with 0 keys AND current storage is empty!");
+                            MMKVMigrationLog(@"❌ This suggests the migration didn't find the old data.");
+                            MMKVMigrationLog(@"❌ User will need to re-login.");
+                        } else {
+                            MMKVMigrationLog(@"✅ Current storage has data, migration might have run on a clean install");
+                        }
+                    }
+                }
+            } @catch (NSException *e) {
+                MMKVMigrationLog(@"Could not check current storage: %@", e.reason);
+            }
+        } else {
+            MMKVMigrationLog(@"✅ Migration was successful with %@ keys", keysMigrated);
+        }
+        
         return;
     }
     
@@ -79,35 +144,92 @@ static NSString *toHex(NSString *str) {
         NSString *groupDir = [groupURL path];
         NSString *mmkvPath = [groupDir stringByAppendingPathComponent:@"mmkv"];
         
-        MMKVMigrationLog(@"App Group MMKV path: %@", mmkvPath);
+        MMKVMigrationLog(@"App Group: %@", appGroup);
+        MMKVMigrationLog(@"App Group directory: %@", groupDir);
+        MMKVMigrationLog(@"Expected MMKV path: %@", mmkvPath);
         
-        // Check if MMKV directory exists
+        // Check if MMKV directory exists in App Group
         BOOL dirExists = [[NSFileManager defaultManager] fileExistsAtPath:mmkvPath];
+        MMKVMigrationLog(@"MMKV directory exists in App Group: %@", dirExists ? @"YES" : @"NO");
+        
         if (!dirExists) {
-            MMKVMigrationLog(@"MMKV directory does not exist");
-            [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
-            return;
+            // IMPORTANT: react-native-mmkv-storage might have stored data in Documents directory
+            // instead of App Group on older versions. Let's check there too.
+            NSArray *documentsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            if (documentsPaths.count > 0) {
+                NSString *documentsDir = documentsPaths[0];
+                NSString *documentsMMKVPath = [documentsDir stringByAppendingPathComponent:@"mmkv"];
+                
+                MMKVMigrationLog(@"Checking alternate location (Documents): %@", documentsMMKVPath);
+                BOOL docsMMKVExists = [[NSFileManager defaultManager] fileExistsAtPath:documentsMMKVPath];
+                
+                if (docsMMKVExists) {
+                    MMKVMigrationLog(@"⚠️  Found MMKV data in Documents directory!");
+                    MMKVMigrationLog(@"⚠️  Old library may have been configured to use Documents instead of App Group");
+                    MMKVMigrationLog(@"⚠️  Attempting to migrate from: %@", documentsMMKVPath);
+                    
+                    // Update mmkvPath to point to the Documents location
+                    mmkvPath = documentsMMKVPath;
+                    dirExists = YES;
+                } else {
+                    MMKVMigrationLog(@"MMKV directory not found in Documents either");
+                }
+            }
+            
+            if (!dirExists) {
+                MMKVMigrationLog(@"MMKV directory does not exist in any checked location");
+                MMKVMigrationLog(@"Checked locations:");
+                MMKVMigrationLog(@"  1. App Group: %@", [groupDir stringByAppendingPathComponent:@"mmkv"]);
+                if (documentsPaths.count > 0) {
+                    MMKVMigrationLog(@"  2. Documents: %@", [documentsPaths[0] stringByAppendingPathComponent:@"mmkv"]);
+                }
+                [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
+                return;
+            }
         }
         
         // List MMKV files
         NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:mmkvPath error:nil];
         NSMutableArray *instanceIds = [NSMutableArray array];
         
-        MMKVMigrationLog(@"Found %lu MMKV files", (unsigned long)files.count);
+        MMKVMigrationLog(@"Found %lu MMKV files in directory", (unsigned long)files.count);
+        MMKVMigrationLog(@"All files: %@", [files componentsJoinedByString:@", "]);
         
         for (NSString *file in files) {
             if (![file hasSuffix:@".crc"] && ![file isEqualToString:@"specialCharacter"]) {
                 [instanceIds addObject:file];
+                MMKVMigrationLog(@"  -> Will migrate: %@", file);
+            } else {
+                MMKVMigrationLog(@"  -> Skipping: %@", file);
+            }
+        }
+        
+        // Add common react-native-mmkv-storage default instance IDs if not already present
+        // The old library typically used these instance names
+        NSArray *possibleInstanceIds = @[@"mmkvIDStore", @"default", @"mmkv.default"];
+        for (NSString *instanceId in possibleInstanceIds) {
+            if (![instanceIds containsObject:instanceId]) {
+                // Check if this instance file actually exists
+                NSString *possiblePath = [mmkvPath stringByAppendingPathComponent:instanceId];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:possiblePath]) {
+                    MMKVMigrationLog(@"  -> Adding discovered instance: %@", instanceId);
+                    [instanceIds addObject:instanceId];
+                }
             }
         }
         
         if (instanceIds.count == 0) {
-            MMKVMigrationLog(@"No MMKV instances found");
+            MMKVMigrationLog(@"No MMKV instances found to migrate");
+            MMKVMigrationLog(@"This might indicate:");
+            MMKVMigrationLog(@"  1. Fresh install (no previous data)");
+            MMKVMigrationLog(@"  2. Data stored in different location");
+            MMKVMigrationLog(@"  3. Already migrated by a previous version");
             [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
             return;
         }
         
-        MMKVMigrationLog(@"MMKV instances to migrate: %@", [instanceIds componentsJoinedByString:@", "]);
+        MMKVMigrationLog(@"Will attempt to migrate %lu MMKV instances:", (unsigned long)instanceIds.count);
+        MMKVMigrationLog(@"  %@", [instanceIds componentsJoinedByString:@", "]);
         
         // Collect all data from all instances
         NSMutableDictionary *allData = [NSMutableDictionary dictionary];
