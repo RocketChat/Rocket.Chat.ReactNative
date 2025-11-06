@@ -1,83 +1,42 @@
 import { useState, useEffect, useCallback } from 'react';
 import { MMKV } from 'react-native-mmkv';
 import { Platform } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { appGroupPath } from './appGroup';
 
 let storage: MMKV | null = null;
 let storageInitPromise: Promise<MMKV> | null = null;
 
-function initializeStorage(): Promise<MMKV> {
+function initializeStorage() {
 	if (storage) return Promise.resolve(storage);
 
 	if (storageInitPromise) return storageInitPromise;
 
-	storageInitPromise = (async (): Promise<MMKV> => {
-		// Step 1: Try to get the old encryption key from AsyncStorage (saved during debug phase)
-		const savedKey = await AsyncStorage.getItem('MMKV_MIGRATION_KEY');
+	storageInitPromise = ((): any => {
+		console.log('[MMKV] Initializing storage...');
 
-		// Step 2: Determine the old MMKV storage path
-		let mmkvPath: string | undefined;
-		if (Platform.OS === 'ios') {
-			// iOS: Get App Group path
-			// We'll need to implement getAppGroupPath() if it doesn't exist
-			// For now, use undefined to use default path
-			mmkvPath = undefined; // TODO: Implement iOS app group path
-		} else {
-			// Android: {filesDir}/mmkv
-			const filesDir = FileSystem.documentDirectory?.replace('file://', '').replace(/\/$/, '');
-			mmkvPath = filesDir ? `${filesDir}/mmkv` : undefined;
+		// On iOS, use the App Group path to match where native migration wrote the data
+		// On Android, react-native-mmkv uses default path
+		const mmkvPath = Platform.OS === 'ios' ? `${appGroupPath}mmkv` : undefined;
+
+		if (mmkvPath) {
+			console.log('[MMKV] Using custom path:', mmkvPath);
 		}
 
-		// Step 3: Try to open old MMKV with the saved encryption key
-		let migrated = false;
-		if (savedKey && mmkvPath) {
-			try {
-				const oldStorage = new MMKV({
-					id: 'default',
-					path: mmkvPath,
-					encryptionKey: savedKey
-				});
-
-				const oldKeys = oldStorage.getAllKeys();
-
-				if (oldKeys.length > 0) {
-					// Create new storage at default location WITHOUT custom path
-					// This is where react-native-mmkv stores data by default
-					storage = new MMKV({
-						id: 'default'
-						// No path, no encryption - fresh start
-					});
-
-					// Copy all data
-					for (const key of oldKeys) {
-						const value = oldStorage.getString(key);
-						if (value !== undefined) {
-							storage.set(key, value);
-						}
-					}
-
-					migrated = true;
-
-					// Clean up migration key
-					await AsyncStorage.removeItem('MMKV_MIGRATION_KEY');
-				}
-			} catch (error) {
-				// Migration failed, will use default storage
-				console.error('[MMKV Migration] Error during migration:', error);
-			}
-		}
-
-		// Step 4: If migration didn't happen, just open default storage
-		if (!migrated) {
-			storage = new MMKV({
-				id: 'default'
-			});
-		}
+		// Initialize MMKV storage
+		// Native migration already ran and wrote data to this location
+		storage = new MMKV({
+			id: 'default',
+			path: mmkvPath
+		});
 
 		if (!storage) {
 			throw new Error('Failed to initialize MMKV storage');
 		}
+
+		// Log what we found
+		const keys = storage.getAllKeys();
+		console.log(`[MMKV] Storage initialized with ${keys.length} keys`);
 
 		return storage;
 	})();
@@ -85,21 +44,26 @@ function initializeStorage(): Promise<MMKV> {
 	return storageInitPromise;
 }
 
-function getStorage(): Promise<MMKV> {
+function getStorage(): any {
 	if (storage) return Promise.resolve(storage);
 	return initializeStorage();
 }
 
 function getStorageSync(): MMKV {
 	if (!storage) {
-		console.warn('[MMKV] Storage not yet initialized, waiting...');
-		throw new Error('MMKV not ready. Try again shortly.');
+		console.warn('[MMKV] Storage not yet initialized, initializing now...');
+		// Initialize synchronously if needed (migration already ran in native code)
+		const mmkvPath = Platform.OS === 'ios' ? `${appGroupPath}mmkv` : undefined;
+		storage = new MMKV({
+			id: 'default',
+			path: mmkvPath
+		});
 	}
 	return storage;
 }
 
-// Initialize storage when module loads
-initializeStorage();
+// DON'T auto-initialize on module load - let app/index.tsx control initialization timing
+// This ensures migration completes first
 
 class UserPreferences {
 	getString(key: string): string | null {

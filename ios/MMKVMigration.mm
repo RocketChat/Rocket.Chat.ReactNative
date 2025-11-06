@@ -168,6 +168,16 @@ static NSString *toHex(NSString *str) {
             if ([value isKindOfClass:[NSString class]]) {
                 [newMMKV setString:(NSString *)value forKey:key];
                 migratedCount++;
+                
+                // Log important keys
+                if ([key containsString:@"CURRENT_SERVER"] || 
+                    [key containsString:@"reactnativemeteor_usertoken"] ||
+                    [key containsString:@"THEME"]) {
+                    NSString *displayValue = [(NSString *)value length] > 50 
+                        ? [[(NSString *)value substringToIndex:50] stringByAppendingString:@"..."]
+                        : (NSString *)value;
+                    MMKVMigrationLog(@"  📝 Migrated: %@ = %@", key, displayValue);
+                }
             } else if ([value isKindOfClass:[NSData class]]) {
                 [newMMKV setData:(NSData *)value forKey:key];
                 migratedCount++;
