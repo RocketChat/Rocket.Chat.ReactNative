@@ -31,8 +31,26 @@ const restore = function* restore() {
 		yield call(initializeStorage);
 		console.log('MMKV storage initialized');
 
+		// Debug: Check migration status (useful for TestFlight debugging)
+		try {
+			const MMKVMigrationStatus = require('../lib/native/NativeMMKVMigrationStatus').default;
+			if (MMKVMigrationStatus) {
+				const status = yield call([MMKVMigrationStatus, MMKVMigrationStatus.getMigrationStatus]);
+				console.log('Migration status:', JSON.stringify(status, null, 2));
+			}
+		} catch (error) {
+			console.log('Could not get migration status:', error);
+		}
+
 		const server = UserPreferences.getString(CURRENT_SERVER);
 		console.log('Current server from storage:', server);
+
+		// Debug: Log all keys in storage
+		const allKeys = UserPreferences.getAllKeys();
+		console.log(`Total keys in MMKV: ${allKeys.length}`);
+		if (allKeys.length > 0) {
+			console.log('Sample keys:', allKeys.slice(0, 10));
+		}
 		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
 		if (!server) {

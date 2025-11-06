@@ -39,12 +39,25 @@ static NSString *toHex(NSString *str) {
 + (void)migrate {
     MMKVMigrationLog(@"=== Starting MMKV Migration ===");
     
+    // Log build configuration
+    #ifdef DEBUG
+    MMKVMigrationLog(@"Build: DEBUG");
+    #else
+    MMKVMigrationLog(@"Build: RELEASE/PRODUCTION");
+    #endif
+    
+    // Log bundle identifier
+    NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+    MMKVMigrationLog(@"Bundle ID: %@", bundleId);
+    
     // Check if migration already completed
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:@"MMKV_MIGRATION_COMPLETED"]) {
         MMKVMigrationLog(@"Migration already completed previously");
         return;
     }
+    
+    MMKVMigrationLog(@"Migration NOT yet completed - proceeding...");
     
     @try {
         // Get app group directory
@@ -138,18 +151,28 @@ static NSString *toHex(NSString *str) {
         
         MMKVMigrationLog(@"\nTotal unique keys to migrate: %lu", (unsigned long)allData.count);
         
+        // List all keys being migrated
+        MMKVMigrationLog(@"Keys to migrate:");
+        for (NSString *key in allData) {
+            MMKVMigrationLog(@"  - %@", key);
+        }
+        
         // Write all data to the new MMKV "default" instance using MMKVBridge
         // Get encryption key for new storage
         NSString *newAlias = toHex(@"com.MMKV.default");
+        MMKVMigrationLog(@"\nGetting encryption key for new storage with alias: %@", newAlias);
+        
         NSString *newPassword = [secureStorage getSecureKey:newAlias];
         
         NSData *newCryptKey = newPassword ? [newPassword dataUsingEncoding:NSUTF8StringEncoding] : nil;
         
         if (newCryptKey) {
-            MMKVMigrationLog(@"Using encryption for new storage");
+            MMKVMigrationLog(@"Using encryption for new storage (key length: %lu)", (unsigned long)newPassword.length);
         } else {
             MMKVMigrationLog(@"New storage will be unencrypted");
         }
+        
+        MMKVMigrationLog(@"Creating new MMKVBridge instance at path: %@", mmkvPath);
         
         MMKVBridge *newMMKV = [[MMKVBridge alloc] initWithID:@"default" 
                                                     cryptKey:newCryptKey 
@@ -192,9 +215,13 @@ static NSString *toHex(NSString *str) {
         MMKVMigrationLog(@"\n=== Migration Complete ===");
         MMKVMigrationLog(@"Total keys migrated: %d", migratedCount);
         
-        // Mark migration as completed
+        // Mark migration as completed with metadata
         [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
+        [defaults setObject:@(migratedCount) forKey:@"MMKV_MIGRATION_KEYS_COUNT"];
+        [defaults setObject:[NSDate date].description forKey:@"MMKV_MIGRATION_TIMESTAMP"];
         [defaults synchronize];
+        
+        MMKVMigrationLog(@"Migration metadata saved to UserDefaults");
         
     } @catch (NSException *exception) {
         MMKVMigrationLog(@"❌ Migration error: %@", exception.reason);
@@ -208,17 +235,28 @@ static NSString *toHex(NSString *str) {
         // Create MMKVBridge instance to read data
         NSData *cryptKey = password ? [password dataUsingEncoding:NSUTF8StringEncoding] : nil;
         
+        MMKVMigrationLog(@"  Creating MMKVBridge with ID: %@, cryptKey: %@, rootPath: %@", 
+                        instanceId, 
+                        cryptKey ? @"YES" : @"NO",
+                        rootPath);
+        
         MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:instanceId 
                                                  cryptKey:cryptKey 
                                                  rootPath:rootPath];
         
         if (!mmkv) {
+            MMKVMigrationLog(@"  ❌ Failed to create MMKVBridge instance");
             return nil;
         }
         
+        MMKVMigrationLog(@"  ✅ MMKVBridge instance created");
+        
         // Get all keys
         NSArray *allKeys = [mmkv allKeys];
+        MMKVMigrationLog(@"  allKeys returned: %@", allKeys ? [NSString stringWithFormat:@"%lu keys", (unsigned long)allKeys.count] : @"nil");
+        
         if (!allKeys || allKeys.count == 0) {
+            MMKVMigrationLog(@"  No keys found in instance");
             return nil;
         }
         
@@ -233,22 +271,28 @@ static NSString *toHex(NSString *str) {
                 
                 if (stringValue) {
                     data[key] = stringValue;
+                    MMKVMigrationLog(@"    ✓ Read string key: %@", key);
                 } else {
                     // Try as data
                     NSData *dataValue = [mmkv dataForKey:key];
                     if (dataValue) {
                         data[key] = dataValue;
+                        MMKVMigrationLog(@"    ✓ Read data key: %@", key);
+                    } else {
+                        MMKVMigrationLog(@"    ⚠️ Could not read key: %@", key);
                     }
                 }
             } @catch (NSException *exception) {
-                MMKVMigrationLog(@"  Error reading key: %@", key);
+                MMKVMigrationLog(@"  ❌ Error reading key %@: %@", key, exception.reason);
             }
         }
+        
+        MMKVMigrationLog(@"  Successfully read %lu/%lu keys", (unsigned long)data.count, (unsigned long)allKeys.count);
         
         return data.count > 0 ? data : nil;
         
     } @catch (NSException *exception) {
-        MMKVMigrationLog(@"  Error reading instance: %@", exception.reason);
+        MMKVMigrationLog(@"  ❌ Exception reading instance: %@", exception.reason);
         return nil;
     }
 }
