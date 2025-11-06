@@ -406,7 +406,12 @@ const RoomMembersView = (): React.ReactElement => {
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={
 					<>
-						<ActionsSection joined={params.joined as boolean} rid={state.room.rid} t={state.room.t} />
+						<ActionsSection
+							joined={params.joined as boolean}
+							rid={state.room.rid}
+							t={state.room.t}
+							abacAttributes={state.room.abacAttributes}
+						/>
 						<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
 					</>
 				}
