@@ -12,6 +12,10 @@
   "A11y_in_app_notification": "{{name}} থেকে নতুন বার্তা: {{message}}",
   "A11y_incoming_call_dismiss": "বন্ধ করুন",
   "A11y_incoming_call_swipe_down_to_view_options": "নির্বাচনগুলি দেখতে নিচে সোয়াইপ করুন",
+  "ABAC_disabled_action_reason": "ABAC-পরিচালিত রুমগুলিতে উপলব্ধ নয়",
+  "ABAC_managed": "ABAC দ্বারা পরিচালিত",
+  "ABAC_managed_description": "শুধুমাত্র অনুগত ব্যবহারকারীদের অ্যাট্রিবিউট-ভিত্তিক অ্যাক্সেস নিয়ন্ত্রিত রুমগুলিতে অ্যাক্সেস আছে। অ্যাট্রিবিউটগুলি রুমের অ্যাক্সেস নির্ধারণ করে।",
+  "ABAC_room_attributes": "রুমের বৈশিষ্ট্য",
   "accept": "গ্রহণ করুন",
   "Accessibility": "অ্যাক্সেসিবিলিটি",
   "Accessibility_and_Appearance": "অ্যাক্সেসিবিলিটি ও চেহারা",
@@ -892,9 +896,5 @@
   "Your_invite_link_will_never_expire": "আপনার আমন্ত্রণ লিঙ্কটি কখনও মেয়াদ শেষ হবে না।",
   "Your_password_is": "আপনার পাসওয়ার্ড হল",
   "Your_Password_Must_Have": "আপনার পাসওয়ার্ড থাকতে হবে:",
-  "Your_workspace": "আপনার ওয়ার্কস্পেস",
-  "ABAC_room_attributes": "রুমের বৈশিষ্ট্য",
-  "ABAC_managed": "ABAC দ্বারা পরিচালিত",
-  "ABAC_managed_description": "শুধুমাত্র অনুগত ব্যবহারকারীদের অ্যাট্রিবিউট-ভিত্তিক অ্যাক্সেস নিয়ন্ত্রিত রুমগুলিতে অ্যাক্সেস আছে। অ্যাট্রিবিউটগুলি রুমের অ্যাক্সেস নির্ধারণ করে।",
-  "ABAC_disabled_action_reason": "ABAC-পরিচালিত রুমগুলিতে উপলব্ধ নয়"
+  "Your_workspace": "আপনার ওয়ার্কস্পেস"
 }

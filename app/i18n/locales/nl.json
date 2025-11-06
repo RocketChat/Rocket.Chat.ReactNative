@@ -8,6 +8,10 @@
   "A11y_in_app_notification": "Nieuw bericht van {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Afwijzen",
   "A11y_incoming_call_swipe_down_to_view_options": "Veeg omlaag om opties te bekijken",
+  "ABAC_disabled_action_reason": "Niet beschikbaar in ABAC-beheerde kamers",
+  "ABAC_managed": "ABAC beheerd",
+  "ABAC_managed_description": "Alleen conforme gebruikers hebben toegang tot op attributen gebaseerde toegangsgecontroleerde kamers. Attributen bepalen de toegang tot de kamer.",
+  "ABAC_room_attributes": "Kamerattributen",
   "Accessibility": "Toegankelijkheid",
   "Accessibility_and_Appearance": "Toegankelijkheid & uiterlijk",
   "Accessibility_statement": "Toegankelijkheidsverklaring",
@@ -775,9 +779,5 @@
   "Your_invite_link_will_never_expire": "Je uitnodigingslink zal nooit verlopen.",
   "Your_password_is": "Jouw wachtwoord is",
   "Your_Password_Must_Have": "Uw wachtwoord moet hebben:",
-  "Your_workspace": "Jouw werkruimte",
-  "ABAC_room_attributes": "Kamerattributen",
-  "ABAC_managed": "ABAC beheerd",
-  "ABAC_managed_description": "Alleen conforme gebruikers hebben toegang tot op attributen gebaseerde toegangsgecontroleerde kamers. Attributen bepalen de toegang tot de kamer.",
-  "ABAC_disabled_action_reason": "Niet beschikbaar in ABAC-beheerde kamers"
+  "Your_workspace": "Jouw werkruimte"
 }

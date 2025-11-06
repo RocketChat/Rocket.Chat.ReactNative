@@ -12,6 +12,10 @@
   "A11y_in_app_notification": "New message from {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dismiss",
   "A11y_incoming_call_swipe_down_to_view_options": "Swipe down to view options",
+  "ABAC_disabled_action_reason": "Not available in ABAC-managed rooms",
+  "ABAC_managed": "ABAC managed",
+  "ABAC_managed_description": "Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.",
+  "ABAC_room_attributes": "Room attributes",
   "accept": "Accept",
   "Accessibility": "Accessibility",
   "Accessibility_and_Appearance": "Accessibility & appearance",
@@ -995,9 +999,5 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_Password_Must_Have": "Your password must have:",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "ABAC_room_attributes": "Room attributes",
-  "ABAC_managed": "ABAC managed",
-  "ABAC_managed_description": "Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.",
-  "ABAC_disabled_action_reason": "Not available in ABAC-managed rooms"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
 }

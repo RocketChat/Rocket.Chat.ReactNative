@@ -12,6 +12,10 @@
   "A11y_in_app_notification": "Új üzenet érkezett {{name}}-tól: {{message}}",
   "A11y_incoming_call_dismiss": "Elutasítás",
   "A11y_incoming_call_swipe_down_to_view_options": "Húzza lefelé az opciók megtekintéséhez",
+  "ABAC_disabled_action_reason": "Nem érhető el ABAC által kezelt szobákban",
+  "ABAC_managed": "ABAC által kezelt",
+  "ABAC_managed_description": "Csak a megfelelő felhasználók férhetnek hozzá az attribútum alapú hozzáférés-vezérelt szobákhoz. Az attribútumok határozzák meg a szoba hozzáférését.",
+  "ABAC_room_attributes": "Szoba attribútumok",
   "accept": "Elfogadom",
   "Accessibility": "Akadálymentesség",
   "Accessibility_and_Appearance": "Hozzáférhetőség és megjelenés",
@@ -895,9 +899,5 @@
   "Your_invite_link_will_never_expire": "A meghívási hivatkozása sosem jár le.",
   "Your_password_is": "A jelszava a következő",
   "Your_Password_Must_Have": "A jelszavának rendelkeznie kell:",
-  "Your_workspace": "Az Ön munkaterülete",
-  "ABAC_room_attributes": "Szoba attribútumok",
-  "ABAC_managed": "ABAC által kezelt",
-  "ABAC_managed_description": "Csak a megfelelő felhasználók férhetnek hozzá az attribútum alapú hozzáférés-vezérelt szobákhoz. Az attribútumok határozzák meg a szoba hozzáférését.",
-  "ABAC_disabled_action_reason": "Nem érhető el ABAC által kezelt szobákban"
+  "Your_workspace": "Az Ön munkaterülete"
 }

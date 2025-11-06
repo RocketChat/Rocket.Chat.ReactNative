@@ -8,6 +8,10 @@
   "A11y_in_app_notification": "來自 {{name}} 的新訊息：{{message}}",
   "A11y_incoming_call_dismiss": "關閉",
   "A11y_incoming_call_swipe_down_to_view_options": "向下滑動以查看選項",
+  "ABAC_disabled_action_reason": "無法在 ABAC 管理的房間中使用",
+  "ABAC_managed": "ABAC 管理",
+  "ABAC_managed_description": "只有符合條件的使用者才能存取基於屬性的存取控制房間。屬性決定房間存取權限。",
+  "ABAC_room_attributes": "房間屬性",
   "Accessibility": "無障礙設施",
   "Accessibility_and_Appearance": "無障礙功能與外觀",
   "Accessibility_statement": "无障碍声明",
@@ -650,9 +654,5 @@
   "Your_invite_link_will_never_expire": "您的邀請連結永久有效。",
   "Your_password_is": "您的密碼",
   "Your_Password_Must_Have": "您的密碼必須具有：",
-  "Your_workspace": "您的工作區",
-  "ABAC_room_attributes": "房間屬性",
-  "ABAC_managed": "ABAC 管理",
-  "ABAC_managed_description": "只有符合條件的使用者才能存取基於屬性的存取控制房間。屬性決定房間存取權限。",
-  "ABAC_disabled_action_reason": "無法在 ABAC 管理的房間中使用"
+  "Your_workspace": "您的工作區"
 }

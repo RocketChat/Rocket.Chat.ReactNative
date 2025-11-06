@@ -8,6 +8,10 @@
   "A11y_in_app_notification": "Yeni mesaj {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dismiss et.",
   "A11y_incoming_call_swipe_down_to_view_options": "Aşağı kaydırarak seçenekleri görüntüle",
+  "ABAC_disabled_action_reason": "ABAC tarafından yönetilen odalarda mevcut değil",
+  "ABAC_managed": "ABAC tarafından yönetilir",
+  "ABAC_managed_description": "Yalnızca uyumlu kullanıcılar, öznitelik tabanlı erişim kontrollü odalara erişebilir. Öznitelikler, oda erişimini belirler.",
+  "ABAC_room_attributes": "Oda özellikleri",
   "Accessibility": "Erişilebilirlik",
   "Accessibility_and_Appearance": "Erişilebilirlik ve görünüm",
   "Accessibility_statement": "Erişilebilirlik beyanı",
@@ -661,9 +665,5 @@
   "Your_invite_link_will_never_expire": "Davet bağlantınızın geçerlilik süresi asla dolmayacak.",
   "Your_password_is": "Şifreniz",
   "Your_Password_Must_Have": "Şifreniz:",
-  "Your_workspace": "Çalışma alanınız",
-  "ABAC_room_attributes": "Oda özellikleri",
-  "ABAC_managed": "ABAC tarafından yönetilir",
-  "ABAC_managed_description": "Yalnızca uyumlu kullanıcılar, öznitelik tabanlı erişim kontrollü odalara erişebilir. Öznitelikler, oda erişimini belirler.",
-  "ABAC_disabled_action_reason": "ABAC tarafından yönetilen odalarda mevcut değil"
+  "Your_workspace": "Çalışma alanınız"
 }

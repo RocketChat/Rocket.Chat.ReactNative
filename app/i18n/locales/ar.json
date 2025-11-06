@@ -8,6 +8,10 @@
   "A11y_in_app_notification": "رسالة جديدة من {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "تجاهل",
   "A11y_incoming_call_swipe_down_to_view_options": "اسحب لأسفل لعرض الخيارات",
+  "ABAC_disabled_action_reason": "غير متاح في الغرف المدارة بواسطة ABAC",
+  "ABAC_managed": "مدار بواسطة ABAC",
+  "ABAC_managed_description": "فقط المستخدمون المتوافقون لديهم حق الوصول إلى الغرف التي يتم التحكم فيها بالوصول المستند إلى السمات. تحدد السمات الوصول إلى الغرفة.",
+  "ABAC_room_attributes": "سمات الغرفة",
   "Accessibility": "إمكانية الوصول",
   "Accessibility_and_Appearance": "إمكانية الوصول والمظهر",
   "Accessibility_statement": "بيان الوصول",
@@ -629,9 +633,5 @@
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
   "Your_Password_Must_Have": "يجب أن تحتوي كلمة المرور الخاصة بك على:",
-  "Your_workspace": "مساحة عملك",
-  "ABAC_room_attributes": "سمات الغرفة",
-  "ABAC_managed": "مدار بواسطة ABAC",
-  "ABAC_managed_description": "فقط المستخدمون المتوافقون لديهم حق الوصول إلى الغرف التي يتم التحكم فيها بالوصول المستند إلى السمات. تحدد السمات الوصول إلى الغرفة.",
-  "ABAC_disabled_action_reason": "غير متاح في الغرف المدارة بواسطة ABAC"
+  "Your_workspace": "مساحة عملك"
 }

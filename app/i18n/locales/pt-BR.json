@@ -12,6 +12,10 @@
   "A11y_in_app_notification": "Nova mensagem de {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Dispensar",
   "A11y_incoming_call_swipe_down_to_view_options": "Deslize para baixo para ver as opções",
+  "ABAC_disabled_action_reason": "Não disponível em salas gerenciadas por ABAC",
+  "ABAC_managed": "Gerenciado por ABAC",
+  "ABAC_managed_description": "Apenas usuários compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala.",
+  "ABAC_room_attributes": "Atributos da sala",
   "accept": "Aceitar",
   "Accessibility": "Acessibilidade",
   "Accessibility_and_Appearance": "Acessibilidade e aparência",
@@ -979,9 +983,5 @@
   "Your_password_is": "Sua senha é",
   "Your_Password_Must_Have": "Sua senha deve conter:",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace",
-  "ABAC_room_attributes": "Atributos da sala",
-  "ABAC_managed": "Gerenciado por ABAC",
-  "ABAC_managed_description": "Apenas usuários compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala.",
-  "ABAC_disabled_action_reason": "Não disponível em salas gerenciadas por ABAC"
+  "Your_workspace": "Sua workspace"
 }

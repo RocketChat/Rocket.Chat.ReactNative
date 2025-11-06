@@ -12,6 +12,10 @@
   "A11y_in_app_notification": "Новое сообщение от {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Отклонить",
   "A11y_incoming_call_swipe_down_to_view_options": "Проведите вниз, чтобы просмотреть варианты действий",
+  "ABAC_disabled_action_reason": "Недоступно в комнатах, управляемых ABAC",
+  "ABAC_managed": "Управляется ABAC",
+  "ABAC_managed_description": "Только соответствующие пользователи имеют доступ к комнатам с атрибутивным контролем доступа. Атрибуты определяют доступ к комнате.",
+  "ABAC_room_attributes": "Атрибуты комнаты",
   "Accessibility": "Доступность",
   "Accessibility_and_Appearance": "Доступность и внешний вид",
   "Accessibility_statement": "Заявление о доступности",
@@ -822,9 +826,5 @@
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
   "Your_Password_Must_Have": "Ваш пароль должен иметь:",
-  "Your_workspace": "Ваш сервер",
-  "ABAC_room_attributes": "Атрибуты комнаты",
-  "ABAC_managed": "Управляется ABAC",
-  "ABAC_managed_description": "Только соответствующие пользователи имеют доступ к комнатам с атрибутивным контролем доступа. Атрибуты определяют доступ к комнате.",
-  "ABAC_disabled_action_reason": "Недоступно в комнатах, управляемых ABAC"
+  "Your_workspace": "Ваш сервер"
 }

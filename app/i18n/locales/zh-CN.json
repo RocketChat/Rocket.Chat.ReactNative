@@ -8,6 +8,10 @@
   "A11y_in_app_notification": "来自{{name}}的新消息：{{message}}",
   "A11y_incoming_call_dismiss": "关闭",
   "A11y_incoming_call_swipe_down_to_view_options": "向下滑动以查看选项",
+  "ABAC_disabled_action_reason": "在ABAC管理的房间中不可用",
+  "ABAC_managed": "ABAC 管理",
+  "ABAC_managed_description": "只有符合条件的用户才能访问基于属性的访问控制房间。属性决定房间访问权限。",
+  "ABAC_room_attributes": "房间属性",
   "Accessibility": "无障碍性",
   "Accessibility_and_Appearance": "辅助功能和外观",
   "Accessibility_statement": "无障碍声明",
@@ -621,9 +625,5 @@
   "Your_invite_link_will_never_expire": "您的邀请链接永久有效。",
   "Your_password_is": "您的密码",
   "Your_Password_Must_Have": "您的密码必须具有：",
-  "Your_workspace": "您的工作区",
-  "ABAC_room_attributes": "房间属性",
-  "ABAC_managed": "ABAC 管理",
-  "ABAC_managed_description": "只有符合条件的用户才能访问基于属性的访问控制房间。属性决定房间访问权限。",
-  "ABAC_disabled_action_reason": "在ABAC管理的房间中不可用"
+  "Your_workspace": "您的工作区"
 }
