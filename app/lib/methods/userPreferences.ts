@@ -1,23 +1,36 @@
 import { useState, useEffect, useCallback } from 'react';
 import { MMKV } from 'react-native-mmkv';
-import { Platform } from 'react-native';
-
-import { appGroupPath } from './appGroup';
+import { Platform, NativeModules } from 'react-native';
 
 let storage: MMKV | null = null;
 let storageInitPromise: Promise<MMKV> | null = null;
 
-function initializeStorage() {
+// Get app group path lazily to avoid accessing native modules at import time
+function getAppGroupPath(): string {
+	if (Platform.OS !== 'ios') {
+		return '';
+	}
+
+	try {
+		const { AppGroup } = NativeModules;
+		return AppGroup?.path || '';
+	} catch {
+		return '';
+	}
+}
+
+function initializeStorage(): Promise<MMKV> {
 	if (storage) return Promise.resolve(storage);
 
 	if (storageInitPromise) return storageInitPromise;
 
-	storageInitPromise = ((): any => {
+	storageInitPromise = Promise.resolve().then((): MMKV => {
 		console.log('[MMKV] Initializing storage...');
 
 		// On iOS, use the App Group path to match where native migration wrote the data
 		// On Android, react-native-mmkv uses default path
-		const mmkvPath = Platform.OS === 'ios' ? `${appGroupPath}mmkv` : undefined;
+		const appGroupPath = getAppGroupPath();
+		const mmkvPath = Platform.OS === 'ios' && appGroupPath ? `${appGroupPath}mmkv` : undefined;
 
 		if (mmkvPath) {
 			console.log('[MMKV] Using custom path:', mmkvPath);
@@ -39,12 +52,12 @@ function initializeStorage() {
 		console.log(`[MMKV] Storage initialized with ${keys.length} keys`);
 
 		return storage;
-	})();
+	});
 
 	return storageInitPromise;
 }
 
-function getStorage(): any {
+function getStorage(): Promise<MMKV> {
 	if (storage) return Promise.resolve(storage);
 	return initializeStorage();
 }
@@ -53,7 +66,8 @@ function getStorageSync(): MMKV {
 	if (!storage) {
 		console.warn('[MMKV] Storage not yet initialized, initializing now...');
 		// Initialize synchronously if needed (migration already ran in native code)
-		const mmkvPath = Platform.OS === 'ios' ? `${appGroupPath}mmkv` : undefined;
+		const appGroupPath = getAppGroupPath();
+		const mmkvPath = Platform.OS === 'ios' && appGroupPath ? `${appGroupPath}mmkv` : undefined;
 		storage = new MMKV({
 			id: 'default',
 			path: mmkvPath
