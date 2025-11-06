@@ -109298,9 +109298,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={1}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -109309,8 +109306,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -109864,9 +109859,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={2}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -109875,8 +109867,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -110223,9 +110213,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={3}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -110234,8 +110221,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -110582,9 +110567,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={4}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -110593,8 +110575,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -110920,9 +110900,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={5}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -110931,8 +110908,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -111171,9 +111146,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={6}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -111182,8 +111154,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -111820,9 +111790,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={7}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -111831,8 +111798,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -112386,9 +112351,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={8}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -112397,8 +112359,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -112745,9 +112705,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={9}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -112756,8 +112713,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
@@ -113104,9 +113059,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                           </View>
                           <View
                             collapsable={false}
-                            enabled={false}
-                            handlerTag={10}
-                            handlerType="PanGestureHandler"
                             hitSlop={
                               {
                                 "bottom": 12,
@@ -113115,8 +113067,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                                 "top": 12,
                               }
                             }
-                            onGestureHandlerEvent={[Function]}
-                            onGestureHandlerStateChange={[Function]}
                             style={
                               [
                                 {
