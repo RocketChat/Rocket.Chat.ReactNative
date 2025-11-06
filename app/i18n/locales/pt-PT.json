@@ -512,5 +512,6 @@
   "Your_Password_Must_Have": "Sua senha deve ter:",
   "ABAC_room_attributes": "Atributos da sala",
   "ABAC_managed": "Gerido por ABAC",
-  "ABAC_managed_description": "Apenas utilizadores compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala."
+  "ABAC_managed_description": "Apenas utilizadores compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala.",
+  "ABAC_disabled_action_reason": "Não disponível em salas geridas por ABAC"
 }

@@ -898,5 +898,6 @@
   "Your_workspace": "Az Ön munkaterülete",
   "ABAC_room_attributes": "Szoba attribútumok",
   "ABAC_managed": "ABAC által kezelt",
-  "ABAC_managed_description": "Csak a megfelelő felhasználók férhetnek hozzá az attribútum alapú hozzáférés-vezérelt szobákhoz. Az attribútumok határozzák meg a szoba hozzáférését."
+  "ABAC_managed_description": "Csak a megfelelő felhasználók férhetnek hozzá az attribútum alapú hozzáférés-vezérelt szobákhoz. Az attribútumok határozzák meg a szoba hozzáférését.",
+  "ABAC_disabled_action_reason": "Nem érhető el ABAC által kezelt szobákban"
 }

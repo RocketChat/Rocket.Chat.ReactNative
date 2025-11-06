@@ -945,5 +945,6 @@
   "Your_workspace": "Arbeidsområdet ditt",
   "ABAC_room_attributes": "Romattributter",
   "ABAC_managed": "ABAC-administrert",
-  "ABAC_managed_description": "Kun kompatible brukere har tilgang til attributtbaserte tilgangskontrollerte rom. Attributter bestemmer romtilgang."
+  "ABAC_managed_description": "Kun kompatible brukere har tilgang til attributtbaserte tilgangskontrollerte rom. Attributter bestemmer romtilgang.",
+  "ABAC_disabled_action_reason": "Ikke tilgjengelig i ABAC-administrerte rom"
 }

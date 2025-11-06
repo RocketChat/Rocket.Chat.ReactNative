@@ -970,5 +970,6 @@
   "Your_workspace": "Váš pracovní prostor",
   "ABAC_room_attributes": "Atributy místnosti",
   "ABAC_managed": "Spravováno ABAC",
-  "ABAC_managed_description": "Pouze vyhovující uživatelé mají přístup k místnostem řízeným přístupem na základě atributů. Atributy určují přístup k místnosti."
+  "ABAC_managed_description": "Pouze vyhovující uživatelé mají přístup k místnostem řízeným přístupem na základě atributů. Atributy určují přístup k místnosti.",
+  "ABAC_disabled_action_reason": "Není k dispozici v místnostech spravovaných systémem ABAC"
 }

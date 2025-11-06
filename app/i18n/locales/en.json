@@ -998,5 +998,6 @@
   "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
   "ABAC_room_attributes": "Room attributes",
   "ABAC_managed": "ABAC managed",
-  "ABAC_managed_description": "Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access."
+  "ABAC_managed_description": "Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.",
+  "ABAC_disabled_action_reason": "Not available in ABAC-managed rooms"
 }

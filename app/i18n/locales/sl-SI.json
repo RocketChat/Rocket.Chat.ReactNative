@@ -793,5 +793,6 @@
   "Your_workspace": "Vaš delovni prostor",
   "ABAC_room_attributes": "Atributi sobe",
   "ABAC_managed": "ABAC upravljano",
-  "ABAC_managed_description": "Samo skladni uporabniki imajo dostop do sob z nadzorom dostopa na podlagi atributov. Atributi določajo dostop do sobe."
+  "ABAC_managed_description": "Samo skladni uporabniki imajo dostop do sob z nadzorom dostopa na podlagi atributov. Atributi določajo dostop do sobe.",
+  "ABAC_disabled_action_reason": "Ni na voljo v sobah, ki jih upravlja ABAC"
 }

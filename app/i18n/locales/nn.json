@@ -399,5 +399,6 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Invitasjonskoblingen din utløper {{date}} eller etter  {{usesLeft}} anvendelser.",
   "ABAC_room_attributes": "Romattributt",
   "ABAC_managed": "ABAC-administrert",
-  "ABAC_managed_description": "Berre kompatible brukarar har tilgang til attributtbaserte tilgangskontrollerte rom. Attributta bestemmer romtilgangen."
+  "ABAC_managed_description": "Berre kompatible brukarar har tilgang til attributtbaserte tilgangskontrollerte rom. Attributta bestemmer romtilgangen.",
+  "ABAC_disabled_action_reason": "Ikkje tilgjengeleg i ABAC-administrerte rom"
 }

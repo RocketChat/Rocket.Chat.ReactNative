@@ -624,5 +624,6 @@
   "Your_workspace": "您的工作区",
   "ABAC_room_attributes": "房间属性",
   "ABAC_managed": "ABAC 管理",
-  "ABAC_managed_description": "只有符合条件的用户才能访问基于属性的访问控制房间。属性决定房间访问权限。"
+  "ABAC_managed_description": "只有符合条件的用户才能访问基于属性的访问控制房间。属性决定房间访问权限。",
+  "ABAC_disabled_action_reason": "在ABAC管理的房间中不可用"
 }

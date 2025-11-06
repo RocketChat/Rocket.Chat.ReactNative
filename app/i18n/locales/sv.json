@@ -855,5 +855,6 @@
   "Your_workspace": "Din arbetsyta",
   "ABAC_room_attributes": "Rumsattribut",
   "ABAC_managed": "ABAC-hanterat",
-  "ABAC_managed_description": "Endast kompatibla användare har åtkomst till attributbaserat åtkomstskyddade rum. Attributen avgör tillgången till rummet."
+  "ABAC_managed_description": "Endast kompatibla användare har åtkomst till attributbaserat åtkomstskyddade rum. Attributen avgör tillgången till rummet.",
+  "ABAC_disabled_action_reason": "Inte tillgängligt i ABAC-hanterade rum"
 }

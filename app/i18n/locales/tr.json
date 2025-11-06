@@ -664,5 +664,6 @@
   "Your_workspace": "Çalışma alanınız",
   "ABAC_room_attributes": "Oda özellikleri",
   "ABAC_managed": "ABAC tarafından yönetilir",
-  "ABAC_managed_description": "Yalnızca uyumlu kullanıcılar, öznitelik tabanlı erişim kontrollü odalara erişebilir. Öznitelikler, oda erişimini belirler."
+  "ABAC_managed_description": "Yalnızca uyumlu kullanıcılar, öznitelik tabanlı erişim kontrollü odalara erişebilir. Öznitelikler, oda erişimini belirler.",
+  "ABAC_disabled_action_reason": "ABAC tarafından yönetilen odalarda mevcut değil"
 }

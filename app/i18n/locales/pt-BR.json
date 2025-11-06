@@ -982,5 +982,6 @@
   "Your_workspace": "Sua workspace",
   "ABAC_room_attributes": "Atributos da sala",
   "ABAC_managed": "Gerenciado por ABAC",
-  "ABAC_managed_description": "Apenas usuários compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala."
+  "ABAC_managed_description": "Apenas usuários compatíveis têm acesso a salas controladas por acesso baseado em atributos. Atributos determinam o acesso à sala.",
+  "ABAC_disabled_action_reason": "Não disponível em salas gerenciadas por ABAC"
 }

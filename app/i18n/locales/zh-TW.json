@@ -653,5 +653,6 @@
   "Your_workspace": "您的工作區",
   "ABAC_room_attributes": "房間屬性",
   "ABAC_managed": "ABAC 管理",
-  "ABAC_managed_description": "只有符合條件的使用者才能存取基於屬性的存取控制房間。屬性決定房間存取權限。"
+  "ABAC_managed_description": "只有符合條件的使用者才能存取基於屬性的存取控制房間。屬性決定房間存取權限。",
+  "ABAC_disabled_action_reason": "無法在 ABAC 管理的房間中使用"
 }
