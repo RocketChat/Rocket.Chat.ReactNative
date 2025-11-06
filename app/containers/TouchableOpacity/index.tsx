@@ -1,30 +1,32 @@
 import React from 'react';
-import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { Pressable, type PressableProps } from 'react-native-gesture-handler';
-import type { StyleProp, ViewStyle } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import { Pressable, type PressableProps, type StyleProp, type ViewStyle } from 'react-native';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface TouchableOpacityProps extends PressableProps {
 	style?: StyleProp<ViewStyle>;
+	opacity?: number;
 	activeOpacity?: number;
 }
 
 function TouchableOpacity(props: TouchableOpacityProps): React.JSX.Element {
-	const opacity = useSharedValue(props.activeOpacity || 1);
+	const opacity = useSharedValue(props.opacity || 1);
 	const animatedStyle = useAnimatedStyle(() => ({
 		opacity: opacity.value
 	}));
 
 	const onPressIn = () => {
-		opacity.value = withTiming(0.2);
+		opacity.value = props.activeOpacity || 0.2;
 	};
 	const onPressOut = () => {
-		opacity.value = withTiming(props.activeOpacity || 1);
+		opacity.value = props.opacity || 1;
 	};
 
 	return (
-		<Pressable {...props} onPressIn={onPressIn} onPressOut={onPressOut} style={[animatedStyle, props.style]}>
+		<AnimatedPressable {...props} onPressIn={onPressIn} onPressOut={onPressOut} style={[animatedStyle, props.style]}>
 			{props.children}
-		</Pressable>
+		</AnimatedPressable>
 	);
 }
 
