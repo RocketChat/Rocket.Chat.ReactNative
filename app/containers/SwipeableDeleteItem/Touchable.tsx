@@ -88,35 +88,57 @@ const SwipeableDeleteTouchable = ({
 		let toValue = 0;
 
 		if (rowState.value === 0) {
-			// if no option is opened - only allow left swipes (negative translationX)
-			if (translationX < 0 && translationX > -longSwipe) {
-				// open delete action if swipe left
-				if (I18n.isRTL) {
-					toValue = -actionWidth;
+			// if no option is opened
+			if (I18n.isRTL) {
+				// RTL: swipe right (positive translationX) to show delete
+				if (translationX > 0 && translationX < longSwipe) {
+					// open delete action if swipe right
+					toValue = actionWidth;
+					rowState.value = 1;
+				} else if (translationX >= longSwipe) {
+					// long swipe right - trigger delete immediately
+					toValue = 0;
+					rowState.value = 1;
+					handleDeletePress();
 				} else {
-					toValue = -1 * actionWidth;
+					// any other gesture (including left swipes) - stay closed
+					toValue = 0;
 				}
+			} else if (translationX < 0 && translationX > -longSwipe) {
+				// LTR: open delete action if swipe left
+				toValue = -actionWidth;
 				rowState.value = 1;
 			} else if (translationX <= -longSwipe) {
-				// long swipe left - trigger delete immediately
+				// LTR: long swipe left - trigger delete immediately
 				toValue = 0;
 				rowState.value = 1;
 				handleDeletePress();
 			} else {
-				// any other gesture (including right swipes) - stay closed
+				// LTR: any other gesture (including right swipes) - stay closed
 				toValue = 0;
 			}
 		} else if (rowState.value === 1) {
-			// if right option is opened (delete action)
-			if (valueRef.current > -1 * smallSwipe) {
+			// if delete option is opened
+			if (I18n.isRTL) {
+				// RTL: delete is on the left (positive translation)
+				if (valueRef.current < smallSwipe) {
+					toValue = 0;
+					rowState.value = 0;
+				} else if (valueRef.current > longSwipe) {
+					handleDeletePress();
+				} else {
+					toValue = actionWidth;
+				}
+			} else if (valueRef.current > -smallSwipe) {
+				// LTR: close if swipe back right
 				toValue = 0;
 				rowState.value = 0;
 			} else if (valueRef.current < -longSwipe) {
+				// LTR: trigger delete on long swipe
 				handleDeletePress();
-			} else if (I18n.isRTL) {
-				toValue = -actionWidth;
 			} else {
-				toValue = -1 * actionWidth;
+				// LTR: keep delete action open
+				toValue = -actionWidth;
 			}
 		}
 
@@ -131,13 +153,24 @@ const SwipeableDeleteTouchable = ({
 		.failOffsetY([-20, 20]) // Fail on vertical movement to distinguish scrolling
 		.onUpdate(event => {
 			const newValue = event.translationX + rowOffSet.value;
-			// Prevent right swipe - only allow left swipes (negative values)
-			if (newValue > 0) {
+
+			if (I18n.isRTL) {
+				// RTL: allow right swipes (positive values), prevent left swipes
+				if (newValue < 0) {
+					transX.value = 0;
+				} else {
+					transX.value = newValue;
+					// Limit how far right it can stretch
+					if (transX.value > width) transX.value = width;
+				}
+			} else if (newValue > 0) {
+				// LTR: prevent right swipes
 				transX.value = 0;
 			} else {
+				// LTR: allow left swipes (negative values)
 				transX.value = newValue;
 				// Limit how far left it can stretch
-				if (transX.value < -1 * width) transX.value = -1 * width;
+				if (transX.value < -width) transX.value = -width;
 			}
 		})
 		.onEnd(event => {

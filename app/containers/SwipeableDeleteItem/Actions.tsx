@@ -58,25 +58,43 @@ export const DeleteAction = React.memo(
 
 		const animatedDeleteButtonStyles = useAnimatedStyle(() => {
 			if (I18n.isRTL) {
-				if (transX.value < longSwipe && transX.value >= 2 * actionWidth) {
+				// RTL: delete button appears from the left when swiping right
+				if (transX.value > longSwipe && transX.value >= 2 * actionWidth) {
 					const parallaxSwipe = interpolate(
 						transX.value,
 						[2 * actionWidth, longSwipe],
-						[actionWidth, actionWidth + 0.1 * transX.value]
+						[-actionWidth, -actionWidth - 0.1 * transX.value]
 					);
-					return { transform: [{ translateX: parallaxSwipe + translateXDelete.value }] };
+					return {
+						transform: [{ translateX: parallaxSwipe - translateXDelete.value }],
+						left: 0,
+						right: undefined
+					};
 				}
-				return { transform: [{ translateX: transX.value - actionWidth + translateXDelete.value }] };
+				return {
+					transform: [{ translateX: transX.value - actionWidth - translateXDelete.value }],
+					left: 0,
+					right: undefined
+				};
 			}
-			if (transX.value > -longSwipe && transX.value <= -2 * actionWidth) {
+			// LTR: delete button appears from the right when swiping left
+			if (transX.value < -longSwipe && transX.value <= -2 * actionWidth) {
 				const parallaxSwipe = interpolate(
 					transX.value,
 					[-2 * actionWidth, -longSwipe],
-					[-actionWidth, -actionWidth + 0.1 * transX.value]
+					[actionWidth, actionWidth + 0.1 * transX.value]
 				);
-				return { transform: [{ translateX: parallaxSwipe + translateXDelete.value }] };
+				return {
+					transform: [{ translateX: parallaxSwipe + translateXDelete.value }],
+					right: 0,
+					left: undefined
+				};
 			}
-			return { transform: [{ translateX: transX.value + actionWidth + translateXDelete.value }] };
+			return {
+				transform: [{ translateX: transX.value + actionWidth + translateXDelete.value }],
+				right: 0,
+				left: undefined
+			};
 		});
 		const viewHeight = { height: rowHeight + SERVER_ITEM_PADDING_VERTICAL };
 
@@ -119,6 +137,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		top: 0,
 		alignItems: 'flex-end'
+		// Position (left/right) will be dynamically set based on RTL in the component
 	},
 	actionButton: {
 		width: 80,
