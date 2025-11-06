@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import SearchHeader from '../../../containers/SearchHeader';
@@ -9,6 +8,7 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 import ServersList from './ServersList';
+import TouchableOpacity from '../../../containers/TouchableOpacity';
 
 const styles = StyleSheet.create({
 	container: {
@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
 
 // search and searchEnabled need to be props because Header is used on react-navigation, which does not support context
 const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string) => void; searchEnabled: boolean }) => {
-	'use memo';
-
 	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
 	const connected = useAppSelector(state => state.meteor.connected);
 	const isFetching = useAppSelector(state => state.rooms.isFetching);
