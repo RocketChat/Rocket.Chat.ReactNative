@@ -14,6 +14,7 @@ export type TActionSheetOptionsItem = {
 	onPress: () => void;
 	right?: () => React.ReactElement;
 	enabled?: boolean;
+	disabledReason?: string;
 };
 
 export type TActionSheetOptions = {
