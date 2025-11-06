@@ -206,7 +206,7 @@ class Encryption {
 	encodePrivateKey = async (privateKey: string, password: string, userId: string) => {
 		// TODO: get the appropriate server version
 		const { version } = store.getState().server;
-		const isV2 = compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0');
+		const isV2 = compareServerVersion(version, 'greaterThanOrEqualTo', '7.13.0');
 
 		const keyBase64 = await this.generateMasterKey(password, userId, isV2 ? 100000 : 1000);
 		const ivB64 = isV2 ? await randomBytes(12) : await randomBytes(16);

@@ -227,7 +227,7 @@ export default class EncryptionRoom {
 	createNewRoomKey = async () => {
 		const { version } = store.getState().server;
 		// v2
-		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.9.0')) {
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.13.0')) {
 			this.roomKey = b64ToBuffer(await randomBytes(32));
 			// Web Crypto format of a Secret Key
 			const sessionKeyExported = {
