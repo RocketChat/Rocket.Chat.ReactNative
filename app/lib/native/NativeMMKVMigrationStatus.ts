@@ -11,4 +11,3 @@ interface IMMKVMigrationStatus {
 }
 
 export default NativeModules.MMKVMigrationStatus as IMMKVMigrationStatus;
-

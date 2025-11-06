@@ -7,30 +7,30 @@ import UserPreferences from './userPreferences';
 export async function checkMigrationStatus() {
 	try {
 		const status = await MMKVMigrationStatus.getMigrationStatus();
-		
+
 		console.log('=== MMKV Migration Status ===');
 		console.log(`Completed: ${status.completed}`);
 		console.log(`Timestamp: ${status.timestamp}`);
 		console.log(`Keys Migrated: ${status.keysMigrated}`);
 		console.log(`Bundle ID: ${status.bundleId}`);
-		
+
 		// Check actual keys in storage
 		const allKeys = UserPreferences.getAllKeys();
 		console.log(`\nCurrent keys in storage: ${allKeys.length}`);
-		
+
 		if (allKeys.length > 0) {
 			console.log('Sample keys:', allKeys.slice(0, 20));
-			
+
 			// Check for important keys
 			const currentServer = UserPreferences.getString('CURRENT_SERVER');
 			console.log(`\nCURRENT_SERVER: ${currentServer || 'NOT FOUND'}`);
-			
+
 			if (currentServer) {
 				const token = UserPreferences.getString(`reactnativemeteor_usertoken-${currentServer}`);
 				console.log(`User token exists: ${token ? 'YES' : 'NO'}`);
 			}
 		}
-		
+
 		return {
 			...status,
 			keysInStorage: allKeys.length,
@@ -53,4 +53,3 @@ export async function resetMigration() {
 		console.error('Error resetting migration:', error);
 	}
 }
-
