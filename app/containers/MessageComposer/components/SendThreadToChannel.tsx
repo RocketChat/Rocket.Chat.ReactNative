@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
-import TouchableOpacity from '../../../containers/TouchableOpacity';
+import TouchableOpacity from '../../TouchableOpacity';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { useAlsoSendThreadToChannel, useMessageComposerApi } from '../context';
 import { CustomIcon } from '../../CustomIcon';

@@ -1,7 +1,7 @@
 import React from 'react';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { Pressable, type PressableProps } from 'react-native-gesture-handler';
-import { StyleProp, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
 interface TouchableOpacityProps extends PressableProps {
 	style?: StyleProp<ViewStyle>;
