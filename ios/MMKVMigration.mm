@@ -169,6 +169,7 @@ static NSString *toHex(NSString *str) {
                 [newMMKV setString:(NSString *)value forKey:key];
                 migratedCount++;
                 
+                
                 // Log important keys
                 if ([key containsString:@"CURRENT_SERVER"] || 
                     [key containsString:@"reactnativemeteor_usertoken"] ||
