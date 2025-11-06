@@ -140,7 +140,7 @@ const ServersList = () => {
 				keyboardShouldPersistTaps='always'
 			/>
 			<List.Separator />
-			<View style={{ padding: 16 }}>
+			<View style={styles.addServerButtonContainer}>
 				<Button
 					title={I18n.t('Add_Server')}
 					type='primary'

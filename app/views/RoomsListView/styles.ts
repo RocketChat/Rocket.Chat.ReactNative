@@ -46,5 +46,8 @@ export default StyleSheet.create({
 		paddingVertical: 14,
 		paddingHorizontal: 16,
 		borderRadius: 4
+	},
+	addServerButtonContainer: {
+		padding: 16
 	}
 });

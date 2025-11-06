@@ -88,8 +88,7 @@ export const DeleteAction = React.memo(
 					style={[
 						styles.actionRightButtonContainer,
 						{
-							width,
-							alignItems: 'flex-end'
+							width
 						},
 						viewHeight,
 						animatedDeleteButtonStyles
@@ -118,7 +117,8 @@ const styles = StyleSheet.create({
 	actionRightButtonContainer: {
 		position: 'absolute',
 		justifyContent: 'center',
-		top: 0
+		top: 0,
+		alignItems: 'flex-end'
 	},
 	actionButton: {
 		width: 80,
