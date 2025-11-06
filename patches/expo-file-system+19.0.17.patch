@@ -1,0 +1,32 @@
+diff --git a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
+index a85957a..ac31ea2 100644
+--- a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
++++ b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
+@@ -27,6 +27,16 @@ class FileSystemModule : Module() {
+   private val context: Context
+     get() = appContext.reactContext ?: throw Exceptions.AppContextLost()
+ 
++    companion object {
++        @JvmStatic
++        var client: OkHttpClient? = null
++
++        @JvmStatic
++        fun setOkHttpClient(okHttpClient: OkHttpClient) {
++            client = okHttpClient
++        }
++    }
++
+   @RequiresApi(Build.VERSION_CODES.O)
+   @OptIn(EitherType::class)
+   override fun definition() = ModuleDefinition {
+@@ -61,8 +71,8 @@ class FileSystemModule : Module() {
+       }
+ 
+       val request = requestBuilder.build()
+-      val client = OkHttpClient()
+-      val response = request.await(client)
++      val okHttpClient = client ?: OkHttpClient()
++      val response = request.await(okHttpClient)
+ 
+       if (!response.isSuccessful) {
+         throw UnableToDownloadException("response has status: ${response.code}")
