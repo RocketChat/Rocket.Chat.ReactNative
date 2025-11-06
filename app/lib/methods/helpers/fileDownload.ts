@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import FileViewer from 'react-native-file-viewer';
 
 import { LISTENER } from '../../../containers/Toast';
