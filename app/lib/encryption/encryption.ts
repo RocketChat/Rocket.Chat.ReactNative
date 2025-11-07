@@ -208,7 +208,7 @@ class Encryption {
 		const { version } = store.getState().server;
 		const isV2 = compareServerVersion(version, 'greaterThanOrEqualTo', '7.13.0');
 
-		const keyBase64 = await this.generateMasterKey(password, userId, isV2 ? 100000 : 1000);
+		const keyBase64 = await this.generateMasterKey(password, isV2 ? `v2:${userId}:mobile` : userId, isV2 ? 100000 : 1000);
 		const ivB64 = isV2 ? await randomBytes(12) : await randomBytes(16);
 		const ivArrayBuffer = b64ToBuffer(ivB64);
 		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
@@ -226,11 +226,11 @@ class Encryption {
 
 	// Decode a private key fetched from server
 	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
-		const { iv: ivBuffer, ciphertext: ciphertextBuffer, iterations, version } = parsePrivateKey(privateKey, userId);
+		const { iv: ivBuffer, ciphertext: ciphertextBuffer, iterations, version, salt } = parsePrivateKey(privateKey, userId);
 		const ciphertextB64 = bufferToB64(ciphertextBuffer);
 		const ivHex = bufferToHex(ivBuffer);
 
-		const keyBase64 = await this.generateMasterKey(password, userId, iterations);
+		const keyBase64 = await this.generateMasterKey(password, salt, iterations);
 		const keyHex = bufferToHex(b64ToBuffer(keyBase64));
 
 		let privKeyBase64;
@@ -242,15 +242,15 @@ class Encryption {
 		return bufferToUtf8(b64ToBuffer(privKeyBase64));
 	};
 
-	// Generate a user master key, this is based on userId and a password
-	generateMasterKey = async (password: string, userId: string, iterations: number): Promise<string> => {
+	// Generate a user master key, this is based on salt and a password
+	generateMasterKey = async (password: string, salt: string, iterations: number): Promise<string> => {
 		const hash = 'SHA256';
 		const keyLen = 32;
 
 		const passwordBase64 = bufferToB64(utf8ToBuffer(password));
-		const userIdBase64 = bufferToB64(utf8ToBuffer(userId));
+		const saltBase64 = bufferToB64(utf8ToBuffer(salt));
 
-		const masterKeyBase64 = await pbkdf2Hash(passwordBase64, userIdBase64, iterations, keyLen, hash);
+		const masterKeyBase64 = await pbkdf2Hash(passwordBase64, saltBase64, iterations, keyLen, hash);
 		return masterKeyBase64;
 	};
 
