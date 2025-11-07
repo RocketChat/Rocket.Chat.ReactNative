@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { type E2EEnterYourPasswordStackParamList } from '../stacks/types';
+import { type E2EEnterYourPasswordStackParamList, type InsideStackParamList } from '../stacks/types';
 import { encryptionDecodeKey } from '../actions/encryption';
 import Button from '../containers/Button';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
@@ -115,6 +115,16 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 		dispatch(encryptionDecodeKey(password));
 	};
 
+	const navigateToForgotPassword = () => {
+		const insideNavigation = navigation.getParent<NativeStackNavigationProp<InsideStackParamList>>();
+		insideNavigation?.navigate('DrawerNavigator', {
+			screen: 'SettingsStackNavigator',
+			params: {
+				screen: 'E2EEncryptionSecurityView'
+			}
+		});
+	};
+
 	return (
 		<KeyboardView>
 			<ScrollView
@@ -146,7 +156,7 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 						/>
 						<Button
 							type='secondary'
-							onPress={() => navigation.navigate('E2EResetYourPasswordView')}
+							onPress={navigateToForgotPassword}
 							title={I18n.t('Forgot_E2EE_password')}
 							testID='e2e-enter-your-password-view-forgot-password'
 							style={styles.forgotE2EEPasswordButton}
