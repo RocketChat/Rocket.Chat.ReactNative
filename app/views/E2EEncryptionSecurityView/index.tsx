@@ -4,8 +4,7 @@ import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
-import { e2eResetOwnKey } from 'lib/services/restApi';
-
+import { e2eResetOwnKey } from '../../lib/services/restApi';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
@@ -48,7 +47,7 @@ const E2EEncryptionSecurityView = () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
 					const res = await e2eResetOwnKey();
-
+					console.log('res', res);
 					if (res?.success === true) {
 						dispatch(logout());
 					}
