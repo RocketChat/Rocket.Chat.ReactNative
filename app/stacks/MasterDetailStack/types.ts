@@ -191,7 +191,6 @@ export type ModalStackParamList = {
 		showCloseModal: boolean;
 	};
 	E2EEnterYourPasswordView: undefined;
-	E2EResetYourPasswordView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
 	SecurityPrivacyView: undefined;
