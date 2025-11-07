@@ -39,11 +39,11 @@ const ListPicker = ({
 	const option = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
 	const insets = useSafeAreaInsets();
 
-	const getOptions = () => (
+	const getOptions = (): React.ReactElement => (
 		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{OPTIONS[preference].map(i => (
-				<>
+				<React.Fragment key={i.value}>
 					<List.Radio
 						title={i.label}
 						isSelected={option?.value === i.value}
@@ -54,7 +54,7 @@ const ListPicker = ({
 						}}
 					/>
 					<List.Separator />
-				</>
+				</React.Fragment>
 			))}
 		</View>
 	);
@@ -65,7 +65,7 @@ const ListPicker = ({
 		<List.Item
 			title={title}
 			testID={testID}
-			onPress={() => showActionSheet({ options: getOptions() })}
+			onPress={() => showActionSheet({ children: getOptions() })}
 			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
 			additionalAcessibilityLabel={label}
 		/>
