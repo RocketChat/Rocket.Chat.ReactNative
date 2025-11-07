@@ -31,7 +31,7 @@ const restore = function* restore() {
 
 	// Use native logger for TestFlight debugging on iOS when available
 	const logger = {
-		info: (msg) => {
+		info: msg => {
 			console.log(msg);
 			if (hasNativeLogger) {
 				try {
@@ -41,7 +41,7 @@ const restore = function* restore() {
 				}
 			}
 		},
-		error: (msg) => {
+		error: msg => {
 			console.error(msg);
 			if (hasNativeLogger) {
 				try {
@@ -51,7 +51,7 @@ const restore = function* restore() {
 				}
 			}
 		},
-		warn: (msg) => {
+		warn: msg => {
 			console.warn(msg);
 			if (hasNativeLogger) {
 				try {
@@ -162,7 +162,7 @@ const restore = function* restore() {
 					key.includes('SERVER')
 			);
 			logger.info(`Important keys found: ${importantKeys.length}`);
-			importantKeys.forEach((key) => {
+			importantKeys.forEach(key => {
 				const value = UserPreferences.getString(key);
 				logger.info(`  ${key}: ${value}`);
 			});
@@ -204,11 +204,16 @@ const restore = function* restore() {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
 			logger.info(`✅ Valid server and userId found - server: ${server}`);
-			yield localAuthenticate(server);
+			try {
+				yield localAuthenticate(server);
+			} catch (error) {
+				const errorMsg = error && error.message ? error.message : String(error || 'Unknown');
+				logger.warn(`localAuthenticate failed: ${errorMsg}`);
+			}
 			const serverRecord = yield getServerById(server);
 			if (!serverRecord) {
-				logger.error('Server record not found in database');
-				return;
+				logger.warn('Server record not found in database yet - proceeding without version info');
+				return yield put(selectServerRequest(server));
 			}
 			logger.info('Selecting server and starting app...');
 			yield put(selectServerRequest(server, serverRecord.version));
