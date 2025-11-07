@@ -81,7 +81,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		serverVersion: state.server.version,
 		Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 	}));
-
 	const {
 		control,
 		handleSubmit,
