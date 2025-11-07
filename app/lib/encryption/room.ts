@@ -114,7 +114,7 @@ export default class EncryptionRoom {
 
 		if (!this.subscription) {
 			this.subscription = await getSubscriptionByRoomId(this.roomId);
-			if (!this.subscription) {
+			if (!this.subscription || !this.subscription.encrypted) {
 				return;
 			}
 		}
