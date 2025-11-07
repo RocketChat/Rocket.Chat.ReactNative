@@ -131,22 +131,21 @@ export default class EncryptionRoom {
 			return;
 		}
 
-		// Similar to Encryption.evaluateSuggestedKey
 		const { E2EKey, e2eKeyId, E2ESuggestedKey } = this.subscription;
 		if (E2ESuggestedKey) {
 			try {
+				this.establishing = true;
+				const { keyID, roomKey, sessionKeyExportedString, algorithm } = await this.importRoomKey(
+					E2ESuggestedKey,
+					Encryption.privateKey
+				);
+				this.keyID = keyID;
+				this.roomKey = roomKey;
+				this.sessionKeyExportedString = sessionKeyExportedString;
+				this.algorithm = algorithm;
 				try {
-					this.establishing = true;
-					const { keyID, roomKey, sessionKeyExportedString, algorithm } = await this.importRoomKey(
-						E2ESuggestedKey,
-						Encryption.privateKey
-					);
-					this.keyID = keyID;
-					this.roomKey = roomKey;
-					this.sessionKeyExportedString = sessionKeyExportedString;
-					this.algorithm = algorithm;
 					await e2eAcceptSuggestedGroupKey(this.roomId);
-					this.readyPromise.resolve();
+					Encryption.deleteRoomInstance(this.roomId);
 					return;
 				} catch (error) {
 					await e2eRejectSuggestedGroupKey(this.roomId);

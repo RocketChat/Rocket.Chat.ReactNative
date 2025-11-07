@@ -308,25 +308,8 @@ class Encryption {
 		}
 	};
 
-	evaluateSuggestedKey = async (rid: string, E2ESuggestedKey: string) => {
-		if (this.privateKey) {
-			try {
-				const roomE2E = await this.getRoomInstance(rid);
-				if (!roomE2E) {
-					return;
-				}
-
-				try {
-					await roomE2E.importRoomKey(E2ESuggestedKey, this.privateKey);
-				} catch (error) {
-					await e2eRejectSuggestedGroupKey(rid);
-					return;
-				}
-				await e2eAcceptSuggestedGroupKey(rid);
-			} catch (e) {
-				console.error(e);
-			}
-		}
+	deleteRoomInstance = (rid: string) => {
+		delete this.roomInstances[rid];
 	};
 
 	// Logic to decrypt all pending messages/threads/threadMessages
