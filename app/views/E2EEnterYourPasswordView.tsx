@@ -117,7 +117,7 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 	const navigateToForgotPassword = () => {
 		isNavigatingToResetPassword.current = true;
 		const insideNavigation = navigation.getParent<NativeStackNavigationProp<InsideStackParamList>>();
-		insideNavigation?.navigate('E2ESaveYourPasswordStackNavigator', { screen: 'E2EEncryptionSecurityView' });
+		insideNavigation?.navigate('E2EEnterYourPasswordStackNavigator', { screen: 'E2EEncryptionSecurityView' });
 	};
 
 	return (
