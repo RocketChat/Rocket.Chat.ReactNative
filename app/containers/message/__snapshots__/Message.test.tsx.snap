@@ -103797,14 +103797,6 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                   <View
                     style={
                       {
-                        "flex": 1,
-                        "height": 150,
-                      }
-                    }
-                  />
-                  <View
-                    style={
-                      {
                         "alignItems": "flex-start",
                         "flex": 1,
                         "flexDirection": "column",
@@ -106362,14 +106354,6 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     }
                   }
                 >
-                  <View
-                    style={
-                      {
-                        "flex": 1,
-                        "height": 150,
-                      }
-                    }
-                  />
                   <View
                     style={
                       {
