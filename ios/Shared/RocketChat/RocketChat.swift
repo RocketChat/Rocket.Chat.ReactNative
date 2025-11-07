@@ -39,35 +39,45 @@ final class RocketChat {
   func sendMessage(rid: String, message: String, threadIdentifier: String?, completion: @escaping((MessageResponse?) -> Void)) {
     let id = String.random(length: 17)
     
-    var msg = message
     let encrypted = Database(server: server).readRoomEncrypted(for: rid)
-    if encrypted {
-      msg = encryptMessage(rid: rid, id: id, message: message)
-    }
     
-    api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, threadIdentifier: threadIdentifier, messageType: encrypted ? .e2e : nil )) { response in
-      switch response {
-      case .resource(let response):
-        completion(response)
-        
-      case .error:
-        completion(nil)
-        break
+    if encrypted {
+      let encryption = Encryption(server: server, rid: rid)
+      guard let content = encryption.encryptContent(message) else {
+        return
+      }
+      
+      // For backward compatibility, also set msg field
+      let msg = content.algorithm == "rc.v2.aes-sha2" ? "" : content.ciphertext
+      
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, content: content, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
+        switch response {
+        case .resource(let response):
+          completion(response)
+          
+        case .error:
+          completion(nil)
+          break
+        }
+      }
+    } else {
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: message, threadIdentifier: threadIdentifier, messageType: nil)) { response in
+        switch response {
+        case .resource(let response):
+          completion(response)
+          
+        case .error:
+          completion(nil)
+          break
+        }
       }
     }
   }
   
-  func decryptMessage(rid: String, message: String) -> String? {
+  func decryptContent(rid: String, content: EncryptedContent) -> String? {
     encryptionQueue.sync {
       let encryption = Encryption(server: server, rid: rid)
-      return encryption.decryptMessage(message: message)
-    }
-  }
-  
-  func encryptMessage(rid: String, id: String, message: String) -> String {
-    encryptionQueue.sync {
-      let encryption = Encryption(server: server, rid: rid)
-      return encryption.encryptMessage(id: id, message: message)
+      return encryption.decryptContent(content: content)
     }
   }
 }

@@ -255,7 +255,7 @@ export default class RoomSubscription {
 			const threadMessagesCollection = db.get('thread_messages');
 
 			// Decrypt the message if necessary
-			message = await Encryption.decryptMessage(message);
+			message = (await Encryption.decryptMessage(message)) as IMessage;
 
 			// Create or update message
 			try {

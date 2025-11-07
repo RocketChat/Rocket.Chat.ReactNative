@@ -114,15 +114,36 @@ public class ReplyBroadcast extends BroadcastReceiver {
 
         String id = getMessageId();
 
-        String msg = Encryption.shared.encryptMessage(message, id, ejson);
+        // Use the new content structure approach
+        Encryption.EncryptionContent content = Encryption.shared.encryptMessageContent(message, id, ejson);
 
         Map msgMap = new HashMap();
         msgMap.put("_id", id);
         msgMap.put("rid", rid);
-        msgMap.put("msg", msg);
-        if (msg != message) {
+        
+        if (content != null) {
+            // Create content structure similar to TypeScript
+            Map contentMap = new HashMap();
+            contentMap.put("algorithm", content.algorithm);
+            contentMap.put("ciphertext", content.ciphertext);
+            if (content.kid != null) {
+                contentMap.put("kid", content.kid);
+            }
+            if (content.iv != null) {
+                contentMap.put("iv", content.iv);
+            }
+            msgMap.put("content", contentMap);
             msgMap.put("t", "e2e");
+            
+            // For backward compatibility, also set msg field
+            String msg = "rc.v2.aes-sha2".equals(content.algorithm) 
+                ? "" // Empty for v2
+                : content.ciphertext; // Direct ciphertext for v1
+            msgMap.put("msg", msg);
+        } else {
+            msgMap.put("msg", message);
         }
+        
         if(ejson.tmid != null) {
             msgMap.put("tmid", ejson.tmid);
         }

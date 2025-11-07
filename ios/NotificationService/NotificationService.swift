@@ -50,22 +50,21 @@ class NotificationService: UNNotificationServiceExtension {
         // If is a encrypted message
         if payload.messageType == .e2e {
             if let rid = payload.rid {
-                let messageToDecrypt: String?
-
-                if let msg = payload.msg, !msg.isEmpty {
-                    messageToDecrypt = msg
-                } else if let content = payload.content, content.algorithm == "rc.v1.aes-sha2" {
-                    messageToDecrypt = content.ciphertext
+                let decryptedMessage: String?
+                
+                if let content = payload.content, (content.algorithm == "rc.v1.aes-sha2" || content.algorithm == "rc.v2.aes-sha2") {
+                    decryptedMessage = rocketchat?.decryptContent(rid: rid, content: content)
+                } else if let msg = payload.msg, !msg.isEmpty {
+                    // Fallback to msg field
+                    decryptedMessage = rocketchat?.decryptContent(rid: rid, content: EncryptedContent(algorithm: "rc.v1.aes-sha2", ciphertext: msg, kid: nil, iv: nil))
                 } else {
-                    messageToDecrypt = nil
+                    decryptedMessage = nil
                 }
-
-                if let messageToDecrypt = messageToDecrypt, !messageToDecrypt.isEmpty {
-                    if let decryptedMessage = rocketchat?.decryptMessage(rid: rid, message: messageToDecrypt) {
-                        bestAttemptContent?.body = decryptedMessage
-                        if let roomType = payload.type, roomType == .group, let sender = payload.senderName {
+                
+                if let decryptedMessage = decryptedMessage {
+                    bestAttemptContent?.body = decryptedMessage
+                    if let roomType = payload.type, roomType == .group, let sender = payload.senderName {
                             bestAttemptContent?.body = "\(sender): \(decryptedMessage)"
-                        }
                     }
                 }
             }

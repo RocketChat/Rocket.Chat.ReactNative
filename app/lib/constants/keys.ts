@@ -5,7 +5,7 @@ export const E2E_RANDOM_PASSWORD_KEY = 'RC_E2E_RANDOM_PASSWORD_KEY';
 export const E2E_STATUS = {
 	PENDING: 'pending',
 	DONE: 'done'
-};
+} as const;
 export const E2E_BANNER_TYPE = {
 	REQUEST_PASSWORD: 'REQUEST_PASSWORD',
 	SAVE_PASSWORD: 'SAVE_PASSWORD'

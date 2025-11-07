@@ -38,8 +38,6 @@ export default function encryption(state = initialState, action: TApplicationAct
 				enabled: false,
 				failure: true
 			};
-		case ENCRYPTION.INIT:
-			return initialState;
 		default:
 			return state;
 	}
