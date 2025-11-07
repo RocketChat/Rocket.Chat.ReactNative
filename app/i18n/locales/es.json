@@ -324,6 +324,7 @@
   "Resend": "Reenviar",
   "RESET": "Reset",
   "Reset_E2EE_Password": "Restablecer contraseña E2EE",
+  "Reset_E2EE_Password_Description": "Restablecer le cerrará la sesión y generará una nueva contraseña E2EE al volver a iniciar sesión.\n\nRecuperará el acceso a las salas cifradas con miembros en línea, pero no a aquellas sin miembros en línea.",
   "Reset_password": "Resetear contraseña",
   "resetting_password": "reseteando contraseña",
   "Review_message": "Revisar mensaje",

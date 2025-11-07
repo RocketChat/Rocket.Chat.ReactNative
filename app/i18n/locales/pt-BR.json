@@ -694,6 +694,7 @@
   "Resend_email": "Reenviar e-mail",
   "RESET": "Resetar",
   "Reset_E2EE_Password": "Redefinir Senha E2EE",
+  "Reset_E2EE_Password_Description": "Redefinir irá desconectá-lo e gerar uma nova senha E2EE ao fazer login novamente.\n\nVocê recuperará acesso a salas criptografadas com membros online, mas não àquelas sem membros online.",
   "Reset_password": "Resetar senha",
   "resetting_password": "redefinindo senha",
   "Resume": "Continuar",

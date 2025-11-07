@@ -709,6 +709,7 @@
   "RESET": "Reset",
   "Reset": "Reset",
   "Reset_E2EE_Password": "Reset E2EE Password",
+  "Reset_E2EE_Password_Description": "Resetting will log you out and generate a new E2EE password upon logging back in.\n\nYou'll regain access to encrypted rooms with online members, but not to those without any members online.",
   "Reset_encryption_keys": "Reset encryption keys",
   "Reset_encryption_keys_info__room_type__": "Resetting E2EE keys is only recommend if no {{room_type}} member has a valid key to regain access to the previously encrypted content.",
   "Reset_password": "Reset password",

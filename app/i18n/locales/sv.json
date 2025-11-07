@@ -599,6 +599,7 @@
   "Resend": "Skicka igen",
   "RESET": "Återställ",
   "Reset_E2EE_Password": "Återställ E2EE-lösenord",
+  "Reset_E2EE_Password_Description": "Återställning kommer att logga ut dig och generera ett nytt E2EE-lösenord när du loggar in igen.\n\nDu kommer att återfå tillgång till krypterade rum med medlemmar online, men inte till de utan några medlemmar online.",
   "Reset_password": "Återställ lösenordet",
   "resetting_password": "återställer lösenordet",
   "Resume": "Återuppta",

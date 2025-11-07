@@ -556,6 +556,7 @@
   "Resend": "Opnieuw verzenden",
   "RESET": "Reset",
   "Reset_E2EE_Password": "Wachtwoord voor E2EE Resetten",
+  "Reset_E2EE_Password_Description": "Opnieuw instellen zal u afmelden en een nieuw E2EE-wachtwoord genereren wanneer u opnieuw inlogt.\n\nU krijgt weer toegang tot versleutelde kamers met online leden, maar niet tot die zonder online leden.",
   "Reset_password": "Wachtwoord resetten",
   "resetting_password": "wachtwoord aan het resetten",
   "Resume": "Hervatten",

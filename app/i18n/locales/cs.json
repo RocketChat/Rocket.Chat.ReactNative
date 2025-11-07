@@ -686,6 +686,7 @@
   "Resend_email": "Přeposlat email",
   "RESET": "Resetovat",
   "Reset_E2EE_Password": "Obnovit E2EE heslo",
+  "Reset_E2EE_Password_Description": "Resetováním dojde k odhlášení a po opětovném přihlášení vygeneruje nové E2EE heslo.\n\nZískáte zpět přístup k šifrovaným místnostem s online členy, ale ne k těm, kde žádní členové nejsou online.",
   "Reset_password": "Obnovit heslo",
   "resetting_password": "resetování hesla",
   "Resume": "Životopis",

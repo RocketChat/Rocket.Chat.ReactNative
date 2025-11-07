@@ -451,6 +451,7 @@
   "Resend": "重新发送",
   "RESET": "重置",
   "Reset_E2EE_Password": "重置 E2EE 密码",
+  "Reset_E2EE_Password_Description": "重置将使您注销，并在重新登录时生成一个新的 E2EE 密码。\n\n您将重新获得对有在线成员的加密房间的访问权限，但无法访问没有在线成员的房间。",
   "Reset_password": "重置密码",
   "resetting_password": "正在重置密码",
   "Review_app_desc": "请在 {{store}} 给予我们 5 星好评",

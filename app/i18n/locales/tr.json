@@ -470,6 +470,7 @@
   "Resend": "Yeniden yolla",
   "RESET": "Sifirla",
   "Reset_E2EE_Password": "E2EE Şifresini Sıfırla",
+  "Reset_E2EE_Password_Description": "Sıfırlama, oturumunuzu kapatacak ve tekrar oturum açarken yeni bir E2EE şifresi oluşturacaktır.\n\nÇevrimiçi üyeleri olan şifreli odalara tekrar erişim sağlayabilirsiniz, ancak çevrimiçi üyesi olmayan odalara erişim sağlayamazsınız.",
   "Reset_password": "Şifre sıfırla",
   "resetting_password": "şifre sıfırlanıyor",
   "Review_app_desc": "{{store}} üzerinde bize 5 yıldız verin",

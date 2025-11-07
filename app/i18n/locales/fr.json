@@ -556,6 +556,7 @@
   "Resend": "Renvoyer",
   "RESET": "Réinitialiser",
   "Reset_E2EE_Password": "Réinitialiser le mot de passe E2EE",
+  "Reset_E2EE_Password_Description": "La réinitialisation vous déconnectera et générera un nouveau mot de passe E2EE lors de votre reconnexion. \n\nVous retrouverez l'accès aux salles chiffrées avec des membres en ligne, mais pas à celles sans membres en ligne.",
   "Reset_password": "Réinitialiser le mot de passe",
   "resetting_password": "réinitialisation du mot de passe",
   "Resume": "Reprendre",

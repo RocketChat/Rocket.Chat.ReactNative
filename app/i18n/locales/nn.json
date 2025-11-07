@@ -294,6 +294,7 @@
   "RESET": "Tilbakestill",
   "Reset": "Tilbakestill",
   "Reset_E2EE_Password": "Tilbakestill E2EE-passord",
+  "Reset_E2EE_Password_Description": "Å tilbakestille vil logge deg ut og generere eit nytt E2EE-passord når du loggar deg inn igjen.\n\nDu vil få tilgang til krypterte rom med medlemmer som er online, men ikkje til dei utan medlemmer online.",
   "Reset_encryption_keys": "Tilbakestill krypteringsnøkler",
   "Reset_password": "Tilbakestilling av passord",
   "Resume": "Gjenoppta",

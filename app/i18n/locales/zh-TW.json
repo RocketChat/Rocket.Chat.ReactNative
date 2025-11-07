@@ -469,6 +469,7 @@
   "Resend": "重新發送",
   "RESET": "重置",
   "Reset_E2EE_Password": "重設 E2EE 密碼",
+  "Reset_E2EE_Password_Description": "重設將會將您登出，並在重新登入時生成一個新的 E2EE 密碼。\n\n您將能夠重新進入有線上成員的加密房間，但無法進入沒有線上成員的房間。",
   "Reset_password": "重置密碼",
   "resetting_password": "正在重置密碼",
   "Review_app_desc": "請在 {{store}} 給予我們 5 星好評",

@@ -638,6 +638,7 @@
   "Resend": "Újraküldés",
   "RESET": "Visszaállítás",
   "Reset_E2EE_Password": "E2EE jelszó visszaállítása",
+  "Reset_E2EE_Password_Description": "A visszaállítás kijelentkeztet és új E2EE jelszót generál, amikor újra bejelentkezel.\n\nHozzáférést fogsz kapni a titkosított szobákhoz, ahol vannak online tagok, de nem azokhoz, ahol nincsenek online tagok.",
   "Reset_password": "Jelszó visszaállítása",
   "resetting_password": "jelszó visszaállítása",
   "Resume": "Folytatás",

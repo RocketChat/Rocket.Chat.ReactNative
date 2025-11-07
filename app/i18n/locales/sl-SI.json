@@ -568,6 +568,7 @@
   "Resend": "Ponovno poslati",
   "RESET": "Ponastaviti",
   "Reset_E2EE_Password": "Ponastavi geslo E2EE",
+  "Reset_E2EE_Password_Description": "Ponastavitev vas bo odjavila in ob ponovni prijavi ustvarila novo geslo E2EE.\n\nDostop do šifriranih sob z aktivnimi člani boste pridobili nazaj, ne pa tudi do tistih, kjer ni nobenega člana prijavljenega.",
   "Reset_password": "Ponastavitev gesla",
   "resetting_password": "Ponastavitev gesla",
   "Resume": "Nadaljuj",

@@ -625,6 +625,7 @@
   "Resend": "Erneut senden",
   "RESET": "Zurücksetzen",
   "Reset_E2EE_Password": "E2EE-Passwort zurücksetzen",
+  "Reset_E2EE_Password_Description": "Das Zurücksetzen wird Sie abmelden und ein neues E2EE-Passwort beim erneuten Anmelden generieren.\n\nSie werden wieder Zugriff auf verschlüsselte Räume mit Online-Mitgliedern erhalten, jedoch nicht auf solche ohne Online-Mitglieder.",
   "Reset_password": "Passwort zurücksetzen",
   "resetting_password": "Passwort zurücksetzen",
   "Resume": "Fortsetzen",

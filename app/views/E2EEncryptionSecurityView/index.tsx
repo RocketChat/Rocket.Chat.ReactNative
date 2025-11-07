@@ -78,7 +78,7 @@ const E2EEncryptionSecurityView = () => {
 
 					<List.Section>
 						<View style={styles.content}>
-							<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
+							<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
 							<View>
 								<Button
 									onPress={resetE2EEPassword}
