@@ -101,7 +101,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const { mediaUris } = shareExtensionParams;
 		if (mediaUris) {
 			try {
-				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri))) as FileSystem.FileInfo[];
+				const info = (await Promise.all(
+					mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri))
+				)) as FileSystem.FileInfo[];
 				const attachments = info.map(file => {
 					if (!file.exists) {
 						return null;
