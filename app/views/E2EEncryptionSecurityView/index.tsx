@@ -67,7 +67,7 @@ const E2EEncryptionSecurityView = () => {
 	}, [navigation]);
 
 	const cancel = () => {
-		navigation.getParent()?.goBack();
+		navigation.goBack();
 	};
 
 	return (
