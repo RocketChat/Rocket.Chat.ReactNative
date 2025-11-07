@@ -82,7 +82,7 @@ const E2EEncryptionSecurityView = () => {
 								<Button
 									onPress={resetE2EEPassword}
 									title={I18n.t('Reset_E2EE_Password')}
-									testID='e2e-reset-your-password-view-reset-password'
+									testID='e2e-encryption-security-view-reset-password-button'
 								/>
 								<Button type='secondary' onPress={cancel} title={I18n.t('Cancel')} testID='e2e-reset-your-password-view-cancel' />
 							</View>

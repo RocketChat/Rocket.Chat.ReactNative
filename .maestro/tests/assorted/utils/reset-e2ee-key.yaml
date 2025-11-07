@@ -6,10 +6,10 @@ tags:
 ---
 - extendedWaitUntil:
     visible:
-      id: e2e-encryption-security-view-reset-key
+      id: e2e-encryption-security-view-reset-password-button
     timeout: 60000
 - tapOn:
-    id: e2e-encryption-security-view-reset-key
+    id: e2e-encryption-security-view-reset-password-button
 - extendedWaitUntil:
     visible:
       text: .*Are you sure.*

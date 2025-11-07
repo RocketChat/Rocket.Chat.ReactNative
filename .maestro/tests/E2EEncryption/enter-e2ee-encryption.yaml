@@ -108,7 +108,7 @@ onFlowEnd:
 - tapOn:
     text: 'Reset E2EE password'
 - tapOn:
-    id: e2e-reset-your-password-view-reset-password
+    id: e2e-encryption-security-view-reset-password-button
 - tapOn: 'Yes, reset it'
 - assertVisible: 'Add workspace'
 - runFlow: '../../helpers/navigate-to-login.yaml'
