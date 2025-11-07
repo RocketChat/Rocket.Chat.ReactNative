@@ -65,8 +65,8 @@ const ListPicker = ({
 		<List.Item
 			title={title}
 			testID={testID}
-			onPress={() => showActionSheet({ children: getOptions() })}
-			right={() => <Text style={[styles.pickerText, { color: colors.fontHint }]}>{label}</Text>}
+			onPress={() => showActionSheet({ options: getOptions() })}
+			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
 			additionalAcessibilityLabel={label}
 		/>
 	);
