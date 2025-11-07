@@ -43,8 +43,6 @@ import { compareServerVersion } from '../methods/helpers';
 import {
 	e2eSetUserPublicAndPrivateKeys,
 	e2eRequestSubscriptionKeys,
-	e2eRejectSuggestedGroupKey,
-	e2eAcceptSuggestedGroupKey,
 	fetchUsersWaitingForGroupKey,
 	provideUsersSuggestedGroupKeys
 } from '../services/restApi';

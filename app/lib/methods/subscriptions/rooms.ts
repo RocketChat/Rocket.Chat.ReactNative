@@ -149,7 +149,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			}
 		}
 
-		let tmp = merge(subscription, room);
+		const tmp = merge(subscription, room);
 		const sub = await getSubscriptionByRoomId(tmp.rid);
 
 		const batch: Model[] = [];
