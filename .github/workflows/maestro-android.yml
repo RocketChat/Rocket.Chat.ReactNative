@@ -64,20 +64,8 @@ jobs:
           while [ $ATTEMPT -le $MAX_RETRIES ]; do
             echo "Attempt $ATTEMPT of $MAX_RETRIES"
 
-            echo "Starting screen recording..."
-            adb shell screenrecord /sdcard/test_run.mp4 > /dev/null 2>&1 &
-            RECORD_PID=$!
-
             maestro test .maestro --exclude-tags=util --include-tags=test-$SHARD --format junit --output maestro-report.xml
             TEST_EXIT_CODE=$?
-
-            echo "Stopping screen recording..."
-            kill -INT $RECORD_PID || true
-            sleep 2
-
-            echo "Pulling video from device..."
-            adb pull /sdcard/test_run.mp4 test_run_${SHARD}_attempt_${ATTEMPT}.mp4 || true
-            adb shell rm /sdcard/test_run.mp4 || true
 
             if [ $TEST_EXIT_CODE -eq 0 ]; then
               echo "Maestro passed on attempt $ATTEMPT"
@@ -119,12 +107,4 @@ jobs:
         with:
           name: Android Test Report - Shard ${{ inputs.shard }}
           path: maestro-report.xml
-          retention-days: 7
-      
-      - name: Upload Screen Recording
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: maestro-video-${{ inputs.shard }}
-          path: test_run_${{ inputs.shard }}_attempt_*.mp4
           retention-days: 7
