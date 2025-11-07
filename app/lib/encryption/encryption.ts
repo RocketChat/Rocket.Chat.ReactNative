@@ -1,7 +1,7 @@
 import { type Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
-import { deleteAsync } from 'expo-file-system';
+import { deleteAsync } from 'expo-file-system/legacy';
 import {
 	pbkdf2Hash,
 	aesEncrypt,

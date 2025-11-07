@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native/scripts/cocoapods/new_architecture.rb b/node_modules/react-native/scripts/cocoapods/new_architecture.rb
+index 7d8f8e6..d2852a2 100644
+--- a/node_modules/react-native/scripts/cocoapods/new_architecture.rb
++++ b/node_modules/react-native/scripts/cocoapods/new_architecture.rb
+@@ -163,7 +163,7 @@ class NewArchitectureHelper
+             .uniq{ |p| p.path }
+             .map{ |p| p.path }
+ 
+-        excluded_info_plist = ["/Pods", "Tests", "metainternal", ".bundle", "build/", "DerivedData/"]
++        excluded_info_plist = ["/Pods", "Tests", "metainternal", ".bundle", "build/", "DerivedData/", ".xcframework", ".framework"]
+         projectPaths.each do |projectPath|
+             projectFolderPath = File.dirname(projectPath)
+             infoPlistFiles = `find #{projectFolderPath} -name "Info.plist"`
