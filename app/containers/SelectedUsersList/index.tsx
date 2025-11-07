@@ -52,7 +52,7 @@ const SelectedUsersList = ({ users, useRealName, onPress }: ISelectedUsersList) 
 				style={[
 					styles.list,
 					{
-						backgroundColor: colors.surfaceHover,
+						backgroundColor: colors.surfaceTint,
 						borderColor: colors.strokeLight
 					}
 				]}

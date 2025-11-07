@@ -142,8 +142,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	}, [navigation, route]);
 
 	return (
-		<KeyboardView style={styles.container} backgroundColor={colors.surfaceHover}>
-			<SafeAreaView testID='create-discussion-view'>
+		<KeyboardView style={styles.container} backgroundColor={colors.surfaceTint}>
+			<SafeAreaView testID='create-discussion-view' style={{ backgroundColor: colors.surfaceTint }}>
 				<ScrollView {...scrollPersistTaps}>
 					<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
 					<View style={styles.form}>
