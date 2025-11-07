@@ -4,6 +4,19 @@
 
 @implementation SecureStorage : NSObject
 
+RCT_EXPORT_MODULE(SecureStorage);
+
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
+}
+
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getSecureKeySync:(NSString *)key)
+{
+    NSString *value = [self getSecureKey:key];
+    return value ? value : [NSNull null];
+}
+
 NSString *serviceName = nil;
 
 - (void) setSecureKey: (NSString *)key value:(NSString *)value

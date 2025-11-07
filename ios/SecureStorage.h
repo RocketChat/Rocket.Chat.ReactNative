@@ -1,7 +1,8 @@
 #import <React/RCTBridgeModule.h>
 #import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
 
-@interface SecureStorage: NSObject 
+@interface SecureStorage: NSObject <RCTBridgeModule>
 
 - (void) setSecureKey: (nonnull NSString *)key value:(nonnull NSString *)value
               options: (nonnull NSDictionary *)options;

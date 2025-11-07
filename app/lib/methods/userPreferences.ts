@@ -28,6 +28,7 @@ function getEncryptionKey(): string | undefined {
 	try {
 		const { SecureStorage } = NativeModules;
 		if (!SecureStorage) {
+			console.log('[MMKV] SecureStorage native module not available');
 			return undefined;
 		}
 
@@ -42,8 +43,12 @@ function getEncryptionKey(): string | undefined {
 
 		const alias = toHex('com.MMKV.default');
 		const key = SecureStorage.getSecureKeySync?.(alias);
-
-		return key || undefined;
+		if (!key || key === null) {
+			console.log('[MMKV] Encryption key not found in SecureStorage');
+			return undefined;
+		}
+		console.log('[MMKV] Retrieved encryption key from SecureStorage (length:', key.length, ')');
+		return key;
 	} catch (error) {
 		console.log('[MMKV] Could not get encryption key:', error);
 		return undefined;
