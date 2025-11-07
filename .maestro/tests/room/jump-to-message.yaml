@@ -108,8 +108,7 @@ tags:
       id: 'message-content-30'
     timeout: 60000
 - tapOn:
-    text: '30'
-    index: 1
+    id: 'message-content-30'
 - extendedWaitUntil:
     visible:
       id: 'message-content-29'
