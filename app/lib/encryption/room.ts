@@ -178,7 +178,7 @@ export default class EncryptionRoom {
 			try {
 				this.establishing = true;
 				await this.createRoomKey();
-				this.readyPromise.resolve();
+				Encryption.deleteRoomInstance(this.roomId);
 				return;
 			} catch (error) {
 				this.establishing = false;

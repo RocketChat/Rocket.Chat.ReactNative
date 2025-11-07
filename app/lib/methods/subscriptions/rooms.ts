@@ -223,6 +223,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 
 		Encryption.decryptPendingSubscriptions();
 		Encryption.decryptPendingMessages(tmp.rid);
+		Encryption.getRoomInstance(tmp.rid);
 	} catch (e) {
 		log(e);
 	}
