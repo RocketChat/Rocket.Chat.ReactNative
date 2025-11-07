@@ -45,4 +45,4 @@ tags:
       id: e2e-encryption-security-view
     timeout: 60000
 - assertVisible:
-    id: e2e-encryption-security-view-reset-key
+    id: e2e-encryption-security-view-reset-password-button
