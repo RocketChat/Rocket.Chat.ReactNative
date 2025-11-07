@@ -267,6 +267,7 @@ export type E2ESaveYourPasswordStackParamList = {
 	E2EHowItWorksView?: {
 		showCloseModal?: boolean;
 	};
+	E2EEncryptionSecurityView: undefined;
 };
 
 export type E2EEnterYourPasswordStackParamList = {
