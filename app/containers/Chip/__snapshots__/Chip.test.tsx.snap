@@ -50,7 +50,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
         },
         undefined,
       ]
@@ -228,7 +228,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
         },
         undefined,
       ]
@@ -406,7 +406,7 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
         },
         undefined,
       ]
@@ -529,7 +529,7 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
         },
         undefined,
       ]
@@ -626,7 +626,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
           "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
         },
         undefined,
       ]
