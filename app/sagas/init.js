@@ -31,7 +31,7 @@ const restore = function* restore() {
 
 	// Use native logger for TestFlight debugging on iOS when available
 	const logger = {
-		info: msg => {
+		info: (msg) => {
 			console.log(msg);
 			if (hasNativeLogger) {
 				try {
@@ -41,7 +41,7 @@ const restore = function* restore() {
 				}
 			}
 		},
-		error: msg => {
+		error: (msg) => {
 			console.error(msg);
 			if (hasNativeLogger) {
 				try {
@@ -51,7 +51,7 @@ const restore = function* restore() {
 				}
 			}
 		},
-		warn: msg => {
+		warn: (msg) => {
 			console.warn(msg);
 			if (hasNativeLogger) {
 				try {
@@ -162,7 +162,7 @@ const restore = function* restore() {
 					key.includes('SERVER')
 			);
 			logger.info(`Important keys found: ${importantKeys.length}`);
-			importantKeys.forEach(key => {
+			importantKeys.forEach((key) => {
 				const value = UserPreferences.getString(key);
 				logger.info(`  ${key}: ${value}`);
 			});
