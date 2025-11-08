@@ -41,7 +41,6 @@ tags:
 - tapOn:
     id: 'directory-view-search'
 - inputText: join-from-directory
-- pressKey: Enter
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-join-from-directory'
@@ -103,7 +102,11 @@ tags:
 - tapOn:
     id: 'directory-view-search'
 - inputText: ${output.otherUser.username}
-- pressKey: Enter
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: enter
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-${output.otherUser.username}'
@@ -147,7 +150,6 @@ tags:
 - tapOn:
     id: 'directory-view-search'
 - inputText: ${output.team}
-- pressKey: Enter
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-${output.team}'
