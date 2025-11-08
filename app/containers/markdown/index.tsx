@@ -4,6 +4,7 @@ import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
+import getBlockValueString from '../../lib/methods/getBlockValueString';
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
 import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import MarkdownContext from './contexts/MarkdownContext';
@@ -72,7 +73,7 @@ const Markdown: React.FC<IMarkdownProps> = ({
 				{tokens?.map((block, index) => {
 					// sliced to avoid very long keys
 					// key example: PARAGRAPH-this is value of 20 -3
-					const key = `${block.type}-${block.value?.toString().slice(0, 20)}-${index}`;
+					const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
 					switch (block.type) {
 						case 'BIG_EMOJI':
 							return <BigEmoji key={key} value={block.value} />;

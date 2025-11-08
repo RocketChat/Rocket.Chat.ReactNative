@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
+import getBlockValueString from '../../../lib/methods/getBlockValueString';
 import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
 import { Emoji } from './emoji';
@@ -37,14 +38,6 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 						block.value = block.value?.toString().trimLeft();
 					}
 				}
-
-				const getBlockValueString = (v: any): string => {
-					if (!v) return 'null';
-					if (typeof v === 'string') return v;
-					if (typeof v?.value === 'string') return v.value;
-					if (Array.isArray(v)) return v.map(getBlockValueString).join('');
-					return JSON.stringify(v).slice(0, 20);
-				};
 
 				// key example: IMAGE-https:rocket.chat/assets/image...-3 <upto 20 chars only>
 				const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
