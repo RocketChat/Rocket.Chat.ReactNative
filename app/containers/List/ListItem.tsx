@@ -230,7 +230,7 @@ const ListItem = React.memo(({ ...props }: IListItem) => {
 		return <Button {...props} onPress={onPress} />;
 	}
 	return (
-		<View style={{ backgroundColor: props.backgroundColor || colors.surfaceRoom }}>
+		<View numberOfLines={1} ellipsizeMode='tail' style={{ backgroundColor: props.backgroundColor || colors.surfaceRoom }}>
 			<Content {...props} />
 		</View>
 	);
