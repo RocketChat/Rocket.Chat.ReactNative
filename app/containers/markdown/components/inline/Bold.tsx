@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 const Bold = ({ value }: IBoldProps) => (
 	<Text style={styles.text}>
 		{value.map((block, index) => {
-			// key example: LINK-https:rocket.chat/link/123...-3 <upto 20 chars only>
+			// key example: LINK-https:rocket.chat/link/123456789...-3 <upto 50 chars only>
 			const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
 			switch (block.type) {
 				case 'LINK':

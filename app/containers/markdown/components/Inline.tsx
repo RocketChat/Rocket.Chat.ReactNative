@@ -39,7 +39,7 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 					}
 				}
 
-				// key example: IMAGE-https:rocket.chat/assets/image...-3 <upto 20 chars only>
+				// key example: IMAGE-https:rocket.chat/assets/images/123img.png...-3 <upto 50 chars only>
 				const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
 
 				switch (block.type) {

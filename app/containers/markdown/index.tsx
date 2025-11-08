@@ -72,7 +72,7 @@ const Markdown: React.FC<IMarkdownProps> = ({
 				}}>
 				{tokens?.map((block, index) => {
 					// sliced to avoid very long keys
-					// key example: PARAGRAPH-this is value of 20 -3
+					// key example: PARAGRAPH-this is value upto 50 chars -3
 					const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
 					switch (block.type) {
 						case 'BIG_EMOJI':
