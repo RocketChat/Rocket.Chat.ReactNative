@@ -71,7 +71,7 @@ const ListTitle = ({ title, color, styleTitle, translateTitle }: IListTitle) => 
 	switch (typeof title) {
 		case 'string':
 			return (
-				<Text style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
+				<Text numberOfLines={1} ellipsizeMode='tail' style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
 					{translateTitle && title ? I18n.t(title) : title}
 				</Text>
 			);
@@ -230,7 +230,7 @@ const ListItem = React.memo(({ ...props }: IListItem) => {
 		return <Button {...props} onPress={onPress} />;
 	}
 	return (
-		<View numberOfLines={1} ellipsizeMode='tail' style={{ backgroundColor: props.backgroundColor || colors.surfaceRoom }}>
+		<View style={{ backgroundColor: props.backgroundColor || colors.surfaceRoom }}>
 			<Content {...props} />
 		</View>
 	);
