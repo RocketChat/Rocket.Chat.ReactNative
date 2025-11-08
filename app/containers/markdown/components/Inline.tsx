@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
+import getBlockValueString from '../../../lib/methods/getBlockValueString';
 import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
 import { Emoji } from './emoji';
@@ -38,22 +39,26 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 					}
 				}
 
+				// key example: IMAGE-https:rocket.chat/assets/images/123img.png...-3 <upto 50 chars only>
+				const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
+
 				switch (block.type) {
 					case 'IMAGE':
-						return <Image value={block.value} />;
+						return <Image key={key} value={block.value} />;
 					case 'PLAIN_TEXT':
-						return <Plain value={block.value} />;
+						return <Plain key={key} value={block.value} />;
 					case 'BOLD':
-						return <Bold value={block.value} />;
+						return <Bold key={key} value={block.value} />;
 					case 'STRIKE':
-						return <Strike value={block.value} />;
+						return <Strike key={key} value={block.value} />;
 					case 'ITALIC':
-						return <Italic value={block.value} />;
+						return <Italic key={key} value={block.value} />;
 					case 'LINK':
-						return <Link value={block.value} />;
+						return <Link key={key} value={block.value} />;
 					case 'MENTION_USER':
 						return (
 							<AtMention
+								key={key}
 								mention={block.value.value}
 								useRealName={useRealName}
 								username={username}
@@ -62,14 +67,14 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 							/>
 						);
 					case 'EMOJI':
-						return <Emoji block={block} index={index} />;
+						return <Emoji key={key} block={block} index={index} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
+						return <Hashtag key={key} hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':
-						return <InlineCode value={block.value} />;
+						return <InlineCode key={key} value={block.value} />;
 					case 'INLINE_KATEX':
 						// return <InlineKaTeX value={block.value} />;
-						return <Text>{block.value}</Text>;
+						return <Text key={key}>{block.value}</Text>;
 					default:
 						return null;
 				}

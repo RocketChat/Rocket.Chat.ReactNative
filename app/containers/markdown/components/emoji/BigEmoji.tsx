@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
 
 const BigEmoji = ({ value }: IBigEmojiProps) => (
 	<View style={styles.container}>
-		{value.map(block => (
-			<Emoji block={block} isBigEmoji />
+		{value.map((block, index) => (
+			<Emoji key={('shortCode' in block ? block.shortCode : block.unicode) ?? index} block={block} isBigEmoji />
 		))}
 	</View>
 );
