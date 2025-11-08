@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Pressable } from 'react-native-gesture-handler';
 import { StyleSheet, Text } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { type Subscription } from 'rxjs';
@@ -70,7 +70,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 	}
 
 	return (
-		<TouchableWithoutFeedback
+		<Pressable
 			style={styles.container}
 			onPress={() => setAlsoSendThreadToChannel(!alsoSendThreadToChannel)}
 			testID='message-composer-send-to-channel'>
@@ -81,7 +81,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.fontDefault}
 			/>
 			<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
-		</TouchableWithoutFeedback>
+		</Pressable>
 	);
 };
 

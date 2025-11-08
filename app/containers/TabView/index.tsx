@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { TabView as ReanimatedTabView, type Route, type NavigationState } from 'reanimated-tab-view';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import TouchableOpacity from '../TouchableOpacity';
 import styles from './styles';
 import { useTheme } from '../../theme';
 
