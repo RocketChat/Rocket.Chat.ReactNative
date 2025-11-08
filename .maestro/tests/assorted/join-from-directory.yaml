@@ -102,6 +102,11 @@ tags:
 - tapOn:
     id: 'directory-view-search'
 - inputText: ${output.otherUser.username}
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - pressKey: enter
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-${output.otherUser.username}'
