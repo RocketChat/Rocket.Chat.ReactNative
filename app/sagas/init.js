@@ -1,6 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import UserPreferences, { initializeStorage } from '../lib/methods/userPreferences';
@@ -21,12 +22,51 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
+const ensureServersInDatabase = async () => {
+	const prefix = `${TOKEN_KEY}-`;
+	const keys = UserPreferences.getAllKeys();
+	const serverUrls = Array.from(
+		new Set(
+			keys
+				.filter(key => key.startsWith(prefix))
+				.map(key => key.slice(prefix.length))
+				.filter(serverKey => serverKey.startsWith('http://') || serverKey.startsWith('https://'))
+		)
+	);
+
+	if (serverUrls.length === 0) {
+		return;
+	}
+
+	const serversDB = database.servers;
+	const serverCollection = serversDB.get('servers');
+	const existingRecords = await serverCollection.query().fetch();
+	const existingIds = new Set(existingRecords.map(record => record.id));
+
+	const missingServers = serverUrls.filter(url => !existingIds.has(url));
+	if (!missingServers.length) {
+		return;
+	}
+
+	await serversDB.write(() =>
+		Promise.all(
+			missingServers.map(url =>
+				serverCollection.create(record => {
+					record._raw = sanitizedRaw({ id: url }, serverCollection.schema);
+					record.name = url;
+				})
+			)
+		)
+	);
+};
+
 const restore = function* restore() {
 	try {
 		// IMPORTANT: Initialize MMKV storage FIRST
 		// Native migration has already completed in AppDelegate
 		// This connects JavaScript to the migrated data
 		yield call(initializeStorage);
+		yield call(ensureServersInDatabase);
 
 		const server = UserPreferences.getString(CURRENT_SERVER);
 		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
