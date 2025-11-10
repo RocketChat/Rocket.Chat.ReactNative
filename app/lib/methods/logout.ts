@@ -24,7 +24,7 @@ async function removeServerKeys({ server, userId }: { server: string; userId?: s
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 	if (isIOS) {
-		await Keychain.resetInternetCredentials(server);
+		await Keychain.resetInternetCredentials({ server });
 	}
 }
 
