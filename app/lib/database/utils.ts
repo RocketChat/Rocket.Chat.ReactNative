@@ -11,8 +11,8 @@ export const sanitizeLikeString = (str?: string): string | undefined => str?.rep
 // slugifyLikeString('テスト123') => 'tesuto123'
 export const slugifyLikeString = (str?: string) => {
 	if (!str) return '';
-	str?.replace(likeStringRegex, '_');
-	const slugified = slugify(str);
+	const sanitized = str.replace(likeStringRegex, '_');
+	const slugified = slugify(sanitized);
 	return slugified;
 };
 
