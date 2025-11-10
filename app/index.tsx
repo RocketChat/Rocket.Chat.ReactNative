@@ -38,6 +38,7 @@ import { initStore } from './lib/store/auxStore';
 import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+import './i18n/index';
 import StatusBar from './containers/StatusBar';
 
 enableScreens();
