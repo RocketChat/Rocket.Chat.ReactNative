@@ -17,6 +17,11 @@ export interface IInputSelection {
 	end: number;
 }
 
+/**
+ * @param text - text value to set in the input field
+ * @param selection - (Optional) text selection range, start and end. if not passed cursor will be set where it is (end)
+ * @param forceUpdateDraftMessage - (Optional) forces immediate saving of message draft.
+ */
 export type TSetInput = (text: string, selection?: IInputSelection, forceUpdateDraftMessage?: boolean) => void;
 
 export type TMicOrSend = 'mic' | 'send';

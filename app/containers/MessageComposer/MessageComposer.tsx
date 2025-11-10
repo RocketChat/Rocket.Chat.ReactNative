@@ -91,7 +91,7 @@ export const MessageComposer = ({
 			return;
 		}
 
-		const textFromInput = composerInputComponentRef.current.getTextAndClear();
+		const textFromInput = composerInputComponentRef.current.getTextAndClear().trim();
 
 		if (action === 'edit') {
 			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });
