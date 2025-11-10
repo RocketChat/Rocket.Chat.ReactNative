@@ -28,7 +28,6 @@ function getEncryptionKey(): string | undefined {
 	try {
 		const { SecureStorage } = NativeModules;
 		if (!SecureStorage) {
-			console.log('[MMKV] SecureStorage native module not available');
 			return undefined;
 		}
 
@@ -44,13 +43,10 @@ function getEncryptionKey(): string | undefined {
 		const alias = toHex('com.MMKV.default');
 		const key = SecureStorage.getSecureKeySync?.(alias);
 		if (!key || key === null) {
-			console.log('[MMKV] Encryption key not found in SecureStorage');
-			return undefined;
+			return;
 		}
-		console.log('[MMKV] Retrieved encryption key from SecureStorage (length:', key.length, ')');
 		return key;
-	} catch (error) {
-		console.log('[MMKV] Could not get encryption key:', error);
+	} catch {
 		return undefined;
 	}
 }
@@ -61,8 +57,6 @@ function initializeStorage(): Promise<MMKV> {
 	if (storageInitPromise) return storageInitPromise;
 
 	storageInitPromise = Promise.resolve().then((): MMKV => {
-		console.log('[MMKV] Initializing storage...');
-
 		// On iOS, use the App Group path to match where native migration wrote the data
 		// On Android, react-native-mmkv uses default path
 		const appGroupPath = getAppGroupPath();
@@ -70,16 +64,6 @@ function initializeStorage(): Promise<MMKV> {
 
 		// CRITICAL: Get encryption key (same as native migration uses)
 		const encryptionKey = getEncryptionKey();
-
-		if (mmkvPath) {
-			console.log('[MMKV] Using custom path:', mmkvPath);
-		}
-
-		if (encryptionKey) {
-			console.log('[MMKV] Using encryption (key length:', encryptionKey.length, ')');
-		} else {
-			console.log('[MMKV] No encryption key found - using unencrypted storage');
-		}
 
 		// Initialize MMKV storage with encryption key (matching native migration)
 		// Native migration already ran and wrote ENCRYPTED data to this location
@@ -91,14 +75,6 @@ function initializeStorage(): Promise<MMKV> {
 
 		if (!storage) {
 			throw new Error('Failed to initialize MMKV storage');
-		}
-
-		// Log what we found
-		const keys = storage.getAllKeys();
-		console.log(`[MMKV] Storage initialized with ${keys.length} keys`);
-
-		if (keys.length > 0) {
-			console.log('[MMKV] Sample keys:', keys.slice(0, 5));
 		}
 
 		return storage;
@@ -114,7 +90,6 @@ function getStorage(): Promise<MMKV> {
 
 function getStorageSync(): MMKV {
 	if (!storage) {
-		console.warn('[MMKV] Storage not yet initialized, initializing now...');
 		// Initialize synchronously if needed (migration already ran in native code)
 		const appGroupPath = getAppGroupPath();
 		const mmkvPath = Platform.OS === 'ios' && appGroupPath ? `${appGroupPath}mmkv` : undefined;

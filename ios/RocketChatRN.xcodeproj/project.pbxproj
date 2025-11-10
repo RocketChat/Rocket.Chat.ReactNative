@@ -290,8 +290,6 @@
 		66C2701D2EBBCB570062725F /* MMKVMigration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVMigration.mm */; };
 		66C270202EBBCB780062725F /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701F2EBBCB780062725F /* SecureStorage.m */; };
 		66C270212EBBCB780062725F /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701F2EBBCB780062725F /* SecureStorage.m */; };
-		66C270242EBCD6FF0062725F /* MMKVMigrationStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C270232EBCD6FF0062725F /* MMKVMigrationStatus.m */; };
-		66C270252EBCD6FF0062725F /* MMKVMigrationStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C270232EBCD6FF0062725F /* MMKVMigrationStatus.m */; };
 		79D8C97F8CE2EC1B6882826B /* SecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B215A42CFB843397273C7EA /* SecureStorage.m */; };
 		7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		7A0129D42C6E8EC800F84A97 /* ShareRocketChatRN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */; };
@@ -594,8 +592,6 @@
 		66C2701A2EBBCB570062725F /* MMKVMigration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MMKVMigration.mm; sourceTree = "<group>"; };
 		66C2701E2EBBCB780062725F /* SecureStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecureStorage.h; sourceTree = "<group>"; };
 		66C2701F2EBBCB780062725F /* SecureStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecureStorage.m; sourceTree = "<group>"; };
-		66C270222EBCD6FF0062725F /* MMKVMigrationStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMKVMigrationStatus.h; sourceTree = "<group>"; };
-		66C270232EBCD6FF0062725F /* MMKVMigrationStatus.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMKVMigrationStatus.m; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRocketChatRN.swift; sourceTree = "<group>"; };
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -695,8 +691,6 @@
 		13B07FAE1A68108700A75B9A /* RocketChatRN */ = {
 			isa = PBXGroup;
 			children = (
-				66C270222EBCD6FF0062725F /* MMKVMigrationStatus.h */,
-				66C270232EBCD6FF0062725F /* MMKVMigrationStatus.m */,
 				66C2701E2EBBCB780062725F /* SecureStorage.h */,
 				66C2701F2EBBCB780062725F /* SecureStorage.m */,
 				6678BC242EBAB28B00710853 /* MMKVReader.mm */,
@@ -2168,7 +2162,6 @@
 				1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */,
 				1E76CBC2251529560067298C /* Storage.swift in Sources */,
 				1E76CBD925152C8C0067298C /* Push.swift in Sources */,
-				66C270252EBCD6FF0062725F /* MMKVMigrationStatus.m in Sources */,
 				1E0426E6251A5467008F022C /* RoomType.swift in Sources */,
 				1E76CBCD25152C2C0067298C /* MessageType.swift in Sources */,
 				1E76CBC925152C1F0067298C /* PushResponse.swift in Sources */,
@@ -2445,7 +2438,6 @@
 				7AAB3E17257E6A6E00707CF6 /* ReplyNotification.swift in Sources */,
 				7AAB3E18257E6A6E00707CF6 /* Storage.swift in Sources */,
 				7AAB3E19257E6A6E00707CF6 /* Push.swift in Sources */,
-				66C270242EBCD6FF0062725F /* MMKVMigrationStatus.m in Sources */,
 				7AAB3E1A257E6A6E00707CF6 /* RoomType.swift in Sources */,
 				7AAB3E1B257E6A6E00707CF6 /* MessageType.swift in Sources */,
 				7AAB3E1C257E6A6E00707CF6 /* PushResponse.swift in Sources */,
