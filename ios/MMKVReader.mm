@@ -9,7 +9,6 @@
 #import "MMKVReader.h"
 #import "SecureStorage.h"
 #import "MMKV.h"
-#import <React/RCTLog.h>
 #import <string>
 
 @implementation MMKVReader
@@ -56,10 +55,6 @@ RCT_EXPORT_METHOD(getStoragePath:(RCTPromiseResolveBlock)resolve
             @"mmkvDirExists": @(mmkvDirExists)
         };
         
-        RCTLogInfo(@"Files Directory: %@", groupDir);
-        RCTLogInfo(@"MMKV Directory: %@", mmkvDir);
-        RCTLogInfo(@"MMKV Directory exists: %@", mmkvDirExists ? @"YES" : @"NO");
-        
         resolve(result);
     } @catch (NSException *exception) {
         reject(@"ERROR", exception.reason, nil);
@@ -76,9 +71,6 @@ RCT_EXPORT_METHOD(listMMKVFiles:(RCTPromiseResolveBlock)resolve
         NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
         NSString *groupDir = [groupURL path];
         NSString *mmkvDir = [groupDir stringByAppendingPathComponent:@"mmkv"];
-        
-        RCTLogInfo(@"=== MMKV Files List ===");
-        RCTLogInfo(@"Looking in: %@", mmkvDir);
         
         NSMutableArray *filesList = [NSMutableArray array];
         
@@ -97,13 +89,9 @@ RCT_EXPORT_METHOD(listMMKVFiles:(RCTPromiseResolveBlock)resolve
                 };
                 
                 [filesList addObject:fileInfo];
-                RCTLogInfo(@"File: %@ (%@ bytes)", fileName, attrs[NSFileSize]);
             }
-        } else {
-            RCTLogInfo(@"MMKV directory does not exist");
         }
         
-        RCTLogInfo(@"======================");
         
         resolve(filesList);
     } @catch (NSException *exception) {
@@ -119,29 +107,23 @@ RCT_EXPORT_METHOD(readAndDecryptMMKV:(NSString *)mmkvId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     @try {
-        RCTLogInfo(@"=== Starting MMKV Read (Using MMKV C++ Library) ===");
-        RCTLogInfo(@"MMKV ID: %@", mmkvId);
-        
+     
         // Get app group directory
         NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
         NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
         NSString *groupDir = [groupURL path];
         NSString *mmkvPath = [groupDir stringByAppendingPathComponent:@"mmkv"];
         
-        RCTLogInfo(@"MMKV Path: %@", mmkvPath);
         
         // Initialize MMKV with the root path
         std::string mmkvPathStr = [mmkvPath UTF8String];
         MMKV::initializeMMKV(mmkvPathStr);
-        RCTLogInfo(@"MMKV initialized");
         
         // Get encryption key from keychain
         SecureStorage *secureStorage = [[SecureStorage alloc] init];
         NSString *alias = [self toHex:[NSString stringWithFormat:@"com.MMKV.%@", mmkvId]];
         NSString *password = [secureStorage getSecureKey:alias];
         
-        RCTLogInfo(@"Alias (hex): %@", alias);
-        RCTLogInfo(@"Encryption key retrieved: %@", password ? [NSString stringWithFormat:@"YES (length: %lu)", (unsigned long)password.length] : @"NO");
         
         // Open MMKV instance with encryption key
         MMKV *mmkv = nullptr;
@@ -156,24 +138,19 @@ RCT_EXPORT_METHOD(readAndDecryptMMKV:(NSString *)mmkvId
         }
         
         if (!mmkv) {
-            RCTLogError(@"Failed to open MMKV instance");
             reject(@"NO_MMKV", @"Could not open MMKV instance", nil);
             return;
         }
         
-        RCTLogInfo(@"✅ MMKV instance opened successfully");
         
         // Get all keys
         auto allKeys = mmkv->allKeys();
         
         if (allKeys.empty()) {
-            RCTLogInfo(@"⚠️  No keys found in MMKV instance");
             resolve(@{});
             return;
         }
         
-        RCTLogInfo(@"📋 Total keys found: %zu", allKeys.size());
-        RCTLogInfo(@"=== All MMKV Key-Value Pairs ===");
         
         // Read all key-value pairs
         NSMutableDictionary *result = [NSMutableDictionary dictionary];
@@ -199,8 +176,6 @@ RCT_EXPORT_METHOD(readAndDecryptMMKV:(NSString *)mmkvId
                         ? [NSString stringWithFormat:@"%@... (+%lu more chars)", [value substringToIndex:100], (unsigned long)(value.length - 100)]
                         : value;
                     
-                    RCTLogInfo(@"📝 String Key: %@", key);
-                    RCTLogInfo(@"   Value: %@", displayValue);
                 } else {
                     // Try as int
                     int32_t intValue = 0;
@@ -209,26 +184,18 @@ RCT_EXPORT_METHOD(readAndDecryptMMKV:(NSString *)mmkvId
                     if (hasInt) {
                         result[key] = @(intValue);
                         intCount++;
-                        RCTLogInfo(@"🔢 Int Key: %@ = %d", key, intValue);
                     } else {
                         // Try as boolean
                         bool boolValue = mmkv->getBool(keyStr, false);
                         result[key] = @(boolValue);
                         boolCount++;
-                        RCTLogInfo(@"✓ Bool Key: %@ = %@", key, boolValue ? @"true" : @"false");
                     }
                 }
             } @catch (NSException *exception) {
                 RCTLogError(@"❌ Error reading key: %s - %@", keyStr.c_str(), exception.reason);
             }
         }
-        
-        RCTLogInfo(@"=== MMKV Read Complete ===");
-        RCTLogInfo(@"Successfully read %zu keys:", allKeys.size());
-        RCTLogInfo(@"  - Strings: %d", stringCount);
-        RCTLogInfo(@"  - Integers: %d", intCount);
-        RCTLogInfo(@"  - Booleans: %d", boolCount);
-        
+    
         resolve(result);
     } @catch (NSException *exception) {
         RCTLogError(@"Error reading MMKV: %@", exception.reason);
