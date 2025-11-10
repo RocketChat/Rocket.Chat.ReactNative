@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { type Bold as BoldProps } from '@rocket.chat/message-parser';
 
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Bold = ({ value }: IBoldProps) => (
+const Bold = memo(({ value }: IBoldProps) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
@@ -35,6 +35,6 @@ const Bold = ({ value }: IBoldProps) => (
 			}
 		})}
 	</Text>
-);
+));
 
 export default Bold;

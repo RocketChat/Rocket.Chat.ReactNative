@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text } from 'react-native';
 import { type OrderedList as OrderedListProps } from '@rocket.chat/message-parser';
 
@@ -10,7 +10,9 @@ interface IOrderedListProps {
 	value: OrderedListProps['value'];
 }
 
-const OrderedList = ({ value }: IOrderedListProps): React.ReactElement => {
+const OrderedList = memo(({ value }: IOrderedListProps): React.ReactElement => {
+	'use memo';
+
 	const { colors } = useTheme();
 	return (
 		<View>
@@ -24,6 +26,6 @@ const OrderedList = ({ value }: IOrderedListProps): React.ReactElement => {
 			))}
 		</View>
 	);
-};
+});
 
 export default OrderedList;

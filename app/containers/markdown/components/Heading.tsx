@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text } from 'react-native';
 import { type Heading as HeadingProps } from '@rocket.chat/message-parser';
 
@@ -11,7 +11,9 @@ interface IHeadingProps {
 	level: HeadingProps['level'];
 }
 
-const Heading = ({ value, level }: IHeadingProps) => {
+const Heading = memo(({ value, level }: IHeadingProps) => {
+	'use memo';
+
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
 
@@ -27,6 +29,6 @@ const Heading = ({ value, level }: IHeadingProps) => {
 			})}
 		</Text>
 	);
-};
+});
 
 export default Heading;

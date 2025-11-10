@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 import { type Quote as QuoteProps } from '@rocket.chat/message-parser';
 
@@ -11,7 +11,9 @@ interface IQuoteProps {
 	value: QuoteProps['value'];
 }
 
-const Quote = ({ value }: IQuoteProps) => {
+const Quote = memo(({ value }: IQuoteProps) => {
+	'use memo';
+
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>
@@ -23,6 +25,6 @@ const Quote = ({ value }: IQuoteProps) => {
 			</View>
 		</View>
 	);
-};
+});
 
 export default Quote;

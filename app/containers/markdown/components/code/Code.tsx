@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 import { type Code as CodeProps } from '@rocket.chat/message-parser';
 
@@ -10,7 +10,9 @@ interface ICodeProps {
 	value: CodeProps['value'];
 }
 
-const Code = ({ value }: ICodeProps): React.ReactElement => {
+const Code = memo(({ value }: ICodeProps): React.ReactElement => {
+	'use memo';
+
 	const { colors } = useTheme();
 
 	return (
@@ -32,6 +34,6 @@ const Code = ({ value }: ICodeProps): React.ReactElement => {
 			})}
 		</View>
 	);
-};
+});
 
 export default Code;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { Text } from 'react-native';
 import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -17,7 +17,7 @@ interface ILinkProps {
 	value: LinkProps['value'];
 }
 
-const Link = ({ value }: ILinkProps) => {
+const Link = memo(({ value }: ILinkProps) => {
 	const { theme } = useTheme();
 	const { onLinkPress } = useContext(MarkdownContext);
 	const { src, label } = value;
@@ -57,6 +57,6 @@ const Link = ({ value }: ILinkProps) => {
 			})(label)}
 		</Text>
 	);
-};
+});
 
 export default Link;
