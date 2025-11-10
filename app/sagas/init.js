@@ -51,7 +51,7 @@ const ensureServersInDatabase = async () => {
 	await serversDB.write(() =>
 		Promise.all(
 			missingServers.map(url =>
-				serverCollection.create(record => {
+				serverCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: url }, serverCollection.schema);
 					record.name = url;
 				})
