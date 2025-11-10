@@ -70,7 +70,6 @@ const restore = function* restore() {
 			yield call(AsyncStorage.removeItem, 'pushNotification');
 			yield call(deepLinkingClickCallPush, JSON.parse(pushNotification));
 		}
-
 	} catch (e) {
 		log(e);
 		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
