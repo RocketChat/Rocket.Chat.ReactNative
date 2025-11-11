@@ -35,5 +35,9 @@ export default StyleSheet.create({
 		width: 10,
 		height: 10,
 		borderRadius: 5
-	}
+	},
+	 statusText: {
+    flex: 1,
+    overflow: 'hidden',
+  },
 });

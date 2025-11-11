@@ -67,19 +67,31 @@ const CustomStatus = () => {
 		<>
 			<List.Item
 				title={() => (
-					<Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1 }}>
+					<Text numberOfLines={1} ellipsizeMode='tail' style={styles.statusText}>
 						{statusText || I18n.t('Edit_Status')}
 					</Text>
 				)}
 				left={() => <Status size={24} status={status} />}
 				right={right}
-				onPress={() => (presenceBroadcastDisabled ? onPressPresenceLearnMore() : sidebarNavigate('StatusView'))}
-				translateTitle={!statusText}
+				onPress={() =>
+					presenceBroadcastDisabled ? onPressPresenceLearnMore() : sidebarNavigate('StatusView')
+				}
 				testID={`sidebar-custom-status-${status}`}
 			/>
+
 			<List.Separator />
 		</>
 	);
 };
 
 export default memo(CustomStatus);
+
+
+
+const styles = StyleSheet.create({
+	statusText: {
+		flex: 1,
+		overflow: 'hidden',
+	},
+
+});
