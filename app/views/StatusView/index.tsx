@@ -23,7 +23,6 @@ import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
-import Check from '../../containers/Check';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
 
 interface IStatus {
@@ -77,21 +76,23 @@ const Status = ({
 	setStatus: (status: TUserStatus) => void;
 }) => {
 	const { id, name } = statusType;
+
 	return (
 		<>
-			<List.Item
+			<List.Radio
+				isSelected={status === id}
 				additionalAcessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
 				title={name}
 				onPress={() => {
-					const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
+					const key = `STATUS_${id.toUpperCase()}` as keyof typeof events;
 					logEvent(events[key]);
-					if (status !== statusType.id) {
-						setStatus(statusType.id);
+					if (status !== id) {
+						setStatus(id);
 					}
 				}}
 				testID={`status-view-${id}`}
+				value={statusType.id}
 				left={() => <StatusIcon size={24} status={statusType.id} />}
-				right={() => (status === id ? <Check /> : null)}
 			/>
 			<List.Separator />
 		</>

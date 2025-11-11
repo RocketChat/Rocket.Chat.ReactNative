@@ -54,7 +54,11 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				rippleColor={colors.surfaceNeutral}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...props}>
-				<View accessible={accessible} accessibilityLabel={accessibilityLabel} style={viewStyle}>
+				<View
+					accessible={accessible}
+					accessibilityRole={props.accessibilityRole}
+					accessibilityLabel={accessibilityLabel}
+					style={viewStyle}>
 					{children}
 				</View>
 			</RectButton>

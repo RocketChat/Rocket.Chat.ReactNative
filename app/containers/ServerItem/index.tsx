@@ -2,7 +2,8 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import Check from '../Check';
+import I18n from '../../i18n';
+import * as List from '../List/index';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
 import Touch from '../Touch';
@@ -25,8 +26,16 @@ const defaultLogo = require('../../static/images/logo.png');
 
 const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();
+
+	const iconName = hasCheck ? 'radio-checked' : 'radio-unchecked';
+	const iconColor = hasCheck ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+	const accessibilityLabel = `${item.name || item.id}. ${item.id}. ${I18n.t(hasCheck ? 'Selected' : 'Unselected')}`;
+
 	return (
 		<Touch
+			accessible
+			accessibilityLabel={accessibilityLabel}
+			accessibilityRole='radio'
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
 			testID={`server-item-${item.id}`}
@@ -53,7 +62,8 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 						{item.id}
 					</Text>
 				</View>
-				{hasCheck ? <Check /> : null}
+
+				<List.Icon name={iconName} color={iconColor} />
 			</View>
 		</Touch>
 	);
