@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Alert, Linking, View } from 'react-native';
+import { Alert, Linking, View, Text } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
 
 import { CustomIcon } from '../../../containers/CustomIcon';
@@ -16,8 +16,6 @@ import { NOTIFICATION_PRESENCE_CAP } from '../../../lib/constants/notifications'
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
 const CustomStatus = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { status: userStatus, statusText } = useAppSelector(getUserSelector, shallowEqual);
 	const presenceBroadcastDisabled = useAppSelector(state => state.settings.Presence_broadcast_disabled) as boolean;
@@ -52,7 +50,9 @@ const CustomStatus = () => {
 		status = 'disabled';
 	}
 
-	let right: (() => JSX.Element | null) | undefined = () => <CustomIcon name='edit' size={20} color={colors.fontTitlesLabels} />;
+	let right: (() => JSX.Element | null) | undefined = () => (
+		<CustomIcon name='edit' size={20} color={colors.fontTitlesLabels} />
+	);
 	if (notificationPresenceCap) {
 		right = () => <View style={[styles.customStatusDisabled, { backgroundColor: colors.userPresenceDisabled }]} />;
 	} else if (presenceBroadcastDisabled) {
@@ -66,11 +66,16 @@ const CustomStatus = () => {
 	return (
 		<>
 			<List.Item
-				title={statusText || 'Edit_Status'}
+				title={() => (
+					<Text numberOfLines={1} ellipsizeMode='tail' style={styles.statusText}>
+						{statusText || I18n.t('Edit_Status')}
+					</Text>
+				)}
 				left={() => <Status size={24} status={status} />}
 				right={right}
-				onPress={() => (presenceBroadcastDisabled ? onPressPresenceLearnMore() : sidebarNavigate('StatusView'))}
-				translateTitle={!statusText}
+				onPress={() =>
+					presenceBroadcastDisabled ? onPressPresenceLearnMore() : sidebarNavigate('StatusView')
+				}
 				testID={`sidebar-custom-status-${status}`}
 			/>
 			<List.Separator />
