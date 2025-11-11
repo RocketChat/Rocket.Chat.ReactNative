@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Alert, Linking, View } from 'react-native';
+import { Alert, Linking, View, Text } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
 
 import { CustomIcon } from '../../../containers/CustomIcon';
@@ -66,7 +66,11 @@ const CustomStatus = () => {
 	return (
 		<>
 			<List.Item
-				title={statusText || 'Edit_Status'}
+				title={() => (
+					<Text numberOfLines={1} ellipsizeMode="tail" style={{ flex: 1 }}>
+						{statusText || I18n.t('Edit_Status')}
+					</Text>
+				)}
 				left={() => <Status size={24} status={status} />}
 				right={right}
 				onPress={() => (presenceBroadcastDisabled ? onPressPresenceLearnMore() : sidebarNavigate('StatusView'))}
