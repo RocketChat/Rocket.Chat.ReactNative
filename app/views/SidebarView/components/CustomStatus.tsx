@@ -16,8 +16,6 @@ import { NOTIFICATION_PRESENCE_CAP } from '../../../lib/constants/notifications'
 import { sidebarNavigate } from '../methods/sidebarNavigate';
 
 const CustomStatus = () => {
-	'use memo';
-
 	const { colors } = useTheme();
 	const { status: userStatus, statusText } = useAppSelector(getUserSelector, shallowEqual);
 	const presenceBroadcastDisabled = useAppSelector(state => state.settings.Presence_broadcast_disabled) as boolean;
@@ -52,7 +50,9 @@ const CustomStatus = () => {
 		status = 'disabled';
 	}
 
-	let right: (() => JSX.Element | null) | undefined = () => <CustomIcon name='edit' size={20} color={colors.fontTitlesLabels} />;
+	let right: (() => JSX.Element | null) | undefined = () => (
+		<CustomIcon name='edit' size={20} color={colors.fontTitlesLabels} />
+	);
 	if (notificationPresenceCap) {
 		right = () => <View style={[styles.customStatusDisabled, { backgroundColor: colors.userPresenceDisabled }]} />;
 	} else if (presenceBroadcastDisabled) {
@@ -78,20 +78,9 @@ const CustomStatus = () => {
 				}
 				testID={`sidebar-custom-status-${status}`}
 			/>
-
 			<List.Separator />
 		</>
 	);
 };
 
 export default memo(CustomStatus);
-
-
-
-const styles = StyleSheet.create({
-	statusText: {
-		flex: 1,
-		overflow: 'hidden',
-	},
-
-});
