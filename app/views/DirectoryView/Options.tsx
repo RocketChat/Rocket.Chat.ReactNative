@@ -49,7 +49,7 @@ const DirectoryOptions = ({
 				accessibilityRole='radio'
 				onPress={() => changeType(itemType)}
 				style={styles.filterItemButton}
-				accessibilityLabel={I18n.t(text)}
+				accessibilityLabel={`${I18n.t(text)}. ${propType === itemType ? I18n.t('Checked') : I18n.t('Unchecked')}`}
 				accessible>
 				<View style={styles.filterItemContainer}>
 					<CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.filterItemIcon} />
