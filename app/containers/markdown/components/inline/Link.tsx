@@ -12,6 +12,8 @@ import EventEmitter from '../../../../lib/methods/helpers/events';
 import { themes } from '../../../../lib/constants/colors';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import styles from '../../styles';
+import { useUserPreferences } from '../../../../lib/methods/userPreferences';
+import { SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 
 interface ILinkProps {
 	value: LinkProps['value'];
@@ -20,6 +22,8 @@ interface ILinkProps {
 const Link = ({ value }: ILinkProps) => {
 	const { theme } = useTheme();
 	const { onLinkPress } = useContext(MarkdownContext);
+    const [showUnderlineForLinks] = useUserPreferences<boolean>(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY);
+
 	const { src, label } = value;
 	const handlePress = () => {
 		if (!src.value) {
@@ -37,7 +41,7 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].fontInfo }]}>
+		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].fontInfo, textDecorationLine: showUnderlineForLinks ? 'underline' : 'none' }]}>
 			{(block => {
 				const blockArray = Array.isArray(block) ? block : [block];
 				return blockArray.map(blockInArray => {
