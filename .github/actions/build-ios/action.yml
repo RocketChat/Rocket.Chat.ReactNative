@@ -118,7 +118,7 @@ runs:
       with:
         max_attempts: 3
         retry_wait_seconds: 60
-        timeout_minutes: 50
+        timeout_minutes: 60
         shell: bash
         retry_on: timeout
         command: |
