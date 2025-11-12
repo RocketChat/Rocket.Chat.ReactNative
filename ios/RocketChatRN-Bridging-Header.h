@@ -4,7 +4,6 @@
 
 #import "SecureStorage.h"
 #import "MMKVMigration.h"
-#import "MMKVLogger.h"
 #import "Shared/RocketChat/MMKVBridge.h"
 #import <react-native-notifications/RNNotificationEventHandler.h>
 #import <react-native-notifications/RNNotificationCenter.h>
