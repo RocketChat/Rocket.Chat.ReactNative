@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, type ListRenderItem } from 'react-native';
+import { AccessibilityInfo, FlatList, type ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp } from '@react-navigation/native';
@@ -126,6 +126,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					loading: false,
 					total: directories.total
 				}));
+				this.announceSearchResults(directories.count);
 			} else {
 				this.setState({ loading: false });
 			}
@@ -137,6 +138,15 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 	search = () => {
 		this.load({ newSearch: true });
+	};
+
+	announceSearchResults = (count: number) => {
+		if (!count) {
+			AccessibilityInfo.announceForAccessibility(I18n.t('No_results_found'));
+			return;
+		}
+		const message = count === 1 ? I18n.t('One_result_found') : I18n.t('Search_Results_found', { count: count.toString() });
+		AccessibilityInfo.announceForAccessibility(message);
 	};
 
 	changeType = (type: string) => {
