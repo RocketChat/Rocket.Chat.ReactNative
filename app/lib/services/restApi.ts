@@ -949,7 +949,6 @@ export const emitTyping = (room: IRoom, typing = true) => {
 	}
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
-// test
 export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
 	// {} when TOTP is enabled
 	unsubscribeRooms();

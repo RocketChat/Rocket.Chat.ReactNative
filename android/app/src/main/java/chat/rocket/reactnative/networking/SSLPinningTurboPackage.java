@@ -11,7 +11,6 @@ import com.facebook.react.TurboReactPackage;
 
 import java.util.HashMap;
 import java.util.Map;
- 
 public class SSLPinningTurboPackage extends TurboReactPackage {
 
     @Nullable

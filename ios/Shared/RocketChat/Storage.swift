@@ -45,6 +45,6 @@ final class Storage {
     }
     
     func getPrivateKey(server: String) -> String? {
-        return mmkv.privateKey(for: server)
+        mmkv.privateKey(for: server)
     }
 }
