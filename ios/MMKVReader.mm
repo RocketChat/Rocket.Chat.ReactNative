@@ -192,13 +192,12 @@ RCT_EXPORT_METHOD(readAndDecryptMMKV:(NSString *)mmkvId
                     }
                 }
             } @catch (NSException *exception) {
-                RCTLogError(@"❌ Error reading key: %s - %@", keyStr.c_str(), exception.reason);
+               
             }
         }
     
         resolve(result);
     } @catch (NSException *exception) {
-        RCTLogError(@"Error reading MMKV: %@", exception.reason);
         reject(@"ERROR", exception.reason, nil);
     }
 }
