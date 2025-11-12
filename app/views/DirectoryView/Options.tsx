@@ -41,6 +41,7 @@ const DirectoryOptions = ({
 			text = 'Teams';
 			icon = 'teams';
 		}
+
 		return (
 			<Touch onPress={() => changeType(itemType)} style={styles.filterItemButton} accessibilityLabel={I18n.t(text)} accessible>
 				<View style={styles.filterItemContainer}>
