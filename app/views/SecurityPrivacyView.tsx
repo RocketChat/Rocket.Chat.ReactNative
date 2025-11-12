@@ -6,6 +6,7 @@ import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
+import { MODAL_TRANSITION_DELAY_MS } from '../lib/constants/localAuthentication';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
 import { type SettingsStackParamList } from '../stacks/types';
@@ -59,7 +60,14 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 
 	const navigateToScreenLockConfigView = async () => {
 		if (server?.autoLock) {
-			await handleLocalAuthentication(true);
+			try {
+				await handleLocalAuthentication(true);
+				// Add a small delay to prevent modal conflicts on iOS
+				await new Promise(resolve => setTimeout(resolve, MODAL_TRANSITION_DELAY_MS));
+			} catch {
+				// User cancelled or authentication failed
+				return;
+			}
 		}
 		navigateToScreen('ScreenLockConfigView');
 	};
