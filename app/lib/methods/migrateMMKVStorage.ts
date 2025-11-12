@@ -7,7 +7,7 @@ export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newS
 	const errors: string[] = [];
 
 	try {
-		if (!MMKVReader && !isAndroid) {
+		if (!MMKVReader || !isAndroid) {
 			console.log('MMKVReader module not available - skipping migration');
 			return;
 		}
