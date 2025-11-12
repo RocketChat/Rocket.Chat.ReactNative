@@ -8,6 +8,10 @@ on:
     branches:
       - 'develop'
 
+concurrency:
+  group: ${{ github.workflow }}-develop
+  cancel-in-progress: true
+      
 jobs:
   run-eslint-and-test:
     name: ESLint and Test
