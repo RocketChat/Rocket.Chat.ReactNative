@@ -103,7 +103,7 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
             .newBuilder(this.reactContext, client)
             .build();
         Fresco.initialize(this.reactContext, config);
-        // RNCWebView 
+        // RNCWebView
         RNCWebViewManager.setCertificateAlias(name);
 
         // Expo File System network layer
