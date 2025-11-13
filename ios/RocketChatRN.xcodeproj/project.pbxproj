@@ -283,8 +283,6 @@
 		65AD383C2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */; };
 		65B9A71A2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
 		65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
-		6678BC252EBAB28B00710853 /* MMKVReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6678BC242EBAB28B00710853 /* MMKVReader.mm */; };
-		6678BC262EBAB28B00710853 /* MMKVReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6678BC242EBAB28B00710853 /* MMKVReader.mm */; };
 		66C2701B2EBBCB570062725F /* MMKVMigration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVMigration.mm */; };
 		66C2701C2EBBCB570062725F /* MMKVMigration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVMigration.mm */; };
 		66C2701D2EBBCB570062725F /* MMKVMigration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66C2701A2EBBCB570062725F /* MMKVMigration.mm */; };
@@ -586,8 +584,6 @@
 		60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RocketChatRN.entitlements; path = RocketChatRN/RocketChatRN.entitlements; sourceTree = "<group>"; };
 		65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		65B9A7192AFC24190088956F /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
-		6678BC232EBAB27F00710853 /* MMKVReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMKVReader.h; sourceTree = "<group>"; };
-		6678BC242EBAB28B00710853 /* MMKVReader.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MMKVReader.mm; sourceTree = "<group>"; };
 		66C270192EBBCB570062725F /* MMKVMigration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMKVMigration.h; sourceTree = "<group>"; };
 		66C2701A2EBBCB570062725F /* MMKVMigration.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MMKVMigration.mm; sourceTree = "<group>"; };
 		66C2701E2EBBCB780062725F /* SecureStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecureStorage.h; sourceTree = "<group>"; };
@@ -693,8 +689,6 @@
 			children = (
 				66C2701E2EBBCB780062725F /* SecureStorage.h */,
 				66C2701F2EBBCB780062725F /* SecureStorage.m */,
-				6678BC242EBAB28B00710853 /* MMKVReader.mm */,
-				6678BC232EBAB27F00710853 /* MMKVReader.h */,
 				7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
 				A48B46D82D3FFBD200945489 /* A11yFlowModule.m */,
@@ -2170,7 +2164,6 @@
 				1E76CBD725152C840067298C /* HTTPMethod.swift in Sources */,
 				1E76CBC725152BFF0067298C /* Payload.swift in Sources */,
 				1E76CBD225152C730067298C /* Data+Extensions.swift in Sources */,
-				6678BC262EBAB28B00710853 /* MMKVReader.mm in Sources */,
 				1E76CBD125152C710067298C /* Date+Extensions.swift in Sources */,
 				1E76CBD425152C790067298C /* Database.swift in Sources */,
 				7ACFE7DA2DDE48760090D9BC /* AppDelegate.swift in Sources */,
@@ -2446,7 +2439,6 @@
 				7AAB3E20257E6A6E00707CF6 /* HTTPMethod.swift in Sources */,
 				7AAB3E21257E6A6E00707CF6 /* Payload.swift in Sources */,
 				7AAB3E23257E6A6E00707CF6 /* Data+Extensions.swift in Sources */,
-				6678BC252EBAB28B00710853 /* MMKVReader.mm in Sources */,
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
 				7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */,
