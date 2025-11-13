@@ -287,10 +287,11 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 				username: user?.username,
 				email: user?.emails?.[0]?.address || null,
 				currentPassword: null,
-				newPassword: null,
-				avatar: null
+				bio: user?.bio,
+				nickname: user?.nickname,
+				saving: false
 			});
-		}, [user?.name, user?.username, user?.emails, reset])
+		}, [user?.name, user?.username, user?.emails, user?.bio, user?.nickname, reset])
 	);
 
 	// Sync form values when user data loads (fixes race condition on app startup)
