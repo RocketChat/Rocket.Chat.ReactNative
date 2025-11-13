@@ -287,7 +287,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 				username: user?.username || '',
 				email: user?.emails?.[0]?.address || '',
 				bio: user?.bio || '',
-				nickname: user?.nickname || ''
+				nickname: user?.nickname || '',
+				currentPassword: null,
+				saving: false
 			});
 		}, [user, reset])
 	);
