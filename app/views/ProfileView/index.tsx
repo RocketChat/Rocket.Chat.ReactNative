@@ -282,8 +282,15 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	useFocusEffect(
 		useCallback(() => {
-			reset();
-		}, [])
+			reset({
+				name: user?.name as string,
+				username: user?.username,
+				email: user?.emails?.[0]?.address || null,
+				currentPassword: null,
+				newPassword: null,
+				avatar: null
+			});
+		}, [user?.name, user?.username, user?.emails, reset])
 	);
 
 	// Sync form values when user data loads (fixes race condition on app startup)
@@ -291,7 +298,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		if (user?.emails?.[0]?.address) {
 			const currentEmail = getValues('email');
 			// Only update if email is missing/null but user has email data
-			if (!currentEmail && user.emails[0].address) {
+			if (!currentEmail) {
 				setValue('email', user.emails[0].address, { shouldValidate: false, shouldDirty: false });
 			}
 		}
