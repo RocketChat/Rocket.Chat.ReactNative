@@ -49,7 +49,7 @@ const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 		const baseUri = `${url}/${image}`;
 		// Add cache busting query parameter using image value hash
 		// This ensures cache invalidation when image changes without using Date.now()
-		const separator = image.includes('?') ? '&' : '?';
+		const separator = baseUri.includes('?') ? '&' : '?';
 		return `${baseUri}${separator}_cb=${encodeURIComponent(image)}`;
 	}, [url, image]);
 	
