@@ -1,8 +1,7 @@
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import  { DDPSDK } from '@rocket.chat/ddp-client';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
+import { DDPSDK } from '@rocket.chat/ddp-client';
 
 import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
@@ -13,21 +12,19 @@ import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import I18n from '../../i18n';
-import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
+import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
-import { unsubscribeRooms } from '../methods/subscribeRooms';
-import { getSettings } from '../methods/getSettings';
-import { onRolesChanged } from '../methods/getRoles';
-import { setPresenceCap } from '../methods/getUsersPresence';
-import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../methods/setUser';
-import { compareServerVersion } from '../methods/helpers/compareServerVersion';
-import { isIOS } from '../methods/helpers/deviceInfo';
-import { isSsl } from '../methods/helpers/isSsl';
-import fetch from '../methods/helpers/fetch';
+import { compareServerVersion, isIOS } from '../methods/helpers';
+import { onRolesChanged } from 'lib/methods/getRoles';
+import { getSettings } from 'lib/methods/getSettings';
+import { setPresenceCap } from 'lib/methods/getUsersPresence';
+import { _setUser, _activeUsers, _setUserTimer } from 'lib/methods/setUser';
+import { unsubscribeRooms } from 'lib/methods/subscribeRooms';
+import { IActiveUsers } from 'reducers/activeUsers';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -38,94 +35,47 @@ interface IServices {
 	service: string;
 }
 
-let connectingListener: any;
-let connectedListener: any;
-let closeListener: any;
-let usersListener: any;
-let notifyAllListener: any;
-let rolesListener: any;
-let notifyLoggedListener: any;
-let logoutListener: any;
-
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
-	return new Promise<void>(resolve => {
-		// Check for running requests and abort them before connecting to the server
-		abort();
+	return new Promise<void>(async resolve => {
+		if (sdk.current?.connection.url === server) {
+			return resolve();
+		}
 
 		disconnect();
 		database.setActiveDB(server);
-
-		store.dispatch(connectRequest());
-
-		if (connectingListener) {
-			connectingListener.then(stopListener);
-		}
-
-		if (connectedListener) {
-			connectedListener.then(stopListener);
-		}
-
-		if (closeListener) {
-			closeListener.then(stopListener);
-		}
-
-		if (usersListener) {
-			usersListener.then(stopListener);
-		}
-
-		if (notifyAllListener) {
-			notifyAllListener.then(stopListener);
-		}
-
-		if (rolesListener) {
-			rolesListener.then(stopListener);
-		}
-
-		if (notifyLoggedListener) {
-			notifyLoggedListener.then(stopListener);
-		}
-
-		if (logoutListener) {
-			logoutListener.then(stopListener);
-		}
 
 		unsubscribeRooms();
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-		sdk.initialize(server);
+		await sdk.initialize(server);
+		resolve();
 		getSettings();
 
-		sdk.current.connection.on('connected', () => {
-			console.log('connected');
-		});
-
-		connectingListener = sdk.current.connection.on('connecting', () => {
-			store.dispatch(connectRequest());
-		});
-
-		connectedListener = sdk.current.connection.on('connected', () => {
-			const { connected } = store.getState().meteor;
-			if (connected) {
-				return;
+		sdk.current?.connection.on('connection', status => {
+			if (['connecting', 'reconnecting'].includes(status)) {
+				store.dispatch(connectRequest());
 			}
-			store.dispatch(connectSuccess());
-			const { user } = store.getState().login;
-			if (user?.token) {
-				store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
+			if (status === 'connected') {
+				const { connected } = store.getState().meteor;
+				if (connected) {
+					return;
+				}
+				store.dispatch(connectSuccess());
+				const { user } = store.getState().login;
+				if (user?.token) {
+					store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
+				}
+			}
+			if (['disconnected', 'closed'].includes(status)) {
+				store.dispatch(disconnectAction());
 			}
 		});
+		await sdk.current?.connection.connect();
 
-		closeListener = sdk.current.connection.on('close', () => {
-			store.dispatch(disconnectAction());
-		});
+		sdk.onCollection('users', (ddpMessage: any) => _setUser(ddpMessage));
 
-		usersListener = sdk.current.client.on(
-			'users',
-			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
-		);
-
-		notifyAllListener = sdk.current.stream(
+		sdk.onCollection(
 			'stream-notify-all',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -163,28 +113,31 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		rolesListener = sdk.current.onStreamData(
+		sdk.onCollection(
 			'stream-roles',
 			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
 		);
 
 		// RC 4.1
-		sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
-			const userStatus = ddpMessage.fields.args[0];
-			const { uid } = ddpMessage.fields;
-			const [, status, statusText] = userStatus;
-			const newStatus = { status: STATUSES[status], statusText };
-			// @ts-ignore
-			store.dispatch(setActiveUsers({ [uid]: newStatus }));
+		sdk.onCollection('stream-user-presence', ddpMessage => {
+			if (ddpMessage.msg === 'added' || ddpMessage.msg === 'changed') {
+				if (!ddpMessage.fields) {
+					return;
+				}
+				const userStatus = ddpMessage.fields.args[0];
+				const { uid } = ddpMessage.fields;
+				const [, status, statusText] = userStatus;
+				const newStatus = { status: STATUSES[status], statusText };
+				store.dispatch(setActiveUsers({ [uid]: newStatus }));
 
-			const { user: loggedUser } = store.getState().login;
-			if (loggedUser && loggedUser.id === uid) {
-				// @ts-ignore
-				store.dispatch(setUser(newStatus));
+				const { user: loggedUser } = store.getState().login;
+				if (loggedUser && loggedUser.id === uid) {
+					store.dispatch(setUser(newStatus));
+				}
 			}
 		});
 
-		notifyLoggedListener = sdk.current.onStreamData(
+		sdk.onCollection(
 			'stream-notify-logged',
 			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
 				const { eventName } = ddpMessage.fields;
@@ -200,7 +153,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 								store.dispatch(setActiveUsers(activeUsersBatch));
 							});
 							_setUserTimer.setUserTimer = null;
-							_activeUsers.activeUsers = {} as IActiveUsers;
+                            //@ts-ignore - fix me
+							_activeUsers.activeUsers = {}
 							return null;
 						}, 10000);
 					}
@@ -265,7 +219,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
+		sdk.onCollection('stream-force_logout', () => store.dispatch(logout(true)));
 
 		resolve();
 	});
@@ -275,60 +229,62 @@ function stopListener(listener: any): boolean {
 	return listener && listener.stop();
 }
 
-async function login(credentials: ICredentials): Promise<ILoggedUser | undefined> {
-	// RC 0.64.0
-	await sdk.current.login(credentials);
+async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
+	// TODO: other login methods: ldap, saml, cas, apple, oauth, oauth_custom
+	const result = await sdk.login(credentials);
+	const { me } = result;
 	const serverVersion = store.getState().server.version;
-	const result = sdk.current.currentLogin?.result;
+	const loginUser = sdk.current?.account.user;
+
+	if (!me) {
+		throw new Error("Couldn't fetch user data");
+	}
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
-		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
-		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
+		enableMessageParserEarlyAdoption = me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+		showMessageInMainThread = me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
-	if (result) {
+	if (loginUser) {
+		// TODO: review type
 		const user: ILoggedUser = {
-			id: result.userId,
-			token: result.authToken,
-			username: result.me.username,
-			name: result.me.name,
-			language: result.me.language,
-			status: result.me.status,
-			statusText: result.me.statusText,
-			customFields: result.me.customFields,
-			statusLivechat: result.me.statusLivechat,
-			emails: result.me.emails,
-			roles: result.me.roles,
-			avatarETag: result.me.avatarETag,
+			id: loginUser.id,
+			token: loginUser.token as string,
+			username: me.username as string,
+			name: me.name,
+			language: me.language,
+			status: me.status as ILoggedUser['status'],
+			statusText: me.statusText,
+			customFields: me.customFields,
+			statusLivechat: me.statusLivechat,
+			emails: me.emails,
+			roles: me.roles,
+			avatarETag: me.avatarETag,
 			showMessageInMainThread,
 			enableMessageParserEarlyAdoption,
-			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
-			bio: result.me.bio,
-			nickname: result.me.nickname,
-			requirePasswordChange: result.me.requirePasswordChange
+			alsoSendThreadToChannel: me.settings?.preferences?.alsoSendThreadToChannel,
+			bio: me.bio,
+			nickname: me.nickname,
+			requirePasswordChange: me.requirePasswordChange
 		};
 		return user;
 	}
 }
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean): Promise<ILoggedUser> {
+function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWebView = false): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const result = await login(params);
+			const result = await login(params, isFromWebView);
 			if (result) {
 				return resolve(result);
 			}
 		} catch (e: any) {
 			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
-				const { details, error } = e.data;
+				const { details } = e.data;
 				try {
-					const code = await twoFactor({
-						params,
-						method: details?.method || 'totp',
-						invalid: (details.error || error) === 'totp-invalid'
-					});
+					const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
 
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));
@@ -387,19 +343,13 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 	return loginTOTP(params, true);
 }
 
-async function loginOAuthOrSso(params: ICredentials) {
-	const result = await loginTOTP(params, false);
-	store.dispatch(loginRequest({ resume: result.token }, false));
-}
-
-function abort() {
-	if (sdk.current) {
-		return sdk.current.abort();
-	}
+async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
+	const result = await loginTOTP(params, false, isFromWebView);
+	store.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 }
 
 function checkAndReopen() {
-	return sdk.current.checkAndReopen();
+	console.log('TODO: CHECK AND REOPEN: do we need to hurry connection on app foreground?');
 }
 
 function disconnect() {
@@ -411,24 +361,19 @@ async function getWebsocketInfo({
 }: {
 	server: string;
 }): Promise<{ success: true } | { success: false; message: string }> {
-	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-
 	try {
-		await websocketSdk.connect();
-	} catch (err: any) {
-		if (err.message && err.message.includes('400')) {
-			return {
-				success: false,
-				message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
-			};
-		}
+		const sdk = await DDPSDK.createAndConnect(server);
+		sdk.connection.close();
+
+		return {
+			success: true
+		};
+	} catch {
+		return {
+			success: false,
+			message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
+		};
 	}
-
-	websocketSdk.disconnect();
-
-	return {
-		success: true
-	};
 }
 
 async function getLoginServices(server: string) {
@@ -461,11 +406,11 @@ async function getLoginServices(server: string) {
 }
 
 function determineAuthType(services: IServices) {
-	const { name, custom, showButton, service } = services;
+	const { name, custom, showButton = true, service } = services;
 
 	const authName = name || service;
 
-	if (custom && showButton !== false) {
+	if (custom && showButton) {
 		return 'oauth_custom';
 	}
 
@@ -492,7 +437,6 @@ export {
 	loginWithPassword,
 	loginOAuthOrSso,
 	checkAndReopen,
-	abort,
 	connect,
 	disconnect,
 	getWebsocketInfo,
