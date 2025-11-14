@@ -2,12 +2,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { MMKV } from 'react-native-mmkv';
 import { Platform, NativeModules } from 'react-native';
 
+import { isAndroid } from './helpers';
+
 let storage: MMKV | null = null;
 let storageInitPromise: Promise<MMKV> | null = null;
 
 // Get app group path lazily to avoid accessing native modules at import time
 function getAppGroupPath(): string {
-	if (Platform.OS !== 'ios') {
+	if (isAndroid) {
 		return '';
 	}
 
@@ -64,13 +66,10 @@ function getStorageSync(): MMKV {
 	return storage;
 }
 
-// DON'T auto-initialize on module load - let app/index.tsx control initialization timing
-// This ensures migration completes first
-
 class UserPreferences {
 	getString(key: string): string | null {
 		try {
-			return getStorageSync().getString(key) ?? null;
+			return getStorageSync().getString(key) || null;
 		} catch {
 			return null;
 		}
@@ -86,7 +85,7 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
-			return getStorageSync().getBoolean(key) ?? null;
+			return getStorageSync().getBoolean(key) || null;
 		} catch {
 			return null;
 		}
@@ -130,7 +129,7 @@ class UserPreferences {
 	// Additional utility methods
 	getNumber(key: string): number | null {
 		try {
-			return getStorageSync().getNumber(key) ?? null;
+			return getStorageSync().getNumber(key) || null;
 		} catch {
 			return null;
 		}
