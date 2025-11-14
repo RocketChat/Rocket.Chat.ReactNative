@@ -4,35 +4,42 @@ import database from '../../database';
 import { type IRoom, type ISubscription } from '../../../definitions';
 import { type IUserMessage } from '../../../definitions/IMessage';
 
+// Helper type for room-like objects that can be either IRoom or ISubscription
+type TRoomLike = Pick<IRoom | ISubscription, 'uids' | 'usernames' | 'prid' | 'fname' | 'name'> & {
+	t?: string;
+	rid?: string;
+	federated?: boolean;
+};
+
 /**
  * Determines if a room is a group chat (more than 2 participants)
  */
-export function isGroupChat(room: Partial<IRoom | ISubscription>): boolean {
+export function isGroupChat(room: Partial<TRoomLike> | undefined): boolean {
 	return ((room?.uids && room.uids.length > 2) || (room?.usernames && room.usernames.length > 2)) ?? false;
 }
 
 /**
  * Gets the avatar identifier for a room
  */
-export function getRoomAvatar(room: Partial<IRoom | ISubscription>): string | undefined {
-	if (isGroupChat(room) && room.uids && room.usernames) {
+export function getRoomAvatar(room: Partial<TRoomLike> | undefined): string {
+	if (isGroupChat(room) && room?.uids && room?.usernames) {
 		return room.uids.length + room.usernames.join();
 	}
-	return room.prid ? room.fname : room.name;
+	return room?.prid ? (room.fname || '') : (room?.name || '');
 }
 
 /**
  * Gets the UID of the other participant in a direct message
  */
-export function getUidDirectMessage(room: (Partial<IRoom | ISubscription> & { itsMe?: boolean }) | null): string | null | undefined {
+export function getUidDirectMessage(room: (Partial<TRoomLike> & { itsMe?: boolean }) | null | undefined): string | undefined {
 	const { id: userId } = reduxStore.getState().login.user;
 
 	if (!room) {
-		return null;
+		return undefined;
 	}
 
 	if (room.itsMe) {
-		return userId;
+		return userId || undefined;
 	}
 
 	// legacy method
@@ -41,43 +48,43 @@ export function getUidDirectMessage(room: (Partial<IRoom | ISubscription> & { it
 	}
 
 	if (isGroupChat(room)) {
-		return null;
+		return undefined;
 	}
 
 	const me = room.uids?.find(uid => uid === userId);
 	const other = room.uids?.filter(uid => uid !== userId);
 
-	return other && other.length ? other[0] : me;
+	return (other && other.length ? other[0] : me) || undefined;
 }
 
 /**
  * Gets the display title for a room
  */
-export function getRoomTitle(room: Partial<IRoom | ISubscription>): string | undefined {
+export function getRoomTitle(room: Partial<TRoomLike> | undefined): string {
 	const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } =
 		reduxStore.getState().settings;
 	const { username } = reduxStore.getState().login.user;
-	if ('federated' in room && room.federated === true) {
-		return room.fname;
+	if (room && 'federated' in room && room.federated === true) {
+		return room.fname || '';
 	}
-	if (isGroupChat(room) && !(room.name && room.name.length) && room.usernames) {
+	if (isGroupChat(room) && !(room?.name && room.name.length) && room?.usernames) {
 		return room.usernames
 			.filter(u => u !== username)
 			.sort((u1, u2) => u1.localeCompare(u2))
 			.join(', ');
 	}
-	if (allowSpecialChars && room.t !== 'd') {
-		return room.fname || room.name;
+	if (allowSpecialChars && room?.t !== 'd') {
+		return room?.fname || room?.name || '';
 	}
-	return ((room?.prid || useRealName) && room?.fname) || room?.name;
+	return ((room?.prid || useRealName) && room?.fname) || room?.name || '';
 }
 
 /**
  * Gets the sender name based on settings (real name or username)
  */
-export function getSenderName(sender: IUserMessage): string | undefined {
+export function getSenderName(sender: IUserMessage): string {
 	const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
-	return useRealName ? sender.name : sender.username;
+	return (useRealName ? sender.name : sender.username) || '';
 }
 
 /**

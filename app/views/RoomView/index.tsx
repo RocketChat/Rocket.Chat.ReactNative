@@ -620,11 +620,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('id' in room && t === 'd' && !isGroupChat(room)) {
 			try {
 				const roomUserId = getUidDirectMessage(room);
-				this.setState({ roomUserId }, () => this.setHeader());
+				if (roomUserId) {
+					this.setState({ roomUserId }, () => this.setHeader());
 
-				const result = await getUserInfo(roomUserId);
-				if (result.success) {
-					return result.user;
+					const result = await getUserInfo(roomUserId);
+					if (result.success) {
+						return result.user;
+					}
 				}
 			} catch (e) {
 				log(e);
