@@ -3,7 +3,6 @@ package chat.rocket.reactnative.storage;
 import android.content.Context;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,15 +31,5 @@ public final class Storage {
         return baos.toByteArray();
     }
 
-    public static boolean exists(Context context, String filename) throws IOException {
-        File file = context.getFileStreamPath(filename);
-        return file != null && file.exists();
-    }
-
-    public static void resetValues(Context context, String[] filenames) {
-        for(String filename : filenames) {
-            context.deleteFile(filename);
-        }
-    }
 }
 
