@@ -353,7 +353,7 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('/v1/channels.info', { roomId });
 
-export const getUserPreferences = (userId: string) =>
+export const getUserPreferences = () =>
 	// RC 0.62.0
 	sdk.get('/v1/users.getPreferences');
 
