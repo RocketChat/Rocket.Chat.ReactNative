@@ -7,10 +7,6 @@
 - (void) setSecureKey: (nonnull NSString *)key value:(nonnull NSString *)value
               options: (nonnull NSDictionary *)options;
 - (nullable NSString *) getSecureKey:(nonnull NSString *)key;
-- (bool) secureKeyExists:(nonnull NSString *)key;
-- (void) removeSecureKey:(nonnull NSString *)key;
-
-- (BOOL)searchKeychainCopyMatchingExists:(nonnull NSString *)identifier;
 
 - (nonnull NSString *)searchKeychainCopyMatching:(nonnull NSString *)identifier;
 
@@ -22,10 +18,6 @@
 
 - (BOOL)deleteKeychainValue:(nonnull NSString *)identifier;
 
-- (void)clearSecureKeyStore;
-
 - (void)handleAppUninstallation;
-
-- (void) setServiceName: (nonnull NSString *)serviceName;
 
 @end
