@@ -1,20 +1,30 @@
-// @ts-nocheck - TEMP
 import log from './log';
 import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
+import { type IRoom, type ISubscription } from '../../../definitions';
+import { type IUserMessage } from '../../../definitions/IMessage';
 
-export function isGroupChat(room): boolean {
+/**
+ * Determines if a room is a group chat (more than 2 participants)
+ */
+export function isGroupChat(room: Partial<IRoom | ISubscription>): boolean {
 	return ((room?.uids && room.uids.length > 2) || (room?.usernames && room.usernames.length > 2)) ?? false;
 }
 
-export function getRoomAvatar(room) {
+/**
+ * Gets the avatar identifier for a room
+ */
+export function getRoomAvatar(room: Partial<IRoom | ISubscription>): string | undefined {
 	if (isGroupChat(room) && room.uids && room.usernames) {
 		return room.uids.length + room.usernames.join();
 	}
 	return room.prid ? room.fname : room.name;
 }
 
-export function getUidDirectMessage(room) {
+/**
+ * Gets the UID of the other participant in a direct message
+ */
+export function getUidDirectMessage(room: (Partial<IRoom | ISubscription> & { itsMe?: boolean }) | null): string | null | undefined {
 	const { id: userId } = reduxStore.getState().login.user;
 
 	if (!room) {
@@ -40,7 +50,10 @@ export function getUidDirectMessage(room) {
 	return other && other.length ? other[0] : me;
 }
 
-export function getRoomTitle(room) {
+/**
+ * Gets the display title for a room
+ */
+export function getRoomTitle(room: Partial<IRoom | ISubscription>): string | undefined {
 	const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } =
 		reduxStore.getState().settings;
 	const { username } = reduxStore.getState().login.user;
@@ -59,12 +72,18 @@ export function getRoomTitle(room) {
 	return ((room?.prid || useRealName) && room?.fname) || room?.name;
 }
 
-export function getSenderName(sender) {
+/**
+ * Gets the sender name based on settings (real name or username)
+ */
+export function getSenderName(sender: IUserMessage): string | undefined {
 	const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
 	return useRealName ? sender.name : sender.username;
 }
 
-export function canAutoTranslate() {
+/**
+ * Checks if the current user can use auto-translate feature
+ */
+export function canAutoTranslate(): boolean {
 	try {
 		const { AutoTranslate_Enabled } = reduxStore.getState().settings;
 		if (!AutoTranslate_Enabled) {
@@ -79,20 +98,32 @@ export function canAutoTranslate() {
 	}
 }
 
-export function isRead(item) {
+/**
+ * Checks if a subscription/room item is read
+ */
+export function isRead(item: Partial<ISubscription>): boolean {
 	let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
-	isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
+	isUnread = isUnread && ((item.unread ?? 0) > 0 || item.alert === true); // either its unread count > 0 or its alert
 	return !isUnread;
 }
 
-export function hasRole(role): boolean {
+/**
+ * Checks if the current user has a specific role
+ */
+export function hasRole(role: string): boolean {
 	const loginUser = reduxStore.getState().login.user;
 	const userRoles = loginUser?.roles || [];
 	return userRoles.indexOf(role) > -1;
 }
 
-export async function hasPermission(permissions, rid?: any): Promise<boolean[]> {
-	let roomRoles = [];
+/**
+ * Checks if the current user has specific permissions in a room
+ * @param permissions Array of permission role arrays to check
+ * @param rid Optional room ID to check room-specific roles
+ * @returns Array of boolean values indicating if each permission is granted
+ */
+export async function hasPermission(permissions: Array<string[] | undefined>, rid?: string): Promise<boolean[]> {
+	let roomRoles: string[] = [];
 	if (rid) {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -100,7 +131,7 @@ export async function hasPermission(permissions, rid?: any): Promise<boolean[]> 
 			// get the room from database
 			const room = await subsCollection.find(rid);
 			// get room roles
-			roomRoles = room.roles || [];
+			roomRoles = (room as any).roles || [];
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
 			return permissions.map(() => false);
@@ -111,8 +142,9 @@ export async function hasPermission(permissions, rid?: any): Promise<boolean[]> 
 		const loginUser = reduxStore.getState().login.user;
 		const userRoles = loginUser?.roles || [];
 		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
+		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r)) ?? false);
 	} catch (e) {
 		log(e);
+		return permissions.map(() => false);
 	}
 }
