@@ -227,6 +227,13 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 								u.avatarETag = etag;
 							});
 						});
+						
+						// Also update logged-in user's avatarETag in Redux if it's the current user
+						// This triggers the saga to update serversDB, ensuring useAvatarETag hook picks up the change
+						const { user: loggedUser } = store.getState().login;
+						if (loggedUser && loggedUser.username === username) {
+							store.dispatch(setUser({ avatarETag: etag }));
+						}
 					} catch {
 						// We can't create a new record since we don't receive the user._id
 					}
