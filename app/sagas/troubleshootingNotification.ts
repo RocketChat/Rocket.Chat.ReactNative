@@ -28,7 +28,7 @@ function* init() {
 	try {
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.5.0')) {
 			const pushInfoResult = yield* call(pushInfo);
-			if (pushInfoResult.success) {
+			if (pushInfoResult) {
 				pushGatewayEnabled = pushInfoResult.pushGatewayEnabled;
 				defaultPushGateway = pushInfoResult.defaultPushGateway;
 			}
