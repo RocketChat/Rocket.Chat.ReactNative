@@ -23,7 +23,6 @@ extension MMKVBridge {
 		guard let userToken = string(forKey: "reactnativemeteor_usertoken-\(userId)") else {
 			return nil
 		}
-
 		return userToken
 	}
 	
@@ -31,7 +30,6 @@ extension MMKVBridge {
 		guard let userId = string(forKey: "reactnativemeteor_usertoken-\(server)") else {
 			return nil
 		}
-
 		return userId
 	}
 	
@@ -39,7 +37,6 @@ extension MMKVBridge {
 		guard let privateKey = string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") else {
 			return nil
 		}
-
 		return privateKey
 	}
 }
