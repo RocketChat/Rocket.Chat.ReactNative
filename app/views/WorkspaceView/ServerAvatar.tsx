@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -30,6 +30,20 @@ const styles = StyleSheet.create({
 		borderRadius: BORDER_RADIUS,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	imageContainer: {
+		width: SIZE,
+		height: SIZE,
+		position: 'relative'
+	},
+	skeletonOverlay: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 
@@ -53,18 +67,34 @@ const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 		return `${baseUri}${separator}_cb=${encodeURIComponent(image)}`;
 	}, [url, image]);
 	
-	// Initialize loading state - will be reset by onLoadStart when Image mounts
+	// Track loading/error for the current imageUri and reset when it changes
+	const previousImageUriRef = useRef<string | null>(imageUri);
 	const [loading, setLoading] = useState(() => !!imageUri);
 	const [error, setError] = useState(false);
 
-	const handleLoadStart = () => {
-		setLoading(true);
-		setError(false);
-	};
+	// Reset loading/error state when imageUri changes
+	// This ensures a new image URL can recover from previous errors
+	// Note: Using useEffect here is necessary to reset state when props change.
+	// The linter warning about cascading renders is acceptable here as we need
+	// to synchronize component state with prop changes for proper error recovery.
+	useEffect(() => {
+		// Only update if imageUri actually changed
+		if (previousImageUriRef.current !== imageUri) {
+			previousImageUriRef.current = imageUri;
+			if (imageUri) {
+				// New image: start in loading state and clear previous errors
+				setLoading(true);
+				setError(false);
+			} else {
+				// No image: nothing to load, no error
+				setLoading(false);
+				setError(false);
+			}
+		}
+	}, [imageUri]);
 
 	const handleLoad = () => {
 		setLoading(false);
-		setError(false);
 	};
 
 	const handleError = () => {
@@ -72,19 +102,10 @@ const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 		setError(true);
 	};
 
-	// Show skeleton while loading
-	if (loading && imageUri && !error) {
-		return (
-			<View style={styles.container}>
-				<SkeletonPlaceholder borderRadius={BORDER_RADIUS} backgroundColor={colors.surfaceNeutral}>
-					<SkeletonPlaceholder.Item width={SIZE} height={SIZE} borderRadius={BORDER_RADIUS} />
-				</SkeletonPlaceholder>
-			</View>
-		);
-	}
+	const showFallback = error || !imageUri;
 
 	// Show fallback icon on error or when no image is provided
-	if (error || !imageUri) {
+	if (showFallback) {
 		return (
 			<View style={styles.container}>
 				<View
@@ -102,25 +123,33 @@ const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 		);
 	}
 
-	// Show the actual image
+	// Show the actual image with an overlaid skeleton while loading
 	return (
 		<View style={styles.container}>
-			<Image
-				key={`${imageUri}-${image}`}
-				style={[
-					styles.image,
-					{
-						borderColor: colors.strokeLight,
-						borderWidth: 1,
-						backgroundColor: isDarkMode ? colors.surfaceNeutral : 'transparent'
-					}
-				]}
-				source={{ uri: imageUri }}
-				onLoadStart={handleLoadStart}
-				onLoad={handleLoad}
-				onError={handleError}
-				contentFit='cover'
-			/>
+			<View style={styles.imageContainer}>
+				<Image
+					key={`${imageUri}-${image}`}
+					style={[
+						styles.image,
+						{
+							borderColor: colors.strokeLight,
+							borderWidth: 1,
+							backgroundColor: isDarkMode ? colors.surfaceNeutral : 'transparent'
+						}
+					]}
+					source={{ uri: imageUri }}
+					onLoad={handleLoad}
+					onError={handleError}
+					contentFit='cover'
+				/>
+				{loading && (
+					<View style={styles.skeletonOverlay}>
+						<SkeletonPlaceholder borderRadius={BORDER_RADIUS} backgroundColor={colors.surfaceNeutral}>
+							<SkeletonPlaceholder.Item width={SIZE} height={SIZE} borderRadius={BORDER_RADIUS} />
+						</SkeletonPlaceholder>
+					</View>
+				)}
+			</View>
 		</View>
 	);
 });
