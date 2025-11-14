@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useFocusEffect } from '@react-navigation/native';
+import { Image } from 'expo-image';
 
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
@@ -280,9 +281,20 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		navigation.setOptions(options);
 	}, []);
 
+	const [avatarRefreshKey, setAvatarRefreshKey] = useState(0);
+
 	useFocusEffect(
 		useCallback(() => {
 			reset();
+			// Force avatar refresh when returning to ProfileView
+			// This ensures the avatar updates immediately after changing it
+			setAvatarRefreshKey(prev => prev + 1);
+			
+			// Clear image cache for avatar to ensure fresh fetch
+			// This helps when avatarETag hasn't updated yet but avatar has changed
+			Image.clearMemoryCache().catch(() => {
+				// Ignore errors if cache clearing fails
+			});
 		}, [])
 	);
 
@@ -293,7 +305,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: colors.surfaceTint, paddingTop: 32 }]}
 					testID='profile-view-list'
 					{...scrollPersistTaps}>
-					<View style={styles.avatarContainer} testID='profile-view-avatar'>
+					<View style={styles.avatarContainer} testID='profile-view-avatar' key={`avatar-container-${avatarRefreshKey}`}>
 						<AvatarWithEdit
 							editAccessibilityLabel={I18n.t('Edit_Avatar')}
 							text={user.username}

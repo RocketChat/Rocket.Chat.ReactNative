@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Image } from 'expo-image';
 import Touchable from 'react-native-platform-touchable';
@@ -36,6 +36,62 @@ const Avatar = React.memo(
 		cdnPrefix,
 		accessibilityLabel
 	}: IAvatar) => {
+		// Compute avatar URI with memoization to ensure it updates when dependencies change
+		// Hooks must be called before early return
+		const avatarUri = useMemo(() => {
+			if (isStatic) {
+				return avatar;
+			}
+			let uri = getAvatarURL({
+				type,
+				text,
+				size,
+				userId,
+				token,
+				avatar,
+				server,
+				avatarETag,
+				serverVersion,
+				rid,
+				blockUnauthenticatedAccess,
+				avatarExternalProviderUrl,
+				roomAvatarExternalProviderUrl,
+				cdnPrefix
+			});
+			
+			// Add cache busting parameter using avatarETag to force fresh fetch when avatar changes
+			// The avatarETag changes when avatar is updated, ensuring URL changes and cache is invalidated
+			if (avatarETag && uri && !uri.includes('_cb=')) {
+				const separator = uri.includes('?') ? '&' : '?';
+				uri = `${uri}${separator}_cb=${encodeURIComponent(avatarETag)}`;
+			}
+			
+			return uri;
+		}, [
+			type,
+			text,
+			size,
+			userId,
+			token,
+			avatar,
+			server,
+			avatarETag,
+			serverVersion,
+			rid,
+			blockUnauthenticatedAccess,
+			avatarExternalProviderUrl,
+			roomAvatarExternalProviderUrl,
+			cdnPrefix,
+			isStatic
+		]);
+
+		// Create a cache key that changes when avatar or avatarETag changes
+		// This forces Image component to remount and fetch fresh image
+		const imageKey = useMemo(
+			() => `avatar-${avatarUri}-${avatarETag || ''}-${avatar || ''}`,
+			[avatarUri, avatarETag, avatar]
+		);
+
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
@@ -62,31 +118,12 @@ const Avatar = React.memo(
 				</MarkdownContext.Provider>
 			);
 		} else {
-			let uri = avatar;
-			if (!isStatic) {
-				uri = getAvatarURL({
-					type,
-					text,
-					size,
-					userId,
-					token,
-					avatar,
-					server,
-					avatarETag,
-					serverVersion,
-					rid,
-					blockUnauthenticatedAccess,
-					avatarExternalProviderUrl,
-					roomAvatarExternalProviderUrl,
-					cdnPrefix
-				});
-			}
-
 			image = (
 				<Image
+					key={imageKey}
 					style={avatarStyle}
 					source={{
-						uri,
+						uri: avatarUri,
 						headers: RocketChatSettings.customHeaders
 					}}
 					priority='high'
