@@ -122,51 +122,6 @@ public class SecureKeystore {
         }
     }
 
-    public boolean secureKeyExists(String key) {
-        if (useKeystore()) {
-            try {
-                boolean exists = exists(reactContext, key);
-                return exists;
-            } catch (Exception e) {
-                return false;
-            }
-        } else {
-            try {
-                boolean exists = prefs.contains(key);
-                return exists;
-            } catch (IllegalViewOperationException e) {
-                return false;
-            }
-        }
-    }
-
-    public void removeSecureKey(String key) {
-        ArrayList<Boolean> fileDeleted = new ArrayList<Boolean>();
-        if (useKeystore()) {
-            try {
-                for (String filename : new String[]{
-                        Constants.SKS_DATA_FILENAME + key,
-                        Constants.SKS_KEY_FILENAME + key,
-                }) {
-                    fileDeleted.add(reactContext.deleteFile(filename));
-                }
-            } catch (Exception e) {
-                Log.e(Constants.TAG, "Error removing secure key", e);
-            }
-        } else {
-            try {
-                if (prefs.getString(key, null) == null) {
-                    // Key doesn't exist
-                } else {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.remove(key).apply();
-                }
-            } catch (Exception e) {
-                Log.e(Constants.TAG, "Error removing key from prefs", e);
-            }
-        }
-    }
-
     private PublicKey getOrCreatePublicKey(Context context, String alias) throws GeneralSecurityException, IOException {
         KeyStore keyStore = KeyStore.getInstance(getKeyStore());
         keyStore.load(null);
@@ -283,10 +238,6 @@ public class SecureKeystore {
         SecretKey secretKey = getSymmetricKey(context, alias);
         byte[] cipherTextBytes = Storage.readValues(context, Constants.SKS_DATA_FILENAME + alias);
         return new String(decryptAesCipherText(secretKey, cipherTextBytes), "UTF-8");
-    }
-
-    public boolean exists(Context context, String alias) throws IOException {
-        return Storage.exists(context, Constants.SKS_DATA_FILENAME + alias);
     }
 
     private String getKeyStore() {
