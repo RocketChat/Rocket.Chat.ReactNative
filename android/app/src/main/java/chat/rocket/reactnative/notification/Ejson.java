@@ -5,10 +5,10 @@ import android.util.Log;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Callback;
 
+import chat.rocket.reactnative.SecureStorage;
 import com.tencent.mmkv.MMKV;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
-import chat.rocket.reactnative.SecureStorage;
 
 import java.math.BigInteger;
 
