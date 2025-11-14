@@ -5,6 +5,7 @@ import {
 	type IBaseScreen,
 	type ILastMessage,
 	type ILoggedUser,
+	type RoomType,
 	type TSubscriptionModel,
 	type ICustomEmojis,
 	type TMessageAction
@@ -44,7 +45,7 @@ export interface IRoomViewState {
 		| TSubscriptionModel
 		| {
 				rid: string;
-				t: string;
+				t: RoomType;
 				name?: string;
 				fname?: string;
 				prid?: string;
