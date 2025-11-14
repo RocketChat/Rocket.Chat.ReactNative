@@ -468,9 +468,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		try {
 			if (!isGroupChat(room)) {
 				const roomUserId = getUidDirectMessage(room);
-				const result = await getUserInfo(roomUserId);
-				if (result.success) {
-					this.setState({ member: result.user as any });
+				if (roomUserId) {
+					const result = await getUserInfo(roomUserId);
+					if (result.success) {
+						this.setState({ member: result.user as any });
+					}
 				}
 			}
 		} catch (e) {
