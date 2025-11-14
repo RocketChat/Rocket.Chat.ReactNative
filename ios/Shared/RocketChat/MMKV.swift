@@ -20,14 +20,26 @@ extension MMKVBridge {
 	}
 	
 	func userToken(for userId: String) -> String? {
-		return string(forKey: "reactnativemeteor_usertoken-\(userId)")
+		guard let userToken = string(forKey: "reactnativemeteor_usertoken-\(userId)") else {
+			return nil
+		}
+
+		return userToken
 	}
 	
 	func userId(for server: String) -> String? {
-		return string(forKey: "reactnativemeteor_usertoken-\(server)")
+		guard let userId = string(forKey: "reactnativemeteor_usertoken-\(server)") else {
+			return nil
+		}
+
+		return userId
 	}
 	
 	func privateKey(for server: String) -> String? {
-		return string(forKey: "\(server)-RC_E2E_PRIVATE_KEY")
+		guard let privateKey = string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") else {
+			return nil
+		}
+
+		return privateKey
 	}
 }
