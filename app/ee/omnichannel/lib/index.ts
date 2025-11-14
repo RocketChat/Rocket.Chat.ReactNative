@@ -12,8 +12,8 @@ export const changeLivechatStatus = () => sdk.methodCallWrapper('livechat:change
 // @ts-ignore
 export const getInquiriesQueued = (serverVersion: string) => {
 	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
-		? 'livechat/inquiries.queuedForUser'
-		: 'livechat/inquiries.queued';
+		? '/v1/livechat/inquiries.queuedForUser'
+		: '/v1/livechat/inquiries.queued';
 	return sdk.get(url);
 };
 
