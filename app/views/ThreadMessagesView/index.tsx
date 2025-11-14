@@ -341,7 +341,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				offset,
 				text: searchText
 			});
-			if (result.success) {
+			if (result) {
 				this.updateThreads({ update: result.threads, lastThreadSync });
 				this.setState({
 					loading: false,
