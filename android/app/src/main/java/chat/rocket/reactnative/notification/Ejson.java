@@ -61,13 +61,11 @@ public class Ejson {
                 MMKV.initialize(this.reactContext);
                 SecureStorage secureStorage = new SecureStorage(this.reactContext);
 
-                // Get encryption key from Android Keystore (same hex conversion as before)
+                // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31                
                 String alias = Utils.toHex("com.MMKV.default");
-
-                // Retrieve encryption key (may be null for unencrypted storage)
+                
                 String password = secureStorage.getSecureKeyInternal(alias);
                 
-                Log.d("Ejson", "MMKV encryption key exists: " + (password != null ? "YES" : "NO"));
                 
                 // Initialize MMKV (works with or without encryption)
                 mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
