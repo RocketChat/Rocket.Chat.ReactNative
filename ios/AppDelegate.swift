@@ -3,7 +3,6 @@ import React
 import ReactAppDependencyProvider
 import Firebase
 import Bugsnag
-import MMKV
 import WatchConnectivity
 
 @UIApplicationMain
@@ -18,14 +17,20 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    // IMPORTANT: Migrate MMKV data FIRST, before any other initialization
+    // This must run before Firebase, Bugsnag, and React Native start
+    MMKVMigration.migrate()
+    
+    
+    if let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String,
+       let groupDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) {
+      let mmkvPath = groupDirectory.appendingPathComponent("mmkv").path
+      try? FileManager.default.createDirectory(atPath: mmkvPath, withIntermediateDirectories: true, attributes: nil)
+      _ = MMKVBridge(id: "bootstrap", cryptKey: nil, rootPath: mmkvPath)
+    }
+    
     FirebaseApp.configure()
     Bugsnag.start()
-    
-    // Initialize MMKV with app group
-    if let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String,
-       let groupDir = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.path {
-      MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: .debug)
-    }
     
     // Initialize notifications
     RNNotifications.startMonitorNotifications()

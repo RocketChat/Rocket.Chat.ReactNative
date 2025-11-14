@@ -26,6 +26,7 @@ import com.wix.reactnativenotifications.core.notification.IPushNotification
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
+import chat.rocket.reactnative.storage.MMKVReaderTurboPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
 
 open class MainApplication : Application(), ReactApplication, INotificationsApplication {
@@ -35,7 +36,9 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
               add(SSLPinningTurboPackage())
+              add(MMKVReaderTurboPackage())
               add(WatermelonDBJSIPackage())
+              add(SecureStoragePackage())
             }
 
         override fun getJSMainModuleName(): String = "index"

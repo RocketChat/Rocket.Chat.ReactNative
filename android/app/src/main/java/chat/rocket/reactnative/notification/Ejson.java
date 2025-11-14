@@ -5,7 +5,7 @@ import android.util.Log;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Callback;
 
-import com.ammarahmed.mmkv.SecureKeystore;
+import chat.rocket.reactnative.SecureStorage;
 import com.tencent.mmkv.MMKV;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
@@ -59,13 +59,15 @@ public class Ejson {
             try {
                 // Start MMKV container
                 MMKV.initialize(this.reactContext);
-                SecureKeystore secureKeystore = new SecureKeystore(this.reactContext);
+                SecureStorage secureStorage = new SecureStorage(this.reactContext);
 
-                // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
+                // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31 
                 String alias = Utils.toHex("com.MMKV.default");
-
-                // Retrieve container password
-                String password = secureKeystore.getSecureKey(alias);
+                
+                String password = secureStorage.getSecureKeyInternal(alias);
+                
+                
+                // Initialize MMKV (works with or without encryption)
                 mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
             } catch (Exception e) {
                 Log.e("Ejson", "Failed to initialize MMKV: " + e.getMessage());

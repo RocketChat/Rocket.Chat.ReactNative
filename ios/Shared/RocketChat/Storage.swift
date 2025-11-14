@@ -7,7 +7,7 @@ struct Credentials {
 }
 
 final class Storage {
-    private let mmkv = MMKV.build()
+    private let mmkv = MMKVBridge.build()
     
     private var appGroupIdentifier: String? {
         return Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String
