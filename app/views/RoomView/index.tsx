@@ -145,13 +145,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const name = props.route.params?.name;
 		const fname = props.route.params?.fname;
 		const prid = props.route.params?.prid;
-		const room = props.route.params?.room ?? {
+		const room = (props.route.params?.room ?? {
 			rid: this.rid as string,
-			t: this.t as string,
+			t: (this.t as RoomType) || ('d' as RoomType),
 			name,
 			fname,
 			prid
-		};
+		}) as IRoomViewState['room'];
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);

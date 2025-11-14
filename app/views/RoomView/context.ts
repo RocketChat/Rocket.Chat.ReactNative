@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { type ILastMessage, type TSubscriptionModel } from '../../definitions';
+import { type ILastMessage, type RoomType, type TSubscriptionModel } from '../../definitions';
 
 export type TMessageAction = 'reply' | 'quote' | 'edit' | 'react' | null;
 
@@ -12,7 +12,7 @@ export type TRoomContextRoom =
 	| TSubscriptionModel
 	| {
 			rid: string;
-			t: string;
+			t: RoomType;
 			name?: string;
 			fname?: string;
 			prid?: string;

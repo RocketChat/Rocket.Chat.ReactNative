@@ -8,6 +8,7 @@ import {
 	type IMessage,
 	type IServer,
 	type ISubscription,
+	type RoomType,
 	type SubscriptionType,
 	type TAnyMessageModel,
 	type TChangeAvatarViewContext,
@@ -36,7 +37,7 @@ export type ChatsStackParamList = {
 				name?: string;
 				fname?: string;
 				prid?: string;
-				room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
+				room?: TSubscriptionModel | { rid: string; t: RoomType; name?: string; fname?: string; prid?: string };
 				jumpToMessageId?: string;
 				jumpToThreadId?: string;
 				roomUserId?: string | null;

@@ -12,6 +12,7 @@ import { type IPermissionsState } from '../../reducers/permissions';
 import { type IMessage } from '../../definitions';
 import { colors } from '../../lib/constants/colors';
 import { type IRoomContext, RoomContext } from '../../views/RoomView/context';
+import { type RoomType } from '../../definitions';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 import { initStore } from '../../lib/store/auxStore';
 import { search } from '../../lib/methods/search';
@@ -78,7 +79,7 @@ const initialContext = {
 	tmid: undefined,
 	room: {
 		rid: 'rid',
-		t: 'd',
+		t: 'd' as RoomType,
 		tmid: undefined,
 		name: 'Rocket Chat',
 		fname: 'Rocket Chat',
