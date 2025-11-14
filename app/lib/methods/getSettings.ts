@@ -143,7 +143,7 @@ export async function setSettings(): Promise<void> {
 	reduxStore.dispatch(addSettings(parseSettings(parsed.slice(0, parsed.length))));
 }
 
-export function subscribeSettings(): void {
+export function subscribeSettings() {
 	return sdk.subscribe('stream-notify-all', 'public-settings-changed');
 }
 
@@ -159,8 +159,8 @@ export async function getSettings(): Promise<void> {
 		let settings: IData[] = [];
 		const serverVersion = reduxStore.getState().server.version;
 		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
-			? `${sdk.current.client.host}/api/v1/settings.public?_id=${settingsParams.join(',')}`
-			: `${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
+			? `${sdk.current?.connection.url}/api/v1/settings.public?_id=${settingsParams.join(',')}`
+			: `${sdk.current?.connection.url}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
 		// Iterate over paginated results to retrieve all settings
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?

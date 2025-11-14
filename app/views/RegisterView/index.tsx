@@ -132,7 +132,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		try {
 			const response = await register({ name, email, pass: password, username });
 
-			if (response.success) {
+			if (response) {
 				if (Accounts_EmailVerification) {
 					showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
 					navigation.goBack();
