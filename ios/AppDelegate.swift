@@ -4,7 +4,6 @@ import ReactAppDependencyProvider
 import Firebase
 import Bugsnag
 import WatchConnectivity
-import MMKV
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -24,8 +23,10 @@ public class AppDelegate: ExpoAppDelegate {
     
     
     if let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String,
-       let groupDir = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.path {
-      MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: .debug)
+       let groupDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) {
+      let mmkvPath = groupDirectory.appendingPathComponent("mmkv").path
+      try? FileManager.default.createDirectory(atPath: mmkvPath, withIntermediateDirectories: true, attributes: nil)
+      _ = MMKVBridge(id: "bootstrap", cryptKey: nil, rootPath: mmkvPath)
     }
     
     FirebaseApp.configure()
