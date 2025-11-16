@@ -7,8 +7,9 @@ const canPostReadOnly = async (room: Partial<ISubscription>, username: string, p
 	const isUnmuted = !!room?.unmuted?.find(m => m === username);
 	// Use provided permission or fallback to static snapshot for backward compatibility
 	const permissionToCheck = postReadOnlyPermission ?? reduxStore.getState().permissions['post-readonly'];
-	const permission = await hasPermission([permissionToCheck], room.rid);
-	return permission[0] || isUnmuted;
+	const permissions = (await hasPermission([permissionToCheck], room.rid)) ?? [false];
+	const canPost = !!permissions[0];
+	return canPost || isUnmuted;
 };
 
 const isMuted = (room: Partial<ISubscription>, username: string) =>
