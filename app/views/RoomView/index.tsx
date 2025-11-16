@@ -248,7 +248,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
 		const { roomUpdate, member, isOnHold, isAutocompleteVisible } = state;
-		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = this.props;
+		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays, postReadOnlyPermission } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -256,6 +256,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return true;
 		}
 		if (airGappedRestrictionRemainingDays !== nextProps.airGappedRestrictionRemainingDays) {
+			return true;
+		}
+		if (!dequal(postReadOnlyPermission, nextProps.postReadOnlyPermission)) {
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
@@ -310,6 +313,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
+		// Update readOnly when permission changes or room updates
+		// Always call setReadOnly to ensure it's up to date (it will only update state if value changed)
 		this.setReadOnly();
 	}
 
@@ -568,8 +573,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	setReadOnly = async () => {
 		const { room } = this.state;
-		const { user } = this.props;
-		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
+		const { user, postReadOnlyPermission } = this.props;
+		const readOnly = await isReadOnly(room as ISubscription, user.username as string, postReadOnlyPermission);
 		this.setState({ readOnly });
 	};
 
@@ -1576,6 +1581,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
+	postReadOnlyPermission: state.permissions['post-readonly'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
 	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
 	inAppFeedback: state.inAppFeedback,
