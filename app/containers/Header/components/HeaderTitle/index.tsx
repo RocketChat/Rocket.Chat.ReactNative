@@ -1,5 +1,5 @@
 import React, { memo, type ReactNode } from 'react';
-import { Text, View } from 'react-native';
+import { Text, type TextProps, View } from 'react-native';
 
 import { isAndroid } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
@@ -7,9 +7,11 @@ import { styles } from './styles';
 
 interface IHeaderTitle {
 	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
+	position?: 'left' | 'center' | 'right';
 }
 
-const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
+type HeaderTitleProps = IHeaderTitle & TextProps;
+const HeaderTitle = memo(({ headerTitle, position, ...props }: HeaderTitleProps) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -24,8 +26,10 @@ const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
 					numberOfLines={1}
 					style={{
 						...styles.androidTitle,
-						color: colors.fontTitlesLabels
-					}}>
+						color: colors.fontTitlesLabels,
+						alignSelf: position === 'left' ? 'flex-start' : 'center'
+					}}
+					{...props}>
 					{headerTitle}
 				</Text>
 			);
@@ -36,8 +40,10 @@ const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
 					numberOfLines={1}
 					style={{
 						...styles.title,
-						color: colors.fontTitlesLabels
-					}}>
+						color: colors.fontTitlesLabels,
+						alignSelf: position === 'left' ? 'flex-start' : 'center'
+					}}
+					{...props}>
 					{headerTitle}
 				</Text>
 			</View>

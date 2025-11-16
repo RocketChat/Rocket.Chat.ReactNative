@@ -10,16 +10,13 @@ export const styles = StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textBold,
-		fontSize: 18,
-		flex: 1,
-		lineHeight: 24,
-		paddingVertical: 6
+		fontSize: 16,
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	androidTitle: {
 		...sharedStyles.textBold,
 		fontSize: 18,
-		flex: 1,
-		lineHeight: 24,
-		paddingVertical: 10
+		flex: 1
 	}
 });
