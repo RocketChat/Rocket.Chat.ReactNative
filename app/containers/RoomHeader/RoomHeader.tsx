@@ -181,7 +181,6 @@ const Header = React.memo(
 								sourceType={sourceType}
 							/>
 						)}
-						{/* <HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} /> */}
 						<HeaderTitle headerTitle={title ?? ''} testID={testID} position='left' />
 					</View>
 					<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
