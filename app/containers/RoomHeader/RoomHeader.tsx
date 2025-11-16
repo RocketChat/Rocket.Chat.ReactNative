@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { PlatformPressable } from '@react-navigation/elements';
+import { Pressable } from 'react-native-gesture-handler';
 
 import HeaderTitle from '../Header/components/HeaderTitle';
 import I18n from '../../i18n';
@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
 	},
 	titleContainer: {
 		alignItems: 'center',
-		flexDirection: 'row',
-		marginBottom: 4
+		flexDirection: 'row'
 	},
 	subtitle: {
 		flexShrink: 1,
@@ -170,7 +169,7 @@ const Header = React.memo(
 				accessible
 				accessibilityLabel={accessibilityLabel}
 				accessibilityRole='header'>
-				<PlatformPressable testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+				<Pressable testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
 					<View style={styles.titleContainer}>
 						{tmid ? null : (
 							<RoomTypeIcon
@@ -182,10 +181,11 @@ const Header = React.memo(
 								sourceType={sourceType}
 							/>
 						)}
+						{/* <HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} /> */}
 						<HeaderTitle headerTitle={title ?? ''} testID={testID} position='left' />
 					</View>
 					<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
-				</PlatformPressable>
+				</Pressable>
 			</View>
 		);
 	}
