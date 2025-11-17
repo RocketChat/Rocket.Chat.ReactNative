@@ -1,69 +1,29 @@
 import { useState, useEffect, useCallback } from 'react';
-import { MMKV } from 'react-native-mmkv';
-import { Platform, NativeModules } from 'react-native';
+import { MMKV, Mode } from 'react-native-mmkv';
+import type { Configuration } from 'react-native-mmkv';
+import { NativeModules } from 'react-native';
 
 import { isAndroid } from './helpers';
 
 let storage: MMKV | null = null;
-let storageInitPromise: Promise<MMKV> | null = null;
 
-// Get app group path lazily to avoid accessing native modules at import time
-function getAppGroupPath(): string {
-	if (isAndroid) {
-		return '';
+function ensureStorage(): MMKV {
+	if (!storage) {
+		storage = new MMKV(buildConfiguration());
 	}
-
-	try {
-		const { AppGroup } = NativeModules;
-		return AppGroup?.path || '';
-	} catch {
-		return '';
-	}
+	return storage;
 }
 
-function initializeStorage(): Promise<MMKV> {
-	if (storage) return Promise.resolve(storage);
-
-	if (storageInitPromise) return storageInitPromise;
-
-	storageInitPromise = Promise.resolve().then((): MMKV => {
-		// On iOS, use the App Group path to match where native migration wrote the data
-		// On Android, react-native-mmkv uses default path
-		const appGroupPath = getAppGroupPath();
-		const mmkvPath = Platform.OS === 'ios' && appGroupPath ? `${appGroupPath}mmkv` : undefined;
-
-		// Initialize MMKV storage
-		storage = new MMKV({
-			id: 'default',
-			path: mmkvPath
-		});
-
-		if (!storage) {
-			throw new Error('Failed to initialize MMKV storage');
-		}
-
-		return storage;
-	});
-
-	return storageInitPromise;
+function initializeStorage(): MMKV {
+	return ensureStorage();
 }
 
 function getStorage(): Promise<MMKV> {
-	if (storage) return Promise.resolve(storage);
-	return initializeStorage();
+	return Promise.resolve(ensureStorage());
 }
 
 function getStorageSync(): MMKV {
-	if (!storage) {
-		// Initialize synchronously if needed (migration already ran in native code)
-		const appGroupPath = getAppGroupPath();
-		const mmkvPath = Platform.OS === 'ios' && appGroupPath ? `${appGroupPath}mmkv` : undefined;
-		storage = new MMKV({
-			id: 'default',
-			path: mmkvPath
-		});
-	}
-	return storage;
+	return ensureStorage();
 }
 
 class UserPreferences {
@@ -238,3 +198,30 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 const userPreferences = new UserPreferences();
 export default userPreferences;
 export { initializeStorage, getStorage };
+
+function buildConfiguration(): Configuration {
+	const config: Configuration = {
+		id: 'default',
+		mode: Mode.MULTI_PROCESS
+	};
+
+	const appGroupPath = getAppGroupPath();
+	if (!isAndroid && appGroupPath) {
+		config.path = `${appGroupPath}mmkv`;
+	}
+
+	return config;
+}
+
+function getAppGroupPath(): string {
+	if (isAndroid) {
+		return '';
+	}
+
+	try {
+		const { AppGroup } = NativeModules;
+		return AppGroup?.path || '';
+	} catch {
+		return '';
+	}
+}
