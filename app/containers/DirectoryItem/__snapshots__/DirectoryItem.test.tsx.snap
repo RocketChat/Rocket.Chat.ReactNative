@@ -12,6 +12,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
     <View
       accessibilityLabel="Styled Room undefined"
       accessible={true}
+      importantForAccessibility="yes"
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -91,7 +92,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
           >
             <View
               accessibilityLabel="S's avatar"
-              accessible={true}
+              accessible={false}
               style={
                 [
                   {
@@ -268,6 +269,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     <View
       accessibilityLabel="General undefined"
       accessible={true}
+      importantForAccessibility="yes"
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -345,7 +347,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           >
             <View
               accessibilityLabel="G's avatar"
-              accessible={true}
+              accessible={false}
               style={
                 [
                   {
@@ -522,6 +524,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
     <View
       accessibilityLabel="Alice Johnson undefined"
       accessible={true}
+      importantForAccessibility="yes"
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -599,7 +602,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
           >
             <View
               accessibilityLabel="A's avatar"
-              accessible={true}
+              accessible={false}
               style={
                 [
                   {
@@ -745,6 +748,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
     <View
       accessibilityLabel="This is a very very very very very very very long room name that should be truncated 9999 members"
       accessible={true}
+      importantForAccessibility="yes"
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -822,7 +826,7 @@ exports[`Story Snapshots: LongRoomName should match snapshot 1`] = `
           >
             <View
               accessibilityLabel="L's avatar"
-              accessible={true}
+              accessible={false}
               style={
                 [
                   {
@@ -1018,6 +1022,7 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
     <View
       accessibilityLabel="Just a title undefined"
       accessible={true}
+      importantForAccessibility="yes"
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -1183,6 +1188,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
     <View
       accessibilityLabel="Engineering Team undefined"
       accessible={true}
+      importantForAccessibility="yes"
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -1260,7 +1266,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
           >
             <View
               accessibilityLabel="E's avatar"
-              accessible={true}
+              accessible={false}
               style={
                 [
                   {
@@ -1437,6 +1443,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
     <View
       accessibilityLabel="General 123 members"
       accessible={true}
+      importantForAccessibility="yes"
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -1514,7 +1521,7 @@ exports[`Story Snapshots: WithRightLabel should match snapshot 1`] = `
           >
             <View
               accessibilityLabel="G's avatar"
-              accessible={true}
+              accessible={false}
               style={
                 [
                   {
@@ -1710,6 +1717,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
     <View
       accessibilityLabel="No description room undefined"
       accessible={true}
+      importantForAccessibility="yes"
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -1787,7 +1795,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
           >
             <View
               accessibilityLabel="N's avatar"
-              accessible={true}
+              accessible={false}
               style={
                 [
                   {
