@@ -86,9 +86,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 				}
 
 				// optimistic update: merge highlights into existing preferences
-				dispatch({
-					type: setUser.type,
-					payload: {
+					dispatch(setUser({
 						settings: {
 							...settings,
 							preferences: {
@@ -96,8 +94,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 								highlights: words
 							}
 						}
-					}
-				});
+					}));
 
 				// attempt save and capture server response or error
 				let saveRes: any;
@@ -211,11 +208,11 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						setHighlights(value);
 						setDirty(value !== initialHighlightRef.current);
 					}}
-						onBlur={() => {
-						// Only save if dirty or changed
+					// Call saveHighlights on blur; it internally checks dirty/changed
+					onBlur={() => {
 						saveHighlights(highlights);
 					}}
-						placeholder={I18n.t('Highlight_Words_Placeholder')}
+					placeholder={I18n.t('Highlight_Words_Placeholder')}
 					/>
 					{dirty ? (
 						<>
