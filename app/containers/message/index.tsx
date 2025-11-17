@@ -506,7 +506,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					handleEnterCall={handleEnterCall}
 					blockAction={blockAction}
 					highlighted={isHighlighted}
-					highlightWords={highlights}
+					highlights={highlights}
 					comment={comment}
 					isTranslated={isTranslated}
 					isBeingEdited={isBeingEdited}

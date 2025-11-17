@@ -69,8 +69,8 @@ const Markdown: React.FC<IMarkdownProps> = ({
 					username,
 					navToRoomInfo,
 					getCustomEmoji,
-					onLinkPress
-					,highlights
+					onLinkPress,
+					highlights
 				}}>
 				{tokens?.map(block => {
 					switch (block.type) {
