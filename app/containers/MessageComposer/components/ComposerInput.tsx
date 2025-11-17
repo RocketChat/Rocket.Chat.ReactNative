@@ -45,6 +45,30 @@ import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
+function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean){
+    if(isCodeBlock){
+        if(startingText.length > 0){
+            return markdown.length + 2;
+        }
+        
+        return markdown.length + 1;
+    }
+
+    return markdown.length + (startingText.length > 0 ? 1 : 0);
+}
+
+function getSeparator(startingText: string, isCodeBlock: boolean){
+    if(startingText.length === 0){
+        return '';
+    }
+
+    if(isCodeBlock){
+        return '\n';
+    }
+
+    return ' ';
+}
+
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
@@ -132,8 +156,11 @@ export const ComposerInput = memo(
                         const isCodeBlock = style === 'code-block';
                         const startingText = text.substr(0, start);
 
-                        const newText = `${startingText}${startingText.length > 0 ? isCodeBlock ? '\n' : ' ' : ''}${markdown}${isCodeBlock ? '\n\n' : ''}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
-                        const length = isCodeBlock ? (startingText.length > 0 ? 1 : 0) + markdown.length + (isCodeBlock ? 1 : 0) : markdown.length + (startingText.length > 0 && !isCodeBlock ? 1 : 0);
+                        const separator = getSeparator(startingText, isCodeBlock);
+                        const closingNewlines = isCodeBlock ? '\n\n' : ''; 
+                        
+                        const newText = `${startingText}${separator}${markdown}${closingNewlines}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+                        const length = calculateLength(startingText, markdown, isCodeBlock);
                         
 						setInput(newText, {
 							start: start + length,
