@@ -1,5 +1,10 @@
 // Mock for react-native-mmkv
 
+export const Mode = {
+	SINGLE_PROCESS: 1,
+	MULTI_PROCESS: 2
+};
+
 export class MMKV {
 	constructor(config) {
 		this.id = config?.id || 'default';

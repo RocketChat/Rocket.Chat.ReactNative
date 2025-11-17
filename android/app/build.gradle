@@ -95,13 +95,6 @@ android {
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
-        ndk {
-            // Use reactNativeArchitectures from gradle.properties if set, otherwise default to ARM only
-            def architectures = project.findProperty('reactNativeArchitectures')
-                ? project.reactNativeArchitectures.split(',').collect { it.trim() }
-                : ["arm64-v8a", "armeabi-v7a"]
-            abiFilters(*architectures)
-        }
     }
 
     signingConfigs {
