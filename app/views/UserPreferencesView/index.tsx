@@ -86,15 +86,18 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 				}
 
 				// optimistic update: merge highlights into existing preferences
-				dispatch(setUser({
-					settings: {
-						...settings,
-						preferences: {
-							...settings?.preferences,
-							highlights: words
+				dispatch({
+					type: setUser.type,
+					payload: {
+						settings: {
+							...settings,
+							preferences: {
+								...settings?.preferences,
+								highlights: words
+							}
 						}
 					}
-				} as Partial<IUser>));
+				});
 
 				// attempt save and capture server response or error
 				let saveRes: any;
@@ -210,12 +213,6 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					}}
 						onBlur={() => {
 						// Only save if dirty or changed
-						const words = highlights.split(',').map(w => w.trim()).filter(w => w);
-						const current = Array.isArray(settings?.preferences?.highlights)
-							? settings.preferences.highlights.map((s: string) => (s || '').trim())
-							: [];
-						const unchanged = JSON.stringify(current) === JSON.stringify(words);
-						if (!dirty && unchanged) return;
 						saveHighlights(highlights);
 					}}
 						placeholder={I18n.t('Highlight_Words_Placeholder')}
