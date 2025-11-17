@@ -201,9 +201,13 @@ export { initializeStorage, getStorage };
 
 function buildConfiguration(): Configuration {
 	const config: Configuration = {
-		id: 'default',
-		mode: Mode.MULTI_PROCESS
+		id: 'default'
 	};
+
+	const multiProcessMode = (Mode as { MULTI_PROCESS?: Mode })?.MULTI_PROCESS;
+	if (multiProcessMode) {
+		config.mode = multiProcessMode;
+	}
 
 	const appGroupPath = getAppGroupPath();
 	if (!isAndroid && appGroupPath) {
