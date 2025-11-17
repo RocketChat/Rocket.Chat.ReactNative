@@ -167,7 +167,7 @@ export const ComposerInput = memo(
 							start,
 							end - start
 						)}${beforeMarkdownClose}${markdown}${text.substr(end)}`;
-						const length = calculateLength(startingText, markdown, isCodeBlock, start, end);
+						const length = calculateLength(startingText, markdown, isCodeBlock);
 
 						setInput(newText, {
 							start: start + length,
