@@ -52,10 +52,10 @@ const DirectoryItem = ({
 	const height = ROW_HEIGHT * fontScale;
 
 	return (
-		<View accessible accessibilityLabel={`${title} ${rightLabel}`}>
+		<View accessible accessibilityLabel={`${title} ${rightLabel}`} importantForAccessibility='yes'>
 			<Touch onPress={onPress} style={{ backgroundColor: colors.surfaceRoom }} testID={testID}>
 				<View style={[styles.directoryItemContainer, { height }, style]}>
-					<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
+					<Avatar accessible={false} text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 					<View style={styles.directoryItemTextContainer}>
 						<View style={styles.directoryItemTextTitle}>
 							{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}

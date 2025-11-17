@@ -34,7 +34,8 @@ const Avatar = React.memo(
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
 		cdnPrefix,
-		accessibilityLabel
+		accessibilityLabel,
+		accessible = true
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
@@ -101,10 +102,10 @@ const Avatar = React.memo(
 				</Touchable>
 			);
 		}
-
+		console.log('accessible', accessible);
 		return (
 			<View
-				accessible
+				accessible={accessible}
 				accessibilityLabel={!onPress ? avatarAccessibilityLabel : undefined}
 				style={[avatarStyle, style]}
 				testID='avatar'>
