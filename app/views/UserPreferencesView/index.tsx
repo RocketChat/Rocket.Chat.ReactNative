@@ -1,5 +1,5 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
@@ -10,11 +10,14 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as List from '../../containers/List';
 import { getUserSelector } from '../../selectors/login';
 import { type ProfileStackParamList } from '../../stacks/types';
-import { saveUserPreferences } from '../../lib/services/restApi';
+import { saveUserPreferences, setUserPreferences, getUserPreferences } from '../../lib/services/restApi';
+import { showToast } from '../../lib/methods/helpers/showToast';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
 import { type IUser } from '../../definitions';
+import { FormTextInput } from '../../containers/TextInput';
+import Button from '../../containers/Button';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -27,6 +30,16 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
+	const initialHighlightRef = useRef(settings?.preferences?.highlights?.join(', ') || '');
+	const [highlights, setHighlights] = useState(initialHighlightRef.current);
+	const [dirty, setDirty] = useState(false);
+
+	useEffect(() => {
+		const initial = settings?.preferences?.highlights?.join(', ') || '';
+		initialHighlightRef.current = initial;
+		setHighlights(initial);
+		setDirty(false);
+	}, [settings?.preferences?.highlights]);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -42,8 +55,10 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	const toggleMessageParser = async (value: boolean) => {
 		try {
-			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
-			await saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
+			// optimistic update
+			dispatch(setUser({ settings: { ...settings, preferences: { ...settings?.preferences, enableMessageParserEarlyAdoption: value } } } as Partial<IUser>));
+			// send properly shaped payload (userId separate)
+			await setUserPreferences(id, { enableMessageParserEarlyAdoption: value });
 		} catch (e) {
 			log(e);
 		}
@@ -58,10 +73,60 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		}
 	};
 
+	const saveHighlights = async (value: string) => {
+			try {
+				const words = value.split(',').map(w => w.trim()).filter(w => w);
+				// optimistic update
+				dispatch(setUser({ settings: { ...settings, preferences: { highlights: words } } } as Partial<IUser>));
+
+				// attempt save and capture server response or error
+				let saveRes: any;
+				try {
+					saveRes = await saveUserPreferences({ highlights: words });
+					log({ saveUserPreferencesResponse: saveRes });
+				} catch (err) {
+					log(err);
+					showToast(I18n.t('Highlights_save_failed'));
+					return;
+				}
+
+				// verify server-side saved value and inform the user; normalize values to avoid ordering/spacing mismatches
+				try {
+					const result = await getUserPreferences(id);
+					log({ getUserPreferencesResponse: result });
+					if (result?.success && result?.preferences) {
+						const saved: string[] = Array.isArray(result.preferences.highlights)
+							? result.preferences.highlights.map((s: string) => (s || '').trim().toLowerCase())
+							: [];
+						const expected = words.map(w => w.trim().toLowerCase());
+						const sortA = [...saved].sort();
+						const sortB = [...expected].sort();
+						if (JSON.stringify(sortA) === JSON.stringify(sortB)) {
+							initialHighlightRef.current = value;
+							setDirty(false);
+							showToast(I18n.t('Highlights_saved_successfully'));
+						} else {
+							log({ highlightsMismatch: { saved, expected } });
+							showToast(I18n.t('Highlights_save_failed'));
+						}
+					} else {
+						showToast(I18n.t('Highlights_save_failed'));
+					}
+				} catch (err) {
+					log(err);
+					showToast(I18n.t('Highlights_save_failed'));
+				}
+			} catch (e) {
+				log(e);
+				showToast(I18n.t('Highlights_save_failed'));
+			}
+		};
+
 	const setAlsoSendThreadToChannel = async (param: { [key: string]: string }, onError: () => void) => {
 		try {
 			await saveUserPreferences(param);
-			dispatch(setUser(param));
+			// optimistic update merging into preferences
+			dispatch(setUser({ settings: { ...settings, preferences: { ...settings?.preferences, ...param } } } as Partial<IUser>));
 		} catch (e) {
 			log(e);
 			onError();
@@ -115,6 +180,34 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						onPress={() => toggleConvertAsciiToEmoji(!convertAsciiEmoji)}
 					/>
 					<List.Separator />
+				</List.Section>
+				<List.Section>
+					<List.Separator />
+					<List.Item title='Highlights' testID='preferences-view-highlights' />
+					<List.Separator />
+					<FormTextInput
+						value={highlights}
+						onChangeText={value => {
+							setHighlights(value);
+							setDirty(value !== initialHighlightRef.current);
+						}}
+						onBlur={() => saveHighlights(highlights)}
+						placeholder='Enter words separated by commas'
+					/>
+					{dirty ? (
+						<>
+							<List.Separator />
+							<Button
+								title={I18n.t('Save')}
+								small
+								onPress={() => saveHighlights(highlights)}
+								testID='preferences-view-highlights-save'
+								style={{ alignSelf: 'center', marginTop: 15}}
+							/>
+						</>
+					) : null}
+					<List.Separator />
+					<List.Info info='Highlights_Description' />
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

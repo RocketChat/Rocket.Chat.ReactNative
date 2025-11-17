@@ -70,6 +70,7 @@ export interface IMessageContent {
 	hasError: boolean;
 	isHeader: boolean;
 	isTranslated: boolean;
+	highlights?: string[];
 	pinned?: boolean;
 }
 

@@ -112,6 +112,7 @@ export interface INotificationPreferences {
 	pushNotifications: TNotifications;
 	emailNotificationMode: 'mentions' | 'nothing';
 	language?: string;
+	highlights?: string[];
 }
 
 export interface IMessagePreferences {

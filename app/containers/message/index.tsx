@@ -63,6 +63,7 @@ interface IMessageContainerProps {
 	isPreview?: boolean;
 	dateSeparator?: Date | string | null;
 	showUnreadSeparator?: boolean;
+	highlights?: string[];
 }
 
 interface IMessageContainerState {
@@ -375,11 +376,12 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			threadBadgeColor,
 			toggleFollowThread,
 			jumpToMessage,
-			highlighted,
+			highlighted: propHighlighted,
 			isBeingEdited,
 			isPreview,
 			showUnreadSeparator,
-			dateSeparator
+			dateSeparator,
+			highlights
 		} = this.props;
 		const {
 			id,
@@ -425,6 +427,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		}
 
 		const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && autoTranslateMessage !== false && otherUserMessage;
+
+		const safeMessage = (message ?? '').toString();
+		const isHighlighted =
+			propHighlighted || (highlights && highlights.some(word => safeMessage.toLowerCase().includes(word.toLowerCase())));
 
 		return (
 			<MessageContext.Provider
@@ -499,7 +505,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					navToRoomInfo={navToRoomInfo}
 					handleEnterCall={handleEnterCall}
 					blockAction={blockAction}
-					highlighted={highlighted}
+					highlighted={isHighlighted}
+					highlightWords={highlights}
 					comment={comment}
 					isTranslated={isTranslated}
 					isBeingEdited={isBeingEdited}
