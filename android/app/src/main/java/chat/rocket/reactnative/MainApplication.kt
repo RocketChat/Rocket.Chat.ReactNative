@@ -28,6 +28,7 @@ import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVReaderTurboPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
+import com.tencent.mmkv.MMKV;
 
 open class MainApplication : Application(), ReactApplication, INotificationsApplication {
 
@@ -56,6 +57,9 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
+    
+    // Initialize MMKV before React Native starts
+    MMKV.initialize(this)
 
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
