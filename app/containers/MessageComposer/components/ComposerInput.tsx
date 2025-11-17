@@ -129,10 +129,15 @@ export const ComposerInput = memo(
 						const { start, end } = selectionRef.current;
 						const text = textRef.current;
 						const markdown = MARKDOWN_STYLES[style];
-						const newText = `${text.substr(0, start)}${markdown}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+                        const isCodeBlock = style === 'code-block';
+                        const startingText = text.substr(0, start);
+
+                        const newText = `${startingText}${startingText.length > 0 ? isCodeBlock ? '\n' : ' ' : ''}${markdown}${isCodeBlock ? '\n\n' : ''}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
+                        const length = isCodeBlock ? (startingText.length > 0 ? 1 : 0) + markdown.length + (isCodeBlock ? 1 : 0) : markdown.length + (startingText.length > 0 && !isCodeBlock ? 1 : 0);
+                        
 						setInput(newText, {
-							start: start + markdown.length,
-							end: start === end ? start + markdown.length : end + markdown.length
+							start: start + length,
+							end: start === end ? start + length : end + length
 						});
 					});
 					emitter.on('toolbarMention', () => {
@@ -157,7 +162,7 @@ export const ComposerInput = memo(
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
 				const text = textRef.current;
-				setInput('', undefined, true);
+				setInput('', { start: 0, end: 0 }, true);
 				return text;
 			},
 			getText: () => textRef.current,
