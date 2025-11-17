@@ -45,7 +45,7 @@ import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean, start: number, end: number){
+function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean){
     if(isCodeBlock){
         if(startingText.length > 0){
             return markdown.length + 2;
