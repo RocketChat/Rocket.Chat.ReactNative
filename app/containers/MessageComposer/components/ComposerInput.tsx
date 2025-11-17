@@ -45,7 +45,7 @@ import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
-function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean){
+function calculateLength(startingText: string, markdown: string, isCodeBlock: boolean, start: number, end: number){
     if(isCodeBlock){
         if(startingText.length > 0){
             return markdown.length + 2;
@@ -54,7 +54,9 @@ function calculateLength(startingText: string, markdown: string, isCodeBlock: bo
         return markdown.length + 1;
     }
 
-    return markdown.length + (startingText.length > 0 ? 1 : 0);
+    const endWithSpace = startingText.endsWith(' ');
+
+    return markdown.length + (startingText.length > 0 ? 1 : 0) + (endWithSpace ? -1 : 0);
 }
 
 function getSeparator(startingText: string, isCodeBlock: boolean){
@@ -66,7 +68,7 @@ function getSeparator(startingText: string, isCodeBlock: boolean){
         return '\n';
     }
 
-    return ' ';
+    return startingText.endsWith(' ') ? '' : ' ';
 }
 
 export const ComposerInput = memo(
@@ -155,12 +157,14 @@ export const ComposerInput = memo(
 						const markdown = MARKDOWN_STYLES[style];
                         const isCodeBlock = style === 'code-block';
                         const startingText = text.substr(0, start);
+                        console.log(style);
 
                         const separator = getSeparator(startingText, isCodeBlock);
-                        const closingNewlines = isCodeBlock ? '\n\n' : ''; 
+                        const closingNewlines = (isCodeBlock) ? '\n\n' : '';
+                        const beforeMarkdownClose = (isCodeBlock && start !== end) ? '\n' : '';
                         
-                        const newText = `${startingText}${separator}${markdown}${closingNewlines}${text.substr(start, end - start)}${markdown}${text.substr(end)}`;
-                        const length = calculateLength(startingText, markdown, isCodeBlock);
+                        const newText = `${startingText}${separator}${markdown}${closingNewlines}${text.substr(start, end - start)}${beforeMarkdownClose}${markdown}${text.substr(end)}`;
+                        const length = calculateLength(startingText, markdown, isCodeBlock, start, end);
                         
 						setInput(newText, {
 							start: start + length,
@@ -200,7 +204,7 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
-			const message = text.trim();
+			const message = text;
 			textRef.current = message;
 
 			if (forceUpdateDraftMessage) {
@@ -319,7 +323,7 @@ export const ComposerInput = memo(
 				default:
 					mention = '';
 			}
-			const newText = `${result}${mention} ${text.slice(cursor)}`;
+			const newText = `${result}${mention} ${text.slice(cursor)}`.trim()
 
 			const newCursor = result.length + mention.length + 1;
 			setInput(newText, { start: newCursor, end: newCursor });

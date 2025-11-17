@@ -365,7 +365,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-code-block'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('``````', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('```\n\n```', undefined);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 
@@ -384,7 +384,7 @@ describe('MessageComposer', () => {
 				await user.press(screen.getByTestId('message-composer-code-block'));
 				await user.press(screen.getByTestId('message-composer-send'));
 				expect(onSendMessage).toHaveBeenCalledTimes(1);
-				expect(onSendMessage).toHaveBeenCalledWith('```test```', undefined);
+				expect(onSendMessage).toHaveBeenCalledWith('```\n\ntest\n```', undefined);
 				expect(screen.toJSON()).toMatchSnapshot();
 			});
 		});
