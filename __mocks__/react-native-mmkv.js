@@ -83,7 +83,7 @@ export class MMKV {
 	}
 
 	notifyListeners(key) {
-		this.listeners.forEach(listener => {
+		this.listeners.forEach((listener) => {
 			try {
 				listener(key);
 			} catch (error) {
