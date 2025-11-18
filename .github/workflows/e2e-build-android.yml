@@ -44,9 +44,9 @@ jobs:
             android/.gradle
             android/app/build
             android/app/.cxx
-          key: android-build-${{ runner.os }}-${{ hashFiles('package.json', '**/*.gradle*', 'android/gradle.properties', 'android/settings.gradle') }}
+          key: android-build-v2-${{ runner.os }}-${{ hashFiles('package.json', '**/*.gradle*', 'android/gradle.properties', 'android/settings.gradle') }}
           restore-keys: |
-            android-build-${{ runner.os }}-
+            android-build-v2-${{ runner.os }}-
 
       - name: Set up JDK
         uses: actions/setup-java@v4
