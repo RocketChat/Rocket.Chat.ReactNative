@@ -99,9 +99,9 @@ export interface IUserEmail {
 
 export interface IUserSettings {
 	profile?: any;
-	preferences: {
-		[key: string]: any;
-	};
+	// preferences should follow the structured notification and message preferences
+	// which include `highlights` and other typed keys
+	preferences: INotificationPreferences & IMessagePreferences;
 }
 export type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
 

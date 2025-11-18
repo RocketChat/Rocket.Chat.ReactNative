@@ -38,7 +38,10 @@ const Plain = ({ value }: IPlainProps): React.ReactElement => {
 
 	const wordsLower = new Set(words.map((w: string) => w.toLowerCase()));
 	// build regex to split and keep matched parts; guard pattern
-	const pattern = words.map(escapeRegExp).filter(Boolean).join('|');
+	// build alternation pattern from escaped words; word-boundaries are applied
+	// around the full pattern when constructing the RegExp below to avoid
+	// duplicating boundary anchors per item.
+	const pattern = words.map((w: string) => escapeRegExp(w)).filter(Boolean).join('|');
 	if (!pattern) {
 		return (
 			<Text accessibilityLabel={text} style={[styles.plainText, { color: colors.fontDefault }]}>
@@ -46,7 +49,10 @@ const Plain = ({ value }: IPlainProps): React.ReactElement => {
 			</Text>
 		);
 	}
-	const re = new RegExp(`(${pattern})`, 'ig');
+	// ensure the overall pattern is anchored to word boundaries so only whole words match
+	// use a non-capturing group for the alternation to avoid nested captured groups
+	// which would cause duplicate entries when splitting.
+	const re = new RegExp(`(\\b(?:${pattern})\\b)`, 'ig');
 	const parts = text.split(re);
 
 	// use red highlight for matched words (theme-aware tokens)

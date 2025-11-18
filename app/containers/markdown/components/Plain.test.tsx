@@ -73,6 +73,24 @@ describe('Plain (highlights)', () => {
     expect(getBackground(h2)).toBe(colors.statusBackgroundDanger);
   });
 
+  it('does not highlight partial words', () => {
+    const tree = render(
+      <ThemeContext.Provider value={{ theme: 'light', colors }}>
+        <MarkdownContext.Provider value={{ highlights: ['rocket'] }}>
+          <Plain value={'hello rockets and rocketing world'} />
+        </MarkdownContext.Provider>
+      </ThemeContext.Provider>
+    );
+
+    // there should be no separate node with text 'rocket' (partial matches shouldn't count)
+    const rocket = tree.queryByText('rocket');
+    expect(rocket).toBeNull();
+
+    // full text should still be rendered
+    const full = tree.getByText('hello rockets and rocketing world');
+    expect(full).toBeTruthy();
+  });
+
   it('when no highlights configured returns full text and does not create separate highlighted nodes', () => {
     const tree = render(
       <ThemeContext.Provider value={{ theme: 'light', colors }}>

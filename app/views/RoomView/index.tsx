@@ -1373,7 +1373,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isBeingEdited={isBeingEdited}
 					dateSeparator={dateSeparator}
 					showUnreadSeparator={showUnreadSeparator}
-					highlights={(user as any).settings?.preferences?.highlights}
+					highlights={user.settings?.preferences?.highlights}
 				/>
 			);
 		}
