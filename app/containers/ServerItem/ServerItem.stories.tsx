@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { themes } from '../../lib/constants';
-import ServerItemComponent, { IServerItem } from '.';
-import { ThemeContext, TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants/colors';
+import ServerItemComponent, { type IServerItem } from '.';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 
 export default {
 	title: 'ServerItem'

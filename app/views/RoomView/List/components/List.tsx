@@ -3,6 +3,11 @@ import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react
 import { FlashList } from '@shopify/flash-list';
 
 import { IListProps } from '../definitions';
+import { isIOS } from '../../../../lib/methods/helpers';
+import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
+import NavBottomFAB from './NavBottomFAB';
+import { type IListProps } from '../definitions';
+import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
 import { SCROLL_LIMIT } from '../constants';
 import NavBottomFAB from './NavBottomFAB';
@@ -16,7 +21,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
+const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
 	const [userScrolled, setUserScrolled] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
@@ -70,3 +75,5 @@ export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		</View>
 	);
 };
+
+export default List;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dimensions, EmitterSubscription, Linking } from 'react-native';
+import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -15,10 +15,11 @@ import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
-import { IThemePreference } from './definitions/ITheme';
+import { type IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, themes } from './lib/constants';
-import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
+import { colors, themes } from './lib/constants/colors';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './lib/constants/tablet';
+import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
 import { debounce, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
@@ -34,7 +35,7 @@ import { initializePushNotifications, onNotification } from './lib/notifications
 import { getInitialNotification } from './lib/notifications/videoConf/getInitialNotification';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
-import { TSupportedThemes, ThemeContext } from './theme';
+import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 import StatusBar from './containers/StatusBar';
@@ -207,7 +208,7 @@ export default class Root extends React.Component<{}, IState> {
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
-			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
+			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
 					<ThemeContext.Provider
 						value={{

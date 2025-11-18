@@ -3,7 +3,7 @@ import { useState } from 'react';
 import I18n from '../../../i18n';
 import { showConfirmationAlert } from '../../../lib/methods/helpers/info';
 import SSLPinning from '../../../lib/methods/helpers/sslPinning';
-import { CERTIFICATE_KEY } from '../../../lib/constants';
+import { CERTIFICATE_KEY } from '../../../lib/constants/keys';
 import userPreferences from '../../../lib/methods/userPreferences';
 
 const useCertificate = () => {

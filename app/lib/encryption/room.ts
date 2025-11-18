@@ -1,6 +1,6 @@
 import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
-import ByteBuffer from 'bytebuffer';
+import type ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 import {
@@ -15,12 +15,12 @@ import {
 
 import getSingleMessage from '../methods/getSingleMessage';
 import {
-	IAttachment,
-	IMessage,
-	IUpload,
-	TSendFileMessageFileInfo,
-	IServerAttachment,
-	TSubscriptionModel
+	type IAttachment,
+	type IMessage,
+	type IUpload,
+	type TSendFileMessageFileInfo,
+	type IServerAttachment,
+	type TSubscriptionModel
 } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { compareServerVersion, debounce } from '../methods/helpers';
@@ -42,15 +42,23 @@ import {
 	bufferToHex
 } from './utils';
 import { Encryption } from './index';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
-import { Services } from '../services';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
+import {
+	e2eRejectSuggestedGroupKey,
+	e2eAcceptSuggestedGroupKey,
+	e2eSetRoomKeyID,
+	e2eRequestRoomKey,
+	e2eGetUsersOfRoomWithoutKey,
+	provideUsersSuggestedGroupKeys,
+	e2eUpdateGroupKey
+} from '../services/restApi';
 import { getMessageUrlRegex } from './helpers/getMessageUrlRegex';
 import { mapMessageFromAPI } from './helpers/mapMessageFromApi';
 import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getMessageById } from '../database/services/Message';
-import { TEncryptFileResult, TGetContent } from './definitions';
+import { type TEncryptFileResult, type TGetContent } from './definitions';
 import { store } from '../store/auxStore';
 
 export default class EncryptionRoom {
@@ -113,9 +121,9 @@ export default class EncryptionRoom {
 					this.roomKey = roomKey;
 					this.sessionKeyExportedString = sessionKeyExportedString;
 				} catch (error) {
-					await Services.e2eRejectSuggestedGroupKey(this.roomId);
+					await e2eRejectSuggestedGroupKey(this.roomId);
 				}
-				await Services.e2eAcceptSuggestedGroupKey(this.roomId);
+				await e2eAcceptSuggestedGroupKey(this.roomId);
 				this.readyPromise.resolve();
 				return;
 			} catch (e) {
@@ -213,7 +221,7 @@ export default class EncryptionRoom {
 
 	createRoomKey = async () => {
 		await this.createNewRoomKey();
-		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
+		await e2eSetRoomKeyID(this.roomId, this.keyID);
 		await this.encryptKeyForOtherParticipants();
 	};
 
@@ -241,7 +249,7 @@ export default class EncryptionRoom {
 	requestRoomKey = debounce(
 		async (e2eKeyId: string) => {
 			try {
-				await Services.e2eRequestRoomKey(this.roomId, e2eKeyId);
+				await e2eRequestRoomKey(this.roomId, e2eKeyId);
 			} catch {
 				// do nothing
 			}
@@ -254,7 +262,7 @@ export default class EncryptionRoom {
 	encryptKeyForOtherParticipants = async () => {
 		try {
 			const decryptedOldGroupKeys = await this.exportOldRoomKeys(this.subscription?.oldRoomKeys);
-			const result = await Services.e2eGetUsersOfRoomWithoutKey(this.roomId);
+			const result = await e2eGetUsersOfRoomWithoutKey(this.roomId);
 			if (result.success) {
 				const { users } = result;
 				if (!users.length) {
@@ -269,14 +277,14 @@ export default class EncryptionRoom {
 
 						usersSuggestedGroupKeys[this.roomId].push({ _id: user._id, key, ...(oldKeys && { oldKeys }) });
 					}
-					await Services.provideUsersSuggestedGroupKeys(usersSuggestedGroupKeys);
+					await provideUsersSuggestedGroupKeys(usersSuggestedGroupKeys);
 				} else {
 					await Promise.all(
 						users.map(async user => {
 							if (user.e2e?.public_key) {
 								const key = await this.encryptRoomKeyForUser(user.e2e.public_key);
 								if (key) {
-									await Services.e2eUpdateGroupKey(user?._id, this.roomId, key);
+									await e2eUpdateGroupKey(user?._id, this.roomId, key);
 								}
 							}
 						})

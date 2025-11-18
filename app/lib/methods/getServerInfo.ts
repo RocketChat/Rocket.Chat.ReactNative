@@ -1,17 +1,23 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 import moment from 'moment';
 
 import { getSupportedVersionsCloud } from '../services/restApi';
-import { TCloudInfo, IServerInfo, ISupportedVersions, ISupportedVersionsData, IApiServerInfo } from '../../definitions';
+import {
+	type TCloudInfo,
+	type IServerInfo,
+	type ISupportedVersions,
+	type ISupportedVersionsData,
+	type IApiServerInfo
+} from '../../definitions';
 import { selectServerFailure } from '../../actions/server';
 import { store } from '../store/auxStore';
 import I18n from '../../i18n';
-import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
+import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants/supportedVersions';
 import { getServerById } from '../database/services/Server';
 import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 import { getUserSelector } from '../../selectors/login';
+import fetch from './helpers/fetch';
 
 interface IServerInfoFailure {
 	success: false;
@@ -52,7 +58,6 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 		const response = await fetch(`${server}/api/info`, {
 			method: 'GET',
 			headers: {
-				...RocketChatSettings.customHeaders,
 				'Content-Type': 'application/json',
 				'X-Auth-Token': user?.token,
 				'X-User-Id': user?.id

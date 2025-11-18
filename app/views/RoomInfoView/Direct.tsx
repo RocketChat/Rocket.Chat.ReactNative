@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 import CustomFields from './CustomFields';
 import Timezone from './Timezone';
 import styles from './styles';
-import { IUser } from '../../definitions';
+import { type IUser } from '../../definitions';
 
 const Roles = ({ roles }: { roles?: string[] }) => {
 	const { colors } = useTheme();

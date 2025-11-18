@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import { textInputDebounceTime } from '../../../lib/constants';
+import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { textParser } from '../utils';
 import I18n from '../../../i18n';
 import Items from './Items';
 import styles from './styles';
 import { useTheme } from '../../../theme';
-import { IItemData } from '.';
+import { type IItemData } from '.';
 import { debounce } from '../../../lib/methods/helpers/debounce';
-import { isIOS } from '../../../lib/methods/helpers';
 import { useActionSheet } from '../../ActionSheet';
 
 interface IMultiSelectContentProps {
@@ -73,7 +72,7 @@ export const MultiSelectContent = React.memo(
 						onChangeText={handleSearch}
 						placeholder={I18n.t('Search')}
 						inputStyle={{ backgroundColor: colors.surfaceLight }}
-						bottomSheet={isIOS}
+						bottomSheet={true}
 						onSubmitEditing={() => {
 							setTimeout(() => {
 								hideActionSheet();

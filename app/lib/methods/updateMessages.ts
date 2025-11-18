@@ -1,8 +1,14 @@
-import { Model, Q } from '@nozbe/watermelondb';
+import { type Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { MESSAGE_TYPE_ANY_LOAD } from '../constants';
-import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import { MESSAGE_TYPE_ANY_LOAD } from '../constants/messageTypeLoad';
+import {
+	type IMessage,
+	type TMessageModel,
+	type TSubscriptionModel,
+	type TThreadMessageModel,
+	type TThreadModel
+} from '../../definitions';
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { Encryption } from '../encryption';

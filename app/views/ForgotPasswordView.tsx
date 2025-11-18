@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,8 +10,8 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
-import { Services } from '../lib/services';
-import { OutsideParamList } from '../stacks/types';
+import { forgotPassword } from '../lib/services/restApi';
+import { type OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
@@ -51,7 +51,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 		try {
 			logEvent(events.FP_FORGOT_PASSWORD);
 			setIsFetching(true);
-			const result = await Services.forgotPassword(email);
+			const result = await forgotPassword(email);
 			if (result.success) {
 				navigation.pop();
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));

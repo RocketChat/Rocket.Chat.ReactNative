@@ -1,0 +1,44 @@
+appId: chat.rocket.reactnative
+name: Login with Deeplink
+tags:
+  - 'util'
+
+---
+- clearState
+- stopApp: chat.rocket.reactnative
+- evalScript: ${output.login = output.utils.login(USERNAME, PASSWORD)}
+- runFlow:
+    file: 'open-deeplink.yaml'
+    env:
+      link: ${output.utils.getDeepLink('auth', server || output.data.server, 'userId=', output.login.userId, '&token=', output.login.authToken)}
+- runFlow:
+    when:
+      platform: android
+    commands:
+      - runFlow:
+          when:
+            visible: '.*Pixel Launcher.*'
+          commands:
+            - tapOn: 'Close App'
+      - extendedWaitUntil:
+          visible:
+            text: '.*Allow.*'
+          timeout: 30000
+          optional: true
+      - tapOn:
+          text: '.*Allow.*'
+          optional: true
+      - assertNotVisible:
+          text: '.*Allow.*'
+          optional: true
+- runFlow:
+    when:
+      visible: '.*Would like to send you notifications.*'
+      platform: iOS
+    commands:
+      - tapOn:
+          point: 65%,60%
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000

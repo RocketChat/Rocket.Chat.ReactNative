@@ -9,7 +9,7 @@ import sharedStyles from '../Styles';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
-import { IMessageFromServer } from '../../definitions';
+import { type IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {

@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 
 import Button from '../Button';
 import AvatarContainer from './AvatarContainer';
-import { IAvatar } from './interfaces';
+import { type IAvatar } from './interfaces';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import sharedStyles from '../../views/Styles';
 

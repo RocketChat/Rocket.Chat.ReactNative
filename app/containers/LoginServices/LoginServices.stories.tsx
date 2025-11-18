@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { colors } from '../../lib/constants';
+import { colors } from '../../lib/constants/colors';
 import i18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import ServicesSeparator from './ServicesSeparator';
 import ButtonService from './ButtonService';
-import { IServices } from '../../selectors/login';
-import { TIconsName } from '../CustomIcon';
+import { type IServices } from '../../selectors/login';
+import { type TIconsName } from '../CustomIcon';
 
 const styles = StyleSheet.create({
 	serviceName: {

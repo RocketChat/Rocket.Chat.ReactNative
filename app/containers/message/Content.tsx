@@ -8,13 +8,15 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
-import { IMessageContent } from './interfaces';
+import { type IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
-import { MessageTypesValues } from '../../definitions';
+import { themes } from '../../lib/constants/colors';
+import { type MessageTypesValues } from '../../definitions';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { user, onLinkPress } = useContext(MessageContext);
 
@@ -58,16 +60,13 @@ const Content = React.memo(
 					msg={props.msg}
 					md={props.type !== 'e2e' ? props.md : undefined}
 					getCustomEmoji={props.getCustomEmoji}
-					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}
-					tmid={props.tmid}
 					useRealName={props.useRealName}
 					onLinkPress={onLinkPress}
 					isTranslated={props.isTranslated}
-					testID={`message-markdown-${props.msg}`}
 				/>
 			);
 		}

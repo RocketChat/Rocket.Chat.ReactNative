@@ -2,9 +2,9 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 
 import * as List from '../../containers/List';
-import { colors } from '../../lib/constants';
-import { ThemeContext, TSupportedThemes } from '../../theme';
-import Item, { IItem } from './Item';
+import { colors } from '../../lib/constants/colors';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
+import Item, { type IItem } from './Item';
 
 const author = {
 	_id: 'userid',

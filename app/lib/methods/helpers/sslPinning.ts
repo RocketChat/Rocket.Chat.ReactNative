@@ -5,7 +5,7 @@ import * as FileSystem from 'expo-file-system';
 import UserPreferences from '../userPreferences';
 import I18n from '../../../i18n';
 import { extractHostname } from './server';
-import { ICertificate } from '../../../definitions';
+import { type ICertificate } from '../../../definitions';
 import { CERTIFICATE_KEY } from '../../constants/keys';
 import NativeSSLPinningAndroid from '../../native/NativeSSLPinningAndroid';
 
@@ -79,11 +79,11 @@ const RCSSLPinning = Platform.select({
 			}),
 		setCertificate: (name: string, server: string) => {
 			if (name) {
-				let certificate = UserPreferences.getMap(name) as ICertificate;
-				if (!certificate.path.match(extractFileScheme(documentDirectory!))) {
-					certificate = persistCertificate(server, name, certificate.password);
+				const certificate = UserPreferences.getMap(name) as ICertificate;
+				if (certificate) {
+					persistCertificate(server, name, certificate.password);
+					SSLPinning?.setCertificate(server, certificate.path, certificate.password);
 				}
-				SSLPinning?.setCertificate(server, certificate.path, certificate.password);
 			}
 		},
 		removeCertificate

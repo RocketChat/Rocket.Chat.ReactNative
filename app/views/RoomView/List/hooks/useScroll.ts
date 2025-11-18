@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ViewToken } from 'react-native';
+import { type ViewToken, type ViewabilityConfigCallbackPairs } from 'react-native';
 
-import { IListContainerRef, TListRef, TMessagesIdsRef } from '../definitions';
+import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
+import { VIEWABILITY_CONFIG } from '../constants';
 
 export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);

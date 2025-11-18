@@ -9,19 +9,19 @@ import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actio
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import { TServerHistoryModel } from '../../definitions';
+import { type TServerHistoryModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { isAndroid, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import ServerInput from './components/ServerInput';
 import { getServerById } from '../../lib/database/services/Server';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
 import CertificatePicker from './components/CertificatePicker';
 import useConnectServer from './hooks/useConnectServer';
-import { INewServerViewProps } from './definitions';
+import { type INewServerViewProps } from './definitions';
 import completeUrl from './utils/completeUrl';
 import styles from './styles';
 

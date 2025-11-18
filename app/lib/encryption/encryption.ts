@@ -1,4 +1,4 @@
-import { Model, Q } from '@nozbe/watermelondb';
+import { type Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system';
@@ -10,20 +10,20 @@ import {
 	rsaGenerateKeys,
 	rsaImportKey,
 	rsaExportKey,
-	JWK,
+	type JWK,
 	calculateFileChecksum
 } from '@rocket.chat/mobile-crypto';
 import { sampleSize } from 'lodash';
 
 import {
-	IMessage,
-	IServerAttachment,
-	ISubscription,
-	TMessageModel,
-	TSendFileMessageFileInfo,
-	TSubscriptionModel,
-	TThreadMessageModel,
-	TThreadModel
+	type IMessage,
+	type IServerAttachment,
+	type ISubscription,
+	type TMessageModel,
+	type TSendFileMessageFileInfo,
+	type TSubscriptionModel,
+	type TThreadMessageModel,
+	type TThreadModel
 } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
@@ -32,17 +32,24 @@ import {
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
-} from '../constants';
+} from '../constants/keys';
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from '../methods/helpers/log';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import UserPreferences from '../methods/userPreferences';
 import { compareServerVersion } from '../methods/helpers';
-import { Services } from '../services';
+import {
+	e2eSetUserPublicAndPrivateKeys,
+	e2eRequestSubscriptionKeys,
+	e2eRejectSuggestedGroupKey,
+	e2eAcceptSuggestedGroupKey,
+	fetchUsersWaitingForGroupKey,
+	provideUsersSuggestedGroupKeys
+} from '../services/restApi';
 import { store } from '../store/auxStore';
 import { MAX_CONCURRENT_QUEUE } from './constants';
-import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import { type IDecryptionFileQueue, type TDecryptFile, type TEncryptFile } from './definitions';
 import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
 import {
@@ -204,10 +211,10 @@ class Encryption {
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
 
 		// Send the new keys to the server
-		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 
 		// Request e2e keys of all encrypted rooms
-		await Services.e2eRequestSubscriptionKeys();
+		await e2eRequestSubscriptionKeys();
 	};
 
 	// Encode a private key before send it to the server
@@ -277,7 +284,7 @@ class Encryption {
 		}
 
 		// Send the new keys to the server
-		await Services.e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey, force);
+		await e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey, force);
 	};
 
 	// get a encryption room instance
@@ -313,10 +320,10 @@ class Encryption {
 				try {
 					await roomE2E.importRoomKey(E2ESuggestedKey, this.privateKey);
 				} catch (error) {
-					await Services.e2eRejectSuggestedGroupKey(rid);
+					await e2eRejectSuggestedGroupKey(rid);
 					return;
 				}
-				await Services.e2eAcceptSuggestedGroupKey(rid);
+				await e2eAcceptSuggestedGroupKey(rid);
 			} catch (e) {
 				console.error(e);
 			}
@@ -491,7 +498,7 @@ class Encryption {
 						return;
 					}
 
-					const result = await Services.fetchUsersWaitingForGroupKey(sampleIds);
+					const result = await fetchUsersWaitingForGroupKey(sampleIds);
 					if (!result.success || !Object.keys(result.usersWaitingForE2EKeys).length) {
 						return;
 					}
@@ -502,7 +509,7 @@ class Encryption {
 						return;
 					}
 
-					await Services.provideUsersSuggestedGroupKeys(userKeysWithRooms);
+					await provideUsersSuggestedGroupKeys(userKeysWithRooms);
 				}
 			} catch (e) {
 				log(e);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CustomIcon } from './CustomIcon';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 import { useTheme } from '../theme';
 
 const Check = React.memo(() => {

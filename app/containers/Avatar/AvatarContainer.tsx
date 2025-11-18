@@ -3,9 +3,9 @@ import { shallowEqual } from 'react-redux';
 
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
-import { IAvatar } from './interfaces';
+import { type IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 const AvatarContainer = ({
 	style,

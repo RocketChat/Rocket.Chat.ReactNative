@@ -2,6 +2,8 @@ appId: chat.rocket.reactnative
 name: Valid Workspace
 onFlowStart:
   - runFlow: '../../../helpers/setup.yaml'
+tags:
+  - test-3
 
 ---
 - runFlow: ../../../helpers/launch-app.yaml

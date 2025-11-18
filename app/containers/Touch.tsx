@@ -1,6 +1,6 @@
 import React from 'react';
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
-import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
+import { View, StyleSheet, type ViewStyle, type StyleProp } from 'react-native';
 
 import { useTheme } from '../theme';
 

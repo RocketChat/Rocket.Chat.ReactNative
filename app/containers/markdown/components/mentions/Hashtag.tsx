@@ -1,18 +1,18 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { type StyleProp, Text, type TextStyle } from 'react-native';
 
 import i18n from '../../../../i18n';
 import { themes } from '../../../../lib/constants/colors';
 import { ROOM_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 import { showErrorAlert } from '../../../../lib/methods/helpers/info';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
-import { IUserChannel } from '../../interfaces';
+import { type IUserChannel } from '../../interfaces';
 import styles from '../../styles';
 
 interface IHashtag {
