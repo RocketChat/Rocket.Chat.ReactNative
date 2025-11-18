@@ -1,5 +1,5 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
@@ -30,16 +30,19 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
-	const initialHighlightRef = useRef(settings?.preferences?.highlights?.join(', ') || '');
-	const [highlights, setHighlights] = useState(initialHighlightRef.current);
+	const [serverHighlights, setServerHighlights] = useState(settings?.preferences?.highlights?.join(', ') || '');
+	const [highlights, setHighlights] = useState(serverHighlights);
 	const [dirty, setDirty] = useState(false);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const initial = settings?.preferences?.highlights?.join(', ') || '';
-		initialHighlightRef.current = initial;
-		setHighlights(initial);
-		setDirty(false);
-	}, [settings?.preferences?.highlights]);
+		if (initial !== serverHighlights) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setServerHighlights(initial);
+			setHighlights(initial);
+			setDirty(false);
+		}
+	}, [settings?.preferences?.highlights, serverHighlights]);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -119,7 +122,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						const sortA = [...saved].sort();
 						const sortB = [...expected].sort();
 						if (JSON.stringify(sortA) === JSON.stringify(sortB)) {
-							initialHighlightRef.current = value;
+							setServerHighlights(value);
 							setDirty(false);
 							showToast(I18n.t('Highlights_saved_successfully'));
 						} else {
@@ -206,8 +209,9 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						value={highlights}
 						onChangeText={value => {
 						setHighlights(value);
-						setDirty(value !== initialHighlightRef.current);
+						setDirty(value !== serverHighlights);
 					}}
+						testID='highlightsInput'
 					// Call saveHighlights on blur; it internally checks dirty/changed
 					onBlur={() => {
 						saveHighlights(highlights);
@@ -222,6 +226,11 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 								small
 								onPress={() => saveHighlights(highlights)}
 								testID='preferences-view-highlights-save'
+								accessibilityLabel='save-highlights-button'
+								// stable ID used by E2E
+								// Detox looks for the `testID` prop; keep existing repo ID and
+								// provide a secondary attribute for web-like runners.
+								data-testid='saveHighlightsButton'
 								style={{ alignSelf: 'center', marginTop: 15}}
 							/>
 						</>

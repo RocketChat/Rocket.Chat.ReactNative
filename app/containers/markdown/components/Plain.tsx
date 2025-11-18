@@ -13,8 +13,8 @@ interface IPlainProps {
 const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const Plain = ({ value }: IPlainProps): React.ReactElement => {
-	const { colors, theme } = useTheme();
-	const { highlights = [] } = useContext(MarkdownContext as any);
+	const { colors } = useTheme();
+	const { highlights = [] } = useContext<any>(MarkdownContext);
 
 	const text = (value ?? '').toString();
 
@@ -36,7 +36,7 @@ const Plain = ({ value }: IPlainProps): React.ReactElement => {
 		);
 	}
 
-	const wordsLower = new Set(words.map(w => w.toLowerCase()));
+	const wordsLower = new Set(words.map((w: string) => w.toLowerCase()));
 	// build regex to split and keep matched parts; guard pattern
 	const pattern = words.map(escapeRegExp).filter(Boolean).join('|');
 	if (!pattern) {
