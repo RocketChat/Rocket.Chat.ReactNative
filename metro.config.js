@@ -12,7 +12,27 @@ const config = {
 		unstable_allowRequireContext: true
 	},
 	resolver: {
-		sourceExts
+		// When running E2E tests, prioritize .mock.ts files ONLY in app/ directory
+		// Exclude node_modules to prevent loading library-internal mocks
+		sourceExts: process.env.RUNNING_E2E_TESTS === 'true' ? ['mock.ts', ...sourceExts] : sourceExts,
+		resolveRequest:
+			process.env.RUNNING_E2E_TESTS === 'true'
+				? (context, moduleName, platform) => {
+						// Only apply mock resolution to app code, not node_modules
+						if (moduleName.startsWith('react-native-mmkv')) {
+							// Force react-native-mmkv to use real files, not .mock.ts
+							return context.resolveRequest(
+								context,
+								moduleName,
+								platform,
+								// Override sourceExts for this specific module
+								{ ...context, preferredSourceExts: sourceExts }
+							);
+						}
+						// Default resolution for everything else
+						return context.resolveRequest(context, moduleName, platform);
+				  }
+				: undefined
 	}
 };
 
