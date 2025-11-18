@@ -44,9 +44,9 @@ jobs:
             android/.gradle
             android/app/build
             android/app/.cxx
-          key: android-build-v2-${{ runner.os }}-${{ hashFiles('package.json', '**/*.gradle*', 'android/gradle.properties', 'android/settings.gradle') }}
+          key: android-build-${{ runner.os }}-${{ hashFiles('package.json', '**/*.gradle*', 'android/gradle.properties', 'android/settings.gradle') }}
           restore-keys: |
-            android-build-v2-${{ runner.os }}-
+            android-build-${{ runner.os }}-
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -73,7 +73,7 @@ jobs:
           echo -e "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8" >> ./gradle.properties
           echo -e "android.useAndroidX=true" >> ./gradle.properties
           echo -e "android.enableJetifier=true" >> ./gradle.properties
-          echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
+          echo -e "reactNativeArchitectures=x86_64" >> ./gradle.properties
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
           echo -e "newArchEnabled=true" >> ./gradle.properties
           echo -e "hermesEnabled=true" >> ./gradle.properties
@@ -86,7 +86,7 @@ jobs:
           
       - name: Build Android Release APK
         working-directory: android
-        run: ./gradlew assembleExperimentalRelease --parallel --max-workers=4 --no-daemon --stacktrace
+        run: ./gradlew assembleExperimentalRelease --build-cache --parallel --max-workers=4 --no-daemon --stacktrace
         env:
           RUNNING_E2E_TESTS: true
 
