@@ -12,7 +12,7 @@ const config = {
 		unstable_allowRequireContext: true
 	},
 	resolver: {
-		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts
+		sourceExts
 	}
 };
 
