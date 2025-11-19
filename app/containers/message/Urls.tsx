@@ -1,4 +1,4 @@
-import React, { type ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { type ReactElement, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { Text, View, type ViewStyle } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -124,33 +124,33 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
-	const [imageUrl, setImageUrl] = useState(url.image);
+	const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+	const getImageUrl = useCallback(() => {
+		const _imageUrl = url.image || url.url;
+
+		if (!_imageUrl) return null;
+		if (_imageUrl.startsWith('http')) return _imageUrl;
+		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
+	}, [url.image, url.url, baseUrl, user.id, user.token]);
 
 	useEffect(() => {
 		const verifyUrlIsImage = async () => {
 			try {
-				const imageUrl = getImageUrl();
-				if (!imageUrl || !API_Embed) return;
+				const _imageUrl = getImageUrl();
+				if (!_imageUrl || !API_Embed) return;
 
-				const response = await axios.head(imageUrl);
+				const response = await axios.head(_imageUrl);
 				const contentType = response.headers['content-type'];
 				if (contentType?.startsWith?.('image/')) {
-					setImageUrl(imageUrl);
+					setImageUrl(_imageUrl);
 				}
 			} catch {
 				// do nothing
 			}
 		};
 		verifyUrlIsImage();
-	}, [url.image, url.url, API_Embed]);
-
-	const getImageUrl = () => {
-		const _imageUrl = url.image || url.url;
-
-		if (!_imageUrl) return null;
-		if (_imageUrl.includes('http')) return _imageUrl;
-		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
-	};
+	}, [url.image, url.url, API_Embed, getImageUrl]);
 
 	const onPress = () => openLink(url.url, theme);
 

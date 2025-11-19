@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import Touchable from 'react-native-platform-touchable';
+import { A11y } from 'react-native-a11y-order';
 
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useTheme } from '../theme';
@@ -11,6 +12,7 @@ import { BUTTON_HIT_SLOP } from './message/utils';
 import AvatarContainer from './Avatar';
 import StatusContainer from './Status';
 import DotsLoader from './DotsLoader';
+import I18n from '../i18n';
 
 type TCallHeader = {
 	mic: boolean;
@@ -39,37 +41,45 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 	};
 
 	return (
-		<View>
-			<View style={style.actionSheetHeader}>
-				<View style={style.rowContainer}>
-					<Text style={style.actionSheetHeaderTitle}>{title}</Text>
-					{calling && direct ? <DotsLoader /> : null}
+		<A11y.Order>
+			<View>
+				<View style={style.actionSheetHeader}>
+					<View style={style.rowContainer}>
+						<Text style={style.actionSheetHeaderTitle}>{title}</Text>
+						{calling && direct ? <DotsLoader /> : null}
+					</View>
+					<View style={style.actionSheetHeaderButtons}>
+						<A11y.Index index={1}>
+							<Touchable
+								accessibilityLabel={cam ? I18n.t('Turn_camera_off') : I18n.t('Turn_camera_on')}
+								onPress={() => setCam(!cam)}
+								style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
+								hitSlop={BUTTON_HIT_SLOP}
+								disabled={calling}>
+								<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
+							</Touchable>
+						</A11y.Index>
+						<A11y.Index index={2}>
+							<Touchable
+								accessibilityLabel={mic ? I18n.t('Turn_mic_off') : I18n.t('Turn_mic_on')}
+								onPress={() => setMic(!mic)}
+								style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
+								hitSlop={BUTTON_HIT_SLOP}
+								disabled={calling}>
+								<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={24} color={handleColors(mic).icon} />
+							</Touchable>
+						</A11y.Index>
+					</View>
 				</View>
-				<View style={style.actionSheetHeaderButtons}>
-					<Touchable
-						onPress={() => setCam(!cam)}
-						style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
-						hitSlop={BUTTON_HIT_SLOP}
-						disabled={calling}>
-						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
-					</Touchable>
-					<Touchable
-						onPress={() => setMic(!mic)}
-						style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
-						hitSlop={BUTTON_HIT_SLOP}
-						disabled={calling}>
-						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={24} color={handleColors(mic).icon} />
-					</Touchable>
+				<View style={style.actionSheetUsernameContainer}>
+					<AvatarContainer text={avatar} size={36} />
+					{direct ? <StatusContainer size={16} id={uid} style={style.statusContainerMargin} /> : null}
+					<Text style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0 }} numberOfLines={1}>
+						{name}
+					</Text>
 				</View>
 			</View>
-			<View style={style.actionSheetUsernameContainer}>
-				<AvatarContainer text={avatar} size={36} />
-				{direct ? <StatusContainer size={16} id={uid} style={style.statusContainerMargin} /> : null}
-				<Text style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0 }} numberOfLines={1}>
-					{name}
-				</Text>
-			</View>
-		</View>
+		</A11y.Order>
 	);
 };
 
