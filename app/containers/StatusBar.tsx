@@ -1,9 +1,9 @@
 import React from 'react';
 import { StatusBar as StatusBarRN } from 'expo-status-bar';
 import { SystemBars } from 'react-native-edge-to-edge';
+import { Platform } from 'react-native';
 
 import { useTheme } from '../theme';
-import { Platform } from 'react-native';
 
 interface IStatusBar {
 	barStyle?: 'light' | 'dark';
