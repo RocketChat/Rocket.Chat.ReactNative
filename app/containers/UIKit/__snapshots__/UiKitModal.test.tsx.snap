@@ -840,7 +840,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
     style={
       [
         {
-          "height": 0.5,
+          "height": 1,
         },
         {
           "alignSelf": "center",
@@ -1965,7 +1965,7 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
     style={
       [
         {
-          "height": 0.5,
+          "height": 1,
         },
         {
           "alignSelf": "center",
@@ -3101,7 +3101,7 @@ exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
     style={
       [
         {
-          "height": 0.5,
+          "height": 1,
         },
         {
           "alignSelf": "center",
@@ -3853,7 +3853,7 @@ exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
     style={
       [
         {
-          "height": 0.5,
+          "height": 1,
         },
         {
           "alignSelf": "center",

@@ -20,7 +20,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -129,7 +129,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -238,7 +238,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -396,7 +396,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -554,7 +554,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -960,7 +960,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -1092,7 +1092,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -1226,7 +1226,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -1287,7 +1287,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1368,7 +1368,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1449,7 +1449,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1470,7 +1470,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1551,7 +1551,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1632,7 +1632,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1681,7 +1681,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1762,7 +1762,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1843,7 +1843,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -1920,7 +1920,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -2001,7 +2001,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -2082,7 +2082,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -2145,7 +2145,7 @@ exports[`Story Snapshots: Separator should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -2178,7 +2178,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -2259,7 +2259,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -2359,7 +2359,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -2460,7 +2460,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -2549,7 +2549,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -2795,7 +2795,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -3043,7 +3043,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -3120,7 +3120,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -3366,7 +3366,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -3614,7 +3614,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -3733,7 +3733,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -3979,7 +3979,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -4227,7 +4227,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -4304,7 +4304,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -4550,7 +4550,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -4798,7 +4798,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -4861,7 +4861,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -4942,7 +4942,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -5074,7 +5074,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -5163,7 +5163,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -5409,7 +5409,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -5657,7 +5657,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -5734,7 +5734,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -5980,7 +5980,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6228,7 +6228,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6379,7 +6379,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6466,7 +6466,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6553,7 +6553,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6640,7 +6640,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6727,7 +6727,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6814,7 +6814,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6901,7 +6901,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -6988,7 +6988,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -7075,7 +7075,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -7162,7 +7162,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -7249,7 +7249,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -7273,7 +7273,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -7308,7 +7308,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -7435,7 +7435,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -7565,7 +7565,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -7760,7 +7760,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -7890,7 +7890,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -7979,7 +7979,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -8225,7 +8225,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -8473,7 +8473,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -8550,7 +8550,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -8796,7 +8796,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {
@@ -9044,7 +9044,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
           style={
             [
               {
-                "height": 0.5,
+                "height": 1,
               },
               undefined,
               {

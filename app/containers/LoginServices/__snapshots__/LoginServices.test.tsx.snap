@@ -258,10 +258,10 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     style={
       [
         {
-          "backgroundColor": "#F7F8FA",
-          "borderRadius": 4,
+          "backgroundColor": undefined,
+          "borderRadius": undefined,
           "margin": undefined,
-          "marginBottom": 10,
+          "marginBottom": undefined,
           "marginEnd": undefined,
           "marginHorizontal": undefined,
           "marginLeft": undefined,
@@ -284,7 +284,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
           "backgroundColor": "#FFFFFF",
           "borderBottomLeftRadius": undefined,
           "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
+          "borderRadius": undefined,
           "borderTopLeftRadius": undefined,
           "borderTopRightRadius": undefined,
           "bottom": 0,
@@ -298,7 +298,17 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     />
     <View
       accessible={true}
-      style={{}}
+      style={
+        {
+          "0": {
+            "borderRadius": 4,
+            "marginBottom": 10,
+          },
+          "1": {
+            "backgroundColor": "#F7F8FA",
+          },
+        }
+      }
     >
       <View
         accessible={false}
@@ -393,10 +403,10 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     style={
       [
         {
-          "backgroundColor": "#F7F8FA",
-          "borderRadius": 4,
+          "backgroundColor": undefined,
+          "borderRadius": undefined,
           "margin": undefined,
-          "marginBottom": 10,
+          "marginBottom": undefined,
           "marginEnd": undefined,
           "marginHorizontal": undefined,
           "marginLeft": undefined,
@@ -419,7 +429,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
           "backgroundColor": "#FFFFFF",
           "borderBottomLeftRadius": undefined,
           "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
+          "borderRadius": undefined,
           "borderTopLeftRadius": undefined,
           "borderTopRightRadius": undefined,
           "bottom": 0,
@@ -433,7 +443,17 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     />
     <View
       accessible={true}
-      style={{}}
+      style={
+        {
+          "0": {
+            "borderRadius": 4,
+            "marginBottom": 10,
+          },
+          "1": {
+            "backgroundColor": "#F7F8FA",
+          },
+        }
+      }
     >
       <View
         accessible={false}
@@ -528,10 +548,10 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     style={
       [
         {
-          "backgroundColor": "#F7F8FA",
-          "borderRadius": 4,
+          "backgroundColor": undefined,
+          "borderRadius": undefined,
           "margin": undefined,
-          "marginBottom": 10,
+          "marginBottom": undefined,
           "marginEnd": undefined,
           "marginHorizontal": undefined,
           "marginLeft": undefined,
@@ -554,7 +574,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
           "backgroundColor": "#FFFFFF",
           "borderBottomLeftRadius": undefined,
           "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
+          "borderRadius": undefined,
           "borderTopLeftRadius": undefined,
           "borderTopRightRadius": undefined,
           "bottom": 0,
@@ -568,7 +588,17 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     />
     <View
       accessible={true}
-      style={{}}
+      style={
+        {
+          "0": {
+            "borderRadius": 4,
+            "marginBottom": 10,
+          },
+          "1": {
+            "backgroundColor": "#F7F8FA",
+          },
+        }
+      }
     >
       <View
         accessible={false}
@@ -663,10 +693,10 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     style={
       [
         {
-          "backgroundColor": "#F7F8FA",
-          "borderRadius": 4,
+          "backgroundColor": undefined,
+          "borderRadius": undefined,
           "margin": undefined,
-          "marginBottom": 10,
+          "marginBottom": undefined,
           "marginEnd": undefined,
           "marginHorizontal": undefined,
           "marginLeft": undefined,
@@ -689,7 +719,7 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
           "backgroundColor": "#FFFFFF",
           "borderBottomLeftRadius": undefined,
           "borderBottomRightRadius": undefined,
-          "borderRadius": 4,
+          "borderRadius": undefined,
           "borderTopLeftRadius": undefined,
           "borderTopRightRadius": undefined,
           "bottom": 0,
@@ -703,7 +733,17 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
     />
     <View
       accessible={true}
-      style={{}}
+      style={
+        {
+          "0": {
+            "borderRadius": 4,
+            "marginBottom": 10,
+          },
+          "1": {
+            "backgroundColor": "#F7F8FA",
+          },
+        }
+      }
     >
       <View
         accessible={false}
