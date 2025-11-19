@@ -106,7 +106,7 @@ onFlowEnd:
 - tapOn:
     id: 'e2e-enter-your-password-view-forgot-password'
 - tapOn:
-    text: 'Reset E2EE password'
+    text: 'Reset E2EE Password'
 - tapOn:
     id: e2e-encryption-security-view-reset-password-button
 - tapOn: 'Yes, reset it'
