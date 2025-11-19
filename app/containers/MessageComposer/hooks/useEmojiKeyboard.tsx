@@ -42,7 +42,7 @@ const useKeyboardAnimation = () => {
 	const height = useSharedValue(0);
 	const { bottom } = useSafeAreaInsets();
 
-    //TODO: subtraction is currently temporary, i am looking for a better solution
+	//TODO: subtraction is currently temporary, i am looking for a better solution
 	useKeyboardHandler(
 		{
 			onStart: e => {

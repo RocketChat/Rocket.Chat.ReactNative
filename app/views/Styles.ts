@@ -5,14 +5,14 @@ import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 
 const defaultTextStyle = StyleSheet.create({
 	text: {
-        textAlign: 'left',
-        backgroundColor: 'transparent',
-        ...Platform.select({
-            android: {
-                includeFontPadding: false
-            }
-        })
-    }
+		textAlign: 'left',
+		backgroundColor: 'transparent',
+		...Platform.select({
+			android: {
+				includeFontPadding: false
+			}
+		})
+	}
 });
 
 export default StyleSheet.create({

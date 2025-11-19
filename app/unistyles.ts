@@ -11,9 +11,9 @@ declare module 'react-native-unistyles' {
 
 const settings = {
 	initialTheme: () => {
-        const theme = initialTheme();
-        return theme.currentTheme === 'dark' ? theme.darkLevel : (theme.currentTheme as keyof UnistylesThemes) 
-    }
+		const theme = initialTheme();
+		return theme.currentTheme === 'dark' ? theme.darkLevel : (theme.currentTheme as keyof UnistylesThemes);
+	}
 };
 
 StyleSheet.configure({

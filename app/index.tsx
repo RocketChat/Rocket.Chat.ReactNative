@@ -210,41 +210,41 @@ export default class Root extends React.Component<{}, IState> {
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
-                    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
-                        <ThemeContext.Provider
-                            value={{
-                                theme,
-                                themePreferences,
-                                setTheme: this.setTheme,
-                                colors: colors[theme]
-                            }}>
-                            <ResponsiveLayoutProvider>
-                                <DimensionsContext.Provider
-                                    value={{
-                                        width,
-                                        height,
-                                        scale,
-                                        fontScale,
-                                        setDimensions: this.setDimensions
-                                    }}>
-                                    <GestureHandlerRootView>
-                                        <KeyboardProvider>
-                                            <ActionSheetProvider>
-                                                <StatusBar />
-                                                <AppContainer />
-                                                <TwoFactor />
-                                                <ScreenLockedView />
-                                                <ChangePasscodeView />
-                                                <InAppNotification />
-                                                <Toast />
-                                                <Loading />
-                                            </ActionSheetProvider>
-                                        </KeyboardProvider>
-                                    </GestureHandlerRootView>
-                                </DimensionsContext.Provider>
-                            </ResponsiveLayoutProvider>
-                        </ThemeContext.Provider>
-                    </SafeAreaView>
+					<SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+						<ThemeContext.Provider
+							value={{
+								theme,
+								themePreferences,
+								setTheme: this.setTheme,
+								colors: colors[theme]
+							}}>
+							<ResponsiveLayoutProvider>
+								<DimensionsContext.Provider
+									value={{
+										width,
+										height,
+										scale,
+										fontScale,
+										setDimensions: this.setDimensions
+									}}>
+									<GestureHandlerRootView>
+										<KeyboardProvider>
+											<ActionSheetProvider>
+												<StatusBar />
+												<AppContainer />
+												<TwoFactor />
+												<ScreenLockedView />
+												<ChangePasscodeView />
+												<InAppNotification />
+												<Toast />
+												<Loading />
+											</ActionSheetProvider>
+										</KeyboardProvider>
+									</GestureHandlerRootView>
+								</DimensionsContext.Provider>
+							</ResponsiveLayoutProvider>
+						</ThemeContext.Provider>
+					</SafeAreaView>
 				</Provider>
 			</SafeAreaProvider>
 		);

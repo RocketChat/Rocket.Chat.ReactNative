@@ -1,7 +1,7 @@
 module.exports = {
 	presets: ['babel-preset-expo'],
 	plugins: [
-        ['react-native-unistyles/plugin', { root: 'app' }],
+		['react-native-unistyles/plugin', { root: 'app' }],
 		[
 			'babel-plugin-react-compiler',
 			{

@@ -1,4 +1,3 @@
-
 import { StyleSheet } from 'react-native-unistyles';
 
 import sharedStyles from '../Styles';
