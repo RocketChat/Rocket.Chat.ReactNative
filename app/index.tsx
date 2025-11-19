@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
+import { Dimensions, type EmitterSubscription, Linking, Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -210,7 +210,7 @@ export default class Root extends React.Component<{}, IState> {
 		return (
 			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
-					<SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
+					<SafeAreaView style={{ flex: 1 }} edges={Platform.OS === 'android' ? ['bottom'] : []}>
 						<ThemeContext.Provider
 							value={{
 								theme,
