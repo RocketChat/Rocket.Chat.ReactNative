@@ -13,26 +13,8 @@ const config = {
 	},
 	resolver: {
 		// When running E2E tests, prioritize .mock.ts files for app code
-		sourceExts: process.env.RUNNING_E2E_TESTS === 'true' ? ['mock.ts', ...sourceExts] : sourceExts,
-		// BUT exclude specific libraries from mock resolution
-		resolveRequest:
-			process.env.RUNNING_E2E_TESTS === 'true'
-				? (context, moduleName, platform) => {
-						// Check if we're resolving a module from within react-native-mmkv
-						const isResolvingFromMMKV =
-							context.originModulePath && context.originModulePath.includes('node_modules/react-native-mmkv');
-
-						// Force these libraries to skip .mock.ts files
-						if (moduleName.startsWith('react-native-mmkv') || isResolvingFromMMKV) {
-							return context.resolveRequest(context, moduleName, platform, {
-								...context,
-								preferredSourceExts: sourceExts // Use normal extensions (no mock.ts)
-							});
-						}
-						// Default resolution for everything else (including app code)
-						return context.resolveRequest(context, moduleName, platform);
-				  }
-				: undefined
+		// Note: react-native-mmkv's internal mock file is disabled via patch-package
+		sourceExts: process.env.RUNNING_E2E_TESTS === 'true' ? ['mock.ts', ...sourceExts] : sourceExts
 	}
 };
 
