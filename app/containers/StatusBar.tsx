@@ -19,7 +19,7 @@ const StatusBar = ({ barStyle, backgroundColor }: IStatusBar) => {
 		}
 	}
 
-	if (Platform.OS === 'android' && Platform.Version >= 35) {
+	if (Platform.OS === 'android') {
 		return <SystemBars style={barStyle} />;
 	}
 
