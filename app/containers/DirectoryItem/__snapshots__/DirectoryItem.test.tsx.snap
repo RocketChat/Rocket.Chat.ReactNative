@@ -10,7 +10,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="Styled Room undefined"
+      accessibilityLabel="Styled Room "
       accessible={true}
       importantForAccessibility="yes"
     >
@@ -267,7 +267,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="General undefined"
+      accessibilityLabel="General "
       accessible={true}
       importantForAccessibility="yes"
     >
@@ -522,7 +522,7 @@ exports[`Story Snapshots: DirectMessage should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="Alice Johnson undefined"
+      accessibilityLabel="Alice Johnson "
       accessible={true}
       importantForAccessibility="yes"
     >
@@ -1020,7 +1020,7 @@ exports[`Story Snapshots: OnlyTitle should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="Just a title undefined"
+      accessibilityLabel="Just a title "
       accessible={true}
       importantForAccessibility="yes"
     >
@@ -1186,7 +1186,7 @@ exports[`Story Snapshots: TeamMain should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="Engineering Team undefined"
+      accessibilityLabel="Engineering Team "
       accessible={true}
       importantForAccessibility="yes"
     >
@@ -1715,7 +1715,7 @@ exports[`Story Snapshots: WithoutDescription should match snapshot 1`] = `
 >
   <View>
     <View
-      accessibilityLabel="No description room undefined"
+      accessibilityLabel="No description room "
       accessible={true}
       importantForAccessibility="yes"
     >
