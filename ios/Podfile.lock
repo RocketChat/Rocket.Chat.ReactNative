@@ -2655,7 +2655,7 @@ PODS:
   - simdjson (3.9.4)
   - SocketRocket (0.7.1)
   - TOCropViewController (2.7.4)
-  - Unistyles (3.0.17):
+  - Unistyles (3.0.18):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3262,7 +3262,7 @@ SPEC CHECKSUMS:
   simdjson: 7bb9e33d87737cec966e7b427773c67baa4458fe
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
-  Unistyles: 9e808134aaed9c44f87474642c4df0d3002d26ef
+  Unistyles: db6535f6ea5c0c9e2a45a557b247e9d4cb6cfa75
   WatermelonDB: 4c846c8cb94eef3cba90fa034d15310163226703
   Yoga: dfabf1234ccd5ac41d1b1d43179f024366ae9831
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
