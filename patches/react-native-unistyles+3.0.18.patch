@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-unistyles/src/web/index.ts b/node_modules/react-native-unistyles/src/web/index.ts
+index 6e05d9b..0bd7883 100644
+--- a/node_modules/react-native-unistyles/src/web/index.ts
++++ b/node_modules/react-native-unistyles/src/web/index.ts
+@@ -24,7 +24,7 @@ export const StyleSheet = {
+     },
+     compose: (a: object, b: object) => RNStyleSheet.compose(a, b),
+     flatten: (...styles: Array<object>) => RNStyleSheet.flatten(...styles),
+-    hairlineWidth: 1
++    hairlineWidth: 0.5
+ } as unknown as typeof NativeStyleSheet
+ 
+ export const UnistylesRuntime = unistyles.services.runtime as unknown as typeof NativeUnistylesRuntime
