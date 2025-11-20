@@ -65,6 +65,10 @@ function getSeparator(startingText: string, isCodeBlock: boolean) {
 	}
 
 	if (isCodeBlock) {
+		if (/```(\s*)$/.test(startingText)) {
+			return '';
+		}
+
 		return '\n';
 	}
 
@@ -157,13 +161,11 @@ export const ComposerInput = memo(
 						const markdown = MARKDOWN_STYLES[style];
 						const isCodeBlock = style === 'code-block';
 						const startingText = text.substr(0, start);
-						console.log(style);
 
 						const separator = getSeparator(startingText, isCodeBlock);
-						const closingNewlines = isCodeBlock ? '\n\n' : '';
-						const beforeMarkdownClose = isCodeBlock && start !== end ? '\n' : '';
+						const beforeMarkdownClose = isCodeBlock ? '\n' : '';
 
-						const newText = `${startingText}${separator}${markdown}${closingNewlines}${text.substr(
+						const newText = `${startingText}${separator}${markdown}${beforeMarkdownClose}${text.substr(
 							start,
 							end - start
 						)}${beforeMarkdownClose}${markdown}${text.substr(end)}`;
