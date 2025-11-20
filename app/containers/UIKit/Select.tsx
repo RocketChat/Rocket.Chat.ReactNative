@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import RNPickerSelect from 'react-native-picker-select';
 
 import sharedStyles from '../../views/Styles';

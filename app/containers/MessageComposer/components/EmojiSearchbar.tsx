@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Pressable, FlatList } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import { MessageInnerContext } from '../context';

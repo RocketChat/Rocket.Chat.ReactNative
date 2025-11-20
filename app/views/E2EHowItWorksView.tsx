@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import * as HeaderButton from '../containers/Header/components/HeaderButton';

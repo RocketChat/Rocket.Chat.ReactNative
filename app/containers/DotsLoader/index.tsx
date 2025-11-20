@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { type StyleProp, View, type ViewStyle, StyleSheet } from 'react-native';
+import { type StyleProp, View, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../theme';
 

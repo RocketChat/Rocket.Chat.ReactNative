@@ -1,5 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, type ActivityIndicatorProps, StyleSheet } from 'react-native';
+import { ActivityIndicator, type ActivityIndicatorProps } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../theme';
 import { themes } from '../lib/constants/colors';
