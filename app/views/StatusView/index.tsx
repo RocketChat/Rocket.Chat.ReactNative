@@ -76,7 +76,6 @@ const Status = ({
 	setStatus: (status: TUserStatus) => void;
 }) => {
 	const { id, name } = statusType;
-
 	return (
 		<>
 			<List.Radio
