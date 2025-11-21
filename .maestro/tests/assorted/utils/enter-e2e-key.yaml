@@ -20,7 +20,7 @@ tags:
     id: 'e2e-enter-your-password-view-password'
 - inputText: 'abc'
 - tapOn:
-    text: 'Confirm'
+    text: 'Enable encryption'
 - extendedWaitUntil:
     visible:
       id: 'room-view-messages'

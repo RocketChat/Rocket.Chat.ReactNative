@@ -406,3 +406,17 @@ tags:
     visible:
       text: '.*m6.*'
     timeout: 60000
+
+# Should reset E2EE key from E2EEnterYourPasswordView
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.userA.username}
+      PASSWORD: ${output.userA.password}
+      CLEAR_STATE: true
+- runFlow: './utils/navigate-to-e2ee-.yaml'
+- runFlow: './utils/reset-e2ee-key.yaml'
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.userA.username}
