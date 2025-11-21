@@ -414,7 +414,7 @@ tags:
       USERNAME: ${output.userA.username}
       PASSWORD: ${output.userA.password}
       CLEAR_STATE: true
-- runFlow: './utils/navigate-to-e2ee-.yaml'
+- runFlow: './utils/navigate-to-e2ee-security.yaml'
 - runFlow: './utils/reset-e2ee-key.yaml'
 - runFlow:
     file: '../../helpers/login-with-deeplink.yaml'
