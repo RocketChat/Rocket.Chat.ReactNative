@@ -1293,6 +1293,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
+
 		if (!previousItem) {
 			dateSeparator = item.ts;
 			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
@@ -1358,7 +1359,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					useRealName={useRealName}
 					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
 					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-					autoTranslateLanguage={'id' in room ? room?.autoTranslateLanguageBcp47 || room.autoTranslateLanguage : undefined}
+					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
 					getCustomEmoji={this.getCustomEmoji}
 					handleEnterCall={this.handleEnterCall}

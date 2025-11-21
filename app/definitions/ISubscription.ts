@@ -83,7 +83,6 @@ export interface ISubscription {
 	jitsiTimeout?: Date;
 	autoTranslate?: boolean;
 	autoTranslateLanguage?: string;
-	autoTranslateLanguageBcp47?: string;
 	lastMessage?: ILastMessage | null; // TODO: we need to use IMessage here
 	hideUnreadStatus?: boolean;
 	sysMes?: string[] | boolean;
