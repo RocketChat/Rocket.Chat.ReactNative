@@ -87,7 +87,6 @@ const LanguageView = () => {
 			log(e);
 		}
 	};
-	console.log(language, languageDefault);
 
 	return (
 		<SafeAreaView testID='language-view'>

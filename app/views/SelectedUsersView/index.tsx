@@ -35,7 +35,7 @@ const SelectedUsersView = () => {
 
 	const { maxUsers, showButton, title, buttonText, showSkipText = true, nextAction } = useRoute<TRoute>().params;
 	const navigation = useNavigation<TNavigation>();
-	console.log(buttonText);
+
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
