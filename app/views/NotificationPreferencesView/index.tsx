@@ -67,7 +67,7 @@ const RenderListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
 			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
-			additionalAcessibilityLabel={label}
+			additionalAccessibilityLabel={label}
 		/>
 	);
 };
@@ -146,7 +146,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						right={() => (
 							<RenderSwitch preference='disableNotifications' room={room} onChangeValue={handleSaveNotificationSettings} />
 						)}
-						additionalAcessibilityLabel={!room.disableNotifications}
+						additionalAccessibilityLabel={!room.disableNotifications}
 					/>
 					<List.Separator />
 					<List.Info info={I18n.t('Receive_notifications_from', { name: room.name })} translateInfo={false} />
@@ -161,7 +161,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 							<RenderSwitch preference='muteGroupMentions' room={room} onChangeValue={handleSaveNotificationSettings} />
 						)}
 						// @ts-ignore
-						additionalAcessibilityLabel={!room.muteGroupMentions}
+						additionalAccessibilityLabel={!room.muteGroupMentions}
 					/>
 					<List.Separator />
 					<List.Info info='Receive_Group_Mentions_Info' />
@@ -175,7 +175,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						right={() => (
 							<RenderSwitch preference='hideUnreadStatus' room={room} onChangeValue={handleSaveNotificationSettings} />
 						)}
-						additionalAcessibilityLabel={!room.hideUnreadStatus}
+						additionalAccessibilityLabel={!room.hideUnreadStatus}
 					/>
 					<List.Separator />
 					<List.Info info='Mark_as_unread_Info' />
@@ -190,7 +190,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 							right={() => (
 								<RenderSwitch preference='hideMentionStatus' room={room} onChangeValue={handleSaveNotificationSettings} />
 							)}
-							additionalAcessibilityLabel={!room.hideMentionStatus}
+							additionalAccessibilityLabel={!room.hideMentionStatus}
 						/>
 						<List.Separator />
 						<List.Info info='Show_badge_for_mentions_Info' />

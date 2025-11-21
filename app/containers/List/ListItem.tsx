@@ -99,9 +99,9 @@ interface IListItemContent {
 	heightContainer?: number;
 	rightContainerStyle?: StyleProp<ViewStyle>;
 	styleTitle?: StyleProp<TextStyle>;
-	additionalAcessibilityLabel?: string | boolean;
+	additionalAccessibilityLabel?: string | boolean;
 	accessibilityRole?: AccessibilityRole;
-	additionalAcessibilityLabelCheck?: boolean;
+	additionalAccessibilityLabelCheck?: boolean;
 }
 
 const Content = React.memo(
@@ -120,8 +120,8 @@ const Content = React.memo(
 		heightContainer,
 		rightContainerStyle = {},
 		styleTitle,
-		additionalAcessibilityLabel,
-		additionalAcessibilityLabelCheck,
+		additionalAccessibilityLabel,
+		additionalAccessibilityLabelCheck,
 		accessibilityRole,
 		accessibilityLabel
 	}: IListItemContent) => {
@@ -141,18 +141,18 @@ const Content = React.memo(
 			if (subtitle) {
 				label = translateSubtitle ? `${label} ${I18n.t(subtitle)}` : `${label} ${subtitle}`;
 			}
-			if (typeof additionalAcessibilityLabel === 'string') {
-				label = `${label} ${additionalAcessibilityLabel}`;
+			if (typeof additionalAccessibilityLabel === 'string') {
+				label = `${label} ${additionalAccessibilityLabel}`;
 			}
-			if (typeof additionalAcessibilityLabel === 'boolean') {
-				if (additionalAcessibilityLabelCheck) {
-					label = `${label} ${additionalAcessibilityLabel ? I18n.t('Checked') : I18n.t('Unchecked')}`;
+			if (typeof additionalAccessibilityLabel === 'boolean') {
+				if (additionalAccessibilityLabelCheck) {
+					label = `${label} ${additionalAccessibilityLabel ? I18n.t('Checked') : I18n.t('Unchecked')}`;
 				} else {
-					label = `${label} ${additionalAcessibilityLabel ? I18n.t('Enabled') : I18n.t('Disabled')}`;
+					label = `${label} ${additionalAccessibilityLabel ? I18n.t('Enabled') : I18n.t('Disabled')}`;
 				}
 			}
 			return label;
-		}, [title, subtitle, translateTitle, translateSubtitle, additionalAcessibilityLabel, additionalAcessibilityLabelCheck]);
+		}, [title, subtitle, translateTitle, translateSubtitle, additionalAccessibilityLabel, additionalAccessibilityLabelCheck]);
 
 		return (
 			<View

@@ -102,7 +102,7 @@ const ListPicker = ({
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}
-			additionalAcessibilityLabel={label}
+			additionalAccessibilityLabel={label}
 		/>
 	);
 };

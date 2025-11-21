@@ -102,7 +102,7 @@ const LanguageView = () => {
 						title={item.label}
 						value={item.value}
 						translateTitle={false}
-						isSelected={item.label === (language || languageDefault)}
+						isSelected={item.value === (language || languageDefault)}
 						onPress={submit}
 					/>
 				)}

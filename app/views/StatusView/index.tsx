@@ -81,7 +81,7 @@ const Status = ({
 		<>
 			<List.Radio
 				isSelected={status === id}
-				additionalAcessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
+				additionalAccessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
 				title={name}
 				onPress={() => {
 					const key = `STATUS_${id.toUpperCase()}` as keyof typeof events;

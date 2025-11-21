@@ -41,7 +41,7 @@ export default function CommunityEditionPushQuota(): React.ReactElement | null {
 				testID='push-troubleshoot-view-workspace-consumption'
 				onPress={alertWorkspaceConsumption}
 				right={() => <Text style={[styles.pickerText, { color: percentageColor }]}>{percentage}</Text>}
-				additionalAcessibilityLabel={percentage}
+				additionalAccessibilityLabel={percentage}
 			/>
 			<List.Separator />
 			<List.Info info='Workspace_consumption_description' />

@@ -20,7 +20,7 @@ const ListRadio = ({ value, isSelected, ...rest }: IListRadio) => {
 		<ListItem
 			{...rest}
 			right={() => <ListIcon name={iconName} color={iconColor} />}
-			additionalAcessibilityLabel={isSelected ? i18n.t('Selected') : i18n.t('Unselected')}
+			additionalAccessibilityLabel={isSelected ? i18n.t('Selected') : i18n.t('Unselected')}
 			accessibilityRole='radio'
 		/>
 	);

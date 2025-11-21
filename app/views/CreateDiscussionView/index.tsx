@@ -173,7 +173,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 								title='Encrypted'
 								testID='room-actions-encrypt'
 								right={() => <Switch value={encrypted} onValueChange={onEncryptedChange} />}
-								additionalAcessibilityLabel={encrypted}
+								additionalAccessibilityLabel={encrypted}
 							/>
 						</>
 					) : null}

@@ -67,7 +67,7 @@ const ListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ children: getOptions() })}
 			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
-			additionalAcessibilityLabel={label}
+			additionalAccessibilityLabel={label}
 		/>
 	);
 };
