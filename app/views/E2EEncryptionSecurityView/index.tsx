@@ -47,7 +47,6 @@ const E2EEncryptionSecurityView = () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
 					const res = await e2eResetOwnKey();
-					console.log('res', res);
 					if (res?.success === true) {
 						dispatch(logout());
 					}
