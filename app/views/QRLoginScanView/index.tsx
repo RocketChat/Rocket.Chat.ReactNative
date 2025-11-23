@@ -7,7 +7,7 @@ import {
 	ActivityIndicator
 } from 'react-native';
 import { Pressable } from 'react-native-gesture-handler';
-import { BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
+import { type BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import Animated, {
 	useSharedValue,
@@ -18,7 +18,7 @@ import Animated, {
 	cancelAnimation
 } from 'react-native-reanimated';
 
-import { dynamicStyles } from './styles';
+import { useStyle, SCANNER_SIZE } from './styles';
 import { CustomIcon } from '../../containers/CustomIcon';
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -26,7 +26,6 @@ import { sendScannedQRCode } from '../../lib/services/restApi';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { showErrorAlert } from '../../lib/methods/helpers';
 
-const SCANNER_SIZE = 280;
 
 const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	const { width: screenWidth, height: screenHeight } = useResponsiveLayout();
@@ -43,7 +42,7 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	const scanLineAnim = useSharedValue(0);
 	const cornerAnim = useSharedValue(1);
 
-	const styles = dynamicStyles(screenHeight, screenWidth);
+	const styles = useStyle(screenHeight, screenWidth);
 
 	useEffect(() => {
 		if (isFocused && permission?.granted) {
@@ -107,13 +106,10 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 		}
 	}, [isScanning, showCamera, isProcessing, scanLineAnim, cornerAnim]);
 
-	// eslint-disable-next-line arrow-body-style
-	useEffect(() => {
-		return () => {
-			cancelAnimation(fadeAnim);
-			cancelAnimation(scanLineAnim);
-			cancelAnimation(cornerAnim);
-		};
+	useEffect(() => () => {
+		cancelAnimation(fadeAnim);
+		cancelAnimation(scanLineAnim);
+		cancelAnimation(cornerAnim);
 	}, [fadeAnim, scanLineAnim, cornerAnim]);
 
 	const fadeStyle = useAnimatedStyle(() => ({

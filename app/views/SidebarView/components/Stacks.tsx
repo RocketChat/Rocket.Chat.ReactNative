@@ -49,6 +49,13 @@ const Stacks = ({ currentScreen }: { currentScreen: string | null }) => {
 				testID='sidebar-settings'
 			/>
 			<List.Separator />
+			<List.Item
+				title={'QR_Login'}
+				left={() => <List.Icon name='login' />}
+				onPress={() => sidebarNavigate('QRLoginStackNavigator')}
+				backgroundColor={currentScreen === 'QRLoginStackNavigator' ? colors.strokeLight : undefined}
+				testID='sidebar-qrlogin'
+			/>
 		</>
 	);
 };

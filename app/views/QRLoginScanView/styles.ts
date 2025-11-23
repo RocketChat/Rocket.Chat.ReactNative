@@ -4,11 +4,8 @@ const CORNER_SIZE = 24;
 const CORNER_THICKNESS = 4;
 export const SCANNER_SIZE = 280;
 
-export const dynamicStyles = (
-	screenHeight: number,
-	screenWidth: number
-) => (
-	StyleSheet.create({
+export function useStyle(screenHeight: number, screenWidth: number) {
+	const style = StyleSheet.create({
 		container: {
 			flex: 1
 		},
@@ -194,4 +191,5 @@ export const dynamicStyles = (
 			fontWeight: '500'
 		}
 	})
-);
+	return style;
+}
