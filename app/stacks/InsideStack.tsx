@@ -85,7 +85,8 @@ import {
 	type NewMessageStackParamList,
 	type ProfileStackParamList,
 	type SettingsStackParamList,
-	type AccessibilityStackParamList
+	type AccessibilityStackParamList,
+	type QRLoginStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
