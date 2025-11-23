@@ -2,7 +2,7 @@ import React from 'react';
 import type { Preview } from '@storybook/react';
 import { Provider } from 'react-redux';
 
-import { themes } from '../app/lib/constants';
+import { themes } from '../app/lib/constants/colors';
 import MessageContext from '../app/containers/message/Context';
 import { selectServerRequest } from '../app/actions/server';
 import { mockedStore as store } from '../app/reducers/mockedStore';

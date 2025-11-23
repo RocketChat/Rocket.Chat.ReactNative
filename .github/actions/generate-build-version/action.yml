@@ -1,0 +1,51 @@
+name: Generate Build Version
+
+inputs:
+  RN_VARIABLES_PAT:
+    required: true
+    type: string
+
+outputs:
+  BUILD_VERSION:
+    description: "Generated build version"
+    value: ${{ steps.compute.outputs.BUILD_VERSION }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get BUILD_VERSION from repo variable
+      id: build_version
+      shell: bash
+      run: |
+        RESPONSE=$(
+          curl -s -L \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ inputs.RN_VARIABLES_PAT }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/${{ github.repository }}/actions/variables/BUILD_VERSION
+        )
+
+        VALUE=$(echo "$RESPONSE" | jq -r '.value')
+        echo "LATEST_BUILD_VERSION=$VALUE" >> $GITHUB_OUTPUT
+
+    - name: Compute BUILD_VERSION
+      id: compute
+      shell: bash
+      run: |
+        LATEST_BUILD_VERSION="${{ steps.build_version.outputs.LATEST_BUILD_VERSION }}"
+        BUILD_VERSION=$((LATEST_BUILD_VERSION + 1))
+        echo "BUILD_VERSION=$BUILD_VERSION" >> $GITHUB_OUTPUT
+
+        echo "### 📦 Build Version Generated" >> $GITHUB_STEP_SUMMARY
+        echo "\`Build Version: $BUILD_VERSION\`" >> $GITHUB_STEP_SUMMARY
+
+    - name: Update BUILD_VERSION in repo variable
+      shell: bash
+      run: |
+        curl -s -L \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ inputs.RN_VARIABLES_PAT }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          -X PATCH \
+          -d '{"name": "BUILD_VERSION", "value": "${{ steps.compute.outputs.BUILD_VERSION }}"}' \
+          https://api.github.com/repos/${{ github.repository }}/actions/variables/BUILD_VERSION

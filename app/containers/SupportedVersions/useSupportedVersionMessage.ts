@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 const applyParams = (message: string, params: Record<string, unknown>) => {
 	const keys = Object.keys(params);

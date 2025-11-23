@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 
 import { appInit } from '../../actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
-import { INotification, SubscriptionType } from '../../definitions';
+import { type INotification, SubscriptionType } from '../../definitions';
 import { store } from '../store/auxStore';
 import { deviceToken, pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 

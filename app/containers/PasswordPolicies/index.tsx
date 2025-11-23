@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { IPasswordPolicy } from '../../lib/hooks/useVerifyPassword';
+import { type IPasswordPolicy } from '../../lib/hooks/useVerifyPassword';
 import Tip from './components/Tip';
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -32,7 +32,7 @@ const PasswordPolicies = ({ isDirty, password, policies }: IPasswordTips) => {
 	};
 
 	return (
-		<View accessible>
+		<View>
 			<Text
 				accessibilityLabel={i18n.t('Your_Password_Must_Have')}
 				accessible

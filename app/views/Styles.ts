@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, TextStyle } from 'react-native';
+import { Platform, StyleSheet, type TextStyle } from 'react-native';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 
@@ -81,8 +81,7 @@ export default StyleSheet.create({
 				fontWeight: '400'
 			},
 			android: {
-				fontFamily: 'Inter-Regular',
-				letterSpacing: 0.01
+				fontFamily: 'Inter-Regular'
 			}
 		})
 	},

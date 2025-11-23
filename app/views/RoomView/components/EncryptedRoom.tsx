@@ -1,16 +1,16 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { ChatsStackParamList } from '../../../stacks/types';
+import { type ChatsStackParamList } from '../../../stacks/types';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import Button from '../../../containers/Button';
 import sharedStyles from '../../Styles';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption';
 import I18n from '../../../i18n';
-import { TNavigation } from '../../../stacks/stackType';
+import { type TNavigation } from '../../../stacks/stackType';
 
 const GAP = 32;
 

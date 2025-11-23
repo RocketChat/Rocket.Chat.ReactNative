@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
-import DateTimePicker, { BaseProps } from '@react-native-community/datetimepicker';
+import DateTimePicker, { type BaseProps } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import moment from 'moment';
 
 import Button from '../Button';
 import { textParser } from './utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../CustomIcon';
 import { isAndroid } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
-import { IDatePicker } from './interfaces';
+import { type IDatePicker } from './interfaces';
 
 const styles = StyleSheet.create({
 	input: {

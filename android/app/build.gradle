@@ -3,7 +3,6 @@ apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
 apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'com.bugsnag.android.gradle'
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -91,13 +90,11 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.64.0"
+        versionName "4.67.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
-        testBuildType System.getProperty('testBuildType', 'debug')
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     signingConfigs {
@@ -153,8 +150,6 @@ dependencies {
 
     implementation "com.google.code.gson:gson:2.8.9"
     implementation "com.tencent:mmkv-static:1.2.10"
-    androidTestImplementation('com.wix:detox:+')
-    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.facebook.soloader:soloader:0.10.4'
 }
 

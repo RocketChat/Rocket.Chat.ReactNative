@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable } from 'react-native';
 
 import styles, { EMOJI_BUTTON_SIZE } from './styles';
-import { IEmoji } from '../../definitions/IEmoji';
+import { type IEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
 import { Emoji } from './Emoji';

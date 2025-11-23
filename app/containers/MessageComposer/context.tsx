@@ -1,8 +1,7 @@
-import React, { createContext, ReactElement, useContext, useMemo, useReducer } from 'react';
+import React, { createContext, type ReactElement, useContext, useMemo, useReducer } from 'react';
 
-import { IEmoji } from '../../definitions';
-import { IAutocompleteBase, TMicOrSend } from './interfaces';
-import { animateNextTransition } from '../../lib/methods/helpers';
+import { type IEmoji } from '../../definitions';
+import { type IAutocompleteBase, type TMicOrSend } from './interfaces';
 
 type TMessageComposerContextApi = {
 	setFocused(focused: boolean): void;
@@ -66,17 +65,14 @@ type Actions =
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
 		case 'updateFocused':
-			animateNextTransition();
 			return { ...state, focused: action.focused };
 		case 'setMicOrSend':
 			return { ...state, micOrSend: action.micOrSend };
 		case 'setMarkdownToolbar':
-			animateNextTransition();
 			return { ...state, showMarkdownToolbar: action.showMarkdownToolbar };
 		case 'setAlsoSendThreadToChannel':
 			return { ...state, alsoSendThreadToChannel: action.alsoSendThreadToChannel };
 		case 'setRecordingAudio':
-			animateNextTransition();
 			return { ...state, recordingAudio: action.recordingAudio };
 		case 'setAutocompleteParams':
 			return { ...state, autocompleteParams: action.params };
@@ -84,6 +80,8 @@ const reducer = (state: State, action: Actions): State => {
 };
 
 export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
+	'use memo';
+
 	const [state, dispatch] = useReducer(reducer, {
 		autocompleteParams: { text: '', type: null }
 	} as State);

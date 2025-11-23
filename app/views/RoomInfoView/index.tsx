@@ -1,26 +1,25 @@
-import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
-import { ISubscription, IUser, SubscriptionType } from '../../definitions';
+import { type ISubscription, type IUser, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { ChatsStackParamList } from '../../stacks/types';
+import { createDirectMessage, getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import RoomInfoButtons from './components/RoomInfoButtons';
 import RoomInfoViewAvatar from './components/RoomInfoViewAvatar';
@@ -127,7 +126,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadVisitor = async () => {
 		try {
 			if (room?.visitor?._id) {
-				const result = await Services.getVisitorInfo(room.visitor._id);
+				const result = await getVisitorInfo(room.visitor._id);
 				if (result.success) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
@@ -166,7 +165,7 @@ const RoomInfoView = (): React.ReactElement => {
 		if (isEmpty(roomUser)) {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
-				const result = await Services.getUserInfo(roomUserId);
+				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
 					const r = handleRoles(user);
@@ -203,7 +202,7 @@ const RoomInfoView = (): React.ReactElement => {
 		} else {
 			try {
 				if (!isDirect) {
-					const result = await Services.getRoomInfo(rid);
+					const result = await getRoomInfo(rid);
 					if (result.success) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
 				}
 			} catch (e) {
@@ -219,7 +218,7 @@ const RoomInfoView = (): React.ReactElement => {
 			// We don't need to create a direct
 			if (!isEmpty(member)) return resolve();
 			try {
-				const result = await Services.createDirectMessage(roomUser.username);
+				const result = await createDirectMessage(roomUser.username);
 				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
 			} catch (e) {
 				reject(e);
@@ -264,7 +263,7 @@ const RoomInfoView = (): React.ReactElement => {
 		if (!r?.rid) return;
 		logEvent(events.RI_TOGGLE_BLOCK_USER);
 		try {
-			await Services.toggleBlockUser(r.rid, userBlocked, !blocker);
+			await toggleBlockUser(r.rid, userBlocked, !blocker);
 		} catch (e) {
 			log(e);
 		}
@@ -286,7 +285,6 @@ const RoomInfoView = (): React.ReactElement => {
 
 	return (
 		<ScrollView style={[styles.scroll, { backgroundColor: colors.surfaceRoom }]}>
-			<StatusBar />
 			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-info-view'>
 				<View style={[styles.avatarContainer, { backgroundColor: colors.surfaceHover }]}>
 					<RoomInfoViewAvatar

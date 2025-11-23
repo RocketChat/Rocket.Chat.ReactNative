@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView, StatusBar } from 'react-native';
-import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ScrollView } from 'react-native';
+import { type CompositeNavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,17 +9,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import log from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { ChatsStackParamList } from '../../stacks/types';
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import I18n from '../../i18n';
 import UserInfo from './UserInfo';
 import styles from './styles';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import Button from '../../containers/Button';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
-import { Services } from '../../lib/services';
+import { reportUser } from '../../lib/services/restApi';
 import KeyboardView from '../../containers/KeyboardView';
 import Navigation from '../../lib/navigation/appNavigation';
 
@@ -70,7 +70,7 @@ const ReportUserView = () => {
 	const submit = async ({ description }: ISubmit) => {
 		try {
 			setLoading(true);
-			await Services.reportUser(userId, description);
+			await reportUser(userId, description);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Report_sent_successfully') });
 			setLoading(false);
 			if (isMasterDetail) {
@@ -88,7 +88,6 @@ const ReportUserView = () => {
 		<KeyboardView>
 			<SafeAreaView style={styles.containerView} testID='report-user-view'>
 				<ScrollView contentContainerStyle={styles.scroll}>
-					<StatusBar />
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput
 						name='description'
