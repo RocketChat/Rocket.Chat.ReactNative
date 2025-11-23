@@ -74,6 +74,10 @@ import CallSection from './components/CallSection';
 import { type TNavigation } from '../../stacks/stackType';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import Navigation from '../../lib/navigation/appNavigation';
+import RoomInfoSection from './components/RoomInfoSection';
+import E2EEncryptionSection from './components/E2EEncryptionSection';
+import LastSection from './components/LastSection';
+import OmnichannelSection from './components/OmnichannelSection';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -746,338 +750,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 	};
 
-	renderRoomInfo = () => {
-		const { room, member } = this.state;
-		const { rid, name, t, topic, source } = room;
-		const { theme, fontScale } = this.props;
-
-		const avatar = getRoomAvatar(room);
-		const isGroupChatHandler = isGroupChat(room);
-
-		return (
-			<List.Section>
-				<List.Separator />
-				<Touch
-					onPress={() =>
-						this.onPressTouchable({
-							route: 'RoomInfoView',
-							// forward room only if room isn't joined
-							params: {
-								rid,
-								t,
-								room: room.asPlain ? room.asPlain() : room,
-								member,
-								fromRid: room?.rid
-							}
-						})
-					}
-					style={{ backgroundColor: themes[theme].surfaceRoom }}
-					accessibilityLabel={I18n.t('Room_Info')}
-					enabled={!isGroupChatHandler}
-					testID='room-actions-info'>
-					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
-						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
-							{t === 'd' && member._id ? (
-								<View style={[sharedStyles.status, { backgroundColor: themes[theme].surfaceRoom }]}>
-									<Status size={16} id={member._id} />
-								</View>
-							) : undefined}
-						</Avatar>
-						<View style={styles.roomTitleContainer}>
-							{room.t === 'd' ? (
-								<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-									{room.fname}
-								</Text>
-							) : (
-								<View style={styles.roomTitleRow}>
-									<RoomTypeIcon
-										type={room.prid ? 'discussion' : room.t}
-										teamMain={room.teamMain}
-										status={room.visitor?.status}
-										sourceType={source}
-									/>
-									<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-										{getRoomTitle(room)}
-									</Text>
-								</View>
-							)}
-							<MarkdownPreview
-								msg={t === 'd' ? `@${name}` : topic}
-								style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
-							/>
-							{room.t === 'd' && (
-								<MarkdownPreview
-									msg={member.statusText}
-									style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
-								/>
-							)}
-						</View>
-						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
-					</View>
-				</Touch>
-				<List.Separator />
-			</List.Section>
-		);
-	};
-
-	renderE2EEncryption = () => {
-		const { room, canToggleEncryption, canEdit } = this.state;
-
-		const { serverVersion } = this.props;
-		let hasPermission = false;
-		if (compareServerVersion(serverVersion, 'lowerThan', '3.11.0')) {
-			hasPermission = canEdit;
-		} else {
-			hasPermission = canToggleEncryption;
-		}
-
-		if (E2E_ROOM_TYPES[room.t]) {
-			return (
-				<List.Section>
-					<List.Separator />
-					<List.Item
-						title='E2E_Encryption'
-						subtitle={room.encrypted ? 'Enabled' : 'Disabled'}
-						left={() => <List.Icon name='encrypted' />}
-						onPress={() =>
-							this.onPressTouchable({
-								route: 'E2EEToggleRoomView',
-								params: {
-									rid: room.rid
-								}
-							})
-						}
-						disabled={!hasPermission}
-						showActionIndicator
-					/>
-					<List.Separator />
-				</List.Section>
-			);
-		}
-		return null;
-	};
-
-	renderLastSection = () => {
-		const { room, joined, loading } = this.state;
-		const { theme } = this.props;
-		const { t, blocker } = room;
-
-		if (!joined || t === 'l') {
-			return null;
-		}
-
-		if (t === 'd' && !isGroupChat(room)) {
-			return (
-				<>
-					<List.Section>
-						<List.Separator />
-						<List.Item
-							title={`${blocker ? 'Unblock' : 'Block'}`}
-							onPress={() =>
-								this.onPressTouchable({
-									event: this.toggleBlockUser
-								})
-							}
-							testID='room-actions-block-user'
-							left={() => <List.Icon name='ignore' />}
-						/>
-						<List.Separator />
-					</List.Section>
-					<List.Section>
-						<List.Separator />
-						<List.Item
-							title={'Report'}
-							onPress={() =>
-								this.onPressTouchable({
-									event: this.handleReportUser
-								})
-							}
-							testID='room-actions-block-user'
-							left={() => <List.Icon name='warning' color={themes[theme].buttonBackgroundDangerDefault} />}
-							showActionIndicator
-							color={themes[theme].buttonBackgroundDangerDefault}
-						/>
-						<List.Separator />
-					</List.Section>
-				</>
-			);
-		}
-
-		if (t === 'p' || t === 'c') {
-			return (
-				<List.Section>
-					<List.Separator />
-					<List.Item
-						disabled={loading}
-						title='Leave'
-						onPress={() =>
-							this.onPressTouchable({
-								event: room.teamMain ? this.leaveTeam : this.leaveChannel
-							})
-						}
-						testID='room-actions-leave-channel'
-						left={() => <List.Icon name='logout' color={themes[theme].buttonBackgroundDangerDefault} />}
-						showActionIndicator
-						color={themes[theme].buttonBackgroundDangerDefault}
-					/>
-					<List.Separator />
-				</List.Section>
-			);
-		}
-
-		return null;
-	};
-
-	teamChannelActions = (t: string, room: ISubscription) => {
-		const { canEdit, canCreateTeam, canAddChannelToTeam, hasE2EEWarning } = this.state;
-		const canConvertToTeam = canEdit && canCreateTeam && !room.teamMain;
-		const canMoveToTeam = canEdit && canAddChannelToTeam && !room.teamId;
-
-		return (
-			<>
-				{['c', 'p'].includes(t) && canConvertToTeam ? (
-					<>
-						<List.Item
-							title='Convert_to_Team'
-							onPress={() =>
-								this.onPressTouchable({
-									event: this.convertToTeam
-								})
-							}
-							testID='room-actions-convert-to-team'
-							left={() => <List.Icon name='teams' />}
-							showActionIndicator
-							disabled={hasE2EEWarning}
-						/>
-						<List.Separator />
-					</>
-				) : null}
-
-				{['c', 'p'].includes(t) && canMoveToTeam ? (
-					<>
-						<List.Item
-							title='Move_to_Team'
-							onPress={() =>
-								this.onPressTouchable({
-									event: this.moveToTeam
-								})
-							}
-							testID='room-actions-move-to-team'
-							left={() => <List.Icon name='channel-move-to-team' />}
-							showActionIndicator
-							disabled={hasE2EEWarning}
-						/>
-						<List.Separator />
-					</>
-				) : null}
-			</>
-		);
-	};
-
-	teamToChannelActions = (t: string, room: ISubscription) => {
-		const { canEdit, canConvertTeam, loading, hasE2EEWarning } = this.state;
-		const canConvertTeamToChannel = canEdit && canConvertTeam && !!room?.teamMain;
-
-		return (
-			<>
-				{['c', 'p'].includes(t) && canConvertTeamToChannel ? (
-					<>
-						<List.Item
-							title='Convert_to_Channel'
-							disabled={loading || hasE2EEWarning}
-							onPress={() =>
-								this.onPressTouchable({
-									event: this.convertTeamToChannel
-								})
-							}
-							left={() => <List.Icon name='channel-public' />}
-							showActionIndicator
-						/>
-						<List.Separator />
-					</>
-				) : null}
-			</>
-		);
-	};
-
-	renderOmnichannelSection = () => {
-		const { room } = this.state;
-		const { rid, t } = room;
-		const { theme } = this.props;
-
-		if (t !== 'l' || this.isOmnichannelPreview) {
-			return null;
-		}
-
-		return (
-			<List.Section>
-				{this.omnichannelPermissions?.canForwardGuest ? (
-					<>
-						<List.Item
-							title='Forward'
-							onPress={() =>
-								this.onPressTouchable({
-									route: 'ForwardLivechatView',
-									params: { rid }
-								})
-							}
-							left={() => <List.Icon name='chat-forward' color={themes[theme].fontTitlesLabels} />}
-							showActionIndicator
-						/>
-						<List.Separator />
-					</>
-				) : null}
-
-				{this.omnichannelPermissions?.canPlaceLivechatOnHold ? (
-					<>
-						<List.Item
-							title='Place_chat_on_hold'
-							onPress={() =>
-								this.onPressTouchable({
-									event: this.placeOnHoldLivechat
-								})
-							}
-							left={() => <List.Icon name='pause' color={themes[theme].fontTitlesLabels} />}
-							showActionIndicator
-						/>
-						<List.Separator />
-					</>
-				) : null}
-
-				{this.omnichannelPermissions?.canReturnQueue ? (
-					<>
-						<List.Item
-							title='Return_to_waiting_line'
-							onPress={() =>
-								this.onPressTouchable({
-									event: this.handleReturnLivechat
-								})
-							}
-							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].fontTitlesLabels} />}
-							showActionIndicator
-						/>
-						<List.Separator />
-					</>
-				) : null}
-
-				<>
-					<List.Item
-						title='Close'
-						color={themes[theme].buttonBackgroundDangerDefault}
-						onPress={() =>
-							this.onPressTouchable({
-								event: this.closeLivechat
-							})
-						}
-						left={() => <List.Icon name='chat-close' color={themes[theme].buttonBackgroundDangerDefault} />}
-						showActionIndicator
-					/>
-					<List.Separator />
-				</>
-			</List.Section>
-		);
-	};
-
 	render() {
 		const { room, membersCount, canViewMembers, joined, canAutoTranslate, hasE2EEWarning } = this.state;
 		const { isMasterDetail, navigation } = this.props;
@@ -1087,9 +759,16 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return (
 			<SafeAreaView testID='room-actions-view'>
 				<List.Container testID='room-actions-scrollview'>
-					{this.renderRoomInfo()}
+					<RoomInfoSection
+						room={room}
+						membersCount={membersCount}
+						canViewMembers={canViewMembers}
+						joined={joined}
+						navigation={navigation}
+						isGroupChatHandler={isGroupChatHandler}
+					/>
 					<CallSection rid={rid} disabled={hasE2EEWarning} />
-					{this.renderE2EEncryption()}
+					<E2EEncryptionSection room={room} canToggleEncryption={this.state.canToggleEncryption} canEdit={this.state.canEdit} />
 					<List.Section>
 						<List.Separator />
 
@@ -1299,9 +978,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								<List.Separator />
 							</>
 						) : null}
-
-						{this.teamChannelActions(t, room)}
-						{this.teamToChannelActions(t, room)}
 					</List.Section>
 					{this.renderOmnichannelSection()}
 					{this.renderLastSection()}
