@@ -1,22 +1,22 @@
 import React, { useContext } from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { IUserMessage } from '../../../../definitions';
-import { IAttachment } from '../../../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { type IUserMessage } from '../../../../definitions';
+import { type IAttachment } from '../../../../definitions/IAttachment';
+import { type TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import I18n from '../../../../i18n';
 import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { TIconsName } from '../../../CustomIcon';
+import { type TIconsName } from '../../../CustomIcon';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import BlurComponent from '../OverlayComponent';
-import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
+import { type TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
@@ -39,8 +39,6 @@ interface IMessageVideo {
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
 	author?: IUserMessage;
-	style?: StyleProp<TextStyle>[];
-	isReply?: boolean;
 	msg?: string;
 }
 
@@ -72,15 +70,9 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 	);
 };
 
-const Video = ({
-	file,
-	showAttachment,
-	getCustomEmoji,
-	author,
-	style,
-	isReply,
-	msg
-}: IMessageVideo): React.ReactElement | null => {
+const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVideo): React.ReactElement | null => {
+	'use memo';
+
 	const { user } = useContext(MessageContext);
 	const { colors } = useTheme();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
@@ -109,12 +101,12 @@ const Video = ({
 	};
 
 	return (
-		<>
-			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} />
+		<View style={{ gap: 4 }}>
+			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
 			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
 			</Touchable>
-		</>
+		</View>
 	);
 };
 

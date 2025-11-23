@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { LayoutChangeEvent, useWindowDimensions, View } from 'react-native';
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { type LayoutChangeEvent, useWindowDimensions, View } from 'react-native';
+import { type NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 import HeaderTitle from './components/HeaderTitle';
 import HeaderContainer from './components/HeaderContainer';
 import { isAndroid } from '../../lib/methods/helpers';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { styles } from './styles';
 import { HeaderBackButton } from './components/HeaderBackButton';
 
 interface IHeader extends NativeStackHeaderProps {}
 
 const Header = ({ options, navigation, route }: IHeader) => {
+	'use memo';
+
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -26,7 +28,8 @@ const Header = ({ options, navigation, route }: IHeader) => {
 		route.name === 'RoomsListView' ||
 		route.name === 'ShareListView' ||
 		route.name === 'ShareView' ||
-		route.name === 'AttachmentView';
+		route.name === 'AttachmentView' ||
+		route.name === 'DrawerNavigator';
 
 	const handleOnLayout = ({
 		nativeEvent: {

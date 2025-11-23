@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, ListRenderItem, useWindowDimensions } from 'react-native';
+import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { FlatList, type ListRenderItem, useWindowDimensions } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
@@ -9,15 +9,14 @@ import RoomItem from '../../../containers/RoomItem';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import SafeAreaView from '../../../containers/SafeAreaView';
-import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
-import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
-import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants';
-import { ChatsStackParamList } from '../../../stacks/types';
-import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { type IOmnichannelRoom, type IApplicationState } from '../../../definitions';
+import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants/tablet';
+import { type ChatsStackParamList } from '../../../stacks/types';
+import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
@@ -110,7 +109,6 @@ const QueueListView = React.memo(() => {
 
 	return (
 		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
-			<StatusBar />
 			<FlatList
 				ref={getScrollRef}
 				data={queued}

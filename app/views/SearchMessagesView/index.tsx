@@ -1,6 +1,6 @@
 import React from 'react';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
@@ -12,34 +12,34 @@ import Markdown from '../../containers/markdown';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
-import { textInputDebounceTime, themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { themes } from '../../lib/constants/colors';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
+import getRoomInfo, { type IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import styles from './styles';
-import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
+import { type InsideStackParamList, type ChatsStackParamList } from '../../stacks/types';
 import { compareServerVersion, debounce, isIOS } from '../../lib/methods/helpers';
 import {
-	IMessageFromServer,
-	IUser,
-	TMessageModel,
-	IUrl,
-	IAttachment,
-	ISubscription,
+	type IMessageFromServer,
+	type IUser,
+	type TMessageModel,
+	type IUrl,
+	type IAttachment,
+	type ISubscription,
 	SubscriptionType,
-	TSubscriptionModel,
-	TGetCustomEmoji,
-	ICustomEmoji
+	type TSubscriptionModel,
+	type TGetCustomEmoji,
+	type ICustomEmoji
 } from '../../definitions';
-import { Services } from '../../lib/services';
-import { TNavigation } from '../../stacks/stackType';
+import { searchMessages } from '../../lib/services/restApi';
+import { type TNavigation } from '../../stacks/stackType';
 import Navigation from '../../lib/navigation/appNavigation';
 
 const QUERY_SIZE = 50;
@@ -159,7 +159,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await Services.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
+		const result = await searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
 			const urlRenderMessages = result.messages?.map(message => {
 				if (message.urls && message.urls.length > 0) {
@@ -331,7 +331,6 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		const { theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='search-messages-view'>
-				<StatusBar />
 				<View style={styles.searchContainer}>
 					<FormTextInput
 						autoFocus

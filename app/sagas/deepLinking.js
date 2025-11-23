@@ -2,15 +2,16 @@ import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effe
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
-import { appInit, appStart } from '../actions/app';
+import { appInit, appStart, appReady } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import { loginRequest } from '../actions/login';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
-import { canOpenRoom, getServerInfo } from '../lib/methods';
+import { canOpenRoom } from '../lib/methods/canOpenRoom';
+import { getServerInfo } from '../lib/methods/getServerInfo';
 import { emitter, getUidDirectMessage } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
@@ -18,7 +19,8 @@ import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import log from '../lib/methods/helpers/log';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
-import { Services } from '../lib/services';
+import { loginOAuthOrSso } from '../lib/services/connect';
+import { notifyUser } from '../lib/services/restApi';
 import sdk from '../lib/services/sdk';
 import Navigation from '../lib/navigation/appNavigation';
 
@@ -44,7 +46,7 @@ const waitForNavigation = () => {
 	if (Navigation.navigationRef.current) {
 		return Promise.resolve();
 	}
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		const listener = () => {
 			emitter.off('navigationReady', listener);
 			resolve();
@@ -96,7 +98,7 @@ const fallbackNavigation = function* fallbackNavigation() {
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
 	try {
-		yield Services.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
 	} catch (e) {
 		log(e);
 	}
@@ -204,6 +206,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield take(types.SERVER.SELECT_SUCCESS);
 			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
+			yield put(appReady({}));
 			yield navigate({ params });
 		} else {
 			yield handleInviteLink({ params, requireLogin: true });
@@ -223,13 +226,13 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 			const uid = params.caller._id;
 			const { rid, callId, event } = params;
 			if (event === 'accept') {
-				yield call(Services.notifyUser, `${uid}/video-conference`, {
+				yield call(notifyUser, `${uid}/video-conference`, {
 					action: 'accepted',
 					params: { uid, rid, callId }
 				});
 				yield videoConfJoin(callId, true, false, true);
 			} else if (event === 'decline') {
-				yield call(Services.notifyUser, `${uid}/video-conference`, {
+				yield call(notifyUser, `${uid}/video-conference`, {
 					action: 'rejected',
 					params: { uid, rid, callId }
 				});
@@ -271,7 +274,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			return;
 		}
 		// if deep link is from a different server
-		const result = yield Services.getServerInfo(host);
+		const result = yield getServerInfo(host);
 		if (!result.success) {
 			// Fallback to prevent the app from being stuck on splash screen
 			yield fallbackNavigation();

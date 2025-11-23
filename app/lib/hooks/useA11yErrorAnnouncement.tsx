@@ -1,29 +1,39 @@
 import { useRef } from 'react';
 import { AccessibilityInfo } from 'react-native';
+import { type FieldErrorsImpl } from 'react-hook-form';
 
 import { useDebounce } from '../methods/helpers';
-import { textInputDebounceTime } from '../constants';
+import { accessibilityErrorAnnouncementDebounceTime } from '../constants/debounceConfig';
+
+type TInputValues = {
+	[key: string]: any;
+};
 
 interface IUseA11yErrorAnnouncement {
-	error: string | undefined;
+	errors: FieldErrorsImpl<any>;
+	inputValues: TInputValues;
 }
 
-const useA11yErrorAnnouncement = ({ error }: IUseA11yErrorAnnouncement) => {
-	const previousMessage = useRef<string>(error);
-	const announced = useRef<boolean>(false);
-	const shouldAnnounce = error && error !== previousMessage.current && !announced.current;
+const useA11yErrorAnnouncement = ({ errors, inputValues }: IUseA11yErrorAnnouncement) => {
+	const previousInputValues = useRef<TInputValues>(inputValues);
 
 	const handleA11yAnnouncement = useDebounce(() => {
-		if (shouldAnnounce) {
-			const message = (error || '').trim();
-			if (message) {
-				AccessibilityInfo.announceForAccessibility(message);
-				announced.current = true;
-			}
-		} else if (!error) {
-			announced.current = false;
+		const hasError = Object.keys(errors).length;
+
+		if (!hasError) {
+			previousInputValues.current = inputValues;
+			return;
 		}
-	}, textInputDebounceTime);
+
+		Object.entries(errors).forEach(([fieldName, error]: [string, any]) => {
+			const message = error?.message?.trim();
+			if (message && inputValues[fieldName] !== previousInputValues.current[fieldName]) {
+				AccessibilityInfo.announceForAccessibility(message);
+			}
+		});
+
+		previousInputValues.current = inputValues;
+	}, accessibilityErrorAnnouncementDebounceTime);
 
 	handleA11yAnnouncement();
 };

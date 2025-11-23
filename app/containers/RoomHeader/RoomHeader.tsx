@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -7,10 +7,11 @@ import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { type TUserStatus, type IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
+import { type IUsersTyping } from '../../reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 type TRoomHeaderSubTitle = {
-	usersTyping: [];
+	usersTyping: IUsersTyping;
 	subtitle?: string;
 	renderFunc?: () => React.ReactElement;
 	scale: number;
@@ -71,7 +72,7 @@ interface IRoomHeader {
 	tmid?: string;
 	teamMain?: boolean;
 	status?: TUserStatus;
-	usersTyping: [];
+	usersTyping: IUsersTyping;
 	isGroupChat?: boolean;
 	parentTitle?: string;
 	onPress: Function;
@@ -189,7 +190,7 @@ const Header = React.memo(
 			);
 		}
 
-		const handleOnPress = useCallback(() => onPress(), []);
+		const handleOnPress = () => onPress();
 
 		return (
 			<View

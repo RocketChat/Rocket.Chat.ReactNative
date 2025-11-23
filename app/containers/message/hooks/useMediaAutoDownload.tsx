@@ -1,17 +1,17 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 
-import { IAttachment, IUserMessage } from '../../../definitions';
-import { isImageBase64 } from '../../../lib/methods';
+import { type IAttachment, type IUserMessage } from '../../../definitions';
+import { isImageBase64 } from '../../../lib/methods/isImageBase64';
 import { fetchAutoDownloadEnabled } from '../../../lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
-	MediaTypes,
-	TDownloadState
+	type MediaTypes,
+	type TDownloadState
 } from '../../../lib/methods/handleMediaDownload';
-import { emitter } from '../../../lib/methods/helpers';
+import { emitter } from '../../../lib/methods/helpers/emitter';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
 import MessageContext from '../Context';
 import { useFile } from './useFile';
@@ -35,6 +35,19 @@ const getFileProperty = (file: IAttachment, fileType: MediaTypes, property: 'url
 	}
 };
 
+const getOriginalURL = (file: IAttachment): string | null => {
+	if (file.image_url) {
+		return file.image_url;
+	}
+	if (file.video_url) {
+		return file.video_url;
+	}
+	if (file.audio_url) {
+		return file.audio_url;
+	}
+	return null;
+};
+
 export const useMediaAutoDownload = ({
 	file,
 	author,
@@ -44,11 +57,20 @@ export const useMediaAutoDownload = ({
 	author?: IUserMessage;
 	showAttachment?: Function;
 }) => {
+	'use memo';
+
 	const fileType = getFileType(file) ?? 'image';
 	const { id, baseUrl, user } = useContext(MessageContext);
 	const [status, setStatus] = useState<TDownloadState>('to-download');
 	const [currentFile, setCurrentFile] = useFile(file, id);
-	const url = formatAttachmentUrl(file.title_link || getFileProperty(currentFile, fileType, 'url'), user.id, user.token, baseUrl);
+	const originalUrl = getOriginalURL(file);
+	const url = formatAttachmentUrl(
+		file.title_link || getFileProperty(currentFile, fileType, 'url'),
+		user.id,
+		user.token,
+		baseUrl,
+		originalUrl
+	);
 	const isEncrypted = currentFile.e2e === 'pending';
 
 	useEffect(() => {

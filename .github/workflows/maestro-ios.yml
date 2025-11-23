@@ -1,0 +1,123 @@
+name: Maestro Tests on iOS
+
+on:
+  workflow_call:
+    inputs:
+      shard:
+        required: true
+        type: string
+
+jobs:
+  ios-test:
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download App
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-simulator-app
+          path: ios-simulator-app
+
+      - name: Setup E2E Account
+        uses: ./.github/actions/e2e-account
+        with:
+          E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
+
+      - name: Install Maestro
+        run: |
+          brew tap facebook/fb
+          brew install facebook/fb/idb-companion
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Configure Simulator
+        run: |
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+          defaults write com.apple.iphonesimulator ShowSingleTouches 1
+          defaults write com.apple.iphonesimulator SlowAnimations -bool false
+          defaults write com.apple.iphonesimulator ShowDeviceBezels -bool false
+          defaults write com.apple.iphonesimulator DisableShadows -bool true
+
+      - name: Boot Simulator
+        timeout-minutes: 30
+        run: |
+          SIM_NAME="iPhone 16 Pro Max"
+          TIMEOUT=300  # 5 minutes in seconds
+          INTERVAL=5   # Check every 5 seconds
+    
+          xcrun simctl boot "$SIM_NAME" || true
+        
+          ELAPSED=0
+          while true; do
+            BOOTED=$(xcrun simctl list devices | grep "$SIM_NAME (" | grep "(Booted)")
+            if [ -n "$BOOTED" ]; then
+                echo "$SIM_NAME is booted"
+                break
+            fi
+        
+            if [ $ELAPSED -ge $TIMEOUT ]; then
+                echo "Simulator did not boot within 5 minutes. Retrying..."
+                xcrun simctl shutdown "$SIM_NAME"
+                xcrun simctl boot "$SIM_NAME"
+                ELAPSED=0
+            fi
+        
+            sleep $INTERVAL
+            ELAPSED=$((ELAPSED + INTERVAL))
+            done
+        
+          xcrun simctl list devices | grep Booted
+
+      - name: Get Simulator UDID 
+        id: booted-sim
+        run: |
+          UDID=$(xcrun simctl list devices | grep "iPhone 16 Pro Max (" | grep "(Booted)" | grep -oE '[A-F0-9-]{36}' | head -n1)
+          echo "UDID=$UDID"
+          echo "UDID=$UDID" >> $GITHUB_ENV
+
+      - name: Install App
+        run: |
+          xcrun simctl install $UDID "ios-simulator-app"
+
+      - name: Run Tests
+        id: maestro-tests
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          command: |
+            SHARD=${{ inputs.shard }}
+            echo "Running shard: $SHARD"
+            export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
+
+            maestro test .maestro \
+              --exclude-tags=util \
+              --include-tags=test-$SHARD \
+              --exclude-tags=android-only \
+              --format junit \
+              --output maestro-report.xml
+
+      - name: Maestro Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Report - Shard ${{ inputs.shard }}
+          path: maestro-report.xml
+          retention-days: 28
+
+      - name: iOS Maestro Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS Maestro Logs - Shard ${{ inputs.shard }}
+          path: ~/.maestro/tests/
+          retention-days: 28

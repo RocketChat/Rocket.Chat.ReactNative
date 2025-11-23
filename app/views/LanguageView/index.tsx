@@ -3,22 +3,21 @@ import { FlatList } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { appStart } from '../../actions/app';
 import { setUser } from '../../actions/login';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { RootEnum } from '../../definitions';
 import I18n, { isRTL, LANGUAGES } from '../../i18n';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { SettingsStackParamList } from '../../stacks/types';
+import { type SettingsStackParamList } from '../../stacks/types';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
+import { saveUserPreferences } from '../../lib/services/restApi';
 import LanguageItem from './LanguageItem';
 
 const LanguageView = () => {
@@ -67,7 +66,7 @@ const LanguageView = () => {
 		}
 
 		try {
-			await Services.saveUserPreferences(params);
+			await saveUserPreferences(params);
 			dispatch(setUser({ language: params.language }));
 
 			const serversDB = database.servers;
@@ -91,7 +90,6 @@ const LanguageView = () => {
 
 	return (
 		<SafeAreaView testID='language-view'>
-			<StatusBar />
 			<FlatList
 				data={LANGUAGES}
 				keyExtractor={item => item.value}

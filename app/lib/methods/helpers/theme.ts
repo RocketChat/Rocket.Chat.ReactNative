@@ -2,10 +2,11 @@ import { Appearance } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as SystemUI from 'expo-system-ui';
 
-import { IThemePreference, TThemeMode } from '../../../definitions/ITheme';
-import { themes, THEME_PREFERENCES_KEY } from '../../constants';
+import { type IThemePreference, type TThemeMode } from '../../../definitions/ITheme';
+import { themes } from '../../constants/colors';
+import { THEME_PREFERENCES_KEY } from '../../constants/keys';
 import UserPreferences from '../userPreferences';
-import { TSupportedThemes } from '../../../theme';
+import { type TSupportedThemes } from '../../../theme';
 import { isAndroid } from './deviceInfo';
 
 let themeListener: { remove: () => void } | null;
@@ -57,7 +58,7 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 			// Do nothing
 		}
 	}
-	SystemUI.setBackgroundColorAsync(themes[theme].surfaceLight);
+	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
 };
 
 export const unsubscribeTheme = () => {

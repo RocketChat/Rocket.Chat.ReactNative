@@ -1,20 +1,19 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
-import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
-import { getPermalinkMessage } from '../../lib/methods';
+import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import SelectPersonOrChannel from './SelectPersonOrChannel';
-import { useAppSelector } from '../../lib/hooks';
-import { NewMessageStackParamList } from '../../stacks/types';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { type NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
 import MessagePreview from '../../containers/message/Preview';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -76,7 +75,6 @@ const ForwardMessageView = () => {
 
 	return (
 		<KeyboardView backgroundColor={colors.surfaceHover}>
-			<StatusBar />
 			<SafeAreaView testID='forward-message-view' style={styles.container}>
 				<ScrollView {...scrollPersistTaps}>
 					<SelectPersonOrChannel

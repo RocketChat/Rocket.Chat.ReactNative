@@ -1,10 +1,22 @@
 import log from './helpers/log';
-import { TMessageModel, TSubscriptionModel } from '../../definitions';
+import { type TMessageModel, type TSubscriptionModel, type SubscriptionType } from '../../definitions';
 import { store } from '../store/auxStore';
 import { isGroupChat } from './helpers';
 import { getRoom } from './getRoom';
 
 type TRoomType = 'p' | 'c' | 'd';
+
+interface ISubscription {
+	t: SubscriptionType;
+	name: string;
+	rid: string;
+}
+
+const roomTypes = {
+	p: 'group',
+	c: 'channel',
+	d: 'direct'
+};
 
 export async function getPermalinkMessage(message: TMessageModel): Promise<string | null> {
 	if (!message.subscription) return null;
@@ -16,24 +28,20 @@ export async function getPermalinkMessage(message: TMessageModel): Promise<strin
 		return null;
 	}
 	const { server } = store.getState().server;
-	const roomType = {
-		p: 'group',
-		c: 'channel',
-		d: 'direct'
-	}[room.t as TRoomType];
-	return `${server}/${roomType}/${isGroupChat(room) ? room.rid : room.name}?msg=${message.id}`;
+	return buildPermalinkMessage(server, isGroupChat(room), room, message.id);
 }
 
 export function getPermalinkChannel(channel: TSubscriptionModel): string {
 	const { server } = store.getState().server;
-	const roomType = {
-		p: 'group',
-		c: 'channel',
-		d: 'direct'
-	};
+	return buildPermalinkChannel(server, channel);
+}
 
-	// @ts-ignore - wrong SubscriptionType
-	const room = roomType[channel.t];
+export function buildPermalinkMessage(server: string, isGoupChat: boolean, room: ISubscription, messageId: string) {
+	const roomType = roomTypes[room.t as TRoomType];
+	return `${server}/${roomType}/${isGoupChat ? room.rid : encodeURIComponent(room.name)}?msg=${messageId}`;
+}
 
-	return `${server}/${room}/${channel.name}`;
+export function buildPermalinkChannel(server: string, channel: ISubscription) {
+	const roomType = roomTypes[channel.t as TRoomType];
+	return `${server}/${roomType}/${encodeURIComponent(channel.name)}`;
 }

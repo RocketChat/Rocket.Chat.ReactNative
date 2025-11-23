@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
-import { IAutocompleteEmoji, IAutocompleteUserRoom, TAutocompleteItem, TAutocompleteType } from '../interfaces';
-import { search } from '../../../lib/methods';
+import {
+	type IAutocompleteEmoji,
+	type IAutocompleteUserRoom,
+	type TAutocompleteItem,
+	type TAutocompleteType
+} from '../interfaces';
+import { search } from '../../../lib/methods/search';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import database from '../../../lib/database';
-import { emojis } from '../../../lib/constants';
-import { ICustomEmoji } from '../../../definitions';
-import { Services } from '../../../lib/services';
+import { emojis } from '../../../lib/constants/emojis';
+import { type ICustomEmoji } from '../../../definitions';
+import { getCommandPreview, getListCannedResponse } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import I18n from '../../../i18n';
 import { NO_CANNED_RESPONSES } from '../constants';
@@ -153,7 +158,7 @@ export const useAutocomplete = ({
 						updateAutocompleteVisible(false);
 						return;
 					}
-					const response = await Services.getCommandPreview(text, rid, commandParams);
+					const response = await getCommandPreview(text, rid, commandParams);
 					if (response.success) {
 						const previewItems = (response.preview?.items || []).map(item => ({
 							id: item.id,
@@ -170,7 +175,7 @@ export const useAutocomplete = ({
 					}
 				}
 				if (type === '!') {
-					const res = await Services.getListCannedResponse({ text });
+					const res = await getListCannedResponse({ text });
 					if (res.success) {
 						if (res.cannedResponses.length === 0) {
 							setItems([

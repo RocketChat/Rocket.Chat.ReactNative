@@ -1,5 +1,5 @@
-import React, { ReactElement, useRef, useImperativeHandle } from 'react';
-import { AccessibilityInfo, findNodeHandle, LayoutChangeEvent } from 'react-native';
+import React, { type ReactElement, useRef, useImperativeHandle } from 'react';
+import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -8,13 +8,13 @@ import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import { MessageInnerContext, useAlsoSendThreadToChannel, useMessageComposerApi, useRecordingAudio } from './context';
-import { IComposerInput } from './interfaces';
+import { type IComposerInput } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { IEmoji } from '../../definitions';
+import { type IEmoji } from '../../definitions';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { generateTriggerId } from '../../lib/methods';
-import { Services } from '../../lib/services';
+import { generateTriggerId } from '../../lib/methods/actions';
+import { runSlashCommand } from '../../lib/services/restApi';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
@@ -22,6 +22,7 @@ import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboard
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
+import { useTheme } from '../../theme';
 
 export const MessageComposer = ({
 	forwardedRef,
@@ -30,6 +31,8 @@ export const MessageComposer = ({
 	forwardedRef: any;
 	children?: ReactElement;
 }): ReactElement | null => {
+	'use memo';
+
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
@@ -47,6 +50,7 @@ export const MessageComposer = ({
 	const { setAlsoSendThreadToChannel, setAutocompleteParams } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const { colors } = useTheme();
 
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction,
@@ -79,6 +83,9 @@ export const MessageComposer = ({
 			setAlsoSendThreadToChannel(false);
 		}
 
+		// Hide autocomplete
+		setAutocompleteParams({ text: '', type: null, params: '' });
+
 		if (sharing) {
 			onSendMessage?.();
 			return;
@@ -108,16 +115,13 @@ export const MessageComposer = ({
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
+					await runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
 				} catch (e) {
 					log(e);
 				}
 				return;
 			}
 		}
-
-		// Hide autocomplete
-		setAutocompleteParams({ text: '', type: null, params: '' });
 
 		// Text message
 		onSendMessage?.(textFromInput, alsoSendThreadToChannel);
@@ -196,7 +200,7 @@ export const MessageComposer = ({
 				onLayout={handleLayout}>
 				{children}
 			</MessageComposerContent>
-			<Animated.View style={emojiKeyboardStyle}>
+			<Animated.View style={[emojiKeyboardStyle, { backgroundColor: colors.surfaceLight }]}>
 				{showEmojiKeyboard && !showEmojiSearchbar ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
 			</Animated.View>
 			<Autocomplete
