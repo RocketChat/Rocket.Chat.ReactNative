@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, StyleProp, TextStyle, useWindowDimensions } from 'react-native';
+import { Text, useWindowDimensions } from 'react-native';
+import type { StyleProp, TextStyle } from 'react-native';
 
 import { useTheme } from '../../theme';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
