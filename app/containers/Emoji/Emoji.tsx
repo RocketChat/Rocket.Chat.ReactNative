@@ -25,15 +25,17 @@ const Emoji = ({ literal, isBigEmoji, style, isAvatar, getCustomEmoji, customEmo
     const { fontScaleLimited } = useResponsiveLayout();
     const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
 
+    // Calculate emoji sizes once to avoid duplication
+    const customEmojiSize = {
+        width: 15 * fontScale,
+        height: 15 * fontScale
+    };
+    const customEmojiBigSize = {
+        width: 30 * fontScale,
+        height: 30 * fontScale
+    };
+
     if (customEmoji) {
-        const customEmojiSize = {
-            width: 15 * fontScale,
-            height: 15 * fontScale
-        };
-        const customEmojiBigSize = {
-            width: 30 * fontScale,
-            height: 30 * fontScale
-        };
         return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={customEmoji} />;
     }
 
@@ -46,27 +48,13 @@ const Emoji = ({ literal, isBigEmoji, style, isAvatar, getCustomEmoji, customEmo
     const foundCustomEmoji = getCustomEmoji?.(emojiName);
 
     if (foundCustomEmoji) {
-        const customEmojiSize = {
-            width: 15 * fontScale,
-            height: 15 * fontScale
-        };
-        const customEmojiBigSize = {
-            width: 30 * fontScale,
-            height: 30 * fontScale
-        };
         return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={foundCustomEmoji} />;
     }
-
-    // Handle ASCII emojis if needed, though usually handled by parser or formatShortnameToUnicode if configured
-    // But here we follow the logic from markdown/components/emoji/Emoji.tsx
-    // logic for ASCII is a bit specific to the block structure there, but here we deal with string literal.
-    // If formatShortnameToUnicode returns the same string, it might be an ASCII or unknown.
 
     const avatarStyle = {
         fontSize: 30 * fontScaleLimited,
         lineHeight: 30 * fontScaleLimited,
-        textAlign: 'center',
-        textAlignVertical: 'center'
+        textAlign: 'center' as const
     };
 
     return (
