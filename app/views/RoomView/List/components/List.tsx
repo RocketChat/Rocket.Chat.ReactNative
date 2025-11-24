@@ -1,16 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
+import { type NativeScrollEvent, type NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
-import { IListProps } from '../definitions';
-import { isIOS } from '../../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
-import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
+import NavBottomFAB from './NavBottomFAB';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
-import { SCROLL_LIMIT } from '../constants';
-import NavBottomFAB from './NavBottomFAB';
 
 const styles = StyleSheet.create({
 	list: {
@@ -47,18 +42,9 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		}
 	};
 
-	useEffect(() => {
-		if (!userScrolled) {
-			setTimeout(() => {
-				listRef?.current.scrollToEnd();
-			}, 200);
-		}
-	}, [props.data?.length]);
-
 	return (
 		<View style={styles.list}>
 			<FlashList
-				onMomentumScrollBegin={() => setUserScrolled(true)}
 				ref={listRef}
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
