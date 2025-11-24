@@ -30,17 +30,22 @@ const ensureServersInDatabase = async (): Promise<void> => {
 		return;
 	}
 
-	await serversDB.write(async () => {
-		await Promise.all(
-			missingServers.map(url =>
-				serverCollection.create(record => {
-					record._raw = sanitizedRaw({ id: url }, serverCollection.schema);
-					record.name = url;
-				})
-			)
-		);
-	});
-	userPreferences.setBool('WORKSPACE_MIGRATION_COMPLETED', true);
+	try {
+		await serversDB.write(async () => {
+			await Promise.all(
+				missingServers.map(url =>
+					serverCollection.create(record => {
+						record._raw = sanitizedRaw({ id: url }, serverCollection.schema);
+						record.name = url;
+					})
+				)
+			);
+		});
+		userPreferences.setBool('WORKSPACE_MIGRATION_COMPLETED', true);
+	} catch (error) {
+		console.error('Failed to ensure servers in database:', error);
+		throw error;
+	}
 };
 
 export default ensureServersInDatabase;
