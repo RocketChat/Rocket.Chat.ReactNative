@@ -17,7 +17,6 @@ export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newS
 		const oldData = await MMKVReader.readAndDecryptMMKV(oldInstanceId);
 
 		const allKeys = Object.keys(oldData);
-		console.log(`Found ${allKeys.length} entries in old storage`);
 
 		if (allKeys.length === 0) {
 			console.log('No data to migrate');
@@ -35,7 +34,6 @@ export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newS
 
 		// Step 3: Migrate data
 		console.log('Step 2: Migrating data to new MMKV...');
-		let migratedCount = 0;
 
 		// Migrate all key-value pairs
 		for (const key of allKeys) {
@@ -45,19 +43,10 @@ export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newS
 				// Determine the type and write appropriately
 				if (typeof value === 'string') {
 					targetStorage.set(key, value);
-					const displayValue = value.length > 50 ? `${value.substring(0, 50)}...` : value;
-					console.log(`✓ String: ${key} = ${displayValue}`);
-					migratedCount++;
 				} else if (typeof value === 'number') {
 					targetStorage.set(key, value);
-					console.log(`✓ Number: ${key} = ${value}`);
-					migratedCount++;
 				} else if (typeof value === 'boolean') {
 					targetStorage.set(key, value);
-					console.log(`✓ Boolean: ${key} = ${value}`);
-					migratedCount++;
-				} else {
-					console.warn(`⚠️  Skipping unknown type for key: ${key} (type: ${typeof value})`);
 				}
 			} catch (error: any) {
 				const errorMsg = `Failed to migrate key "${key}": ${error.message}`;
@@ -67,28 +56,9 @@ export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newS
 		}
 
 		console.log('=== Migration Complete ===');
-		console.log(`Total entries found: ${allKeys.length}`);
-		console.log(`Successfully migrated: ${migratedCount}`);
-		console.log(`Errors: ${errors.length}`);
-
-		return {
-			success: errors.length === 0,
-			keysFound: allKeys.length,
-			keysMigrated: migratedCount,
-			errors,
-			data: oldData
-		};
 	} catch (error: any) {
 		const errorMsg = `Migration failed: ${error.message}`;
 		console.error(errorMsg);
-		errors.push(errorMsg);
-
-		return {
-			success: false,
-			keysFound: 0,
-			keysMigrated: 0,
-			errors
-		};
 	}
 }
 
