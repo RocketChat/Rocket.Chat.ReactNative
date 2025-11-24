@@ -61,7 +61,6 @@ public class Ejson {
                 MMKV.initialize(this.reactContext);
                 SecureStorage secureStorage = new SecureStorage(this.reactContext);
 
-                // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31 
                 String alias = Utils.toHex("com.MMKV.default");
                 
                 String password = secureStorage.getSecureKeyInternal(alias);

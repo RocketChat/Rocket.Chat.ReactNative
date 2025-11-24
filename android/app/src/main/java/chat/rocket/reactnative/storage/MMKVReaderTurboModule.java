@@ -1,5 +1,7 @@
 package chat.rocket.reactnative.storage;
 
+import java.io.File;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
