@@ -70,6 +70,18 @@ public class MMKVReaderTurboModule extends NativeMMKVReaderSpec {
         }
     }
 
+    /**
+     * Reads and decrypts legacy MMKV storage for one-time migration.
+     * 
+     * LIMITATIONS (inherent to MMKV Java API v1.2.10):
+     * - No API to query stored value types before decoding
+     * - Uses sentinel values and heuristics for type detection
+     * - May misdetect: Integer.MIN_VALUE as non-integer, stored 'false' as missing
+     * - These limitations are acceptable for read-only legacy migration
+     * 
+     * @param mmkvId The MMKV instance ID to read
+     * @param promise React Native promise for async result
+     */
     @Override
     public void readAndDecryptMMKV(String mmkvId, Promise promise) {
         try {
@@ -100,32 +112,28 @@ public class MMKVReaderTurboModule extends NativeMMKVReaderSpec {
             
             // Read all key-value pairs using MMKV's native methods
             WritableMap result = Arguments.createMap();
-            int stringCount = 0;
-            int intCount = 0;
-            int boolCount = 0;
             
             for (String key : allKeys) {
                 try {
-                    // Try to read as string first (most common)
-                    String value = mmkv.decodeString(key);
-                    
-                    if (value != null) {
-                        result.putString(key, value);
-                        stringCount++;
-                    } else {
-                        // Try as int
-                        int intValue = mmkv.decodeInt(key, Integer.MIN_VALUE);
-                        if (intValue != Integer.MIN_VALUE) {
-                            result.putInt(key, intValue);
-                            intCount++;
-                        } else {
-                            // Try as boolean
-                            boolean boolValue = mmkv.decodeBool(key, false);
-                            result.putBoolean(key, boolValue);
-                            boolCount++;
-                        }
+                    // Try string first (most common in React Native storage)
+                    String stringValue = mmkv.decodeString(key);
+                    if (stringValue != null) {
+                        result.putString(key, stringValue);
+                        continue;
                     }
+                    
+                    int intValue = mmkv.decodeInt(key, Integer.MIN_VALUE);
+                    if (intValue != Integer.MIN_VALUE) {
+                        result.putInt(key, intValue);
+                        continue;
+                    }
+                    
+                    if (mmkv.containsKey(key)) {
+                        boolean boolValue = mmkv.decodeBool(key, false);
+                        result.putBoolean(key, boolValue);
+                    } 
                 } catch (Exception e) {
+                    android.util.Log.e("MMKVReader", "Error decoding key: " + key, e);
                 }
             }
 

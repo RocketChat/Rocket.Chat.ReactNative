@@ -39,6 +39,11 @@ static NSString *toHex(NSString *str) {
         }
 
         NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
+        if (!groupURL) {
+            [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
+            return;
+        }
+        
         NSString *groupDir = [groupURL path];
         NSString *mmkvPath = [groupDir stringByAppendingPathComponent:@"mmkv"];
 
