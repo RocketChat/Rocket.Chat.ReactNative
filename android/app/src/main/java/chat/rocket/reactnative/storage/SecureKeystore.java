@@ -37,6 +37,7 @@ import javax.security.auth.x500.X500Principal;
 /**
  * SecureKeystore implementation
  * Copied from react-native-mmkv-storage to avoid dependency
+ * Original source: https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/android/src/main/java/com/ammarahmed/mmkv/SecureKeystore.java
  * This manages encryption keys using Android Keystore System
  */
 public class SecureKeystore {

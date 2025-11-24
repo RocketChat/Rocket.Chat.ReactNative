@@ -3,6 +3,7 @@ package chat.rocket.reactnative.storage;
 /**
  * Constants for SecureKeystore
  * Copied from react-native-mmkv-storage to avoid dependency
+ * Original source: https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/android/src/main/java/com/ammarahmed/mmkv/Constants.java
  */
 public class Constants {
 

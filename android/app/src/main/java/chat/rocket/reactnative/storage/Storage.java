@@ -10,6 +10,7 @@ import java.io.IOException;
 /**
  * Storage helper for SecureKeystore
  * Copied from react-native-mmkv-storage to avoid dependency
+ * Original source: https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/android/src/main/java/com/ammarahmed/mmkv/Storage.java
  */
 public final class Storage {
 

@@ -7,13 +7,8 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.Arguments;
 import com.tencent.mmkv.MMKV;
 
-import java.io.File;
+// Reads and decrypts old MMKV storage using Tencent MMKV library
 
-/**
- * MMKVReader TurboModule
- * Reads and decrypts old MMKV storage using Tencent MMKV library
- * Standalone - doesn't depend on react-native-mmkv-storage
- */
 public class MMKVReaderTurboModule extends NativeMMKVReaderSpec {
 
     private ReactApplicationContext reactContext;
@@ -138,9 +133,9 @@ public class MMKVReaderTurboModule extends NativeMMKVReaderSpec {
         }
     }
 
-    /**
-     * Convert string to hexadecimal (same as react-native-mmkv-storage)
-     */
+    
+    // Convert string to hexadecimal (same as react-native-mmkv-storage)
+    
     private String toHex(String arg) {
         try {
             byte[] bytes = arg.getBytes("UTF-8");
