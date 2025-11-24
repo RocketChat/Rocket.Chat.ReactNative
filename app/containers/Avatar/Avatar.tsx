@@ -84,12 +84,14 @@ const Avatar = React.memo(
 
 			image = (
 				<Image
+					key={`${uri}-${avatarETag || ''}`}
 					style={avatarStyle}
 					source={{
 						uri,
 						headers: RocketChatSettings.customHeaders
 					}}
 					priority='high'
+					cachePolicy='memory-disk'
 				/>
 			);
 		}
