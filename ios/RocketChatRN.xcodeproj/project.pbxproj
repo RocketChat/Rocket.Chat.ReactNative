@@ -1865,7 +1865,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
+				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1951,7 +1951,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
+				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1960,8 +1960,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "
-";
+			shellScript = "\n";
 		};
 		84028E94C77DEBDD5200728D /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2691,8 +2690,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
-					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -2768,8 +2766,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
-					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -3294,7 +3291,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -3358,7 +3358,10 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
