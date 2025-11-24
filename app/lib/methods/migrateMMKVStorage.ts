@@ -2,9 +2,11 @@ import { MMKV } from 'react-native-mmkv';
 
 import MMKVReader from '../native/NativeMMKVReader';
 import { isAndroid } from './helpers';
+import userPreferences from './userPreferences';
 
 export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newStorage?: MMKV) {
 	const errors: string[] = [];
+	userPreferences.setBool('WORKSPACE_MIGRATION_COMPLETED', false);
 
 	try {
 		if (!MMKVReader || !isAndroid) {

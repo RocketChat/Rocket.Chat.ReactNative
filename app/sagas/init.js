@@ -24,7 +24,11 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
-		yield call(ensureServersInDatabase);
+		// Only runs after initial migration to avoid data inconsistencies.
+		const migrationCompleted = UserPreferences.getBool('WORKSPACE_MIGRATION_COMPLETED');
+		if (migrationCompleted) {
+			yield call(ensureServersInDatabase);
+		}
 
 		const server = UserPreferences.getString(CURRENT_SERVER);
 		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
