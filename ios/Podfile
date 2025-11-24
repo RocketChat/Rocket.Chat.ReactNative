@@ -37,7 +37,6 @@ $static_framework = [
   'WatermelonDB',
   'simdjson',
   'react-native-mmkv-storage',
-  'react-native-simple-crypto',
   'react-native-notifications'
 ]
 pre_install do |installer|
@@ -76,13 +75,5 @@ post_install do |installer|
     command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
     puts "Stripping bitcode: #{command}"
     system(command)
-  end
-
-  framework_paths = [
-    "ios/Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework/ios-arm64_armv7/OpenSSL.framework/OpenSSL"
-  ]
-
-  framework_paths.each do |framework_relative_path|
-    strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
   end
 end

@@ -42,6 +42,9 @@ import chat.rocket.reactnative.R;
 public class CustomPushNotification extends PushNotification {
     public static ReactApplicationContext reactApplicationContext;
     final NotificationManager notificationManager;
+    
+    // Create a single Gson instance
+    private static final Gson gson = new Gson();
 
     public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
         super(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper);
@@ -63,9 +66,9 @@ public class CustomPushNotification extends PushNotification {
     @Override
     public void onReceived() throws InvalidNotificationException {
         Bundle received = mNotificationProps.asBundle();
-        Ejson receivedEjson = new Gson().fromJson(received.getString("ejson", "{}"), Ejson.class);
+        Ejson receivedEjson = safeFromJson(received.getString("ejson", "{}"), Ejson.class);
 
-        if (receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
+        if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
             notificationLoad(receivedEjson, new Callback() {
                 @Override
                 public void call(@Nullable Bundle bundle) {
@@ -78,18 +81,18 @@ public class CustomPushNotification extends PushNotification {
 
         // We should re-read these values since that can be changed by notificationLoad
         Bundle bundle = mNotificationProps.asBundle();
-        Ejson loadedEjson = new Gson().fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        Ejson loadedEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
         String notId = bundle.getString("notId", "1");
 
         if (notificationMessages.get(notId) == null) {
             notificationMessages.put(notId, new ArrayList<Bundle>());
         }
 
-        boolean hasSender = loadedEjson.sender != null;
+        boolean hasSender = loadedEjson != null && loadedEjson.sender != null;
         String title = bundle.getString("title");
 
         // If it has a encrypted message
-        if (loadedEjson.msg != null) {
+        if (loadedEjson != null && loadedEjson.msg != null) {
             // Override message with the decrypted content
             String decrypted = Encryption.shared.decryptMessage(loadedEjson, reactApplicationContext);
             if (decrypted != null) {
@@ -100,9 +103,9 @@ public class CustomPushNotification extends PushNotification {
         bundle.putLong("time", new Date().getTime());
         bundle.putString("username", hasSender ? loadedEjson.sender.username : title);
         bundle.putString("senderId", hasSender ? loadedEjson.sender._id : "1");
-        bundle.putString("avatarUri", loadedEjson.getAvatarUri());
+        bundle.putString("avatarUri", loadedEjson != null ? loadedEjson.getAvatarUri() : null);
 
-        if (loadedEjson.notificationType instanceof String && loadedEjson.notificationType.equals("videoconf")) {
+        if (loadedEjson != null && loadedEjson.notificationType instanceof String && loadedEjson.notificationType.equals("videoconf")) {
             notifyReceivedToJS();
         } else {
             notificationMessages.get(notId).add(bundle);
@@ -128,7 +131,7 @@ public class CustomPushNotification extends PushNotification {
         String title = bundle.getString("title");
         String message = bundle.getString("message");
         Boolean notificationLoaded = bundle.getBoolean("notificationLoaded", false);
-        Ejson ejson = new Gson().fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        Ejson ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         notification
                 .setContentTitle(title)
@@ -145,7 +148,7 @@ public class CustomPushNotification extends PushNotification {
         notificationDismiss(notification, notificationId);
 
         // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
-        if (ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
+        if (ejson == null || ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
             notificationStyle(notification, notificationId, bundle);
             notificationReply(notification, notificationId, bundle);
 
@@ -159,9 +162,9 @@ public class CustomPushNotification extends PushNotification {
                 while (iterator.hasNext()) {
                     Bundle not = (Bundle) iterator.next();
                     // get the notification info
-                    Ejson notEjson = gson.fromJson(not.getString("ejson", "{}"), Ejson.class);
+                    Ejson notEjson = safeFromJson(not.getString("ejson", "{}"), Ejson.class);
                     // if already has a notification from same server
-                    if (ejson.serverURL().equals(notEjson.serverURL())) {
+                    if (ejson != null && notEjson != null && ejson.serverURL().equals(notEjson.serverURL())) {
                         String id = not.getString("notId");
                         // cancel this notification
                         notificationManager.cancel(Integer.parseInt(id));
@@ -207,13 +210,15 @@ public class CustomPushNotification extends PushNotification {
 
         int smallIconResId = res.getIdentifier("ic_notification", "drawable", packageName);
 
-        Gson gson = new Gson();
-        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        Ejson ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         notification.setSmallIcon(smallIconResId);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            notification.setLargeIcon(getAvatar(ejson.getAvatarUri()));
+            String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
+            if (avatarUri != null) {
+                notification.setLargeIcon(getAvatar(avatarUri));
+            }
         }
     }
 
@@ -236,7 +241,10 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private String extractMessage(String message, Ejson ejson) {
-        if (ejson.type != null && !ejson.type.equals("d")) {
+        if (message == null) {
+            return "";
+        }
+        if (ejson != null && ejson.type != null && !ejson.type.equals("d")) {
             int pos = message.indexOf(":");
             int start = pos == -1 ? 0 : pos + 2;
             return message.substring(start, message.length());
@@ -291,17 +299,19 @@ public class CustomPushNotification extends PushNotification {
                     String message = data.getString("message");
                     String senderId = data.getString("senderId");
                     String avatarUri = data.getString("avatarUri");
-                    Ejson ejson = gson.fromJson(data.getString("ejson", "{}"), Ejson.class);
+                    Ejson ejson = safeFromJson(data.getString("ejson", "{}"), Ejson.class);
                     String m = extractMessage(message, ejson);
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                        messageStyle.addMessage(m, timestamp, ejson.senderName);
+                        String senderName = ejson != null ? ejson.senderName : "Unknown";
+                        messageStyle.addMessage(m, timestamp, senderName);
                     } else {
                         Bitmap avatar = getAvatar(avatarUri);
 
+                        String senderName = ejson != null ? ejson.senderName : "Unknown";
                         Person.Builder sender = new Person.Builder()
                                 .setKey(senderId)
-                                .setName(ejson.senderName);
+                                .setName(senderName);
 
                         if (avatar != null) {
                             sender.setIcon(Icon.createWithBitmap(avatar));
@@ -368,5 +378,30 @@ public class CustomPushNotification extends PushNotification {
     private void notificationLoad(Ejson ejson, Callback callback) {
         LoadNotification loadNotification = new LoadNotification();
         loadNotification.load(reactApplicationContext, ejson, callback);
+    }
+    
+    /**
+     * Safely parse JSON string to object with error handling.
+     *
+     * @param json     JSON string to parse
+     * @param classOfT Target class type
+     * @param <T>      Type parameter
+     * @return Parsed object, or null if parsing fails
+     */
+    private static <T> T safeFromJson(String json, Class<T> classOfT) {
+        if (json == null || json.trim().isEmpty() || json.equals("{}")) {
+            return null; // no need to create a new instance
+        }
+
+        try {
+            return gson.fromJson(json, classOfT);
+        } catch (Exception e) {
+            android.util.Log.e(
+                    "CustomPushNotification",
+                    "Failed to parse JSON into " + classOfT.getSimpleName() + " (payload redacted).",
+                    e
+            );
+            return null;
+        }
     }
 }

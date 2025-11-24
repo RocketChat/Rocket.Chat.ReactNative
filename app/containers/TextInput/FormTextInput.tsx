@@ -1,5 +1,14 @@
 import React, { useMemo, useState } from 'react';
-import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
+import {
+	type StyleProp,
+	StyleSheet,
+	Text,
+	type TextInput as RNTextInput,
+	type TextInputProps,
+	type TextStyle,
+	View,
+	type ViewStyle
+} from 'react-native';
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
@@ -8,7 +17,7 @@ import i18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
 
@@ -150,7 +159,7 @@ export const FormTextInput = ({
 								iconLeft && styles.inputIconLeft,
 								secureTextEntry || iconRight || showClearInput ? styles.inputIconRight : {},
 								{
-									backgroundColor: colors.surfaceRoom,
+									backgroundColor: colors.surfaceLight,
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},

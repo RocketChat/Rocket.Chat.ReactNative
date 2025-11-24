@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,8 +14,8 @@ import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import sharedStyles from '../Styles';
-import { Services } from '../../lib/services';
-import { SettingsStackParamList } from '../../stacks/types';
+import { e2eResetOwnKey } from '../../lib/services/restApi';
+import { type SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
 
 const styles = StyleSheet.create({
@@ -52,12 +52,9 @@ const E2EEncryptionSecurityView = () => {
 			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					const res = await Services.e2eResetOwnKey();
-					/**
-					 * It might return an empty object when TOTP is enabled,
-					 * that's why we're using strict equality to boolean
-					 */
-					if (res === true) {
+					const res = await e2eResetOwnKey();
+
+					if (res?.success === true) {
 						dispatch(logout());
 					}
 				} catch (e) {

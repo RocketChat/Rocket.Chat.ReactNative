@@ -12,23 +12,21 @@ import { store } from '../store/auxStore';
 import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import I18n from '../../i18n';
-import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
+import { type ICredentials, type ILoggedUser, STATUSES } from '../../definitions';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
-import { defaultSettings } from '../constants';
-import {
-	getSettings,
-	IActiveUsers,
-	unsubscribeRooms,
-	_activeUsers,
-	_setUser,
-	_setUserTimer,
-	onRolesChanged,
-	setPresenceCap
-} from '../methods';
-import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
+import { defaultSettings } from '../constants/defaultSettings';
+import { unsubscribeRooms } from '../methods/subscribeRooms';
+import { getSettings } from '../methods/getSettings';
+import { onRolesChanged } from '../methods/getRoles';
+import { setPresenceCap } from '../methods/getUsersPresence';
+import { _setUser, type IActiveUsers, _setUserTimer, _activeUsers } from '../methods/setUser';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { isIOS } from '../methods/helpers/deviceInfo';
+import { isSsl } from '../methods/helpers/isSsl';
+import fetch from '../methods/helpers/fetch';
 
 interface IServices {
 	[index: string]: string | boolean;

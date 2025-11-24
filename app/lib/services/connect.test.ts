@@ -1,8 +1,8 @@
 import { determineAuthType } from './connect';
 
 // Mock the isIOS helper
-jest.mock('../methods/helpers', () => ({
-	...jest.requireActual('../methods/helpers'),
+jest.mock('../methods/helpers/deviceInfo', () => ({
+	...jest.requireActual('../methods/helpers/deviceInfo'),
 	isIOS: false
 }));
 

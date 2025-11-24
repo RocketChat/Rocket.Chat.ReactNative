@@ -4,9 +4,9 @@ import orderBy from 'lodash/orderBy';
 
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
-import { MessageTypeLoad } from '../constants';
+import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import sdk from '../services/sdk';
-import { IMessage } from '../../definitions';
+import { type IMessage } from '../../definitions';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 

@@ -12,7 +12,7 @@ import RoomItem from '../../containers/RoomItem';
 import { type IRoomItem } from '../../containers/RoomItem/interfaces';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import i18n from '../../i18n';
-import { MAX_SIDEBAR_WIDTH } from '../../lib/constants';
+import { MAX_SIDEBAR_WIDTH } from '../../lib/constants/tablet';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
@@ -29,6 +29,8 @@ import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
 
 const RoomsListView = memo(function RoomsListView() {
+	'use memo';
+
 	useHeader();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();

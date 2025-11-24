@@ -3,20 +3,20 @@ import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/core';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp } from '@react-navigation/core';
 
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import I18n from '../../i18n';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { type TSupportedThemes, withTheme } from '../../theme';
+import { themes } from '../../lib/constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
-import { ChatsStackParamList } from '../../stacks/types';
-import { IApplicationState, IReadReceipts } from '../../definitions';
-import { Services } from '../../lib/services';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { type IApplicationState, type IReadReceipts } from '../../definitions';
+import { getReadReceipts } from '../../lib/services/restApi';
 
 interface IReadReceiptViewState {
 	loading: boolean;
@@ -84,7 +84,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getReadReceipts(this.messageId);
+			const result = await getReadReceipts(this.messageId);
 			if (result.success) {
 				this.setState({
 					receipts: result.receipts,

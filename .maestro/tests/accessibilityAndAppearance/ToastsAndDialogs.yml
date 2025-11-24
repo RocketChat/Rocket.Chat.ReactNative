@@ -1,0 +1,50 @@
+appId: chat.rocket.reactnative
+name: Toasts and Dialogs
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowEnd:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-13
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+# Show alerts as Toasts
+- tapOn: 'Menu'
+- tapOn: 'Accessibility & appearance'
+- tapOn: 'Show alerts as. Toasts'
+- assertVisible: 'Toasts. Dismissed automatically. Checked'
+- assertVisible: 'Dialogs. Require manual dismissal. Unchecked'
+- tapOn: 'Bottom Sheet backdrop'
+- tapOn: 'Menu'
+- tapOn: 'Edit status'
+- tapOn:
+    id: 'status-view-offline'
+- tapOn: 'Save'
+- extendedWaitUntil:
+    visible:
+      text: 'Status saved successfully!'
+    timeout: 60000
+
+# Show alerts as Dialogs
+- tapOn: 'Accessibility & appearance'
+- tapOn: 'Show alerts as. Toasts'
+- assertVisible: 'Toasts. Dismissed automatically. Checked'
+- tapOn: 'Dialogs. Require manual dismissal. Unchecked'
+- tapOn: 'Menu'
+- tapOn: 'Edit status'
+- tapOn:
+    id: 'status-view-online'
+- tapOn: 'Save'
+- extendedWaitUntil:
+    visible:
+      text: 'Status saved successfully!'
+    timeout: 60000
+- assertVisible: 'OK'
+- tapOn: 'OK'

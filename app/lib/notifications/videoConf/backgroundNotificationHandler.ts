@@ -1,11 +1,11 @@
-import notifee, { AndroidCategory, AndroidFlags, AndroidImportance, AndroidVisibility, Event } from '@notifee/react-native';
+import notifee, { AndroidCategory, AndroidFlags, AndroidImportance, AndroidVisibility, type Event } from '@notifee/react-native';
 import { getMessaging as messaging } from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ejson from 'ejson';
 
 import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
 import i18n from '../../../i18n';
-import { colors } from '../../constants';
+import { colors } from '../../constants/colors';
 import { store } from '../../store/auxStore';
 
 const VIDEO_CONF_CHANNEL = 'video-conf-call';

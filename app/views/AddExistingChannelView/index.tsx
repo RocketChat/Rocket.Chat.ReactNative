@@ -1,10 +1,10 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
-import { textInputDebounceTime } from '../../lib/constants';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import * as List from '../../containers/List';
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -15,11 +15,11 @@ import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sendLoadingEvent } from '../../containers/Loading';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
-import { ChatsStackParamList } from '../../stacks/types';
-import { TSubscriptionModel, SubscriptionType } from '../../definitions';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { type TSubscriptionModel, SubscriptionType } from '../../definitions';
 import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
-import { useAppSelector } from '../../lib/hooks';
+import { addRoomsToTeam } from '../../lib/services/restApi';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Navigation from '../../lib/navigation/appNavigation';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
@@ -136,7 +136,7 @@ const AddExistingChannelView = () => {
 		sendLoadingEvent({ visible: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await Services.addRoomsToTeam({ rooms: selected, teamId });
+			const result = await addRoomsToTeam({ rooms: selected, teamId });
 			if (result.success) {
 				sendLoadingEvent({ visible: false });
 				Navigation.resetTo();

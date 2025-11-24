@@ -3,9 +3,9 @@ import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../../../lib/constants';
-import { IAttachment } from '../../../../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
+import { themes } from '../../../../../lib/constants/colors';
+import { type IAttachment } from '../../../../../definitions/IAttachment';
+import { type TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../../CustomIcon';
 import { useTheme } from '../../../../../theme';
 import sharedStyles from '../../../../../views/Styles';
@@ -85,19 +85,23 @@ interface IMessageReply {
 
 const AttText = React.memo(
 	({ text, getCustomEmoji }: IMessageAttText) => {
+		'use memo';
+
 		const { user } = useContext(MessageContext);
 
 		if (!text) {
 			return null;
 		}
 
-		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} style={[styles.fieldText]} />;
+		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
 	},
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
 
 const Fields = React.memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const { user } = useContext(MessageContext);
 
@@ -123,6 +127,8 @@ const Fields = React.memo(
 
 const CollapsibleQuote = React.memo(
 	({ attachment, getCustomEmoji }: IMessageReply) => {
+		'use memo';
+
 		const { theme } = useTheme();
 		const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 

@@ -1,12 +1,12 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Observable, Subscription } from 'rxjs';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import { type Observable, type Subscription } from 'rxjs';
+import { type CompositeNavigationProp } from '@react-navigation/native';
 
 import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
@@ -16,13 +16,20 @@ import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
-import { IApplicationState, IBaseScreen, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import {
+	type IApplicationState,
+	type IBaseScreen,
+	type ISubscription,
+	type IUser,
+	SubscriptionType,
+	type TSubscriptionModel
+} from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { getUserSelector } from '../../selectors/login';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -30,8 +37,9 @@ import Touch from '../../containers/Touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
-import { E2E_ROOM_TYPES, themes } from '../../lib/constants';
-import { getPermalinkChannel } from '../../lib/methods';
+import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
+import { themes } from '../../lib/constants/colors';
+import { getPermalinkChannel } from '../../lib/methods/getPermalinks';
 import {
 	canAutoTranslate as canAutoTranslateMethod,
 	getRoomAvatar,
@@ -42,15 +50,28 @@ import {
 	compareServerVersion,
 	isTeamRoom
 } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import {
+	getUserInfo,
+	toggleBlockUser,
+	getRoomCounters,
+	getDepartmentInfo,
+	getTagsList,
+	getChannelInfo,
+	teamListRoomsOfUser,
+	convertTeamToChannel,
+	addRoomsToTeam,
+	convertChannelToTeam,
+	onHoldLivechat,
+	returnLivechat
+} from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import CallSection from './components/CallSection';
-import { TNavigation } from '../../stacks/stackType';
+import { type TNavigation } from '../../stacks/stackType';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import Navigation from '../../lib/navigation/appNavigation';
 
@@ -176,7 +197,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 				// If the previous users count changes, we will update it and the members count to the value from the room counter.
 				if (this.prevUsersCount !== changes.usersCount) {
-					const counters = await Services.getRoomCounters(room.rid, room.t as any);
+					const counters = await getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
 						if (this.mounted) {
 							this.setState({ membersCount: counters.members });
@@ -207,7 +228,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					}
 				} else {
 					try {
-						const result = await Services.getChannelInfo(room.rid);
+						const result = await getChannelInfo(room.rid);
 						if (result.success) {
 							// @ts-ignore
 							this.setState({ room: { ...result.channel, rid: result.channel._id } });
@@ -220,7 +241,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (room && (await this.canViewMembers())) {
 				try {
-					const counters = await Services.getRoomCounters(room.rid, room.t as any);
+					const counters = await getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
 						await this.updateUsersCount(counters.members);
 						this.setState({ joined: counters.joined, membersCount: counters.members });
@@ -385,14 +406,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			let tagsList: ILivechatTag[] | undefined;
 
 			if (departmentId) {
-				const result = await Services.getDepartmentInfo(departmentId);
+				const result = await getDepartmentInfo(departmentId);
 				if (result.success) {
 					departmentInfo = result.department as ILivechatDepartment;
 				}
 			}
 
 			if (departmentInfo?.requestTagBeforeClosingChat) {
-				tagsList = await Services.getTagsList();
+				tagsList = await getTagsList();
 			}
 
 			if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
@@ -415,7 +436,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			confirmationText: I18n.t('Yes'),
 			onPress: async () => {
 				try {
-					await Services.onHoldLivechat(room.rid);
+					await onHoldLivechat(room.rid);
 					navigation.navigate('RoomsListView');
 				} catch (e: any) {
 					showErrorAlert(e.data?.error, I18n.t('Oops'));
@@ -424,7 +445,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		});
 	};
 
-	returnLivechat = () => {
+	handleReturnLivechat = () => {
 		const {
 			room: { rid }
 		} = this.state;
@@ -433,7 +454,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			confirmationText: I18n.t('Yes'),
 			onPress: async () => {
 				try {
-					await Services.returnLivechat(rid);
+					await returnLivechat(rid);
 				} catch (e: any) {
 					showErrorAlert(e.reason, I18n.t('Oops'));
 				}
@@ -447,7 +468,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		try {
 			if (!isGroupChat(room)) {
 				const roomUserId = getUidDirectMessage(room);
-				const result = await Services.getUserInfo(roomUserId);
+				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					this.setState({ member: result.user as any });
 				}
@@ -464,7 +485,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { rid, blocker } = room;
 		const { member } = this.state;
 		try {
-			await Services.toggleBlockUser(rid, member._id as string, !blocker);
+			await toggleBlockUser(rid, member._id as string, !blocker);
 		} catch (e) {
 			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
@@ -517,7 +538,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				return;
 			}
 			this.setState({ loading: true });
-			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
+			const result = await teamListRoomsOfUser({ teamId: room.teamId, userId });
 
 			if (result.success) {
 				if (result.rooms?.length) {
@@ -550,7 +571,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (!room.teamId) {
 				return;
 			}
-			const result = await Services.convertTeamToChannel({ teamId: room.teamId, selected });
+			const result = await convertTeamToChannel({ teamId: room.teamId, selected });
 
 			if (result.success) {
 				Navigation.resetTo();
@@ -579,7 +600,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				return;
 			}
 			this.setState({ loading: true });
-			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
+			const result = await teamListRoomsOfUser({ teamId: room.teamId, userId });
 
 			if (result.success) {
 				if (result.rooms?.length) {
@@ -618,7 +639,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		logEvent(events.RA_CONVERT_TO_TEAM);
 		try {
 			const { room } = this.state;
-			const result = await Services.convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as any });
+			const result = await convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as any });
 
 			if (result.success) {
 				Navigation.resetTo();
@@ -642,7 +663,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		logEvent(events.RA_MOVE_TO_TEAM);
 		try {
 			const { room } = this.state;
-			const result = await Services.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
+			const result = await addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
 			if (result.success) {
 				Navigation.resetTo();
 			}
@@ -1029,7 +1050,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							title='Return_to_waiting_line'
 							onPress={() =>
 								this.onPressTouchable({
-									event: this.returnLivechat
+									event: this.handleReturnLivechat
 								})
 							}
 							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].fontTitlesLabels} />}
