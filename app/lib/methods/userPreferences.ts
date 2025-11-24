@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { MMKV, Mode } from 'react-native-mmkv';
 import type { Configuration } from 'react-native-mmkv';
 import { NativeModules } from 'react-native';
@@ -7,29 +7,23 @@ import { isAndroid } from './helpers';
 
 let storage: MMKV | null = null;
 
-function ensureStorage(): MMKV {
+const initializeStorage = (): MMKV => {
 	if (!storage) {
 		storage = new MMKV(buildConfiguration());
 	}
 	return storage;
-}
-
-function initializeStorage(): MMKV {
-	return ensureStorage();
-}
-
-function getStorage(): Promise<MMKV> {
-	return Promise.resolve(ensureStorage());
-}
-
-function getStorageSync(): MMKV {
-	return ensureStorage();
-}
+};
 
 class UserPreferences {
+	private mmkv: MMKV;
+
+	constructor() {
+		this.mmkv = initializeStorage();
+	}
+
 	getString(key: string): string | null {
 		try {
-			return getStorageSync().getString(key) || null;
+			return this.mmkv.getString(key) || null;
 		} catch {
 			return null;
 		}
@@ -37,7 +31,7 @@ class UserPreferences {
 
 	setString(key: string, value: string): void {
 		try {
-			getStorageSync().set(key, value);
+			this.mmkv.set(key, value);
 		} catch (error) {
 			console.error('Error setting string in MMKV:', error);
 		}
@@ -45,7 +39,7 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
-			return getStorageSync().getBoolean(key) || null;
+			return this.mmkv.getBoolean(key) || null;
 		} catch {
 			return null;
 		}
@@ -53,7 +47,7 @@ class UserPreferences {
 
 	setBool(key: string, value: boolean): void {
 		try {
-			getStorageSync().set(key, value);
+			this.mmkv.set(key, value);
 		} catch (error) {
 			console.error('Error setting boolean in MMKV:', error);
 		}
@@ -61,26 +55,24 @@ class UserPreferences {
 
 	getMap(key: string): object | null {
 		try {
-			const jsonString = getStorageSync().getString(key);
+			const jsonString = this.mmkv.getString(key);
 			return jsonString ? JSON.parse(jsonString) : null;
 		} catch {
 			return null;
 		}
 	}
 
-	async setMap(key: string, value: object): Promise<void> {
+	setMap(key: string, value: object): void {
 		try {
-			const storageInstance = await getStorage();
-			storageInstance.set(key, JSON.stringify(value));
+			this.mmkv.set(key, JSON.stringify(value));
 		} catch (error) {
 			console.error('Error setting map in MMKV:', error);
-			throw error;
 		}
 	}
 
 	removeItem(key: string): void {
 		try {
-			getStorageSync().delete(key);
+			this.mmkv.delete(key);
 		} catch (error) {
 			console.error('Error removing item from MMKV:', error);
 		}
@@ -89,7 +81,7 @@ class UserPreferences {
 	// Additional utility methods
 	getNumber(key: string): number | null {
 		try {
-			return getStorageSync().getNumber(key) || null;
+			return this.mmkv.getNumber(key) || null;
 		} catch {
 			return null;
 		}
@@ -97,7 +89,7 @@ class UserPreferences {
 
 	setNumber(key: string, value: number): void {
 		try {
-			getStorageSync().set(key, value);
+			this.mmkv.set(key, value);
 		} catch (error) {
 			console.error('Error setting number in MMKV:', error);
 		}
@@ -105,7 +97,7 @@ class UserPreferences {
 
 	getAllKeys(): string[] {
 		try {
-			return getStorageSync().getAllKeys();
+			return this.mmkv.getAllKeys();
 		} catch {
 			return [];
 		}
@@ -113,7 +105,7 @@ class UserPreferences {
 
 	contains(key: string): boolean {
 		try {
-			return getStorageSync().contains(key);
+			return this.mmkv.contains(key);
 		} catch {
 			return false;
 		}
@@ -121,18 +113,18 @@ class UserPreferences {
 
 	clearAll(): void {
 		try {
-			getStorageSync().clearAll();
+			this.mmkv.clearAll();
 		} catch (error) {
 			console.error('Error clearing MMKV:', error);
 		}
 	}
 }
 
-// Hook to use user preferences with react-native-mmkv
-export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undefined, (value: T) => void] {
+export const useUserPreferences = <T>(key: string, defaultValue?: T): [T | undefined, (value: T) => void] => {
 	const getInitialValue = useCallback((): T | undefined => {
 		try {
-			const storedValue = getStorageSync().getString(key);
+			const mmkv = initializeStorage();
+			const storedValue = mmkv.getString(key);
 			if (storedValue !== undefined) {
 				try {
 					return JSON.parse(storedValue) as T;
@@ -140,13 +132,13 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 					return storedValue as T;
 				}
 			}
-			// Check for boolean
-			const boolValue = getStorageSync().getBoolean(key);
+
+			const boolValue = mmkv.getBoolean(key);
 			if (boolValue !== undefined) {
 				return boolValue as T;
 			}
-			// Check for number
-			const numValue = getStorageSync().getNumber(key);
+
+			const numValue = mmkv.getNumber(key);
 			if (numValue !== undefined) {
 				return numValue as T;
 			}
@@ -158,23 +150,10 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 
 	const [value, setValue] = useState<T | undefined>(getInitialValue);
 
-	// Listen for changes
-	useEffect(() => {
-		const listener = getStorageSync().addOnValueChangedListener(changedKey => {
-			if (changedKey === key) {
-				setValue(getInitialValue());
-			}
-		});
-
-		return () => {
-			listener.remove();
-		};
-	}, [key, getInitialValue]);
-
 	const setStoredValue = useCallback(
 		(newValue: T) => {
 			try {
-				const mmkv = getStorageSync();
+				const mmkv = initializeStorage();
 				if (typeof newValue === 'string') {
 					mmkv.set(key, newValue);
 				} else if (typeof newValue === 'boolean') {
@@ -193,13 +172,9 @@ export function useUserPreferences<T>(key: string, defaultValue?: T): [T | undef
 	);
 
 	return [value, setStoredValue];
-}
+};
 
-const userPreferences = new UserPreferences();
-export default userPreferences;
-export { initializeStorage, getStorage };
-
-function buildConfiguration(): Configuration {
+const buildConfiguration = (): Configuration => {
 	const config: Configuration = {
 		id: 'default'
 	};
@@ -215,9 +190,9 @@ function buildConfiguration(): Configuration {
 	}
 
 	return config;
-}
+};
 
-function getAppGroupPath(): string {
+const getAppGroupPath = (): string => {
 	if (isAndroid) {
 		return '';
 	}
@@ -228,4 +203,8 @@ function getAppGroupPath(): string {
 	} catch {
 		return '';
 	}
-}
+};
+
+const userPreferences = new UserPreferences();
+export default userPreferences;
+export { initializeStorage };
