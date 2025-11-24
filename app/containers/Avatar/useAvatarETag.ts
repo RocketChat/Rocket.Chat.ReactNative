@@ -20,10 +20,9 @@ export const useAvatarETag = ({
 }) => {
 	const [avatarETag, setAvatarETag] = useState<string | undefined>('');
 
-	const isDirect = () => type === 'd';
-
 	useEffect(() => {
-		let subscription: Subscription;
+		let subscription: Subscription | undefined;
+		let isSubscribed = true;
 		const observeAvatarETag = async () => {
 			const db = database.active;
 			const usersCollection = db.get('users');
@@ -36,7 +35,7 @@ export const useAvatarETag = ({
 					const userCollections = serversDB.get('users');
 					const user = await userCollections.find(id);
 					record = user;
-				} else if (isDirect()) {
+				} else if (type === 'd') {
 					const [user] = await usersCollection.query(Q.where('username', text)).fetch();
 					record = user;
 				} else if (rid) {
@@ -46,7 +45,7 @@ export const useAvatarETag = ({
 				// Record not found
 			}
 
-			if (record) {
+			if (record && isSubscribed) {
 				const observable = record.observe() as Observable<TSubscriptionModel | TUserModel | TLoggedUserModel>;
 				subscription = observable.subscribe(r => {
 					setAvatarETag(r.avatarETag);
@@ -55,6 +54,7 @@ export const useAvatarETag = ({
 		};
 		observeAvatarETag();
 		return () => {
+			isSubscribed = false;
 			if (subscription?.unsubscribe) {
 				subscription.unsubscribe();
 			}
