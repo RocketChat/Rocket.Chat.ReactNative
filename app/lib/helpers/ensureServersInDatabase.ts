@@ -40,6 +40,7 @@ const ensureServersInDatabase = async (): Promise<void> => {
 			)
 		);
 	});
+	userPreferences.setBool('WORKSPACE_MIGRATION_COMPLETED', true);
 };
 
 export default ensureServersInDatabase;

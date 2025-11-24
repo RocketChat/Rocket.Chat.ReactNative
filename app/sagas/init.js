@@ -26,7 +26,7 @@ const restore = function* restore() {
 	try {
 		// Only runs after initial migration to avoid data inconsistencies.
 		const migrationCompleted = UserPreferences.getBool('WORKSPACE_MIGRATION_COMPLETED');
-		if (migrationCompleted) {
+		if (!migrationCompleted) {
 			yield call(ensureServersInDatabase);
 		}
 
