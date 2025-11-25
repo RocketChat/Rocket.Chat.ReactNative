@@ -59,7 +59,7 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 		mode: 'onChange',
 		defaultValues: { password: '' }
 	});
-	const isNavigatingToResetPassword = useRef<boolean>(false);
+	const shouldDisplayToast = useRef<boolean>(false);
 
 	const password = watch('password');
 
@@ -83,9 +83,9 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 	// If screen is closed and e2ee is still disabled, warns the user via toast
 	useFocusEffect(
 		useCallback(() => {
-			isNavigatingToResetPassword.current = false;
+			shouldDisplayToast.current = true;
 			return () => {
-				if (!encryptionEnabled && !isNavigatingToResetPassword.current) {
+				if (!encryptionEnabled && shouldDisplayToast.current) {
 					showToast(I18n.t('e2ee_disabled'));
 				}
 			};
@@ -109,13 +109,14 @@ const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): Re
 	}, [encryptionFailure, prevEncryptionFailure]);
 
 	const submit = () => {
+		shouldDisplayToast.current = false;
 		prevEncryptionFailure.current = false;
 		logEvent(events.E2E_ENTER_PW_SUBMIT);
 		dispatch(encryptionDecodeKey(password));
 	};
 
 	const navigateToForgotPassword = () => {
-		isNavigatingToResetPassword.current = true;
+		shouldDisplayToast.current = false;
 		const insideNavigation = navigation.getParent<NativeStackNavigationProp<InsideStackParamList>>();
 		insideNavigation?.navigate('E2EEnterYourPasswordStackNavigator', { screen: 'E2EEncryptionSecurityView' });
 	};
