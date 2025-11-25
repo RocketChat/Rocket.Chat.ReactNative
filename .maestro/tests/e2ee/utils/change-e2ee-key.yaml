@@ -1,0 +1,23 @@
+appId: chat.rocket.reactnative
+name: Change E2EE Key
+tags:
+  - 'util'
+
+---
+- tapOn: Enter manually
+- tapOn: New password
+- inputText: ${output.data.e2eePassword}
+- hideKeyboard
+- swipe:
+    direction: DOWN
+    duration: 100
+- tapOn: Save Changes
+- extendedWaitUntil:
+    visible:
+      text: .*Are you sure.*
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: .*Make sure you've saved it carefully somewhere else.*
+    timeout: 60000
+- tapOn: Yes, change it
