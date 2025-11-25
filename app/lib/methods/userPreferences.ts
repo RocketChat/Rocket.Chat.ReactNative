@@ -1,178 +1,8 @@
-import { useState, useCallback } from 'react';
-import { MMKV, Mode } from 'react-native-mmkv';
+import { MMKV, Mode, useMMKVString } from 'react-native-mmkv';
 import type { Configuration } from 'react-native-mmkv';
 import { NativeModules } from 'react-native';
 
 import { isAndroid } from './helpers';
-
-let storage: MMKV | null = null;
-
-const initializeStorage = (): MMKV => {
-	if (!storage) {
-		storage = new MMKV(buildConfiguration());
-	}
-	return storage;
-};
-
-class UserPreferences {
-	private mmkv: MMKV;
-
-	constructor() {
-		this.mmkv = initializeStorage();
-	}
-
-	getString(key: string): string | null {
-		try {
-			return this.mmkv.getString(key) || null;
-		} catch {
-			return null;
-		}
-	}
-
-	setString(key: string, value: string): void {
-		try {
-			this.mmkv.set(key, value);
-		} catch (error) {
-			console.error('Error setting string in MMKV:', error);
-		}
-	}
-
-	getBool(key: string): boolean | null {
-		try {
-			return this.mmkv.getBoolean(key) || null;
-		} catch {
-			return null;
-		}
-	}
-
-	setBool(key: string, value: boolean): void {
-		try {
-			this.mmkv.set(key, value);
-		} catch (error) {
-			console.error('Error setting boolean in MMKV:', error);
-		}
-	}
-
-	getMap(key: string): object | null {
-		try {
-			const jsonString = this.mmkv.getString(key);
-			return jsonString ? JSON.parse(jsonString) : null;
-		} catch {
-			return null;
-		}
-	}
-
-	setMap(key: string, value: object): void {
-		try {
-			this.mmkv.set(key, JSON.stringify(value));
-		} catch (error) {
-			console.error('Error setting map in MMKV:', error);
-		}
-	}
-
-	removeItem(key: string): void {
-		try {
-			this.mmkv.delete(key);
-		} catch (error) {
-			console.error('Error removing item from MMKV:', error);
-		}
-	}
-
-	// Additional utility methods
-	getNumber(key: string): number | null {
-		try {
-			return this.mmkv.getNumber(key) || null;
-		} catch {
-			return null;
-		}
-	}
-
-	setNumber(key: string, value: number): void {
-		try {
-			this.mmkv.set(key, value);
-		} catch (error) {
-			console.error('Error setting number in MMKV:', error);
-		}
-	}
-
-	getAllKeys(): string[] {
-		try {
-			return this.mmkv.getAllKeys();
-		} catch {
-			return [];
-		}
-	}
-
-	contains(key: string): boolean {
-		try {
-			return this.mmkv.contains(key);
-		} catch {
-			return false;
-		}
-	}
-
-	clearAll(): void {
-		try {
-			this.mmkv.clearAll();
-		} catch (error) {
-			console.error('Error clearing MMKV:', error);
-		}
-	}
-}
-
-export const useUserPreferences = <T>(key: string, defaultValue?: T): [T | undefined, (value: T) => void] => {
-	const getInitialValue = useCallback((): T | undefined => {
-		try {
-			const mmkv = initializeStorage();
-			const storedValue = mmkv.getString(key);
-			if (storedValue !== undefined) {
-				try {
-					return JSON.parse(storedValue) as T;
-				} catch {
-					return storedValue as T;
-				}
-			}
-
-			const boolValue = mmkv.getBoolean(key);
-			if (boolValue !== undefined) {
-				return boolValue as T;
-			}
-
-			const numValue = mmkv.getNumber(key);
-			if (numValue !== undefined) {
-				return numValue as T;
-			}
-			return defaultValue;
-		} catch {
-			return defaultValue;
-		}
-	}, [key, defaultValue]);
-
-	const [value, setValue] = useState<T | undefined>(getInitialValue);
-
-	const setStoredValue = useCallback(
-		(newValue: T) => {
-			try {
-				const mmkv = initializeStorage();
-				if (typeof newValue === 'string') {
-					mmkv.set(key, newValue);
-				} else if (typeof newValue === 'boolean') {
-					mmkv.set(key, newValue);
-				} else if (typeof newValue === 'number') {
-					mmkv.set(key, newValue);
-				} else if (typeof newValue === 'object') {
-					mmkv.set(key, JSON.stringify(newValue));
-				}
-				setValue(newValue);
-			} catch (error) {
-				console.error(`Error setting value for key ${key}:`, error);
-			}
-		},
-		[key]
-	);
-
-	return [value, setStoredValue];
-};
 
 const buildConfiguration = (): Configuration => {
 	const config: Configuration = {
@@ -205,6 +35,99 @@ const getAppGroupPath = (): string => {
 	}
 };
 
+const MMKV_INSTANCE = new MMKV(buildConfiguration());
+
+export const useUserPreferences = <T>(key: string, defaultValue?: T): [T | undefined, (value: T | undefined) => void] => {
+	const [storedValue, setStoredValue] = useMMKVString(key, MMKV_INSTANCE);
+
+	const value = storedValue !== undefined ? (storedValue as T) : defaultValue;
+
+	const setValue = (newValue: T | undefined) => {
+		if (newValue === undefined) {
+			setStoredValue(undefined);
+		} else if (typeof newValue === 'string') {
+			setStoredValue(newValue);
+		} else {
+			setStoredValue(JSON.stringify(newValue));
+		}
+	};
+
+	return [value, setValue];
+};
+
+class UserPreferences {
+	private mmkv: MMKV;
+
+	constructor() {
+		this.mmkv = MMKV_INSTANCE;
+	}
+
+	getString(key: string): string | null {
+		try {
+			return this.mmkv.getString(key) || null;
+		} catch {
+			return null;
+		}
+	}
+
+	setString(key: string, value: string): void {
+		this.mmkv.set(key, value);
+	}
+
+	getBool(key: string): boolean | null {
+		try {
+			return this.mmkv.getBoolean(key) || null;
+		} catch {
+			return null;
+		}
+	}
+
+	setBool(key: string, value: boolean): void {
+		this.mmkv.set(key, value);
+	}
+
+	getMap(key: string): object | null {
+		try {
+			const jsonString = this.mmkv.getString(key);
+			return jsonString ? JSON.parse(jsonString) : null;
+		} catch {
+			return null;
+		}
+	}
+
+	setMap(key: string, value: object): void {
+		this.mmkv.set(key, JSON.stringify(value));
+	}
+
+	removeItem(key: string): void {
+		this.mmkv.delete(key);
+	}
+
+	getNumber(key: string): number | null {
+		try {
+			return this.mmkv.getNumber(key) || null;
+		} catch {
+			return null;
+		}
+	}
+
+	setNumber(key: string, value: number): void {
+		this.mmkv.set(key, value);
+	}
+
+	getAllKeys(): string[] {
+		return this.mmkv.getAllKeys();
+	}
+
+	contains(key: string): boolean {
+		return this.mmkv.contains(key);
+	}
+
+	clearAll(): void {
+		this.mmkv.clearAll();
+	}
+}
+
 const userPreferences = new UserPreferences();
 export default userPreferences;
-export { initializeStorage };
+export { MMKV_INSTANCE as initializeStorage };
