@@ -225,6 +225,14 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		backgroundColor = colors.surfaceNeutral;
 	}
 
+	if (props.hasError || props.isInfo) {
+		return (
+			<View>
+				<Message {...props} />
+			</View>
+		);
+	}
+
 	return (
 		<A11y.Order>
 			<A11y.Index index={1}>
