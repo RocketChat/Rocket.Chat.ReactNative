@@ -4,6 +4,11 @@ import { themes } from '../../../../lib/constants/colors';
 import ServersHistoryItemComponent, { type IServersHistoryItem } from '.';
 import { ThemeContext, type TSupportedThemes } from '../../../../theme';
 import { type TServerHistoryModel } from '../../../../definitions';
+import {
+	BASE_ROW_HEIGHT,
+	BASE_ROW_HEIGHT_CONDENSED,
+	ResponsiveLayoutContext
+} from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export default {
 	title: 'ServersHistoryItem'
@@ -16,6 +21,16 @@ const defaultItem = {
 	updatedAt: new Date(),
 	iconURL: 'https://open.rocket.chat/images/logo/android-chrome-512x512.png'
 } as TServerHistoryModel;
+
+const responsiveLayoutProviderValue = {
+	fontScale: 1,
+	fontScaleLimited: 1,
+	isLargeFontScale: false,
+	rowHeight: BASE_ROW_HEIGHT,
+	rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
+	width: 350,
+	height: 800
+};
 
 const ServersHistoryItem = ({
 	item,
@@ -33,11 +48,13 @@ const ServersHistoryItem = ({
 			theme,
 			colors: themes[theme]
 		}}>
-		<ServersHistoryItemComponent
-			item={{ ...defaultItem, ...item } as TServerHistoryModel}
-			onPress={onPress}
-			onDeletePress={onDeletePress || (() => alert('Delete'))}
-		/>
+		<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderValue}>
+			<ServersHistoryItemComponent
+				item={{ ...defaultItem, ...item } as TServerHistoryModel}
+				onPress={onPress}
+				onDeletePress={onDeletePress || (() => alert('Delete'))}
+			/>
+		</ResponsiveLayoutContext.Provider>
 	</ThemeContext.Provider>
 );
 

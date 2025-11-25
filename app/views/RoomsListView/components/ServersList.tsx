@@ -115,7 +115,7 @@ const ServersList = () => {
 		<ServerItem
 			item={item}
 			onPress={() => select(item.id, item.version)}
-			onDeletePress={() => remove(item.id)}
+			onDeletePress={() => item.id === server || remove(item.id)}
 			hasCheck={item.id === server}
 		/>
 	);

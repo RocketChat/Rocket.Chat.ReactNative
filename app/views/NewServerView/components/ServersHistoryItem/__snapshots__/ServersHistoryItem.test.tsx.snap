@@ -34,7 +34,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 300,
             },
             {
               "height": 68,
@@ -340,7 +340,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 300,
             },
             {
               "height": 68,
@@ -646,7 +646,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 300,
             },
             {
               "height": 68,
@@ -957,7 +957,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 300,
             },
             {
               "height": 68,
@@ -1263,7 +1263,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 300,
             },
             {
               "height": 68,
@@ -1574,7 +1574,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 300,
             },
             {
               "height": 68,
@@ -1880,7 +1880,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 300,
             },
             {
               "height": 68,
@@ -2186,7 +2186,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
               "top": 0,
             },
             {
-              "width": undefined,
+              "width": 300,
             },
             {
               "height": 68,
