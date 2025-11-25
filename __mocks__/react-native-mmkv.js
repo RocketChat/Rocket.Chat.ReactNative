@@ -1,4 +1,5 @@
 // Mock for react-native-mmkv
+const { useState, useEffect } = require('react');
 
 // Shared storage between instances with the same id
 const storageInstances = new Map();
@@ -83,7 +84,7 @@ export class MMKV {
 	}
 
 	notifyListeners(key) {
-		this.listeners.forEach((listener) => {
+		this.listeners.forEach(listener => {
 			try {
 				listener(key);
 			} catch (error) {
@@ -95,3 +96,104 @@ export class MMKV {
 
 // Export Configuration type for TypeScript
 export const Configuration = {};
+
+// React hooks for MMKV
+export function useMMKVString(key, mmkvInstance) {
+	const [value, setValue] = useState(() => mmkvInstance.getString(key));
+
+	useEffect(() => {
+		const listener = mmkvInstance.addOnValueChangedListener(changedKey => {
+			if (changedKey === key || changedKey === undefined) {
+				setValue(mmkvInstance.getString(key));
+			}
+		});
+		return () => listener.remove();
+	}, [key, mmkvInstance]);
+
+	const setStoredValue = newValue => {
+		if (newValue === undefined) {
+			mmkvInstance.delete(key);
+		} else {
+			mmkvInstance.set(key, newValue);
+		}
+		setValue(newValue);
+	};
+
+	return [value, setStoredValue];
+}
+
+export function useMMKVNumber(key, mmkvInstance) {
+	const [value, setValue] = useState(() => mmkvInstance.getNumber(key));
+
+	useEffect(() => {
+		const listener = mmkvInstance.addOnValueChangedListener(changedKey => {
+			if (changedKey === key || changedKey === undefined) {
+				setValue(mmkvInstance.getNumber(key));
+			}
+		});
+		return () => listener.remove();
+	}, [key, mmkvInstance]);
+
+	const setStoredValue = newValue => {
+		if (newValue === undefined) {
+			mmkvInstance.delete(key);
+		} else {
+			mmkvInstance.set(key, newValue);
+		}
+		setValue(newValue);
+	};
+
+	return [value, setStoredValue];
+}
+
+export function useMMKVBoolean(key, mmkvInstance) {
+	const [value, setValue] = useState(() => mmkvInstance.getBoolean(key));
+
+	useEffect(() => {
+		const listener = mmkvInstance.addOnValueChangedListener(changedKey => {
+			if (changedKey === key || changedKey === undefined) {
+				setValue(mmkvInstance.getBoolean(key));
+			}
+		});
+		return () => listener.remove();
+	}, [key, mmkvInstance]);
+
+	const setStoredValue = newValue => {
+		if (newValue === undefined) {
+			mmkvInstance.delete(key);
+		} else {
+			mmkvInstance.set(key, newValue);
+		}
+		setValue(newValue);
+	};
+
+	return [value, setStoredValue];
+}
+
+export function useMMKVObject(key, mmkvInstance) {
+	const [value, setValue] = useState(() => {
+		const stored = mmkvInstance.getString(key);
+		return stored ? JSON.parse(stored) : undefined;
+	});
+
+	useEffect(() => {
+		const listener = mmkvInstance.addOnValueChangedListener(changedKey => {
+			if (changedKey === key || changedKey === undefined) {
+				const stored = mmkvInstance.getString(key);
+				setValue(stored ? JSON.parse(stored) : undefined);
+			}
+		});
+		return () => listener.remove();
+	}, [key, mmkvInstance]);
+
+	const setStoredValue = newValue => {
+		if (newValue === undefined) {
+			mmkvInstance.delete(key);
+		} else {
+			mmkvInstance.set(key, JSON.stringify(newValue));
+		}
+		setValue(newValue);
+	};
+
+	return [value, setStoredValue];
+}
