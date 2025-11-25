@@ -60,7 +60,7 @@ const E2EEncryptionSecurityView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('E2E_Encryption')
+			title: I18n.t('Reset_E2EE_Password')
 		});
 	}, [navigation]);
 
