@@ -84,7 +84,7 @@ export class MMKV {
 	}
 
 	notifyListeners(key) {
-		this.listeners.forEach(listener => {
+		this.listeners.forEach((listener) => {
 			try {
 				listener(key);
 			} catch (error) {
@@ -102,7 +102,7 @@ export function useMMKVString(key, mmkvInstance) {
 	const [value, setValue] = useState(() => mmkvInstance.getString(key));
 
 	useEffect(() => {
-		const listener = mmkvInstance.addOnValueChangedListener(changedKey => {
+		const listener = mmkvInstance.addOnValueChangedListener((changedKey) => {
 			if (changedKey === key || changedKey === undefined) {
 				setValue(mmkvInstance.getString(key));
 			}
@@ -110,7 +110,7 @@ export function useMMKVString(key, mmkvInstance) {
 		return () => listener.remove();
 	}, [key, mmkvInstance]);
 
-	const setStoredValue = newValue => {
+	const setStoredValue = (newValue) => {
 		if (newValue === undefined) {
 			mmkvInstance.delete(key);
 		} else {
@@ -126,7 +126,7 @@ export function useMMKVNumber(key, mmkvInstance) {
 	const [value, setValue] = useState(() => mmkvInstance.getNumber(key));
 
 	useEffect(() => {
-		const listener = mmkvInstance.addOnValueChangedListener(changedKey => {
+		const listener = mmkvInstance.addOnValueChangedListener((changedKey) => {
 			if (changedKey === key || changedKey === undefined) {
 				setValue(mmkvInstance.getNumber(key));
 			}
@@ -134,7 +134,7 @@ export function useMMKVNumber(key, mmkvInstance) {
 		return () => listener.remove();
 	}, [key, mmkvInstance]);
 
-	const setStoredValue = newValue => {
+	const setStoredValue = (newValue) => {
 		if (newValue === undefined) {
 			mmkvInstance.delete(key);
 		} else {
@@ -150,7 +150,7 @@ export function useMMKVBoolean(key, mmkvInstance) {
 	const [value, setValue] = useState(() => mmkvInstance.getBoolean(key));
 
 	useEffect(() => {
-		const listener = mmkvInstance.addOnValueChangedListener(changedKey => {
+		const listener = mmkvInstance.addOnValueChangedListener((changedKey) => {
 			if (changedKey === key || changedKey === undefined) {
 				setValue(mmkvInstance.getBoolean(key));
 			}
@@ -158,7 +158,7 @@ export function useMMKVBoolean(key, mmkvInstance) {
 		return () => listener.remove();
 	}, [key, mmkvInstance]);
 
-	const setStoredValue = newValue => {
+	const setStoredValue = (newValue) => {
 		if (newValue === undefined) {
 			mmkvInstance.delete(key);
 		} else {
@@ -177,7 +177,7 @@ export function useMMKVObject(key, mmkvInstance) {
 	});
 
 	useEffect(() => {
-		const listener = mmkvInstance.addOnValueChangedListener(changedKey => {
+		const listener = mmkvInstance.addOnValueChangedListener((changedKey) => {
 			if (changedKey === key || changedKey === undefined) {
 				const stored = mmkvInstance.getString(key);
 				setValue(stored ? JSON.parse(stored) : undefined);
@@ -186,7 +186,7 @@ export function useMMKVObject(key, mmkvInstance) {
 		return () => listener.remove();
 	}, [key, mmkvInstance]);
 
-	const setStoredValue = newValue => {
+	const setStoredValue = (newValue) => {
 		if (newValue === undefined) {
 			mmkvInstance.delete(key);
 		} else {
