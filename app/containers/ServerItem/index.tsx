@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Dimensions } from 'react-native';
+import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import Radio from '../Radio';
@@ -7,6 +7,7 @@ import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';
 import I18n from '../../i18n';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export { ROW_HEIGHT };
 export { default as ServerItemTouchable } from './Touchable';
@@ -28,7 +29,7 @@ const defaultLogo = require('../../static/images/logo.png');
 
 const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();
-	const { width } = Dimensions.get('window');
+	const { width } = useResponsiveLayout();
 
 	const serverName = item.name || item.id;
 	const accessibilityLabel = `${serverName}, ${item.id}`;
