@@ -1151,6 +1151,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLink should match snapshot 1`] = 
                                       },
                                       {
                                         "color": "#095AD2",
+                                        "textDecorationLine": "none",
                                       },
                                     ]
                                   }
@@ -1799,6 +1800,7 @@ exports[`Story Snapshots: AttachmentWithTextAndLinkLargeFont should match snapsh
                                       },
                                       {
                                         "color": "#095AD2",
+                                        "textDecorationLine": "none",
                                       },
                                     ]
                                   }
@@ -102037,6 +102039,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                                           },
                                           {
                                             "color": "#095AD2",
+                                            "textDecorationLine": "none",
                                           },
                                         ]
                                       }
@@ -103098,6 +103101,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                                           },
                                           {
                                             "color": "#095AD2",
+                                            "textDecorationLine": "none",
                                           },
                                         ]
                                       }
