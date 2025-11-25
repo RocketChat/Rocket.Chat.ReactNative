@@ -1,6 +1,5 @@
 import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
-import type ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 import {
@@ -10,17 +9,21 @@ import {
 	rsaEncrypt,
 	aesEncrypt,
 	calculateFileChecksum,
-	aesDecrypt
+	aesDecrypt,
+	aesGcmEncrypt,
+	aesGcmDecrypt,
+	randomUuid
 } from '@rocket.chat/mobile-crypto';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import {
-	type IAttachment,
-	type IMessage,
-	type IUpload,
-	type TSendFileMessageFileInfo,
-	type IServerAttachment,
-	type TSubscriptionModel
+import type {
+	IAttachment,
+	IMessage,
+	IUpload,
+	TSendFileMessageFileInfo,
+	IServerAttachment,
+	TSubscriptionModel,
+	ISubscription
 } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { compareServerVersion, debounce } from '../methods/helpers';
@@ -39,7 +42,9 @@ import {
 	splitVectorData,
 	toString,
 	utf8ToBuffer,
-	bufferToHex
+	bufferToHex,
+	decodePrefixedBase64,
+	encodePrefixedBase64
 } from './utils';
 import { Encryption } from './index';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants/keys';
@@ -61,14 +66,17 @@ import { getMessageById } from '../database/services/Message';
 import { type TEncryptFileResult, type TGetContent } from './definitions';
 import { store } from '../store/auxStore';
 
+type TAlgorithm = 'A128CBC' | 'A256GCM' | '';
+
 export default class EncryptionRoom {
 	ready: boolean;
 	roomId: string;
 	userId: string;
 	establishing: boolean;
 	readyPromise: Deferred;
-	sessionKeyExportedString: string | ByteBuffer;
+	sessionKeyExportedString: string;
 	keyID: string;
+	algorithm: TAlgorithm;
 	roomKey: ArrayBuffer;
 	subscription: TSubscriptionModel | null;
 
@@ -78,6 +86,7 @@ export default class EncryptionRoom {
 		this.userId = userId;
 		this.establishing = false;
 		this.keyID = '';
+		this.algorithm = '';
 		this.sessionKeyExportedString = '';
 		this.roomKey = new ArrayBuffer(0);
 		this.readyPromise = new Deferred();
@@ -105,52 +114,82 @@ export default class EncryptionRoom {
 
 		if (!this.subscription) {
 			this.subscription = await getSubscriptionByRoomId(this.roomId);
-			if (!this.subscription) {
+			if (!this.subscription || !this.subscription.encrypted) {
 				return;
 			}
 		}
 
-		// Similar to Encryption.evaluateSuggestedKey
+		// Redundant check to avoid multiple handshakes, because of the async sub fetch
+		if (this.establishing) {
+			return this.readyPromise;
+		}
+
+		// Check if we have the user's private key to decrypt room keys
+		if (!Encryption.privateKey) {
+			// User hasn't entered E2E password yet
+			// Room will remain not ready until password is entered
+			return;
+		}
+
 		const { E2EKey, e2eKeyId, E2ESuggestedKey } = this.subscription;
-		if (E2ESuggestedKey && Encryption.privateKey) {
+		if (E2ESuggestedKey) {
 			try {
+				this.establishing = true;
+				const { keyID, roomKey, sessionKeyExportedString, algorithm } = await this.importRoomKey(
+					E2ESuggestedKey,
+					Encryption.privateKey
+				);
+				this.keyID = keyID;
+				this.roomKey = roomKey;
+				this.sessionKeyExportedString = sessionKeyExportedString;
+				this.algorithm = algorithm;
 				try {
-					this.establishing = true;
-					const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2ESuggestedKey, Encryption.privateKey);
-					this.keyID = keyID;
-					this.roomKey = roomKey;
-					this.sessionKeyExportedString = sessionKeyExportedString;
+					await e2eAcceptSuggestedGroupKey(this.roomId);
+					Encryption.deleteRoomInstance(this.roomId);
+					return;
 				} catch (error) {
 					await e2eRejectSuggestedGroupKey(this.roomId);
 				}
-				await e2eAcceptSuggestedGroupKey(this.roomId);
-				this.readyPromise.resolve();
-				return;
 			} catch (e) {
 				log(e);
 			}
 		}
 
 		// If this room has a E2EKey, we import it
-		if (E2EKey && Encryption.privateKey) {
-			this.establishing = true;
-			const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2EKey, Encryption.privateKey);
-			this.keyID = keyID;
-			this.roomKey = roomKey;
-			this.sessionKeyExportedString = sessionKeyExportedString;
-			this.readyPromise.resolve();
-			return;
+		if (E2EKey) {
+			try {
+				this.establishing = true;
+				const { keyID, roomKey, sessionKeyExportedString, algorithm } = await this.importRoomKey(E2EKey, Encryption.privateKey);
+				this.keyID = keyID;
+				this.roomKey = roomKey;
+				this.sessionKeyExportedString = sessionKeyExportedString;
+				this.algorithm = algorithm;
+				this.readyPromise.resolve();
+				return;
+			} catch (error) {
+				this.establishing = false;
+				log(error);
+				// Fall through to try other options
+			}
 		}
 
 		// If it doesn't have a e2eKeyId, we need to create keys to the room
 		if (!e2eKeyId) {
-			this.establishing = true;
-			await this.createRoomKey();
-			this.readyPromise.resolve();
-			return;
+			try {
+				this.establishing = true;
+				await this.createRoomKey();
+				Encryption.deleteRoomInstance(this.roomId);
+				return;
+			} catch (error) {
+				this.establishing = false;
+				log(error);
+				// Cannot create room key, room will remain not ready
+			}
 		}
 
 		// Request a E2EKey for this room to other users
+		// Room will remain not ready until the key is received via subscription update
+		// When E2EKey arrives, next handshake() call will succeed
 		this.requestRoomKey(e2eKeyId);
 	};
 
@@ -158,32 +197,24 @@ export default class EncryptionRoom {
 	importRoomKey = async (
 		E2EKey: string,
 		privateKey: string
-	): Promise<{ sessionKeyExportedString: string | ByteBuffer; roomKey: ArrayBuffer; keyID: string }> => {
+	): Promise<{ sessionKeyExportedString: string; roomKey: ArrayBuffer; keyID: string; algorithm: TAlgorithm }> => {
 		try {
-			const roomE2EKey = E2EKey.slice(12);
+			// Parse the encrypted key using prefixed base64
+			const [kid, encryptedData] = decodePrefixedBase64(E2EKey);
 
-			const decryptedKey = await rsaDecrypt(roomE2EKey, privateKey);
+			// Decrypt the session key
+			const decryptedKey = await rsaDecrypt(bufferToB64(encryptedData), privateKey);
 			const sessionKeyExportedString = toString(decryptedKey);
 
-			let keyID = '';
-			const { version } = store.getState().server;
-			if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
-				keyID = (await sha256(sessionKeyExportedString as string)).slice(0, 12);
-			} else {
-				keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
-			}
-
-			// Extract K from Web Crypto Secret Key
-			// K is a base64URL encoded array of bytes
-			// Web Crypto API uses this as a private key to decrypt/encrypt things
-			// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
-			const { k } = EJSON.parse(sessionKeyExportedString as string);
-			const roomKey = b64ToBuffer(k);
+			const keyID = kid;
+			const parsedKey = EJSON.parse(sessionKeyExportedString);
+			const roomKey: ArrayBuffer = b64ToBuffer(parsedKey.k);
 
 			return {
 				sessionKeyExportedString,
 				roomKey,
-				keyID
+				keyID,
+				algorithm: parsedKey.alg
 			};
 		} catch (e: any) {
 			throw new Error(e);
@@ -193,9 +224,30 @@ export default class EncryptionRoom {
 	hasSessionKey = () => !!this.sessionKeyExportedString;
 
 	createNewRoomKey = async () => {
-		const key = b64ToBuffer(await randomBytes(16));
-		this.roomKey = key;
+		const { version } = store.getState().server;
+		// v2
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.13.0')) {
+			this.roomKey = b64ToBuffer(await randomBytes(32));
+			// Web Crypto format of a Secret Key
+			const sessionKeyExported = {
+				// Type of Secret Key
+				kty: 'oct',
+				// Algorithm
+				alg: 'A256GCM',
+				// Base64URI encoded array of bytes
+				k: bufferToB64URI(this.roomKey),
+				// Specific Web Crypto properties
+				ext: true,
+				key_ops: ['encrypt', 'decrypt']
+			};
+			this.keyID = await randomUuid();
+			this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
+			this.algorithm = 'A256GCM';
+			return;
+		}
 
+		// v1
+		this.roomKey = b64ToBuffer(await randomBytes(16));
 		// Web Crypto format of a Secret Key
 		const sessionKeyExported = {
 			// Type of Secret Key
@@ -210,8 +262,8 @@ export default class EncryptionRoom {
 		};
 
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
+		this.algorithm = 'A128CBC';
 
-		const { version } = store.getState().server;
 		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
 			this.keyID = (await sha256(this.sessionKeyExportedString as string)).slice(0, 12);
 		} else {
@@ -301,7 +353,8 @@ export default class EncryptionRoom {
 		try {
 			const userKey = await rsaImportKey(EJSON.parse(publicKey));
 			const encryptedUserKey = await rsaEncrypt(this.sessionKeyExportedString as string, userKey);
-			return this.keyID + encryptedUserKey;
+			const encryptedBuffer = b64ToBuffer(encryptedUserKey as string);
+			return encodePrefixedBase64(this.keyID, encryptedBuffer);
 		} catch (e) {
 			log(e);
 		}
@@ -391,44 +444,54 @@ export default class EncryptionRoom {
 		return usersWithKeys;
 	}
 
-	// Encrypt text
-	encryptText = async (text: string | ArrayBuffer) => {
-		text = utf8ToBuffer(text as string);
-		const vector = b64ToBuffer(await randomBytes(16));
-		const data = b64ToBuffer(await aesEncrypt(bufferToB64(text), bufferToHex(this.roomKey), bufferToHex(vector)));
+	// Encrypt text - returns structured object with algorithm
+	encryptText = async (
+		text: string
+	): Promise<
+		| { algorithm: 'rc.v2.aes-sha2'; kid: string; iv: string; ciphertext: string }
+		| { algorithm: 'rc.v1.aes-sha2'; ciphertext: string }
+	> => {
+		const textBuffer = utf8ToBuffer(text);
+		if (this.algorithm === 'A256GCM') {
+			const vectorBase64 = await randomBytes(12);
+			const vector = b64ToBuffer(vectorBase64);
+			const data = await aesGcmEncrypt(bufferToB64(textBuffer), bufferToHex(this.roomKey), bufferToHex(vector));
+			return {
+				algorithm: 'rc.v2.aes-sha2' as const,
+				kid: this.keyID,
+				iv: vectorBase64,
+				ciphertext: data
+			};
+		}
 
-		return this.keyID + bufferToB64(joinVectorData(vector, data));
+		const vectorBase64 = await randomBytes(16);
+		const vector = b64ToBuffer(vectorBase64);
+		const data = b64ToBuffer(await aesEncrypt(bufferToB64(textBuffer), bufferToHex(this.roomKey), bufferToHex(vector)));
+		return {
+			algorithm: 'rc.v1.aes-sha2' as const,
+			ciphertext: this.keyID + bufferToB64(joinVectorData(vector, data))
+		};
 	};
 
 	// Encrypt messages
-	encrypt = async (message: IMessage) => {
+	encrypt = async (message: IMessage): Promise<IMessage> => {
 		if (!this.ready) {
 			return message;
 		}
 
 		try {
-			const msg = await this.encryptText(
-				EJSON.stringify({
-					_id: message._id,
-					text: message.msg,
-					userId: this.userId,
-					ts: new Date()
-				})
-			);
+			const content = await this.encryptText(EJSON.stringify({ msg: message.msg || '' }));
 
 			return {
 				...message,
 				t: E2E_MESSAGE_TYPE,
 				e2e: E2E_STATUS.PENDING,
-				msg,
 				e2eMentions: getE2EEMentions(message.msg),
-				content: {
-					algorithm: 'rc.v1.aes-sha2' as const,
-					ciphertext: msg
-				}
+				content
 			};
-		} catch {
+		} catch (e) {
 			// Do nothing
+			console.error(e);
 		}
 
 		return message;
@@ -444,7 +507,11 @@ export default class EncryptionRoom {
 			let description = '';
 
 			if (message.description) {
-				description = await this.encryptText(EJSON.stringify({ text: message.description }));
+				const encryptedResult = await this.encryptText(EJSON.stringify({ msg: message.description }));
+				description =
+					encryptedResult.algorithm === 'rc.v1.aes-sha2'
+						? encryptedResult.ciphertext
+						: EJSON.stringify({ kid: encryptedResult.kid, iv: encryptedResult.iv, ciphertext: encryptedResult.ciphertext });
 			}
 
 			return {
@@ -537,10 +604,8 @@ export default class EncryptionRoom {
 				file: files[0]
 			});
 
-			return {
-				algorithm: 'rc.v1.aes-sha2',
-				ciphertext: await Encryption.encryptText(rid, data)
-			};
+			const encryptedResult = await this.encryptText(data);
+			return encryptedResult;
 		};
 
 		const fileContentData = {
@@ -556,10 +621,7 @@ export default class EncryptionRoom {
 			}
 		};
 
-		const fileContent = {
-			algorithm: 'rc.v1.aes-sha2' as const,
-			ciphertext: await Encryption.encryptText(rid, EJSON.stringify(fileContentData))
-		};
+		const fileContent = await this.encryptText(EJSON.stringify(fileContentData));
 
 		return {
 			file: {
@@ -573,44 +635,70 @@ export default class EncryptionRoom {
 		};
 	};
 
-	// Decrypt text
-	decryptText = async (msg: string | ArrayBuffer) => {
-		if (!msg) {
-			return null;
-		}
-
-		const m = await this.decryptContent(msg as string);
-		return m.text;
-	};
-
 	decryptFileContent = async (data: IServerAttachment) => {
-		if (data.content?.algorithm === 'rc.v1.aes-sha2') {
-			const content = await this.decryptContent(data.content.ciphertext);
+		if (data.content?.algorithm === 'rc.v1.aes-sha2' || data.content?.algorithm === 'rc.v2.aes-sha2') {
+			const content = await this.decryptContent(data.content);
 			Object.assign(data, content);
 		}
 		return data;
 	};
 
-	decryptContent = async (contentBase64: string) => {
-		if (!contentBase64) {
+	parse = (
+		payload: string | IMessage['content']
+	): {
+		kid: string;
+		iv: ArrayBuffer;
+		ciphertext: string;
+	} => {
+		// v2: {"kid":"...", "iv": "...", "ciphertext":"..."}
+		if (typeof payload !== 'string' && payload?.algorithm === 'rc.v2.aes-sha2') {
+			return { kid: payload.kid, iv: b64ToBuffer(payload.iv), ciphertext: payload.ciphertext };
+		}
+		// v1: kid + base64(vector + ciphertext)
+		const message = typeof payload === 'string' ? payload : payload?.ciphertext || '';
+		const kid = message.slice(0, 12);
+		const contentBuffer = b64ToBuffer(message.slice(12) as string);
+		const [iv, ciphertext] = splitVectorData(contentBuffer);
+		return { kid, iv, ciphertext: bufferToB64(ciphertext) };
+	};
+
+	doDecrypt = async (ciphertext: string, key: ArrayBuffer, iv: ArrayBuffer, algorithm: TAlgorithm) => {
+		const keyHex = bufferToHex(key);
+		const ivHex = bufferToHex(iv);
+		let decrypted;
+		if (algorithm === 'A256GCM') {
+			decrypted = await aesGcmDecrypt(ciphertext, keyHex, ivHex);
+		} else {
+			decrypted = await aesDecrypt(ciphertext, keyHex, ivHex);
+		}
+		if (!decrypted) {
 			return null;
 		}
-
-		const keyID = contentBase64.slice(0, 12);
-		const contentBuffer = b64ToBuffer(contentBase64.slice(12) as string);
-		const [vector, cipherText] = splitVectorData(contentBuffer);
-
-		let oldKey;
-		if (keyID !== this.keyID) {
-			const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === keyID);
-			if (oldRoomKey?.E2EKey && Encryption.privateKey) {
-				const { roomKey } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
-				oldKey = roomKey;
-			}
-		}
-
-		const decrypted = await aesDecrypt(bufferToB64(cipherText), bufferToHex(oldKey || this.roomKey), bufferToHex(vector));
 		return EJSON.parse(bufferToUtf8(b64ToBuffer(decrypted)));
+	};
+
+	decryptContent = async (content: IMessage['content'] | string) => {
+		try {
+			if (!content) {
+				return null;
+			}
+
+			const { kid, iv, ciphertext } = this.parse(content);
+
+			if (kid !== this.keyID) {
+				const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === kid);
+				if (oldRoomKey?.E2EKey && Encryption.privateKey) {
+					const { roomKey, algorithm } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
+					return this.doDecrypt(ciphertext, roomKey, iv, algorithm);
+				}
+				return null;
+			}
+
+			return this.doDecrypt(ciphertext, this.roomKey, iv, this.algorithm);
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
 	};
 
 	// Decrypt messages
@@ -624,35 +712,25 @@ export default class EncryptionRoom {
 
 			// If message type is e2e and it's encrypted still
 			if (t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE) {
-				const { msg, tmsg } = message;
-				// Decrypt msg
-				if (msg) {
-					message.msg = await this.decryptText(msg);
+				const content = await this.decryptContent(message.content || message.msg);
+				message = {
+					...message,
+					...content,
+					attachments: content.attachments?.map((att: IAttachment) => ({
+						...att,
+						e2e: 'pending'
+					}))
+				};
+				if (content.text) {
+					message.msg = content.text;
 				}
 
-				// Decrypt tmsg
-				if (tmsg) {
-					message.tmsg = await this.decryptText(tmsg);
-				}
-
-				if (message.content?.algorithm === 'rc.v1.aes-sha2') {
-					const content = await this.decryptContent(message.content.ciphertext);
-					message = {
-						...message,
-						...content,
-						attachments: content.attachments?.map((att: IAttachment) => ({
-							...att,
-							e2e: 'pending'
-						}))
-					};
-				}
-
-				const decryptedMessage: IMessage = {
+				const decryptedMessage = {
 					...message,
 					e2e: 'done'
 				};
 
-				const decryptedMessageWithQuote = await this.decryptQuoteAttachment(decryptedMessage);
+				const decryptedMessageWithQuote = await this.decryptQuoteAttachment(decryptedMessage as IMessage);
 				return decryptedMessageWithQuote;
 			}
 		} catch {
@@ -688,10 +766,57 @@ export default class EncryptionRoom {
 				}
 				const decryptedQuoteMessage = await this.decrypt(mapMessageFromAPI(quotedMessageObject));
 				message.attachments = message.attachments || [];
-				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);
+				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage as IMessage, url);
 				return message.attachments.push(quoteAttachment);
 			})
 		);
 		return message;
 	}
+
+	decryptSubscription = async (subscription: Partial<ISubscription>) => {
+		if (!this.ready) {
+			return subscription;
+		}
+
+		// If the subscription doesn't have a lastMessage just return
+		const { rid, lastMessage } = subscription;
+		if (!lastMessage) {
+			return subscription;
+		}
+
+		const { t, e2e } = lastMessage;
+
+		// If it's not an encrypted message
+		if (t !== E2E_MESSAGE_TYPE) {
+			return subscription;
+		}
+
+		// If already marked as decrypted in the incoming data
+		if (e2e === E2E_STATUS.DONE) {
+			return subscription;
+		}
+
+		if (!rid) {
+			return subscription;
+		}
+
+		if (
+			this.subscription?.lastMessage?._updatedAt &&
+			lastMessage?._updatedAt &&
+			new Date(this.subscription.lastMessage._updatedAt).getTime() === new Date(lastMessage._updatedAt).getTime() &&
+			this.subscription?.lastMessage?.e2e === E2E_STATUS.DONE
+		) {
+			// Same message already decrypted in DB, return subscription with DB's decrypted version
+			return {
+				...subscription,
+				lastMessage: this.subscription?.lastMessage
+			};
+		}
+
+		const decryptedMessage = await this.decrypt(lastMessage as IMessage);
+		return {
+			...subscription,
+			lastMessage: decryptedMessage
+		};
+	};
 }
