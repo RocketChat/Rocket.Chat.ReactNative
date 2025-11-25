@@ -112,16 +112,16 @@ this is a normal line`}
 );
 
 export const Links = () => {
-    useUserPreferences(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY, false);
+	useUserPreferences(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY, false);
 
-    return (
-        <View style={styles.container}>
-            <Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' />
-            <Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' />
-            <Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' />
-            <Markdown msg='[Markdown link](https://rocket.chat) and the text continues on the next line' />
-        </View>
-    )
+	return (
+		<View style={styles.container}>
+			<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' />
+			<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' />
+			<Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' />
+			<Markdown msg='[Markdown link](https://rocket.chat) and the text continues on the next line' />
+		</View>
+	);
 };
 
 export const Image = () => (
