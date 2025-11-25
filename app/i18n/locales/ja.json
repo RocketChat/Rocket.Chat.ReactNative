@@ -311,6 +311,7 @@
   "Message_HideType_wm": "ようこそ",
   "Message_removed": "メッセージを除く",
   "Message_Reported": "メッセージを報告しました",
+  "Message_translated_into_idiom": "{{idiom}}に翻訳されたメッセージ",
   "Message_was_not_read": "メッセージは未読です。",
   "Message_was_read": "メッセージが読まれました。",
   "messages": "メッセージ",

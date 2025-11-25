@@ -472,6 +472,7 @@
   "Message_removed": "বার্তা সরানো হয়েছে",
   "Message_Reported": "বার্তা প্রতিবেদন করা হয়েছে",
   "Message_starred": "বার্তা তারকা",
+  "Message_translated_into_idiom": "বার্তাটি {{idiom}}-এ অনুবাদিত হয়েছে।",
   "Message_unstarred": "বার্তা তারকা নয়",
   "Message_was_not_read": "বার্তাটি পড়া হয়নি।",
   "Message_was_read": "বার্তাটি পড়া হয়েছে।",

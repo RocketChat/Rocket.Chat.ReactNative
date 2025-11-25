@@ -496,6 +496,7 @@
   "Message_Reported": "Melding rapportert",
   "Message_roomname": "Melding {{roomName}}",
   "Message_starred": "Meldingen er stjernemerket",
+  "Message_translated_into_idiom": "Melding oversatt til {{idiom}}",
   "Message_unstarred": "Meldingen er fjernet fra stjernen",
   "Message_was_not_read": "Meldingen ble ikke lest",
   "Message_was_read": "Meldingen ble lest",

@@ -360,6 +360,7 @@
   "Message_removed": "Messaggio rimosso",
   "Message_Reported": "Messaggio segnalato",
   "Message_starred": "Messaggio importante",
+  "Message_translated_into_idiom": "Messaggio tradotto in {{idiom}}",
   "Message_unstarred": "Messaggio non importante",
   "Message_was_not_read": "Il messaggio non è stato letto.",
   "Message_was_read": "Messaggio letto",

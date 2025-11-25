@@ -407,6 +407,7 @@
   "Message_removed": "Message supprimé",
   "Message_Reported": "Message signalé",
   "Message_starred": "Message suivi",
+  "Message_translated_into_idiom": "Message traduit en {{idiom}}",
   "Message_unstarred": "Message non suivi",
   "Message_was_not_read": "Le message n'a pas été lu.",
   "Message_was_read": "Message lu",
