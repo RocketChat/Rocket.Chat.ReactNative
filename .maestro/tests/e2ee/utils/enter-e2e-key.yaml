@@ -18,7 +18,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'e2e-enter-your-password-view-password'
-- inputText: 'abc'
+- inputText: ${output.data.e2eePassword}
 - tapOn:
     text: 'Enable encryption'
 - extendedWaitUntil:
