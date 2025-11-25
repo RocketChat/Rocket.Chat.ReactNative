@@ -8,10 +8,10 @@ import {
 } from 'react-native-gesture-handler';
 import { View, type AccessibilityActionEvent } from 'react-native';
 
-import Touch from '../Touch';
+import Touch from '../../Touch';
 import { DeleteAction } from './Actions';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import { useTheme } from '../../../theme';
+import I18n from '../../../i18n';
 
 export interface ISwipeableDeleteTouchableProps {
 	children: JSX.Element;
@@ -214,3 +214,4 @@ const SwipeableDeleteTouchable = ({
 };
 
 export default memo(SwipeableDeleteTouchable);
+

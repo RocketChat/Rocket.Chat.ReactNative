@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import SwipeableDeleteTouchable from '../SwipeableDeleteItem/Touchable';
+import SwipeableDeleteTouchable from './SwipeableDeleteItem/Touchable';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
 

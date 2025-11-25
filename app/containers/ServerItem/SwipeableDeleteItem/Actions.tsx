@@ -12,9 +12,9 @@ import Animated, {
 import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
-import { CustomIcon } from '../CustomIcon';
-import { useTheme } from '../../theme';
-import I18n from '../../i18n';
+import { CustomIcon } from '../../CustomIcon';
+import { useTheme } from '../../../theme';
+import I18n from '../../../i18n';
 
 export interface IDeleteActionProps {
 	transX: SharedValue<number>;
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		top: 0,
 		alignItems: 'flex-end'
-		// Position (left/right) will be dynamically set based on RTL in the component
 	},
 	actionButton: {
 		width: 80,
