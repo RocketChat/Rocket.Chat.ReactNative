@@ -119,7 +119,7 @@ export const Links = () => {
 			<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' />
 			<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' />
 			<Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' />
-			<Markdown msg='[Markdown link](https://rocket.chat) and the text continues on the next line' />
+			<Markdown msg='[Markdown link](https://rocket.chat) and the text continues on the next line ' />
 		</View>
 	);
 };
