@@ -112,8 +112,7 @@ this is a normal line`}
 );
 
 export const Links = () => {
-    const [_, setShowUnderlineForLinks] = useUserPreferences(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY, true);
-    setShowUnderlineForLinks(false);
+    useUserPreferences(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY, false);
 
     return (
         <View style={styles.container}>
@@ -165,8 +164,7 @@ export const Lists = () => (
 );
 
 export const ShowUnderlineForLinks = () => {
-	const [_, setShowUnderlineForLinks] = useUserPreferences(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY, true);
-    setShowUnderlineForLinks(true);
+	useUserPreferences(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY, true);
 
 	return (
 		<View style={styles.container}>
