@@ -40,7 +40,7 @@ const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServ
 	return (
 		<Touchable
 			onPress={onPress}
-			onDeletePress={onDeletePress || (() => {})}
+			onDeletePress={onDeletePress}
 			testID={`server-item-${item.id}`}
 			width={width}
 			accessibilityLabel={accessibilityLabel}
