@@ -22,7 +22,7 @@ interface ILinkProps {
 const Link = ({ value }: ILinkProps) => {
 	const { theme } = useTheme();
 	const { onLinkPress } = useContext(MarkdownContext);
-    const [showUnderlineForLinks] = useUserPreferences<boolean>(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY);
+	const [showUnderlineForLinks] = useUserPreferences<boolean>(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY);
 
 	const { src, label } = value;
 	const handlePress = () => {
@@ -41,7 +41,10 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].fontInfo, textDecorationLine: showUnderlineForLinks ? 'underline' : 'none' }]}>
+		<Text
+			onPress={handlePress}
+			onLongPress={onLongPress}
+			style={[styles.link, { color: themes[theme].fontInfo, textDecorationLine: showUnderlineForLinks ? 'underline' : 'none' }]}>
 			{(block => {
 				const blockArray = Array.isArray(block) ? block : [block];
 				return blockArray.map(blockInArray => {

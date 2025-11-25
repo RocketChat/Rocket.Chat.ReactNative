@@ -26,7 +26,7 @@ const AccessibilityAndAppearanceView = () => {
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
 	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
 	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
-    const [showUnderlineForLinks, setShowUnderlineForLinks] = useUserPreferences<boolean>(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY);
+	const [showUnderlineForLinks, setShowUnderlineForLinks] = useUserPreferences<boolean>(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY);
 	const [autoplayGifs, setAutoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const [alertDisplayType, setAlertDisplayType] = useUserPreferences<TAlertDisplayType>(
 		ALERT_DISPLAY_TYPE_PREFERENCES_KEY,
@@ -41,7 +41,7 @@ const AccessibilityAndAppearanceView = () => {
 		setRoomsWithHashTagSymbol(!roomsWithHashTagSymbol);
 	};
 
-    const toggleShowUnderlineForLinks = () => {
+	const toggleShowUnderlineForLinks = () => {
 		setShowUnderlineForLinks(!showUnderlineForLinks);
 	};
 
@@ -54,7 +54,9 @@ const AccessibilityAndAppearanceView = () => {
 	);
 	const renderRoomsWithHashTagSwitch = () => <Switch value={roomsWithHashTagSymbol} onValueChange={toggleRoomsWithHashTag} />;
 
-    const renderShowUnderlineForLinksSwitch = () => <Switch value={showUnderlineForLinks} onValueChange={toggleShowUnderlineForLinks} />;
+	const renderShowUnderlineForLinksSwitch = () => (
+		<Switch value={showUnderlineForLinks} onValueChange={toggleShowUnderlineForLinks} />
+	);
 
 	const renderAutoplayGifs = () => <Switch value={autoplayGifs} onValueChange={toggleAutoplayGifs} />;
 
@@ -112,7 +114,7 @@ const AccessibilityAndAppearanceView = () => {
 						onPress={toggleRoomsWithHashTag}
 					/>
 					<List.Separator />
-                    <List.Item
+					<List.Item
 						testID='accessibility-show-underline-for-links-switch'
 						title='Show_underline_for_links'
 						right={renderShowUnderlineForLinksSwitch}
