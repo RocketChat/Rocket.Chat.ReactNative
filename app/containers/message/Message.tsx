@@ -227,9 +227,9 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 
 	if (props.hasError || props.isInfo) {
 		return (
-			<View>
+			<A11y.Order>
 				<Message {...props} />
-			</View>
+			</A11y.Order>
 		);
 	}
 
