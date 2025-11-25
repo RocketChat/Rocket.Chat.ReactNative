@@ -214,4 +214,3 @@ const SwipeableDeleteTouchable = ({
 };
 
 export default memo(SwipeableDeleteTouchable);
-
