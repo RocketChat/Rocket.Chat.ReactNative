@@ -5,6 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Markdown, { MarkdownPreview } from '.';
 import { themes } from '../../lib/constants/colors';
 import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions/IEmoji';
+import { SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY } from '../../lib/constants/keys';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
 
 const theme = 'light';
 
@@ -109,14 +111,18 @@ this is a normal line`}
 	</View>
 );
 
-export const Links = () => (
-	<View style={styles.container}>
-		<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' />
-		<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' />
-		<Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' />
-		<Markdown msg='[Markdown link](https://rocket.chat) and the text continues on the next line' />
-	</View>
-);
+export const Links = () => {
+	useUserPreferences(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY, false);
+
+	return (
+		<View style={styles.container}>
+			<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' />
+			<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' />
+			<Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' />
+			<Markdown msg='[Markdown link](https://rocket.chat) and the text continues on the next line' />
+		</View>
+	);
+};
 
 export const Image = () => (
 	<View style={styles.container}>
@@ -156,3 +162,13 @@ export const Lists = () => (
 		/>
 	</View>
 );
+
+export const ShowUnderlineForLinks = () => {
+	useUserPreferences(SHOW_UNDERLINE_FOR_LINKS_PREFERENCES_KEY, true);
+
+	return (
+		<View style={styles.container}>
+			<Markdown msg='https://rocket.chat' />
+		</View>
+	);
+};
