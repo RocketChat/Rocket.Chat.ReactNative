@@ -40,7 +40,14 @@ const MMKV_INSTANCE = new MMKV(buildConfiguration());
 export const useUserPreferences = <T>(key: string, defaultValue?: T): [T | undefined, (value: T | undefined) => void] => {
 	const [storedValue, setStoredValue] = useMMKVString(key, MMKV_INSTANCE);
 
-	const value = storedValue !== undefined ? (storedValue as T) : defaultValue;
+	let value: T | undefined = defaultValue;
+	if (storedValue !== undefined) {
+		if (typeof defaultValue === 'string' || defaultValue === undefined) {
+			value = storedValue as T;
+		} else {
+			value = JSON.parse(storedValue) as T;
+		}
+	}
 
 	const setValue = (newValue: T | undefined) => {
 		if (newValue === undefined) {
