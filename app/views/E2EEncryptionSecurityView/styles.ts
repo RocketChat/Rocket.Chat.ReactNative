@@ -23,5 +23,8 @@ export const styles = StyleSheet.create({
 	},
 	separator: {
 		marginVertical: 16
+	},
+	content: {
+		gap: 32
 	}
 });
