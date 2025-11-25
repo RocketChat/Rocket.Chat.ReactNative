@@ -443,6 +443,7 @@
   "Message_removed": "meddelande borttaget",
   "Message_Reported": "Meddelandet har anmälts",
   "Message_starred": "Meddelandet har stjärnmarkerats",
+  "Message_translated_into_idiom": "Meddelande översatt till {{idiom}}",
   "Message_unstarred": "Stjärnmarkering borttagen för meddelande",
   "Message_was_not_read": "Meddelandet lästes inte",
   "Message_was_read": "Meddelande lästes",

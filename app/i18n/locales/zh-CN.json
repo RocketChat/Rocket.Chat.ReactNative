@@ -328,6 +328,7 @@
   "Message_removed": "信息被删除",
   "Message_Reported": "信息已举报",
   "Message_starred": "信息被标注",
+  "Message_translated_into_idiom": "消息已翻译为{{idiom}}",
   "Message_unstarred": "信息被取消标注",
   "Message_was_not_read": "消息未读",
   "Message_was_read": "消息已读",

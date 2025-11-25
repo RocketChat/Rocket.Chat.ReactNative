@@ -344,6 +344,7 @@
   "Message_removed": "訊息被刪除",
   "Message_Reported": "訊息已檢舉",
   "Message_starred": "訊息被標註",
+  "Message_translated_into_idiom": "訊息翻譯為{{idiom}}",
   "Message_unstarred": "訊息被取消標註",
   "Message_was_not_read": "消息未讀取",
   "Message_was_read": "訊息已讀",

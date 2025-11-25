@@ -463,6 +463,7 @@
   "Message_removed": "Nachricht entfernt",
   "Message_Reported": "Nachricht gemeldet",
   "Message_starred": "Nachricht favorisiert",
+  "Message_translated_into_idiom": "Nachricht ins {{idiom}} übersetzt",
   "Message_unstarred": "Nachricht nicht mehr favorisiert",
   "Message_was_not_read": "Nachricht wurde nicht gelesen.",
   "Message_was_read": "Nachricht wurde gelesen.",

@@ -525,6 +525,7 @@
   "Message_Reported": "Message reported",
   "Message_roomname": "Message {{roomName}}",
   "Message_starred": "Message starred",
+  "Message_translated_into_idiom": "Message translated into {{idiom}}",
   "Message_unstarred": "Message unstarred",
   "Message_was_not_read": "Message was not read",
   "Message_was_read": "Message was read",
