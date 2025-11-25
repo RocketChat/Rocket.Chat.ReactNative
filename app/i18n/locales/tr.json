@@ -342,6 +342,7 @@
   "Message_removed": "İleti kaldırıldı",
   "Message_Reported": "İleti bildirildi",
   "Message_starred": "İletia yıldız eklendi",
+  "Message_translated_into_idiom": "Mesaj {{idiom}} diline çevrildi.",
   "Message_unstarred": "İletiın yıldızı kaldırıldı",
   "Message_was_not_read": "Mesaj okunmadı.",
   "Message_was_read": "Mesaj okundu",

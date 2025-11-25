@@ -469,6 +469,7 @@
   "Message_removed": "செய்தி அகற்றப்பட்டது",
   "Message_Reported": "செய்தி அறிவிக்கப்பட்டது",
   "Message_starred": "செய்தி அமைந்துள்ளது",
+  "Message_translated_into_idiom": "செய்தி மொழிபெயர்க்கப்பட்டது {{idiom}}-க்கு",
   "Message_unstarred": "செய்தி அமைந்துவிடப்படவில்லை",
   "Message_was_not_read": "செய்தி படிக்கப்படவில்லை",
   "Message_was_read": "செய்தி வாசிக்கப்பட்டது",

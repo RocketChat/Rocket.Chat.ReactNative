@@ -503,6 +503,7 @@
   "Message_Reported": "Zpráva nahlášena",
   "Message_roomname": "Zpráva {{roomName}}",
   "Message_starred": "Zpráva označena hvězdičkou",
+  "Message_translated_into_idiom": "Zpráva přeložena do {{idiom}}",
   "Message_unstarred": "Zpráva nebyla označena hvězdičkou",
   "Message_was_not_read": "Zpráva nebyla přečtena.",
   "Message_was_read": "Zpráva byla přečtena.",

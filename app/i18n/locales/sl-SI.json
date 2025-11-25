@@ -416,6 +416,7 @@
   "Message_removed": "Sporočilo odstranjeno",
   "Message_Reported": "Sporočilo prijavljeno",
   "Message_starred": "Sporočilo v zvezdi",
+  "Message_translated_into_idiom": "Sporočilo prevedeno v {{idiom}}",
   "Message_unstarred": "Sporočilo neokuženo",
   "Message_was_not_read": "Sporočilo ni bilo prebrano",
   "Message_was_read": "Sporočilo je bilo prebrano",

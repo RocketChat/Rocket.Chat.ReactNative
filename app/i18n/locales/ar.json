@@ -326,6 +326,7 @@
   "Message_removed": "الرسالة حذفت",
   "Message_Reported": "تم التبليغ على الرسالة",
   "Message_starred": "الرسالة مميزة",
+  "Message_translated_into_idiom": "تمت ترجمة الرسالة إلى {{idiom}}",
   "Message_unstarred": "الرسالة غير مميزة",
   "Message_was_not_read": "الرسالة لم تُقرأ",
   "Message_was_read": "تمت قراءة الرسالة",

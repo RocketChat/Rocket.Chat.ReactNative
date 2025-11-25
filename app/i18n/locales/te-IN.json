@@ -468,6 +468,7 @@
   "Message_removed": "సందేశం తీసివేయబడింది",
   "Message_Reported": "సందేశం నివేదిస్తున్నాం",
   "Message_starred": "సందేశం నకిలీయం చేసినది",
+  "Message_translated_into_idiom": "సందేశం {{idiom}} భాషలోకి అనువదించబడింది",
   "Message_unstarred": "సందేశం నకిలీయం తీసివేయబడింది",
   "Message_was_not_read": "संदेश नहीं पढ़ा गया था।",
   "Message_was_read": "संदेश पढ़ा गया था।",

@@ -404,6 +404,7 @@
   "Message_removed": "Bericht verwijderd",
   "Message_Reported": "Bericht gerapporteerd",
   "Message_starred": "Bericht met ster",
+  "Message_translated_into_idiom": "Bericht vertaald in {{idiom}}",
   "Message_unstarred": "Bericht zonder ster",
   "Message_was_not_read": "Bericht werd niet gelezen.",
   "Message_was_read": "Bericht was gelezen",

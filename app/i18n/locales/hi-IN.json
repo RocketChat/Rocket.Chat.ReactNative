@@ -469,6 +469,7 @@
   "Message_removed": "संदेश हटा दिया गया",
   "Message_Reported": "संदेश की सूचना दी गई",
   "Message_starred": "संदेश स्टार किया गया",
+  "Message_translated_into_idiom": "संदेश {{idiom}} में अनुवादित",
   "Message_unstarred": "संदेश का स्टार हटाया गया",
   "Message_was_not_read": "संदेश नहीं पढ़ा गया",
   "Message_was_read": "संदेश पढ़ा गया था।",

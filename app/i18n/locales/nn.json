@@ -226,6 +226,7 @@
   "Message_HideType_ut": "Bruker ble med i samtalen",
   "Message_HideType_wm": "Skjul velkomstmeldinger",
   "Message_removed": "melding fjernet",
+  "Message_translated_into_idiom": "Melding omsett til {{idiom}}",
   "messages": "meldinger",
   "More": "Mer",
   "Mute": "Demp",

@@ -442,6 +442,7 @@
   "Message_removed": "viesti poistettu",
   "Message_Reported": "Viestistä ilmoitettu",
   "Message_starred": "Viesti merkitty tähdellä",
+  "Message_translated_into_idiom": "Viesti käännetty {{idiom}}.",
   "Message_unstarred": "Viestin tähtimerkintä poistettu",
   "Message_was_not_read": "Viestiä ei luettu",
   "Message_was_read": "Viesti luettiin",

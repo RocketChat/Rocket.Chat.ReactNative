@@ -234,6 +234,7 @@
   "Message_actions": "Acciones de mensaje",
   "Message_removed": "Mensaje eliminado",
   "Message_Reported": "Mensaje notificado",
+  "Message_translated_into_idiom": "Mensaje traducido al {{idiom}}",
   "Message_was_not_read": "Mensaje no fue leído.",
   "Message_was_read": "Mensaje fue leído",
   "messages": "mensajes",
