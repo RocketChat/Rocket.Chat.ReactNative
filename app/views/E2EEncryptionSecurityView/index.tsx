@@ -56,15 +56,15 @@ const E2EEncryptionSecurityView = () => {
 					<ChangePassword />
 
 					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-					<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
-					<Button
-						onPress={resetOwnKey}
-						title={I18n.t('E2E_encryption_reset_button')}
-						type='secondary'
-						testID='e2e-encryption-security-view-reset-key'
-						color={colors.buttonFontDanger}
-						backgroundColor={colors.buttonBackgroundDangerDefault}
-					/>
+					<View style={styles.content}>
+						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
+						<Button
+							onPress={resetOwnKey}
+							title={I18n.t('E2E_encryption_reset_button')}
+							type='primary'
+							testID='e2e-encryption-security-view-reset-key'
+						/>
+					</View>
 				</View>
 			</List.Container>
 		</SafeAreaView>
