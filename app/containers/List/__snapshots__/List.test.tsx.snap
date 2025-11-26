@@ -73,8 +73,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -184,8 +182,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -295,8 +291,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -455,8 +449,6 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -850,8 +842,6 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
           }
         >
           <Text
-            ellipsizeMode="tail"
-            numberOfLines={1}
             style={
               [
                 {
@@ -1073,8 +1063,6 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               }
             >
               <Text
-                ellipsizeMode="tail"
-                numberOfLines={1}
                 style={
                   [
                     {
@@ -1209,8 +1197,6 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               }
             >
               <Text
-                ellipsizeMode="tail"
-                numberOfLines={1}
                 style={
                   [
                     {
@@ -1354,8 +1340,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -1437,8 +1421,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -1541,8 +1523,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -1624,8 +1604,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -1756,8 +1734,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -1839,8 +1815,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -1999,8 +1973,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -2082,8 +2054,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -2261,8 +2231,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -2344,8 +2312,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -2447,8 +2413,6 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -2734,8 +2698,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -2984,8 +2946,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -3309,8 +3269,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -3559,8 +3517,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -3926,8 +3882,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -4176,8 +4130,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -4501,8 +4453,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -4751,8 +4701,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -4966,8 +4914,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -5099,8 +5045,6 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
               }
             >
               <Text
-                ellipsizeMode="tail"
-                numberOfLines={1}
                 style={
                   [
                     {
@@ -5368,8 +5312,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -5618,8 +5560,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -5943,8 +5883,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -6193,8 +6131,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -6502,8 +6438,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -6591,8 +6525,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -6680,8 +6612,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -6769,8 +6699,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -6858,8 +6786,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -6947,8 +6873,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -7036,8 +6960,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -7125,8 +7047,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -7214,8 +7134,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -7303,8 +7221,6 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
                   style={
                     [
                       {
@@ -7491,8 +7407,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -7574,8 +7488,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -7752,8 +7664,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -7903,8 +7813,6 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             }
           >
             <Text
-              ellipsizeMode="tail"
-              numberOfLines={1}
               style={
                 [
                   {
@@ -8220,8 +8128,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -8470,8 +8376,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -8795,8 +8699,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
@@ -9045,8 +8947,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    ellipsizeMode="tail"
-                    numberOfLines={1}
                     style={
                       [
                         {
