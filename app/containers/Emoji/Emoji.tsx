@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, useWindowDimensions } from 'react-native';
-import type { StyleProp, TextStyle } from 'react-native';
+import type { StyleProp, TextStyle, ImageStyle } from 'react-native';
 
 import { useTheme } from '../../theme';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
@@ -23,7 +23,7 @@ const Emoji = ({ literal, isBigEmoji, style, isAvatar, getCustomEmoji, customEmo
     const { formatShortnameToUnicode } = useShortnameToUnicode();
     const { fontScale } = useWindowDimensions();
     const { fontScaleLimited } = useResponsiveLayout();
-    const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
+
 
     // Calculate emoji sizes once to avoid duplication
     const customEmojiSize = {
@@ -36,7 +36,7 @@ const Emoji = ({ literal, isBigEmoji, style, isAvatar, getCustomEmoji, customEmo
     };
 
     if (customEmoji) {
-        return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={customEmoji} />;
+        return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style as StyleProp<ImageStyle>]} emoji={customEmoji} />;
     }
 
     if (!literal) {
@@ -48,7 +48,7 @@ const Emoji = ({ literal, isBigEmoji, style, isAvatar, getCustomEmoji, customEmo
     const foundCustomEmoji = getCustomEmoji?.(emojiName);
 
     if (foundCustomEmoji) {
-        return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={foundCustomEmoji} />;
+        return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style as StyleProp<ImageStyle>]} emoji={foundCustomEmoji} />;
     }
 
     const avatarStyle = {
