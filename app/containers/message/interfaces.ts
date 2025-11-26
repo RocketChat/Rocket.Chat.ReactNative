@@ -132,4 +132,5 @@ export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessage
 	isIgnored: boolean;
 	dcount: number | undefined;
 	dlm: string | Date | undefined;
+	autoTranslateLanguage?: string;
 }

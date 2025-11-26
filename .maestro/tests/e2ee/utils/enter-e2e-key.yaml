@@ -20,7 +20,7 @@ tags:
     id: 'e2e-enter-your-password-view-password'
 - inputText: ${output.data.e2eePassword}
 - tapOn:
-    text: 'Confirm'
+    text: 'Enable encryption'
 - extendedWaitUntil:
     visible:
       id: 'room-view-messages'
