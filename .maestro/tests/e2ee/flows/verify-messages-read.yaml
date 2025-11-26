@@ -1,0 +1,38 @@
+appId: chat.rocket.reactnative
+name: Verify Messages Read
+tags:
+  - 'flow'
+env:
+  MESSAGE_1: m0
+  MESSAGE_2: m1
+  MESSAGE_3: m2
+  MESSAGE_4: m3
+---
+- runFlow:
+    file: '../../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+- runFlow:
+    file: '../../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- runFlow: '../utils/enter-e2e-key.yaml'
+
+# Verify all messages are visible
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_1}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_2}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_3}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_4}.*'
+    timeout: 60000
