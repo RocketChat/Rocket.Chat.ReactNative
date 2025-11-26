@@ -5,8 +5,6 @@ import type { StyleProp, TextStyle, ImageStyle } from 'react-native';
 import { useTheme } from '../../theme';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { getUserSelector } from '../../selectors/login';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface ISharedEmojiProps {
