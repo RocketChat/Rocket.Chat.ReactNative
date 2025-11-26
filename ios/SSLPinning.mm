@@ -16,25 +16,14 @@
 
 @implementation Challenge : NSObject
 
-// Helper method to get MMKVBridge instance with proper initialization
+// Helper method to get MMKVBridge instance
 +(MMKVBridge *)getMMKVInstance {
   SecureStorage *secureStorage = [[SecureStorage alloc] init];
   NSString *hexKey = [self stringToHex:@"com.MMKV.default"];
   NSString *key = [secureStorage getSecureKey:hexKey];
   
-  // Get app group path
-  NSString *appGroupPath = nil;
-  if (NSString *suite = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]) {
-    if (NSURL *directory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:suite]) {
-      appGroupPath = [directory path];
-    }
-  }
-  
-  // Create MMKV path matching userPreferences.ts logic: appGroupPath/mmkv
-  NSString *mmkvPath = appGroupPath ? [appGroupPath stringByAppendingPathComponent:@"mmkv"] : nil;
-  
   NSData *cryptKey = (key && [key length] > 0) ? [key dataUsingEncoding:NSUTF8StringEncoding] : nil;
-  MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:cryptKey rootPath:mmkvPath];
+  MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:cryptKey rootPath:nil];
   
   return mmkvBridge;
 }
