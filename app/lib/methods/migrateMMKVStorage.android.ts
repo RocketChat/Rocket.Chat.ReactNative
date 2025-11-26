@@ -1,15 +1,13 @@
 import { MMKV } from 'react-native-mmkv';
 
 import MMKVReader from '../native/NativeMMKVReader';
-import { isAndroid } from './helpers';
 import userPreferences from './userPreferences';
 
-export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newStorage?: MMKV) {
+const migrateFromOldMMKV = async (oldInstanceId: string = 'default') => {
 	const errors: string[] = [];
-	userPreferences.setBool('WORKSPACE_MIGRATION_COMPLETED', false);
 
 	try {
-		if (!MMKVReader || !isAndroid) {
+		if (!MMKVReader) {
 			console.log('MMKVReader module not available - skipping migration');
 			return;
 		}
@@ -32,7 +30,7 @@ export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newS
 		}
 
 		// Step 2: Create or use new MMKV storage
-		const targetStorage = newStorage || new MMKV({ id: 'default' });
+		const targetStorage = new MMKV({ id: 'default' });
 
 		// Step 3: Migrate data
 		console.log('Step 2: Migrating data to new MMKV...');
@@ -58,10 +56,12 @@ export async function migrateFromOldMMKV(oldInstanceId: string = 'default', newS
 		}
 
 		console.log('=== Migration Complete ===');
+		// Mark Android MMKV data migration as completed
+		userPreferences.setBool('MMKV_DATA_MIGRATION_COMPLETED', true);
 	} catch (error: any) {
 		const errorMsg = `Migration failed: ${error.message}`;
 		console.error(errorMsg);
 	}
-}
+};
 
 export default migrateFromOldMMKV;

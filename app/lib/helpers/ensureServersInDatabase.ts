@@ -17,6 +17,8 @@ const ensureServersInDatabase = async (): Promise<void> => {
 	);
 
 	if (serverUrls.length === 0) {
+		// No server URLs found in MMKV - mark as completed
+		userPreferences.setBool('ENSURED_SERVERS_IN_DATABASE', true);
 		return;
 	}
 
@@ -27,10 +29,13 @@ const ensureServersInDatabase = async (): Promise<void> => {
 
 	const missingServers = serverUrls.filter(url => !existingIds.has(url));
 	if (!missingServers.length) {
+		// All servers already exist in database - mark as completed
+		userPreferences.setBool('ENSURED_SERVERS_IN_DATABASE', true);
 		return;
 	}
 
 	try {
+		// Create missing server records in the database
 		await serversDB.write(async () => {
 			await Promise.all(
 				missingServers.map(url =>
@@ -41,7 +46,8 @@ const ensureServersInDatabase = async (): Promise<void> => {
 				)
 			);
 		});
-		userPreferences.setBool('WORKSPACE_MIGRATION_COMPLETED', true);
+		// Mark migration as completed
+		userPreferences.setBool('ENSURED_SERVERS_IN_DATABASE', true);
 	} catch (error) {
 		console.error('Failed to ensure servers in database:', error);
 		throw error;

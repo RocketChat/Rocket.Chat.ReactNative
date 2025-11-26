@@ -24,8 +24,9 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
-		// Only runs after initial migration to avoid data inconsistencies.
-		const migrationCompleted = UserPreferences.getBool('WORKSPACE_MIGRATION_COMPLETED');
+		// Ensures server URLs from MMKV storage exist as records in WatermelonDB.
+		// Only runs once - flag prevents re-execution to avoid data inconsistencies.
+		const migrationCompleted = UserPreferences.getBool('ENSURED_SERVERS_IN_DATABASE');
 		if (!migrationCompleted) {
 			yield call(ensureServersInDatabase);
 		}

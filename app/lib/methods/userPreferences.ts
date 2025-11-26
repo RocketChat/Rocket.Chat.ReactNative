@@ -45,7 +45,11 @@ export const useUserPreferences = <T>(key: string, defaultValue?: T): [T | undef
 		if (typeof defaultValue === 'string' || defaultValue === undefined) {
 			value = storedValue as T;
 		} else {
-			value = JSON.parse(storedValue) as T;
+			try {
+				value = JSON.parse(storedValue) as T;
+			} catch {
+				value = defaultValue;
+			}
 		}
 	}
 
