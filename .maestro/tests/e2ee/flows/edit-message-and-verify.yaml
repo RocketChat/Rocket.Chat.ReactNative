@@ -1,0 +1,66 @@
+appId: chat.rocket.reactnative
+name: Edit Message and Verify
+tags:
+  - 'flow'
+env:
+  ORIGINAL_MESSAGE: m99
+  EDITED_MESSAGE: m6
+  MESSAGE_1: m0
+  MESSAGE_2: m1
+  MESSAGE_3: m2
+  MESSAGE_4: m3
+  MESSAGE_5: m4
+---
+# Send a message
+- runFlow:
+    file: '../../../helpers/send-message.yaml'
+    env:
+      message: ${ORIGINAL_MESSAGE}
+- extendedWaitUntil:
+    visible:
+      text: '.*${ORIGINAL_MESSAGE}.*'
+    timeout: 60000
+
+# Edit the message
+- longPressOn:
+    text: '.*${ORIGINAL_MESSAGE}.*'
+- extendedWaitUntil:
+    visible:
+      id: 'action-sheet'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Edit'
+    timeout: 60000
+- tapOn:
+    text: 'Edit'
+- eraseText
+- inputText: ${EDITED_MESSAGE}
+- tapOn:
+    id: 'message-composer-send'
+
+# Verify all messages are visible including edited one
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_1}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_2}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_3}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_4}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_5}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${EDITED_MESSAGE}.*'
+    timeout: 60000
