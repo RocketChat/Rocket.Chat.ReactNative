@@ -22,9 +22,9 @@ const getEmojiToken = (block: EmojiProps, isAvatar: boolean) => {
 	return block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
 };
 
-const Emoji = ({ block, isBigEmoji, style, index, isAvatar }: IEmojiProps) => {
+const Emoji = ({ block, isBigEmoji, style, isAvatar }: IEmojiProps) => {
 	const { getCustomEmoji } = useContext(MarkdownContext);
-	const literal = getEmojiToken(block, !!isAvatar);
+	const literal = getEmojiToken(block, isAvatar ?? false);
 
 	return <SharedEmoji literal={literal} isBigEmoji={isBigEmoji} style={style} isAvatar={isAvatar} getCustomEmoji={getCustomEmoji} />;
 };

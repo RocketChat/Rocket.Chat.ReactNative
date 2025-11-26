@@ -59,7 +59,9 @@ const Emoji = ({ literal, isBigEmoji, style, isAvatar, getCustomEmoji, customEmo
         <Text
             style={[
                 { color: colors.fontDefault },
-                isBigEmoji ? { fontSize: 30, lineHeight: 43 } : { fontSize: 16, lineHeight: 22 },
+                isBigEmoji
+                    ? { fontSize: 30 * fontScaleLimited, lineHeight: 43 * fontScaleLimited }
+                    : { fontSize: 16 * fontScaleLimited, lineHeight: 22 * fontScaleLimited },
                 style,
                 isAvatar && avatarStyle
             ]}>
