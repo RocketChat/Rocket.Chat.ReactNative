@@ -2,6 +2,7 @@ import React from 'react';
 import { type UnorderedList as UnorderedListProps } from '@rocket.chat/message-parser';
 import { View, Text } from 'react-native';
 
+import getBlockValueString from '../../../../lib/methods/getBlockValueString';
 import Inline from '../Inline';
 import styles from '../../styles';
 import { themes } from '../../../../lib/constants/colors';
@@ -16,7 +17,7 @@ const UnorderedList = ({ value }: IUnorderedListProps) => {
 	return (
 		<View>
 			{value.map((item, index) => {
-				const key = `${item.value?.toString?.().slice(0, 20) || index}-${index}`;
+				const key = `${item.type}-${getBlockValueString(item.value)}-${index}`;
 				return (
 					<View key={key} style={styles.row}>
 						<Text style={[styles.text, { color: themes[theme].fontDefault }]}>{'\u2022 '}</Text>
