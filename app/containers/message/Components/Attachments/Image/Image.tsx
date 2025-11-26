@@ -12,6 +12,7 @@ import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
+import Skeleton from '../../../../Skeleton/Skeleton';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	'use memo';
@@ -82,12 +83,12 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 							contentFit='cover'
 						/>
 					) : (
-						<View style={[styles.image, borderStyle]} />
+						<Skeleton width={styles.image.width} height={200} borderRadius={4} />
 					)}
 					<OverlayComponent
-						loading={['loading', 'downloaded'].includes(status)}
+						loading={false}
 						style={[styles.image, borderStyle]}
-						iconName={status === 'to-download' ? 'arrow-down-circle' : 'loading'}
+						iconName={status === 'to-download' ? 'arrow-down-circle' : ('loading' as any)}
 						showBackground={!imagePreview || !imageType}
 					/>
 				</>

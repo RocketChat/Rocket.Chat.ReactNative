@@ -1179,6 +1179,42 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
           }
         }
       >
+        <View
+          onLayout={[Function]}
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "transparent",
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 100,
+                    "width": 100,
+                  },
+                  [
+                    {
+                      "overflow": "hidden",
+                    },
+                    {
+                      "backgroundColor": "#F7F8FA",
+                    },
+                  ],
+                  {
+                    "borderRadius": 4,
+                    "height": 100,
+                    "width": 100,
+                  },
+                ]
+              }
+            />
+          </View>
+        </View>
         <ViewManagerAdapter_ExpoImage
           borderColor={4291546833}
           containerViewRef={"[React.ref]"}
@@ -1189,10 +1225,11 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
               "top": "50%",
             }
           }
-          height={300}
+          height={0}
           nativeViewRef={"[React.ref]"}
           onError={[Function]}
           onLoad={[Function]}
+          onLoadEnd={[Function]}
           onLoadStart={[Function]}
           onProgress={[Function]}
           placeholder={[]}
@@ -1206,12 +1243,12 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
           style={
             {
               "borderColor": "#CBCED1",
-              "height": 300,
-              "width": 300,
+              "height": 0,
+              "width": 0,
             }
           }
           transition={null}
-          width={300}
+          width={0}
         />
       </Text>
     </Text>
