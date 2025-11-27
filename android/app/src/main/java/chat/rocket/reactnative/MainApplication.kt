@@ -27,6 +27,7 @@ import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVReaderTurboPackage;
+import chat.rocket.reactnative.storage.MMKVMigration;
 import chat.rocket.reactnative.notification.CustomPushNotification;
 import com.tencent.mmkv.MMKV;
 
@@ -60,6 +61,10 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
     
     // Initialize MMKV before React Native starts
     MMKV.initialize(this)
+    
+    // Migrate MMKV data from old encrypted storage to new unencrypted storage
+    // Must run before React Native starts to avoid race conditions
+    MMKVMigration.migrate(this)
 
     // Load the native entry point for the New Architecture
     load()

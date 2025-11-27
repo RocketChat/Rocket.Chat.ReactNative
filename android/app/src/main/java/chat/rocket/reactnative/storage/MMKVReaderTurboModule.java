@@ -76,8 +76,23 @@ public class MMKVReaderTurboModule extends NativeMMKVReaderSpec {
      * LIMITATIONS (inherent to MMKV Java API v1.2.10):
      * - No API to query stored value types before decoding
      * - Uses sentinel values and heuristics for type detection
-     * - May misdetect: Integer.MIN_VALUE as non-integer, stored 'false' as missing
-     * - These limitations are acceptable for read-only legacy migration
+     * 
+     * TYPE DETECTION LIMITATIONS:
+     * 1. Integer.MIN_VALUE sentinel: Actual stored values of Integer.MIN_VALUE cannot be
+     *    distinguished from "key not found", so they will be skipped during migration.
+     *    This is acceptable for one-time migration as Integer.MIN_VALUE is rarely used.
+     * 
+     * 2. Boolean false detection: Boolean values stored as 'false' may be misdetected
+     *    if the key exists but decodeBool() returns false (which could mean either
+     *    "stored false" or "not found, returning default"). The current implementation
+     *    uses containsKey() check, but this is not 100% reliable for boolean detection.
+     * 
+     * 3. Type inference order: String → Int → Boolean. If a value could be multiple types,
+     *    it will be detected as the first matching type in this order.
+     * 
+     * These limitations are acceptable for read-only legacy migration. The native
+     * MMKVMigration class uses the same approach. Critical data should be verified
+     * post-migration if Integer.MIN_VALUE or boolean false values are expected.
      * 
      * @param mmkvId The MMKV instance ID to read
      * @param promise React Native promise for async result

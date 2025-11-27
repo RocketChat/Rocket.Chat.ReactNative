@@ -9,6 +9,7 @@
 #import "MMKVMigration.h"
 #import "SecureStorage.h"
 #import "Shared/RocketChat/MMKVBridge.h"
+#import <os/log.h>
 
 static NSString *toHex(NSString *str) {
     if (!str) return @"";
@@ -21,6 +22,15 @@ static NSString *toHex(NSString *str) {
     }
 
     return [hex lowercaseString];
+}
+
+static os_log_t migration_log(void) {
+    static os_log_t log = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        log = os_log_create("chat.rocket.reactnative", "MMKVMigration");
+    });
+    return log;
 }
 
 @implementation MMKVMigration
@@ -147,7 +157,9 @@ static NSString *toHex(NSString *str) {
         [defaults setObject:@(migratedCount) forKey:@"MMKV_MIGRATION_KEYS_COUNT"];
         [defaults setObject:[NSDate date].description forKey:@"MMKV_MIGRATION_TIMESTAMP"];
         [defaults synchronize];
-    } @catch (__unused NSException *exception) {
+        os_log_info(migration_log(), "MMKV Migration completed successfully: %ld keys migrated", (long)migratedCount);
+    } @catch (NSException *exception) {
+        os_log_error(migration_log(), "MMKV Migration error: %{public}@ - %{public}@", exception.name, exception.reason);
     }
 }
 
@@ -182,12 +194,14 @@ static NSString *toHex(NSString *str) {
                         data[key] = dataValue;
                     }
                 }
-            } @catch (__unused NSException *exception) {
+            } @catch (NSException *exception) {
+                os_log_error(migration_log(), "MMKV Migration error reading key '%{public}@': %{public}@ - %{public}@", key, exception.name, exception.reason);
             }
         }
 
         return data.count > 0 ? data : nil;
-    } @catch (__unused NSException *exception) {
+    } @catch (NSException *exception) {
+        os_log_error(migration_log(), "MMKV Migration error reading instance '%{public}@': %{public}@ - %{public}@", instanceId, exception.name, exception.reason);
         return nil;
     }
 }

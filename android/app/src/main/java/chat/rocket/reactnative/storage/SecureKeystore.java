@@ -43,7 +43,7 @@ import javax.security.auth.x500.X500Principal;
 public class SecureKeystore {
 
     private SharedPreferences prefs;
-    private ReactApplicationContext reactContext;
+    private Context context;
     private final String SharedPrefFileName = "rnmmkv.shareprefs";
 
     private boolean useKeystore() {
@@ -51,22 +51,49 @@ public class SecureKeystore {
     }
 
     public SecureKeystore(ReactApplicationContext reactApplicationContext) {
-        reactContext = reactApplicationContext;
+        context = reactApplicationContext;
         if (!useKeystore()) {
             try {
-                MasterKey key = new MasterKey.Builder(reactContext)
+                MasterKey key = new MasterKey.Builder(context)
                         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                         .build();
 
+                // Filename for EncryptedSharedPreferences - must match react-native-mmkv-storage
+                // to maintain compatibility with existing encrypted preference files
+                // This hash was used by the original library and cannot be changed
                 prefs = EncryptedSharedPreferences.create(
-                        reactContext,
+                        context,
                         "e4b001df9a082298dd090bb7455c45d92fbd5dda.xml",
                         key,
                         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
             } catch (GeneralSecurityException | IOException | RuntimeException e) {
                 Log.e("MMKVReader:SecureKeystore", "Failed to create encrypted shared preferences! Falling back to standard SharedPreferences", e);
-                prefs = reactContext.getSharedPreferences(SharedPrefFileName, Context.MODE_PRIVATE);
+                prefs = context.getSharedPreferences(SharedPrefFileName, Context.MODE_PRIVATE);
+            }
+        }
+    }
+
+    public SecureKeystore(Context context) {
+        this.context = context;
+        if (!useKeystore()) {
+            try {
+                MasterKey key = new MasterKey.Builder(context)
+                        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                        .build();
+
+                // Filename for EncryptedSharedPreferences - must match react-native-mmkv-storage
+                // to maintain compatibility with existing encrypted preference files
+                // This hash was used by the original library and cannot be changed
+                prefs = EncryptedSharedPreferences.create(
+                        context,
+                        "e4b001df9a082298dd090bb7455c45d92fbd5dda.xml",
+                        key,
+                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+            } catch (GeneralSecurityException | IOException | RuntimeException e) {
+                Log.e("MMKVReader:SecureKeystore", "Failed to create encrypted shared preferences! Falling back to standard SharedPreferences", e);
+                prefs = context.getSharedPreferences(SharedPrefFileName, Context.MODE_PRIVATE);
             }
         }
     }
@@ -83,10 +110,10 @@ public class SecureKeystore {
                 Locale initialLocale = Locale.getDefault();
                 if (isRTL(initialLocale)) {
                     Locale.setDefault(Locale.ENGLISH);
-                    setCipherText(reactContext, key, value);
+                    setCipherText(context, key, value);
                     Locale.setDefault(initialLocale);
                 } else {
-                    setCipherText(reactContext, key, value);
+                    setCipherText(context, key, value);
                 }
             } catch (Exception e) {
                 Log.e(Constants.TAG, "Error setting secure key", e);
@@ -105,7 +132,7 @@ public class SecureKeystore {
     public String getSecureKey(String key) {
         if (useKeystore()) {
             try {
-                String value = getPlainText(reactContext, key);
+                String value = getPlainText(context, key);
                 return value;
             } catch (FileNotFoundException fnfe) {
                 return null;

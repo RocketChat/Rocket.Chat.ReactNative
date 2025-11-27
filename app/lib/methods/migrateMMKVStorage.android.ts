@@ -4,6 +4,14 @@ import MMKVReader from '../native/NativeMMKVReader';
 import userPreferences from './userPreferences';
 
 const migrateFromOldMMKV = async (oldInstanceId: string = 'default') => {
+	// Native migration runs first in MainApplication.onCreate() before React Native starts
+	// This JS migration is kept as fallback but should rarely (if ever) run
+	// Check if native migration already completed
+	if (userPreferences.getBool('MMKV_MIGRATION_COMPLETED')) {
+		console.log('MMKV migration already completed by native code, skipping JS migration');
+		return;
+	}
+
 	const errors: string[] = [];
 
 	try {
@@ -57,7 +65,8 @@ const migrateFromOldMMKV = async (oldInstanceId: string = 'default') => {
 
 		console.log('=== Migration Complete ===');
 		// Mark Android MMKV data migration as completed
-		userPreferences.setBool('MMKV_DATA_MIGRATION_COMPLETED', true);
+		// Note: Native migration runs first in MainApplication, this is fallback
+		userPreferences.setBool('MMKV_MIGRATION_COMPLETED', true);
 	} catch (error: any) {
 		const errorMsg = `Migration failed: ${error.message}`;
 		console.error(errorMsg);
