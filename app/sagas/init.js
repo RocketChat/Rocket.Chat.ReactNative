@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
-import { selectServerRequest } from '../actions/server';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
@@ -16,6 +16,8 @@ import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
 
+import appConfig from '../../app.json';
+
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
@@ -24,26 +26,33 @@ export const initLocalSettings = function* initLocalSettings() {
 const restore = function* restore() {
 	console.log('RESTORE');
 	try {
-		const server = UserPreferences.getString(CURRENT_SERVER);
-		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		// const server = UserPreferences.getString(CURRENT_SERVER);
+		// let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
-		if (!server) {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		} else if (!userId) {
-			const serversDB = database.servers;
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
+		// if (!server) {
+		// 	yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		// } else if (!userId) {
+		// 	const serversDB = database.servers;
+		// 	const serversCollection = serversDB.get('servers');
+		// 	const servers = yield serversCollection.query().fetch();
 
-			// Check if there're other logged in servers and picks first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (userId) {
-						return yield put(selectServerRequest(newServer, newServer.version));
-					}
-				}
-			}
+		// 	// Check if there're other logged in servers and picks first one
+		// 	if (servers.length > 0) {
+		// 		for (let i = 0; i < servers.length; i += 1) {
+		// 			const newServer = servers[i].id;
+		// 			userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
+		// 			if (userId) {
+		// 				return yield put(selectServerRequest(newServer));
+		// 			}
+		// 		}
+		// 	}
+		const { server } = appConfig;
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+
+		if (!userId) {
+			UserPreferences.removeItem(TOKEN_KEY);
+			UserPreferences.removeItem(CURRENT_SERVER);
+			yield put(serverRequest(appConfig.server));
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
 			yield localAuthenticate(server);
