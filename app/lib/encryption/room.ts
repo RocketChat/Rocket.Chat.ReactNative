@@ -19,7 +19,6 @@ import getSingleMessage from '../methods/getSingleMessage';
 import type {
 	IAttachment,
 	IMessage,
-	IUpload,
 	TSendFileMessageFileInfo,
 	IServerAttachment,
 	TSubscriptionModel,
@@ -482,46 +481,20 @@ export default class EncryptionRoom {
 		try {
 			const content = await this.encryptText(EJSON.stringify({ msg: message.msg || '' }));
 
-			return {
+			const encryptedMessage = {
 				...message,
 				t: E2E_MESSAGE_TYPE,
 				e2e: E2E_STATUS.PENDING,
 				e2eMentions: getE2EEMentions(message.msg),
 				content
-			};
+			} as IMessage;
+
+			delete encryptedMessage.msg;
+
+			return encryptedMessage;
 		} catch (e) {
 			// Do nothing
 			console.error(e);
-		}
-
-		return message;
-	};
-
-	// Encrypt upload
-	encryptUpload = async (message: IUpload) => {
-		if (!this.ready) {
-			return message;
-		}
-
-		try {
-			let description = '';
-
-			if (message.description) {
-				const encryptedResult = await this.encryptText(EJSON.stringify({ msg: message.description }));
-				description =
-					encryptedResult.algorithm === 'rc.v1.aes-sha2'
-						? encryptedResult.ciphertext
-						: EJSON.stringify({ kid: encryptedResult.kid, iv: encryptedResult.iv, ciphertext: encryptedResult.ciphertext });
-			}
-
-			return {
-				...message,
-				t: E2E_MESSAGE_TYPE,
-				e2e: E2E_STATUS.PENDING,
-				description
-			};
-		} catch {
-			// Do nothing
 		}
 
 		return message;
