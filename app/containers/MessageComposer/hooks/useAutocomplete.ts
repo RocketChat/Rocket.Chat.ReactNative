@@ -53,8 +53,7 @@ export const useAutocomplete = ({
 	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
 }): TAutocompleteItem[] => {
 	const [items, setItems] = useState<TAutocompleteItem[]>([]);
-	const [mentionAll] = usePermissions(['mention-all']);
-	const [mentionHere] = usePermissions(['mention-here']);
+	const [mentionAll, mentionHere] = usePermissions(['mention-all', 'mention-here']);
 
 	useEffect(() => {
 		const getAutocomplete = async () => {
