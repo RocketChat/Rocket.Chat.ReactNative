@@ -1,0 +1,59 @@
+appId: chat.rocket.reactnative
+name: Create E2EE Room
+tags:
+  - 'flow'
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view'
+- extendedWaitUntil:
+    visible:
+      id: 'new-message-view-create-channel'
+    timeout: 60000
+- tapOn:
+    id: 'new-message-view-create-channel'
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-search'
+- inputText: ${USER_TO_ADD}
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-${USER_TO_ADD}'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-${USER_TO_ADD}'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-${USER_TO_ADD}'
+- tapOn:
+    id: 'selected-users-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-name'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-name'
+- inputText: ${ROOM}
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: 'create-channel-encrypted'
+    timeout: 60000
+- tapOn:
+    id: 'create-channel-encrypted'
+- tapOn:
+    id: 'create-channel-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${ROOM}'
+    timeout: 60000

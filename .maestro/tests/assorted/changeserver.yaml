@@ -32,10 +32,6 @@ tags:
     visible:
       id: 'rooms-list-header-server-add'
     timeout: 60000
-- extendedWaitUntil:
-    visible:
-      id: 'rooms-list-header-create-workspace-button'
-    timeout: 60000
 
 # should login to server, add new server, close the app, open the app and show previous logged server
 - tapOn:
@@ -53,6 +49,8 @@ tags:
       id: 'workspace-view'
     timeout: 60000
 - launchApp
+- waitForAnimationToEnd:
+    timeout: 500
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -73,6 +71,8 @@ tags:
     visible:
       id: 'server-item-${output.data.alternateServer}'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn:
     id: 'server-item-${output.data.alternateServer}'
 - extendedWaitUntil:
@@ -111,6 +111,8 @@ tags:
     visible:
       id: 'rooms-list-header-servers-list-button'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
@@ -123,6 +125,8 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'server-item-${output.data.server}'
+- waitForAnimationToEnd:
+    timeout: 500
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -138,6 +142,8 @@ tags:
 
 # should reopen the app and show main server
 - launchApp
+- waitForAnimationToEnd:
+    timeout: 500
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
@@ -146,3 +152,51 @@ tags:
     file: './utils/check-server.yaml'
     env:
       server: ${output.data.server}
+
+# should test swipe to delete on alternate server
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    visible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+
+# swipe left to reveal delete button
+- swipe:
+    direction: LEFT
+    from:
+      id: 'server-item-${output.data.alternateServer}'
+
+# tap delete button
+- tapOn:
+    id: 'server-item-${output.data.alternateServer}-delete'
+
+# confirm deletion
+- extendedWaitUntil:
+    visible:
+      text: '.*Delete.*'
+    timeout: 60000
+- tapOn:
+    text: 'Delete'
+
+# verify alternate server is deleted
+- waitForAnimationToEnd:
+    timeout: 500
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-header-servers-list-button'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-header-servers-list-button'
+- extendedWaitUntil:
+    notVisible:
+      id: 'server-item-${output.data.alternateServer}'
+    timeout: 60000
+
+# verify main server still exists
+- assertVisible:
+    id: 'server-item-${output.data.server}'

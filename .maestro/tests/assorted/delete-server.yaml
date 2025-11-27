@@ -77,14 +77,26 @@ tags:
     visible:
       id: 'server-item-${output.data.server}'
     timeout: 60000
-- longPressOn:
-    id: 'server-item-${output.data.server}'
+
+# swipe left to reveal delete button
+- swipe:
+    direction: LEFT
+    from:
+      id: 'server-item-${output.data.server}'
+
+# tap delete button
+- tapOn:
+    id: 'server-item-${output.data.server}-delete'
+
+# confirm deletion
 - extendedWaitUntil:
     visible:
       text: '.*Delete.*'
     timeout: 60000
 - tapOn:
     text: 'Delete'
+- waitForAnimationToEnd:
+    timeout: 300
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'

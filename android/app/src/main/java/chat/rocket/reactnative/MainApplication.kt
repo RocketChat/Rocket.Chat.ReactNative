@@ -54,12 +54,11 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
     SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
 
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
-      load()
-    }
+    // Load the native entry point for the New Architecture
+    load()
     
-    reactNativeHost.reactInstanceManager.addReactInstanceEventListener(object : ReactInstanceEventListener {
+    // Register listener to set React context when initialized
+    reactHost.addReactInstanceEventListener(object : ReactInstanceEventListener {
       override fun onReactContextInitialized(context: ReactContext) {
         CustomPushNotification.setReactContext(context as ReactApplicationContext)
       }

@@ -1,0 +1,44 @@
+appId: chat.rocket.reactnative
+name: Enter Key, Read Messages and Send
+tags:
+  - 'flow'
+env:
+  MESSAGE_1: m0
+  MESSAGE_2: m1
+  MESSAGE_3: m2
+  NEW_MESSAGE: m3
+---
+- runFlow:
+    file: '../../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+- runFlow:
+    file: '../../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- runFlow: '../utils/enter-e2e-key.yaml'
+
+# Verify messages are visible
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_1}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_2}.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*${MESSAGE_3}.*'
+    timeout: 60000
+
+# Send a new message
+- extendedWaitUntil:
+    visible:
+      id: 'message-composer-input'
+    timeout: 60000
+- runFlow:
+    file: '../../../helpers/send-message.yaml'
+    env:
+      message: ${NEW_MESSAGE}

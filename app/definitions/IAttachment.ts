@@ -1,5 +1,5 @@
 import { type IUser } from './IUser';
-import { type E2EType, type IAttachmentTranslations, type IMessageE2EEContent } from './IMessage';
+import { type E2EType, type IAttachmentTranslations, type EncryptedContent } from './IMessage';
 
 export type TAttachmentEncryption = {
 	iv: string;
@@ -72,7 +72,7 @@ export interface IServerAttachment {
 	uploading: boolean;
 	url: string;
 	user: Pick<IUser, '_id' | 'username' | 'name'>;
-	content?: IMessageE2EEContent;
+	content?: EncryptedContent;
 }
 
 export interface IShareAttachment {

@@ -4,12 +4,17 @@ tags:
   - 'util'
 
 ---
+- scrollUntilVisible:
+    element:
+      id: e2e-encryption-security-view-reset-key
+    direction: DOWN
+    timeout: 30000
 - extendedWaitUntil:
     visible:
-      id: e2e-encryption-security-view-reset-key
+      id: e2e-encryption-security-view-reset-password-button
     timeout: 60000
 - tapOn:
-    id: e2e-encryption-security-view-reset-key
+    id: e2e-encryption-security-view-reset-password-button
 - extendedWaitUntil:
     visible:
       text: .*Are you sure.*
