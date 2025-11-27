@@ -439,7 +439,7 @@ describe('MessageComposer', () => {
 			expect(onSendMessage).toHaveBeenCalledWith('@john', undefined);
 		});
 
-		test('does not show @all or @here in autocomplete when user does not have permissions', async () => {
+		test('does not show @all or @here in autocomplete when user does not have permissions ', async () => {
 			mockedStore.dispatch(setPermissions({ 'mention-all': [], 'mention-here': [] }));
 			const onSendMessage = jest.fn();
 			render(<Render context={{ onSendMessage }} />);
