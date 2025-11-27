@@ -3775,6 +3775,12 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@legendapp/list@^2.0.0-beta.7":
+  version "2.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@legendapp/list/-/list-2.0.0-beta.7.tgz#d71d351c5be85ba58da8d41a428f3f1eed39c6bc"
+  integrity sha512-yU33xM57OWRp9CEbdNEJ4gtkjHOv1Tn/eQEBSx0t0hOSIMj3zx3kIwFkU3e2Kl/IJUVkrzLcRZIREyXI7eV5YQ==
+  dependencies:
+    use-sync-external-store "^1.5.0"
 "@jridgewell/trace-mapping@^0.3.28":
   version "0.3.31"
   resolved "https://registry.yarnpkg.com/@jridgewell/trace-mapping/-/trace-mapping-0.3.31.tgz#db15d6781c931f3a251a3dac39501c98a6082fd0"

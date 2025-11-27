@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { type ViewToken, type ViewabilityConfigCallbackPairs } from 'react-native';
+import {ViewToken, type ViewToken, type ViewabilityConfigCallbackPairs } from 'react-native';
+
 
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
 import { VIEWABILITY_CONFIG } from '../constants';
@@ -21,20 +22,8 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	);
 
 	const jumpToBottom = useCallback(() => {
-		listRef.current?.scrollToOffset({ offset: -100 });
+		listRef.current?.scrollToEnd();
 	}, [listRef]);
-
-	const onViewableItemsChanged: IListProps['onViewableItemsChanged'] = ({ viewableItems: vi }) => {
-		viewableItems.current = vi;
-	};
-
-	const viewabilityConfigCallbackPairs = useRef<ViewabilityConfigCallbackPairs>([
-		{ onViewableItemsChanged, viewabilityConfig: VIEWABILITY_CONFIG }
-	]);
-
-	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
-		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
-	};
 
 	const setHighlightTimeout = () => {
 		if (highlightTimeout.current) {
@@ -98,8 +87,6 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		jumpToBottom,
 		jumpToMessage,
 		cancelJumpToMessage,
-		viewabilityConfigCallbackPairs,
-		handleScrollToIndexFailed,
 		highlightedMessageId
 	};
 };

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import { LegendList } from '@legendapp/list';
 
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
@@ -8,52 +8,58 @@ import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
+import NavBottomFAB from './NavBottomFAB';
 
 const styles = StyleSheet.create({
 	list: {
 		flex: 1
 	},
 	contentContainer: {
-		paddingTop: 10
+		paddingVertical: 10
 	}
 });
 
+
 const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
+	const { data } = props;
+	const showScrollToBottomButton = (data?.length || 0) > 5;
 	const [visible, setVisible] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
-	const scrollHandler = useAnimatedScrollHandler({
-		onScroll: event => {
-			if (event.contentOffset.y > SCROLL_LIMIT) {
-				runOnJS(setVisible)(true);
-			} else {
-				runOnJS(setVisible)(false);
-			}
+	const [visible, setVisible] = useState(false);
+
+	const checkIfAtEnd = () => {
+		if (listRef.current?.getState().isAtEnd) {
+			setVisible(false);
+		} else {
+			setVisible(true);
 		}
-	});
+	};
+
+	useEffect(() => {
+		listRef?.current?.scrollToEnd();
+	}, [props.data?.length]);
 
 	return (
 		<View style={styles.list}>
-			{/* @ts-ignore */}
-			<Animated.FlatList
+			<LegendList
+				ref={listRef}
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
-				ref={listRef}
-				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted
-				removeClippedSubviews={isIOS}
-				initialNumToRender={7}
 				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
-				scrollEventThrottle={16}
-				onScroll={scrollHandler}
+				onScroll={checkIfAtEnd}
+				keyExtractor={item => item?.id}
+				maintainScrollAtEndThreshold={0.1}
+				maintainScrollAtEnd
+				maintainVisibleContentPosition
+				waitForInitialLayout
+				recycleItems
+				alignItemsAtEnd
 				{...props}
-				{...scrollPersistTaps}
 			/>
-			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
+			{showScrollToBottomButton ? <NavBottomFAB visible={visible} onPress={jumpToBottom} /> : null}
 		</View>
 	);
 };
