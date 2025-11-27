@@ -26,6 +26,8 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, style = [], testID }: IMarkdo
 			accessibilityLabel={m}
 			style={[styles.text, { color: themes[theme].fontDefault, lineHeight: undefined }, ...style]}
 			numberOfLines={numberOfLines}
+			ellipsizeMode="tail"
+			allowFontScaling={true}
 			testID={testID || `markdown-preview-${m}`}>
 			{m}
 		</Text>

@@ -18,8 +18,8 @@ interface IResponsiveFontScaleProviderProps {
 export const ResponsiveLayoutContext = createContext({} as IResponsiveLayoutContextData);
 
 export const FONT_SCALE_LIMIT = 1.3;
-export const BASE_ROW_HEIGHT = 75;
-export const BASE_ROW_HEIGHT_CONDENSED = 60;
+export const BASE_ROW_HEIGHT = 84;
+export const BASE_ROW_HEIGHT_CONDENSED = 68;
 
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	// `fontScale` is the current font scaling value of the device.
