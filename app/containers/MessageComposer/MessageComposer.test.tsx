@@ -472,7 +472,7 @@ describe('MessageComposer', () => {
 		});
 
 		test('shows only @here when user has mention-here permission', async () => {
-			mockedStore.dispatch(setPermissions({ 'mention-here': ['user'], 'mention-all': [''] }));
+			mockedStore.dispatch(setPermissions({ 'mention-here': ['user'], 'mention-all': [] }));
 			const onSendMessage = jest.fn();
 			render(<Render context={{ onSendMessage }} />);
 
