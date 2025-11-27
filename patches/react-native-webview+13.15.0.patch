@@ -184,18 +184,9 @@ index 44d3378..3972014 100644
      public String getName() {
          return RNCWebViewManagerImpl.NAME;
 diff --git a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
-index 526cc16..d038c43 100644
+index 526cc16..8f3318d 100644
 --- a/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
 +++ b/node_modules/react-native-webview/android/src/oldarch/com/reactnativecommunity/webview/RNCWebViewModule.java
-@@ -40,7 +40,7 @@ public class RNCWebViewModule extends ReactContextBaseJavaModule {
-     }
- 
-     public void setDownloadRequest(DownloadManager.Request request) {
--        mRNCWebViewModuleImpl.setDownloadRequest(request);
-+        mRNCWxebViewModuleImpl.setDownloadRequest(request);
-     }
- 
-     public void downloadFile(String downloadingMessage) {
 @@ -51,6 +51,10 @@ public class RNCWebViewModule extends ReactContextBaseJavaModule {
          return mRNCWebViewModuleImpl.grantFileDownloaderPermissions(downloadingMessage, lackPermissionToDownloadMessage);
      }
