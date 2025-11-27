@@ -74,7 +74,7 @@ const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines, el
 			return (
 				<Text
 					numberOfLines={numberOfLines}
-					ellipsizeMode={ellipsizeMode as any}
+					ellipsizeMode={ellipsizeMode}
 					style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
 					{translateTitle && title ? I18n.t(title) : title}
 				</Text>
@@ -107,7 +107,7 @@ interface IListItemContent {
 	accessibilityRole?: AccessibilityRole;
 	additionalAcessibilityLabelCheck?: boolean;
 	numberOfLines?: number;
-	ellipsizeMode?: string;
+	ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
 }
 
 const Content = React.memo(
