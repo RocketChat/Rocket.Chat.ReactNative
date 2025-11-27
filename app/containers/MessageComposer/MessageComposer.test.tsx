@@ -439,69 +439,69 @@ describe('MessageComposer', () => {
 			expect(onSendMessage).toHaveBeenCalledWith('@john', undefined);
 		});
 
-        test('does not show @all or @here in autocomplete when user does not have permissions', async () => {
-            mockedStore.dispatch(setPermissions({ 'mention-all': [], 'mention-here': [] }));
-            const onSendMessage = jest.fn();
-            render(<Render context={{ onSendMessage }} />);
+		test('does not show @all or @here in autocomplete when user does not have permissions', async () => {
+			mockedStore.dispatch(setPermissions({ 'mention-all': [], 'mention-here': [] }));
+			const onSendMessage = jest.fn();
+			render(<Render context={{ onSendMessage }} />);
 
-            await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-            await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
-            await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-                nativeEvent: { selection: { start: 1, end: 1 } }
-            });
-            jest.advanceTimersByTime(500);
-            
-            await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).not.toBeOnTheScreen());
-            await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).not.toBeOnTheScreen());
-        });
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			jest.advanceTimersByTime(500);
 
-        test('shows only @all when user has mention-all permission', async () => {
-            mockedStore.dispatch(setPermissions({ 'mention-all': ['user'], 'mention-here': [] }));
-            const onSendMessage = jest.fn();
-            render(<Render context={{ onSendMessage }} />);
+			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).not.toBeOnTheScreen());
+			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).not.toBeOnTheScreen());
+		});
 
-            await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-            await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
-            await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-                nativeEvent: { selection: { start: 1, end: 1 } }
-            });
-            jest.advanceTimersByTime(500);
-            
-            await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).toBeOnTheScreen());
-            await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).not.toBeOnTheScreen());
-        });
+		test('shows only @all when user has mention-all permission', async () => {
+			mockedStore.dispatch(setPermissions({ 'mention-all': ['user'], 'mention-here': [] }));
+			const onSendMessage = jest.fn();
+			render(<Render context={{ onSendMessage }} />);
 
-        test('shows only @here when user has mention-here permission', async () => {
-            mockedStore.dispatch(setPermissions({ 'mention-here': ['user'], 'mention-all': [''] }));
-            const onSendMessage = jest.fn();
-            render(<Render context={{ onSendMessage }} />);
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			jest.advanceTimersByTime(500);
 
-            await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-            await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
-            await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-                nativeEvent: { selection: { start: 1, end: 1 } }
-            });
-            jest.advanceTimersByTime(500);
-            
-            await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).toBeOnTheScreen());
-            await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).not.toBeOnTheScreen());
-        });
+			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).toBeOnTheScreen());
+			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).not.toBeOnTheScreen());
+		});
 
-        test('shows both @all and @here when user has both permissions', async () => {
-            mockedStore.dispatch(setPermissions({ 'mention-all': ['user'], 'mention-here': ['user'] }));
-            const onSendMessage = jest.fn();
-            render(<Render context={{ onSendMessage }} />);
+		test('shows only @here when user has mention-here permission', async () => {
+			mockedStore.dispatch(setPermissions({ 'mention-here': ['user'], 'mention-all': [''] }));
+			const onSendMessage = jest.fn();
+			render(<Render context={{ onSendMessage }} />);
 
-            await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
-            await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
-            await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
-                nativeEvent: { selection: { start: 1, end: 1 } }
-            });
-            jest.advanceTimersByTime(500);
-            
-            await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).toBeOnTheScreen());
-            await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).toBeOnTheScreen());
-        });
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			jest.advanceTimersByTime(500);
+
+			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).toBeOnTheScreen());
+			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).not.toBeOnTheScreen());
+		});
+
+		test('shows both @all and @here when user has both permissions', async () => {
+			mockedStore.dispatch(setPermissions({ 'mention-all': ['user'], 'mention-here': ['user'] }));
+			const onSendMessage = jest.fn();
+			render(<Render context={{ onSendMessage }} />);
+
+			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
+			await fireEvent.changeText(screen.getByTestId('message-composer-input'), '@');
+			await fireEvent(screen.getByTestId('message-composer-input'), 'selectionChange', {
+				nativeEvent: { selection: { start: 1, end: 1 } }
+			});
+			jest.advanceTimersByTime(500);
+
+			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-all')).toBeOnTheScreen());
+			await waitFor(() => expect(screen.queryByTestId('autocomplete-item-here')).toBeOnTheScreen());
+		});
 
 		test('select # room inserts channel and sends, autocomplete hides', async () => {
 			const onSendMessage = jest.fn();
