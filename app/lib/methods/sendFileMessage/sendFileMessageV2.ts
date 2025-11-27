@@ -73,7 +73,7 @@ export async function sendFileMessageV2(
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				msg: file.msg || undefined,
+				msg: (content ? '' : file.msg) || undefined,
 				tmid: tmid || undefined,
 				description: file.description || undefined,
 				t: content ? 'e2e' : undefined,
