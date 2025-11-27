@@ -18,17 +18,17 @@ const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, 
 
 	return (
 		<View style={styles.lastMessageContainer}>
-			<MarkdownPreview
-				msg={formatLastMessage({
-					lastMessage,
-					type,
-					showLastMessage,
-					username,
-					useRealName
-				})}
-				style={[styles.markdownText, { color: alert ? colors.fontDefault : colors.fontSecondaryInfo }, alignSelf]}
-				numberOfLines={2}
-			/>
+		<MarkdownPreview
+			msg={formatLastMessage({
+				lastMessage,
+				type,
+				showLastMessage,
+				username,
+				useRealName
+			})}
+			style={[styles.markdownText, { color: alert ? colors.fontDefault : colors.fontSecondaryInfo }, alignSelf]}
+			numberOfLines={2}
+		/>
 		</View>
 	);
 }, arePropsEqual);
