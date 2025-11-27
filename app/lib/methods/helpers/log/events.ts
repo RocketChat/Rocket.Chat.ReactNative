@@ -349,6 +349,7 @@ export default {
 	// E2E ENCRYPTION SECURITY VIEW
 	E2E_SEC_CHANGE_PASSWORD: 'e2e_sec_change_password',
 	E2E_SEC_RESET_OWN_KEY: 'e2e_sec_reset_own_key',
+	E2E_SEC_COPY_PASSWORD: 'e2e_sec_copy_password',
 
 	// TEAM CHANNELS VIEW
 	TC_SEARCH: 'tc_search',

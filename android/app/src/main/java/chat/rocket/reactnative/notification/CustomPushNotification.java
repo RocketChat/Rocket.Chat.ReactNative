@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -40,28 +41,41 @@ import java.util.concurrent.ExecutionException;
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.R;
 
+/**
+ * Custom push notification handler for Rocket.Chat.
+ * 
+ * Handles standard push notifications and End-to-End encrypted (E2E) notifications.
+ * For E2E notifications, waits for React Native initialization before decrypting and displaying.
+ */
 public class CustomPushNotification extends PushNotification {
     private static final String TAG = "RocketChat.CustomPush";
     private static final boolean ENABLE_VERBOSE_LOGS = BuildConfig.DEBUG;
     
+    // Shared state
     public static volatile ReactApplicationContext reactApplicationContext;
+    private static final Gson gson = new Gson();
+    private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
+    
+    // Constants
+    public static final String KEY_REPLY = "KEY_REPLY";
+    public static final String NOTIFICATION_ID = "NOTIFICATION_ID";
+    
+    // Instance fields
     final NotificationManager notificationManager;
     
-    // Create a single Gson instance
-    private static final Gson gson = new Gson();
-
-    public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
+    public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, 
+                                 AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
         super(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper);
         notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
+    /**
+     * Sets the React application context when React Native initializes.
+     * Called from MainApplication when React context is ready.
+     */
     public static void setReactContext(ReactApplicationContext context) {
         reactApplicationContext = context;
     }
-
-    private static Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
-    public static String KEY_REPLY = "KEY_REPLY";
-    public static String NOTIFICATION_ID = "NOTIFICATION_ID";
 
     public static void clearMessages(int notId) {
         notificationMessages.remove(Integer.toString(notId));
@@ -195,41 +209,115 @@ public class CustomPushNotification extends PushNotification {
         String notId = bundle.getString("notId", "1");
 
         if (ENABLE_VERBOSE_LOGS) {
-            android.util.Log.d(TAG, "[onReceived processing] notId=" + notId);
-            android.util.Log.d(TAG, "[onReceived processing] bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
-            android.util.Log.d(TAG, "[onReceived processing] bundle.title=" + (bundle.getString("title") != null ? "[present]" : "[null]"));
-            android.util.Log.d(TAG, "[onReceived processing] bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0));
-            android.util.Log.d(TAG, "[onReceived processing] loadedEjson.notificationType=" + (loadedEjson != null ? loadedEjson.notificationType : "null"));
-            android.util.Log.d(TAG, "[onReceived processing] loadedEjson.sender=" + (loadedEjson != null && loadedEjson.sender != null ? loadedEjson.sender.username : "null"));
+            android.util.Log.d(TAG, "[processNotification] notId=" + notId);
+            android.util.Log.d(TAG, "[processNotification] bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
+            android.util.Log.d(TAG, "[processNotification] bundle.title=" + (bundle.getString("title") != null ? "[present]" : "[null]"));
+            android.util.Log.d(TAG, "[processNotification] bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0));
+            android.util.Log.d(TAG, "[processNotification] loadedEjson.notificationType=" + (loadedEjson != null ? loadedEjson.notificationType : "null"));
+            android.util.Log.d(TAG, "[processNotification] loadedEjson.sender=" + (loadedEjson != null && loadedEjson.sender != null ? loadedEjson.sender.username : "null"));
         }
 
-        notificationMessages.putIfAbsent(notId, new ArrayList<Bundle>());
+        // Handle E2E encrypted notifications
+        if (isE2ENotification(loadedEjson)) {
+            handleE2ENotification(bundle, loadedEjson, notId);
+            return; // E2E processor will handle showing the notification
+        }
 
-        boolean hasSender = loadedEjson != null && loadedEjson.sender != null;
-        String title = bundle.getString("title");
+        // Handle regular (non-E2E) notifications
+        showNotification(bundle, loadedEjson, notId);
+    }
 
-        // If it has a encrypted message
-        if (loadedEjson != null && loadedEjson.msg != null) {
-            // Override message with the decrypted content
-            String decrypted = Encryption.shared.decryptMessage(loadedEjson, reactApplicationContext);
+    /**
+     * Checks if this is an E2E encrypted notification.
+     */
+    private boolean isE2ENotification(Ejson ejson) {
+        return ejson != null && "e2e".equals(ejson.messageType);
+    }
+
+    /**
+     * Handles E2E encrypted notifications by delegating to the async processor.
+     */
+    private void handleE2ENotification(Bundle bundle, Ejson ejson, String notId) {
+        // Check if React context is immediately available
+        if (reactApplicationContext != null) {
+            // Fast path: decrypt immediately
+            String decrypted = Encryption.shared.decryptMessage(ejson, reactApplicationContext);
+            
             if (decrypted != null) {
                 bundle.putString("message", decrypted);
+                mNotificationProps = createProps(bundle);
+                bundle = mNotificationProps.asBundle();
+                ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+                showNotification(bundle, ejson, notId);
+            } else {
+                Log.w(TAG, "E2E decryption failed for notification");
             }
+            return;
+        }
+        
+        // Slow path: wait for React context asynchronously
+        Log.i(TAG, "Waiting for React context to decrypt E2E notification");
+        
+        E2ENotificationProcessor processor = new E2ENotificationProcessor(
+            // Context provider
+            () -> reactApplicationContext,
+            
+            // Callback
+            new E2ENotificationProcessor.NotificationCallback() {
+                @Override
+                public void onDecryptionComplete(Bundle decryptedBundle, Ejson decryptedEjson, String notificationId) {
+                    // Update props and show notification
+                    mNotificationProps = createProps(decryptedBundle);
+                    Bundle finalBundle = mNotificationProps.asBundle();
+                    Ejson finalEjson = safeFromJson(finalBundle.getString("ejson", "{}"), Ejson.class);
+                    showNotification(finalBundle, finalEjson, notificationId);
+                }
+                
+                @Override
+                public void onDecryptionFailed(Bundle originalBundle, Ejson originalEjson, String notificationId) {
+                    Log.w(TAG, "E2E decryption failed for notification");
+                }
+                
+                @Override
+                public void onTimeout(Bundle originalBundle, Ejson originalEjson, String notificationId) {
+                    Log.w(TAG, "Timeout waiting for React context for E2E notification");
+                }
+            }
+        );
+        
+        processor.processAsync(bundle, ejson, notId);
+    }
+
+    /**
+     * Shows the notification to the user.
+     * Centralizes the notification display logic.
+     */
+    private void showNotification(Bundle bundle, Ejson ejson, String notId) {
+        // Initialize notification message list for this ID
+        if (notificationMessages.get(notId) == null) {
+            notificationMessages.put(notId, new ArrayList<>());
         }
 
+        // Prepare notification data
+        boolean hasSender = ejson != null && ejson.sender != null;
+        String title = bundle.getString("title");
+
         bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", hasSender ? loadedEjson.sender.username : title);
-        bundle.putString("senderId", hasSender ? loadedEjson.sender._id : "1");
+        bundle.putString("username", hasSender ? ejson.sender.username : title);
+        bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         
-        String avatarUri = loadedEjson != null ? loadedEjson.getAvatarUri() : null;
+        String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
         if (ENABLE_VERBOSE_LOGS) {
-            android.util.Log.d(TAG, "[processNotification] avatarUri=" + (avatarUri != null ? "[present]" : "[null]"));
+            android.util.Log.d(TAG, "[showNotification] avatarUri=" + (avatarUri != null ? "[present]" : "[null]"));
         }
         bundle.putString("avatarUri", avatarUri);
 
-        if (loadedEjson != null && loadedEjson.notificationType instanceof String && loadedEjson.notificationType.equals("videoconf")) {
+        // Handle special notification types
+        if (ejson != null && ejson.notificationType instanceof String && 
+            ejson.notificationType.equals("videoconf")) {
             notifyReceivedToJS();
         } else {
+            // Show regular notification
             if (ENABLE_VERBOSE_LOGS) {
                 android.util.Log.d(TAG, "[Before add to notificationMessages] notId=" + notId + ", bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0) + ", bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
             }
@@ -294,7 +382,6 @@ public class CustomPushNotification extends PushNotification {
             // message couldn't be loaded from server (Fallback notification)
         } else {
             android.util.Log.w(TAG, "[getNotificationBuilder] ⚠️ Rendering FALLBACK notification (ejson=" + (ejson != null) + ", notificationType=" + (ejson != null ? ejson.notificationType : "null") + ", notificationLoaded=" + notificationLoaded + ")");
-            Gson gson = new Gson();
             // iterate over the current notification ids to dismiss fallback notifications from same server
             for (Map.Entry<String, List<Bundle>> bundleList : notificationMessages.entrySet()) {
                 // iterate over the notifications with this id (same host + rid)
@@ -466,8 +553,6 @@ public class CustomPushNotification extends PushNotification {
         } else {
             Notification.MessagingStyle messageStyle;
 
-            Gson gson = new Gson();
-
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                 messageStyle = new Notification.MessagingStyle("");
             } else {
@@ -571,7 +656,7 @@ public class CustomPushNotification extends PushNotification {
     }
     
     /**
-     * Safely parse JSON string to object with error handling.
+     * Safely parses JSON string to object with error handling.
      *
      * @param json     JSON string to parse
      * @param classOfT Target class type
@@ -580,17 +665,13 @@ public class CustomPushNotification extends PushNotification {
      */
     private static <T> T safeFromJson(String json, Class<T> classOfT) {
         if (json == null || json.trim().isEmpty() || json.equals("{}")) {
-            return null; // no need to create a new instance
+            return null;
         }
 
         try {
             return gson.fromJson(json, classOfT);
         } catch (Exception e) {
-            android.util.Log.e(
-                    "CustomPushNotification",
-                    "Failed to parse JSON into " + classOfT.getSimpleName() + " (payload redacted).",
-                    e
-            );
+            Log.e(TAG, "Failed to parse JSON into " + classOfT.getSimpleName(), e);
             return null;
         }
     }
