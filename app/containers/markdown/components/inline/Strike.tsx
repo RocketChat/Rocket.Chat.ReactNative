@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { type Strike as StrikeProps } from '@rocket.chat/message-parser';
 
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Strike = ({ value }: IStrikeProps) => (
+const Strike = memo(({ value }: IStrikeProps) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
@@ -34,6 +34,6 @@ const Strike = ({ value }: IStrikeProps) => (
 			}
 		})}
 	</Text>
-);
+));
 
 export default Strike;

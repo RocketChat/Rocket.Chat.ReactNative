@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text } from 'react-native';
 import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
@@ -11,7 +11,9 @@ interface IParagraphProps {
 	value: ParagraphProps['value'];
 }
 
-const Paragraph = ({ value }: IParagraphProps) => {
+const Paragraph = memo(({ value }: IParagraphProps) => {
+	'use memo';
+
 	let forceTrim = false;
 	const { theme } = useTheme();
 	if (
@@ -36,6 +38,6 @@ const Paragraph = ({ value }: IParagraphProps) => {
 			<Inline value={value} forceTrim={forceTrim} />
 		</Text>
 	);
-};
+});
 
 export default Paragraph;

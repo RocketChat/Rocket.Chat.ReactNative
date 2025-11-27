@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
 
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Italic = ({ value }: IItalicProps) => (
+const Italic = memo(({ value }: IItalicProps) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
@@ -34,6 +34,6 @@ const Italic = ({ value }: IItalicProps) => (
 			}
 		})}
 	</Text>
-);
+));
 
 export default Italic;

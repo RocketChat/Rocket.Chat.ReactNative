@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { Text } from 'react-native';
 import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
@@ -17,7 +17,9 @@ interface IParagraphProps {
 	forceTrim?: boolean;
 }
 
-const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
+const Inline = memo(({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
+	'use memo';
+
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
 		<Text style={styles.inline}>
@@ -76,6 +78,6 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 			})}
 		</Text>
 	);
-};
+});
 
 export default Inline;
