@@ -68,7 +68,7 @@ public class SecureKeystore {
                         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
             } catch (GeneralSecurityException | IOException | RuntimeException e) {
-                Log.e("MMKVReader:SecureKeystore", "Failed to create encrypted shared preferences! Falling back to standard SharedPreferences", e);
+                Log.e("SecureKeystore", "Failed to create encrypted shared preferences! Falling back to standard SharedPreferences", e);
                 prefs = context.getSharedPreferences(SharedPrefFileName, Context.MODE_PRIVATE);
             }
         }
@@ -92,7 +92,7 @@ public class SecureKeystore {
                         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
             } catch (GeneralSecurityException | IOException | RuntimeException e) {
-                Log.e("MMKVReader:SecureKeystore", "Failed to create encrypted shared preferences! Falling back to standard SharedPreferences", e);
+                Log.e("SecureKeystore", "Failed to create encrypted shared preferences! Falling back to standard SharedPreferences", e);
                 prefs = context.getSharedPreferences(SharedPrefFileName, Context.MODE_PRIVATE);
             }
         }

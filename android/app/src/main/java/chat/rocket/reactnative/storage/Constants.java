@@ -15,7 +15,7 @@ public class Constants {
     public static final String RSA_ALGORITHM = "RSA/ECB/PKCS1Padding";
     public static final String AES_ALGORITHM = "AES/ECB/PKCS5Padding";
 
-    public static final String TAG = "MMKVReaderSecureStorage";
+    public static final String TAG = "SecureKeystore";
 
     // Internal storage file
     public static final String SKS_KEY_FILENAME = "SKS_KEY_FILE";
