@@ -23,10 +23,6 @@ std::shared_ptr<TurboModule> MainApplicationModuleProvider(
     return std::make_shared<JavaTurboModule>(moduleName, params);
   }
   
-  if (moduleName == "MMKVReader") {
-    return std::make_shared<JavaTurboModule>(moduleName, params);
-  }
-  
   return rncore_ModuleProvider(moduleName, params);
 }
 
