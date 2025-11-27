@@ -27,26 +27,32 @@ import Check from '../../containers/Check';
 import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
 
 interface IStatus {
-	id: TUserStatus;
+	_id: string;
 	name: string;
+	statusType: TUserStatus;
+    isCustom?: boolean;
 }
 
 const STATUS: IStatus[] = [
 	{
-		id: 'online',
-		name: 'Online'
+		_id: 'online',
+		name: 'Online',
+        statusType: 'online'
 	},
 	{
-		id: 'busy',
-		name: 'Busy'
+		_id: 'busy',
+		name: 'Busy',
+        statusType: 'busy'
 	},
 	{
-		id: 'away',
-		name: 'Away'
+		_id: 'away',
+		name: 'Away',
+        statusType: 'away'
 	},
 	{
-		id: 'offline',
-		name: 'Offline'
+		_id: 'offline',
+		name: 'Offline',
+        statusType: 'offline'
 	}
 ];
 
@@ -70,28 +76,31 @@ const styles = StyleSheet.create({
 const Status = ({
 	statusType,
 	status,
-	setStatus
+	setStatus,
+    isCustom
 }: {
 	statusType: IStatus;
 	status: TUserStatus;
 	setStatus: (status: TUserStatus) => void;
+    isCustom?: boolean;
 }) => {
-	const { id, name } = statusType;
+	const { _id, name } = statusType;
 	return (
 		<>
 			<List.Item
-				additionalAcessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
+				additionalAcessibilityLabel={`${status === _id ? I18n.t('Current_Status') : isCustom ? I18n.t('Custom_Status') : ''}`}
 				title={name}
+                translateTitle={!isCustom}
 				onPress={() => {
-					const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
+					const key = `STATUS_${statusType._id.toUpperCase()}` as keyof typeof events;
 					logEvent(events[key]);
-					if (status !== statusType.id) {
-						setStatus(statusType.id);
+					if (status !== statusType._id) {
+						setStatus(statusType.statusType);
 					}
 				}}
-				testID={`status-view-${id}`}
-				left={() => <StatusIcon size={24} status={statusType.id} />}
-				right={() => (status === id ? <Check /> : null)}
+				testID={`status-view-${_id}`}
+				left={() => <StatusIcon size={24} status={statusType.statusType} />}
+				right={() => (status === _id ? <Check /> : null)}
 			/>
 			<List.Separator />
 		</>
@@ -110,6 +119,7 @@ const StatusView = (): React.ReactElement => {
 	const Accounts_AllowInvisibleStatusOption = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
 	);
+    const customUserStatus = useSelector((state: IApplicationState) => state.customUserStatus);
 
 	const {
 		control,
@@ -173,7 +183,8 @@ const StatusView = (): React.ReactElement => {
 		sendLoadingEvent({ visible: false });
 	};
 
-	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
+    const AllStatus = [...STATUS, ...customUserStatus.map(s => ({ ...s, isCustom: true }))];
+	const statusType = Accounts_AllowInvisibleStatusOption ? AllStatus : AllStatus.filter(s => s._id !== 'offline');
 
 	const isStatusChanged = () => {
 		const { status } = inputValues;
@@ -195,8 +206,8 @@ const StatusView = (): React.ReactElement => {
 		<SafeAreaView testID='status-view'>
 			<FlatList
 				data={statusType}
-				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} />}
+				keyExtractor={item => item._id}
+				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} isCustom={item.isCustom} />}
 				ListHeaderComponent={
 					<>
 						<ControlledFormTextInput

@@ -39,6 +39,7 @@ export * from './TChangeAvatarViewContext';
 export * from './IDataSelect';
 export * from './TUserStatus';
 export * from './IDeleteMessageBulkParams';
+export * from './ICustomUserStatus';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: NativeStackNavigationProp<T & TNavigation, S>;

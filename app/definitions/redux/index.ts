@@ -48,6 +48,8 @@ import { type IRooms } from '../../reducers/rooms';
 import { type IPreferences } from '../IPreferences';
 import { type ICustomEmojis } from '../IEmoji';
 import { type IUsersTyping } from '../../reducers/usersTyping';
+import { type TActionCustomUserStatus } from '../../actions/customUserStatus';
+import { type ICustomUserStatus } from '../../definitions/ICustomUserStatus';
 
 export interface IApplicationState {
 	settings: TSettingsState;
@@ -76,6 +78,7 @@ export interface IApplicationState {
 	troubleshootingNotification: ITroubleshootingNotification;
 	supportedVersions: ISupportedVersionsState;
 	inAppFeedback: IInAppFeedbackState;
+    customUserStatus: ICustomUserStatus[];
 }
 
 export type TApplicationActions = TActionActiveUsers &
@@ -99,4 +102,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionUsersRoles &
 	TActionTroubleshootingNotification &
 	TActionSupportedVersions &
-	TInAppFeedbackAction;
+	TInAppFeedbackAction &
+	TActionCustomUserStatus
