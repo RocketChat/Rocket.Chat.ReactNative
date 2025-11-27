@@ -4,7 +4,6 @@ import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
-import getBlockValueString from '../../lib/methods/getBlockValueString';
 import { type IUserMention, type IUserChannel, type TOnLinkPress } from './interfaces';
 import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import MarkdownContext from './contexts/MarkdownContext';
@@ -35,6 +34,28 @@ interface IMarkdownProps {
 	isTranslated?: boolean;
 }
 
+const generateId = (size = 16) => {
+	const rand = Math.random().toString(36).slice(2);
+	const time = Date.now().toString(36);
+	return (rand + time).slice(-size); // use from end
+};
+
+const assignIds = (block: any) => {
+	if (!block._id) {
+		const id = generateId();
+		block._id = id;
+	}
+
+	// add to nested
+	if (Array.isArray(block.value)) {
+		block.value = block.value.map((child: any) => assignIds(child));
+	}
+
+	if (Array.isArray(block.blocks)) {
+		block.blocks = block.blocks.map((child: any) => assignIds(child));
+	}
+	return block;
+};
 const Markdown: React.FC<IMarkdownProps> = ({
 	msg,
 	md,
@@ -57,6 +78,8 @@ const Markdown: React.FC<IMarkdownProps> = ({
 		return null;
 	}
 
+	tokens = tokens.map(assignIds);
+
 	if (isEmpty(tokens)) return null;
 	return (
 		<View style={{ gap: 2 }}>
@@ -70,35 +93,32 @@ const Markdown: React.FC<IMarkdownProps> = ({
 					getCustomEmoji,
 					onLinkPress
 				}}>
-				{tokens?.map((block, index) => {
-					// sliced to avoid very long keys
-					// key example: PARAGRAPH-this is value upto 50 chars -3
-					const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
+				{tokens?.map(block => {
 					switch (block.type) {
 						case 'BIG_EMOJI':
-							return <BigEmoji key={key} value={block.value} />;
+							return <BigEmoji key={block._id} value={block.value} />;
 						case 'UNORDERED_LIST':
-							return <UnorderedList key={key} value={block.value} />;
+							return <UnorderedList key={block._id} value={block.value} />;
 						case 'ORDERED_LIST':
-							return <OrderedList key={key} value={block.value} />;
+							return <OrderedList key={block._id} value={block.value} />;
 						case 'TASKS':
-							return <TaskList key={key} value={block.value} />;
+							return <TaskList key={block._id} value={block.value} />;
 						case 'QUOTE':
-							return <Quote key={key} value={block.value} />;
+							return <Quote key={block._id} value={block.value} />;
 						case 'PARAGRAPH':
-							return <Paragraph key={key} value={block.value} />;
+							return <Paragraph key={block._id} value={block.value} />;
 						case 'CODE':
-							return <Code key={key} value={block.value} />;
+							return <Code key={block._id} value={block.value} />;
 						case 'HEADING':
-							return <Heading key={key} value={block.value} level={block.level} />;
+							return <Heading key={block._id} value={block.value} level={block.level} />;
 						case 'LINE_BREAK':
-							return <LineBreak key={key} />;
+							return <LineBreak key={block._id} />;
 						// This prop exists, but not even on the web it is treated, so...
 						// https://github.com/RocketChat/Rocket.Chat/blob/develop/packages/gazzodown/src/Markup.tsx
 						// case 'LIST_ITEM':
 						// 	return <View />;
 						case 'KATEX':
-							return <KaTeX key={key} value={block.value} />;
+							return <KaTeX key={block._id} value={block.value} />;
 						default:
 							return null;
 					}

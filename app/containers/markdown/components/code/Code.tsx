@@ -1,15 +1,16 @@
 import React from 'react';
 import { View } from 'react-native';
-import { type Code as CodeProps } from '@rocket.chat/message-parser';
+import { type CodeLine as CodeLineType, type Code as CodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../../styles';
 import { useTheme } from '../../../../theme';
 import CodeLine from './CodeLine';
-import getBlockValueString from '../../../../lib/methods/getBlockValueString';
 
 interface ICodeProps {
 	value: CodeProps['value'];
 }
+
+type TCodeLineWithID = CodeLineType & { _id: string };
 
 const Code = ({ value }: ICodeProps): React.ReactElement => {
 	const { colors } = useTheme();
@@ -23,11 +24,11 @@ const Code = ({ value }: ICodeProps): React.ReactElement => {
 					borderColor: colors.strokeLight
 				}
 			]}>
-			{value.map((block, index) => {
-				const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
+			{value.map(b => {
+				const block = b as TCodeLineWithID;
 				switch (block.type) {
 					case 'CODE_LINE':
-						return <CodeLine key={key} value={block.value} />;
+						return <CodeLine key={block._id} value={block.value} />;
 					default:
 						return null;
 				}

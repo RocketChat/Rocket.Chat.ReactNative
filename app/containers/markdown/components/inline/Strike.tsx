@@ -4,7 +4,6 @@ import { type Strike as StrikeProps } from '@rocket.chat/message-parser';
 
 import { Bold, Italic, Link } from './index';
 import Plain from '../Plain';
-import getBlockValueString from '../../../../lib/methods/getBlockValueString';
 
 interface IStrikeProps {
 	value: StrikeProps['value'];
@@ -16,21 +15,23 @@ const styles = StyleSheet.create({
 	}
 });
 
+type TStrikeWithID<T> = T & { _id: string };
+
 const Strike = ({ value }: IStrikeProps) => (
 	<Text style={styles.text}>
-		{value.map((block, index) => {
-			const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
+		{value.map(b => {
+			const block = b as TStrikeWithID<typeof b>;
 			switch (block.type) {
 				case 'LINK':
-					return <Link key={key} value={block.value} />;
+					return <Link key={block._id} value={block.value} />;
 				case 'PLAIN_TEXT':
-					return <Plain key={key} value={block.value} />;
+					return <Plain key={block._id} value={block.value} />;
 				case 'BOLD':
-					return <Bold key={key} value={block.value} />;
+					return <Bold key={block._id} value={block.value} />;
 				case 'ITALIC':
-					return <Italic key={key} value={block.value} />;
+					return <Italic key={block._id} value={block.value} />;
 				case 'MENTION_CHANNEL':
-					return <Plain key={key} value={`#${block.value.value}`} />;
+					return <Plain key={block._id} value={`#${block.value.value}`} />;
 				default:
 					return null;
 			}

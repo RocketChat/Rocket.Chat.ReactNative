@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
+import { type Inlines as InlinesType, type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
-import getBlockValueString from '../../../lib/methods/getBlockValueString';
 import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
 import { Emoji } from './emoji';
@@ -18,11 +17,14 @@ interface IParagraphProps {
 	forceTrim?: boolean;
 }
 
+type TInlineWithID = InlinesType & { _id: string };
+
 const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
 		<Text style={styles.inline}>
-			{value.map((block, index) => {
+			{value.map((b, index) => {
+				const block = b as TInlineWithID;
 				// We are forcing trim when is a `[ ](https://https://open.rocket.chat/) plain_text`
 				// to clean the empty spaces
 				if (forceTrim) {
@@ -39,26 +41,23 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 					}
 				}
 
-				// key example: IMAGE-https:rocket.chat/assets/images/123img.png...-3 <upto 50 chars only>
-				const key = `${block.type}-${getBlockValueString(block.value)}-${index}`;
-
 				switch (block.type) {
 					case 'IMAGE':
-						return <Image key={key} value={block.value} />;
+						return <Image key={block._id} value={block.value} />;
 					case 'PLAIN_TEXT':
-						return <Plain key={key} value={block.value} />;
+						return <Plain key={block._id} value={block.value} />;
 					case 'BOLD':
-						return <Bold key={key} value={block.value} />;
+						return <Bold key={block._id} value={block.value} />;
 					case 'STRIKE':
-						return <Strike key={key} value={block.value} />;
+						return <Strike key={block._id} value={block.value} />;
 					case 'ITALIC':
-						return <Italic key={key} value={block.value} />;
+						return <Italic key={block._id} value={block.value} />;
 					case 'LINK':
-						return <Link key={key} value={block.value} />;
+						return <Link key={block._id} value={block.value} />;
 					case 'MENTION_USER':
 						return (
 							<AtMention
-								key={key}
+								key={block._id}
 								mention={block.value.value}
 								useRealName={useRealName}
 								username={username}
@@ -67,14 +66,14 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 							/>
 						);
 					case 'EMOJI':
-						return <Emoji key={key} block={block} index={index} />;
+						return <Emoji key={block._id} block={block} index={index} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag key={key} hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
+						return <Hashtag key={block._id} hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':
-						return <InlineCode key={key} value={block.value} />;
+						return <InlineCode key={block._id} value={block.value} />;
 					case 'INLINE_KATEX':
 						// return <InlineKaTeX value={block.value} />;
-						return <Text key={key}>{block.value}</Text>;
+						return <Text key={block._id}>{block.value}</Text>;
 					default:
 						return null;
 				}
