@@ -29,12 +29,15 @@ class Utils {
 }
 
 public class Ejson {
+    private static final String TAG = "RocketChat.Ejson";
+    
     String host;
     String rid;
     String type;
     Sender sender;
     String messageId;
     String notificationType;
+    String messageType;
     String senderName;
     String msg;
 
@@ -45,35 +48,59 @@ public class Ejson {
     private ReactApplicationContext reactContext;
 
     private MMKV mmkv;
+    
+    private boolean initializationAttempted = false;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
 
     public Ejson() {
-        AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
-        if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
-            this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
+        // Don't initialize MMKV in constructor - use lazy initialization instead
+    }
+    
+    /**
+     * Lazily initialize MMKV when first needed.
+     * 
+     * NOTE: MMKV requires ReactApplicationContext (not regular Context) because SecureKeystore
+     * needs access to React-specific keystore resources. This means MMKV cannot be initialized
+     * before React Native starts.
+     */
+    private void ensureMMKVInitialized() {
+        if (initializationAttempted) {
+            return;
         }
-
-        // Only initialize MMKV if we have a valid React context
-        if (this.reactContext != null) {
+        
+        initializationAttempted = true;
+        
+        // Try to get ReactApplicationContext from available sources
+        if (this.reactContext == null) {
+            AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
+            if (facade != null) {
+                Object runningContext = facade.getRunningReactContext();
+                if (runningContext instanceof ReactApplicationContext) {
+                    this.reactContext = (ReactApplicationContext) runningContext;
+                }
+            }
+            
+            if (this.reactContext == null) {
+                this.reactContext = CustomPushNotification.reactApplicationContext;
+            }
+        }
+        
+        // Initialize MMKV if context is available
+        if (this.reactContext != null && mmkv == null) {
             try {
-                // Start MMKV container
                 MMKV.initialize(this.reactContext);
                 SecureKeystore secureKeystore = new SecureKeystore(this.reactContext);
-
-                // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
+                // Alias format from react-native-mmkv-storage
                 String alias = Utils.toHex("com.MMKV.default");
-
-                // Retrieve container password
                 String password = secureKeystore.getSecureKey(alias);
                 mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
             } catch (Exception e) {
-                Log.e("Ejson", "Failed to initialize MMKV: " + e.getMessage());
+                Log.e(TAG, "Failed to initialize MMKV", e);
                 mmkv = null;
             }
-        } else {
-            Log.w("Ejson", "React context is null, MMKV will not be initialized");
-            mmkv = null;
+        } else if (this.reactContext == null) {
+            Log.w(TAG, "Cannot initialize MMKV: ReactApplicationContext not available");
         }
     }
 
@@ -85,6 +112,7 @@ public class Ejson {
     }
 
     public String token() {
+        ensureMMKVInitialized();
         String userId = userId();
         if (mmkv != null && userId != null) {
             return mmkv.decodeString(TOKEN_KEY.concat(userId));
@@ -93,6 +121,7 @@ public class Ejson {
     }
 
     public String userId() {
+        ensureMMKVInitialized();
         String serverURL = serverURL();
         if (mmkv != null && serverURL != null) {
             return mmkv.decodeString(TOKEN_KEY.concat(serverURL));
@@ -101,6 +130,7 @@ public class Ejson {
     }
 
     public String privateKey() {
+        ensureMMKVInitialized();
         String serverURL = serverURL();
         if (mmkv != null && serverURL != null) {
             return mmkv.decodeString(serverURL.concat("-RC_E2E_PRIVATE_KEY"));
@@ -116,13 +146,16 @@ public class Ejson {
         return url;
     }
 
-    public static class Sender {
-        String username;
+    static class Sender {
         String _id;
+        String username;
+        String name;
     }
 
-    public static class Content {
-        String ciphertext;
+    static class Content {
         String algorithm;
+        String ciphertext;
+        String kid;
+        String iv;
     }
 }

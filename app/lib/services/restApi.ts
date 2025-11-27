@@ -112,7 +112,7 @@ export const sendConfirmationEmail = (email: string): Promise<{ message: string;
 export const spotlight = (
 	search: string,
 	usernames: string[],
-	type: { users: boolean; rooms: boolean },
+	type: { users: boolean; rooms: boolean; mentions: boolean },
 	rid?: string
 ): Promise<ISpotlight> =>
 	// RC 0.51.0
@@ -963,10 +963,27 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
-export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
-	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
+export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
+	const result = await Encryption.encryptMessage(message as IMessage);
+	if (!result) {
+		throw new Error('Failed to encrypt message');
+	}
+
+	if (result.content) {
+		// RC 0.49.0
+		return sdk.post('chat.update', {
+			roomId: message.rid,
+			msgId: message.id,
+			content: result.content
+		});
+	}
+
 	// RC 0.49.0
-	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+	return sdk.post('chat.update', {
+		roomId: message.rid,
+		msgId: message.id,
+		text: message.msg || ''
+	});
 };
 
 export const registerPushToken = () =>
