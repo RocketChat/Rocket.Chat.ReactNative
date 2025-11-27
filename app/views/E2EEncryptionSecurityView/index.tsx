@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -10,28 +10,12 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Button from '../../containers/Button';
-import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import sharedStyles from '../Styles';
 import { e2eResetOwnKey } from '../../lib/services/restApi';
 import { type SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
-
-const styles = StyleSheet.create({
-	container: {
-		paddingHorizontal: PADDING_HORIZONTAL
-	},
-	title: {
-		fontSize: 16,
-		...sharedStyles.textMedium
-	},
-	description: {
-		fontSize: 14,
-		paddingVertical: 10,
-		...sharedStyles.textRegular
-	}
-});
+import { styles } from './styles';
 
 const E2EEncryptionSecurityView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'E2EEncryptionSecurityView'>>();
@@ -71,16 +55,16 @@ const E2EEncryptionSecurityView = () => {
 				<View style={styles.container}>
 					<ChangePassword />
 
-					<List.Section>
-						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
+					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
+					<View style={styles.content}>
+						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
 						<Button
 							onPress={resetOwnKey}
 							title={I18n.t('E2E_encryption_reset_button')}
-							type='secondary'
+							type='primary'
 							testID='e2e-encryption-security-view-reset-key'
 						/>
-					</List.Section>
+					</View>
 				</View>
 			</List.Container>
 		</SafeAreaView>

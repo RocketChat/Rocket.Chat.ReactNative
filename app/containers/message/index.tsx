@@ -512,6 +512,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isBeingEdited={isBeingEdited}
 					isPreview={isPreview}
 					pinned={pinned}
+					autoTranslateLanguage={autoTranslateLanguage}
 				/>
 				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</MessageContext.Provider>
