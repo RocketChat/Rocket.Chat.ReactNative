@@ -7,8 +7,8 @@ export interface ICustomUserStatus {
 	name: string;
 	statusType: TUserStatus;
 	_updatedAt: {
-        $date: number;
-    };
+		$date: number;
+	};
 }
 
 export type TCustomUserStatusModel = ICustomUserStatus & Model;

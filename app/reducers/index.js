@@ -55,5 +55,5 @@ export default combineReducers({
 	troubleshootingNotification,
 	supportedVersions,
 	inAppFeedback,
-    customUserStatus
+	customUserStatus
 });

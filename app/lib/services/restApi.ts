@@ -11,7 +11,7 @@ import {
 	type IServerRoom,
 	type RoomType,
 	type SubscriptionType,
-    type ICustomUserStatus
+	type ICustomUserStatus
 } from '../../definitions';
 import { type TParams } from '../../definitions/ILivechatEditView';
 import { type ILivechatTag } from '../../definitions/ILivechatTag';
