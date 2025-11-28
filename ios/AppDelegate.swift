@@ -19,15 +19,8 @@ public class AppDelegate: ExpoAppDelegate {
   ) -> Bool {
     // IMPORTANT: Migrate MMKV data FIRST, before any other initialization
     // This must run before Firebase, Bugsnag, and React Native start
+    // MMKVMigration.migrate() also initializes MMKV for the app group
     MMKVMigration.migrate()
-    
-    
-    if let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String,
-       let groupDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) {
-      let mmkvPath = groupDirectory.appendingPathComponent("mmkv").path
-      try? FileManager.default.createDirectory(atPath: mmkvPath, withIntermediateDirectories: true, attributes: nil)
-      _ = MMKVBridge(id: "bootstrap", cryptKey: nil, rootPath: mmkvPath)
-    }
     
     FirebaseApp.configure()
     Bugsnag.start()

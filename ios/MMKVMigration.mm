@@ -2,14 +2,16 @@
 //  MMKVMigration.mm
 //  RocketChatRN
 //
-//  MMKV Migration - reads encrypted old MMKV data and migrates to new storage
-//  Uses MMKV C++ library directly to read and decrypt old data
+//  MMKV Migration - removes encryption from old MMKV data using reKey()
+//  Uses MMKV's built-in reKey to remove encryption in-place (simpler and safer than copying)
 //
 
 #import "MMKVMigration.h"
 #import "SecureStorage.h"
 #import "Shared/RocketChat/MMKVBridge.h"
 #import <os/log.h>
+
+static NSString *const kMigrationFlagKey = kMigrationFlagKey;
 
 static NSString *toHex(NSString *str) {
     if (!str) return @"";
@@ -37,175 +39,77 @@ static os_log_t migration_log(void) {
 
 + (void)migrate {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"MMKV_MIGRATION_COMPLETED"]) {
+    if ([defaults boolForKey:kMigrationFlagKey]) {
+        // Still need to ensure MMKV is initialized for other code (e.g., SSLPinning)
+        [self initializeMMKV];
         return;
     }
 
     @try {
-        NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
-        if (!appGroup) {
-            [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
+        NSString *mmkvPath = [self initializeMMKV];
+        if (!mmkvPath) {
+            [defaults setBool:YES forKey:kMigrationFlagKey];
             return;
         }
 
-        NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
-        if (!groupURL) {
-            [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
-            return;
-        }
-        
-        NSString *groupDir = [groupURL path];
-        NSString *mmkvPath = [groupDir stringByAppendingPathComponent:@"mmkv"];
-
-        BOOL directoryExists = [[NSFileManager defaultManager] fileExistsAtPath:mmkvPath];
-        if (!directoryExists) {
-            NSArray *documentsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            if (documentsPaths.count > 0) {
-                NSString *documentsDir = documentsPaths[0];
-                NSString *documentsMMKVPath = [documentsDir stringByAppendingPathComponent:@"mmkv"];
-                if ([[NSFileManager defaultManager] fileExistsAtPath:documentsMMKVPath]) {
-                    mmkvPath = documentsMMKVPath;
-                    directoryExists = YES;
-                }
-            }
-
-            if (!directoryExists) {
-                [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
-                return;
-            }
-        }
-
-        NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:mmkvPath error:nil];
-        NSMutableArray *instanceIds = [NSMutableArray array];
-
-        for (NSString *file in files) {
-            if (![file hasSuffix:@".crc"] && ![file isEqualToString:@"specialCharacter"]) {
-                [instanceIds addObject:file];
-            }
-        }
-
-        NSArray *possibleInstanceIds = @[@"mmkvIDStore", @"default", @"mmkv.default"];
-        for (NSString *instanceId in possibleInstanceIds) {
-            if (![instanceIds containsObject:instanceId]) {
-                NSString *possiblePath = [mmkvPath stringByAppendingPathComponent:instanceId];
-                if ([[NSFileManager defaultManager] fileExistsAtPath:possiblePath]) {
-                    [instanceIds addObject:instanceId];
-                }
-            }
-        }
-
-        if (instanceIds.count == 0) {
-            [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
-            return;
-        }
-
-        NSMutableDictionary *allData = [NSMutableDictionary dictionary];
         SecureStorage *secureStorage = [[SecureStorage alloc] init];
+        NSString *alias = toHex(@"com.MMKV.default");
+        NSString *password = [secureStorage getSecureKey:alias];
 
-        for (NSString *instanceId in instanceIds) {
-            NSString *alias = toHex([NSString stringWithFormat:@"com.MMKV.%@", instanceId]);
-            NSString *password = [secureStorage getSecureKey:alias];
-
-            NSDictionary *instanceData = [self readInstanceData:instanceId
-                                                   withPassword:password
-                                                         atPath:mmkvPath];
-
-            if (!instanceData && password) {
-                instanceData = [self readInstanceData:instanceId
-                                         withPassword:nil
-                                               atPath:mmkvPath];
-            }
-
-            if (instanceData.count > 0) {
-                [allData addEntriesFromDictionary:instanceData];
-            }
-        }
-
-        if (allData.count == 0) {
-            [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
+        if (!password || password.length == 0) {
+            // No encryption, nothing to migrate
+            os_log_info(migration_log(), "No encryption key found, skipping migration");
+            [defaults setBool:YES forKey:kMigrationFlagKey];
             return;
         }
 
-        NSString *newAlias = toHex(@"com.MMKV.default");
-        NSString *newPassword = [secureStorage getSecureKey:newAlias];
-        NSData *newCryptKey = newPassword ? [newPassword dataUsingEncoding:NSUTF8StringEncoding] : nil;
+        NSData *cryptKey = [password dataUsingEncoding:NSUTF8StringEncoding];
+        MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:@"default"
+                                                cryptKey:cryptKey
+                                                rootPath:mmkvPath];
 
-        MMKVBridge *newMMKV = [[MMKVBridge alloc] initWithID:@"default"
-                                                    cryptKey:newCryptKey
-                                                    rootPath:mmkvPath];
-        if (!newMMKV) {
+        if (!mmkv) {
+            os_log_error(migration_log(), "Failed to open MMKV instance");
             return;
         }
 
-        NSInteger migratedCount = 0;
-        for (NSString *key in allData) {
-            id value = allData[key];
-
-            if ([value isKindOfClass:[NSString class]]) {
-                [newMMKV setString:(NSString *)value forKey:key];
-                migratedCount++;
-            } else if ([value isKindOfClass:[NSData class]]) {
-                [newMMKV setData:(NSData *)value forKey:key];
-                migratedCount++;
-            } else if ([value isKindOfClass:[NSNumber class]]) {
-                [newMMKV setString:[value stringValue] forKey:key];
-                migratedCount++;
-            }
+        NSUInteger keyCount = [mmkv count];
+        if (keyCount == 0) {
+            os_log_info(migration_log(), "No data to migrate");
+            [defaults setBool:YES forKey:kMigrationFlagKey];
+            return;
         }
 
-        [defaults setBool:YES forKey:@"MMKV_MIGRATION_COMPLETED"];
-        [defaults setObject:@(migratedCount) forKey:@"MMKV_MIGRATION_KEYS_COUNT"];
-        [defaults setObject:[NSDate date].description forKey:@"MMKV_MIGRATION_TIMESTAMP"];
-        [defaults synchronize];
-        os_log_info(migration_log(), "MMKV Migration completed successfully: %ld keys migrated", (long)migratedCount);
+        os_log_info(migration_log(), "Found %lu keys, removing encryption...", (unsigned long)keyCount);
+
+        BOOL success = [mmkv reKey:nil];
+        if (success) {
+            // Remove encryption key from Keychain
+            [secureStorage deleteSecureKey:alias];
+            
+            os_log_info(migration_log(), "Migration successful: %lu keys, encryption removed", (unsigned long)keyCount);
+            [defaults setBool:YES forKey:kMigrationFlagKey];
+        } else {
+            os_log_error(migration_log(), "reKey failed - will retry on next launch");
+        }
     } @catch (NSException *exception) {
-        os_log_error(migration_log(), "MMKV Migration error: %{public}@ - %{public}@", exception.name, exception.reason);
+        os_log_error(migration_log(), "Migration error: %{public}@ - %{public}@", exception.name, exception.reason);
     }
 }
 
-+ (NSDictionary *)readInstanceData:(NSString *)instanceId
-                      withPassword:(NSString *)password
-                            atPath:(NSString *)rootPath {
-    @try {
-        NSData *cryptKey = password ? [password dataUsingEncoding:NSUTF8StringEncoding] : nil;
++ (NSString *)initializeMMKV {
+    NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+    if (!appGroup) return nil;
 
-        MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:instanceId
-                                                 cryptKey:cryptKey
-                                                 rootPath:rootPath];
-        if (!mmkv) {
-            return nil;
-        }
+    NSURL *groupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
+    if (!groupURL) return nil;
 
-        NSArray *allKeys = [mmkv allKeys];
-        if (!allKeys || allKeys.count == 0) {
-            return nil;
-        }
-
-        NSMutableDictionary *data = [NSMutableDictionary dictionary];
-
-        for (NSString *key in allKeys) {
-            @try {
-                NSString *stringValue = [mmkv stringForKey:key];
-                if (stringValue) {
-                    data[key] = stringValue;
-                } else {
-                    NSData *dataValue = [mmkv dataForKey:key];
-                    if (dataValue) {
-                        data[key] = dataValue;
-                    }
-                }
-            } @catch (NSException *exception) {
-                os_log_error(migration_log(), "MMKV Migration error reading key '%{public}@': %{public}@ - %{public}@", key, exception.name, exception.reason);
-            }
-        }
-
-        return data.count > 0 ? data : nil;
-    } @catch (NSException *exception) {
-        os_log_error(migration_log(), "MMKV Migration error reading instance '%{public}@': %{public}@ - %{public}@", instanceId, exception.name, exception.reason);
-        return nil;
-    }
+    NSString *mmkvPath = [[groupURL path] stringByAppendingPathComponent:@"mmkv"];
+    [[NSFileManager defaultManager] createDirectoryAtPath:mmkvPath
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:nil];
+    return mmkvPath;
 }
 
 @end
-
-

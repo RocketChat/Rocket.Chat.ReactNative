@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)setData:(NSData *)value forKey:(NSString *)key;
 - (void)removeValueForKey:(NSString *)key;
 - (NSArray<NSString *> *)allKeys;
+- (NSUInteger)count;
+- (BOOL)reKey:(nullable NSData *)newKey;
 
 @end
 

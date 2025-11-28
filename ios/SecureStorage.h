@@ -7,6 +7,7 @@
 - (void) setSecureKey: (nonnull NSString *)key value:(nonnull NSString *)value
               options: (nonnull NSDictionary *)options;
 - (nullable NSString *) getSecureKey:(nonnull NSString *)key;
+- (BOOL) deleteSecureKey:(nonnull NSString *)key;
 
 - (nonnull NSString *)searchKeychainCopyMatching:(nonnull NSString *)identifier;
 

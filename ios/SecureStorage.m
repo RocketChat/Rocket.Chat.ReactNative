@@ -50,6 +50,16 @@ NSString *serviceName = nil;
     }
 }
 
+- (BOOL) deleteSecureKey:(NSString *)key
+{
+    @try {
+        return [self deleteKeychainValue:key];
+    }
+    @catch (NSException *exception) {
+        return NO;
+    }
+}
+
 - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
     NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
 
