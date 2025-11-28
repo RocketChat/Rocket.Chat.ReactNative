@@ -471,7 +471,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				if (roomUserId) {
 					const result = await getUserInfo(roomUserId);
 					if (result.success) {
-						this.setState({ member: result.user as any });
+						const { user } = result;
+						this.setState({ member: user as unknown as Partial<IUser> });
 					}
 				}
 			}

@@ -129,7 +129,7 @@ export function hasRole(role: string): boolean {
  * @param rid Optional room ID to check room-specific roles
  * @returns Array of boolean values indicating if each permission is granted
  */
-export async function hasPermission(permissions: Array<string[] | undefined>, rid?: string): Promise<boolean[]> {
+export async function hasPermission(permissions: Array<string[] | undefined>, rid?: string): Promise<(boolean | undefined)[]> {
 	let roomRoles: string[] = [];
 	if (rid) {
 		const db = database.active;
@@ -151,7 +151,7 @@ export async function hasPermission(permissions: Array<string[] | undefined>, ri
 		const loginUser = reduxStore.getState().login.user;
 		const userRoles = loginUser?.roles || [];
 		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
+		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r)));
 	} catch (e) {
 		log(e);
 		return permissions.map(() => false);

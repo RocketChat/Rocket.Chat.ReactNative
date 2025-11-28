@@ -126,13 +126,13 @@ const MessageActions = React.memo(
 					];
 					const result = await hasPermission(permission, room.rid);
 					permissions = {
-						hasEditPermission: result[0],
-						hasDeletePermission: result[1],
-						hasForceDeletePermission: result[2],
-						hasPinPermission: result[3],
-						hasDeleteOwnPermission: result[4],
-						hasCreateDirectMessagePermission: result[5],
-						hasCreateDiscussionOtherUserPermission: result[6]
+						hasEditPermission: result[0] || false,
+						hasDeletePermission: result[1] || false,
+						hasForceDeletePermission: result[2] || false,
+						hasPinPermission: result[3] || false,
+						hasDeleteOwnPermission: result[4] || false,
+						hasCreateDirectMessagePermission: result[5] || false,
+						hasCreateDiscussionOtherUserPermission: result[6] || false
 					};
 				} catch {
 					// Do nothing
