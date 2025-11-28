@@ -335,7 +335,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { rid } = room;
 		const permissions = await hasPermission([editRoomPermission], rid);
 
-		const canEdit = permissions[0];
+		const canEdit = permissions[0] || false;
 		return canEdit;
 	};
 
@@ -345,7 +345,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { rid } = room;
 		const permissions = await hasPermission([createTeamPermission], rid);
 
-		const canCreateTeam = permissions[0];
+		const canCreateTeam = permissions[0] || false;
 		return canCreateTeam;
 	};
 
@@ -353,10 +353,10 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { addTeamChannelPermission, moveRoomToTeamPermission, serverVersion } = this.props;
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
 			const result = await hasPermission([moveRoomToTeamPermission], rid);
-			return result[0];
+			return result[0] || false;
 		}
 		const result = await hasPermission([addTeamChannelPermission], rid);
-		return result[0];
+		return result[0] || false;
 	};
 
 	canConvertTeam = async () => {
@@ -365,7 +365,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { rid } = room;
 		const permissions = await hasPermission([convertTeamPermission], rid);
 
-		const canConvertTeam = permissions[0];
+		const canConvertTeam = permissions[0] || false;
 		return canConvertTeam;
 	};
 
@@ -375,7 +375,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { rid } = room;
 		const permissions = await hasPermission([toggleRoomE2EEncryptionPermission], rid);
 
-		const canToggleEncryption = permissions[0];
+		const canToggleEncryption = permissions[0] || false;
 		return canToggleEncryption;
 	};
 
