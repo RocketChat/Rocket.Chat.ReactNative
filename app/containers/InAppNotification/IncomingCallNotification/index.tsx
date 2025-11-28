@@ -25,7 +25,7 @@ export interface INotifierComponent {
 			type: SubscriptionType;
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
-		avatar: string;
+		avatar?: string;
 	};
 	isMasterDetail: boolean;
 }
@@ -33,7 +33,7 @@ export interface INotifierComponent {
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 const IncomingCallHeader = React.memo(
-	({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string }) => {
+	({ uid, callId, avatar, roomName }: { callId: string; avatar?: string; uid: string; roomName: string }) => {
 		const componentRef = useRef<View>(null);
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);

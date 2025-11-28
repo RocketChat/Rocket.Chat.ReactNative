@@ -21,17 +21,17 @@ export function isGroupChat(room: Partial<TRoomLike> | undefined): boolean {
 /**
  * Gets the avatar identifier for a room
  */
-export function getRoomAvatar(room: Partial<TRoomLike> | undefined): string {
+export function getRoomAvatar(room: Partial<TRoomLike> | undefined): string | undefined {
 	if (isGroupChat(room) && room?.uids && room?.usernames) {
 		return room.uids.length + room.usernames.join();
 	}
-	return room?.prid ? (room.fname || '') : (room?.name || '');
+	return room?.prid ? room.fname : room?.name;
 }
 
 /**
  * Gets the UID of the other participant in a direct message
  */
-export function getUidDirectMessage(room: (Partial<TRoomLike> & { itsMe?: boolean }) | null | undefined): string | undefined {
+export function getUidDirectMessage(room: (Partial<TRoomLike> & { itsMe?: boolean }) | null): string | undefined {
 	const { id: userId } = reduxStore.getState().login.user;
 
 	if (!room) {

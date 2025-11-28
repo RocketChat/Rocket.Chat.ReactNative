@@ -7,7 +7,13 @@ import { getUserInfo } from '../services/restApi';
 import { useAppSelector } from './useAppSelector';
 
 const useUserData = (rid: string) => {
-	const [user, setUser] = useState({ username: '', avatar: '', uid: '', type: '', direct: false });
+	const [user, setUser] = useState<{ username: string; avatar?: string; uid: string; type: string; direct: boolean }>({
+		username: '',
+		avatar: '',
+		uid: '',
+		type: '',
+		direct: false
+	});
 	const { useRealName } = useAppSelector(state => ({
 		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));

@@ -233,7 +233,7 @@ const RoomInfoView = (): React.ReactElement => {
 			rid: r?.rid,
 			name: getRoomTitle(r),
 			t: roomType,
-			roomUserId: getUidDirectMessage(r)
+			roomUserId: getUidDirectMessage(r || null)
 		};
 
 		if (r?.rid) {
