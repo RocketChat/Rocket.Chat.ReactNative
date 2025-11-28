@@ -1,5 +1,3 @@
-import { type Model } from '@nozbe/watermelondb';
-
 import { type TUserStatus } from './TUserStatus';
 
 export interface ICustomUserStatus {
@@ -10,5 +8,3 @@ export interface ICustomUserStatus {
         $date: number;
     };
 }
-
-export type TCustomUserStatusModel = ICustomUserStatus & Model;
