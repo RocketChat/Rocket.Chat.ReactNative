@@ -1,4 +1,4 @@
- import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,29 +30,29 @@ interface IStatus {
 	_id: string;
 	name: string;
 	statusType: TUserStatus;
-    isCustom?: boolean;
+	isCustom?: boolean;
 }
 
 const STATUS: IStatus[] = [
 	{
 		_id: 'online',
 		name: 'Online',
-        statusType: 'online'
+		statusType: 'online'
 	},
 	{
 		_id: 'busy',
 		name: 'Busy',
-        statusType: 'busy'
+		statusType: 'busy'
 	},
 	{
 		_id: 'away',
 		name: 'Away',
-        statusType: 'away'
+		statusType: 'away'
 	},
 	{
 		_id: 'offline',
 		name: 'Offline',
-        statusType: 'offline'
+		statusType: 'offline'
 	}
 ];
 
@@ -79,14 +79,14 @@ const Status = ({
 	statusText,
 	setStatus,
 	isCustom,
-    isCustomSelected
+	isCustomSelected
 }: {
 	statusType: IStatus;
 	status: TUserStatus;
 	statusText: string;
 	setStatus: (status: TUserStatus, statusText: string) => void;
 	isCustom?: boolean;
-    isCustomSelected: boolean;
+	isCustomSelected: boolean;
 }) => {
 	const { _id, name } = statusType;
 	const acessibilityLabel = useMemo(() => {
@@ -103,10 +103,9 @@ const Status = ({
 		if (isCustomSelected) {
 			return statusText === name;
 		}
-        
+
 		return status === statusType._id;
 	}, [statusText, name, status, statusType]);
-
 
 	return (
 		<>
@@ -130,7 +129,6 @@ const Status = ({
 	);
 };
 
-
 const StatusView = (): React.ReactElement => {
 	const validationSchema = yup.object().shape({
 		statusText: yup
@@ -143,7 +141,7 @@ const StatusView = (): React.ReactElement => {
 	const Accounts_AllowInvisibleStatusOption = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
 	);
-    const customUserStatus = useSelector((state: IApplicationState) => state.customUserStatus);
+	const customUserStatus = useSelector((state: IApplicationState) => state.customUserStatus);
 
 	const {
 		control,
@@ -186,9 +184,9 @@ const StatusView = (): React.ReactElement => {
 
 	const setStatus = (status: TUserStatus, statusText: string) => {
 		setValue('status', status);
-        if(statusText){
-            setValue('statusText', statusText);
-        }
+		if (statusText) {
+			setValue('statusText', statusText);
+		}
 	};
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
@@ -210,12 +208,15 @@ const StatusView = (): React.ReactElement => {
 		sendLoadingEvent({ visible: false });
 	};
 
-    const AllStatus = [...STATUS, ...customUserStatus.map(s => ({ ...s, isCustom: true }))];
+	const AllStatus = [...STATUS, ...customUserStatus.map(s => ({ ...s, isCustom: true }))];
 	const statusType = Accounts_AllowInvisibleStatusOption ? AllStatus : AllStatus.filter(s => s._id !== 'offline');
 
-    const isCustomSelected = useMemo(() => !!customUserStatus.find(s => s.statusType === inputValues.status && s.name === inputValues.statusText), [inputValues.status, inputValues.statusText, statusType]);
-    
-    const isStatusChanged = () => {
+	const isCustomSelected = useMemo(
+		() => !!customUserStatus.find(s => s.statusType === inputValues.status && s.name === inputValues.statusText),
+		[inputValues.status, inputValues.statusText, statusType]
+	);
+
+	const isStatusChanged = () => {
 		const { status } = inputValues;
 		if (!isValid) {
 			return true;
@@ -236,7 +237,16 @@ const StatusView = (): React.ReactElement => {
 			<FlatList
 				data={statusType}
 				keyExtractor={item => item._id}
-				renderItem={({ item }) => <Status statusType={item} statusText={inputValues.statusText} status={inputValues.status} setStatus={setStatus} isCustom={item.isCustom} isCustomSelected={isCustomSelected} />}
+				renderItem={({ item }) => (
+					<Status
+						statusType={item}
+						statusText={inputValues.statusText}
+						status={inputValues.status}
+						setStatus={setStatus}
+						isCustom={item.isCustom}
+						isCustomSelected={isCustomSelected}
+					/>
+				)}
 				ListHeaderComponent={
 					<>
 						<ControlledFormTextInput

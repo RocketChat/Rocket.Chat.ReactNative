@@ -78,7 +78,7 @@ export interface IApplicationState {
 	troubleshootingNotification: ITroubleshootingNotification;
 	supportedVersions: ISupportedVersionsState;
 	inAppFeedback: IInAppFeedbackState;
-    customUserStatus: ICustomUserStatus[];
+	customUserStatus: ICustomUserStatus[];
 }
 
 export type TApplicationActions = TActionActiveUsers &
@@ -103,4 +103,4 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionTroubleshootingNotification &
 	TActionSupportedVersions &
 	TInAppFeedbackAction &
-	TActionCustomUserStatus
+	TActionCustomUserStatus;
