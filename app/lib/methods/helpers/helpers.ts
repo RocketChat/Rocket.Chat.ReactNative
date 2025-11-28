@@ -1,7 +1,7 @@
 import log from './log';
 import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
-import { type IRoom, type ISubscription } from '../../../definitions';
+import { type IRoom, type ISubscription, type TSubscriptionModel } from '../../../definitions';
 import { type IUserMessage } from '../../../definitions/IMessage';
 
 // Helper type for room-like objects that can be either IRoom or ISubscription
@@ -133,12 +133,14 @@ export async function hasPermission(permissions: Array<string[] | undefined>, ri
 	let roomRoles: string[] = [];
 	if (rid) {
 		const db = database.active;
-		const subsCollection = db.get('subscriptions');
+		const subsCollection = db.get<TSubscriptionModel>('subscriptions');
 		try {
 			// get the room from database
 			const room = await subsCollection.find(rid);
 			// get room roles
-			roomRoles = (room as any).roles || [];
+			if (room.roles) {
+				roomRoles = room.roles;
+			}
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
 			return permissions.map(() => false);
