@@ -78,7 +78,7 @@ public class MMKVMigration {
                     // Try string first (most common in React Native storage)
                     String stringValue = oldMMKV.decodeString(key);
                     if (stringValue != null) {
-                        newMMKV.encodeString(key, stringValue);
+                        newMMKV.encode(key, stringValue);
                         migratedCount++;
                         continue;
                     }
@@ -86,7 +86,7 @@ public class MMKVMigration {
                     // Try int (with sentinel value)
                     int intValue = oldMMKV.decodeInt(key, Integer.MIN_VALUE);
                     if (intValue != Integer.MIN_VALUE) {
-                        newMMKV.encodeInt(key, intValue);
+                        newMMKV.encode(key, intValue);
                         migratedCount++;
                         continue;
                     }
@@ -94,7 +94,7 @@ public class MMKVMigration {
                     // Try boolean (if key exists but not string/int, assume boolean)
                     if (oldMMKV.containsKey(key)) {
                         boolean boolValue = oldMMKV.decodeBool(key, false);
-                        newMMKV.encodeBool(key, boolValue);
+                        newMMKV.encode(key, boolValue);
                         migratedCount++;
                     }
                 } catch (Exception e) {
