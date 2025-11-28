@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+ import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -76,36 +76,60 @@ const styles = StyleSheet.create({
 const Status = ({
 	statusType,
 	status,
+	statusText,
 	setStatus,
-    isCustom
+	isCustom,
+    isCustomSelected
 }: {
 	statusType: IStatus;
 	status: TUserStatus;
-	setStatus: (status: TUserStatus) => void;
-    isCustom?: boolean;
+	statusText: string;
+	setStatus: (status: TUserStatus, statusText: string) => void;
+	isCustom?: boolean;
+    isCustomSelected: boolean;
 }) => {
 	const { _id, name } = statusType;
+	const acessibilityLabel = useMemo(() => {
+		if (status === _id) {
+			if (isCustom) {
+				return name;
+			}
+			return I18n.t('Current_Status');
+		}
+		return '';
+	}, [status, _id, isCustom]);
+
+	const checked = useMemo(() => {
+		if (isCustomSelected) {
+			return statusText === name;
+		}
+        
+		return status === statusType._id;
+	}, [statusText, name, status, statusType]);
+
+
 	return (
 		<>
 			<List.Item
-				additionalAcessibilityLabel={`${status === _id ? I18n.t('Current_Status') : isCustom ? I18n.t('Custom_Status') : ''}`}
+				additionalAcessibilityLabel={acessibilityLabel}
 				title={name}
-                translateTitle={!isCustom}
+				translateTitle={!isCustom}
 				onPress={() => {
 					const key = `STATUS_${statusType._id.toUpperCase()}` as keyof typeof events;
 					logEvent(events[key]);
 					if (status !== statusType._id) {
-						setStatus(statusType.statusType);
+						setStatus(statusType.statusType, statusType.isCustom ? statusType.name : statusText);
 					}
 				}}
 				testID={`status-view-${_id}`}
 				left={() => <StatusIcon size={24} status={statusType.statusType} />}
-				right={() => (status === _id ? <Check /> : null)}
+				right={() => (checked ? <Check /> : null)}
 			/>
 			<List.Separator />
 		</>
 	);
 };
+
 
 const StatusView = (): React.ReactElement => {
 	const validationSchema = yup.object().shape({
@@ -160,8 +184,11 @@ const StatusView = (): React.ReactElement => {
 		setHeader();
 	}, [isMasterDetail]);
 
-	const setStatus = (updatedStatus: TUserStatus) => {
-		setValue('status', updatedStatus);
+	const setStatus = (status: TUserStatus, statusText: string) => {
+		setValue('status', status);
+        if(statusText){
+            setValue('statusText', statusText);
+        }
 	};
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
@@ -186,7 +213,9 @@ const StatusView = (): React.ReactElement => {
     const AllStatus = [...STATUS, ...customUserStatus.map(s => ({ ...s, isCustom: true }))];
 	const statusType = Accounts_AllowInvisibleStatusOption ? AllStatus : AllStatus.filter(s => s._id !== 'offline');
 
-	const isStatusChanged = () => {
+    const isCustomSelected = useMemo(() => !!customUserStatus.find(s => s.statusType === inputValues.status && s.name === inputValues.statusText), [inputValues.status, inputValues.statusText, statusType]);
+    
+    const isStatusChanged = () => {
 		const { status } = inputValues;
 		if (!isValid) {
 			return true;
@@ -207,7 +236,7 @@ const StatusView = (): React.ReactElement => {
 			<FlatList
 				data={statusType}
 				keyExtractor={item => item._id}
-				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} isCustom={item.isCustom} />}
+				renderItem={({ item }) => <Status statusType={item} statusText={inputValues.statusText} status={inputValues.status} setStatus={setStatus} isCustom={item.isCustom} isCustomSelected={isCustomSelected} />}
 				ListHeaderComponent={
 					<>
 						<ControlledFormTextInput
