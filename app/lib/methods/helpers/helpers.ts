@@ -151,7 +151,7 @@ export async function hasPermission(permissions: Array<string[] | undefined>, ri
 		const loginUser = reduxStore.getState().login.user;
 		const userRoles = loginUser?.roles || [];
 		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r)) ?? false);
+		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 	} catch (e) {
 		log(e);
 		return permissions.map(() => false);
