@@ -60,12 +60,12 @@ export function getUidDirectMessage(room: (Partial<TRoomLike> & { itsMe?: boolea
 /**
  * Gets the display title for a room
  */
-export function getRoomTitle(room: Partial<TRoomLike> | undefined): string {
+export function getRoomTitle(room: Partial<TRoomLike> | undefined): string | undefined {
 	const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } =
 		reduxStore.getState().settings;
 	const { username } = reduxStore.getState().login.user;
 	if (room && 'federated' in room && room.federated === true) {
-		return room.fname || '';
+		return room.fname;
 	}
 	if (isGroupChat(room) && !(room?.name && room.name.length) && room?.usernames) {
 		return room.usernames
@@ -74,9 +74,9 @@ export function getRoomTitle(room: Partial<TRoomLike> | undefined): string {
 			.join(', ');
 	}
 	if (allowSpecialChars && room?.t !== 'd') {
-		return room?.fname || room?.name || '';
+		return room?.fname || room?.name;
 	}
-	return ((room?.prid || useRealName) && room?.fname) || room?.name || '';
+	return ((room?.prid || useRealName) && room?.fname) || room?.name;
 }
 
 /**

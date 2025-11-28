@@ -471,10 +471,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let parentTitle = '';
 		// TODO: I think it's safe to remove this, but we need to test tablet without rooms
 		if (!tmid) {
-			title = getRoomTitle(room);
+			title = getRoomTitle(room) || '';
 		}
 		if (tmid) {
-			parentTitle = getRoomTitle(room);
+			parentTitle = getRoomTitle(room) || '';
 		}
 		let subtitle: string | undefined;
 		let teamId: string | undefined;
@@ -1569,7 +1569,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 			// Encrypted room, but user session is not encrypted
 			if (showE2EEDisabledRoom) {
-				return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
+				return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room) || ''} />;
 			}
 		}
 

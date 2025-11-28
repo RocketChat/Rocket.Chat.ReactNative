@@ -143,7 +143,7 @@ const AddExistingChannelView = () => {
 			}
 		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
-			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
+			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => { });
 			sendLoadingEvent({ visible: false });
 		}
 	};
@@ -162,7 +162,7 @@ const AddExistingChannelView = () => {
 					const icon = item.t === SubscriptionType.GROUP && !item?.teamId ? 'channel-private' : 'channel-public';
 					return (
 						<List.Item
-							title={getRoomTitle(item)}
+							title={getRoomTitle(item) || ''}
 							translateTitle={false}
 							onPress={() => toggleChannel(item.rid)}
 							testID={`add-existing-channel-view-item-${item.name}`}

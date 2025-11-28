@@ -34,7 +34,7 @@ import Button from '../../containers/Button';
 import useRoomSubscription from './hooks/useRoomSubscription';
 import useRoomDeletionActions from './hooks/useRoomDeletionActions';
 
-interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> {}
+interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> { }
 
 const MESSAGE_TYPE_VALUES = MessageTypeValues.map(m => ({
 	value: m.value,
@@ -92,7 +92,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 		setRandomValue(newRandomValue);
 		setValue('archived', room.archived);
-		setValue('name', getRoomTitle(room));
+		setValue('name', getRoomTitle(room) || '');
 		setValue('description', description || '');
 		setValue('topic', topic || '');
 		setValue('announcement', announcement || '');
@@ -450,9 +450,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 						) : null}
 						{room.broadcast
 							? [
-									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
-									<View style={[styles.divider, { borderColor: colors.strokeLight }]} />
-							  ]
+								<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
+								<View style={[styles.divider, { borderColor: colors.strokeLight }]} />
+							]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
 							<SwitchContainer

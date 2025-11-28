@@ -29,7 +29,7 @@ const SelectPersonOrChannel = ({
 			setRooms(res);
 			return res.map(item => ({
 				value: item.rid,
-				text: { text: getRoomTitle(item) },
+				text: { text: getRoomTitle(item) || '' },
 				imageUrl: getAvatar(item)
 			}));
 		} catch {
@@ -62,7 +62,7 @@ const SelectPersonOrChannel = ({
 				onChange={onRoomSelect}
 				options={rooms.map(room => ({
 					value: room.rid,
-					text: { text: getRoomTitle(room) },
+					text: { text: getRoomTitle(room) || '' },
 					imageUrl: getAvatar(room)
 				}))}
 				placeholder={{ text: `${I18n.t('Select')}` }}

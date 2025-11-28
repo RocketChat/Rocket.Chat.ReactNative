@@ -93,7 +93,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 				}
 			}
 			const name = getRoomTitle(room);
-			setTitle(name);
+			setTitle(name || '');
 		})();
 	}, []);
 

@@ -93,7 +93,7 @@ interface IBaseRoomItem extends IRoomItemTouchables {
 export interface IRoomItemContainerProps extends IBaseRoomItem {
 	item: any;
 	id?: string;
-	getRoomTitle: (item: any) => string;
+	getRoomTitle: (item: any) => string | undefined;
 	getRoomAvatar: (item: any) => string | undefined;
 	getIsRead?: (item: any) => boolean;
 }

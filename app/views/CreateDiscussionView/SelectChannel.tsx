@@ -29,7 +29,7 @@ const SelectChannel = ({
 			setChannels(res);
 			return res.map(channel => ({
 				value: channel,
-				text: { text: getRoomTitle(channel) },
+				text: { text: getRoomTitle(channel) || '' },
 				imageUrl: getAvatar(channel)
 			}));
 		} catch {
@@ -67,7 +67,7 @@ const SelectChannel = ({
 				value={initial && [initial]}
 				options={channels.map(channel => ({
 					value: channel,
-					text: { text: getRoomTitle(channel) },
+					text: { text: getRoomTitle(channel) || '' },
 					imageUrl: getAvatar(channel)
 				}))}
 				onClose={() => getChannels('')}
