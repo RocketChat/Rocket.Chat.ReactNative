@@ -49,7 +49,7 @@ import { type IPreferences } from '../IPreferences';
 import { type ICustomEmojis } from '../IEmoji';
 import { type IUsersTyping } from '../../reducers/usersTyping';
 import { type TActionCustomUserStatus } from '../../actions/customUserStatus';
-import { type ICustomUserStatus } from '../../definitions/ICustomUserStatus';
+import { type ICustomUserStatus } from '../ICustomUserStatus';
 
 export interface IApplicationState {
 	settings: TSettingsState;

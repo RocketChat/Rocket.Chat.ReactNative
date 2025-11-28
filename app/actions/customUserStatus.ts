@@ -1,7 +1,7 @@
 import { type Action } from 'redux';
 
 import { CUSTOM_USER_STATUS } from './actionsTypes';
-import { ICustomUserStatus } from '../definitions';
+import { type ICustomUserStatus } from '../definitions';
 
 export type TActionCustomUserStatus = Action & { customUserStatus: ICustomUserStatus[] };
 

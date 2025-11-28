@@ -1,5 +1,6 @@
-import { type TUserStatus } from './TUserStatus';
 import { type Model } from '@nozbe/watermelondb';
+
+import { type TUserStatus } from './TUserStatus';
 
 export interface ICustomUserStatus {
 	_id: string;
