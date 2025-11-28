@@ -1,6 +1,6 @@
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
@@ -294,16 +294,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		}, [user?.name, user?.username, user?.emails, user?.bio, user?.nickname, reset])
 	);
 
-	// Sync form values when user data loads (fixes race condition on app startup)
-	useEffect(() => {
-		if (user?.emails?.[0]?.address) {
-			const currentEmail = getValues('email');
-			// Only update if email is missing/null but user has email data
-			if (!currentEmail) {
-				setValue('email', user.emails[0].address, { shouldValidate: false, shouldDirty: false });
-			}
-		}
-	}, [user?.emails, setValue, getValues]);
+
 
 	return (
 		<KeyboardView>
