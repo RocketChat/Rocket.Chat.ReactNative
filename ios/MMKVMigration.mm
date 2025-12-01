@@ -9,7 +9,6 @@
 #import "MMKVMigration.h"
 #import "SecureStorage.h"
 #import "Shared/RocketChat/MMKVBridge.h"
-#import <os/log.h>
 
 static NSString *const kMigrationFlagKey = kMigrationFlagKey;
 
@@ -26,13 +25,12 @@ static NSString *toHex(NSString *str) {
     return [hex lowercaseString];
 }
 
-static os_log_t migration_log(void) {
-    static os_log_t log = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        log = os_log_create("chat.rocket.reactnative", "MMKVMigration");
-    });
-    return log;
+static void Logger(NSString *format, ...) {
+    va_list args;
+    va_start(args, format);
+    NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    fprintf(stderr, "[MMKVMigration] %s\n", [message UTF8String]);
 }
 
 @implementation MMKVMigration
@@ -58,7 +56,7 @@ static os_log_t migration_log(void) {
 
         if (!password || password.length == 0) {
             // No encryption, nothing to migrate
-            os_log_info(migration_log(), "No encryption key found, skipping migration");
+            Logger(@"No encryption key found, skipping migration");
             [defaults setBool:YES forKey:kMigrationFlagKey];
             return;
         }
@@ -69,31 +67,31 @@ static os_log_t migration_log(void) {
                                                 rootPath:mmkvPath];
 
         if (!mmkv) {
-            os_log_error(migration_log(), "Failed to open MMKV instance");
+            Logger(@"Failed to open MMKV instance");
             return;
         }
 
         NSUInteger keyCount = [mmkv count];
         if (keyCount == 0) {
-            os_log_info(migration_log(), "No data to migrate");
+            Logger(@"No data to migrate");
             [defaults setBool:YES forKey:kMigrationFlagKey];
             return;
         }
 
-        os_log_info(migration_log(), "Found %lu keys, removing encryption...", (unsigned long)keyCount);
+        Logger(@"Found %lu keys, removing encryption...", (unsigned long)keyCount);
 
         BOOL success = [mmkv reKey:nil];
         if (success) {
             // Remove encryption key from Keychain
             [secureStorage deleteSecureKey:alias];
             
-            os_log_info(migration_log(), "Migration successful: %lu keys, encryption removed", (unsigned long)keyCount);
+            Logger(@"Migration successful: %lu keys, encryption removed", (unsigned long)keyCount);
             [defaults setBool:YES forKey:kMigrationFlagKey];
         } else {
-            os_log_error(migration_log(), "reKey failed - will retry on next launch");
+            Logger(@"reKey failed - will retry on next launch");
         }
     } @catch (NSException *exception) {
-        os_log_error(migration_log(), "Migration error: %{public}@ - %{public}@", exception.name, exception.reason);
+        Logger(@"Migration error: %@ - %@", exception.name, exception.reason);
     }
 }
 
