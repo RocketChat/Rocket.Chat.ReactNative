@@ -27,6 +27,7 @@ import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVMigration;
+import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
 import com.tencent.mmkv.MMKV;
 

@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.reactnative.storage;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

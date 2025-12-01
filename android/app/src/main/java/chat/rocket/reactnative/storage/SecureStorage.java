@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.reactnative.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
