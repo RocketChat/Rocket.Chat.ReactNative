@@ -51,7 +51,12 @@ public class ReplyBroadcast extends BroadcastReceiver {
             Gson gson = new Gson();
             Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
-            replyToMessage(ejson, Integer.parseInt(notId), message);
+            try {
+                int id = Integer.parseInt(notId);
+                replyToMessage(ejson, id, message);
+            } catch (NumberFormatException e) {
+                Log.e("RocketChat.ReplyBroadcast", "Invalid notification ID: " + notId, e);
+            }
         }
     }
 
