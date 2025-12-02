@@ -89,22 +89,7 @@ jobs:
           xcrun simctl install $UDID "ios-simulator-app"
 
       - name: Run Tests
-        id: maestro-tests
-        uses: nick-fields/retry@v3
-        with:
-          max_attempts: 3
-          timeout_minutes: 60
-          command: |
-            SHARD=${{ inputs.shard }}
-            echo "Running shard: $SHARD"
-            export MAESTRO_DRIVER_STARTUP_TIMEOUT=120000
-
-            maestro test .maestro \
-              --exclude-tags=util \
-              --include-tags=test-$SHARD \
-              --exclude-tags=android-only \
-              --format junit \
-              --output maestro-report.xml
+        run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
 
       - name: Maestro Test Report
         if: always()
