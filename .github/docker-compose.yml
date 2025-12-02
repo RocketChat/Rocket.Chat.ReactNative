@@ -27,16 +27,17 @@ services:
   rocketchat:
     image: rocketchat/rocket.chat:latest
     environment:
-      - PORT=3000
-      - ROOT_URL=http://localhost:3000
-      - MONGO_URL=mongodb://mongo:27017/rocketchat
-      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
-      - NODE_OPTIONS=--max-old-space-size=512
-      - ADMIN_EMAIL=admin@admin.com
-      - ADMIN_USERNAME=admin
-      - ADMIN_NAME=ci-admin
-      - ADMIN_PASS=secretpassword123
-      - ADMIN_ROLE=admin
+      PORT: 3000
+      ROOT_URL: http://localhost:3000
+      MONGO_URL: mongodb://mongo:27017/rocketchat
+      MONGO_OPLOG_URL: mongodb://mongo:27017/local
+      NODE_OPTIONS: --max-old-space-size=512
+      INITIAL_USER: yes
+      ADMIN_EMAIL: admin@admin.com
+      ADMIN_USERNAME: admin
+      ADMIN_NAME: ci-admin
+      ADMIN_PASS: secretpassword123
+      ADMIN_ROLE: admin
     depends_on:
       - mongo-init-replica
     ports:
