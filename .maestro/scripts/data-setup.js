@@ -32,9 +32,9 @@ const login = (username, password) => {
         })
     });
 
-    const { authToken, userId } = json(response.body)?.data;
-
     console.log(JSON.stringify(json(response.body)));
+    
+    const { authToken, userId } = json(response.body)?.data;
 
     headers = { 'X-User-Id': userId, 'X-Auth-Token': authToken }
 
