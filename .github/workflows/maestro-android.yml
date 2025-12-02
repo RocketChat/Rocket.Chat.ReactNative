@@ -26,6 +26,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Android Experimental APK
+          run-id: 19871156348
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup E2E Account
         uses: ./.github/actions/e2e-account
