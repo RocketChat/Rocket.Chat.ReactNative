@@ -139,9 +139,26 @@ while [ ${#CURRENT_FAILS[@]} -gt 0 ] && [ "$ROUND" -le "$MAX_RERUN_ROUNDS" ]; do
 
   RPT="${RERUN_REPORT_PREFIX}-round-${ROUND}.xml"
 
-  maestro test "${CURRENT_FAILS[@]}" \
-    --format junit \
-    --output "$RPT" || true
+  if [ "$PLATFORM" = "android" ]; then
+    adb shell settings put system show_touches 1 || true
+    adb install -r "app-experimental-release.apk" || true
+    adb shell monkey -p "chat.rocket.reactnative" -c android.intent.category.LAUNCHER 1 || true
+    sleep 6
+    adb shell am force-stop "chat.rocket.reactnative" || true
+
+    maestro test "${CURRENT_FAILS[@]}" \
+      --exclude-tags=util \
+      --include-tags="test-${SHARD}" \
+      --format junit \
+      --output "$RPT" || true
+  else
+    maestro test "${CURRENT_FAILS[@]}" \
+      --exclude-tags=util \
+      --include-tags="test-${SHARD}" \
+      --exclude-tags=android-only \
+      --format junit \
+      --output "$RPT" || true
+  fi
 
   if [ ! -f "$RPT" ]; then
     echo "Rerun report missing"
