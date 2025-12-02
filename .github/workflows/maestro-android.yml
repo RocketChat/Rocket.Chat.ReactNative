@@ -43,6 +43,9 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Make Maestro script executable
+        run: chmod +x .github/scripts/run-maestro.sh
+
       - name: Start Android Emulator and Run Maestro Tests
         uses: reactivecircus/android-emulator-runner@v2
         timeout-minutes: 60
