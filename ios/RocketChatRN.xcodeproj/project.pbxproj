@@ -1278,6 +1278,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				1EC6ACF422CB9FC300A41C61 /* Embed App Extensions */,
 				1E1EA8082326CCE300E22452 /* ShellScript */,
+				1ED0389C2B507B4F00C007D4 /* Embed Watch Content */,
 				7AAE9EB32891A0D20024F559 /* Upload source maps to Bugsnag */,
 				407D3EDE3DABEE15D27BD87D /* ShellScript */,
 				9C104B12BEE385F7555E641F /* [Expo] Configure project */,
@@ -1289,6 +1290,7 @@
 			dependencies = (
 				1EC6ACBA22CB9FC300A41C61 /* PBXTargetDependency */,
 				1EFEB59B2493B6640072EDC0 /* PBXTargetDependency */,
+				1EE79C552B8912F600CF1863 /* PBXTargetDependency */,
 			);
 			name = RocketChatRN;
 			productName = "Hello World";
