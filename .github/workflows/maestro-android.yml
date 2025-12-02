@@ -62,18 +62,10 @@ jobs:
           disable-animations: true
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
 
-      - name: Upload Test Report
+      - name: Android Maestro Logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Android Test Report - Shard ${{ inputs.shard }}
-          path: maestro-report.xml
-          retention-days: 7
-      
-      - name: Upload Screen Recording
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: maestro-video-${{ inputs.shard }}
-          path: test_run_${{ inputs.shard }}_attempt_*.mp4
+          name: Android Maestro Logs - Shard ${{ inputs.shard }}
+          path: ~/.maestro/tests/
           retention-days: 7
