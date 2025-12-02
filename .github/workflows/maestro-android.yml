@@ -46,6 +46,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Start Rocket.Chat stack
+        working-directory: .github
         run: |
           docker compose up -d
           docker compose logs -f --tail=200 &
