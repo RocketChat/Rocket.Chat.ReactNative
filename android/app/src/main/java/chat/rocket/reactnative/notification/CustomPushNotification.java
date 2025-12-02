@@ -32,12 +32,13 @@ import com.wix.reactnativenotifications.core.notification.PushNotification;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
+import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.R;
 
 /**
@@ -47,12 +48,13 @@ import chat.rocket.reactnative.R;
  * For E2E notifications, waits for React Native initialization before decrypting and displaying.
  */
 public class CustomPushNotification extends PushNotification {
-    private static final String TAG = "RocketChat.Push";
+    private static final String TAG = "RocketChat.CustomPush";
+    private static final boolean ENABLE_VERBOSE_LOGS = BuildConfig.DEBUG;
     
     // Shared state
-    public static ReactApplicationContext reactApplicationContext;
+    public static volatile ReactApplicationContext reactApplicationContext;
     private static final Gson gson = new Gson();
-    private static final Map<String, List<Bundle>> notificationMessages = new HashMap<>();
+    private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
     
     // Constants
     public static final String KEY_REPLY = "KEY_REPLY";
@@ -81,27 +83,139 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
+        Bundle bundle = mNotificationProps.asBundle();
+        String notId = bundle.getString("notId");
         
-        // Load notification data from server if needed
+        if (notId == null || notId.isEmpty()) {
+            throw new InvalidNotificationException("Missing notification ID");
+        }
+        
+        try {
+            Integer.parseInt(notId);
+        } catch (NumberFormatException e) {
+            throw new InvalidNotificationException("Invalid notification ID format: " + notId);
+        }
+        
+        // Check if React is ready - needed for MMKV access (avatars, encryption, message-id-only)
+        if (!mAppLifecycleFacade.isReactInitialized()) {
+            android.util.Log.w(TAG, "React not initialized yet, waiting before processing notification...");
+            
+            // Wait for React to initialize with timeout
+            new Thread(() -> {
+                int attempts = 0;
+                int maxAttempts = 50; // 5 seconds total (50 * 100ms)
+                
+                while (!mAppLifecycleFacade.isReactInitialized() && attempts < maxAttempts) {
+                    try {
+                        Thread.sleep(100); // Wait 100ms
+                        attempts++;
+                        
+                        if (attempts % 10 == 0 && ENABLE_VERBOSE_LOGS) {
+                            android.util.Log.d(TAG, "Still waiting for React initialization... (" + (attempts * 100) + "ms elapsed)");
+                        }
+                    } catch (InterruptedException e) {
+                        android.util.Log.e(TAG, "Wait interrupted", e);
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+                }
+                
+                if (mAppLifecycleFacade.isReactInitialized()) {
+                    android.util.Log.i(TAG, "React initialized after " + (attempts * 100) + "ms, proceeding with notification");
+                    try {
+                        handleNotification();
+                    } catch (Exception e) {
+                        android.util.Log.e(TAG, "Failed to process notification after React initialization", e);
+                    }
+                } else {
+                    android.util.Log.e(TAG, "Timeout waiting for React initialization after " + (maxAttempts * 100) + "ms, processing without MMKV");
+                    try {
+                        handleNotification();
+                    } catch (Exception e) {
+                        android.util.Log.e(TAG, "Failed to process notification without React context", e);
+                    }
+                }
+            }).start();
+            
+            return; // Exit early, notification will be processed in the thread
+        }
+        
+        if (ENABLE_VERBOSE_LOGS) {
+            android.util.Log.d(TAG, "React already initialized, proceeding with notification");
+        }
+        
+        try {
+            handleNotification();
+        } catch (Exception e) {
+            android.util.Log.e(TAG, "Failed to process notification on main thread", e);
+            throw new InvalidNotificationException("Notification processing failed: " + e.getMessage());
+        }
+    }
+    
+    private void handleNotification() {
         Bundle received = mNotificationProps.asBundle();
         Ejson receivedEjson = safeFromJson(received.getString("ejson", "{}"), Ejson.class);
 
-        if (receivedEjson != null && receivedEjson.notificationType != null && 
-            receivedEjson.notificationType.equals("message-id-only")) {
-            notificationLoad(receivedEjson, new Callback() {
-                @Override
-                public void call(@Nullable Bundle bundle) {
-                    if (bundle != null) {
-                        mNotificationProps = createProps(bundle);
-                    }
-                }
-            });
+        if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
+            android.util.Log.d(TAG, "Detected message-id-only notification, will fetch full content from server");
+            loadNotificationAndProcess(receivedEjson);
+            return; // Exit early, notification will be processed in callback
         }
 
-        // Re-read values (may have changed from notificationLoad)
+        // For non-message-id-only notifications, process immediately
+        processNotification();
+    }
+    
+    private void loadNotificationAndProcess(Ejson ejson) {
+        notificationLoad(ejson, new Callback() {
+            @Override
+            public void call(@Nullable Bundle bundle) {
+                if (bundle != null) {
+                    android.util.Log.d(TAG, "Successfully loaded notification content from server, updating notification props");
+                    
+                    if (ENABLE_VERBOSE_LOGS) {
+                        // BEFORE createProps
+                        android.util.Log.d(TAG, "[BEFORE createProps] bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
+                        android.util.Log.d(TAG, "[BEFORE createProps] bundle.title=" + (bundle.getString("title") != null ? "[present]" : "[null]"));
+                        android.util.Log.d(TAG, "[BEFORE createProps] bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0));
+                        android.util.Log.d(TAG, "[BEFORE createProps] bundle has ejson=" + (bundle.getString("ejson") != null));
+                    }
+                    
+                    synchronized(CustomPushNotification.this) {
+                        mNotificationProps = createProps(bundle);
+                    }
+                    
+                    if (ENABLE_VERBOSE_LOGS) {
+                        // AFTER createProps - verify it worked
+                        Bundle verifyBundle = mNotificationProps.asBundle();
+                        android.util.Log.d(TAG, "[AFTER createProps] mNotificationProps.notificationLoaded=" + verifyBundle.getBoolean("notificationLoaded", false));
+                        android.util.Log.d(TAG, "[AFTER createProps] mNotificationProps.title=" + (verifyBundle.getString("title") != null ? "[present]" : "[null]"));
+                        android.util.Log.d(TAG, "[AFTER createProps] mNotificationProps.message length=" + (verifyBundle.getString("message") != null ? verifyBundle.getString("message").length() : 0));
+                        android.util.Log.d(TAG, "[AFTER createProps] mNotificationProps has ejson=" + (verifyBundle.getString("ejson") != null));
+                    }
+                } else {
+                    android.util.Log.w(TAG, "Failed to load notification content from server, will display placeholder notification");
+                }
+                
+                processNotification();
+            }
+        });
+    }
+    
+    private void processNotification() {
+        // We should re-read these values since that can be changed by notificationLoad
         Bundle bundle = mNotificationProps.asBundle();
         Ejson loadedEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
         String notId = bundle.getString("notId", "1");
+
+        if (ENABLE_VERBOSE_LOGS) {
+            android.util.Log.d(TAG, "[processNotification] notId=" + notId);
+            android.util.Log.d(TAG, "[processNotification] bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
+            android.util.Log.d(TAG, "[processNotification] bundle.title=" + (bundle.getString("title") != null ? "[present]" : "[null]"));
+            android.util.Log.d(TAG, "[processNotification] bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0));
+            android.util.Log.d(TAG, "[processNotification] loadedEjson.notificationType=" + (loadedEjson != null ? loadedEjson.notificationType : "null"));
+            android.util.Log.d(TAG, "[processNotification] loadedEjson.sender=" + (loadedEjson != null && loadedEjson.sender != null ? loadedEjson.sender.username : "null"));
+        }
 
         // Handle E2E encrypted notifications
         if (isE2ENotification(loadedEjson)) {
@@ -191,7 +305,12 @@ public class CustomPushNotification extends PushNotification {
         bundle.putLong("time", new Date().getTime());
         bundle.putString("username", hasSender ? ejson.sender.username : title);
         bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
-        bundle.putString("avatarUri", ejson != null ? ejson.getAvatarUri() : null);
+        
+        String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
+        if (ENABLE_VERBOSE_LOGS) {
+            android.util.Log.d(TAG, "[showNotification] avatarUri=" + (avatarUri != null ? "[present]" : "[null]"));
+        }
+        bundle.putString("avatarUri", avatarUri);
 
         // Handle special notification types
         if (ejson != null && ejson.notificationType instanceof String && 
@@ -199,7 +318,13 @@ public class CustomPushNotification extends PushNotification {
             notifyReceivedToJS();
         } else {
             // Show regular notification
+            if (ENABLE_VERBOSE_LOGS) {
+                android.util.Log.d(TAG, "[Before add to notificationMessages] notId=" + notId + ", bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0) + ", bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
+            }
             notificationMessages.get(notId).add(bundle);
+            if (ENABLE_VERBOSE_LOGS) {
+                android.util.Log.d(TAG, "[After add] notificationMessages[" + notId + "].size=" + notificationMessages.get(notId).size());
+            }
             postNotification(Integer.parseInt(notId));
             notifyReceivedToJS();
         }
@@ -224,6 +349,16 @@ public class CustomPushNotification extends PushNotification {
         Boolean notificationLoaded = bundle.getBoolean("notificationLoaded", false);
         Ejson ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
+        if (ENABLE_VERBOSE_LOGS) {
+            android.util.Log.d(TAG, "[getNotificationBuilder] notId=" + notId);
+            android.util.Log.d(TAG, "[getNotificationBuilder] notificationLoaded=" + notificationLoaded);
+            android.util.Log.d(TAG, "[getNotificationBuilder] title=" + (title != null ? "[present]" : "[null]"));
+            android.util.Log.d(TAG, "[getNotificationBuilder] message length=" + (message != null ? message.length() : 0));
+            android.util.Log.d(TAG, "[getNotificationBuilder] ejson=" + (ejson != null ? "present" : "null"));
+            android.util.Log.d(TAG, "[getNotificationBuilder] ejson.notificationType=" + (ejson != null ? ejson.notificationType : "null"));
+            android.util.Log.d(TAG, "[getNotificationBuilder] ejson.sender=" + (ejson != null && ejson.sender != null ? ejson.sender.username : "null"));
+        }
+
         notification
                 .setContentTitle(title)
                 .setContentText(message)
@@ -240,11 +375,13 @@ public class CustomPushNotification extends PushNotification {
 
         // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
         if (ejson == null || ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
+            android.util.Log.i(TAG, "[getNotificationBuilder] ✅ Rendering FULL notification style (ejson=" + (ejson != null) + ", notificationType=" + (ejson != null ? ejson.notificationType : "null") + ", notificationLoaded=" + notificationLoaded + ")");
             notificationStyle(notification, notificationId, bundle);
             notificationReply(notification, notificationId, bundle);
 
             // message couldn't be loaded from server (Fallback notification)
         } else {
+            android.util.Log.w(TAG, "[getNotificationBuilder] ⚠️ Rendering FALLBACK notification (ejson=" + (ejson != null) + ", notificationType=" + (ejson != null ? ejson.notificationType : "null") + ", notificationLoaded=" + notificationLoaded + ")");
             // iterate over the current notification ids to dismiss fallback notifications from same server
             for (Map.Entry<String, List<Bundle>> bundleList : notificationMessages.entrySet()) {
                 // iterate over the notifications with this id (same host + rid)
@@ -257,7 +394,16 @@ public class CustomPushNotification extends PushNotification {
                     if (ejson != null && notEjson != null && ejson.serverURL().equals(notEjson.serverURL())) {
                         String id = not.getString("notId");
                         // cancel this notification
-                        notificationManager.cancel(Integer.parseInt(id));
+                        if (notificationManager != null) {
+                            try {
+                                notificationManager.cancel(Integer.parseInt(id));
+                                if (ENABLE_VERBOSE_LOGS) {
+                                    android.util.Log.d(TAG, "Cancelled previous fallback notification from same server");
+                                }
+                            } catch (NumberFormatException e) {
+                                android.util.Log.e(TAG, "Invalid notification ID for cancel: " + id, e);
+                            }
+                        }
                     }
                 }
             }
@@ -274,14 +420,42 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private Bitmap getAvatar(String uri) {
+        if (uri == null || uri.isEmpty()) {
+            if (ENABLE_VERBOSE_LOGS) {
+                android.util.Log.w(TAG, "getAvatar called with null/empty URI");
+            }
+            return largeIcon();
+        }
+        
+        // Sanitize URL for logging (remove query params with tokens)
+        String sanitizedUri = uri;
+        int queryStart = uri.indexOf("?");
+        if (queryStart != -1) {
+            sanitizedUri = uri.substring(0, queryStart) + "?[auth_params]";
+        }
+        
+        if (ENABLE_VERBOSE_LOGS) {
+            android.util.Log.d(TAG, "Fetching avatar from: " + sanitizedUri);
+        }
+        
         try {
-            return Glide.with(mContext)
+            Bitmap avatar = Glide.with(mContext)
                     .asBitmap()
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
                     .load(uri)
                     .submit(100, 100)
                     .get();
+            
+            if (avatar != null) {
+                if (ENABLE_VERBOSE_LOGS) {
+                    android.util.Log.d(TAG, "Successfully loaded avatar");
+                }
+            } else {
+                android.util.Log.w(TAG, "Avatar loaded but is null");
+            }
+            return avatar != null ? avatar : largeIcon();
         } catch (final ExecutionException | InterruptedException e) {
+            android.util.Log.e(TAG, "Failed to fetch avatar: " + e.getMessage(), e);
             return largeIcon();
         }
     }
@@ -324,7 +498,11 @@ public class CustomPushNotification extends PushNotification {
                     NotificationManager.IMPORTANCE_HIGH);
 
             final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            } else {
+                android.util.Log.e(TAG, "NotificationManager is null, cannot create notification channel");
+            }
 
             notification.setChannelId(CHANNEL_ID);
         }
@@ -350,6 +528,15 @@ public class CustomPushNotification extends PushNotification {
 
     private void notificationStyle(Notification.Builder notification, int notId, Bundle bundle) {
         List<Bundle> bundles = notificationMessages.get(Integer.toString(notId));
+
+        if (ENABLE_VERBOSE_LOGS) {
+            android.util.Log.d(TAG, "[notificationStyle] notId=" + notId + ", bundles=" + (bundles != null ? bundles.size() : "null"));
+            if (bundles != null && bundles.size() > 0) {
+                Bundle firstBundle = bundles.get(0);
+                android.util.Log.d(TAG, "[notificationStyle] first bundle.message length=" + (firstBundle.getString("message") != null ? firstBundle.getString("message").length() : 0));
+                android.util.Log.d(TAG, "[notificationStyle] first bundle.notificationLoaded=" + firstBundle.getBoolean("notificationLoaded", false));
+            }
+        }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             Notification.InboxStyle messageStyle = new Notification.InboxStyle();

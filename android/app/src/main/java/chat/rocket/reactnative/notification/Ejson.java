@@ -12,6 +12,8 @@ import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
 
 import java.math.BigInteger;
 
+import chat.rocket.reactnative.BuildConfig;
+
 class RNCallback implements Callback {
     public void invoke(Object... args) {
 
@@ -64,7 +66,7 @@ public class Ejson {
      * needs access to React-specific keystore resources. This means MMKV cannot be initialized
      * before React Native starts.
      */
-    private void ensureMMKVInitialized() {
+    private synchronized void ensureMMKVInitialized() {
         if (initializationAttempted) {
             return;
         }
@@ -105,28 +107,112 @@ public class Ejson {
     }
 
     public String getAvatarUri() {
-        if (type == null) {
+        if (sender == null || sender.username == null || sender.username.isEmpty()) {
+            Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
             return null;
         }
-        return serverURL() + "/avatar/" + this.sender.username + "?rc_token=" + token() + "&rc_uid=" + userId();
+        
+        String server = serverURL();
+        if (server == null || server.isEmpty()) {
+            Log.w(TAG, "Cannot generate avatar URI: serverURL is null");
+            return null;
+        }
+        
+        String userToken = token();
+        String uid = userId();
+        
+        if (userToken.isEmpty() || uid.isEmpty()) {
+            Log.w(TAG, "Cannot generate avatar URI: missing auth credentials (token=" + !userToken.isEmpty() + ", uid=" + !uid.isEmpty() + ")");
+            return null;
+        }
+        
+        String uri = server + "/avatar/" + sender.username + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+        
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Generated avatar URI for user: " + sender.username);
+        }
+        
+        return uri;
     }
 
     public String token() {
         ensureMMKVInitialized();
         String userId = userId();
-        if (mmkv != null && userId != null) {
-            return mmkv.decodeString(TOKEN_KEY.concat(userId));
+        
+        if (mmkv == null) {
+            Log.e(TAG, "token() called but MMKV is null");
+            return "";
         }
-        return "";
+        
+        if (userId == null || userId.isEmpty()) {
+            Log.w(TAG, "token() called but userId is null or empty");
+            return "";
+        }
+        
+        String key = TOKEN_KEY.concat(userId);
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Looking up token with key: " + key);
+        }
+        
+        String token = mmkv.decodeString(key);
+        
+        if (token == null || token.isEmpty()) {
+            Log.w(TAG, "No token found in MMKV for userId");
+        } else if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Successfully retrieved token from MMKV");
+        }
+        
+        return token != null ? token : "";
     }
 
     public String userId() {
         ensureMMKVInitialized();
         String serverURL = serverURL();
-        if (mmkv != null && serverURL != null) {
-            return mmkv.decodeString(TOKEN_KEY.concat(serverURL));
+        String key = TOKEN_KEY.concat(serverURL);
+        
+        if (mmkv == null) {
+            Log.e(TAG, "userId() called but MMKV is null");
+            return "";
         }
-        return "";
+        
+        if (serverURL == null) {
+            Log.e(TAG, "userId() called but serverURL is null");
+            return "";
+        }
+        
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Looking up userId with key: " + key);
+        }
+        
+        String userId = mmkv.decodeString(key);
+        
+        if (userId == null || userId.isEmpty()) {
+            Log.w(TAG, "No userId found in MMKV for server: " + NotificationHelper.sanitizeUrl(serverURL));
+            
+            // Only list keys in debug builds for diagnostics
+            if (BuildConfig.DEBUG) {
+                try {
+                    String[] allKeys = mmkv.allKeys();
+                    if (allKeys != null && allKeys.length > 0) {
+                        Log.d(TAG, "Available MMKV keys count: " + allKeys.length);
+                        // Log only keys that match the TOKEN_KEY pattern for security
+                        for (String k : allKeys) {
+                            if (k != null && k.startsWith("reactnativemeteor_usertoken")) {
+                                Log.d(TAG, "Found auth key: " + k);
+                            }
+                        }
+                    } else {
+                        Log.w(TAG, "MMKV has no keys stored");
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error listing MMKV keys", e);
+                }
+            }
+        } else if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Successfully retrieved userId from MMKV");
+        }
+        
+        return userId != null ? userId : "";
     }
 
     public String privateKey() {
