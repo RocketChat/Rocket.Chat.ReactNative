@@ -126,9 +126,6 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		// MMKV migration runs natively before React Native starts:
-		// - Android: MainApplication.onCreate() -> MMKVMigration.migrate()
-		// - iOS: AppDelegate.didFinishLaunching() -> MMKVMigration.migrate()
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification

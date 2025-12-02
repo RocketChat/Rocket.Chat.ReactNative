@@ -5,7 +5,6 @@ extension MMKVBridge {
 		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
 		
-		// Use the same path as TypeScript: appGroupPath/mmkv for backward compatibility
 		var mmkvPath: String?
 		if !groupDir.isEmpty {
 			mmkvPath = "\(groupDir)/mmkv"
