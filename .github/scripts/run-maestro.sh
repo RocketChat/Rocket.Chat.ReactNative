@@ -30,7 +30,7 @@ MAPFILE="$(mktemp)"
 trap 'rm -f "$MAPFILE"' EXIT
 
 while IFS= read -r -d '' file; do
-  if grep -qE '(^|[[:space:]\[\],:])test-'"$SHARD"'([[:space:]\[\],:]|$)' "$file"; then
+  if grep -qE "^[[:space:]]*-[[:space:]]*['\"]?test-${SHARD}['\"]?([[:space:]]*$|[[:space:]]*,|[[:space:]]*\\])" "$file"; then
     raw_name="$(grep -m1 -E '^[[:space:]]*name:' "$file" || true)"
     if [ -n "$raw_name" ]; then
       name_val="$(echo "$raw_name" | sed -E 's/^[[:space:]]*name:[[:space:]]*//; s/^["'\'']//; s/["'\'']$//; s/[[:space:]]*$//')"
