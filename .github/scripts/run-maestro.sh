@@ -111,9 +111,6 @@ if [ -z "$FAILED_NAMES" ]; then
   exit 0
 fi
 
-echo "Failed tests:"
-echo "$FAILED_NAMES"
-
 IFS=$'\n' read -rd '' -a FAILED_ARRAY <<<"$FAILED_NAMES" || true
 
 CANDIDATE_FILES=()
@@ -192,9 +189,6 @@ PY
       SEEN3="${SEEN3}"$'\n'"${FILE}"
     fi
   done
-
-  echo "Still failing:"
-  printf '%s\n' "${NEXT_FILES[@]}"
 
   CURRENT_FAILS=("${NEXT_FILES[@]}")
   ROUND=$((ROUND+1))
