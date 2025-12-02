@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:5.0
+    command: >
+      mongod --replSet rs0
+             --bind_ip_all
+             --wiredTigerCacheSizeGB 0.5
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "rs.status().ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mongo-init-replica:
+    image: mongo:5.0
+    depends_on:
+      - mongo
+    entrypoint: [
+      "bash", "-lc",
+      "sleep 2; mongo --host mongo --eval 'rs.initiate({_id:\"rs0\",members:[{_id:0,host:\"mongo:27017\"}]})' || true; sleep 1"
+    ]
+
+  rocketchat:
+    image: rocketchat/rocket.chat:latest
+    environment:
+      - PORT=3000
+      - ROOT_URL=http://localhost:3000
+      - MONGO_URL=mongodb://mongo:27017/rocketchat
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      - NODE_OPTIONS=--max-old-space-size=512
+      - ADMIN_EMAIL=admin@admin.com
+      - ADMIN_USERNAME=admin
+      - ADMIN_NAME=ci-admin
+      - ADMIN_PASS=secretpassword123
+      - ADMIN_ROLE=admin
+    depends_on:
+      - mongo-init-replica
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/info"]
+      interval: 5s
+      retries: 20
+
+volumes:
+  mongo_data:
