@@ -43,6 +43,23 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Start Rocket.Chat stack
+        run: |
+          docker compose up -d
+          docker compose logs -f --tail=200 &
+      
+      - name: Wait for Rocket.Chat to be ready
+        run: |
+          for i in $(seq 1 40); do
+            code=$(curl --silent --max-time 2 -o /dev/null -w "%{http_code}" http://localhost:3000/api/info || echo "000")
+            if [ "$code" = "200" ]; then break; fi
+            sleep 3
+          done
+          if [ "$code" != "200" ]; then
+            docker compose logs --tail=200
+            exit 1
+          fi
+
       - name: Make Maestro script executable
         run: chmod +x .github/scripts/run-maestro.sh
 
@@ -61,6 +78,10 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: ./.github/scripts/run-maestro.sh android ${{ inputs.shard }}
+
+      - name: Teardown Rocket.Chat
+        if: always()
+        run: docker compose down --volumes --remove-orphans
 
       - name: Android Maestro Logs
         if: always()

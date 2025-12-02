@@ -1,7 +1,8 @@
 const data = {
-	server: 'https://mobile.rocket.chat',
+	server: 'http://10.0.2.2:3000',
 	alternateServer: 'https://stable.rocket.chat',
-	...output.account,
+	adminUser: 'admin@admin.com',
+	adminPassword: 'secretpassword123',
     accounts: [],
 	channels: {
 		detoxpublic: {
