@@ -10,7 +10,7 @@
 #import "SecureStorage.h"
 #import "Shared/RocketChat/MMKVBridge.h"
 
-static NSString *const kMigrationFlagKey = kMigrationFlagKey;
+static NSString *const kMigrationFlagKey =  @"MMKV_MIGRATION_COMPLETED";
 
 static NSString *toHex(NSString *str) {
     if (!str) return @"";
