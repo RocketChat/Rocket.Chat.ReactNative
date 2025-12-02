@@ -74,10 +74,17 @@ public class MMKVMigration {
 
             // Remove encryption by re-keying to empty string
             // This decrypts all data and rewrites the file without encryption
-            mmkv.reKey("");
+            boolean success = mmkv.reKey("");
 
-            Log.i(TAG, "MMKV encryption removed successfully for " + keyCount + " keys");
-            prefs.edit().putBoolean(MIGRATION_FLAG_KEY, true).apply();
+            if (success) {
+                // Remove encryption key from SecureKeystore
+                secureKeystore.removeSecureKey(alias);
+                
+                Log.i(TAG, "MMKV encryption removed successfully for " + keyCount + " keys");
+                prefs.edit().putBoolean(MIGRATION_FLAG_KEY, true).apply();
+            } else {
+                Log.e(TAG, "reKey failed - will retry on next launch");
+            }
 
         } catch (Exception e) {
             Log.e(TAG, "MMKV migration failed", e);

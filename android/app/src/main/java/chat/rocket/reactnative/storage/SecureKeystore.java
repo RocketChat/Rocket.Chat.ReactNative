@@ -150,6 +150,32 @@ public class SecureKeystore {
         }
     }
 
+    public boolean removeSecureKey(String key) {
+        if (useKeystore()) {
+            try {
+                // Delete the cipher text file
+                String filename = Constants.SKS_DATA_FILENAME + key;
+                boolean deleted = context.deleteFile(filename);
+                Log.i(Constants.TAG, "Removed secure key file: " + deleted);
+                return deleted;
+            } catch (Exception e) {
+                Log.e(Constants.TAG, "Error removing secure key", e);
+                return false;
+            }
+        } else {
+            try {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.remove(key);
+                editor.apply();
+                Log.i(Constants.TAG, "Removed secure key from prefs");
+                return true;
+            } catch (Exception e) {
+                Log.e(Constants.TAG, "Error removing key from prefs", e);
+                return false;
+            }
+        }
+    }
+
     private PublicKey getOrCreatePublicKey(Context context, String alias) throws GeneralSecurityException, IOException {
         KeyStore keyStore = KeyStore.getInstance(getKeyStore());
         keyStore.load(null);
