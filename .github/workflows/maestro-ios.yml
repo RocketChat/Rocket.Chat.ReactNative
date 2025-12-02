@@ -84,6 +84,9 @@ jobs:
           echo "UDID=$UDID"
           echo "UDID=$UDID" >> $GITHUB_ENV
 
+      - name: Make Maestro script executable
+        run: chmod +x .github/scripts/run-maestro.sh
+
       - name: Install App
         run: |
           xcrun simctl install $UDID "ios-simulator-app"
