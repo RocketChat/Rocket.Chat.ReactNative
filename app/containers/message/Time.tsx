@@ -1,7 +1,7 @@
-import moment from 'moment';
 import React from 'react';
 import { Text } from 'react-native';
 
+import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
 import messageStyles from './styles';
 
@@ -15,7 +15,7 @@ const MessageTime = ({ timeFormat, ts }: IMessageTime) => {
 
 	const { colors } = useTheme();
 
-	const time = moment(ts).format(timeFormat);
+	const time = dayjs(ts).format(timeFormat);
 
 	return <Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>;
 };
