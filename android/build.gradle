@@ -14,6 +14,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://packages.rnrepo.org/releases" }
     }
 
     dependencies {
@@ -22,6 +23,7 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath("org.rnrepo.tools:prebuilds-plugin:0.1.0")
     }
 }
 
@@ -31,6 +33,7 @@ allprojects {
             // expo-camera bundles a custom com.google.android:cameraview
             url "$rootDir/../node_modules/expo-camera/android/maven"
         }
+        maven { url "https://packages.rnrepo.org/releases" }
     }
 }
 
