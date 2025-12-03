@@ -442,7 +442,8 @@ const MessageActions = React.memo(
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
 						onPress: () => handleReplyInDM(message),
-						enabled: permissions.hasCreateDirectMessagePermission
+						enabled: permissions.hasCreateDirectMessagePermission && !room.abacAttributes,
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
 					});
 				}
 
@@ -454,19 +455,24 @@ const MessageActions = React.memo(
 					enabled: permissions.hasCreateDiscussionOtherUserPermission
 				});
 
+				// Forward
 				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Forward'),
 						icon: 'arrow-forward',
-						onPress: () => handleShareMessage(message)
+						onPress: () => handleShareMessage(message),
+						enabled: !room.abacAttributes,
+						disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
 					});
 				}
 
-				// Permalink
+				// Get link
 				options.push({
 					title: I18n.t('Get_link'),
 					icon: 'link',
-					onPress: () => handlePermalink(message)
+					onPress: () => handlePermalink(message),
+					enabled: !room.abacAttributes,
+					disabledReason: room.abacAttributes && I18n.t('ABAC_disabled_action_reason')
 				});
 
 				// Copy
