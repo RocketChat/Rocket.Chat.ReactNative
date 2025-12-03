@@ -16,6 +16,7 @@
   "ABAC_managed": "ABAC managed",
   "ABAC_managed_description": "Only compliant users have access to attribute-based access controlled rooms. Attributes determine room access.",
   "ABAC_room_attributes": "Room attributes",
+  "abac_removed_user_from_the_room": "was removed by ABAC",
   "accept": "Accept",
   "Accessibility": "Accessibility",
   "Accessibility_and_Appearance": "Accessibility & appearance",

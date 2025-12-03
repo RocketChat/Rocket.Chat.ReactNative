@@ -12,6 +12,7 @@
   "ABAC_managed": "ABAC tarafından yönetilir",
   "ABAC_managed_description": "Yalnızca uyumlu kullanıcılar, öznitelik tabanlı erişim kontrollü odalara erişebilir. Öznitelikler, oda erişimini belirler.",
   "ABAC_room_attributes": "Oda özellikleri",
+  "abac_removed_user_from_the_room": "ABAC tarafından kaldırıldı",
   "Accessibility": "Erişilebilirlik",
   "Accessibility_and_Appearance": "Erişilebilirlik ve görünüm",
   "Accessibility_statement": "Erişilebilirlik beyanı",

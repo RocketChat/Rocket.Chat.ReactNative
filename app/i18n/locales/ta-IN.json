@@ -16,6 +16,7 @@
   "ABAC_managed": "ABAC நிர்வகிக்கப்பட்டது",
   "ABAC_managed_description": "இணக்கமான பயனர்கள் மட்டுமே பண்பு அடிப்படையிலான அணுகல் கட்டுப்படுத்தப்பட்ட அறைகளுக்கு அணுகல் கொண்டுள்ளனர். பண்புகள் அறை அணுகலை தீர்மானிக்கின்றன.",
   "ABAC_room_attributes": "அறை பண்புகள்",
+  "abac_removed_user_from_the_room": "ABAC மூலம் அகற்றப்பட்டது",
   "accept": "ஏற்றுக்கொள்",
   "Accessibility": "அணுகல் மேம்பாடு",
   "Accessibility_and_Appearance": "நுகர்வுத்திறன் மற்றும் தோற்றம்",

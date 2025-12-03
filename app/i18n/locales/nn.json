@@ -11,6 +11,7 @@
   "ABAC_managed": "ABAC-administrert",
   "ABAC_managed_description": "Berre kompatible brukarar har tilgang til attributtbaserte tilgangskontrollerte rom. Attributta bestemmer romtilgangen.",
   "ABAC_room_attributes": "Romattributt",
+  "abac_removed_user_from_the_room": "vart fjerna av ABAC",
   "accept": "Aksepter",
   "Accessibility": "Tilgjengelighet",
   "Accessibility_and_Appearance": "Tilgjengelighet og utseende",

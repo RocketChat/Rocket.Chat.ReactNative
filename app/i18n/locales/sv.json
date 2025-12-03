@@ -16,6 +16,7 @@
   "ABAC_managed": "ABAC-hanterat",
   "ABAC_managed_description": "Endast kompatibla användare har åtkomst till attributbaserat åtkomstskyddade rum. Attributen avgör tillgången till rummet.",
   "ABAC_room_attributes": "Rumsattribut",
+  "abac_removed_user_from_the_room": "togs bort av ABAC",
   "Accessibility": "Tillgänglighet",
   "Accessibility_and_Appearance": "Tillgänglighet och utseende",
   "Accessibility_statement": "Tillgänglighetsredogörelse",

@@ -16,6 +16,7 @@
   "ABAC_managed": "ABAC నిర్వహించబడింది",
   "ABAC_managed_description": "అట్రిబ్యూట్ ఆధారిత యాక్సెస్ నియంత్రిత గదులకు అనుకూలమైన వినియోగదారులు మాత్రమే ప్రాప్యతను కలిగి ఉంటారు. లక్షణాలు గది ప్రాప్యతను నిర్ణయిస్తాయి.",
   "ABAC_room_attributes": "గది లక్షణాలు",
+  "abac_removed_user_from_the_room": "ABAC ద్వారా తొలగించబడింది",
   "accept": "అంగీకరించు",
   "Accessibility": "एक्सेसिबिलिटी",
   "Accessibility_and_Appearance": "प्रवेशयोग्यता और रूपरेखा",

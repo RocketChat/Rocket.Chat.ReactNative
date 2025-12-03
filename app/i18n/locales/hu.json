@@ -16,6 +16,7 @@
   "ABAC_managed": "ABAC által kezelt",
   "ABAC_managed_description": "Csak a megfelelő felhasználók férhetnek hozzá az attribútum alapú hozzáférés-vezérelt szobákhoz. Az attribútumok határozzák meg a szoba hozzáférését.",
   "ABAC_room_attributes": "Szoba attribútumok",
+  "abac_removed_user_from_the_room": "eltávolítva az ABAC által",
   "accept": "Elfogadom",
   "Accessibility": "Akadálymentesség",
   "Accessibility_and_Appearance": "Hozzáférhetőség és megjelenés",

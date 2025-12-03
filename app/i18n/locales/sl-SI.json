@@ -16,6 +16,7 @@
   "ABAC_managed": "ABAC upravljano",
   "ABAC_managed_description": "Samo skladni uporabniki imajo dostop do sob z nadzorom dostopa na podlagi atributov. Atributi določajo dostop do sobe.",
   "ABAC_room_attributes": "Atributi sobe",
+  "abac_removed_user_from_the_room": "je bil odstranjen s strani ABAC",
   "Accessibility": "Dostopnost",
   "Accessibility_and_Appearance": "Dostopnost in videz",
   "Accessibility_statement": "Izjava o dostopnosti",

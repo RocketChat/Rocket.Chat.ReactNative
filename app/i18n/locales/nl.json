@@ -12,6 +12,7 @@
   "ABAC_managed": "ABAC beheerd",
   "ABAC_managed_description": "Alleen conforme gebruikers hebben toegang tot op attributen gebaseerde toegangsgecontroleerde kamers. Attributen bepalen de toegang tot de kamer.",
   "ABAC_room_attributes": "Kamerattributen",
+  "abac_removed_user_from_the_room": "werd verwijderd door ABAC",
   "Accessibility": "Toegankelijkheid",
   "Accessibility_and_Appearance": "Toegankelijkheid & uiterlijk",
   "Accessibility_statement": "Toegankelijkheidsverklaring",
