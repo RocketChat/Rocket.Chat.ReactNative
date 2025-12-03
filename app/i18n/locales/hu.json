@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Új üzenet érkezett {{name}}-tól: {{message}}",
   "A11y_incoming_call_dismiss": "Elutasítás",
   "A11y_incoming_call_swipe_down_to_view_options": "Húzza lefelé az opciók megtekintéséhez",
+  "abac_removed_user_from_the_room": "eltávolítva az ABAC által",
   "accept": "Elfogadom",
   "Accessibility": "Akadálymentesség",
   "Accessibility_and_Appearance": "Hozzáférhetőség és megjelenés",

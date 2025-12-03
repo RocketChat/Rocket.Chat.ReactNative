@@ -12,6 +12,7 @@
   "A11y_in_app_notification": "Ny melding fra {{name}}: {{message}}",
   "A11y_incoming_call_dismiss": "Avvis",
   "A11y_incoming_call_swipe_down_to_view_options": "Dra ned for å se alternativer",
+  "abac_removed_user_from_the_room": "ble fjernet av ABAC",
   "accept": "Aksepter",
   "Accessibility": "Tilgjengelighet",
   "Accessibility_and_Appearance": "Tilgjengelighet og utseende",

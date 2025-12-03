@@ -250,7 +250,8 @@ export type MessageTypesValues =
 	| OtrSystemMessages
 	| 'message_pinned'
 	| 'message_snippeted'
-	| 'jitsi_call_started';
+	| 'jitsi_call_started'
+	| 'abac-removed-user-from-room';
 
 export interface IAttachmentTranslations {
 	[k: string]: string;
