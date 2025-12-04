@@ -7,7 +7,7 @@ import * as List from '../../../containers/List';
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
-import { type TAlertDisplayType } from '..';
+import { type TAlertDisplayType, type TEnterKeyBehavior } from '..';
 
 const styles = StyleSheet.create({
 	leftTitleContainer: {
@@ -35,24 +35,27 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TOPTIONS = { label: string; value: TAlertDisplayType; description: string | null }[];
+type TAlertOptions = { label: string; value: TAlertDisplayType; description: string | null }[];
+type TEnterKeyOptions = { label: string; value: TEnterKeyBehavior; description: string | null }[];
 
-interface IBaseParams {
-	value: TAlertDisplayType;
-	onChangeValue: (value: TAlertDisplayType) => void;
+interface IBaseParams<T> {
+	value: T;
+	onChangeValue: (value: T) => void;
 }
 
-const ListPicker = ({
+const ListPicker = <T extends TAlertDisplayType | TEnterKeyBehavior>({
 	value,
 	title,
-	onChangeValue
+	onChangeValue,
+	type
 }: {
 	title: string;
-} & IBaseParams) => {
+	type?: 'alert' | 'enterKey';
+} & IBaseParams<T>) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 
-	const OPTIONS: TOPTIONS = [
+	const ALERT_OPTIONS: TAlertOptions = [
 		{
 			label: I18n.t('A11y_appearance_toasts'),
 			value: 'TOAST' as TAlertDisplayType,
@@ -65,7 +68,22 @@ const ListPicker = ({
 		}
 	];
 
-	const option = OPTIONS.find(option => option.value === value) || OPTIONS[0];
+	const ENTER_KEY_OPTIONS: TEnterKeyOptions = [
+		{
+			label: I18n.t('Enter_key_send_message'),
+			value: 'SEND' as TEnterKeyBehavior,
+			description: null
+		},
+		{
+			label: I18n.t('Enter_key_new_line'),
+			value: 'NEW_LINE' as TEnterKeyBehavior,
+			description: null
+		}
+	];
+
+	const OPTIONS = type === 'enterKey' ? ENTER_KEY_OPTIONS : ALERT_OPTIONS;
+
+	const option = OPTIONS.find(option => option.value === value) || (OPTIONS[0] as typeof OPTIONS[0]);
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS.map(i => ({
@@ -76,7 +94,7 @@ const ListPicker = ({
 			}`,
 			onPress: () => {
 				hideActionSheet();
-				onChangeValue(i.value);
+				onChangeValue(i.value as T);
 			},
 			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
