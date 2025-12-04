@@ -1,0 +1,33 @@
+diff --git a/node_modules/@notifee/react-native/ios/NotifeeCore/NotifeeCore+UNUserNotificationCenter.m b/node_modules/@notifee/react-native/ios/NotifeeCore/NotifeeCore+UNUserNotificationCenter.m
+index beaa360..0ef1054 100644
+--- a/node_modules/@notifee/react-native/ios/NotifeeCore/NotifeeCore+UNUserNotificationCenter.m
++++ b/node_modules/@notifee/react-native/ios/NotifeeCore/NotifeeCore+UNUserNotificationCenter.m
+@@ -180,17 +180,17 @@ - (void)userNotificationCenter:(UNUserNotificationCenter *)center
+ 
+   _notificationOpenedAppID = notifeeNotification[@"id"];
+ 
+-  // handle notification outside of notifee
+-  if (notifeeNotification == nil) {
+-    if (_originalDelegate != nil && originalUNCDelegateRespondsTo.didReceiveNotificationResponse) {
+-      [_originalDelegate userNotificationCenter:center
+-                 didReceiveNotificationResponse:response
+-                          withCompletionHandler:completionHandler];
+-    } else {
+-      notifeeNotification =
+-          [NotifeeCoreUtil parseUNNotificationRequest:response.notification.request];
+-    }
+-  }
++  // // handle notification outside of notifee
++  // if (notifeeNotification == nil) {
++  //   if (_originalDelegate != nil && originalUNCDelegateRespondsTo.didReceiveNotificationResponse) {
++  //     [_originalDelegate userNotificationCenter:center
++  //                didReceiveNotificationResponse:response
++  //                         withCompletionHandler:completionHandler];
++  //   } else {
++  //     notifeeNotification =
++  //         [NotifeeCoreUtil parseUNNotificationRequest:response.notification.request];
++  //   }
++  // }
+ 
+   if (notifeeNotification != nil) {
+     if ([response.actionIdentifier isEqualToString:UNNotificationDismissActionIdentifier]) {

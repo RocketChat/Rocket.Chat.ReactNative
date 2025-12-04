@@ -28,7 +28,7 @@
 		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
 		"@expo/vector-icons": "^14.1.0",
 		"@hookform/resolvers": "^2.9.10",
-		"@notifee/react-native": "7.8.2",
+		"@notifee/react-native": "^9.1.8",
 		"@nozbe/watermelondb": "^0.28.1-0",
 		"@react-native-async-storage/async-storage": "^1.22.3",
 		"@react-native-camera-roll/camera-roll": "^7.10.0",

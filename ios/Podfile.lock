@@ -2385,10 +2385,10 @@ PODS:
     - React-Core
   - RNLocalize (2.1.1):
     - React-Core
-  - RNNotifee (7.8.2):
+  - RNNotifee (9.1.8):
     - React-Core
-    - RNNotifee/NotifeeCore (= 7.8.2)
-  - RNNotifee/NotifeeCore (7.8.2):
+    - RNNotifee/NotifeeCore (= 9.1.8)
+  - RNNotifee/NotifeeCore (9.1.8):
     - React-Core
   - RNReanimated (3.17.1):
     - DoubleConversion
@@ -3185,7 +3185,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: b219389d3a300679b396e81d501e8c8169ffa3c0
   RNKeychain: bbe2f6d5cc008920324acb49ef86ccc03d3b38e4
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
-  RNNotifee: 8768d065bf1e2f9f8f347b4bd79147431c7eacd6
+  RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
   RNReanimated: f52ccd5ceea2bae48d7421eec89b3f0c10d7b642
   RNScreens: b13e4c45f0406f33986a39c0d8da0324bff94435
   RNSVG: 680e961f640e381aab730a04b2371969686ed9f7
