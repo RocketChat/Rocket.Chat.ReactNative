@@ -320,7 +320,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: select-users-view-item-${output.secondUser.username}
-    timeout:
+    timeout: 60000
 - tapOn:
     id: select-users-view-item-${output.secondUser.username}
 - extendedWaitUntil:

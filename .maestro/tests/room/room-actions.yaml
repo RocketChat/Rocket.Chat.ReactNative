@@ -127,6 +127,10 @@ tags:
     timeout: 60000
 - tapOn:
     text: 'Star'
+- extendedWaitUntil:
+    notVisible:
+      text: '.*Message Starred.*'
+    timeout: 60000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
@@ -134,7 +138,8 @@ tags:
       id: 'room-actions-view'
     timeout: 60000
 - tapOn:
-    text: 'Starred'
+    id: 'room-actions-starred'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: starred-messages-view
@@ -172,6 +177,10 @@ tags:
     timeout: 60000
 - tapOn:
     text: 'Unstar'
+- extendedWaitUntil:
+    notVisible:
+      text: '.*Message Unstarred.*'
+    timeout: 60000
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
@@ -179,7 +188,8 @@ tags:
       id: 'room-actions-view'
     timeout: 60000
 - tapOn:
-    text: 'Starred'
+    id: 'room-actions-starred'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: starred-messages-view
