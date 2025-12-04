@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
 import { ScrollView, Share, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import dayjs from '../../lib/dayjs';
 import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
 import Button from '../../containers/Button';
 import Markdown from '../../containers/markdown';
@@ -62,12 +62,12 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 			if (invite.maxUses) {
 				const usesLeft = invite.maxUses - invite.uses;
 				return I18n.t('Your_invite_link_will_expire_on__date__or_after__usesLeft__uses', {
-					date: moment(expiration).format(timeDateFormat),
+					date: dayjs(expiration).format(timeDateFormat),
 					usesLeft
 				});
 			}
 
-			return I18n.t('Your_invite_link_will_expire_on__date__', { date: moment(expiration).format(timeDateFormat) });
+			return I18n.t('Your_invite_link_will_expire_on__date__', { date: dayjs(expiration).format(timeDateFormat) });
 		}
 
 		if (invite.maxUses) {
