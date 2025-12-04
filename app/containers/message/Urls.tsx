@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
 import { dequal } from 'dequal';
-import axios from 'axios';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Touchable from './Touchable';
@@ -139,8 +138,10 @@ const Url = ({ url }: { url: IUrl }) => {
 				const _imageUrl = getImageUrl();
 				if (!_imageUrl || !API_Embed) return;
 
-				const response = await axios.head(_imageUrl);
-				const contentType = response.headers['content-type'];
+				const response = await fetch(_imageUrl, {
+					method: 'HEAD'
+				});
+				const contentType = response.headers.get('content-type');
 				if (contentType?.startsWith?.('image/')) {
 					setImageUrl(_imageUrl);
 				}
