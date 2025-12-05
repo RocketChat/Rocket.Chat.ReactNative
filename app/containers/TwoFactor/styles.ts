@@ -6,6 +6,7 @@ export default StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
+		alignItems: 'center',
 		padding: 16
 	},
 	content: {
@@ -51,5 +52,9 @@ export default StyleSheet.create({
 	},
 	containerInput: {
 		marginBottom: 0
+	},
+	modal: {
+		margin: 0,
+		justifyContent: 'center'
 	}
 });

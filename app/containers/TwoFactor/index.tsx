@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AccessibilityInfo, Text, View } from 'react-native';
+import { AccessibilityInfo, Text, View, useWindowDimensions } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -66,6 +66,7 @@ const TwoFactor = React.memo(() => {
 		code: yup.string().required(I18n.t('Code_required'))
 	});
 	const { colors } = useTheme();
+	const { height: deviceHeight, width: deviceWidth } = useWindowDimensions();
 	const { isMasterDetail } = useAppSelector(state => ({
 		isMasterDetail: state.app.isMasterDetail as boolean
 	}));
@@ -152,6 +153,9 @@ const TwoFactor = React.memo(() => {
 	const color = colors.fontTitlesLabels;
 	return (
 		<Modal
+			deviceHeight={deviceHeight}
+			deviceWidth={deviceWidth}
+			style={styles.modal}
 			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
 			avoidKeyboard
 			useNativeDriver
