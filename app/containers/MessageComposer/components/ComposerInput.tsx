@@ -238,30 +238,16 @@ export const ComposerInput = memo(
 				shouldInterceptEnterRef.current = false;
 
 				if (trimmedText) {
-					// Update refs with the text without newline so getTextAndClear() reads the right value
-					textRef.current = textWithoutNewline;
-					previousTextRef.current = textWithoutNewline;
-
-					// Remove the newline visually without triggering onChangeText
-					isUpdatingNativePropsRef.current = true;
-					inputRef.current?.setNativeProps?.({ text: textWithoutNewline });
-					setTimeout(() => {
-						isUpdatingNativePropsRef.current = false;
-					}, 0);
-
-					// Call the same function the send button uses (handles clearing)
+					// Reuse the exact same pipeline as tapping the send icon:
+					// setInput(...) updates the native TextInput + refs,
+					// then sendMessage() (same handler used by the send button) clears everything via getTextAndClear().
+					setInput(textWithoutNewline);
 					sendMessage();
 					return;
 				}
 
-				// If empty or only whitespace, revert to the previous value (no newline)
-				isUpdatingNativePropsRef.current = true;
-				inputRef.current?.setNativeProps?.({ text: previousText });
-				setTimeout(() => {
-					isUpdatingNativePropsRef.current = false;
-				}, 0);
-				textRef.current = previousText;
-				previousTextRef.current = previousText;
+				// Empty or whitespace-only: rollback to the previous value (no newline)
+				setInput(previousText);
 				return;
 			}
 		}
