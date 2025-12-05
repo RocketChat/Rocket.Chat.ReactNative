@@ -1,8 +1,16 @@
 import CookieManager from '@react-native-cookies/cookies';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, BackHandler, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+	ActivityIndicator,
+	BackHandler,
+	type NativeEventSubscription,
+	Linking,
+	SafeAreaView,
+	StyleSheet,
+	View
+} from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
 
 import { userAgent } from '../../lib/constants/userAgent';
@@ -25,6 +33,7 @@ const JitsiMeetView = (): React.ReactElement => {
 
 	const [authModal, setAuthModal] = useState(false);
 	const [cookiesSet, setCookiesSet] = useState(false);
+	const backHandlerSubscription = useRef<NativeEventSubscription | null>(null);
 
 	const setCookies = async () => {
 		const date = new Date();
@@ -53,7 +62,7 @@ const JitsiMeetView = (): React.ReactElement => {
 			goBack();
 		} catch (error) {
 			// As the jitsi app was not opened, disable the backhandler on android
-			BackHandler.addEventListener('hardwareBackPress', () => true);
+			backHandlerSubscription.current = BackHandler.addEventListener('hardwareBackPress', () => true);
 		}
 	}, [goBack, url]);
 
@@ -94,6 +103,7 @@ const JitsiMeetView = (): React.ReactElement => {
 			logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
 			if (!videoConf) endVideoConfTimer();
 			deactivateKeepAwake();
+			backHandlerSubscription.current?.remove();
 		};
 	}, [handleJitsiApp, onConferenceJoined, videoConf]);
 
