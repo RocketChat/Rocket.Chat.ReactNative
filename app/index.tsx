@@ -138,7 +138,12 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		await getInitialNotification();
+		// Open app from video conf notification (Android)
+		const handledVideoConf = await getInitialNotification();
+		if (handledVideoConf) {
+			// Video conf saga will handle initialization
+			return;
+		}
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();

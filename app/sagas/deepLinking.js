@@ -46,7 +46,7 @@ const waitForNavigation = () => {
 	if (Navigation.navigationRef.current) {
 		return Promise.resolve();
 	}
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		const listener = () => {
 			emitter.off('navigationReady', listener);
 			resolve();
@@ -263,6 +263,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			yield localAuthenticate(host);
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
+			yield put(appReady({}));
 		}
 		yield handleNavigateCallRoom({ params });
 	} else {
@@ -270,6 +271,7 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 			yield localAuthenticate(host);
 			yield put(selectServerRequest(host, serverRecord.version, true, true));
 			yield take(types.LOGIN.SUCCESS);
+			yield put(appReady({}));
 			yield handleNavigateCallRoom({ params });
 			return;
 		}

@@ -36,6 +36,7 @@ const createChannel = () =>
 const handleBackgroundEvent = async (event: Event) => {
 	const { pressAction, notification } = event.detail;
 	const notificationData = notification?.data;
+
 	if (
 		typeof notificationData?.caller === 'object' &&
 		(notificationData.caller as Caller)?._id &&
@@ -44,7 +45,7 @@ const handleBackgroundEvent = async (event: Event) => {
 		if (store?.getState()?.app.ready) {
 			store.dispatch(deepLinkingClickCallPush({ ...notificationData, event: pressAction?.id }));
 		} else {
-			AsyncStorage.setItem('pushNotification', JSON.stringify({ ...notificationData, event: pressAction?.id }));
+			await AsyncStorage.setItem('pushNotification', JSON.stringify({ ...notificationData, event: pressAction?.id }));
 		}
 		await notifee.cancelNotification(
 			`${notificationData.rid}${(notificationData.caller as Caller)._id}`.replace(/[^A-Za-z0-9]/g, '')
