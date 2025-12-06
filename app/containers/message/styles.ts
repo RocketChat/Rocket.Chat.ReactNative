@@ -165,7 +165,7 @@ export default StyleSheet.create({
 	},
 	privateIndicator: {
 		flexDirection: 'row',
-        marginTop: 5
+		marginTop: 5
 	},
 	privateIndicatorText: {
 		fontSize: 12,
