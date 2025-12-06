@@ -25,13 +25,13 @@ tags:
 - inputText: '/status'
 - extendedWaitUntil:
     visible:
-      text: 'Set your status message'
+      id: autocomplete-item-status
     timeout: 15000
 - tapOn:
     id: autocomplete-item-status
 - extendedWaitUntil:
     notVisible:
-      text: 'Set your status message'
+      id: autocomplete-item-status
     timeout: 15000
 - tapOn:
     id: message-composer-send
