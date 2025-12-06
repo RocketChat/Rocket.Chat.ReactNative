@@ -141,6 +141,11 @@ const Url = ({ url }: { url: IUrl }) => {
 				const response = await fetch(_imageUrl, {
 					method: 'HEAD'
 				});
+
+				if (!response.ok) {
+					return;
+				}
+
 				const contentType = response.headers.get('content-type');
 				if (contentType?.startsWith?.('image/')) {
 					setImageUrl(_imageUrl);
