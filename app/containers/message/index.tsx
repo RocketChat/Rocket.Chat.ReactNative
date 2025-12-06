@@ -507,6 +507,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isPreview={isPreview}
 					pinned={pinned}
 					private={isPrivate}
+					autoTranslateLanguage={autoTranslateLanguage}
 				/>
 				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</MessageContext.Provider>

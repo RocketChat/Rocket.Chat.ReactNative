@@ -25,10 +25,11 @@ tags:
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*Quote first message.*'
+      id: '.*Quote first message.*'
     timeout: 60000
 - longPressOn:
-    text: '.*Quote first message.*'
+    id: '.*Quote first message.*'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
@@ -100,7 +101,8 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'search-message-view-input'
-- inputText: '30'
+- inputText: '3'
+- inputText: '0'
 - extendedWaitUntil:
     visible:
       id: 'message-content-30'
@@ -153,7 +155,8 @@ tags:
     direction: DOWN
     timeout: 60000
 - tapOn:
-    text: '.*Load newer.*'
+    text: 'Load newer'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'message-content-104'
@@ -163,7 +166,8 @@ tags:
       text: '.*Load newer.*'
     timeout: 60000
 - tapOn:
-    text: '.*Load newer.*'
+    text: 'Load newer'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'message-content-154'
@@ -173,7 +177,8 @@ tags:
       text: '.*Load newer.*'
     timeout: 60000
 - tapOn:
-    text: '.*Load newer.*'
+    text: 'Load newer'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'message-content-202'
@@ -192,6 +197,7 @@ tags:
     timeout: 60000
 - longPressOn:
     text: .*Go to jumping-thread's thread.*
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
@@ -215,7 +221,8 @@ tags:
       text: '.*thread message sent to main room.*'
     timeout: 60000
 - tapOn:
-    text: '.*thread message sent to main room.*'
+    text: 'thread message sent to main room'
+    retryTapIfNoChange: true
 - runFlow:
     file: './utils/expect-thread-messages.yaml'
     env:
@@ -233,7 +240,7 @@ tags:
       text: '.*quoted.*'
     timeout: 60000
 - longPressOn:
-    text: '.*quoted.*'
+    text: 'quoted'
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'

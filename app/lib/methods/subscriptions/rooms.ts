@@ -149,28 +149,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			}
 		}
 
-		let tmp = merge(subscription, room);
-		tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
+		const tmp = merge(subscription, room);
 		const sub = await getSubscriptionByRoomId(tmp.rid);
-
-		// If we're receiving a E2EKey of a room
-		if (sub && !sub.E2EKey && subscription?.E2EKey) {
-			// Assing info from database subscription to tmp
-			// It should be a plain object
-			tmp = Object.assign(tmp, {
-				rid: sub.rid,
-				encrypted: sub.encrypted,
-				lastMessage: sub.lastMessage,
-				E2EKey: subscription.E2EKey,
-				e2eKeyId: sub.e2eKeyId
-			});
-			// Decrypt lastMessage using the received E2EKey
-			tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
-			// Decrypt all pending messages of this room in parallel
-			Encryption.decryptPendingMessages(tmp.rid);
-		} else if (sub && subscription.E2ESuggestedKey) {
-			await Encryption.evaluateSuggestedKey(sub.rid, subscription.E2ESuggestedKey);
-		}
 
 		const batch: Model[] = [];
 		if (sub) {
@@ -240,6 +220,10 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		await db.write(async () => {
 			await db.batch(batch);
 		});
+
+		Encryption.decryptPendingSubscriptions();
+		Encryption.decryptPendingMessages(tmp.rid);
+		Encryption.getRoomInstance(tmp.rid);
 	} catch (e) {
 		log(e);
 	}
@@ -403,7 +387,7 @@ export default function subscribeRooms() {
 
 				// If it's from a encrypted room
 				if (message?.t === E2E_MESSAGE_TYPE) {
-					if (message.msg) {
+					if (message.msg || message.content) {
 						// Decrypt this message content
 						const { msg } = await Encryption.decryptMessage({ ...message, rid });
 						// If it's a direct the content is the message decrypted

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, type ViewStyle, Pressable } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import { A11y } from 'react-native-a11y-order';
 
 import MessageContext from './Context';
 import User from './User';
@@ -26,6 +27,7 @@ import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import Quote from './Components/Attachments/Quote';
 import { deletePrivateMessages } from '../../lib/methods/deletePrivateMessages';
+import translationLanguages from '../../lib/constants/translationLanguages';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -146,7 +148,11 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
-		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
+		const translatedLanguage = translationLanguages[props?.autoTranslateLanguage || 'en'];
+		const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
+		return props.isTranslated
+			? `${user} ${hour} ${translated}`
+			: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 	};
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
@@ -158,14 +164,20 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 				{thread}
 				<View accessible accessibilityLabel={accessibilityLabel()} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
-					<View style={styles.messageContent}>
-						<Content {...props} />
-						{props.isInfo && props.type === 'message_pinned' ? (
-							<View pointerEvents='none'>
-								<Attachments {...props} />
-							</View>
-						) : null}
-					</View>
+					<A11y.Index
+						accessible={props.isTranslated}
+						accessibilityLabel={props?.msg || ''}
+						accessibilityLanguage={props.autoTranslateLanguage}
+						index={2}>
+						<View style={styles.messageContent}>
+							<Content {...props} />
+							{props.isInfo && props.type === 'message_pinned' ? (
+								<View pointerEvents='none'>
+									<Attachments {...props} />
+								</View>
+							) : null}
+						</View>
+					</A11y.Index>
 				</View>
 			</View>
 		);
@@ -173,32 +185,38 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 
 	return (
 		<View testID={`message-${props.id}`} accessible accessibilityLabel={accessibilityLabel()} style={styles.container}>
-			<View style={styles.flex}>
-				<MessageAvatar {...props} />
-				<View style={styles.messageContent}>
-					<MessageInner {...props} />
-					{props.private && (
-						<View style={styles.privateIndicator}>
-							<Text style={styles.privateIndicatorText}>{i18n.t('Only_you_can_see_this_message')} • </Text>
-							<Pressable onPress={() => deletePrivateMessages(props.id)}>
-								<Text style={styles.privateMessageDismiss}>{i18n.t('Dismiss_message')}</Text>
-							</Pressable>
-						</View>
-					)}
+			<A11y.Index
+				accessible={props.isTranslated}
+				accessibilityLabel={props?.msg || ''}
+				accessibilityLanguage={props.autoTranslateLanguage}
+				index={2}>
+				<View accessible style={styles.flex}>
+					<MessageAvatar {...props} />
+					<View style={styles.messageContent}>
+						<MessageInner {...props} />
+            {props.private && (
+              <View style={styles.privateIndicator}>
+                <Text style={styles.privateIndicatorText}>{i18n.t('Only_you_can_see_this_message')} • </Text>
+                <Pressable onPress={() => deletePrivateMessages(props.id)}>
+                  <Text style={styles.privateMessageDismiss}>{i18n.t('Dismiss_message')}</Text>
+                </Pressable>
+              </View>
+            )}
+					</View>
+					{!props.isHeader ? (
+						<RightIcons
+							type={props.type}
+							msg={props.msg}
+							isEdited={props.isEdited}
+							hasError={props.hasError}
+							isReadReceiptEnabled={props.isReadReceiptEnabled}
+							unread={props.unread}
+							pinned={props.pinned}
+							isTranslated={props.isTranslated}
+						/>
+					) : null}
 				</View>
-				{!props.isHeader ? (
-					<RightIcons
-						type={props.type}
-						msg={props.msg}
-						isEdited={props.isEdited}
-						hasError={props.hasError}
-						isReadReceiptEnabled={props.isReadReceiptEnabled}
-						unread={props.unread}
-						pinned={props.pinned}
-						isTranslated={props.isTranslated}
-					/>
-				) : null}
-			</View>
+			</A11y.Index>
 		</View>
 	);
 });
@@ -218,20 +236,26 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 
 	if (props.hasError || props.isInfo) {
 		return (
-			<View>
+			<A11y.Order>
 				<Message {...props} />
-			</View>
+			</A11y.Order>
 		);
 	}
 
 	return (
-		<Touchable
-			onLongPress={onLongPress}
-			onPress={onPress}
-			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor }}>
-			<Message {...props} />
-		</Touchable>
+		<A11y.Order>
+			<A11y.Index index={1}>
+				<Touchable
+					onLongPress={onLongPress}
+					onPress={onPress}
+					disabled={
+						(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'
+					}
+					style={{ backgroundColor }}>
+					<Message {...props} />
+				</Touchable>
+			</A11y.Index>
+		</A11y.Order>
 	);
 });
 
