@@ -1,4 +1,3 @@
-import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import { Image } from 'expo-image';
@@ -178,12 +177,12 @@ jest.mock('react-native-webview', () => {
 	return { WebView };
 });
 
-global.fetch = jest.fn(async (input, init) => {
+global.fetch = jest.fn((input, init) => {
 	if (init?.method === 'HEAD') {
 		return {
 			ok: true,
 			headers: {
-				get: (name) =>
+				get: name =>
 					name.toLowerCase() === 'content-type' ? 'image/png' : null
 			}
 		};

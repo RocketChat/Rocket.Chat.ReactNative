@@ -929,7 +929,7 @@ export const WithUrl = () => (
             ]}
 		/>
         <Message
-			msg="Multiple URLs"
+			msg='Multiple URLs'
 			urls={[
                 {
                     "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative",
@@ -951,7 +951,7 @@ export const WithUrl = () => (
                 {
                     "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative",
                     "description": "There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...",
-                    "url":"https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1",
+                    "url":"https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1"
                 }
             ]}
 		/>
@@ -959,7 +959,7 @@ export const WithUrl = () => (
             msg='URL with only title'
 			urls={[
                 {
-                    "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative",
+                    "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative"
                 }
             ]}
 		/>
@@ -967,7 +967,7 @@ export const WithUrl = () => (
             msg='URL with only description'
 			urls={[
                 {
-                    "description": "There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...",
+                    "description": "There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ..."
                 }
             ]}
 		/>
