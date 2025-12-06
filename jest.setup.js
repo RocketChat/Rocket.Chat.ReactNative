@@ -177,3 +177,15 @@ jest.mock('react-native-webview', () => {
 	WebView.defaultProps = {};
 	return { WebView };
 });
+
+global.fetch = jest.fn(async (input, init) => {
+	if (init?.method === 'HEAD') {
+		return {
+			ok: true,
+			headers: {
+				get: (name) =>
+					name.toLowerCase() === 'content-type' ? 'image/png' : null
+			}
+		};
+	}
+});
