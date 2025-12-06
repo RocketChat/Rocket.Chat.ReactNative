@@ -210,6 +210,15 @@ export const ComposerInput = memo(
 			}, 300);
 		};
 
+		const sendViaEnterKey = (textWithoutNewline: string) => {
+			// Mirror the send-button pipeline: first sync the TextInput value/refs,
+			// then trigger the shared send handler so it can clear the field via getTextAndClear.
+			setInput(textWithoutNewline);
+			requestAnimationFrame(() => {
+				sendMessage();
+			});
+		};
+
 	const onChangeText: TextInputProps['onChangeText'] = text => {
 		// Skip if we're updating native props to prevent recursive calls
 		if (isUpdatingNativePropsRef.current) {
@@ -238,11 +247,7 @@ export const ComposerInput = memo(
 				shouldInterceptEnterRef.current = false;
 
 				if (trimmedText) {
-					// Reuse the exact same pipeline as tapping the send icon:
-					// setInput(...) updates the native TextInput + refs,
-					// then sendMessage() (same handler used by the send button) clears everything via getTextAndClear().
-					setInput(textWithoutNewline);
-					sendMessage();
+					sendViaEnterKey(textWithoutNewline);
 					return;
 				}
 
