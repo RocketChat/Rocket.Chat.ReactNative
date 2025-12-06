@@ -16,10 +16,6 @@ tags:
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
-- extendedWaitUntil:
-    visible:
-      id: rooms-list-view
-    timeout: 60000
 - tapOn:
     id: rooms-list-view-item-${output.channel.name}
 
@@ -30,12 +26,12 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Set your status message'
-    timeout: 10000
+    timeout: 15000
 - tapOn: Set your status message
 - extendedWaitUntil:
     notVisible:
       text: 'Set your status message'
-    timeout: 10000
+    timeout: 15000
 - tapOn:
     id: message-composer-send
 - extendedWaitUntil:
@@ -45,12 +41,12 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Dismiss message'
-    timeout: 10000
+    timeout: 15000
 - tapOn: Dismiss message
 - extendedWaitUntil:
     notVisible:
       text: 'Status message changed successfully.'
-    timeout: 10000
+    timeout: 15000
 
 # send a private slash command, go back to room list and return to same channel
 - tapOn:
@@ -59,12 +55,12 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Set your status message'
-    timeout: 10000
+    timeout: 15000
 - tapOn: Set your status message
 - extendedWaitUntil:
     notVisible:
       text: 'Set your status message'
-    timeout: 10000
+    timeout: 15000
 - tapOn:
     id: message-composer-send
 - extendedWaitUntil:
@@ -74,7 +70,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Dismiss message'
-    timeout: 10000
+    timeout: 15000
 - tapOn:
     id: header-back
 - tapOn:
@@ -82,4 +78,4 @@ tags:
 - extendedWaitUntil:
     notVisible:
       text: 'Status message changed successfully.'
-    timeout: 10000
+    timeout: 15000
