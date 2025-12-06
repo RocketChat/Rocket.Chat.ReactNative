@@ -1,6 +1,7 @@
+import { Q } from '@nozbe/watermelondb';
+
 import database from '../database';
 import log from './helpers/log';
-import { Q } from '@nozbe/watermelondb';
 
 export async function deletePrivateMessages(id?: string): Promise<void> {
 	try {
