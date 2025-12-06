@@ -197,7 +197,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 						{props.private && (
 							<View style={styles.privateIndicator}>
 								<Text style={styles.privateIndicatorText}>{i18n.t('Only_you_can_see_this_message')} • </Text>
-								<Pressable onPress={() => deletePrivateMessages(props.id)}>
+								<Pressable testID='dismiss-private-message' onPress={() => deletePrivateMessages(props.id)}>
 									<Text style={styles.privateMessageDismiss}>{i18n.t('Dismiss_message')}</Text>
 								</Pressable>
 							</View>

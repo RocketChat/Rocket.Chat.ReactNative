@@ -27,7 +27,8 @@ tags:
     visible:
       text: 'Set your status message'
     timeout: 15000
-- tapOn: Set your status message
+- tapOn:
+    id: autocomplete-item-status
 - extendedWaitUntil:
     notVisible:
       text: 'Set your status message'
@@ -42,7 +43,8 @@ tags:
     visible:
       text: 'Dismiss message'
     timeout: 15000
-- tapOn: Dismiss message
+- tapOn:
+    id: dismiss-private-message
 - extendedWaitUntil:
     notVisible:
       text: 'Status message changed successfully.'
@@ -54,12 +56,13 @@ tags:
 - inputText: '/status'
 - extendedWaitUntil:
     visible:
-      text: 'Set your status message'
+      id: autocomplete-item-status
     timeout: 15000
-- tapOn: Set your status message
+- tapOn:
+    id: autocomplete-item-status
 - extendedWaitUntil:
     notVisible:
-      text: 'Set your status message'
+      id: autocomplete-item-status
     timeout: 15000
 - tapOn:
     id: message-composer-send
