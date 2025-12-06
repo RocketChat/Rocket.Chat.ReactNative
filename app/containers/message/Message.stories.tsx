@@ -918,58 +918,66 @@ export const WithFile = () => (
 export const WithUrl = () => (
 	<>
 		<Message
-            msg='Single URL'
+			msg='Single URL'
 			urls={[
-                {
-                    "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative",
-                    "description": "There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...",
-                    "url":"https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1",
-                    "image": "https://opengraph.githubassets.com/3279b1c919656914846f7e133d6b77526f1182ffd64e7f7d67a01258bb7c190f/RocketChat/Rocket.Chat.ReactNative/issues/1"
-                }
-            ]}
+				{
+					title: 'Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative',
+					description:
+						'There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...',
+					url: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1',
+					image:
+						'https://opengraph.githubassets.com/3279b1c919656914846f7e133d6b77526f1182ffd64e7f7d67a01258bb7c190f/RocketChat/Rocket.Chat.ReactNative/issues/1'
+				}
+			]}
 		/>
-        <Message
+		<Message
 			msg='Multiple URLs'
 			urls={[
-                {
-                    "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative",
-                    "description": "There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...",
-                    "url":"https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1",
-                    "image": "https://opengraph.githubassets.com/3279b1c919656914846f7e133d6b77526f1182ffd64e7f7d67a01258bb7c190f/RocketChat/Rocket.Chat.ReactNative/issues/1"
-                },
-                {
-                    "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative",
-                    "description": "There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...",
-                    "url":"https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1",
-                    "image": "https://opengraph.githubassets.com/3279b1c919656914846f7e133d6b77526f1182ffd64e7f7d67a01258bb7c190f/RocketChat/Rocket.Chat.ReactNative/issues/1"
-                }
-            ]}
+				{
+					title: 'Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative',
+					description:
+						'There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...',
+					url: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1',
+					image:
+						'https://opengraph.githubassets.com/3279b1c919656914846f7e133d6b77526f1182ffd64e7f7d67a01258bb7c190f/RocketChat/Rocket.Chat.ReactNative/issues/1'
+				},
+				{
+					title: 'Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative',
+					description:
+						'There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...',
+					url: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1',
+					image:
+						'https://opengraph.githubassets.com/3279b1c919656914846f7e133d6b77526f1182ffd64e7f7d67a01258bb7c190f/RocketChat/Rocket.Chat.ReactNative/issues/1'
+				}
+			]}
 		/>
-        <Message
-            msg='URL with no image'
+		<Message
+			msg='URL with no image'
 			urls={[
-                {
-                    "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative",
-                    "description": "There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...",
-                    "url":"https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1"
-                }
-            ]}
+				{
+					title: 'Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative',
+					description:
+						'There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...',
+					url: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/1'
+				}
+			]}
 		/>
-        <Message
-            msg='URL with only title'
+		<Message
+			msg='URL with only title'
 			urls={[
-                {
-                    "title": "Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative"
-                }
-            ]}
+				{
+					title: 'Better code structure · Issue #1 · RocketChat/Rocket.Chat.ReactNative'
+				}
+			]}
 		/>
-        <Message
-            msg='URL with only description'
+		<Message
+			msg='URL with only description'
 			urls={[
-                {
-                    "description": "There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ..."
-                }
-            ]}
+				{
+					description:
+						'There are some options to improve the code structure: Read the Building Chatty to get ideas Add redux Rename file meteor.js to RocketChat to encapsulate the API to populate realm Separate views to ...'
+				}
+			]}
 		/>
 	</>
 );

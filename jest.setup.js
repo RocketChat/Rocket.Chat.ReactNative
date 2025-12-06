@@ -182,8 +182,7 @@ global.fetch = jest.fn((input, init) => {
 		return {
 			ok: true,
 			headers: {
-				get: name =>
-					name.toLowerCase() === 'content-type' ? 'image/png' : null
+				get: name => (name.toLowerCase() === 'content-type' ? 'image/png' : null)
 			}
 		};
 	}
