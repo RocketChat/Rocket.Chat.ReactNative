@@ -240,7 +240,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						error={errors.confirmPassword?.message}
 						required
 						label={I18n.t('Password')}
-						secureTextEntry
 						textContentType={isAndroid ? 'newPassword' : undefined}
 						autoComplete={isAndroid ? 'password-new' : undefined}
 						onSubmitEditing={() => setFocus('confirmPassword')}
@@ -255,7 +254,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						required
 						textContentType={isAndroid ? 'newPassword' : undefined}
 						autoComplete={isAndroid ? 'password-new' : undefined}
-						secureTextEntry
 						error={errors.confirmPassword?.message}
 						onSubmitEditing={() => {
 							if (parsedCustomFields) {

@@ -5,6 +5,7 @@ tags:
 
 ---
 - evalScript: ${output.user = output.randomUser()}
+- evalScript: ${console.log(JSON.stringify(output.user))}
 - tapOn:
     id: register-view-name
 - inputText: ${output.user.name}
