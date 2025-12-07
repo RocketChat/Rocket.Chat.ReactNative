@@ -93,9 +93,20 @@ tags:
     visible:
       text: '.*Delete.*'
     timeout: 60000
-- tapOn:
-    point: 65%,55%
-    retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          point: 65%,55%
+          retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          text: 'Delete'
+          retryTapIfNoChange: true
 - waitForAnimationToEnd:
     timeout: 300
 - extendedWaitUntil:
