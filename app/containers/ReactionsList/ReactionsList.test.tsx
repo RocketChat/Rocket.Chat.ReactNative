@@ -1,10 +1,10 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { screen, render, fireEvent, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import ReactionsList from './index';
-import { IReaction } from '../../definitions';
+import { type IReaction } from '../../definitions';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 import * as stories from './ReactionsList.stories';
 

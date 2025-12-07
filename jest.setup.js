@@ -84,14 +84,6 @@ jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	})
 }));
 
-jest.mock('./app/lib/database/services/Message', () => ({
-	getMessageById: messageId => ({
-		id: messageId,
-		rid: 'rid',
-		msg: `Message ${messageId}`
-	})
-}));
-
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	__esModule: true,
 	default: jest.fn(() => ({
@@ -120,6 +112,10 @@ jest.mock('./app/containers/CustomIcon', () => {
 		}
 	};
 });
+
+jest.mock('./app/lib/encryption', () => ({
+	encryptMessage: jest.fn(() => ({ rid: 'test', msg: 'test' }))
+}));
 
 jest.mock('@react-navigation/native', () => {
 	const actualNav = jest.requireActual('@react-navigation/native');
@@ -173,3 +169,11 @@ jest.mock('react-native-math-view', () => {
 });
 
 jest.mock('react-native-keyboard-controller');
+
+jest.mock('react-native-webview', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const WebView = React.forwardRef(() => <View />);
+	WebView.defaultProps = {};
+	return { WebView };
+});

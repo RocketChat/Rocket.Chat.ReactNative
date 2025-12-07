@@ -8,6 +8,8 @@ import { MIN_HEIGHT } from '../../constants';
 import { CancelEdit } from '../CancelEdit';
 
 export const Right = (): React.ReactElement | null => {
+	'use memo';
+
 	const focused = useFocused();
 	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();
 

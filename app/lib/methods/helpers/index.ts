@@ -5,7 +5,6 @@ export * from './deviceInfo';
 export * from './formatAttachmentUrl';
 export * from './generateLoadMoreId';
 export * from './getAvatarUrl';
-export * from './layoutAnimation';
 export * from './info';
 export * from './isReadOnly';
 export * from './media';

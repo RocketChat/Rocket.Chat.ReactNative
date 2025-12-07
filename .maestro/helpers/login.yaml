@@ -1,30 +1,31 @@
 appId: chat.rocket.reactnative
+name: Login
 tags:
   - 'util'
-jsEngine: graaljs
 onFlowStart:
   - runFlow:
       file: setup.yaml
       env:
         skipUser: true
-
   - runFlow:
       when:
         true: ${!USERNAME}
       commands:
-        - evalScript: ${console.log('No username, creating user')}
-        - evalScript: ${output.utils.createUser()}
+        - evalScript: ${output.createdUser = output.utils.createUser()}
 
 ---
 - runFlow: navigate-to-login.yaml
 - tapOn:
     id: login-view-email
-- inputText: ${USERNAME || output.user.email}
-- hideKeyboard
+- inputText: ${USERNAME || output.createdUser.email}
+- tapOn:
+    text: '.*Username or email.*'
 - tapOn:
     id: login-view-password
-- inputText: ${PASSWORD || output.user.password}
-- hideKeyboard
+- inputText: ${PASSWORD || output.createdUser.password}
+- tapOn:
+    text: Login
+    index: 0
 - tapOn:
     id: login-view-submit
 - extendedWaitUntil:

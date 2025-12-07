@@ -1,4 +1,4 @@
-import NetInfo, { NetInfoState, NetInfoStateType } from '@react-native-community/netinfo';
+import NetInfo, { type NetInfoState, type NetInfoStateType } from '@react-native-community/netinfo';
 
 import { setNetInfoState } from '../../actions/app';
 

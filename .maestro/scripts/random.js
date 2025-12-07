@@ -16,5 +16,13 @@ const randomUser = () => {
         email: 'mobile+' + randomVal + '@rocket.chat'
     };
 }
+
+const randomTeamName = () => {
+    const randomVal = random();
+
+    return 'team' + randomVal;
+}
+
 output.random = random;
 output.randomUser = randomUser;
+output.randomTeamName = randomTeamName;

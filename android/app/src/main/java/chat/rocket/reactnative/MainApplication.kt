@@ -25,7 +25,7 @@ import com.wix.reactnativenotifications.core.notification.INotificationsApplicat
 import com.wix.reactnativenotifications.core.notification.IPushNotification
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
-import chat.rocket.reactnative.networking.SSLPinningPackage;
+import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
 
 open class MainApplication : Application(), ReactApplication, INotificationsApplication {
@@ -34,7 +34,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
-              add(SSLPinningPackage())
+              add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
             }
 
@@ -54,12 +54,11 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
     SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
 
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
-      load()
-    }
+    // Load the native entry point for the New Architecture
+    load()
     
-    reactNativeHost.reactInstanceManager.addReactInstanceEventListener(object : ReactInstanceEventListener {
+    // Register listener to set React context when initialized
+    reactHost.addReactInstanceEventListener(object : ReactInstanceEventListener {
       override fun onReactContextInitialized(context: ReactContext) {
         CustomPushNotification.setReactContext(context as ReactApplicationContext)
       }

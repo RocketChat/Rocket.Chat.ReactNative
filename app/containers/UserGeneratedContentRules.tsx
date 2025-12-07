@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Text, ViewStyle } from 'react-native';
+import { View, StyleSheet, Text, type ViewStyle } from 'react-native';
 
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
 import openLink from '../lib/methods/helpers/openLink';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import I18n from '../i18n';
 
 const styles = StyleSheet.create({

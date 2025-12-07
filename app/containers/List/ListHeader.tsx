@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
@@ -25,6 +25,8 @@ interface IListHeader {
 }
 
 const ListHeader = React.memo(({ title, translateTitle = true, numberOfLines }: IListHeader) => {
+	'use memo';
+
 	const { theme } = useTheme();
 
 	return (

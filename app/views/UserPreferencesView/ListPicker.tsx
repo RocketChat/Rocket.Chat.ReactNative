@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';

@@ -37,9 +37,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*&format=png&size=112",
         },
       ]
@@ -94,9 +92,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=112",
         },
       ]
@@ -151,9 +147,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/room/devWBbYr7inwupPqK?format=png&size=112",
         },
       ]
@@ -208,9 +202,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
         },
       ]
@@ -265,9 +257,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg",
         },
       ]
@@ -322,9 +312,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/@general?format=png&size=112",
         },
       ]
@@ -379,9 +367,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
         },
       ]
@@ -476,9 +462,7 @@ exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
         },
       ]
@@ -535,9 +519,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
         },
       ]
@@ -592,9 +574,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=112",
         },
       ]
@@ -702,9 +682,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://cdn.pensador.com/img/authors/ho/me/homer-simpson-l.jpg?format=png&size=112",
         },
       ]
@@ -759,9 +737,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg",
         },
       ]
@@ -850,9 +826,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
       source={
         [
           {
-            "headers": {
-              "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-            },
+            "headers": undefined,
             "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
           },
         ]
@@ -908,9 +882,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=112&etag=5ag8KffJcZj9m5rCv",
         },
       ]
@@ -965,9 +937,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=112",
         },
       ]
@@ -1022,9 +992,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
     source={
       [
         {
-          "headers": {
-            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
-          },
+          "headers": undefined,
           "uri": "https://google.com/avatar/Avatar?format=png&size=112",
         },
       ]

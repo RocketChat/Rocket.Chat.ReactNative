@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
@@ -34,6 +34,7 @@ import ThreadMessagesView from '../../views/ThreadMessagesView';
 import TeamChannelsView from '../../views/TeamChannelsView';
 import ReadReceiptsView from '../../views/ReadReceiptView';
 import ProfileView from '../../views/ProfileView';
+import ChangePasswordView from '../../views/ChangePasswordView';
 import DisplayPrefsView from '../../views/DisplayPrefsView';
 import SettingsView from '../../views/SettingsView';
 import LanguageView from '../../views/LanguageView';
@@ -67,18 +68,20 @@ import DiscussionsView from '../../views/DiscussionsView';
 import AccessibilityAndAppearanceView from '../../views/AccessibilityAndAppearanceView';
 import { ModalContainer } from './ModalContainer';
 import {
-	MasterDetailChatsStackParamList,
-	MasterDetailDrawerParamList,
-	MasterDetailInsideStackParamList,
-	ModalStackParamList
+	type MasterDetailChatsStackParamList,
+	type MasterDetailDrawerParamList,
+	type MasterDetailInsideStackParamList,
+	type ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
-import { TNavigation } from '../stackType';
+import { type TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<MasterDetailChatsStackParamList>();
 const ChatsStackNavigator = React.memo(() => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -90,13 +93,17 @@ const ChatsStackNavigator = React.memo(() => {
 
 // DrawerNavigator
 const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
-const DrawerNavigator = React.memo(() => (
-	<Drawer.Navigator
-		screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } }}
-		drawerContent={() => <RoomsListView />}>
-		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
-	</Drawer.Navigator>
-));
+const DrawerNavigator = React.memo(() => {
+	'use memo';
+
+	return (
+		<Drawer.Navigator
+			screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } }}
+			drawerContent={() => <RoomsListView />}>
+			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
+		</Drawer.Navigator>
+	);
+});
 
 export interface INavigation {
 	navigation: NativeStackNavigationProp<ModalStackParamList>;
@@ -104,6 +111,8 @@ export interface INavigation {
 
 const ModalStack = createNativeStackNavigator<ModalStackParamList & TNavigation>();
 const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ModalContainer navigation={navigation} theme={theme}>
@@ -174,6 +183,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='StatusView' component={StatusView} />
 				<ModalStack.Screen name='ProfileView' component={ProfileView} />
+				<ModalStack.Screen name='ChangePasswordView' component={ChangePasswordView} />
 				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen name='AdminPanelView' component={AdminPanelView} />
 				<ModalStack.Screen name='NewMessageView' component={NewMessageView} />
@@ -200,6 +210,8 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 // InsideStackNavigator
 const InsideStack = createNativeStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
 const InsideStackNavigator = React.memo(() => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<InsideStack.Navigator

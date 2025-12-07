@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { ISubscription } from '../../definitions';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
+import { type ISubscription } from '../../definitions';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
 import I18n from '../../i18n';
-import { Services } from '../../lib/services';
+import { getDepartmentInfo } from '../../lib/services/restApi';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import CustomFields from './CustomFields';
@@ -30,7 +30,7 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 
 	const getDepartment = async (id: string) => {
 		if (id) {
-			const result = await Services.getDepartmentInfo(id);
+			const result = await getDepartmentInfo(id);
 			if (result.success) {
 				setDepartment(result.department as ILivechatDepartment);
 			}

@@ -1,4 +1,4 @@
-import { serializeAsciiUrl } from '.';
+import { serializeAsciiUrl } from './serializeAsciiUrl';
 
 const ASCIIUrl = 'https://чат24.рф';
 const NonASCIIUrl = 'open.rocket.chat';

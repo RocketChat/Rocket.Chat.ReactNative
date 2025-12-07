@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { Italic as ItalicProps } from '@rocket.chat/message-parser';
+import { type Italic as ItalicProps } from '@rocket.chat/message-parser';
 
 import { Bold, Link, Strike } from './index';
 import Plain from '../Plain';

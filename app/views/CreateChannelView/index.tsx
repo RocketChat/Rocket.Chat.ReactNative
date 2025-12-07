@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 import { sendLoadingEvent } from '../../containers/Loading';
 import { createChannelRequest } from '../../actions/createChannel';
 import { removeUser as removeUserAction } from '../../actions/selectedUsers';
@@ -18,12 +19,12 @@ import { useTheme } from '../../theme';
 import { Review } from '../../lib/methods/helpers/review';
 import SafeAreaView from '../../containers/SafeAreaView';
 import sharedStyles from '../Styles';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import Button from '../../containers/Button';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import Chip from '../../containers/Chip';
 import { RoomSettings } from './RoomSettings';
-import { ISelectedUser } from '../../reducers/selectedUsers';
+import { type ISelectedUser } from '../../reducers/selectedUsers';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 
 const styles = StyleSheet.create({
@@ -150,7 +151,7 @@ const CreateChannelView = () => {
 
 	return (
 		<KeyboardView>
-			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
+			<SafeAreaView style={{ backgroundColor: colors.surfaceTint }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
 					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>
 						<ControlledFormTextInput
@@ -159,7 +160,6 @@ const CreateChannelView = () => {
 							testID='create-channel-name'
 							returnKeyType='done'
 							containerStyle={styles.containerStyle}
-							inputStyle={{ backgroundColor: colors.surfaceTint }}
 							name={'channelName'}
 							control={control}
 							error={errors?.channelName?.message}

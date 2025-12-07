@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
-import { IAttachment } from '../../definitions';
-import { MessageTypesValues, TMessageModel } from '../../definitions/IMessage';
+import { type IAttachment } from '../../definitions';
+import { type MessageTypesValues, type TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
 

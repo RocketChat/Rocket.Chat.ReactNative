@@ -3,7 +3,7 @@ import { View, Text, Linking } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getServerById } from '../../lib/database/services/Server';
 import log from '../../lib/methods/helpers/log';
 import database from '../../lib/database';

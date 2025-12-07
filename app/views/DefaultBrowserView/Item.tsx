@@ -3,7 +3,7 @@ import React from 'react';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import * as List from '../../containers/List';
-import { IBrowsersValues, TValue } from '.';
+import { type IBrowsersValues, type TValue } from '.';
 
 interface IRenderItem extends IBrowsersValues {
 	browser: string | null;

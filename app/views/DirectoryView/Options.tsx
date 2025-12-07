@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../containers/Touch';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';

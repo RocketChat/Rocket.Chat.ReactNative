@@ -7,7 +7,7 @@ import {
 	ResponsiveLayoutContext
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { longText } from '../../../.rnstorybook/utils';
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import RoomItemComponent from './RoomItem';
 
 const { width } = Dimensions.get('window');

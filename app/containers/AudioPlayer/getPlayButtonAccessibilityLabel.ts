@@ -1,5 +1,5 @@
 import i18n from '../../i18n';
-import { TAudioState } from './types';
+import { type TAudioState } from './types';
 
 const getPlayButtonAccessibilityLabel = (state: TAudioState) => {
 	switch (state) {

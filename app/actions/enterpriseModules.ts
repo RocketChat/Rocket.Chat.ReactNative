@@ -1,6 +1,6 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
-import { IEnterpriseModules } from '../reducers/enterpriseModules';
+import { type IEnterpriseModules } from '../reducers/enterpriseModules';
 import { ENTERPRISE_MODULES } from './actionsTypes';
 
 interface ISetEnterpriseModules extends Action {

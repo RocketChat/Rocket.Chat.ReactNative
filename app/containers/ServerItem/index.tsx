@@ -1,14 +1,17 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import Check from '../Check';
+import Radio from '../Radio';
 import styles, { ROW_HEIGHT } from './styles';
-import { themes } from '../../lib/constants';
-import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
+import Touchable from './Touchable';
+import I18n from '../../i18n';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export { ROW_HEIGHT };
+export { default as ServerItemTouchable } from './Touchable';
+export type { IServerItemTouchableProps } from './Touchable';
 
 export interface IServerItem {
 	item: {
@@ -18,23 +21,30 @@ export interface IServerItem {
 		useRealName?: boolean;
 	};
 	onPress(): void;
-	onLongPress?(): void;
+	onDeletePress?(): void;
 	hasCheck?: boolean;
 }
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
-	const { theme } = useTheme();
+const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
+	const { colors } = useTheme();
+	const { width } = useResponsiveLayout();
+
+	const serverName = item.name || item.id;
+	const accessibilityLabel = `${serverName}, ${item.id}`;
+	const accessibilityHint = onDeletePress
+		? I18n.t('Activate_to_select_server_Available_actions_delete')
+		: I18n.t('Activate_to_select_server');
+
 	return (
-		<Pressable
+		<Touchable
 			onPress={onPress}
-			onLongPress={() => onLongPress?.()}
+			onDeletePress={onDeletePress}
 			testID={`server-item-${item.id}`}
-			android_ripple={{ color: themes[theme].surfaceNeutral }}
-			style={({ pressed }: { pressed: boolean }) => ({
-				backgroundColor: isIOS && pressed ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom
-			})}>
+			width={width}
+			accessibilityLabel={accessibilityLabel}
+			accessibilityHint={accessibilityHint}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<Image
@@ -50,16 +60,16 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 					<Image source={defaultLogo} style={styles.serverIcon} contentFit='contain' />
 				)}
 				<View style={styles.serverTextContainer}>
-					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].fontTitlesLabels }]}>
+					<Text numberOfLines={1} style={[styles.serverName, { color: colors.fontTitlesLabels }]}>
 						{item.name || item.id}
 					</Text>
-					<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].fontSecondaryInfo }]}>
+					<Text numberOfLines={1} style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>
 						{item.id}
 					</Text>
 				</View>
-				{hasCheck ? <Check /> : null}
+				<Radio check={hasCheck || false} size={24} />
 			</View>
-		</Pressable>
+		</Touchable>
 	);
 });
 

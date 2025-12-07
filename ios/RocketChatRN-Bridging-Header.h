@@ -9,8 +9,9 @@
 #import <react-native-notifications/RCTConvert+RNNotifications.h>
 #import <react-native-notifications/RNEventEmitter.h>
 #import <react-native-notifications/RNNotificationParser.h>
-#import <react-native-simple-crypto/Aes.h>
-#import <react-native-simple-crypto/Rsa.h>
-#import <react-native-simple-crypto/Shared.h>
 #import <RNNotifications.h>
 #import <RNBootSplash.h>
+#import <MobileCrypto/RSACrypto.h>
+#import <MobileCrypto/AESCrypto.h>
+#import <MobileCrypto/RandomUtils.h>
+#import <MobileCrypto/CryptoUtils.h>

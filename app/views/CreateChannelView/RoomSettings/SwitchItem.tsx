@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SwitchProps } from 'react-native';
+import { StyleSheet, Text, View, type SwitchProps } from 'react-native';
 
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
 		minHeight: 54,
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		flexDirection: 'row',
-		maxHeight: 80
+		flexDirection: 'row'
 	},
 	switchTextContainer: {
 		flex: 1,

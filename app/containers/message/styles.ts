@@ -18,11 +18,11 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	messageContent: {
-		flex: 1
+		flex: 1,
+		marginLeft: 10
 	},
 	flex: {
-		flexDirection: 'row',
-		gap: 10
+		flexDirection: 'row'
 	},
 	temp: { opacity: 0.3 },
 	reactionsContainer: {

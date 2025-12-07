@@ -6,6 +6,8 @@ import { useRoomContext } from '../../../views/RoomView/context';
 import { useFocused } from '../context';
 
 export const useAutoSaveDraft = (text = '') => {
+	'use memo';
+
 	const route = useRoute();
 	const { rid, tmid, action, selectedMessages } = useRoomContext();
 	const focused = useFocused();

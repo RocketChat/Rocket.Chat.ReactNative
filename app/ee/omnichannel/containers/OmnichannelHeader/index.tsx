@@ -10,7 +10,7 @@ import { showConfirmationAlert } from '../../../../lib/methods/helpers/info';
 import I18n from '../../../../i18n';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../lib';
 import OmnichannelQueue from './OmnichannelQueue';
-import { isOmnichannelModuleAvailable } from '../../../../lib/methods';
+import { isOmnichannelModuleAvailable } from '../../../../lib/methods/enterpriseModules';
 import Switch from '../../../../containers/Switch';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../../../selectors/login';

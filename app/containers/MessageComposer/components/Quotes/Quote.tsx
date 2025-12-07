@@ -1,16 +1,18 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import moment from 'moment';
 
+import dayjs from '../../../../lib/dayjs';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { MarkdownPreview } from '../../../markdown';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
+	'use memo';
+
 	const [styles, colors] = useStyle();
 	const message = useMessage(messageId);
 	const useRealName = useAppSelector(({ settings }) => settings.UI_Use_Real_Name);
@@ -23,7 +25,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 	if (message) {
 		username = useRealName ? message.u?.name || message.u?.username || '' : message.u?.username || '';
 		msg = message.msg || '';
-		time = message.ts ? moment(message.ts).format('LT') : '';
+		time = message.ts ? dayjs(message.ts).format('LT') : '';
 	}
 
 	if (!message) {

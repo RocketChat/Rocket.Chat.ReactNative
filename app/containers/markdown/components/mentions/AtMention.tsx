@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { type StyleProp, Text, type TextStyle } from 'react-native';
 
 import { useTheme } from '../../../../theme';
-import { themes, USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
+import { USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import styles from '../../styles';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { IUserMention } from '../../interfaces';
-import { useUserPreferences } from '../../../../lib/methods';
+import { type IUserMention } from '../../interfaces';
+import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 
 interface IAtMention {
 	mention: string;
@@ -49,13 +50,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		};
 	}
 
-	const user = mentions?.find?.((m: any) => m && m.username === mention);
+	const atMentioned = mentions?.find?.((m: any) => m && (m.username === mention || m.name === mention));
 
 	const handlePress = () => {
 		logEvent(events.ROOM_MENTION_GO_USER_INFO);
 		const navParam = {
 			t: 'd',
-			rid: user && user._id,
+			rid: atMentioned && atMentioned._id,
 			itsMe
 		};
 		if (navToRoomInfo) {
@@ -63,11 +64,19 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		}
 	};
 
-	if (user) {
+	if (atMentioned) {
+		let text;
+		if (atMentioned.type === 'user') {
+			text = useRealName && atMentioned.name ? atMentioned.name : atMentioned.username;
+		} else {
+			text = atMentioned.name;
+		}
+
 		return (
-			<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
+			// not enough information on mentions to navigate to team info, so we don't handle onPress
+			<Text style={[styles.mention, mentionStyle, ...style]} onPress={atMentioned?.type === 'team' ? undefined : handlePress}>
 				{preffix}
-				{useRealName && user.name ? user.name : user.username}
+				{text}
 			</Text>
 		);
 	}

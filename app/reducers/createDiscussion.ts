@@ -1,4 +1,4 @@
-import { TApplicationActions } from '../definitions';
+import { type TApplicationActions } from '../definitions';
 import { CREATE_DISCUSSION } from '../actions/actionsTypes';
 
 export interface ICreateDiscussion {

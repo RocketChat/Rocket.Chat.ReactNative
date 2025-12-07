@@ -1,15 +1,15 @@
 import {
 	Notifications,
-	Registered,
-	RegistrationError,
-	NotificationCompletion,
-	Notification,
+	type Registered,
+	type RegistrationError,
+	type NotificationCompletion,
+	type Notification,
 	NotificationAction,
 	NotificationCategory
 } from 'react-native-notifications';
 import { PermissionsAndroid, Platform } from 'react-native';
 
-import { INotification } from '../../definitions';
+import { type INotification } from '../../definitions';
 import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';

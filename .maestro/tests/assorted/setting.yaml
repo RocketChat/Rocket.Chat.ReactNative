@@ -1,0 +1,161 @@
+appId: chat.rocket.reactnative
+name: Setting
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-8
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-settings'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-settings'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 60000
+
+# should have settings view
+- assertVisible:
+    id: 'settings-view'
+
+# should have language
+- assertVisible:
+    id: 'settings-view-language'
+
+# should have review app
+- assertVisible:
+    id: 'settings-view-review-app'
+
+# should have share app
+- assertVisible:
+    id: 'settings-view-share-app'
+
+# should have default browser
+- assertVisible:
+    id: 'settings-view-default-browser'
+
+# should have security and privacy
+- assertVisible:
+    id: 'settings-view-security-privacy'
+
+# should have media auto-download
+- assertVisible:
+    id: 'settings-view-media-auto-download'
+
+# should have license
+- assertVisible:
+    id: 'settings-view-license'
+
+# should have legal
+- assertVisible:
+    id: 'settings-view-legal'
+
+# should have version no
+- assertVisible:
+    id: 'settings-view-version'
+
+# should have server version
+- assertVisible:
+    id: 'settings-view-server-version'
+
+# should have get help
+- assertVisible:
+    id: 'settings-view-get-help'
+- tapOn:
+    id: 'settings-view-get-help'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view-get-help-documentation'
+    timeout: 60000
+- assertVisible:
+    id: 'settings-view-get-help-accessibility-statement'
+- assertVisible:
+    id: 'settings-view-get-help-glossary'
+- runFlow:
+    file: '../../helpers/go-back.yaml'
+
+# should tap clear cache and navigate to roomslistview
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view'
+    timeout: 60000
+- assertVisible:
+    id: 'settings-view-clear-cache'
+- tapOn:
+    id: 'settings-view-clear-cache'
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      text: '.*This will clear all your offline data.*'
+    timeout: 60000
+- tapOn:
+    text: 'Clear'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${output.room.name}'
+    timeout: 60000
+
+# should navigate to legalview
+- assertVisible:
+    id: 'rooms-list-view-sidebar'
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-settings'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-settings'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-view'
+    timeout: 60000
+- assertVisible:
+    id: 'settings-view-legal'
+- tapOn:
+    id: 'settings-view-legal'
+- extendedWaitUntil:
+    visible:
+      id: 'legal-view'
+    timeout: 60000
+
+# should have terms of service button
+- assertVisible:
+    id: 'legal-terms-button'
+
+# should have privacy policy button
+- assertVisible:
+    id: 'legal-privacy-button'

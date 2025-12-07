@@ -4,7 +4,7 @@ import { Linking } from 'react-native';
 
 import * as List from '../../../containers/List';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { isIOS, showErrorAlert } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import CustomListSection from './CustomListSection';
