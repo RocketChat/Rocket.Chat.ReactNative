@@ -86,7 +86,7 @@ tags:
 
 # tap delete button
 - tapOn:
-    point: 50%,54%
+    id: 'server-item-${output.data.server}-delete'
 
 # confirm deletion
 - extendedWaitUntil:
@@ -94,7 +94,7 @@ tags:
       text: '.*Delete.*'
     timeout: 60000
 - tapOn:
-    text: 'Delete'
+    point: 50%,54%
 - waitForAnimationToEnd:
     timeout: 300
 - extendedWaitUntil:
