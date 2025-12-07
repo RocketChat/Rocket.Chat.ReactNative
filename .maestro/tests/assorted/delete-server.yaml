@@ -94,7 +94,8 @@ tags:
       text: '.*Delete.*'
     timeout: 60000
 - tapOn:
-    point: 50%,54%
+    point: 65%,55%
+    retryTapIfNoChange: true
 - waitForAnimationToEnd:
     timeout: 300
 - extendedWaitUntil:
