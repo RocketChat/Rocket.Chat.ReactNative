@@ -240,6 +240,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						error={errors.confirmPassword?.message}
 						required
 						label={I18n.t('Password')}
+						secureTextEntry={process.env.RUNNING_E2E_TESTS !== 'true'}
 						textContentType={isAndroid ? 'newPassword' : undefined}
 						autoComplete={isAndroid ? 'password-new' : undefined}
 						onSubmitEditing={() => setFocus('confirmPassword')}
@@ -254,6 +255,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						required
 						textContentType={isAndroid ? 'newPassword' : undefined}
 						autoComplete={isAndroid ? 'password-new' : undefined}
+						secureTextEntry={process.env.RUNNING_E2E_TESTS !== 'true'}
 						error={errors.confirmPassword?.message}
 						onSubmitEditing={() => {
 							if (parsedCustomFields) {
