@@ -1,6 +1,7 @@
-import React, { createContext, ReactElement, useContext, useState } from 'react';
+import React, { createContext, type ReactElement, useContext, useState } from 'react';
+import { Platform } from 'react-native';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
-import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, type SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { MessageInnerContext } from '../context';
@@ -20,6 +21,8 @@ const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
 });
 
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
+	'use memo';
+
 	const showEmojiPickerSharedValue = useSharedValue(false);
 	const showEmojiSearchbarSharedValue = useSharedValue(false);
 
@@ -34,6 +37,8 @@ const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
 const useKeyboardAnimation = () => {
+	'use memo';
+
 	const height = useSharedValue(0);
 
 	useKeyboardHandler(
@@ -64,6 +69,8 @@ const useKeyboardAnimation = () => {
 };
 
 export const useEmojiKeyboard = () => {
+	'use memo';
+
 	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
 	const { focus } = useContext(MessageInnerContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
@@ -71,8 +78,9 @@ export const useEmojiKeyboard = () => {
 
 	const { bottom } = useSafeAreaInsets();
 	const { height } = useKeyboardAnimation();
-	const keyboardHeight = useSharedValue(bottom);
-	const previousHeight = useSharedValue(bottom);
+	const initialHeight = Platform.OS === 'ios' ? bottom : 0;
+	const keyboardHeight = useSharedValue(initialHeight);
+	const previousHeight = useSharedValue(initialHeight);
 
 	const updateHeight = (force: boolean = false) => {
 		'worklet';
@@ -84,7 +92,9 @@ export const useEmojiKeyboard = () => {
 		) {
 			return;
 		}
-		const notch = height.value > 0 ? 0 : bottom;
+		// On iOS, keyboard controller doesn't include bottom inset, so we add it when keyboard is closed
+		// On Android, keyboard controller already includes it, so we don't add it
+		const notch = Platform.OS === 'ios' && height.value === 0 ? bottom : 0;
 		keyboardHeight.value = height.value + notch;
 		previousHeight.value = keyboardHeight.value;
 	};

@@ -1,12 +1,12 @@
 import { dequal } from 'dequal';
 import React from 'react';
-import { TextStyle } from 'react-native';
+import { type TextStyle } from 'react-native';
 
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import { isAndroid } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { MarkdownPreview } from '../markdown';
-import { ILastMessageProps } from './interfaces';
+import { type ILastMessageProps } from './interfaces';
 import styles from './styles';
 
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);

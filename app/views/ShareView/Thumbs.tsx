@@ -3,12 +3,12 @@ import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../../containers/CustomIcon';
 import { isIOS } from '../../lib/methods/helpers';
 import { THUMBS_HEIGHT } from './constants';
-import { TSupportedThemes } from '../../theme';
-import { IShareAttachment } from '../../definitions';
+import { type TSupportedThemes } from '../../theme';
+import { type IShareAttachment } from '../../definitions';
 
 const THUMB_SIZE = 64;
 

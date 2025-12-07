@@ -3,8 +3,8 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Observable, Subscription } from 'rxjs';
+import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { type Observable, type Subscription } from 'rxjs';
 
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -15,8 +15,9 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { textInputDebounceTime, themes, colors } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
+import { themes, colors } from '../../lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
@@ -26,13 +27,20 @@ import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { Filter } from './filters';
 import Item from './Item';
 import styles from './styles';
-import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
+import {
+	type IApplicationState,
+	type IBaseScreen,
+	type IMessage,
+	SubscriptionType,
+	type TSubscriptionModel,
+	type TThreadModel
+} from '../../definitions';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
+import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services/restApi';
 import UserPreferences from '../../lib/methods/userPreferences';
 import Navigation from '../../lib/navigation/appNavigation';
 
@@ -327,7 +335,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getThreadsList({
+			const result = await getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset,
@@ -352,7 +360,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getSyncThreadsList({
+			const result = await getSyncThreadsList({
 				rid: this.rid,
 				updatedSince: updatedSince.toISOString()
 			});
@@ -455,7 +463,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
-			await Services.toggleFollowMessage(tmid, !isFollowingThread);
+			await toggleFollowMessage(tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);

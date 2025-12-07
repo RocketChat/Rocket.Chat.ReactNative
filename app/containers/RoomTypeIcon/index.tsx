@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
-import { ImageStyle } from 'expo-image';
+import { StyleSheet, type ViewStyle } from 'react-native';
+import { type ImageStyle } from 'expo-image';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { themes } from '../../lib/constants/colors';
 import Status from '../Status';
 import { useTheme } from '../../theme';
-import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { type TUserStatus, type IOmnichannelSource } from '../../definitions';
 
 const styles = StyleSheet.create({
 	icon: {

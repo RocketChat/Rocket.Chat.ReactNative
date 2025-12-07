@@ -1,16 +1,16 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TextInputProps } from 'react-native';
+import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
 
-import { textInputDebounceTime } from '../lib/constants';
+import { textInputDebounceTime } from '../lib/constants/debounceConfig';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { useDebounce } from '../lib/methods/helpers';
-import { TNavigation } from '../stacks/stackType';
+import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
-import { IOptionsField } from './NotificationPreferencesView/options';
+import { type IOptionsField } from './NotificationPreferencesView/options';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({

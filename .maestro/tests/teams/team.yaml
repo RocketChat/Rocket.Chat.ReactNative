@@ -4,10 +4,10 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowEnd:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-4
 
 ---
-- runFlow: '../../helpers/launch-app.yaml'
-
 - evalScript: ${output.firstUser = output.utils.createUser()}
 - evalScript: ${output.secondUser = output.utils.createUser()}
 - evalScript: ${output.team = output.utils.createRandomTeam(output.firstUser.username, output.firstUser.password)}
@@ -15,7 +15,7 @@ onFlowEnd:
 - evalScript: ${output.privateRoomName = 'private' + output.random() + '-channel-team'}
 
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.firstUser.username}
       PASSWORD: ${output.firstUser.password}
@@ -320,7 +320,7 @@ onFlowEnd:
 - extendedWaitUntil:
     visible:
       id: select-users-view-item-${output.secondUser.username}
-    timeout:
+    timeout: 60000
 - tapOn:
     id: select-users-view-item-${output.secondUser.username}
 - extendedWaitUntil:

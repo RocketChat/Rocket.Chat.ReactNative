@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
-import Base, { IBase } from './Base';
+import Base, { type IBase } from './Base';
 import { TYPE } from './constants';
 import I18n from '../../i18n';
 
@@ -16,13 +16,13 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 	const confirmRef = useRef<IBase>(null);
 	const [subtitle, setSubtitle] = useState<string | null>(null);
 	const [status, setStatus] = useState(TYPE.CHOOSE);
-	const [previousPasscode, setPreviouPasscode] = useState('');
+	const [previousPasscode, setPreviousPasscode] = useState('');
 
 	const firstStep = (p: string) => {
 		setTimeout(() => {
 			setStatus(TYPE.CONFIRM);
-			setPreviouPasscode(p);
-			confirmRef?.current?.clearPasscode();
+			setPreviousPasscode(p);
+			chooseRef?.current?.clearPasscode();
 		}, 200);
 	};
 

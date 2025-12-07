@@ -4,14 +4,15 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-8
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
 - evalScript: ${output.room = output.utils.createRandomRoom(output.user.username, output.user.password)}
 
-- runFlow: ../../helpers/launch-app.yaml
 - runFlow:
-    file: '../../helpers/login.yaml'
+    file: '../../helpers/login-with-deeplink.yaml'
     env:
       USERNAME: ${output.user.username}
       PASSWORD: ${output.user.password}
@@ -107,6 +108,7 @@ onFlowComplete:
     id: 'settings-view-clear-cache'
 - tapOn:
     id: 'settings-view-clear-cache'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: '.*This will clear all your offline data.*'

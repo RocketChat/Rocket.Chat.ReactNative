@@ -10,7 +10,7 @@ tags:
         id: 'room-view'
     commands:
       - runFlow:
-          file: './navigate-to-room.yaml'
+          file: './search-and-navigate-room.yaml'
           env:
             ROOM: ${ROOM}
 

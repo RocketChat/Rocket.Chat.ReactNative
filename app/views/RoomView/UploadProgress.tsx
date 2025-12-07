@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
-import { Observable, Subscription } from 'rxjs';
+import { type Observable, type Subscription } from 'rxjs';
 import { A11y } from 'react-native-a11y-order';
 
 import database from '../../lib/database';
 import log from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../Styles';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../definitions';
-import { sendFileMessage } from '../../lib/methods';
+import { type TSupportedThemes, withTheme } from '../../theme';
+import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '../../definitions';
+import { sendFileMessage } from '../../lib/methods/sendFileMessage';
 import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
 const styles = StyleSheet.create({

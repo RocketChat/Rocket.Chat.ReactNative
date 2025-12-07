@@ -1,16 +1,16 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { type ReactElement, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { MessageTypeLoad } from '../../../lib/constants';
-import { MessageType, RoomType } from '../../../definitions';
+import { MessageTypeLoad } from '../../../lib/constants/messageTypeLoad';
+import { type MessageType, type RoomType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import MessageSeparator from '../../../containers/MessageSeparator';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	button: {

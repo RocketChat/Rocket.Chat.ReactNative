@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
-import { IRoomItemContainerProps } from './interfaces';
+import { type IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];

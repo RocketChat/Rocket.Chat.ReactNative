@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text } from 'react-native';
 
 import * as List from '../../../containers/List';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 

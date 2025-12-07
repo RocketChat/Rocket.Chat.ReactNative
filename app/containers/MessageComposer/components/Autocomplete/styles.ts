@@ -4,6 +4,8 @@ import { useTheme } from '../../../../theme';
 const MAX_HEIGHT = 216;
 
 export const useStyle = () => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const styles = {
 		root: {

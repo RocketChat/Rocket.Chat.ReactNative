@@ -8,9 +8,9 @@ import database from '../lib/database';
 import UserPreferences from '../lib/methods/userPreferences';
 import { getUserSelector } from '../selectors/login';
 import log from '../lib/methods/helpers/log';
-import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
-import { Services } from '../lib/services';
-import { readMessages } from '../lib/methods';
+import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/constants/keys';
+import { e2eFetchMyKeys } from '../lib/services/restApi';
+import { readMessages } from '../lib/methods/readMessages';
 
 const getServer = state => state.server.server;
 const getE2eEnable = state => state.settings.E2E_Enable;
@@ -40,7 +40,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		const storedPrivateKey = UserPreferences.getString(`${server}-${E2E_PRIVATE_KEY}`);
 
 		// Fetch server stored e2e keys
-		const keys = yield Services.e2eFetchMyKeys();
+		const keys = yield e2eFetchMyKeys();
 
 		// A private key was received from the server, but it's not saved locally yet
 		// Show the banner asking for the password
@@ -94,7 +94,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		const user = yield select(getUserSelector);
 
 		// Fetch server stored e2e keys
-		const keys = yield Services.e2eFetchMyKeys();
+		const keys = yield e2eFetchMyKeys();
 
 		const publicKey = EJSON.parse(keys?.publicKey);
 

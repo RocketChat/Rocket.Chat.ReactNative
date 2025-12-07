@@ -13,11 +13,13 @@ import SendEmailConfirmationView from '../views/SendEmailConfirmationView';
 import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
-import { OutsideModalParamList, OutsideParamList } from './types';
+import { type OutsideModalParamList, type OutsideParamList } from './types';
 
 // Outside
 const Outside = createNativeStackNavigator<OutsideParamList>();
-const _OutsideStack = () => {
+const OutsideStackComponent = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -41,11 +43,13 @@ const mapStateToProps = (state: any) => ({
 	root: state.app.root
 });
 
-const OutsideStack = connect(mapStateToProps)(_OutsideStack);
+const OutsideStack = connect(mapStateToProps)(OutsideStackComponent);
 
 // OutsideStackModal
 const OutsideModal = createNativeStackNavigator<OutsideModalParamList>();
 const OutsideStackModal = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (

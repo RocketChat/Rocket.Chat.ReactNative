@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { FontVariant, Text } from 'react-native';
-import { Audio } from 'expo-av';
+import { type FontVariant, Text } from 'react-native';
+import { type Audio } from 'expo-av';
 
 import sharedStyles from '../../../../views/Styles';
 import { useTheme } from '../../../../theme';

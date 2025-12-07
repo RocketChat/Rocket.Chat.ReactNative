@@ -1,5 +1,5 @@
 import { ENCRYPTION } from '../actions/actionsTypes';
-import { TApplicationActions } from '../definitions';
+import { type TApplicationActions } from '../definitions';
 
 export type IBanner = string;
 export interface IEncryption {
@@ -38,8 +38,6 @@ export default function encryption(state = initialState, action: TApplicationAct
 				enabled: false,
 				failure: true
 			};
-		case ENCRYPTION.INIT:
-			return initialState;
 		default:
 			return state;
 	}

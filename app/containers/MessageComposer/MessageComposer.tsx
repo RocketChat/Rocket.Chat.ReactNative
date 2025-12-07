@@ -1,5 +1,5 @@
-import React, { ReactElement, useRef, useImperativeHandle } from 'react';
-import { AccessibilityInfo, findNodeHandle, LayoutChangeEvent } from 'react-native';
+import React, { type ReactElement, useRef, useImperativeHandle } from 'react';
+import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -8,9 +8,9 @@ import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import { MessageInnerContext, useAlsoSendThreadToChannel, useMessageComposerApi, useRecordingAudio } from './context';
-import { IComposerInput } from './interfaces';
+import { type IComposerInput } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { IEmoji } from '../../definitions';
+import { type IEmoji } from '../../definitions';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods/actions';
@@ -31,6 +31,8 @@ export const MessageComposer = ({
 	forwardedRef: any;
 	children?: ReactElement;
 }): ReactElement | null => {
+	'use memo';
+
 	const composerInputRef = useRef(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',

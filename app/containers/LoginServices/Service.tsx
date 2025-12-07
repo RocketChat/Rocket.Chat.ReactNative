@@ -3,8 +3,8 @@ import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { TIconsName } from '../CustomIcon';
-import { IItemService, IOauthProvider } from './interfaces';
+import { type TIconsName } from '../CustomIcon';
+import { type IItemService, type IOauthProvider } from './interfaces';
 import styles from './styles';
 import * as ServiceLogin from './serviceLogin';
 import ButtonService from './ButtonService';

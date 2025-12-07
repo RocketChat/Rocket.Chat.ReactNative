@@ -1,6 +1,6 @@
 import MessageContext from '../message/Context';
 import { UiKitMessage } from '.';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',

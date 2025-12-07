@@ -1,4 +1,4 @@
-import { ISubscription } from '../../definitions';
+import { type ISubscription } from '../../definitions';
 
 interface IRoomFederated extends ISubscription {
 	federated: true;
