@@ -269,6 +269,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'username-header-${output.user.username}'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: room-info-view-username
