@@ -86,7 +86,7 @@ tags:
 
 # tap delete button
 - tapOn:
-    id: 'server-item-${output.data.server}-delete'
+    point: 50%,54%
 
 # confirm deletion
 - extendedWaitUntil:
