@@ -39,8 +39,8 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<>
-					<Quote {...props} />
 					<Content {...props} />
+					<Quote {...props} />
 					<Attachments {...props} />
 				</>
 				<Urls {...props} />
@@ -87,8 +87,8 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<View style={{ gap: 4 }}>
-					<Quote {...props} />
 					<Content {...props} />
+					<Quote {...props} />
 					<Attachments {...props} />
 					<Urls {...props} />
 					<Thread {...props} />
