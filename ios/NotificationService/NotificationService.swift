@@ -13,6 +13,15 @@ class NotificationService: UNNotificationServiceExtension {
         if let bestAttemptContent = bestAttemptContent {
             let ejson = (bestAttemptContent.userInfo["ejson"] as? String ?? "").data(using: .utf8)!
             guard let data = try? (JSONDecoder().decode(Payload.self, from: ejson)) else {
+                // If decoding fails, still deliver the original notification
+                contentHandler(bestAttemptContent)
+                return
+            }
+            
+            // Video conference notifications should be delivered immediately with VIDEOCONF category
+            if data.notificationType == .videoconf {
+                bestAttemptContent.categoryIdentifier = "VIDEOCONF"
+                contentHandler(bestAttemptContent)
                 return
             }
             
@@ -47,6 +56,11 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processPayload(payload: Payload) {
+        // Handle video conference notifications
+        if payload.notificationType == .videoconf {
+            bestAttemptContent?.categoryIdentifier = "VIDEOCONF"
+        }
+        
         // If is a encrypted message
         if payload.messageType == .e2e {
             if let rid = payload.rid {

@@ -78,17 +78,25 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		}
 	);
 
-	Notifications.events().registerNotificationOpened((notification: Notification, completion: () => void) => {
-		if (isIOS) {
-			const { background } = reduxStore.getState().app;
-			if (background) {
+	Notifications.events().registerNotificationOpened(
+		(notification: Notification, completion: () => void, actionResponse?: { identifier: string; text?: string }) => {
+			if (actionResponse && notification.payload) {
+				notification.payload.action = actionResponse;
+			}
+
+			if (isIOS) {
+				const hasExplicitAction =
+					actionResponse?.identifier === 'ACCEPT_ACTION' || actionResponse?.identifier === 'DECLINE_ACTION';
+				const { background } = reduxStore.getState().app;
+				if (background || hasExplicitAction) {
+					onNotification(notification);
+				}
+			} else {
 				onNotification(notification);
 			}
-		} else {
-			onNotification(notification);
+			completion();
 		}
-		completion();
-	});
+	);
 
 	Notifications.events().registerNotificationReceivedBackground(
 		(notification: Notification, completion: (response: any) => void) => {
