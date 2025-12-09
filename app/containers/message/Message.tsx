@@ -31,6 +31,7 @@ import translationLanguages from '../../lib/constants/translationLanguages';
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
 	const showTimeLarge = isLargeFontScale && props.isHeader;
+	const hasLinkedQuote = props.attachments?.some(file => !!file?.message_link) ?? false;
 
 	let content;
 	if (props.isPreview) {
@@ -39,8 +40,17 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<>
-					<Content {...props} />
-					<Quote {...props} />
+					{hasLinkedQuote ? (
+						<>
+							<Quote {...props} />
+							<Content {...props} />
+						</>
+					) : (
+						<>
+							<Content {...props} />
+							<Quote {...props} />
+						</>
+					)}
 					<Attachments {...props} />
 				</>
 				<Urls {...props} />
@@ -87,8 +97,17 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<View style={{ gap: 4 }}>
-					<Content {...props} />
-					<Quote {...props} />
+					{hasLinkedQuote ? (
+						<>
+							<Quote {...props} />
+							<Content {...props} />
+						</>
+					) : (
+						<>
+							<Content {...props} />
+							<Quote {...props} />
+						</>
+					)}
 					<Attachments {...props} />
 					<Urls {...props} />
 					<Thread {...props} />
@@ -158,6 +177,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
 		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
+		const hasLinkedQuote = props.attachments?.some(file => !!file?.message_link) ?? false;
 		return (
 			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
@@ -169,7 +189,17 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 						accessibilityLanguage={props.autoTranslateLanguage}
 						index={2}>
 						<View style={styles.messageContent}>
-							<Content {...props} />
+							{hasLinkedQuote ? (
+								<>
+									<Quote {...props} />
+									<Content {...props} />
+								</>
+							) : (
+								<>
+									<Content {...props} />
+									<Quote {...props} />
+								</>
+							)}
 							{props.isInfo && props.type === 'message_pinned' ? (
 								<View pointerEvents='none'>
 									<Attachments {...props} />
