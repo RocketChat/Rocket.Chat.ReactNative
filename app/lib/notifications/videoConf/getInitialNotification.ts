@@ -34,23 +34,23 @@ export const getInitialNotification = async (): Promise<boolean> => {
 			const lastResponse = await Notifications.getLastNotificationResponseAsync();
 			if (lastResponse) {
 				const { actionIdentifier, notification } = lastResponse;
+				const trigger = notification.request.trigger;
+				let payload: Record<string, any> = {};
 
-				// Check if it's a video conf action (Accept or Decline)
-				if (actionIdentifier === 'ACCEPT_ACTION' || actionIdentifier === 'DECLINE_ACTION') {
-					const trigger = notification.request.trigger;
-					let payload: Record<string, any> = {};
+				if (trigger && 'type' in trigger && trigger.type === 'push' && 'payload' in trigger && trigger.payload) {
+					payload = trigger.payload as Record<string, any>;
+				}
 
-					if (trigger && 'type' in trigger && trigger.type === 'push' && 'payload' in trigger && trigger.payload) {
-						payload = trigger.payload as Record<string, any>;
-					}
-
-					if (payload.ejson) {
-						const ejsonData = EJSON.parse(payload.ejson);
-						if (ejsonData?.notificationType === 'videoconf') {
-							const event = actionIdentifier === 'ACCEPT_ACTION' ? 'accept' : 'decline';
-							store.dispatch(deepLinkingClickCallPush({ ...ejsonData, event }));
-							return true;
+				if (payload.ejson) {
+					const ejsonData = EJSON.parse(payload.ejson);
+					if (ejsonData?.notificationType === 'videoconf') {
+						// Accept/Decline actions or default tap (treat as accept)
+						let event = 'accept';
+						if (actionIdentifier === 'DECLINE_ACTION') {
+							event = 'decline';
 						}
+						store.dispatch(deepLinkingClickCallPush({ ...ejsonData, event }));
+						return true;
 					}
 				}
 			}

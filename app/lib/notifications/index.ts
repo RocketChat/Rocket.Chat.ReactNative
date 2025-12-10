@@ -17,39 +17,47 @@ interface IEjson {
 
 export const onNotification = (push: INotification): void => {
 	const identifier = String(push?.payload?.action?.identifier);
+
+	// Handle video conf notification actions (Accept/Decline buttons)
 	if (identifier === 'ACCEPT_ACTION' || identifier === 'DECLINE_ACTION') {
-		if (push?.payload && push?.payload?.ejson) {
-			const notification = EJSON.parse(push?.payload?.ejson);
+		if (push?.payload?.ejson) {
+			const notification = EJSON.parse(push.payload.ejson);
 			store.dispatch(deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' }));
 			return;
 		}
 	}
-	if (push?.payload) {
+
+	if (push?.payload?.ejson) {
 		try {
-			const notification = push?.payload;
-			if (notification.ejson) {
-				const { rid, name, sender, type, host, messageId }: IEjson = EJSON.parse(notification.ejson);
+			const notification = EJSON.parse(push.payload.ejson);
 
-				const types: Record<string, string> = {
-					c: 'channel',
-					d: 'direct',
-					p: 'group',
-					l: 'channels'
-				};
-				let roomName = type === SubscriptionType.DIRECT ? sender.username : name;
-				if (type === SubscriptionType.OMNICHANNEL) {
-					roomName = sender.name;
-				}
-
-				const params = {
-					host,
-					rid,
-					messageId,
-					path: `${types[type]}/${roomName}`
-				};
-				store.dispatch(deepLinkingOpen(params));
+			// Handle video conf notification tap (default action) - treat as accept
+			if (notification?.notificationType === 'videoconf') {
+				store.dispatch(deepLinkingClickCallPush({ ...notification, event: 'accept' }));
 				return;
 			}
+
+			// Handle regular message notifications
+			const { rid, name, sender, type, host, messageId }: IEjson = notification;
+			const types: Record<string, string> = {
+				c: 'channel',
+				d: 'direct',
+				p: 'group',
+				l: 'channels'
+			};
+			let roomName = type === SubscriptionType.DIRECT ? sender.username : name;
+			if (type === SubscriptionType.OMNICHANNEL) {
+				roomName = sender.name;
+			}
+
+			const params = {
+				host,
+				rid,
+				messageId,
+				path: `${types[type]}/${roomName}`
+			};
+			store.dispatch(deepLinkingOpen(params));
+			return;
 		} catch (e) {
 			console.warn(e);
 		}
