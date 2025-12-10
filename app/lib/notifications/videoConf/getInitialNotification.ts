@@ -34,7 +34,7 @@ export const getInitialNotification = async (): Promise<boolean> => {
 			const lastResponse = await Notifications.getLastNotificationResponseAsync();
 			if (lastResponse) {
 				const { actionIdentifier, notification } = lastResponse;
-				const trigger = notification.request.trigger;
+				const { trigger } = notification.request;
 				let payload: Record<string, any> = {};
 
 				if (trigger && 'type' in trigger && trigger.type === 'push' && 'payload' in trigger && trigger.payload) {

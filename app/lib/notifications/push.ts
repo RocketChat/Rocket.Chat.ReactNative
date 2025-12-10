@@ -32,8 +32,7 @@ let configured = false;
  */
 const transformNotificationResponse = (response: Notifications.NotificationResponse): INotification => {
 	const { notification, actionIdentifier, userText } = response;
-	const trigger = notification.request.trigger;
-	const content = notification.request.content;
+	const { trigger, content } = notification.request;
 
 	// Get the raw data from the notification
 	let payload: Record<string, any> = {};
@@ -167,13 +166,14 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 
 	// Set up how notifications should be handled when the app is in foreground
 	Notifications.setNotificationHandler({
-		handleNotification: async () => ({
-			shouldShowAlert: false,
-			shouldPlaySound: false,
-			shouldSetBadge: false,
-			shouldShowBanner: false,
-			shouldShowList: false
-		})
+		handleNotification: () =>
+			Promise.resolve({
+				shouldShowAlert: false,
+				shouldPlaySound: false,
+				shouldSetBadge: false,
+				shouldShowBanner: false,
+				shouldShowList: false
+			})
 	});
 
 	// Set up notification categories for iOS
