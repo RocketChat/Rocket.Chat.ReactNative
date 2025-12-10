@@ -73,7 +73,6 @@ const CustomStatus = () => {
 				translateTitle={!statusText}
 				testID={`sidebar-custom-status-${status}`}
 				numberOfLines={1}
-				ellipsizeMode='tail'
 			/>
 			<List.Separator />
 		</>

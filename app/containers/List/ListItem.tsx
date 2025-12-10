@@ -63,9 +63,9 @@ const styles = StyleSheet.create({
 });
 
 interface IListTitle
-	extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines' | 'ellipsizeMode'> {}
+	extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}
 
-const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines, ellipsizeMode }: IListTitle) => {
+const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: IListTitle) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -74,7 +74,6 @@ const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines, el
 			return (
 				<Text
 					numberOfLines={numberOfLines}
-					ellipsizeMode={ellipsizeMode}
 					style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
 					{translateTitle && title ? I18n.t(title) : title}
 				</Text>
@@ -107,7 +106,6 @@ interface IListItemContent {
 	accessibilityRole?: AccessibilityRole;
 	additionalAcessibilityLabelCheck?: boolean;
 	numberOfLines?: number;
-	ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
 }
 
 const Content = React.memo(
@@ -131,7 +129,7 @@ const Content = React.memo(
 		accessibilityRole,
 		accessibilityLabel,
 		numberOfLines,
-		ellipsizeMode
+		
 	}: IListItemContent) => {
 		'use memo';
 
@@ -180,7 +178,6 @@ const Content = React.memo(
 									styleTitle={styleTitle}
 									translateTitle={translateTitle}
 									numberOfLines={numberOfLines}
-									ellipsizeMode={ellipsizeMode}
 								/>
 							) : null}
 							{alert ? (
