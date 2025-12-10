@@ -58,12 +58,14 @@ export const onNotification = (push: INotification): void => {
 };
 
 export const getDeviceToken = (): string => deviceToken;
-export const setBadgeCount = (count?: number): void => setNotificationsBadgeCount(count);
-export const removeNotificationsAndBadge = () => {
-	removeAllNotifications();
-	setBadgeCount();
+export const setBadgeCount = (count?: number): void => {
+	setNotificationsBadgeCount(count);
 };
-export const initializePushNotifications = (): Promise<INotification | { configured: boolean }> | undefined => {
-	setBadgeCount();
+export const removeNotificationsAndBadge = async (): Promise<void> => {
+	await removeAllNotifications();
+	await setNotificationsBadgeCount();
+};
+export const initializePushNotifications = async (): Promise<INotification | { configured: boolean } | null> => {
+	await setNotificationsBadgeCount();
 	return pushNotificationConfigure(onNotification);
 };

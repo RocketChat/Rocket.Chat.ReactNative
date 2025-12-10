@@ -28,6 +28,21 @@ import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
 
+/**
+ * Main Application class.
+ * 
+ * NOTIFICATION ARCHITECTURE (Migration in Progress):
+ * - JS layer uses expo-notifications for token registration and event handling
+ * - Native layer uses react-native-notifications + CustomPushNotification for:
+ *   - FCM message handling (higher priority service)
+ *   - Notification display with MessagingStyle
+ *   - E2E encrypted message decryption
+ *   - Direct reply functionality
+ *   - Message-id-only notification loading
+ * 
+ * INotificationsApplication interface is required by react-native-notifications
+ * to route FCM messages to CustomPushNotification for advanced processing.
+ */
 open class MainApplication : Application(), ReactApplication, INotificationsApplication {
 
   override val reactNativeHost: ReactNativeHost =
