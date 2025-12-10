@@ -93,7 +93,6 @@ android {
         versionName "4.68.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
-        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
     }
 
@@ -144,7 +143,6 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation project(':react-native-notifications')
     implementation "com.google.firebase:firebase-messaging:23.3.1"
     implementation project(':watermelondb-jsi')
 

@@ -8,8 +8,6 @@ import android.util.Log;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
-import com.wix.reactnativenotifications.core.AppLifecycleFacade;
-import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import chat.rocket.mobilecrypto.algorithms.AESCrypto;
@@ -319,10 +317,8 @@ class Encryption {
             if (context instanceof ReactApplicationContext) {
                 this.reactContext = (ReactApplicationContext) context;
             } else {
-                AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
-                if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
-                    this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
-                }
+                // Fallback to CustomPushNotification's static context
+                this.reactContext = CustomPushNotification.reactApplicationContext;
             }
 
             if (this.reactContext == null) {
@@ -370,10 +366,8 @@ class Encryption {
 
     public EncryptionContent encryptMessageContent(final String message, final String id, final Ejson ejson) {
         try {
-            AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
-            if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
-                this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
-            }
+            // Get ReactApplicationContext from CustomPushNotification
+            this.reactContext = CustomPushNotification.reactApplicationContext;
             
             // Use reactContext for database access
             if (this.reactContext == null) {

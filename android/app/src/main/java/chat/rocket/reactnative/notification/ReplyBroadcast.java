@@ -27,8 +27,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import com.wix.reactnativenotifications.core.NotificationIntentAdapter;
-
 public class ReplyBroadcast extends BroadcastReceiver {
     private Context mContext;
     private Bundle bundle;
@@ -43,7 +41,11 @@ public class ReplyBroadcast extends BroadcastReceiver {
             }
 
             mContext = context;
-            bundle = NotificationIntentAdapter.extractPendingNotificationDataFromIntent(intent);
+            // Extract bundle directly from intent extras
+            bundle = intent.getBundleExtra("pushNotification");
+            if (bundle == null) {
+                bundle = intent.getExtras();
+            }
             notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             String notId = bundle.getString("notId");

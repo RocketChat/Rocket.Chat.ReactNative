@@ -75,6 +75,14 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <!-- Custom Firebase Messaging Service for Rocket.Chat notifications -->
+        <service
+            android:name="chat.rocket.reactnative.notification.RCFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter android:priority="100">
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <receiver
             android:name="chat.rocket.reactnative.notification.ReplyBroadcast"
             android:enabled="true"

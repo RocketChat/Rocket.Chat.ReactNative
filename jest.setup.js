@@ -155,21 +155,6 @@ jest.mock('expo-device', () => ({
 	isDevice: true
 }));
 
-// Keep react-native-notifications mock for native code compatibility during migration
-jest.mock('react-native-notifications', () => ({
-	Notifications: {
-		getInitialNotification: jest.fn(() => Promise.resolve()),
-		registerRemoteNotifications: jest.fn(),
-		events: () => ({
-			registerRemoteNotificationsRegistered: jest.fn(),
-			registerRemoteNotificationsRegistrationFailed: jest.fn(),
-			registerNotificationReceivedForeground: jest.fn(),
-			registerNotificationReceivedBackground: jest.fn(),
-			registerNotificationOpened: jest.fn()
-		})
-	}
-}));
-
 jest.mock('@discord/bottom-sheet', () => {
 	const react = require('react-native');
 	return {

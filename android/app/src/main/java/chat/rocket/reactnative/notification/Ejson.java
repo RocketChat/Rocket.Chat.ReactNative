@@ -7,8 +7,6 @@ import com.facebook.react.bridge.Callback;
 
 import com.ammarahmed.mmkv.SecureKeystore;
 import com.tencent.mmkv.MMKV;
-import com.wix.reactnativenotifications.core.AppLifecycleFacade;
-import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
 
 import java.math.BigInteger;
 
@@ -73,19 +71,9 @@ public class Ejson {
         
         initializationAttempted = true;
         
-        // Try to get ReactApplicationContext from available sources
+        // Get ReactApplicationContext from CustomPushNotification
         if (this.reactContext == null) {
-            AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
-            if (facade != null) {
-                Object runningContext = facade.getRunningReactContext();
-                if (runningContext instanceof ReactApplicationContext) {
-                    this.reactContext = (ReactApplicationContext) runningContext;
-                }
-            }
-            
-            if (this.reactContext == null) {
-                this.reactContext = CustomPushNotification.reactApplicationContext;
-            }
+            this.reactContext = CustomPushNotification.reactApplicationContext;
         }
         
         // Initialize MMKV if context is available
