@@ -21,6 +21,8 @@ export const TitleAndSubtitle = () => (
 		<List.Separator />
 		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' />
 		<List.Separator />
+		<List.Item title={longText} numberOfLines={1} />
+		<List.Separator />
 	</List.Container>
 );
 
