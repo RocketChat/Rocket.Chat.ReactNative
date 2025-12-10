@@ -1,4 +1,3 @@
-import notifee from '@notifee/react-native';
 import React from 'react';
 import { Linking } from 'react-native';
 
@@ -19,7 +18,7 @@ export default function DeviceNotificationSettings(): React.ReactElement {
 		if (isIOS) {
 			Linking.openURL('app-settings:');
 		} else {
-			notifee.openNotificationSettings();
+			Linking.openSettings();
 		}
 	};
 

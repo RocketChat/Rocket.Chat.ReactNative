@@ -3930,11 +3930,6 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@notifee/react-native@7.8.2":
-  version "7.8.2"
-  resolved "https://registry.yarnpkg.com/@notifee/react-native/-/react-native-7.8.2.tgz#72d3199ae830b4128ddaef3c1c2f11604759c9c4"
-  integrity sha512-VG4IkWJIlOKqXwa3aExC3WFCVCGCC9BA55Ivg0SMRfEs+ruvYy/zlLANcrVGiPtgkUEryXDhA8SXx9+JcO8oLA==
-
 "@nozbe/simdjson@3.9.4":
   version "3.9.4"
   resolved "https://registry.yarnpkg.com/@nozbe/simdjson/-/simdjson-3.9.4.tgz#64bb522c54cd22e40ff4a64d8f8e8e9285b123b6"
@@ -4385,11 +4380,6 @@
   integrity sha512-NX6TcldPI5zQZcGSFOcn1WN2rw8enTRLZwL+jXHfXrrvuXJOca0gXXYFlcrKUrDGMVZOS6UojvntTlMaBSogOA==
   dependencies:
     stacktrace-js "^2.0.2"
-
-"@react-native-firebase/messaging@^21.12.2":
-  version "21.12.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-21.12.2.tgz#9d8ec5dd21c562a6b5c5d3699fadde419c9f2a75"
-  integrity sha512-t/MQgqclINESO/1yCbgXTHJxAdxIzAnjtgTw6bj/po/1JRGroT+HG3VDpep9a3Z35S4f6eF90AE5zZzcKu8IjQ==
 
 "@react-native-masked-view/masked-view@^0.3.1":
   version "0.3.1"
