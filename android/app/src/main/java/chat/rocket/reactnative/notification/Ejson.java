@@ -35,11 +35,14 @@ public class Ejson {
     String rid;
     String type;
     Sender sender;
+    Caller caller; // For video conf notifications
     String messageId;
+    String callId; // For video conf notifications
     String notificationType;
     String messageType;
     String senderName;
     String msg;
+    Integer status; // For video conf: 0=incoming, 4=cancelled
 
     String tmid;
 
@@ -223,6 +226,11 @@ public class Ejson {
     static class Sender {
         String _id;
         String username;
+        String name;
+    }
+
+    static class Caller {
+        String _id;
         String name;
     }
 

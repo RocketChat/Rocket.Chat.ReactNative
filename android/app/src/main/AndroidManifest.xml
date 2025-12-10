@@ -92,6 +92,15 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
+        <receiver
+            android:name="chat.rocket.reactnative.notification.VideoConfBroadcast"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="chat.rocket.reactnative.ACTION_VIDEO_CONF_ACCEPT" />
+                <action android:name="chat.rocket.reactnative.ACTION_VIDEO_CONF_DECLINE" />
+            </intent-filter>
+        </receiver>
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="${BugsnagAPIKey}" />

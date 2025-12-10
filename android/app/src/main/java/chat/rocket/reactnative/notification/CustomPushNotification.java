@@ -304,10 +304,9 @@ public class CustomPushNotification {
         bundle.putString("avatarUri", avatarUri);
 
         // Handle special notification types
-        if (ejson != null && ejson.notificationType instanceof String && 
-            ejson.notificationType.equals("videoconf")) {
-            // Video conf notifications are handled by notifee
-            Log.d(TAG, "Video conference notification - handled by notifee");
+        if (ejson != null && "videoconf".equals(ejson.notificationType)) {
+            handleVideoConfNotification(bundle, ejson);
+            return;
         } else {
             // Show regular notification
             if (ENABLE_VERBOSE_LOGS) {
@@ -318,6 +317,36 @@ public class CustomPushNotification {
                 Log.d(TAG, "[After add] notificationMessages[" + notId + "].size=" + notificationMessages.get(notId).size());
             }
             postNotification(Integer.parseInt(notId));
+        }
+    }
+
+    /**
+     * Handles video conference notifications.
+     * Shows incoming call notification or cancels existing one based on status.
+     */
+    private void handleVideoConfNotification(Bundle bundle, Ejson ejson) {
+        VideoConfNotification videoConf = new VideoConfNotification(mContext);
+        
+        Integer status = ejson.status;
+        String rid = ejson.rid;
+        // Video conf uses 'caller' field, regular messages use 'sender'
+        String callerId = "";
+        if (ejson.caller != null && ejson.caller._id != null) {
+            callerId = ejson.caller._id;
+        } else if (ejson.sender != null && ejson.sender._id != null) {
+            callerId = ejson.sender._id;
+        }
+        
+        Log.d(TAG, "Video conf notification - status: " + status + ", rid: " + rid);
+        
+        if (status == null || status == 0) {
+            // Incoming call - show notification
+            videoConf.showIncomingCall(bundle, ejson);
+        } else if (status == 4) {
+            // Call cancelled/ended - dismiss notification
+            videoConf.cancelCall(rid, callerId);
+        } else {
+            Log.d(TAG, "Unknown video conf status: " + status);
         }
     }
 
