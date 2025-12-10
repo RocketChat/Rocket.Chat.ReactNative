@@ -27,8 +27,7 @@ public class AppDelegate: ExpoAppDelegate {
       MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: .debug)
     }
     
-    // Initialize notifications
-    RNNotifications.startMonitorNotifications()
+    // Configure reply notification handler (integrates with expo-notifications)
     ReplyNotification.configure()
       
     let delegate = ReactNativeDelegate()
@@ -61,19 +60,6 @@ public class AppDelegate: ExpoAppDelegate {
     watchConnection = WatchConnection(session: WCSession.default)
 
     return result
-  }
-
-  // Remote Notification handling
-  public override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    RNNotifications.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
-  }
-  
-  public override func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    RNNotifications.didFailToRegisterForRemoteNotificationsWithError(error)
-  }
-  
-  public override func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-    RNNotifications.didReceiveBackgroundNotification(userInfo, withCompletionHandler: completionHandler)
   }
 
   // Linking API

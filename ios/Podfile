@@ -36,8 +36,7 @@ end
 $static_framework = [ 
   'WatermelonDB',
   'simdjson',
-  'react-native-mmkv-storage',
-  'react-native-notifications'
+  'react-native-mmkv-storage'
 ]
 pre_install do |installer|
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
