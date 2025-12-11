@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import moment from 'moment';
+import dayjs from '../../../lib/dayjs';
 
 import { useTheme } from '../../../theme';
 import { LISTENER } from '../../Toast';
@@ -18,38 +18,38 @@ const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
 		const timestamp = parseInt(value.timestamp) * 1000;
 
 		if (value.format === 't') {
-			return moment(timestamp).format('hh:mm A');
+			return dayjs(timestamp).format('hh:mm A');
 		}
 
 		if (value.format === 'T') {
-			return moment(timestamp).format('hh:mm:ss A');
+			return dayjs(timestamp).format('hh:mm:ss A');
 		}
 
 		if (value.format === 'd') {
-			return moment(timestamp).format('MM/DD/YYYY');
+			return dayjs(timestamp).format('MM/DD/YYYY');
 		}
 
 		if (value.format === 'D') {
-			return moment(timestamp).format('dddd, MMM DD, YYYY');
+			return dayjs(timestamp).format('dddd, MMM DD, YYYY');
 		}
 
 		if (value.format === 'f') {
-			return moment(timestamp).format('dddd, MMM DD, YYYY hh:mm A');
+			return dayjs(timestamp).format('dddd, MMM DD, YYYY hh:mm A');
 		}
 
 		if (value.format === 'F') {
-			return moment(timestamp).format('dddd, MMM DD, YYYY hh:mm:ss A');
+			return dayjs(timestamp).format('dddd, MMM DD, YYYY hh:mm:ss A');
 		}
 
 		if (value.format === 'R') {
-			return moment(timestamp).fromNow();
+			return dayjs(timestamp).fromNow();
 		}
 
 		return 'Invalid Date';
 	}, [value]);
 
 	const handlePress = React.useCallback(() => {
-		const message = moment(parseInt(value.timestamp) * 1000).format('dddd, MMM DD, YYYY hh:mm A');
+		const message = dayjs(parseInt(value.timestamp) * 1000).format('dddd, MMM DD, YYYY hh:mm A');
 		EventEmitter.emit(LISTENER, { message });
 	}, [value.timestamp]);
 
