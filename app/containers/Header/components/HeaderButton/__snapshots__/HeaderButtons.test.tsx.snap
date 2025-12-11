@@ -204,6 +204,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                 ]
               }
+              testID="unread-badge-1"
             >
               <Text
                 numberOfLines={1}
@@ -319,6 +320,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                 ]
               }
+              testID="unread-badge-1"
             >
               <Text
                 numberOfLines={1}
@@ -434,6 +436,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                 ]
               }
+              testID="unread-badge-1"
             >
               <Text
                 numberOfLines={1}
@@ -3703,6 +3706,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                     ]
                   }
+                  testID="unread-badge-1"
                 >
                   <Text
                     numberOfLines={1}
@@ -4258,6 +4262,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                     ]
                   }
+                  testID="unread-badge-1"
                 >
                   <Text
                     numberOfLines={1}
@@ -4813,6 +4818,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                     ]
                   }
+                  testID="unread-badge-1"
                 >
                   <Text
                     numberOfLines={1}
