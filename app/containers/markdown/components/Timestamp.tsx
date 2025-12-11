@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
-import dayjs from '../../../lib/dayjs';
 
+import dayjs from '../../../lib/dayjs';
 import { useTheme } from '../../../theme';
 import { LISTENER } from '../../Toast';
 import EventEmitter from '../../../lib/methods/helpers/events';
