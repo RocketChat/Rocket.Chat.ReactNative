@@ -81,6 +81,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         Request request = new Request.Builder()
                 .header("x-auth-token", ejson.token())
                 .header("x-user-id", ejson.userId())
+                .header("User-Agent", NotificationHelper.getUserAgent())
                 .url(String.format("%s/api/v1/chat.sendMessage", serverURL))
                 .post(body)
                 .build();

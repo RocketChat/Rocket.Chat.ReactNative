@@ -20,7 +20,7 @@ import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
-import chat.rocket.reactnative.notification.VideoConfPackage;
+import chat.rocket.reactnative.notification.VideoConfTurboPackage
 
 /**
  * Main Application class.
@@ -42,7 +42,7 @@ open class MainApplication : Application(), ReactApplication {
             PackageList(this).packages.apply {
               add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
-              add(VideoConfPackage())
+              add(VideoConfTurboPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"

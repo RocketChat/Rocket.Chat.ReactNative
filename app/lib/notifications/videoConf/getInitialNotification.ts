@@ -1,11 +1,10 @@
 import * as Notifications from 'expo-notifications';
 import EJSON from 'ejson';
-import { NativeModules, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
 import { store } from '../../store/auxStore';
-
-const { VideoConfModule } = NativeModules;
+import NativeVideoConfModule from '../../native/NativeVideoConfAndroid';
 
 /**
  * Check for pending video conference actions from native notification handling.
@@ -13,9 +12,9 @@ const { VideoConfModule } = NativeModules;
  */
 export const getInitialNotification = async (): Promise<boolean> => {
 	// Android: Check native module for pending action
-	if (Platform.OS === 'android' && VideoConfModule) {
+	if (Platform.OS === 'android' && NativeVideoConfModule) {
 		try {
-			const pendingAction = await VideoConfModule.getPendingAction();
+			const pendingAction = await NativeVideoConfModule.getPendingAction();
 			if (pendingAction) {
 				const data = JSON.parse(pendingAction);
 				if (data?.notificationType === 'videoconf') {
