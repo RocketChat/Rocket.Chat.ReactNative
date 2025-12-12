@@ -82,7 +82,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={259}
+        handlerTag={289}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -177,7 +177,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={260}
+        handlerTag={290}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -299,7 +299,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={246}
+          handlerTag={276}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -415,7 +415,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={247}
+          handlerTag={277}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -587,7 +587,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={248}
+                handlerTag={278}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -744,7 +744,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={249}
+          handlerTag={279}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -860,7 +860,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={250}
+          handlerTag={280}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1033,7 +1033,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={251}
+                handlerTag={281}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1214,7 +1214,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={252}
+                handlerTag={282}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1371,7 +1371,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={253}
+          handlerTag={283}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1487,7 +1487,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={254}
+          handlerTag={284}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1660,7 +1660,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={255}
+                handlerTag={285}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1841,7 +1841,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={256}
+                handlerTag={286}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
