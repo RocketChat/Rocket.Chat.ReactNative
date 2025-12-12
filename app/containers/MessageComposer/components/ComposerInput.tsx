@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
+import React, { forwardRef, memo, useCallback, useContext, useEffect, useImperativeHandle } from 'react';
 import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -13,7 +13,7 @@ import {
 	type IInputSelection,
 	type TSetInput
 } from '../interfaces';
-import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
+import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend, MessageInnerContext } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
@@ -42,6 +42,8 @@ import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
+import { useUserPreferences } from '../../../lib/methods/userPreferences';
+import { ENTER_KEY_BEHAVIOR_PREFERENCES_KEY } from '../../../lib/constants/keys';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -55,8 +57,13 @@ export const ComposerInput = memo(
 		const textRef = React.useRef('');
 		const firstRender = React.useRef(true);
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
+		const shouldInterceptEnterRef = React.useRef(false);
+		const previousTextRef = React.useRef('');
+		const isUpdatingNativePropsRef = React.useRef(false);
 		const dispatch = useDispatch();
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const [enterKeyBehavior] = useUserPreferences<'SEND' | 'NEW_LINE'>(ENTER_KEY_BEHAVIOR_PREFERENCES_KEY, 'NEW_LINE');
+		const { sendMessage } = useContext(MessageInnerContext);
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (room && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (room.t === 'd' ? '@' : '#') + getRoomTitle(room) });
@@ -170,12 +177,20 @@ export const ComposerInput = memo(
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
 			const message = text.trim();
 			textRef.current = message;
+			previousTextRef.current = text; // Update previous text ref for iOS newline detection
 
 			if (forceUpdateDraftMessage) {
 				saveMessageDraft('');
 			}
 
+			// Set flag to prevent onChangeText from firing when we update native props
+			isUpdatingNativePropsRef.current = true;
 			inputRef.current?.setNativeProps?.({ text });
+			// Reset flag after a microtask to allow native update to complete
+			// This prevents onChangeText from being triggered by setNativeProps
+			setTimeout(() => {
+				isUpdatingNativePropsRef.current = false;
+			}, 0);
 
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
@@ -195,11 +210,59 @@ export const ComposerInput = memo(
 			}, 300);
 		};
 
-		const onChangeText: TextInputProps['onChangeText'] = text => {
-			textRef.current = text;
-			debouncedOnChangeText(text);
-			setInput(text);
+		const sendViaEnterKey = (textWithoutNewline: string) => {
+			// Mirror the send-button pipeline: first sync the TextInput value/refs,
+			// then trigger the shared send handler so it can clear the field via getTextAndClear.
+			setInput(textWithoutNewline);
+			requestAnimationFrame(() => {
+				sendMessage();
+			});
 		};
+
+	const onChangeText: TextInputProps['onChangeText'] = text => {
+		// Skip if we're updating native props to prevent recursive calls
+		if (isUpdatingNativePropsRef.current) {
+			isUpdatingNativePropsRef.current = false;
+			return;
+		}
+
+		// Handle Enter key behavior for tablets - similar to Rocket.Chat desktop
+		// When sendOnEnter is enabled, Enter sends message instead of creating newline
+		if (isTablet && enterKeyBehavior === 'SEND' && !sharing && rid) {
+			const previousText = previousTextRef.current;
+			const hasNewline = text.endsWith('\n');
+
+			// Detect if Enter was pressed by checking:
+			// 1. Text ends with newline
+			// 2. The text before newline matches previous text (Enter was just pressed, not pasted text)
+			// 3. OR the flag was set by onKeyPress (Android detection)
+			const isNewlineAdded = hasNewline && text.slice(0, -1) === previousText;
+			const shouldIntercept = shouldInterceptEnterRef.current || isNewlineAdded;
+
+			if (shouldIntercept && hasNewline) {
+				const textWithoutNewline = text.slice(0, -1);
+				const trimmedText = textWithoutNewline.trim();
+
+				// Reset the flag immediately
+				shouldInterceptEnterRef.current = false;
+
+				if (trimmedText) {
+					sendViaEnterKey(textWithoutNewline);
+					return;
+				}
+
+				// Empty or whitespace-only: rollback to the previous value (no newline)
+				setInput(previousText);
+				return;
+			}
+		}
+		
+		// Normal flow: update text
+		previousTextRef.current = text;
+		textRef.current = text;
+		debouncedOnChangeText(text);
+		setInput(text);
+	};
 
 		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
 			selectionRef.current = e.nativeEvent.selection;
@@ -359,34 +422,56 @@ export const ComposerInput = memo(
 			stopAutocomplete();
 		}, textInputDebounceTime);
 
-		const handleTyping = (isTyping: boolean) => {
-			if (sharing || !rid) return;
-			dispatch(userTyping(rid, isTyping));
-		};
+	const handleTyping = (isTyping: boolean) => {
+		if (sharing || !rid) return;
+		dispatch(userTyping(rid, isTyping));
+	};
 
-		return (
-			<TextInput
-				style={[styles.textInput, { color: colors.fontDefault }]}
-				placeholder={placeholder}
-				placeholderTextColor={colors.fontAnnotation}
-				ref={component => {
-					inputRef.current = component;
-				}}
-				blurOnSubmit={false}
-				onChangeText={onChangeText}
-				onTouchStart={onTouchStart}
-				onSelectionChange={onSelectionChange}
-				onFocus={onFocus}
-				onBlur={onBlur}
-				underlineColorAndroid='transparent'
-				defaultValue=''
-				multiline
-				{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
-				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-				// eslint-disable-next-line no-nested-ternary
-				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-			/>
-		);
+	const onKeyPress: TextInputProps['onKeyPress'] = e => {
+		// Only handle Enter key behavior on tablets
+		if (!isTablet) {
+			return;
+		}
+
+		// Check if Enter key was pressed (works reliably on Android, may not fire on iOS for multiline)
+		// This provides early detection on Android, but onChangeText comparison is the fallback for iOS
+		const isEnterKey = e.nativeEvent.key === 'Enter' || e.nativeEvent.key === '\n';
+
+		if (isEnterKey && enterKeyBehavior === 'SEND' && !sharing && rid) {
+			// Set flag to intercept the newline in onChangeText
+			// This works on Android where onKeyPress fires reliably
+			shouldInterceptEnterRef.current = true;
+		} else {
+			// Reset flag for other keys
+			shouldInterceptEnterRef.current = false;
+		}
+		// If setting is NEW_LINE, default behavior (multiline) will handle it
+	};
+
+	return (
+		<TextInput
+			style={[styles.textInput, { color: colors.fontDefault }]}
+			placeholder={placeholder}
+			placeholderTextColor={colors.fontAnnotation}
+			ref={component => {
+				inputRef.current = component;
+			}}
+			blurOnSubmit={false}
+			onChangeText={onChangeText}
+			onTouchStart={onTouchStart}
+			onSelectionChange={onSelectionChange}
+			onFocus={onFocus}
+			onBlur={onBlur}
+			onKeyPress={onKeyPress}
+			underlineColorAndroid='transparent'
+			defaultValue=''
+			multiline
+			{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
+			keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+			// eslint-disable-next-line no-nested-ternary
+			testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
+		/>
+	);
 	})
 );
 
