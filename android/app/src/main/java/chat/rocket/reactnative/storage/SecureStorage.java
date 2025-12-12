@@ -159,5 +159,19 @@ public class SecureStorage extends ReactContextBaseJavaModule {
         }
         return key;
     }
+
+    /**
+     * Synchronous method to get the MMKV encryption key.
+     * Returns the key cached by MMKVKeyManager at app startup.
+     * Used by JavaScript to initialize MMKV with the same encryption key as native code.
+     */
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public String getMMKVEncryptionKey() {
+        String key = MMKVKeyManager.getEncryptionKey();
+        if (key == null) {
+            Log.w(TAG, "getMMKVEncryptionKey called but encryption key is null");
+        }
+        return key;
+    }
 }
 

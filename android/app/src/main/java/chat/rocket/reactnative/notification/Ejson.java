@@ -8,6 +8,7 @@ import com.tencent.mmkv.MMKV;
 import java.math.BigInteger;
 
 import chat.rocket.reactnative.BuildConfig;
+import chat.rocket.reactnative.storage.MMKVKeyManager;
 
 class RNCallback implements Callback {
     public void invoke(Object... args) {
@@ -42,11 +43,19 @@ public class Ejson {
     Content content;
 
     /**
-     * Get MMKV instance.
-     * MMKV is already initialized in MainApplication.onCreate() and migration has removed encryption.
+     * Get MMKV instance with encryption.
+     * MMKV is already initialized in MainApplication.onCreate().
+     * Uses the encryption key from MMKVKeyManager which was set at app startup.
      * MMKV internally caches instances, so calling this multiple times is efficient.
      */
     private MMKV getMMKV() {
+        String encryptionKey = MMKVKeyManager.getEncryptionKey();
+        if (encryptionKey != null && !encryptionKey.isEmpty()) {
+            return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, encryptionKey);
+        }
+        // Fallback to no encryption if key is not available
+        // This can happen if Keystore is unavailable (e.g., device locked/Direct Boot)
+        Log.w(TAG, "MMKV encryption key not available, opening without encryption");
         return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE);
     }
 

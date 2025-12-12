@@ -109,15 +109,4 @@
     return _mmkvInstance->count();
 }
 
-- (BOOL)reKey:(nullable NSData *)newKey {
-    if (!_mmkvInstance) return NO;
-    
-    if (newKey && [newKey length] > 0) {
-        std::string newKeyStr((const char *)[newKey bytes], [newKey length]);
-        return _mmkvInstance->reKey(newKeyStr);
-    } else {
-        return _mmkvInstance->reKey(std::string());
-    }
-}
-
 @end

@@ -1,16 +1,15 @@
 //
-//  MMKVMigration.mm
+//  MMKVKeyManager.mm
 //  RocketChatRN
 //
-//  MMKV Migration - removes encryption from old MMKV data using reKey()
-//  Uses MMKV's built-in reKey to remove encryption in-place (simpler and safer than copying)
+//  MMKV Key Manager - Ensures encryption key exists for MMKV storage
+//  For existing users: reads the key from Keychain
+//  For fresh installs: generates a new key and stores it in Keychain
 //
 
-#import "MMKVMigration.h"
+#import "MMKVKeyManager.h"
 #import "SecureStorage.h"
 #import "Shared/RocketChat/MMKVBridge.h"
-
-static NSString *const kMigrationFlagKey =  @"MMKV_MIGRATION_COMPLETED";
 
 static NSString *toHex(NSString *str) {
     if (!str) return @"";
@@ -30,23 +29,16 @@ static void Logger(NSString *format, ...) {
     va_start(args, format);
     NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
     va_end(args);
-    fprintf(stderr, "[MMKVMigration] %s\n", [message UTF8String]);
+    fprintf(stderr, "[MMKVKeyManager] %s\n", [message UTF8String]);
 }
 
-@implementation MMKVMigration
+@implementation MMKVKeyManager
 
-+ (void)migrate {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:kMigrationFlagKey]) {
-        // Still need to ensure MMKV is initialized for other code (e.g., SSLPinning)
-        [self initializeMMKV];
-        return;
-    }
-
++ (void)initialize {
     @try {
         NSString *mmkvPath = [self initializeMMKV];
         if (!mmkvPath) {
-            [defaults setBool:YES forKey:kMigrationFlagKey];
+            Logger(@"Failed to initialize MMKV path");
             return;
         }
 
@@ -55,43 +47,28 @@ static void Logger(NSString *format, ...) {
         NSString *password = [secureStorage getSecureKey:alias];
 
         if (!password || password.length == 0) {
-            // No encryption, nothing to migrate
-            Logger(@"No encryption key found, skipping migration");
-            [defaults setBool:YES forKey:kMigrationFlagKey];
-            return;
+            // Fresh install - generate a new key
+            password = [[NSUUID UUID] UUIDString];
+            [secureStorage setSecureKey:alias value:password options:nil];
+            Logger(@"Generated new MMKV encryption key");
+        } else {
+            Logger(@"Existing MMKV encryption key found");
         }
 
+        // Verify MMKV can be opened with this key
         NSData *cryptKey = [password dataUsingEncoding:NSUTF8StringEncoding];
         MMKVBridge *mmkv = [[MMKVBridge alloc] initWithID:@"default"
                                                 cryptKey:cryptKey
                                                 rootPath:mmkvPath];
 
-        if (!mmkv) {
-            Logger(@"Failed to open MMKV instance");
-            return;
-        }
-
-        NSUInteger keyCount = [mmkv count];
-        if (keyCount == 0) {
-            Logger(@"No data to migrate");
-            [defaults setBool:YES forKey:kMigrationFlagKey];
-            return;
-        }
-
-        Logger(@"Found %lu keys, removing encryption...", (unsigned long)keyCount);
-
-        BOOL success = [mmkv reKey:nil];
-        if (success) {
-            // Remove encryption key from Keychain
-            [secureStorage deleteSecureKey:alias];
-            
-            Logger(@"Migration successful: %lu keys, encryption removed", (unsigned long)keyCount);
-            [defaults setBool:YES forKey:kMigrationFlagKey];
+        if (mmkv) {
+            NSUInteger keyCount = [mmkv count];
+            Logger(@"MMKV initialized with encryption, %lu keys found", (unsigned long)keyCount);
         } else {
-            Logger(@"reKey failed - will retry on next launch");
+            Logger(@"MMKV instance is nil after initialization");
         }
     } @catch (NSException *exception) {
-        Logger(@"Migration error: %@ - %@", exception.name, exception.reason);
+        Logger(@"MMKV initialization error: %@ - %@", exception.name, exception.reason);
     }
 }
 
@@ -111,3 +88,4 @@ static void Logger(NSString *format, ...) {
 }
 
 @end
+

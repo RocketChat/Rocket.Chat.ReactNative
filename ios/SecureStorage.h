@@ -21,4 +21,7 @@
 
 - (void)handleAppUninstallation;
 
+// Returns the MMKV encryption key for use by JavaScript
+- (nullable NSString *)getMMKVEncryptionKey;
+
 @end

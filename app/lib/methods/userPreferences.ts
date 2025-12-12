@@ -4,6 +4,23 @@ import { NativeModules } from 'react-native';
 
 import { isAndroid } from './helpers';
 
+/**
+ * Get the MMKV encryption key from native secure storage.
+ * This key is managed by:
+ * - Android: MMKVKeyManager.java (reads from SecureKeystore or generates new)
+ * - iOS: SecureStorage.m (reads from Keychain or generates new)
+ */
+const getEncryptionKey = (): string | undefined => {
+	try {
+		const { SecureStorage } = NativeModules;
+		const key = SecureStorage?.getMMKVEncryptionKey?.();
+		return key && key !== null ? key : undefined;
+	} catch (error) {
+		console.warn('[UserPreferences] Failed to get MMKV encryption key:', error);
+		return undefined;
+	}
+};
+
 const buildConfiguration = (): Configuration => {
 	const config: Configuration = {
 		id: 'default'
@@ -17,6 +34,12 @@ const buildConfiguration = (): Configuration => {
 	const appGroupPath = getAppGroupPath();
 	if (!isAndroid && appGroupPath) {
 		config.path = `${appGroupPath}mmkv`;
+	}
+
+	// Get encryption key from native secure storage
+	const encryptionKey = getEncryptionKey();
+	if (encryptionKey) {
+		config.encryptionKey = encryptionKey;
 	}
 
 	return config;

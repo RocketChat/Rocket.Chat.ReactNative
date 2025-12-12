@@ -17,10 +17,10 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    // IMPORTANT: Migrate MMKV data FIRST, before any other initialization
-    // This must run before Firebase, Bugsnag, and React Native start
-    // MMKVMigration.migrate() also initializes MMKV for the app group
-    MMKVMigration.migrate()
+    // IMPORTANT: Initialize MMKV encryption FIRST, before any other initialization
+    // This reads existing encryption key or generates a new one for fresh installs
+    // Must run before Firebase, Bugsnag, and React Native start
+    MMKVKeyManager.initialize()
     
     FirebaseApp.configure()
     Bugsnag.start()

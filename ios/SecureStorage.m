@@ -169,4 +169,42 @@ CFStringRef _accessibleValue(NSDictionary *options)
     return kSecAttrAccessibleAfterFirstUnlock;
 }
 
+// Helper function to convert string to hex (same as react-native-mmkv-storage)
+NSString* toHex(NSString *input) {
+    NSData *data = [input dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableString *hexString = [NSMutableString stringWithCapacity:data.length * 2];
+    const unsigned char *bytes = data.bytes;
+    for (NSUInteger i = 0; i < data.length; i++) {
+        [hexString appendFormat:@"%02x", bytes[i]];
+    }
+    return hexString;
+}
+
+/**
+ * Synchronous method to get the MMKV encryption key.
+ * - For existing users: returns the key stored in Keychain
+ * - For fresh installs: generates a new key, stores it, and returns it
+ * Used by JavaScript to initialize MMKV with the same encryption key as native code.
+ */
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getMMKVEncryptionKey)
+{
+    @try {
+        NSString *alias = toHex(@"com.MMKV.default");
+        NSString *key = [self getSecureKey:alias];
+        
+        if (key == nil || key.length == 0) {
+            // Fresh install - generate a new key
+            key = [[NSUUID UUID] UUIDString];
+            [self setSecureKey:alias value:key options:nil];
+            NSLog(@"[SecureStorage] Generated new MMKV encryption key");
+        }
+        
+        return key;
+    }
+    @catch (NSException *exception) {
+        NSLog(@"[SecureStorage] Error getting MMKV encryption key: %@", exception.reason);
+        return [NSNull null];
+    }
+}
+
 @end
