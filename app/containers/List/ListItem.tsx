@@ -62,8 +62,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IListTitle
-	extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}
+interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}
 
 const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: IListTitle) => {
 	'use memo';
@@ -72,9 +71,7 @@ const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: 
 	switch (typeof title) {
 		case 'string':
 			return (
-				<Text
-					numberOfLines={numberOfLines}
-					style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
+				<Text numberOfLines={numberOfLines} style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
 					{translateTitle && title ? I18n.t(title) : title}
 				</Text>
 			);
@@ -128,8 +125,7 @@ const Content = React.memo(
 		additionalAcessibilityLabelCheck,
 		accessibilityRole,
 		accessibilityLabel,
-		numberOfLines,
-		
+		numberOfLines
 	}: IListItemContent) => {
 		'use memo';
 
