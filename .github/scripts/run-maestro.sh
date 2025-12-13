@@ -51,11 +51,12 @@ echo "Mapped flows for tag test-${SHARD}:"
 awk -F'\t' '{ printf "  %s -> %s\n", $1, $2 }' "$MAPFILE"
 
 FLOW_FILES=()
-declare -A SEEN
+SEEN_PATHS=""
+
 while IFS=$'\t' read -r name path; do
-  if [ -z "${SEEN[$path]:-}" ]; then
+  if ! printf '%s\n' "$SEEN_PATHS" | grep -Fqx "$path"; then
     FLOW_FILES+=("$path")
-    SEEN[$path]=1
+    SEEN_PATHS="${SEEN_PATHS}"$'\n'"$path"
   fi
 done < "$MAPFILE"
 
