@@ -494,7 +494,7 @@ export const ComposerInput = memo(
 						underlineColorAndroid='transparent'
 						defaultValue=''
 						multiline
-						{...(autocompleteType ? { autoCompdete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
+						{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
 						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 						// eslint-disable-next-line no-nested-ternary
 						testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
