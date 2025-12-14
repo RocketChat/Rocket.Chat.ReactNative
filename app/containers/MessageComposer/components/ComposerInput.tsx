@@ -1,10 +1,11 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, Platform, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
+import { TextInput, Platform, StyleSheet, type TextInputProps, InteractionManager, Alert } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
-import { type OnChangeSelectionEvent, TypeRichTextInput } from 'react-native-typerich';
+import { type OnChangeSelectionEvent, type onPasteImageEventData, TypeRichTextInput } from 'react-native-typerich';
 
+import { canUploadFile } from '../../../lib/methods/helpers';
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
 import {
@@ -16,7 +17,7 @@ import {
 } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
-import { useAutoSaveDraft } from '../hooks';
+import { useAutoSaveDraft, useCanUploadFile } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
@@ -43,6 +44,8 @@ import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
+import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
+import { getThreadById } from '../../../lib/database/services/Thread';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -68,6 +71,11 @@ export const ComposerInput = memo(
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
+
+		const permissionToUpload = useCanUploadFile(rid);
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
+		const allowList = FileUpload_MediaTypeWhiteList as string;
+		const maxFileSize = FileUpload_MaxFileSize as number;
 
 		const isAndroid = Platform.OS === 'android';
 		// const isAndroid = false;
@@ -388,6 +396,59 @@ export const ComposerInput = memo(
 			dispatch(userTyping(rid, isTyping));
 		};
 
+		const startShareView = () => ({
+			selectedMessages,
+			text: ''
+		});
+
+		const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
+
+		const handleOnPaste = async (e: onPasteImageEventData) => {
+			if (e.error) {
+				handleError(e.error.message);
+				return;
+			}
+			console.log(e);
+			if (!rid) return;
+
+			const room = await getSubscriptionByRoomId(rid);
+			let thread;
+			if (tmid) {
+				thread = await getThreadById(tmid);
+			}
+
+			const file = {
+				filename: e.fileName,
+				size: e.fileSize,
+				mime: e.type,
+				path: e.uri
+			} as any;
+
+			const canUploadResult = canUploadFile({
+				file,
+				allowList,
+				maxFileSize,
+				permissionToUploadFile: permissionToUpload
+			});
+			if (canUploadResult.success) {
+				Navigation.navigate('ShareView', {
+					room,
+					thread: thread || tmid,
+					attachments: [file],
+					action,
+					finishShareView,
+					startShareView
+				});
+			} else {
+				handleError(canUploadResult.error);
+				console.log('error block');
+			}
+		};
+
+		const handleError = (error?: string) => {
+			Alert.alert(I18n.t('Error_uploading'), error && I18n.isTranslated(error) ? I18n.t(error) : error);
+		};
+
 		return (
 			<>
 				{isAndroid ? (
@@ -412,7 +473,9 @@ export const ComposerInput = memo(
 						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 						// eslint-disable-next-line no-nested-ternary
 						testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-						onPasteImageData={e => console.log(e)}
+						onPasteImageData={e => {
+							handleOnPaste(e);
+						}}
 					/>
 				) : (
 					<TextInput
