@@ -1,3 +1,4 @@
 {
-	"name": "RocketChatRN"
+	"name": "RocketChatRN",
+	"plugins": ["expo-video"]
 }

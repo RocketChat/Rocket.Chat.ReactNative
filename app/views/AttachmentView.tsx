@@ -1,11 +1,12 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { ResizeMode, Video } from 'expo-av';
-import React from 'react';
+import { useVideoPlayer, VideoPlayer, VideoView } from 'expo-video';
+import React, { useEffect } from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
+import { useEvent } from 'expo';
 
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
@@ -30,11 +31,9 @@ const RenderContent = ({
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	attachment: IAttachment;
 }) => {
-	const videoRef = React.useRef<Video>(null);
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
-	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const { baseUrl, user } = useAppSelector(
 		state => ({
 			baseUrl: state.server.server,
@@ -42,17 +41,6 @@ const RenderContent = ({
 		}),
 		shallowEqual
 	);
-
-	React.useLayoutEffect(() => {
-		const blurSub = navigation.addListener('blur', () => {
-			if (videoRef.current && videoRef.current.stopAsync) {
-				videoRef.current.stopAsync();
-			}
-		});
-		return () => {
-			blurSub();
-		};
-	}, [navigation]);
 
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
@@ -69,27 +57,47 @@ const RenderContent = ({
 	if (attachment.video_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
-		return (
-			<Video
-				source={{ uri }}
-				rate={1.0}
-				volume={1.0}
-				isMuted={false}
-				resizeMode={ResizeMode.CONTAIN}
-				shouldPlay
-				isLooping={false}
-				style={{ flex: 1 }}
-				useNativeControls
-				onLoad={() => setLoading(false)}
-				onError={() => {
-					navigation.pop();
-					showErrorAlert(I18n.t('Error_play_video'));
-				}}
-				ref={videoRef}
-			/>
-		);
+
+		return <AttachmentVideoView setLoading={setLoading} url={uri} />;
 	}
 	return null;
+};
+
+const AttachmentVideoView = ({ setLoading, url }: { setLoading: React.Dispatch<React.SetStateAction<boolean>>; url: string }) => {
+	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
+	const player = useVideoPlayer({ uri: url }, (videoPlayer: VideoPlayer) => {
+		videoPlayer.play();
+		videoPlayer.playbackRate = 1.0;
+		videoPlayer.volume = 1.0;
+		videoPlayer.muted = false;
+		videoPlayer.loop = false;
+	});
+
+	const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
+	const { status } = useEvent(player, 'statusChange', { status: player.status });
+
+	useEffect(() => {
+		if (status === 'readyToPlay') {
+			setLoading(false);
+		}
+		if (status === 'error') {
+			navigation.pop();
+			showErrorAlert(I18n.t('Error_play_video'));
+		}
+	}, [status]);
+
+	React.useLayoutEffect(() => {
+		const blurSub = navigation.addListener('blur', () => {
+			if (player && isPlaying) {
+				player.pause();
+			}
+		});
+		return () => {
+			blurSub();
+		};
+	}, [navigation, isPlaying]);
+
+	return <VideoView player={player} contentFit={'contain'} style={{ flex: 1 }} nativeControls={status !== 'loading'} />;
 };
 
 const AttachmentView = (): React.ReactElement => {
