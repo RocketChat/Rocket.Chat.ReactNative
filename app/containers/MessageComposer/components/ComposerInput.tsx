@@ -1,8 +1,9 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
+import { TextInput, Platform, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
+import { type OnChangeSelectionEvent, TypeRichTextInput } from 'react-native-typerich';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
@@ -67,6 +68,9 @@ export const ComposerInput = memo(
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
+
+		const isAndroid = Platform.OS === 'android';
+		// const isAndroid = true;
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -157,7 +161,7 @@ export const ComposerInput = memo(
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
 				const text = textRef.current;
-				setInput('', undefined, true);
+				setInput('');
 				return text;
 			},
 			getText: () => textRef.current,
@@ -175,7 +179,11 @@ export const ComposerInput = memo(
 				saveMessageDraft('');
 			}
 
-			inputRef.current?.setNativeProps?.({ text });
+			if (isAndroid) {
+				inputRef.current?.setValue(text);
+			} else {
+				inputRef.current?.setNativeProps?.({ text }); // keep TextInput path
+			}
 
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
@@ -198,6 +206,7 @@ export const ComposerInput = memo(
 		const onChangeText: TextInputProps['onChangeText'] = text => {
 			textRef.current = text;
 			debouncedOnChangeText(text);
+			console.log(text);
 			setInput(text);
 		};
 
@@ -205,8 +214,26 @@ export const ComposerInput = memo(
 			selectionRef.current = e.nativeEvent.selection;
 		};
 
-		const onFocus: TextInputProps['onFocus'] = () => {
+		const onChangeSelection = (e: OnChangeSelectionEvent) => {
+			const { start, end } = e;
+			const selection = { start, end };
+			console.log('selection========', e);
+			selectionRef.current = selection;
+			console.log('sel', selection);
+		};
+
+		const handleFocus = () => {
 			setFocused(true);
+		};
+
+		const handleBlur = () => {
+			if (!iOSBackSwipe.current) {
+				setFocused(false);
+				stopAutocomplete();
+			}
+		};
+		const onFocus: TextInputProps['onFocus'] = () => {
+			handleFocus();
 		};
 
 		const onTouchStart: TextInputProps['onTouchStart'] = () => {
@@ -214,10 +241,7 @@ export const ComposerInput = memo(
 		};
 
 		const onBlur: TextInputProps['onBlur'] = () => {
-			if (!iOSBackSwipe.current) {
-				setFocused(false);
-				stopAutocomplete();
-			}
+			handleBlur();
 		};
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
@@ -365,27 +389,55 @@ export const ComposerInput = memo(
 		};
 
 		return (
-			<TextInput
-				style={[styles.textInput, { color: colors.fontDefault }]}
-				placeholder={placeholder}
-				placeholderTextColor={colors.fontAnnotation}
-				ref={component => {
-					inputRef.current = component;
-				}}
-				blurOnSubmit={false}
-				onChangeText={onChangeText}
-				onTouchStart={onTouchStart}
-				onSelectionChange={onSelectionChange}
-				onFocus={onFocus}
-				onBlur={onBlur}
-				underlineColorAndroid='transparent'
-				defaultValue=''
-				multiline
-				{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
-				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-				// eslint-disable-next-line no-nested-ternary
-				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-			/>
+			<>
+				{isAndroid ? (
+					<TypeRichTextInput
+						style={[styles.textInput]}
+						color={colors.fontDefault}
+						placeholder={placeholder}
+						placeholderTextColor={colors.fontAnnotation}
+						ref={component => {
+							inputRef.current = component;
+						}}
+						// blurOnSubmit={false} // not needed
+						onChangeText={onChangeText}
+						onTouchStart={onTouchStart}
+						onChangeSelection={onChangeSelection}
+						onFocus={handleFocus}
+						onBlur={handleBlur}
+						// underlineColorAndroid='transparent' // by default behaiviour
+						defaultValue=''
+						multiline
+						{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
+						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+						// eslint-disable-next-line no-nested-ternary
+						testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
+						onPasteImageData={e => console.log(e)}
+					/>
+				) : (
+					<TextInput
+						style={[styles.textInput, { color: colors.fontDefault }]}
+						placeholder={placeholder}
+						placeholderTextColor={colors.fontAnnotation}
+						ref={component => {
+							inputRef.current = component;
+						}}
+						blurOnSubmit={false}
+						onChangeText={onChangeText}
+						onTouchStart={onTouchStart}
+						onSelectionChange={onSelectionChange}
+						onFocus={onFocus}
+						onBlur={onBlur}
+						underlineColorAndroid='transparent'
+						defaultValue=''
+						multiline
+						{...(autocompleteType ? { autoCompdete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
+						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+						// eslint-disable-next-line no-nested-ternary
+						testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
+					/>
+				)}
+			</>
 		);
 	})
 );
@@ -397,9 +449,9 @@ const styles = StyleSheet.create({
 		maxHeight: MAX_HEIGHT,
 		paddingTop: 12,
 		paddingBottom: 12,
-		fontSize: 16,
 		textAlignVertical: 'center',
 		...sharedStyles.textRegular,
-		lineHeight: 22
+		lineHeight: 22,
+		fontSize: 16
 	}
 });
