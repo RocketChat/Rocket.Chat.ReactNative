@@ -172,7 +172,7 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
-			const message = text.trim();
+			const message = text;
 			textRef.current = message;
 
 			if (forceUpdateDraftMessage) {
