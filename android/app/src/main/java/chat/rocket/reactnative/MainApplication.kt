@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import chat.rocket.reactnative.NativeModule.PdfViewerPackage
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -36,6 +37,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
             PackageList(this).packages.apply {
               add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
+              add(PdfViewerPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
