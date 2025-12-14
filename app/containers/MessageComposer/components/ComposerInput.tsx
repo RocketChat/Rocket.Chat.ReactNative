@@ -70,7 +70,7 @@ export const ComposerInput = memo(
 		const prevAction = usePrevious(action);
 
 		const isAndroid = Platform.OS === 'android';
-		// const isAndroid = true;
+		// const isAndroid = false;
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -172,7 +172,7 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
-			const message = text;
+			const message = text.trim();
 			textRef.current = message;
 
 			if (forceUpdateDraftMessage) {
@@ -207,7 +207,7 @@ export const ComposerInput = memo(
 			textRef.current = text;
 			debouncedOnChangeText(text);
 			console.log(text);
-			setInput(text);
+			setInput(text, undefined, true);
 		};
 
 		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
@@ -394,7 +394,7 @@ export const ComposerInput = memo(
 					<TypeRichTextInput
 						style={[styles.textInput]}
 						color={colors.fontDefault}
-						placeholder={placeholder}
+						placeholder={`custom textinput ${placeholder}`}
 						placeholderTextColor={colors.fontAnnotation}
 						ref={component => {
 							inputRef.current = component;

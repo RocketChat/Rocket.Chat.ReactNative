@@ -33,7 +33,7 @@ export const MessageComposer = ({
 }): ReactElement | null => {
 	'use memo';
 
-	const composerInputRef = useRef(null);
+	const composerInputRef = useRef<any>(null);
 	const composerInputComponentRef = useRef<IComposerInput>({
 		getTextAndClear: () => '',
 		getText: () => '',
@@ -91,7 +91,7 @@ export const MessageComposer = ({
 			return;
 		}
 
-		const textFromInput = composerInputComponentRef.current.getTextAndClear().trim();
+		const textFromInput = composerInputComponentRef.current.getTextAndClear();
 
 		if (action === 'edit') {
 			return editRequest?.({ id: selectedMessages[0], msg: textFromInput, rid });
@@ -170,7 +170,10 @@ export const MessageComposer = ({
 	};
 
 	const accessibilityFocusOnInput = () => {
-		const node = findNodeHandle(composerInputRef.current);
+		const input = composerInputRef.current;
+
+		const hostRef = input?.getNativeRef?.() ?? input;
+		const node = findNodeHandle(hostRef);
 		if (node) {
 			AccessibilityInfo.setAccessibilityFocus(node);
 		}
