@@ -46,6 +46,7 @@ import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { getThreadById } from '../../../lib/database/services/Thread';
+import { type IShareAttachment } from '../../../definitions';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -403,7 +404,7 @@ export const ComposerInput = memo(
 
 		const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 
-		const handleOnPaste = async (e: onPasteImageEventData) => {
+		const handleOnImagePaste = async (e: onPasteImageEventData) => {
 			if (e.error) {
 				handleError(e.error.message);
 				return;
@@ -428,7 +429,7 @@ export const ComposerInput = memo(
 				size: e.fileSize,
 				mime: e.type,
 				path: e.uri
-			} as any;
+			} as IShareAttachment;
 
 			const canUploadResult = canUploadFile({
 				file,
@@ -479,9 +480,7 @@ export const ComposerInput = memo(
 						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 						// eslint-disable-next-line no-nested-ternary
 						testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-						onPasteImageData={e => {
-							handleOnPaste(e);
-						}}
+						onPasteImageData={handleOnImagePaste}
 					/>
 				) : (
 					<TextInput
