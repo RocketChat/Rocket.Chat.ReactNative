@@ -12658,10 +12658,10 @@ react-native-svg@^15.12.1:
     css-tree "^1.1.3"
     warn-once "0.1.1"
 
-react-native-typerich@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/react-native-typerich/-/react-native-typerich-0.1.9.tgz#6a533ec53f20786ea2e520f6ca88c5ebdd8bc1d3"
-  integrity sha512-F/8/Rf5yRFF05JIpwxGvfFL4BwSUmIPYtXsII14iBo2/jsyj7JPWJiPI7bP74BRXcTrDDXXDH7Zs+aD4kogC2Q==
+react-native-typerich@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/react-native-typerich/-/react-native-typerich-0.1.10.tgz#0914b4000c20194ad50103ae51510e9a0c56eb37"
+  integrity sha512-ktO7UF44uTAcAG42m5U9TiooefpGGXapVNAewODI2MbvE7Xx2xIv2I7TQpXURTG1SfjXzx3C8C4Mp95q0ACt3w==
 
 react-native-url-polyfill@2.0.0, react-native-url-polyfill@^2.0.0:
   version "2.0.0"
