@@ -169,7 +169,7 @@ export const ComposerInput = memo(
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
 				const text = textRef.current;
-				setInput('');
+				setInput('', undefined, true);
 				return text;
 			},
 			getText: () => textRef.current,
@@ -412,6 +412,12 @@ export const ComposerInput = memo(
 			if (!rid) return;
 
 			const room = await getSubscriptionByRoomId(rid);
+
+			if (!room) {
+				handleError('Room not found');
+				return;
+			}
+
 			let thread;
 			if (tmid) {
 				thread = await getThreadById(tmid);
