@@ -79,7 +79,6 @@ export const ComposerInput = memo(
 		const maxFileSize = FileUpload_MaxFileSize as number;
 
 		const isAndroid = Platform.OS === 'android';
-		// const isAndroid = false;
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -215,7 +214,6 @@ export const ComposerInput = memo(
 		const onChangeText: TextInputProps['onChangeText'] = text => {
 			textRef.current = text;
 			debouncedOnChangeText(text);
-			console.log(text);
 			setInput(text, undefined, true);
 		};
 
@@ -226,9 +224,7 @@ export const ComposerInput = memo(
 		const onChangeSelection = (e: OnChangeSelectionEvent) => {
 			const { start, end } = e;
 			const selection = { start, end };
-			console.log('selection========', e);
 			selectionRef.current = selection;
-			console.log('sel', selection);
 		};
 
 		const handleFocus = () => {
@@ -409,7 +405,6 @@ export const ComposerInput = memo(
 				handleError(e.error.message);
 				return;
 			}
-			console.log(e);
 			if (!rid) return;
 
 			const room = await getSubscriptionByRoomId(rid);
@@ -448,7 +443,6 @@ export const ComposerInput = memo(
 				});
 			} else {
 				handleError(canUploadResult.error);
-				console.log('error block');
 			}
 		};
 
@@ -462,7 +456,7 @@ export const ComposerInput = memo(
 					<TypeRichTextInput
 						style={[styles.textInput]}
 						color={colors.fontDefault}
-						placeholder={`custom textinput ${placeholder}`}
+						placeholder={placeholder}
 						placeholderTextColor={colors.fontAnnotation}
 						ref={component => {
 							inputRef.current = component;
@@ -471,7 +465,7 @@ export const ComposerInput = memo(
 						onChangeText={onChangeText}
 						onTouchStart={onTouchStart}
 						onChangeSelection={onChangeSelection}
-						onFocus={handleFocus}
+						onFocus={handleFocus} // typerich onFocus / onBlur events doesn't pass any arguments to callbacks
 						onBlur={handleBlur}
 						// underlineColorAndroid='transparent' // by default behaiviour
 						defaultValue=''
