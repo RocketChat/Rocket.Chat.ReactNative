@@ -46,13 +46,11 @@ export type RoomsEndpoints = {
 	};
 	'rooms.muteUser': {
 		POST: (params: { roomId: string; userId: string }) => {
-			message: { msg: string; result: boolean };
 			success: boolean;
 		};
 	};
 	'rooms.unmuteUser': {
 		POST: (params: { rid: string; userId: string }) => {
-			message: { msg: string; result: boolean };
 			success: boolean;
 		};
 	};

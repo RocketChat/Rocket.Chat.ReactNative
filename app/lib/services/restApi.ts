@@ -531,25 +531,14 @@ export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
-export const toggleMuteUserInRoom = (
-	rid: string,
-	username: string,
-	userId: string,
-	mute: boolean
-): Promise<{ message: { msg: string; result: boolean }; success: boolean }> => {
+export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
 		if (mute) {
-			return sdk.post('rooms.muteUser', { roomId: rid, userId }) as Promise<{
-				message: { msg: string; result: boolean };
-				success: boolean;
-			}>;
+			return sdk.post('rooms.muteUser', { roomId: rid, userId });
 		}
 
-		return sdk.post('rooms.unmuteUser', { rid, userId }) as Promise<{
-			message: { msg: string; result: boolean };
-			success: boolean;
-		}>;
+		return sdk.post('rooms.unmuteUser', { rid, userId });
 	}
 
 	if (mute) {
