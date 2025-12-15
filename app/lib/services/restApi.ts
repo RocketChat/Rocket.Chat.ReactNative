@@ -536,7 +536,6 @@ export const toggleMuteUserInRoom = (rid: string, username: string, userId: stri
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
 		return sdk.post(mute ? 'rooms.muteUser' : 'rooms.unmuteUser', { roomId: rid, userId });
 	}
-
 	// RC 0.51.0
 	return sdk.methodCallWrapper(mute ? 'muteUserInRoom' : 'unmuteUserInRoom', { rid, username });
 };
