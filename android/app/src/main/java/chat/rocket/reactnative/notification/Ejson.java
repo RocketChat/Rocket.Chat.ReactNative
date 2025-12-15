@@ -2,15 +2,13 @@ package chat.rocket.reactnative.notification;
 
 import android.util.Log;
 
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Callback;
-
-import com.ammarahmed.mmkv.SecureKeystore;
 import com.tencent.mmkv.MMKV;
 
 import java.math.BigInteger;
 
 import chat.rocket.reactnative.BuildConfig;
+import chat.rocket.reactnative.storage.MMKVKeyManager;
 
 class RNCallback implements Callback {
     public void invoke(Object... args) {
@@ -30,6 +28,7 @@ class Utils {
 
 public class Ejson {
     private static final String TAG = "RocketChat.Ejson";
+    private static final String TOKEN_KEY = "reactnativemeteor_usertoken-";
     
     String host;
     String rid;
@@ -45,56 +44,17 @@ public class Ejson {
     Integer status; // For video conf: 0=incoming, 4=cancelled
 
     String tmid;
-
     Content content;
 
-    private ReactApplicationContext reactContext;
-
-    private MMKV mmkv;
-    
-    private boolean initializationAttempted = false;
-
-    private String TOKEN_KEY = "reactnativemeteor_usertoken-";
-
-    public Ejson() {
-        // Don't initialize MMKV in constructor - use lazy initialization instead
-    }
-    
-    /**
-     * Lazily initialize MMKV when first needed.
-     * 
-     * NOTE: MMKV requires ReactApplicationContext (not regular Context) because SecureKeystore
-     * needs access to React-specific keystore resources. This means MMKV cannot be initialized
-     * before React Native starts.
-     */
-    private synchronized void ensureMMKVInitialized() {
-        if (initializationAttempted) {
-            return;
+    private MMKV getMMKV() {
+        String encryptionKey = MMKVKeyManager.getEncryptionKey();
+        if (encryptionKey != null && !encryptionKey.isEmpty()) {
+            return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, encryptionKey);
         }
-        
-        initializationAttempted = true;
-        
-        // Get ReactApplicationContext from CustomPushNotification
-        if (this.reactContext == null) {
-            this.reactContext = CustomPushNotification.reactApplicationContext;
-        }
-        
-        // Initialize MMKV if context is available
-        if (this.reactContext != null && mmkv == null) {
-            try {
-                MMKV.initialize(this.reactContext);
-                SecureKeystore secureKeystore = new SecureKeystore(this.reactContext);
-                // Alias format from react-native-mmkv-storage
-                String alias = Utils.toHex("com.MMKV.default");
-                String password = secureKeystore.getSecureKey(alias);
-                mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
-            } catch (Exception e) {
-                Log.e(TAG, "Failed to initialize MMKV", e);
-                mmkv = null;
-            }
-        } else if (this.reactContext == null) {
-            Log.w(TAG, "Cannot initialize MMKV: ReactApplicationContext not available");
-        }
+        // Fallback to no encryption if key is not available
+        // This can happen if Keystore is unavailable (e.g., device locked/Direct Boot)
+        Log.w(TAG, "MMKV encryption key not available, opening without encryption");
+        return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE);
     }
 
     public String getAvatarUri() {
@@ -127,8 +87,8 @@ public class Ejson {
     }
 
     public String token() {
-        ensureMMKVInitialized();
         String userId = userId();
+        MMKV mmkv = getMMKV();
         
         if (mmkv == null) {
             Log.e(TAG, "token() called but MMKV is null");
@@ -157,19 +117,21 @@ public class Ejson {
     }
 
     public String userId() {
-        ensureMMKVInitialized();
         String serverURL = serverURL();
-        String key = TOKEN_KEY.concat(serverURL);
+        
+        if (serverURL == null) {
+            Log.e(TAG, "userId() called but serverURL is null");
+            return "";
+        }
+        
+        MMKV mmkv = getMMKV();
         
         if (mmkv == null) {
             Log.e(TAG, "userId() called but MMKV is null");
             return "";
         }
         
-        if (serverURL == null) {
-            Log.e(TAG, "userId() called but serverURL is null");
-            return "";
-        }
+        String key = TOKEN_KEY.concat(serverURL);
         
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Looking up userId with key: " + key);
@@ -207,8 +169,8 @@ public class Ejson {
     }
 
     public String privateKey() {
-        ensureMMKVInitialized();
         String serverURL = serverURL();
+        MMKV mmkv = getMMKV();
         if (mmkv != null && serverURL != null) {
             return mmkv.decodeString(serverURL.concat("-RC_E2E_PRIVATE_KEY"));
         }

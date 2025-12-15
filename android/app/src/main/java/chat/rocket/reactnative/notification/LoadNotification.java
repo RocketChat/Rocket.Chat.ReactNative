@@ -3,7 +3,6 @@ package chat.rocket.reactnative.notification;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -65,7 +64,7 @@ public class LoadNotification {
     private int[] TIMEOUT = new int[]{0, 1, 3, 5, 10};
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
 
-    public void load(ReactApplicationContext reactApplicationContext, final Ejson ejson, Callback callback) {
+    public void load(final Ejson ejson, Callback callback) {
         Log.i(TAG, "Starting notification load for message-id-only notification");
         
         // Validate ejson object

@@ -2,8 +2,9 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-#import <MMKV/MMKV.h>
-#import <react-native-mmkv-storage/SecureStorage.h>
+#import "SecureStorage.h"
+#import "MMKVKeyManager.h"
+#import "Shared/RocketChat/MMKVBridge.h"
 #import <RNBootSplash.h>
 #import <MobileCrypto/RSACrypto.h>
 #import <MobileCrypto/AESCrypto.h>

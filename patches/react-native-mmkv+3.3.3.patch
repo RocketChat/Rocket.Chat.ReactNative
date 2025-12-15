@@ -1,0 +1,39 @@
+diff --git a/node_modules/react-native-mmkv/android/build/intermediates/aar_metadata/release/writeReleaseAarMetadata/aar-metadata.properties b/node_modules/react-native-mmkv/android/build/intermediates/aar_metadata/release/writeReleaseAarMetadata/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/react-native-mmkv/android/build/intermediates/aar_metadata/release/writeReleaseAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/react-native-mmkv/src/MMKV.ts b/node_modules/react-native-mmkv/src/MMKV.ts
+index 5ee1f01..ea3f444 100644
+--- a/node_modules/react-native-mmkv/src/MMKV.ts
++++ b/node_modules/react-native-mmkv/src/MMKV.ts
+@@ -1,5 +1,5 @@
+ import { createMMKV } from './createMMKV';
+-import { createMockMMKV } from './createMMKV.mock';
++// import { createMockMMKV } from './createMMKV.mock'; // Disabled via patch-package for E2E tests
+ import { isTest } from './PlatformChecker';
+ import type {
+   Configuration,
+@@ -25,9 +25,8 @@ export class MMKV implements MMKVInterface {
+    */
+   constructor(configuration: Configuration = { id: 'mmkv.default' }) {
+     this.id = configuration.id;
+-    this.nativeInstance = isTest()
+-      ? createMockMMKV()
+-      : createMMKV(configuration);
++    // Always use real MMKV (mock disabled via patch-package for E2E tests)
++    this.nativeInstance = createMMKV(configuration);
+     this.functionCache = {};
+ 
+     addMemoryWarningListener(this);
+diff --git a/node_modules/react-native-mmkv/src/createMMKV.mock.ts b/node_modules/react-native-mmkv/src/createMMKV.mock.ts.disabled
+similarity index 100%
+rename from node_modules/react-native-mmkv/src/createMMKV.mock.ts
+rename to node_modules/react-native-mmkv/src/createMMKV.mock.ts.disabled

@@ -638,7 +638,7 @@ public class CustomPushNotification {
 
     private void notificationLoad(Ejson ejson, Callback callback) {
         LoadNotification loadNotification = new LoadNotification();
-        loadNotification.load(reactApplicationContext, ejson, callback);
+        loadNotification.load(ejson, callback);
     }
     
     /**

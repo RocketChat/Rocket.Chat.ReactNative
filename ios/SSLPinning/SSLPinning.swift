@@ -6,7 +6,7 @@ final class SSLPinning: NSObject {
 	}
 	
 	private let database = Database(name: "default")
-	private let mmkv = MMKV.build()
+	private let mmkv = MMKVBridge.build()
 	
 	@objc func setCertificate(_ server: String, _ path: String, _ password: String) {
 		guard FileManager.default.fileExists(atPath: path) else {
@@ -17,8 +17,8 @@ final class SSLPinning: NSObject {
 			return
 		}
 		
-		mmkv.set(Data(referencing: certificate), forKey: Constants.certificateKey.appending(server))
-		mmkv.set(password, forKey: Constants.passwordKey.appending(server))
+		mmkv.setData(Data(referencing: certificate), forKey: Constants.certificateKey.appending(server))
+		mmkv.setString(password, forKey: Constants.passwordKey.appending(server))
 	}
 	
     @objc func migrate() {

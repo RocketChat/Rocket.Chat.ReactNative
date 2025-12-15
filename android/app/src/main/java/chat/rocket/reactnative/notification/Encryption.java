@@ -6,7 +6,6 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -132,7 +131,6 @@ class Encryption {
     private static final String TAG = "RocketChat.E2E";
     
     public static Encryption shared = new Encryption();
-    private ReactApplicationContext reactContext;
 
     private PrefixedData decodePrefixedBase64(String input) {
         // A 256-byte array always encodes to 344 characters in Base64.
@@ -313,20 +311,12 @@ class Encryption {
 
     public String decryptMessage(final Ejson ejson, final Context context) {
         try {
-            // Get ReactApplicationContext for MMKV access
-            if (context instanceof ReactApplicationContext) {
-                this.reactContext = (ReactApplicationContext) context;
-            } else {
-                // Fallback to CustomPushNotification's static context
-                this.reactContext = CustomPushNotification.reactApplicationContext;
-            }
-
-            if (this.reactContext == null) {
-                Log.e(TAG, "Cannot decrypt: ReactApplicationContext not available");
+            if (context == null) {
+                Log.e(TAG, "Cannot decrypt: context is null");
                 return null;
             }
             
-            Room room = readRoom(ejson, this.reactContext);
+            Room room = readRoom(ejson, context);
             if (room == null || room.e2eKey == null) {
                 Log.w(TAG, "Cannot decrypt: room or e2eKey not found");
                 return null;
@@ -364,16 +354,14 @@ class Encryption {
         }
     }
 
-    public EncryptionContent encryptMessageContent(final String message, final String id, final Ejson ejson) {
+    public EncryptionContent encryptMessageContent(final String message, final String id, final Ejson ejson, final Context context) {
         try {
-            // Get ReactApplicationContext from CustomPushNotification
-            this.reactContext = CustomPushNotification.reactApplicationContext;
-            
-            // Use reactContext for database access
-            if (this.reactContext == null) {
+            if (context == null) {
+                Log.e(TAG, "Cannot encrypt: context is null");
                 return null;
             }
-            Room room = readRoom(ejson, this.reactContext);
+            
+            Room room = readRoom(ejson, context);
             if (room == null || !room.encrypted || room.e2eKey == null) {
                 return null;
             }

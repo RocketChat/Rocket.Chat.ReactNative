@@ -26,7 +26,10 @@ const persistCertificate = (server: string, name: string, password?: string) => 
 		password
 	};
 	UserPreferences.setMap(name, certificate);
-	UserPreferences.setMap(extractHostname(server), certificate);
+	const hostname = extractHostname(server);
+	if (hostname) {
+		UserPreferences.setMap(hostname, certificate);
+	}
 	UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, name);
 	return certificate;
 };

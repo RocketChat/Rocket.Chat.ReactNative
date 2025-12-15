@@ -123,7 +123,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         String id = getMessageId();
 
         // Use the new content structure approach
-        Encryption.EncryptionContent content = Encryption.shared.encryptMessageContent(message, id, ejson);
+        Encryption.EncryptionContent content = Encryption.shared.encryptMessageContent(message, id, ejson, mContext);
 
         Map msgMap = new HashMap();
         msgMap.put("_id", id);
