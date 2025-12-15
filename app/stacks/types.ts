@@ -217,6 +217,10 @@ export type SettingsStackParamList = {
 	AccessibilityAndAppearanceView: undefined;
 };
 
+export type QRLoginStackParamList = {
+	QRLoginScanView: undefined;
+};
+
 export type AdminPanelStackParamList = {
 	AdminPanelView: undefined;
 };
@@ -237,6 +241,7 @@ export type DrawerParamList = {
 	SettingsStackNavigator: NavigatorScreenParams<SettingsStackParamList>;
 	AdminPanelStackNavigator: NavigatorScreenParams<AdminPanelStackParamList>;
 	AccessibilityStackNavigator: NavigatorScreenParams<AccessibilityStackParamList>;
+	QRLoginStackNavigator: NavigatorScreenParams<QRLoginStackParamList>;
 };
 
 export type NewMessageStackParamList = {

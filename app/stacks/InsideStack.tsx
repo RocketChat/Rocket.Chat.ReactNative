@@ -85,11 +85,13 @@ import {
 	type NewMessageStackParamList,
 	type ProfileStackParamList,
 	type SettingsStackParamList,
-	type AccessibilityStackParamList
+	type AccessibilityStackParamList,
+	type QRLoginStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
 import { type TNavigation } from './stackType';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
+import QRLoginScanView from '../views/QRLoginScanView';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
@@ -206,6 +208,18 @@ const SettingsStackNavigator = () => {
 	);
 };
 
+// QRLoginStack
+const QRLoginStack = createNativeStackNavigator<QRLoginStackParamList>();
+const QRLoginStackNavigator = () => (
+	<QRLoginStack.Navigator
+		screenOptions={{
+			headerShown: false,
+			orientation: 'portrait'
+		}}>
+		<QRLoginStack.Screen name='QRLoginScanView' component={QRLoginScanView} />
+	</QRLoginStack.Navigator>
+);
+
 // AdminPanelStackNavigator
 const AdminPanelStack = createNativeStackNavigator<AdminPanelStackParamList>();
 const AdminPanelStackNavigator = () => {
@@ -259,6 +273,7 @@ const DrawerNavigator = () => {
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
 			<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
 			<Drawer.Screen name='AccessibilityStackNavigator' component={AccessibilityStackNavigator} />
+			<Drawer.Screen name='QRLoginStackNavigator' component={QRLoginStackNavigator} />
 		</Drawer.Navigator>
 	);
 };
