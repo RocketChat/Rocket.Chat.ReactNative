@@ -43,19 +43,19 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	const createChannel = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
-		navigation.navigate('SelectUsersView', { nextAction: () => navigation.navigate('CreateChannelView') });
+		navigation.navigate('SelectedUsersView', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}, [navigation]);
 
 	const createTeam = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_TEAM);
-		navigation.navigate('SelectUsersView', {
+		navigation.navigate('SelectedUsersView', {
 			nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true })
 		});
 	}, [navigation]);
 
 	const createGroupChat = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
-		navigation.navigate('SelectUsersView', {
+		navigation.navigate('SelectedUsersView', {
 			nextAction: () => dispatch(createChannelRequest({ group: true })),
 			buttonText: I18n.t('Create'),
 			maxUsers
@@ -64,7 +64,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	const createDiscussion = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
-		navigation.navigate('SelectUsersView', {
+		navigation.navigate('SelectedUsersView', {
 			nextAction: () => Navigation.navigate('CreateDiscussionView'),
 			title: I18n.t('Create_Discussion'),
 			buttonText: I18n.t('Next')

@@ -241,7 +241,7 @@ export type DrawerParamList = {
 
 export type NewMessageStackParamList = {
 	NewMessageView: undefined;
-	SelectUsersView: {
+	SelectedUsersView: {
 		maxUsers?: number;
 		showButton?: boolean;
 		title?: string;

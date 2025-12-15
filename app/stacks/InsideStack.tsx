@@ -273,7 +273,7 @@ const NewMessageStackNavigator = () => {
 	return (
 		<NewMessageStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<NewMessageStack.Screen name='NewMessageView' component={NewMessageView} />
-			<NewMessageStack.Screen name='SelectUsersView' component={SelectedUsersView} />
+			<NewMessageStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
 			<NewMessageStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			{/* @ts-ignore */}
 			<NewMessageStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
