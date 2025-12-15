@@ -13,40 +13,63 @@ import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
 
-export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
+export const MessageImage = React.memo(
+	({ uri, status, encrypted = false, imagePreview, imageType, imageDimensions: providedDimensions }: IMessageImage) => {
 	'use memo';
 
 	const { colors } = useTheme();
-	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+	const [imageDimensions, setImageDimensions] = useState({
+		width: providedDimensions?.width ?? 0,
+		height: providedDimensions?.height ?? 0
+	});
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const maxSize = useContext(WidthAwareContext);
-	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
 	const isGif = imageType === 'image/gif';
+	const isSvg = imageType?.includes('svg') ?? false;
 
 	useEffect(() => {
+		if (providedDimensions?.width && providedDimensions?.height) {
+			setImageDimensions({ width: providedDimensions.width, height: providedDimensions.height });
+		}
+	}, [providedDimensions?.width, providedDimensions?.height]);
+
+	useEffect(() => {
+		// Preserve SVG sizing: stick to provided/fallback dimensions and skip intrinsic load that shrinks the view.
+		if (isSvg) {
+			return;
+		}
+
 		if (status === 'downloaded') {
 			Image.loadAsync(uri, {
 				onError: e => {
 					log(e);
 				}
-			}).then(image => {
-				setImageDimensions({ width: image.width, height: image.height });
-			});
+			})
+				.then(image => {
+					setImageDimensions({ width: image.width, height: image.height });
+				})
+				.catch(e => {
+					log(e);
+				});
 		}
-	}, [uri, status]);
+	}, [uri, status, isSvg]);
 
-	const width = Math.min(imageDimensions.width, maxSize) || 0;
-	const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
+	const hasDimensions = imageDimensions.width > 0 && imageDimensions.height > 0;
+	const fallbackSize = Math.min(maxSize, 200);
+	const ratio = hasDimensions ? imageDimensions.height / imageDimensions.width : 1;
+	const displayWidth = hasDimensions ? Math.min(imageDimensions.width, maxSize) : fallbackSize;
+	const displayHeight = hasDimensions ? Math.min(displayWidth * ratio, maxSize) : fallbackSize;
+	const showImage = isValidUrl(uri) && status === 'downloaded' && displayWidth > 0 && displayHeight > 0;
 	const imageStyle = {
-		width,
-		height
+		width: displayWidth,
+		height: displayHeight
 	};
 
 	const containerStyle: ViewStyle = {
 		alignItems: 'center',
 		justifyContent: 'center',
-		...(imageDimensions.width <= 64 && { width: 64 }),
-		...(imageDimensions.height <= 64 && { height: 64 })
+		...(displayWidth <= 64 && { width: 64 }),
+		...(displayHeight <= 64 && { height: 64 })
 	};
 
 	const borderStyle: ViewStyle = {
@@ -69,7 +92,12 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
+					<Image
+						autoplay={autoplayGifs}
+						style={imageStyle}
+						source={{ uri: encodeURI(uri) }}
+						contentFit={isSvg ? 'contain' : 'cover'}
+					/>
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (

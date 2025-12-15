@@ -26,7 +26,14 @@ const ImageContainer = ({
 	const image = (
 		<Button onPress={onPress}>
 			<WidthAwareView>
-				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={imagePreview} imageType={imageType} />
+				<MessageImage
+					uri={url}
+					status={status}
+					encrypted={isEncrypted}
+					imagePreview={imagePreview}
+					imageType={imageType}
+					imageDimensions={file.image_dimensions}
+				/>
 			</WidthAwareView>
 		</Button>
 	);

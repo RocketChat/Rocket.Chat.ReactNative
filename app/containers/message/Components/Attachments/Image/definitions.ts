@@ -18,4 +18,8 @@ export interface IMessageImage {
 	encrypted: boolean;
 	imagePreview?: string;
 	imageType?: string;
+	imageDimensions?: {
+		width?: number;
+		height?: number;
+	};
 }
