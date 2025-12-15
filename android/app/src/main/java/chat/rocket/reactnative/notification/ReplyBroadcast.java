@@ -46,6 +46,9 @@ public class ReplyBroadcast extends BroadcastReceiver {
             if (bundle == null) {
                 bundle = intent.getExtras();
             }
+            if (bundle == null) {
+                return;
+            }
             notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             String notId = bundle.getString("notId");

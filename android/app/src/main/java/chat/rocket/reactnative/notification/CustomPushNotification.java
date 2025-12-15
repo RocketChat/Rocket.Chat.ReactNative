@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.MainActivity;
@@ -470,15 +472,17 @@ public class CustomPushNotification {
         }
         
         try {
+            // Use a 3-second timeout to avoid blocking the FCM service for too long
+            // FCM has a 10-second limit, so we need to fail fast and use fallback icon
             Bitmap avatar = Glide.with(mContext)
                     .asBitmap()
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
                     .load(uri)
                     .submit(100, 100)
-                    .get();
+                    .get(3, TimeUnit.SECONDS);
             
             return avatar != null ? avatar : largeIcon();
-        } catch (final ExecutionException | InterruptedException e) {
+        } catch (final ExecutionException | InterruptedException | TimeoutException e) {
             Log.e(TAG, "Failed to fetch avatar: " + e.getMessage(), e);
             return largeIcon();
         }

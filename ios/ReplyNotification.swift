@@ -9,9 +9,9 @@
 import Foundation
 import UserNotifications
 
-/// Handles direct reply from iOS notifications.
-/// Intercepts REPLY_ACTION responses and sends messages natively,
-/// while forwarding all other notification events to expo-notifications.
+// Handles direct reply from iOS notifications.
+// Intercepts REPLY_ACTION responses and sends messages natively,
+// while forwarding all other notification events to expo-notifications.
 @objc(ReplyNotification)
 class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
   private static var shared: ReplyNotification?

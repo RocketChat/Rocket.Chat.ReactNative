@@ -48,7 +48,17 @@ class NotificationService: UNNotificationServiceExtension {
                             self.bestAttemptContent?.title = notification.title
                             self.bestAttemptContent?.body = notification.text
                             self.processPayload(payload: notification.payload)
+                        } else {
+                            // Server returned no notification, deliver as-is
+                            if let bestAttemptContent = self.bestAttemptContent {
+                                self.contentHandler?(bestAttemptContent)
+                            }
                         }
+                    }
+                } else {
+                    // No messageId available, deliver the notification as-is
+                    if let bestAttemptContent = self.bestAttemptContent {
+                        self.contentHandler?(bestAttemptContent)
                     }
                 }
             }
