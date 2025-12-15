@@ -430,6 +430,7 @@ export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ er
 	return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData }) as any;
 };
 
+// change it
 export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
@@ -461,6 +462,7 @@ export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0
 	sdk.get('users.autocomplete', { selector });
 
+// change it
 export const getRoutingConfig = (): Promise<{
 	previewRoom: boolean;
 	showConnecting: boolean;
@@ -515,6 +517,7 @@ export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
+// change it
 export const toggleMuteUserInRoom = (
 	rid: string,
 	username: string,
@@ -658,6 +661,7 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
+// change it
 export const getRoomRoles = (
 	roomId: string,
 	type: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
