@@ -2,13 +2,16 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import I18n from '../../i18n';
 import * as List from '../List/index';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
-import Touch from '../Touch';
+import Touchable from './Touchable';
+import I18n from '../../i18n';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export { ROW_HEIGHT };
+export { default as ServerItemTouchable } from './Touchable';
+export type { IServerItemTouchableProps } from './Touchable';
 
 export interface IServerItem {
 	item: {
@@ -18,28 +21,33 @@ export interface IServerItem {
 		useRealName?: boolean;
 	};
 	onPress(): void;
-	onLongPress?(): void;
+	onDeletePress?(): void;
 	hasCheck?: boolean;
 }
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
+const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();
+	const { width } = useResponsiveLayout();
 
 	const iconName = hasCheck ? 'radio-checked' : 'radio-unchecked';
 	const iconColor = hasCheck ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
 	const accessibilityLabel = `${item.name || item.id}. ${item.id}. ${I18n.t(hasCheck ? 'Selected' : 'Unselected')}`;
 
+	const accessibilityHint = onDeletePress
+		? I18n.t('Activate_to_select_server_Available_actions_delete')
+		: I18n.t('Activate_to_select_server');
+
 	return (
-		<Touch
-			accessible
+		<Touchable
 			accessibilityLabel={accessibilityLabel}
 			accessibilityRole='radio'
+			accessibilityHint={accessibilityHint}
 			onPress={onPress}
-			onLongPress={() => onLongPress?.()}
+			onDeletePress={onDeletePress}
 			testID={`server-item-${item.id}`}
-			style={{ backgroundColor: colors.surfaceRoom }}>
+			width={width}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<Image
@@ -65,7 +73,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 
 				<List.Icon name={iconName} color={iconColor} />
 			</View>
-		</Touch>
+		</Touchable>
 	);
 });
 
