@@ -20,7 +20,6 @@ export const getInquiriesQueued = (serverVersion: string) => {
 // this inquiry is added to the db by the subscriptions stream
 // and will be removed by the queue stream
 // RC 2.4.0
-
 export const takeInquiry = (inquiryId: string, serverVersion: string) => {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.11.0')) {
 		return sdk.methodCallWrapper('livechat:takeInquiry', inquiryId);
