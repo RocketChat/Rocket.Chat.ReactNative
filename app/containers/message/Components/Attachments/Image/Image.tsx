@@ -25,7 +25,7 @@ export const MessageImage = React.memo(
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const maxSize = useContext(WidthAwareContext);
 	const isGif = imageType === 'image/gif';
-	const isSvg = imageType?.includes('svg') ?? false;
+	const isSvg = imageType?.toLowerCase().includes('svg') ?? false;
 
 	useEffect(() => {
 		if (providedDimensions?.width && providedDimensions?.height) {
