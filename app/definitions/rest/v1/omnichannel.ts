@@ -19,6 +19,19 @@ export type OmnichannelEndpoints = {
 			appearance: ISetting[];
 		};
 	};
+	'livechat/config/routing': {
+		GET: () => {
+			config: {
+				previewRoom: boolean;
+				showConnecting: boolean;
+				showQueue: boolean;
+				showQueueLink: boolean;
+				returnQueue: boolean;
+				enableTriggerAction: boolean;
+				autoAssignAgent: boolean;
+			};
+		};
+	};
 	'livechat/visitors.info': {
 		GET: (params: { visitorId: string }) => {
 			visitor: ILivechatVisitor;
