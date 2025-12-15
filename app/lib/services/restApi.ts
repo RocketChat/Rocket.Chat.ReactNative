@@ -541,6 +541,7 @@ export const toggleMuteUserInRoom = (rid: string, username: string, userId: stri
 		return sdk.post('rooms.unmuteUser', { rid, userId });
 	}
 
+	// Methods removed in RC 8.0.0
 	if (mute) {
 		// RC 0.51.0
 		return sdk.methodCallWrapper('muteUserInRoom', { rid, username });
