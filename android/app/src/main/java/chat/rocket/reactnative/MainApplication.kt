@@ -29,7 +29,6 @@ import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
-import com.tencent.mmkv.MMKV;
 
 open class MainApplication : Application(), ReactApplication, INotificationsApplication {
 
@@ -57,9 +56,6 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
-    
-    // Initialize MMKV before React Native starts
-    MMKV.initialize(this)
     
     // Initialize MMKV encryption - reads existing key or generates new one
     // Must run before React Native starts to avoid race conditions
