@@ -534,20 +534,11 @@ export const deleteRoom = (roomId: string, t: RoomTypes) =>
 export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
-		if (mute) {
-			return sdk.post('rooms.muteUser', { roomId: rid, userId });
-		}
-
-		return sdk.post('rooms.unmuteUser', { rid, userId });
+		return sdk.post(mute ? 'rooms.muteUser' : 'rooms.unmuteUser', { roomId: rid, userId });
 	}
 
-	// Methods removed in RC 8.0.0
-	if (mute) {
-		// RC 0.51.0
-		return sdk.methodCallWrapper('muteUserInRoom', { rid, username });
-	}
 	// RC 0.51.0
-	return sdk.methodCallWrapper('unmuteUserInRoom', { rid, username });
+	return sdk.methodCallWrapper(mute ? 'muteUserInRoom' : 'unmuteUserInRoom', { rid, username });
 };
 
 export const toggleRoomOwner = ({
