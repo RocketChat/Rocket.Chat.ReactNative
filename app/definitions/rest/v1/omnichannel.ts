@@ -122,6 +122,14 @@ export type OmnichannelEndpoints = {
 		}>;
 	};
 
+	'livechat/inquiries.take': {
+		POST: (params: { inquiryId: string }) => void;
+	};
+
+	'livechat/inquiries.returnAsInquiry': {
+		POST: (params: { roomId: string; departmentId?: string }) => boolean;
+	};
+
 	'livechat/rooms': {
 		GET: (params: {
 			guest: string;

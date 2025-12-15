@@ -431,11 +431,16 @@ export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ er
 };
 
 // change it
-export const returnLivechat = (rid: string): Promise<boolean> =>
-	// RC 0.72.0
-	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
+export const returnLivechat = (rid: string, departmentId?: string): Promise<any> => {
+	const serverVersion = reduxStore.getState().server.version;
 
-export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.12.0')) {
+		return sdk.post('livechat/inquiries.returnAsInquiry', { roomId: rid, departmentId });
+	}
+
+	// RC 0.72.0
+	return sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
+};
 
 export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
