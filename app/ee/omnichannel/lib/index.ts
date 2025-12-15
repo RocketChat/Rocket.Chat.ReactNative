@@ -22,10 +22,10 @@ export const getInquiriesQueued = (serverVersion: string) => {
 // RC 2.4.0
 export const takeInquiry = (inquiryId: string, serverVersion: string) => {
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.11.0')) {
-		return sdk.methodCallWrapper('livechat:takeInquiry', inquiryId);
+		return sdk.post('livechat/inquiries.take', { inquiryId });
 	}
 	// Method removed in 8.0.0
-	return sdk.post('livechat/inquiries.take', { inquiryId });
+	return sdk.methodCallWrapper('livechat:takeInquiry', inquiryId);
 };
 
 // RC 4.26
