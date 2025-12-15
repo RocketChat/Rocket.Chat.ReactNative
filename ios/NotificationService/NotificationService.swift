@@ -47,6 +47,13 @@ class NotificationService: UNNotificationServiceExtension {
                         if let notification = notification {
                             self.bestAttemptContent?.title = notification.title
                             self.bestAttemptContent?.body = notification.text
+                            
+                            // Update ejson with full payload from server for correct navigation
+                            if let payloadData = try? JSONEncoder().encode(notification.payload),
+                               let payloadString = String(data: payloadData, encoding: .utf8) {
+                                self.bestAttemptContent?.userInfo["ejson"] = payloadString
+                            }
+                            
                             self.processPayload(payload: notification.payload)
                         } else {
                             // Server returned no notification, deliver as-is
