@@ -6,6 +6,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import moment from 'moment';
 import { StyleSheet } from 'react-native-unistyles';
 
+import dayjs from '../../lib/dayjs';
 import Button from '../Button';
 import { textParser } from './utils';
 import { themes } from '../../lib/constants/colors';
@@ -55,7 +56,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 					onShow(false);
 				}
 			});
-			action({ value: moment(newDate).format('YYYY-MM-DD') });
+			action({ value: dayjs(newDate).format('YYYY-MM-DD') });
 		}
 	};
 

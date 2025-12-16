@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 16,
+	version: 17,
 	tables: [
 		tableSchema({
 			name: 'users',
@@ -50,7 +50,8 @@ export default appSchema({
 			columns: [
 				{ name: 'url', type: 'string', isIndexed: true },
 				{ name: 'username', type: 'string', isOptional: true },
-				{ name: 'updated_at', type: 'number' }
+				{ name: 'updated_at', type: 'number' },
+				{ name: 'icon_url', type: 'string', isOptional: true }
 			]
 		})
 	]

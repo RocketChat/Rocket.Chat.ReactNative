@@ -4,6 +4,7 @@ import Touchable from 'react-native-platform-touchable';
 import moment from 'moment';
 import { StyleSheet } from 'react-native-unistyles';
 
+import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
@@ -59,7 +60,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 	let messageDate = '';
 
 	if (item?.ts) {
-		messageTime = moment(item.ts).format('LT');
+		messageTime = dayjs(item.ts).format('LT');
 		messageDate = formatDateThreads(item.ts);
 	}
 

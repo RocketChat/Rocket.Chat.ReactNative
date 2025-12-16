@@ -1,5 +1,4 @@
 import { dequal } from 'dequal';
-import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
@@ -18,6 +17,7 @@ import { Attachments } from './components';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
+import dayjs from '../../../../lib/dayjs';
 
 const styles = StyleSheet.create({
 	button: {
@@ -104,7 +104,7 @@ const Title = React.memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
 		'use memo';
 
-		const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
+		const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (

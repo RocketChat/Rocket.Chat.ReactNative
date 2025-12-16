@@ -1,6 +1,12 @@
 import React from 'react';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
-import { View, type ViewStyle, type StyleProp } from 'react-native';
+import {
+	View,
+	type ViewStyle,
+	type StyleProp,
+	type AccessibilityActionEvent,
+	type AccessibilityActionInfo
+} from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../theme';
@@ -9,12 +15,30 @@ export interface ITouchProps extends RectButtonProps {
 	children: React.ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
+	accessibilityHint?: string;
+	accessibilityActions?: AccessibilityActionInfo[];
+	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	testID?: string;
 	rectButtonStyle?: StyleProp<ViewStyle>;
 }
 
 const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
-	({ children, onPress, underlayColor, accessible, accessibilityLabel, style, rectButtonStyle, ...props }, ref) => {
+	(
+		{
+			children,
+			onPress,
+			underlayColor,
+			accessible,
+			accessibilityLabel,
+			accessibilityHint,
+			accessibilityActions,
+			onAccessibilityAction,
+			style,
+			rectButtonStyle,
+			...props
+		},
+		ref
+	) => {
 		const { colors } = useTheme();
 		// The background color must be applied to the RectButton, not the View.
 		// If set on the View, the touch opacity animation won't work properly.
@@ -55,7 +79,13 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				rippleColor={colors.surfaceNeutral}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...props}>
-				<View accessible={accessible} accessibilityLabel={accessibilityLabel} style={viewStyle}>
+				<View
+					accessible={accessible}
+					accessibilityLabel={accessibilityLabel}
+					accessibilityHint={accessibilityHint}
+					accessibilityActions={accessibilityActions}
+					onAccessibilityAction={onAccessibilityAction}
+					style={viewStyle}>
 					{children}
 				</View>
 			</RectButton>

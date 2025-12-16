@@ -1,0 +1,52 @@
+appId: chat.rocket.reactnative
+name: Navigate to E2EE Security
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
+    timeout: 60000
+- runFlow:
+    when:
+      visible: 'Save your encryption password'
+    commands:
+      - assertVisible: Save your encryption password
+- runFlow:
+    when:
+      visible: 'Enter E2EE password'
+    commands:
+      - assertVisible: Enter E2EE password
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view-sidebar
+      enabled: true
+    timeout: 60000
+- tapOn:
+    id: rooms-list-view-sidebar
+- extendedWaitUntil:
+    visible:
+      id: sidebar-view
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: sidebar-settings
+    timeout: 60000
+- tapOn:
+    id: sidebar-settings
+- waitForAnimationToEnd:
+    timeout: 5000
+- repeat:
+    while:
+      notVisible:
+        id: security-privacy-view
+    commands:
+      - tapOn: Security and privacy
+
+- assertVisible: End-to-end encryption
+- tapOn: End-to-end encryption
+- extendedWaitUntil:
+    visible:
+      id: e2e-encryption-security-view
+    timeout: 60000

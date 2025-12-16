@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import moment from 'moment';
 import { StyleSheet } from 'react-native-unistyles';
 
+import dayjs from '../lib/dayjs';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants/colors';
@@ -37,7 +38,7 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 		return null;
 	}
 
-	const date = ts ? moment(ts).format('LL') : null;
+	const date = ts ? dayjs(ts).format('LL') : null;
 	const unreadLine = { backgroundColor: themes[theme].buttonBackgroundDangerDefault };
 	const unreadText = { color: themes[theme].fontDanger };
 	if (ts && unread) {

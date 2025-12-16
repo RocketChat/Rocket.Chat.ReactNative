@@ -18,13 +18,13 @@ const ServerItem = ({
 	item,
 	theme = 'light',
 	onPress = () => alert('Press'),
-	onLongPress,
+	onDeletePress,
 	hasCheck
 }: {
 	item?: Partial<IServerItem['item']>;
 	theme?: TSupportedThemes;
 	onPress?: IServerItem['onPress'];
-	onLongPress?: IServerItem['onLongPress'];
+	onDeletePress?: IServerItem['onDeletePress'];
 	hasCheck?: IServerItem['hasCheck'];
 }) => (
 	<ThemeContext.Provider
@@ -32,7 +32,7 @@ const ServerItem = ({
 			theme,
 			colors: themes[theme]
 		}}>
-		<ServerItemComponent item={{ ...defaultItem, ...item }} onPress={onPress} onLongPress={onLongPress} hasCheck={hasCheck} />
+		<ServerItemComponent item={{ ...defaultItem, ...item }} onPress={onPress} onDeletePress={onDeletePress} hasCheck={hasCheck} />
 	</ThemeContext.Provider>
 );
 
@@ -53,9 +53,10 @@ export const Content = () => (
 	</>
 );
 
-export const Touchable = () => (
+export const SwipeActions = () => (
 	<>
-		<ServerItem onLongPress={() => alert('Long Press')} />
+		<ServerItem onDeletePress={() => alert('Delete Server')} />
+		<ServerItem item={{ name: 'Another Server', id: 'https://example.com/' }} onDeletePress={() => alert('Delete Server')} />
 	</>
 );
 
