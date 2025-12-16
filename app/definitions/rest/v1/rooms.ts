@@ -44,6 +44,16 @@ export type RoomsEndpoints = {
 	'rooms.saveNotification': {
 		POST: (params: { roomId: string; notifications: IRoomNotifications }) => {};
 	};
+	'rooms.muteUser': {
+		POST: (params: { roomId: string; userId: string }) => {
+			success: boolean;
+		};
+	};
+	'rooms.unmuteUser': {
+		POST: (params: { rid: string; userId: string }) => {
+			success: boolean;
+		};
+	};
 };
 
 export type TRoomsMediaResponse = {
