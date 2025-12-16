@@ -30,9 +30,13 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
-- tapOn:
-    id: header-back
-    retryTapIfNoChange: true
+- repeat:
+    while:
+      notVisible:
+        id: rooms-list-view-item-${output.otherUser.username}
+    commands:
+      - tapOn:
+          id: header-back
 - extendedWaitUntil:
     notVisible:
       id: 'unread-badge-1'
@@ -54,9 +58,13 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
-- tapOn:
-    id: header-back
-    retryTapIfNoChange: true
+- repeat:
+    while:
+      notVisible:
+        id: rooms-list-view-item-${output.otherUser.username}
+    commands:
+      - tapOn:
+          id: header-back
 - extendedWaitUntil:
     notVisible:
       id: 'mention-badge-1'
@@ -79,9 +87,13 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'rooms-list-view-item-${output.otherUser.username}'
-- tapOn:
-    id: header-back
-    retryTapIfNoChange: true
+- repeat:
+    while:
+      notVisible:
+        id: rooms-list-view-item-${output.otherUser.username}
+    commands:
+      - tapOn:
+          id: header-back
 - extendedWaitUntil:
     notVisible:
       id: 'mention-badge-2'
