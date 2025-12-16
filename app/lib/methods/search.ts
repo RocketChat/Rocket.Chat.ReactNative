@@ -12,8 +12,6 @@ export type TSearch = ISearchLocal | IUserMessage | ISearch;
 
 let debounce: null | ((reason: string) => void) = null;
 
-const MAX_SEARCH_RESULTS = 20;
-
 export const localSearchSubscription = async ({
 	text = '',
 	filterUsers = true,
@@ -136,11 +134,8 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 
 	const data: TSearch[] = localSearchData;
 
-	if (data.length >= MAX_SEARCH_RESULTS) {
-		return data;
-	}
 	try {
-		if (searchText && localSearchData.length < 7) {
+		if (searchText) {
 			const { users, rooms } = (await Promise.race([
 				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms, mentions: true }, rid),
 				new Promise((resolve, reject) => (debounce = reject))
