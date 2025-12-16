@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import {
 	type StyleProp,
-	StyleSheet,
 	Text,
 	type TextInput as RNTextInput,
 	type TextInputProps,
@@ -12,6 +11,7 @@ import {
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
+import { StyleSheet } from 'react-native-unistyles';
 
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';

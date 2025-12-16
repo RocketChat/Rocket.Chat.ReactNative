@@ -2,12 +2,12 @@ import React from 'react';
 import { RectButton, type RectButtonProps } from 'react-native-gesture-handler';
 import {
 	View,
-	StyleSheet,
 	type ViewStyle,
 	type StyleProp,
 	type AccessibilityActionEvent,
 	type AccessibilityActionInfo
 } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../theme';
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { Header } from '../../../containers/List';
 

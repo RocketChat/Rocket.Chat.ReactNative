@@ -1,6 +1,7 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import Markdown, { MarkdownPreview } from '.';
 import { themes } from '../../lib/constants/colors';

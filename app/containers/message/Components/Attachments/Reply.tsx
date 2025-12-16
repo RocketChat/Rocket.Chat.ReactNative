@@ -1,7 +1,8 @@
 import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants/colors';

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';

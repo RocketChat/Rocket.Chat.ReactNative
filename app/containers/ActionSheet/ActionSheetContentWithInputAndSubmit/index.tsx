@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, type TextInputProps, View } from 'react-native';
+import { Text, type TextInputProps, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { CustomIcon, type TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';

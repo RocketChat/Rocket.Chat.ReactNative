@@ -7,7 +7,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -438,7 +438,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -869,7 +869,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -1718,7 +1718,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -1738,7 +1738,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -2153,7 +2153,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -2568,7 +2568,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -2983,7 +2983,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -3398,7 +3398,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -3813,7 +3813,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -3833,7 +3833,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {
@@ -5100,7 +5100,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
       style={
         [
           {
-            "height": 0.5,
+            "height": 1,
           },
           undefined,
           {

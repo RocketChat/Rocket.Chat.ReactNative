@@ -1,6 +1,7 @@
 import React from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { connect } from 'react-redux';
 import { type RouteProp } from '@react-navigation/native';
 

@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Text, View, useWindowDimensions } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { showActionSheetRef } from '../../../containers/ActionSheet';

@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';

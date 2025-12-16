@@ -1,6 +1,7 @@
 import React, { type ReactElement } from 'react';
-import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Linking, Text, View } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { useTheme } from '../../../theme';

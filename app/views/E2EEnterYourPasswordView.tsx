@@ -1,9 +1,10 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
+import { ScrollView, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { type E2EEnterYourPasswordStackParamList, type InsideStackParamList } from '../stacks/types';
 import { encryptionDecodeKey } from '../actions/encryption';

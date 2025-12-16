@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { Q } from '@nozbe/watermelondb';
 import { type Observable, type Subscription } from 'rxjs';
 import { A11y } from 'react-native-a11y-order';

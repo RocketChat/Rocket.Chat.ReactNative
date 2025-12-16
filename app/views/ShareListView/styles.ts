@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { isIOS } from '../../lib/methods/helpers';
 import sharedStyles from '../Styles';

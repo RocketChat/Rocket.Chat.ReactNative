@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { FlatList, View, Text, StyleSheet } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { themes } from '../../lib/constants/colors';
 import SearchBox from '../../containers/SearchBox';

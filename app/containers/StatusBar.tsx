@@ -1,5 +1,7 @@
 import React from 'react';
 import { StatusBar as StatusBarRN } from 'expo-status-bar';
+import { SystemBars } from 'react-native-edge-to-edge';
+import { Platform } from 'react-native';
 
 import { useTheme } from '../theme';
 
@@ -16,6 +18,11 @@ const StatusBar = ({ barStyle, backgroundColor }: IStatusBar) => {
 			barStyle = 'dark';
 		}
 	}
+
+	if (Platform.OS === 'android') {
+		return <SystemBars style={barStyle} />;
+	}
+
 	return <StatusBarRN backgroundColor={backgroundColor ?? colors.surfaceNeutral} animated style={barStyle} />;
 };
 

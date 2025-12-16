@@ -1,5 +1,6 @@
 import React, { type ReactElement } from 'react';
-import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Linking, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../../containers/CustomIcon';

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Video, ResizeMode } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { ScrollView, Text, useWindowDimensions, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 

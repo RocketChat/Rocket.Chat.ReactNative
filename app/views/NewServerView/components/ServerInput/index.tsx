@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, type TextInputProps, View } from 'react-native';
+import { type TextInputProps, View } from 'react-native';
 import { type Control } from 'react-hook-form';
+import { StyleSheet } from 'react-native-unistyles';
 
 import { useTheme } from '../../../../theme';
 import { ControlledFormTextInput } from '../../../../containers/TextInput';

@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 import useDeepCompareEffect from 'use-deep-compare-effect';

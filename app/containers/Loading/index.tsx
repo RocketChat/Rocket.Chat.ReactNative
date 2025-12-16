@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
+import { View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import Animated, {
 	cancelAnimation,
 	Extrapolate,
