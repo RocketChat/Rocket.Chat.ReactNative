@@ -6,6 +6,65 @@ class NotificationService: UNNotificationServiceExtension {
     var bestAttemptContent: UNMutableNotificationContent?
     var rocketchat: RocketChat?
     
+    // MARK: - Avatar Fetching
+    
+    func fetchAvatar(from payload: Payload, completion: @escaping (UNNotificationAttachment?) -> Void) {
+        guard let username = payload.sender?.username else {
+            completion(nil)
+            return
+        }
+        
+        let server = payload.host.removeTrailingSlash()
+        guard let credentials = Storage().getCredentials(server: server) else {
+            completion(nil)
+            return
+        }
+        
+        // Build authenticated avatar URL (URL encode username for special characters)
+        guard let encodedUsername = username.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
+            completion(nil)
+            return
+        }
+        let avatarPath = "/avatar/\(encodedUsername)?format=png&size=100&rc_token=\(credentials.userToken)&rc_uid=\(credentials.userId)"
+        guard let avatarURL = URL(string: server + avatarPath) else {
+            completion(nil)
+            return
+        }
+        
+        // Create request with 3-second timeout
+        var request = URLRequest(url: avatarURL, timeoutInterval: 3)
+        request.httpMethod = "GET"
+        request.addValue(Bundle.userAgent, forHTTPHeaderField: "User-Agent")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard error == nil,
+                  let data = data,
+                  let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                completion(nil)
+                return
+            }
+            
+            // Save to temp file (UNNotificationAttachment requires file URL)
+            let tempDir = FileManager.default.temporaryDirectory
+            let fileName = "\(username)_avatar.png"
+            let fileURL = tempDir.appendingPathComponent(fileName)
+            
+            do {
+                try data.write(to: fileURL)
+                let attachment = try UNNotificationAttachment(
+                    identifier: "avatar",
+                    url: fileURL,
+                    options: [UNNotificationAttachmentOptionsTypeHintKey: "public.png"]
+                )
+                completion(attachment)
+            } catch {
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
+    
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
@@ -126,8 +185,17 @@ class NotificationService: UNNotificationServiceExtension {
             }
         }
         
-        if let bestAttemptContent = bestAttemptContent {
-            contentHandler?(bestAttemptContent)
+        // Fetch avatar and deliver notification
+        fetchAvatar(from: payload) { [weak self] attachment in
+            guard let self = self else { return }
+            
+            if let attachment = attachment {
+                self.bestAttemptContent?.attachments = [attachment]
+            }
+            
+            if let bestAttemptContent = self.bestAttemptContent {
+                self.contentHandler?(bestAttemptContent)
+            }
         }
     }
 }
