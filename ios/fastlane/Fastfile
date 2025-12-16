@@ -56,10 +56,10 @@ platform :ios do
       key_filepath: 'fastlane/app_store_connect_api_key.p8',
       in_house: false
     )
-    match(type: "appstore")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp")
+    match(type: "appstore", platform: "ios")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension", platform: "ios")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService", platform: "ios")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp", platform: "ios")
     # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
     set_key_partition_list(
       keychain: ENV["MATCH_KEYCHAIN_NAME"],
@@ -79,6 +79,7 @@ platform :ios do
 
     match(
       type: "appstore",
+      platform: "ios",
       app_identifier: ["chat.rocket.ios", "chat.rocket.ios.NotificationService", "chat.rocket.ios.Rocket-Chat-ShareExtension", "chat.rocket.ios.watchkitapp"],
       readonly: true,
       output_path: './'
