@@ -290,10 +290,11 @@ tags:
 
 - extendedWaitUntil:
     visible:
-      text: .*${output.otherUser.username}.*
+      id: 'username-header-${output.otherUser.username}'
     timeout: 60000
 - tapOn:
-    text: .*${output.otherUser.username}.*
+    id: 'username-header-${output.otherUser.username}'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: room-info-view-username
