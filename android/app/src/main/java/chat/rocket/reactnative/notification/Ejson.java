@@ -58,11 +58,6 @@ public class Ejson {
     }
 
     public String getAvatarUri() {
-        if (sender == null || sender.username == null || sender.username.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
-            return null;
-        }
-        
         String server = serverURL();
         if (server == null || server.isEmpty()) {
             Log.w(TAG, "Cannot generate avatar URI: serverURL is null");
@@ -77,13 +72,32 @@ public class Ejson {
             return null;
         }
         
-        String uri = server + "/avatar/" + sender.username + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+        String avatarPath;
         
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Generated avatar URI for user: " + sender.username);
+        // For DMs, show sender's avatar; for groups/channels, show room avatar
+        if ("d".equals(type)) {
+            // Direct message: use sender's avatar
+            if (sender == null || sender.username == null || sender.username.isEmpty()) {
+                Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
+                return null;
+            }
+            avatarPath = "/avatar/" + sender.username;
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Generated avatar URI for user: " + sender.username);
+            }
+        } else {
+            // Group/Channel/Livechat: use room avatar
+            if (rid == null || rid.isEmpty()) {
+                Log.w(TAG, "Cannot generate avatar URI: rid is null for non-DM");
+                return null;
+            }
+            avatarPath = "/avatar/room/" + rid;
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Generated avatar URI for room: " + rid);
+            }
         }
         
-        return uri;
+        return server + avatarPath + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
     }
 
     public String token() {

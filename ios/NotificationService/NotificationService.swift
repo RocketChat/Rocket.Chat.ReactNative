@@ -1,4 +1,5 @@
 import UserNotifications
+import Intents
 
 class NotificationService: UNNotificationServiceExtension {
     
@@ -8,25 +9,36 @@ class NotificationService: UNNotificationServiceExtension {
     
     // MARK: - Avatar Fetching
     
-    func fetchAvatar(from payload: Payload, completion: @escaping (UNNotificationAttachment?) -> Void) {
-        guard let username = payload.sender?.username else {
-            completion(nil)
-            return
-        }
-        
+    /// Fetches avatar image data - sender's avatar for DMs, room avatar for groups/channels
+    func fetchAvatarData(from payload: Payload, completion: @escaping (Data?) -> Void) {
         let server = payload.host.removeTrailingSlash()
         guard let credentials = Storage().getCredentials(server: server) else {
             completion(nil)
             return
         }
         
-        // Build authenticated avatar URL (URL encode username for special characters)
-        guard let encodedUsername = username.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
-            completion(nil)
-            return
+        // Build avatar path based on room type
+        let avatarPath: String
+        
+        if payload.type == .direct {
+            // Direct message: use sender's avatar
+            guard let username = payload.sender?.username,
+                  let encodedUsername = username.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
+                completion(nil)
+                return
+            }
+            avatarPath = "/avatar/\(encodedUsername)"
+        } else {
+            // Group/Channel/Livechat: use room avatar
+            guard let rid = payload.rid else {
+                completion(nil)
+                return
+            }
+            avatarPath = "/avatar/room/\(rid)"
         }
-        let avatarPath = "/avatar/\(encodedUsername)?format=png&size=100&rc_token=\(credentials.userToken)&rc_uid=\(credentials.userId)"
-        guard let avatarURL = URL(string: server + avatarPath) else {
+        
+        let fullPath = "\(avatarPath)?format=png&size=100&rc_token=\(credentials.userToken)&rc_uid=\(credentials.userId)"
+        guard let avatarURL = URL(string: server + fullPath) else {
             completion(nil)
             return
         }
@@ -44,25 +56,74 @@ class NotificationService: UNNotificationServiceExtension {
                 completion(nil)
                 return
             }
-            
-            // Save to temp file (UNNotificationAttachment requires file URL)
-            let tempDir = FileManager.default.temporaryDirectory
-            let fileName = "\(username)_avatar.png"
-            let fileURL = tempDir.appendingPathComponent(fileName)
-            
-            do {
-                try data.write(to: fileURL)
-                let attachment = try UNNotificationAttachment(
-                    identifier: "avatar",
-                    url: fileURL,
-                    options: [UNNotificationAttachmentOptionsTypeHintKey: "public.png"]
-                )
-                completion(attachment)
-            } catch {
-                completion(nil)
-            }
+            completion(data)
         }
         task.resume()
+    }
+    
+    // MARK: - Communication Notification
+    
+    /// Updates the notification content with sender avatar using Communication Notifications API
+    func updateNotificationAsCommunication(payload: Payload, avatarData: Data?) {
+        guard let bestAttemptContent = bestAttemptContent else { return }
+        
+        let senderName = payload.sender?.name ?? payload.senderName ?? "Unknown"
+        let senderId = payload.sender?._id ?? ""
+        let senderUsername = payload.sender?.username ?? ""
+        
+        // Create avatar image for the sender
+        var senderImage: INImage? = nil
+        if let data = avatarData {
+            senderImage = INImage(imageData: data)
+        }
+        
+        // Create the sender as an INPerson
+        let sender = INPerson(
+            personHandle: INPersonHandle(value: senderUsername, type: .unknown),
+            nameComponents: nil,
+            displayName: senderName,
+            image: senderImage,
+            contactIdentifier: nil,
+            customIdentifier: senderId
+        )
+        
+        // Determine conversation name (room name for groups, sender name for DMs)
+        let conversationName: String
+        if payload.type == .group, let roomName = payload.name {
+            conversationName = roomName
+        } else {
+            conversationName = senderName
+        }
+        
+        // Create the messaging intent
+        let intent = INSendMessageIntent(
+            recipients: nil,
+            outgoingMessageType: .outgoingMessageText,
+            content: bestAttemptContent.body,
+            speakableGroupName: INSpeakableString(spokenPhrase: conversationName),
+            conversationIdentifier: payload.rid ?? "",
+            serviceName: nil,
+            sender: sender,
+            attachments: nil
+        )
+        
+        // If it's a group chat, set the group avatar (optional, uses sender avatar as fallback)
+        if payload.type == .group {
+            intent.setImage(senderImage, forParameterNamed: \.speakableGroupName)
+        }
+        
+        // Donate the interaction for Siri suggestions
+        let interaction = INInteraction(intent: intent, response: nil)
+        interaction.direction = .incoming
+        interaction.donate(completion: nil)
+        
+        // Update the notification content with the intent
+        do {
+            let updatedContent = try bestAttemptContent.updating(from: intent)
+            self.bestAttemptContent = updatedContent
+        } catch {
+            // Failed to update with intent, will fall back to regular notification
+        }
     }
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
@@ -154,9 +215,7 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent.body = String(format: NSLocalizedString("Incoming call from %@", comment: ""), callerName)
         bestAttemptContent.categoryIdentifier = "VIDEOCONF"
         bestAttemptContent.sound = UNNotificationSound(named: UNNotificationSoundName("ringtone.mp3"))
-        if #available(iOS 15.0, *) {
-            bestAttemptContent.interruptionLevel = .timeSensitive
-        }
+        bestAttemptContent.interruptionLevel = .timeSensitive
         
         contentHandler?(bestAttemptContent)
     }
@@ -185,13 +244,11 @@ class NotificationService: UNNotificationServiceExtension {
             }
         }
         
-        // Fetch avatar and deliver notification
-        fetchAvatar(from: payload) { [weak self] attachment in
+        // Fetch avatar and deliver notification with Communication Notification style
+        fetchAvatarData(from: payload) { [weak self] avatarData in
             guard let self = self else { return }
             
-            if let attachment = attachment {
-                self.bestAttemptContent?.attachments = [attachment]
-            }
+            self.updateNotificationAsCommunication(payload: payload, avatarData: avatarData)
             
             if let bestAttemptContent = self.bestAttemptContent {
                 self.contentHandler?(bestAttemptContent)
