@@ -4,6 +4,7 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 tags:
   - test-13
+  - android-only
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
@@ -31,6 +32,7 @@ tags:
     id: 'rooms-list-view-item-${output.otherUser.username}'
 - tapOn:
     id: header-back
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     notVisible:
       id: 'unread-badge-1'
@@ -54,6 +56,7 @@ tags:
     id: 'rooms-list-view-item-${output.otherUser.username}'
 - tapOn:
     id: header-back
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     notVisible:
       id: 'mention-badge-1'
@@ -78,6 +81,7 @@ tags:
     id: 'rooms-list-view-item-${output.otherUser.username}'
 - tapOn:
     id: header-back
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     notVisible:
       id: 'mention-badge-2'
@@ -102,6 +106,7 @@ tags:
     id: 'rooms-list-view-item-${output.otherUser.username}'
 - tapOn:
     id: header-back
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     notVisible:
       id: 'mention-badge-2'
