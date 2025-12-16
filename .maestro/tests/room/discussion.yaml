@@ -41,8 +41,34 @@ tags:
     id: 'new-message-view-create-discussion'
 - extendedWaitUntil:
     visible:
+      id: 'select-users-view'
+    timeout: 60000
+# Select users in SelectedUsersView
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-search'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-search'
+- inputText: ${output.selectUser}
+- extendedWaitUntil:
+    visible:
+      id: 'select-users-view-item-${output.selectUser}'
+    timeout: 60000
+- tapOn:
+    id: 'select-users-view-item-${output.selectUser}'
+- extendedWaitUntil:
+    visible:
+      id: 'selected-user-${output.selectUser}'
+    timeout: 60000
+# Navigate to CreateDiscussionView by tapping Next
+- tapOn:
+    id: 'selected-users-view-submit'
+- extendedWaitUntil:
+    visible:
       id: 'create-discussion-view'
     timeout: 60000
+# Select channel and enter discussion name
 - tapOn:
     id: 'create-discussion-select-channel'
 - extendedWaitUntil:
@@ -58,49 +84,6 @@ tags:
 - tapOn:
     id: 'multi-select-discussion-name'
 - inputText: ${output.discussionFromNewMessage}
-- tapOn:
-    id: 'create-discussion-select-users'
-- extendedWaitUntil:
-    visible:
-      id: 'action-sheet'
-    timeout: 60000
-- tapOn:
-    id: 'multi-select-search'
-- inputText: ${output.selectUser}
-- extendedWaitUntil:
-    visible:
-      id: 'multi-select-item-${output.selectUser}'
-    timeout: 60000
-- tapOn:
-    id: 'multi-select-item-${output.selectUser}'
-- pressKey: Enter
-- extendedWaitUntil:
-    visible:
-      id: 'multi-select-chip-${output.selectUser}'
-    timeout: 60000
-
-- tapOn:
-    id: 'create-discussion-select-users'
-- extendedWaitUntil:
-    visible:
-      id: 'action-sheet'
-    timeout: 60000
-- tapOn:
-    id: 'multi-select-search'
-- eraseText
-- inputText: 'user'
-- pressKey: Enter
-
-- extendedWaitUntil:
-    visible:
-      id: 'multi-select-chip-${output.selectUser}'
-    timeout: 60000
-- tapOn:
-    id: 'multi-select-chip-${output.selectUser}'
-- extendedWaitUntil:
-    notVisible:
-      id: 'multi-select-chip-${output.selectUser}'
-    timeout: 60000
 - tapOn:
     id: 'create-discussion-submit'
 - extendedWaitUntil:
