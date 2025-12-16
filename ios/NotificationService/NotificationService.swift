@@ -5,6 +5,7 @@ class NotificationService: UNNotificationServiceExtension {
     
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
+    var finalContent: UNNotificationContent?
     var rocketchat: RocketChat?
     
     // MARK: - Avatar Fetching
@@ -12,6 +13,7 @@ class NotificationService: UNNotificationServiceExtension {
     /// Fetches avatar image data - sender's avatar for DMs, room avatar for groups/channels
     func fetchAvatarData(from payload: Payload, completion: @escaping (Data?) -> Void) {
         let server = payload.host.removeTrailingSlash()
+        
         guard let credentials = Storage().getCredentials(server: server) else {
             completion(nil)
             return
@@ -50,9 +52,9 @@ class NotificationService: UNNotificationServiceExtension {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil,
-                  let data = data,
                   let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200 else {
+                  httpResponse.statusCode == 200,
+                  let data = data else {
                 completion(nil)
                 return
             }
@@ -107,7 +109,7 @@ class NotificationService: UNNotificationServiceExtension {
             attachments: nil
         )
         
-        // If it's a group chat, set the group avatar (optional, uses sender avatar as fallback)
+        // If it's a group chat, set the group avatar
         if payload.type == .group {
             intent.setImage(senderImage, forParameterNamed: \.speakableGroupName)
         }
@@ -120,9 +122,11 @@ class NotificationService: UNNotificationServiceExtension {
         // Update the notification content with the intent
         do {
             let updatedContent = try bestAttemptContent.updating(from: intent)
-            self.bestAttemptContent = updatedContent
+            // Store the updated content directly - don't use mutableCopy() as it strips the intent association
+            self.finalContent = updatedContent
         } catch {
-            // Failed to update with intent, will fall back to regular notification
+            // Keep bestAttemptContent as fallback
+            self.finalContent = bestAttemptContent
         }
     }
     
@@ -131,8 +135,9 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            let ejson = (bestAttemptContent.userInfo["ejson"] as? String ?? "").data(using: .utf8)!
-            guard let data = try? (JSONDecoder().decode(Payload.self, from: ejson)) else {
+            guard let ejsonString = bestAttemptContent.userInfo["ejson"] as? String,
+                  let ejson = ejsonString.data(using: .utf8),
+                  let data = try? JSONDecoder().decode(Payload.self, from: ejson) else {
                 contentHandler(bestAttemptContent)
                 return
             }
@@ -250,7 +255,10 @@ class NotificationService: UNNotificationServiceExtension {
             
             self.updateNotificationAsCommunication(payload: payload, avatarData: avatarData)
             
-            if let bestAttemptContent = self.bestAttemptContent {
+            // Deliver finalContent (with intent) if available, otherwise fall back to bestAttemptContent
+            if let content = self.finalContent {
+                self.contentHandler?(content)
+            } else if let bestAttemptContent = self.bestAttemptContent {
                 self.contentHandler?(bestAttemptContent)
             }
         }

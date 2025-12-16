@@ -38,6 +38,10 @@ export const onNotification = (push: INotification): void => {
 			}
 
 			// Handle regular message notifications
+			if (!notification?.rid || !notification?.type || !notification?.host) {
+				store.dispatch(appInit());
+				return;
+			}
 			const { rid, name, sender, type, host, messageId }: IEjson = notification;
 			const types: Record<string, string> = {
 				c: 'channel',

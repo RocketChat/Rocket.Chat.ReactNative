@@ -61,7 +61,7 @@ public class CustomPushNotification {
     
     // Instance fields
     private final Context mContext;
-    private Bundle mBundle;
+    private volatile Bundle mBundle;
     private final NotificationManager notificationManager;
     
     public CustomPushNotification(Context context, Bundle bundle) {

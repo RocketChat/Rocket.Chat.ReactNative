@@ -94,13 +94,24 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
     
     let message = textResponse.userText
     let rocketchat = RocketChat(server: payload.host.removeTrailingSlash())
-    let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+    
+    var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    backgroundTask = UIApplication.shared.beginBackgroundTask {
+      // Expiration handler - called if system needs to reclaim resources
+      if backgroundTask != .invalid {
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = .invalid
+      }
+    }
     
     rocketchat.sendMessage(rid: rid, message: message, threadIdentifier: payload.tmid) { response in
       // Ensure we're on the main thread for UI operations
       DispatchQueue.main.async {
         defer {
-          UIApplication.shared.endBackgroundTask(backgroundTask)
+          if backgroundTask != .invalid {
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = .invalid
+          }
           completionHandler()
         }
         
