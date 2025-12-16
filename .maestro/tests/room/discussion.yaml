@@ -61,7 +61,6 @@ tags:
     visible:
       id: 'selected-user-${output.selectUser}'
     timeout: 60000
-# Navigate to CreateDiscussionView by tapping Next
 - tapOn:
     id: 'selected-users-view-submit'
 - extendedWaitUntil:
