@@ -247,6 +247,7 @@ export type NewMessageStackParamList = {
 		title?: string;
 		buttonText?: string;
 		nextAction?: Function;
+		showSkipText?: boolean;
 	}; // TODO: Change
 	CreateChannelView?: {
 		isTeam?: boolean; // TODO: To check
