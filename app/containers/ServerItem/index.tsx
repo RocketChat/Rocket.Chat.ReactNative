@@ -2,12 +2,16 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import Check from '../Check';
+import Radio from '../Radio';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
-import Touch from '../Touch';
+import Touchable from './Touchable';
+import I18n from '../../i18n';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export { ROW_HEIGHT };
+export { default as ServerItemTouchable } from './Touchable';
+export type { IServerItemTouchableProps } from './Touchable';
 
 export interface IServerItem {
 	item: {
@@ -17,20 +21,30 @@ export interface IServerItem {
 		useRealName?: boolean;
 	};
 	onPress(): void;
-	onLongPress?(): void;
+	onDeletePress?(): void;
 	hasCheck?: boolean;
 }
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
+const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();
+	const { width } = useResponsiveLayout();
+
+	const serverName = item.name || item.id;
+	const accessibilityLabel = `${serverName}, ${item.id}`;
+	const accessibilityHint = onDeletePress
+		? I18n.t('Activate_to_select_server_Available_actions_delete')
+		: I18n.t('Activate_to_select_server');
+
 	return (
-		<Touch
+		<Touchable
 			onPress={onPress}
-			onLongPress={() => onLongPress?.()}
+			onDeletePress={onDeletePress}
 			testID={`server-item-${item.id}`}
-			style={{ backgroundColor: colors.surfaceRoom }}>
+			width={width}
+			accessibilityLabel={accessibilityLabel}
+			accessibilityHint={accessibilityHint}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<Image
@@ -53,9 +67,9 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 						{item.id}
 					</Text>
 				</View>
-				{hasCheck ? <Check /> : null}
+				<Radio check={hasCheck || false} size={24} />
 			</View>
-		</Touch>
+		</Touchable>
 	);
 });
 
