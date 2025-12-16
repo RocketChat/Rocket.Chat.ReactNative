@@ -1,10 +1,33 @@
 import * as Notifications from 'expo-notifications';
 import EJSON from 'ejson';
-import { Platform } from 'react-native';
+import { DeviceEventEmitter, Platform } from 'react-native';
 
 import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
 import { store } from '../../store/auxStore';
 import NativeVideoConfModule from '../../native/NativeVideoConfAndroid';
+
+/**
+ * Sets up listener for video conference actions from native side.
+ * This handles the case when app is in background and user taps Accept/Decline.
+ */
+export const setupVideoConfActionListener = (): (() => void) | undefined => {
+	if (Platform.OS === 'android') {
+		const subscription = DeviceEventEmitter.addListener('VideoConfAction', (actionJson: string) => {
+			try {
+				const data = JSON.parse(actionJson);
+				if (data?.notificationType === 'videoconf') {
+					store.dispatch(deepLinkingClickCallPush(data));
+				}
+			} catch (error) {
+				console.log('Error handling video conf action event:', error);
+			}
+		});
+
+		// Return cleanup function
+		return () => subscription.remove();
+	}
+	return undefined;
+};
 
 /**
  * Check for pending video conference actions from native notification handling.
