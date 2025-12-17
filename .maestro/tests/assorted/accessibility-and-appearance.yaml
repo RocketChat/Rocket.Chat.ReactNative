@@ -200,5 +200,5 @@ tags:
 
 - extendedWaitUntil:
     visible:
-      text: '#general - channel mention'
+      text: 'general - channel mention'
     timeout: 10000
