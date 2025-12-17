@@ -26,6 +26,8 @@ import com.wix.reactnativenotifications.core.notification.IPushNotification
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
+import chat.rocket.reactnative.storage.MMKVKeyManager;
+import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
 
 open class MainApplication : Application(), ReactApplication, INotificationsApplication {
@@ -36,6 +38,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
             PackageList(this).packages.apply {
               add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
+              add(SecureStoragePackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
@@ -53,6 +56,10 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
     super.onCreate()
     SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
+    
+    // Initialize MMKV encryption - reads existing key or generates new one
+    // Must run before React Native starts to avoid race conditions
+    MMKVKeyManager.initialize(this)
 
     // Load the native entry point for the New Architecture
     load()
