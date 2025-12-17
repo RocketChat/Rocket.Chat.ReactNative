@@ -15,7 +15,6 @@ import I18n from '../i18n';
 import { type SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { isIOS } from '../lib/methods/helpers';
 import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 
@@ -120,7 +119,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
 						additionalAccessibilityLabel={showAvatar}
-						accessibilityRole={isIOS ? 'switch' : 'none'}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 				</List.Section>

@@ -7,7 +7,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import I18n from '../../i18n';
-import { isIOS } from '../../lib/methods/helpers';
 import { type AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
@@ -89,7 +88,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Autoplay_gifs'
 						right={renderAutoplayGifs}
 						onPress={toggleAutoplayGifs}
-						accessibilityRole={isIOS ? 'switch' : 'none'}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Item
@@ -97,7 +96,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Mentions_With_@_Symbol'
 						right={renderMentionsWithAtSymbolSwitch}
 						onPress={toggleMentionsWithAtSymbol}
-						accessibilityRole={isIOS ? 'switch' : 'none'}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 					<List.Item
@@ -105,7 +104,7 @@ const AccessibilityAndAppearanceView = () => {
 						title='Rooms_With_#_Symbol'
 						right={renderRoomsWithHashTagSwitch}
 						onPress={toggleRoomsWithHashTag}
-						accessibilityRole={isIOS ? 'switch' : 'none'}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 				</List.Section>
