@@ -14,6 +14,7 @@ import {
 } from '../../../definitions';
 import { compareServerVersion } from './compareServerVersion';
 
+// eslint-disable-next-line complexity
 export const merge = (
 	subscription: ISubscription | IServerSubscription,
 	room?: IRoom | IServerRoom | IOmnichannelRoom
@@ -34,11 +35,6 @@ export const merge = (
 			mergedSubscription.jitsiTimeout = room.jitsiTimeout;
 			mergedSubscription.usernames = room.usernames;
 			mergedSubscription.uids = room.uids;
-			mergedSubscription.abacAttributes = [
-				{ name: 'Chat sensitivity', values: ['Classified', 'Top Secret'] },
-				{ name: 'Country', values: ['US-only'] },
-				{ name: 'Project', values: ['F-038', 'A-072'] }
-			]; // TODO: remove this once we have the actual abac attributes
 		}
 
 		if (compareServerVersion(serverVersion, 'lowerThan', '3.7.0')) {
@@ -69,6 +65,9 @@ export const merge = (
 		mergedSubscription.teamId = room?.teamId;
 		mergedSubscription.teamMain = room?.teamMain;
 		mergedSubscription.federated = room?.federated;
+		if (room && 'abacAttributes' in room) {
+			mergedSubscription.abacAttributes = room.abacAttributes || [];
+		}
 		if (!mergedSubscription.roles || !mergedSubscription.roles.length) {
 			mergedSubscription.roles = [];
 		}

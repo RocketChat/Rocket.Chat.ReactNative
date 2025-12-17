@@ -33,8 +33,8 @@ export const RoomInfoABAC = ({
 
 				<ItemLabel label={I18n.t('ABAC_room_attributes')} />
 				{abacAttributes.map(attribute => (
-					<View key={attribute.name} style={{ gap: 8 }}>
-						<Text style={[styles.abacDescription, { color: colors.fontDefault }]}>{attribute.name}</Text>
+					<View key={attribute.key} style={{ gap: 8 }}>
+						<Text style={[styles.abacDescription, { color: colors.fontDefault }]}>{attribute.key}</Text>
 						<RoomInfoTagContainer>
 							{attribute.values.map(value => (
 								<RoomInfoTag name={value} key={value} />

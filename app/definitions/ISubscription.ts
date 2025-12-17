@@ -116,7 +116,7 @@ export interface ISubscription {
 	uploads: RelationModified<TUploadModel>;
 	disableNotifications?: boolean;
 	federated?: boolean;
-	abacAttributes?: { name: string; values: string[] }[];
+	abacAttributes?: { key: string; values: string[] }[];
 }
 
 export type TSubscriptionModel = ISubscription &

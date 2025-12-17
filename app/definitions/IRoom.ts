@@ -233,6 +233,7 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	isLastOwner?: boolean;
 	federated?: boolean;
+	abacAttributes?: { key: string; values: string[] }[];
 }
 
 export interface IRoomNotifications {
