@@ -21,7 +21,7 @@ platform :ios do
     create_keychain(	
       name: ENV["MATCH_KEYCHAIN_NAME"],	
       password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
-      timeout: 1200,
+      timeout: 0,
       lock_when_sleeps: false,
       unlock: true
     )	
@@ -61,7 +61,11 @@ platform :ios do
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService", platform: "ios")
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp", platform: "ios")
     # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
-    sh "security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" ~/Library/Keychains/#{ENV['MATCH_KEYCHAIN_NAME']}-db"
+    # Allow codesign to access keys without prompting
+    keychain_path = "~/Library/Keychains/#{ENV['MATCH_KEYCHAIN_NAME']}-db"
+    sh "security unlock-keychain -p \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" #{keychain_path}"
+    sh "security set-keychain-settings -lut 3600 #{keychain_path}"
+    sh "security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" #{keychain_path}"
     gym(
       scheme: "RocketChatRN",
       workspace: "RocketChatRN.xcworkspace",
@@ -81,7 +85,11 @@ platform :ios do
       output_path: './'
     )
 
-    sh "security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" ~/Library/Keychains/#{ENV['MATCH_KEYCHAIN_NAME']}-db"
+    # Allow codesign to access keys without prompting
+    keychain_path = "~/Library/Keychains/#{ENV['MATCH_KEYCHAIN_NAME']}-db"
+    sh "security unlock-keychain -p \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" #{keychain_path}"
+    sh "security set-keychain-settings -lut 3600 #{keychain_path}"
+    sh "security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" #{keychain_path} || true"
 
     update_code_signing_settings(
       profile_name: "match AppStore chat.rocket.ios.NotificationService",
