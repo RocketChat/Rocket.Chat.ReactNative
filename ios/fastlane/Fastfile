@@ -61,11 +61,7 @@ platform :ios do
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService", platform: "ios")
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp", platform: "ios")
     # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
-    set_key_partition_list(
-      keychain: ENV["MATCH_KEYCHAIN_NAME"],
-      keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
-      partition_list: "apple-tool:,apple:,codesign:"
-    )
+    sh "security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" ~/Library/Keychains/#{ENV['MATCH_KEYCHAIN_NAME']}-db"
     gym(
       scheme: "RocketChatRN",
       workspace: "RocketChatRN.xcworkspace",
@@ -85,11 +81,7 @@ platform :ios do
       output_path: './'
     )
 
-    set_key_partition_list(
-      keychain: ENV["MATCH_KEYCHAIN_NAME"],
-      keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
-      partition_list: "apple-tool:,apple:,codesign:"
-    )
+    sh "security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" ~/Library/Keychains/#{ENV['MATCH_KEYCHAIN_NAME']}-db"
 
     update_code_signing_settings(
       profile_name: "match AppStore chat.rocket.ios.NotificationService",
