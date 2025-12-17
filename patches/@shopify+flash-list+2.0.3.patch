@@ -1,0 +1,172 @@
+diff --git a/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx b/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
+index 5447a5c..6898649 100644
+--- a/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
++++ b/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
+@@ -97,6 +97,7 @@ const RecyclerViewComponent = <T,>(
+   const firstChildViewRef = useRef<CompatView>(null);
+   const containerViewSizeRef = useRef<RVDimension | undefined>(undefined);
+   const pendingChildIds = useRef<Set<string>>(new Set()).current;
++  const isInitialLayoutHandledRef = useRef(false);
+ 
+   // Track scroll position
+   const scrollY = useRef(new Animated.Value(0)).current;
+@@ -130,6 +131,20 @@ const RecyclerViewComponent = <T,>(
+     scrollAnchorRef
+   );
+ 
++  // Track if we've attempted initial scroll to bottom
++  const hasAttemptedInitialScrollToBottom = useRef(false);
++  const lastDataLengthRef = useRef(recyclerViewManager.getDataLength());
++  
++  // Reset scroll attempt when data length changes significantly (new messages loaded)
++  useMemo(() => {
++    const currentDataLength = recyclerViewManager.getDataLength();
++    if (Math.abs(currentDataLength - lastDataLengthRef.current) > 5) {
++      hasAttemptedInitialScrollToBottom.current = false;
++      isInitialLayoutHandledRef.current = false;
++    }
++    lastDataLengthRef.current = currentDataLength;
++  }, [recyclerViewManager.getDataLength()]);
++
+   // Initialize view holder collection ref
+   const viewHolderCollectionRef = useRef<ViewHolderCollectionRef>(null);
+ 
+@@ -436,10 +451,15 @@ const RecyclerViewComponent = <T,>(
+ 
+   const maintainVisibleContentPositionInternal = useMemo(() => {
+     if (shouldMaintainVisibleContentPosition) {
+-      return {
++      const config: typeof maintainVisibleContentPosition = {
+         ...maintainVisibleContentPosition,
+-        minIndexForVisible: 0,
+       };
++      // For inverted lists starting from bottom, don't set minIndexForVisible
++      // as it interferes with maintaining position of items at the bottom
++      if (!maintainVisibleContentPosition?.startRenderingFromBottom) {
++        config.minIndexForVisible = 0;
++      }
++      return config;
+     }
+     return undefined;
+   }, [maintainVisibleContentPosition, shouldMaintainVisibleContentPosition]);
+@@ -448,6 +468,69 @@ const RecyclerViewComponent = <T,>(
+     recyclerViewManager.getDataLength() > 0 &&
+     (maintainVisibleContentPosition?.startRenderingFromBottom ?? false);
+ 
++  // Handle onContentSizeChange to ensure we scroll to bottom when content size changes
++  // This is more reliable than onLayout for ensuring we're at the bottom
++  const handleContentSizeChange = useCallback(
++    (contentWidth: number, contentHeight: number) => {
++      if (
++        shouldRenderFromBottom &&
++        recyclerViewManager.getDataLength() > 0 &&
++        contentHeight > 0
++      ) {
++        // Try scrolling to bottom, but allow multiple attempts if needed
++        const attemptScroll = () => {
++          if (scrollViewRef.current && handlerMethods) {
++            // Try using scrollToEnd via handlerMethods
++            handlerMethods.scrollToEnd({ animated: false });
++            
++            // Also try direct scrollToEnd as fallback
++            if (scrollViewRef.current.scrollToEnd) {
++              scrollViewRef.current.scrollToEnd({ animated: false });
++            }
++          }
++        };
++        
++        // Use multiple requestAnimationFrame calls to ensure layout is complete
++        requestAnimationFrame(() => {
++          requestAnimationFrame(() => {
++            attemptScroll();
++            // Try one more time after a short delay to handle async layout
++            setTimeout(() => {
++              attemptScroll();
++            }, 50);
++          });
++        });
++        
++        hasAttemptedInitialScrollToBottom.current = true;
++      }
++    },
++    [shouldRenderFromBottom, recyclerViewManager, handlerMethods, scrollViewRef]
++  );
++
++  // Also handle onLayout as a fallback
++  const handleScrollViewLayout = useCallback(() => {
++    if (
++      shouldRenderFromBottom &&
++      recyclerViewManager.getIsFirstLayoutComplete() &&
++      recyclerViewManager.getDataLength() > 0
++    ) {
++      const attemptScroll = () => {
++        if (handlerMethods) {
++          handlerMethods.scrollToEnd({ animated: false });
++        }
++      };
++      
++      // Use requestAnimationFrame to ensure layout is complete
++      requestAnimationFrame(() => {
++        requestAnimationFrame(() => {
++          attemptScroll();
++        });
++      });
++      
++      isInitialLayoutHandledRef.current = true;
++    }
++  }, [shouldRenderFromBottom, recyclerViewManager, handlerMethods]);
++
+   // Create view for measuring bounded size
+   const viewToMeasureBoundedSize = useMemo(() => {
+     return (
+@@ -512,6 +595,8 @@ const RecyclerViewComponent = <T,>(
+           horizontal={horizontal}
+           ref={scrollViewRef}
+           onScroll={animatedEvent}
++          onLayout={handleScrollViewLayout}
++          onContentSizeChange={handleContentSizeChange}
+           maintainVisibleContentPosition={
+             maintainVisibleContentPositionInternal
+           }
+diff --git a/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx b/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
+index 4d99406..5516f1d 100644
+--- a/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
++++ b/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
+@@ -52,6 +52,7 @@ export function useRecyclerViewController<T>(
+   const [_, setRenderId] = useState(0);
+   const pauseOffsetCorrection = useRef(false);
+   const initialScrollCompletedRef = useRef(false);
++  const initialScrollToBottomAttemptedRef = useRef(false);
+   const lastDataLengthRef = useRef(recyclerViewManager.getDataLength());
+   const { setTimeout } = useUnmountAwareTimeout();
+ 
+@@ -569,6 +570,9 @@ export function useRecyclerViewController<T>(
+     const initialScrollIndex =
+       recyclerViewManager.getInitialScrollIndex() ?? -1;
+     const dataLength = data?.length ?? 0;
++    const shouldRenderFromBottom =
++      recyclerViewManager.props.maintainVisibleContentPosition?.startRenderingFromBottom ?? false;
++    
+     if (
+       initialScrollIndex >= 0 &&
+       initialScrollIndex < dataLength &&
+@@ -598,6 +602,19 @@ export function useRecyclerViewController<T>(
+           animated: false,
+           skipFirstItemOffset: false,
+         });
++        
++        // For startRenderingFromBottom, ensure we scroll to actual bottom after layout
++        // This handles variable height items where initial scroll index position might not be accurate
++        if (shouldRenderFromBottom && dataLength > 0 && !initialScrollToBottomAttemptedRef.current) {
++          initialScrollToBottomAttemptedRef.current = true;
++          // Use multiple requestAnimationFrame calls to ensure layout measurements are complete
++          requestAnimationFrame(() => {
++            requestAnimationFrame(() => {
++              // Scroll to end to ensure we're at the actual bottom
++              handlerMethods.scrollToEnd({ animated: false });
++            });
++          });
++        }
+       }, 0);
+     }
+   }, [handlerMethods, recyclerViewManager, setTimeout]);
