@@ -54,6 +54,9 @@ export type RoomsEndpoints = {
 			success: boolean;
 		};
 	};
+	'rooms.invite': {
+		POST: (params: { roomId: string; action: 'accept' | 'reject' }) => void;
+	};
 };
 
 export type TRoomsMediaResponse = {

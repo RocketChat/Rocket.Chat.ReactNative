@@ -66,7 +66,8 @@ import {
 	type TSubscriptionModel,
 	type IEmoji,
 	type TGetCustomEmoji,
-	type RoomType
+	type RoomType,
+	isInviteSubscription
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
@@ -102,6 +103,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import { InvitedRoom } from './components/InvitedRoom';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -327,6 +329,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			roomUpdate.E2EKey !== prevState.roomUpdate.E2EKey
 		) {
 			this.updateE2EEState();
+		}
+
+		// init() is skipped for invite subscriptions. Initialize when invite has been accepted
+		if (prevState.roomUpdate.status === 'INVITED' && roomUpdate.status !== 'INVITED') {
+			this.init();
 		}
 	}
 
@@ -637,6 +644,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (!this.rid) {
 				return;
 			}
+
+			if ('id' in room && isInviteSubscription(room)) {
+				this.setState({ loading: false });
+				return;
+			}
+
 			if (this.tmid) {
 				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
 			} else {
@@ -1561,6 +1574,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let announcement;
 		if ('id' in room) {
 			({ bannerClosed, announcement } = room);
+		}
+
+		if ('id' in room && isInviteSubscription(room)) {
+			return <InvitedRoom room={room} />;
 		}
 
 		if ('encrypted' in room) {
