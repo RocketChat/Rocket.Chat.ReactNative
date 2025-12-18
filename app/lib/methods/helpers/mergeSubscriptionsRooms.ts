@@ -14,6 +14,7 @@ import {
 } from '../../../definitions';
 import { compareServerVersion } from './compareServerVersion';
 
+// eslint-disable-next-line complexity
 export const merge = (
 	subscription: ISubscription | IServerSubscription,
 	room?: IRoom | IServerRoom | IOmnichannelRoom
@@ -112,6 +113,8 @@ export const merge = (
 		mergedSubscription.autoTranslate = false;
 	}
 
+	mergedSubscription.status = mergedSubscription.status ?? undefined;
+	mergedSubscription.inviter = mergedSubscription.inviter ?? undefined;
 	mergedSubscription.blocker = !!mergedSubscription.blocker;
 	mergedSubscription.blocked = !!mergedSubscription.blocked;
 	mergedSubscription.hideMentionStatus = !!mergedSubscription.hideMentionStatus;
