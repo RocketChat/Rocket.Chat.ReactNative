@@ -62,16 +62,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle'> {}
+interface IListTitle extends Pick<IListItemContent, 'title' | 'color' | 'translateTitle' | 'styleTitle' | 'numberOfLines'> {}
 
-const ListTitle = ({ title, color, styleTitle, translateTitle }: IListTitle) => {
+const ListTitle = ({ title, color, styleTitle, translateTitle, numberOfLines }: IListTitle) => {
 	'use memo';
 
 	const { colors } = useTheme();
 	switch (typeof title) {
 		case 'string':
 			return (
-				<Text style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
+				<Text numberOfLines={numberOfLines} style={[styles.title, styleTitle, { color: color || colors.fontDefault }]}>
 					{translateTitle && title ? I18n.t(title) : title}
 				</Text>
 			);
@@ -102,6 +102,7 @@ interface IListItemContent {
 	additionalAcessibilityLabel?: string | boolean;
 	accessibilityRole?: AccessibilityRole;
 	additionalAcessibilityLabelCheck?: boolean;
+	numberOfLines?: number;
 }
 
 const Content = React.memo(
@@ -123,7 +124,8 @@ const Content = React.memo(
 		additionalAcessibilityLabel,
 		additionalAcessibilityLabelCheck,
 		accessibilityRole,
-		accessibilityLabel
+		accessibilityLabel,
+		numberOfLines
 	}: IListItemContent) => {
 		'use memo';
 
@@ -165,7 +167,15 @@ const Content = React.memo(
 				{title || subtitle ? (
 					<View style={styles.textContainer}>
 						<View style={styles.textAlertContainer}>
-							{title ? <ListTitle title={title} color={color} styleTitle={styleTitle} translateTitle={translateTitle} /> : null}
+							{title ? (
+								<ListTitle
+									title={title}
+									color={color}
+									styleTitle={styleTitle}
+									translateTitle={translateTitle}
+									numberOfLines={numberOfLines}
+								/>
+							) : null}
 							{alert ? (
 								<CustomIcon name='info' size={ICON_SIZE} color={colors.buttonBackgroundDangerDefault} style={styles.alertIcon} />
 							) : null}
