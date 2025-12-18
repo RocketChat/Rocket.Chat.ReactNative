@@ -3,7 +3,6 @@ import React
 import ReactAppDependencyProvider
 import Firebase
 import Bugsnag
-import MMKV
 import WatchConnectivity
 
 @UIApplicationMain
@@ -18,14 +17,13 @@ public class AppDelegate: ExpoAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    // IMPORTANT: Initialize MMKV encryption FIRST, before any other initialization
+    // This reads existing encryption key or generates a new one for fresh installs
+    // Must run before Firebase, Bugsnag, and React Native start
+    MMKVKeyManager.initialize()
+    
     FirebaseApp.configure()
     Bugsnag.start()
-    
-    // Initialize MMKV with app group
-    if let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String,
-       let groupDir = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup)?.path {
-      MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: .debug)
-    }
     
     // Initialize notifications
     RNNotifications.startMonitorNotifications()

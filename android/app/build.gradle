@@ -151,6 +151,9 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.9"
     implementation "com.tencent:mmkv-static:1.2.10"
     implementation 'com.facebook.soloader:soloader:0.10.4'
+    
+    // For SecureKeystore (EncryptedSharedPreferences)
+    implementation 'androidx.security:security-crypto:1.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -2,9 +2,7 @@ import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-import * as Keychain from 'react-native-keychain';
-
-import moment from 'moment';
+import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
@@ -37,7 +35,6 @@ import { connect, loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
-import { appGroupSuiteName } from '../lib/methods/appGroup';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
@@ -55,7 +52,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 	const serverRecord = yield getServerById(server);
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	if (!serverRecord || moment(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
+	if (!serverRecord || dayjs(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
 		return;
 	}
 
@@ -279,12 +276,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		if (isIOS) {
-			yield Keychain.setInternetCredentials(server, user.id, user.token, {
-				accessGroup: appGroupSuiteName,
-				securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
-			});
-		}
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
