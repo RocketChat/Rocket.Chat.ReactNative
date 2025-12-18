@@ -1,4 +1,4 @@
-import React, { useState, type ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
@@ -8,39 +8,24 @@ import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import type { IInviteSubscription } from '../../../definitions';
 import Chip from '../../../containers/Chip';
-import { getRoomTitle } from '../../../lib/methods/helpers';
-import { replyRoomInvite } from '../../../lib/methods/replyRoomInvite';
 
 const GAP = 32;
 
 type InvitedRoomProps = {
-	room: IInviteSubscription;
+	title: string;
+	description: string;
+	inviter: IInviteSubscription['inviter'];
+	loading?: boolean;
+	onAccept: () => Promise<void>;
+	onReject: () => Promise<void>;
 };
 
-export const InvitedRoom = ({ room }: InvitedRoomProps): ReactElement => {
+export const InvitedRoom = ({ title, description, inviter, loading, onAccept, onReject }: InvitedRoomProps): ReactElement => {
 	const { colors } = useTheme();
 	const styles = useStyle();
-	const [loading, setLoading] = useState(false);
-
-	const { rid, inviter } = room;
-	const roomName = getRoomTitle(room);
-
-	const title =
-		room.t === 'd' ? I18n.t('invited_room_title_dm') : I18n.t('invited_room_title_channel', { room_name: roomName.slice(0, 30) });
-
-	const description = room.t === 'd' ? I18n.t('invited_room_description_dm') : I18n.t('invited_room_description_channel');
-
-	const handleReply = async (action: 'accept' | 'reject') => {
-		try {
-			setLoading(true);
-			await replyRoomInvite(rid, action);
-		} finally {
-			setLoading(false);
-		}
-	};
 
 	return (
-		<View style={styles.root} testID='room-view-invite-room'>
+		<View style={styles.root}>
 			<View style={styles.container}>
 				<View style={styles.textView}>
 					<View style={styles.icon}>
@@ -52,13 +37,13 @@ export const InvitedRoom = ({ room }: InvitedRoomProps): ReactElement => {
 						<Chip avatar={inviter.username} text={inviter.name || inviter.username} />
 					</Text>
 				</View>
-				<Button title={I18n.t('accept')} loading={loading} onPress={() => handleReply('accept')} />
+				<Button title={I18n.t('accept')} loading={loading} onPress={onAccept} />
 				<Button
 					title={I18n.t('reject')}
 					type='secondary'
 					loading={loading}
 					backgroundColor={colors.surfaceTint}
-					onPress={() => handleReply('reject')}
+					onPress={onReject}
 				/>
 			</View>
 		</View>

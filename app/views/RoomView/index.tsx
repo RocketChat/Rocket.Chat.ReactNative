@@ -104,6 +104,7 @@ import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
 import { InvitedRoom } from './components/InvitedRoom';
+import { getInvitationData } from '../../lib/methods/getInvitationData';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -1577,7 +1578,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		if ('id' in room && isInviteSubscription(room)) {
-			return <InvitedRoom room={room} />;
+			const { title, description, inviter, accept, reject } = getInvitationData(room);
+
+			return (
+				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view-invited'>
+					<InvitedRoom title={title} description={description} inviter={inviter} onAccept={accept} onReject={reject} />
+				</SafeAreaView>
+			);
 		}
 
 		if ('encrypted' in room) {
