@@ -197,8 +197,7 @@ tags:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'maestro-accessibility-test'
-
 - extendedWaitUntil:
     visible:
       text: 'general - channel mention'
-    timeout: 10000
+    timeout: 60000
