@@ -1,0 +1,84 @@
+appId: chat.rocket.reactnative
+name: Private Message
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-13
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.channel = output.utils.createRandomRoom(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- tapOn:
+    id: rooms-list-view-item-${output.channel.name}
+
+# send a private slash command and dismiss it manually
+- tapOn:
+    id: message-composer-input
+- inputText: '/status'
+- extendedWaitUntil:
+    visible:
+      id: autocomplete-item-status
+    timeout: 15000
+- tapOn:
+    id: autocomplete-item-status
+- extendedWaitUntil:
+    notVisible:
+      id: autocomplete-item-status
+    timeout: 15000
+- tapOn:
+    id: message-composer-send
+- extendedWaitUntil:
+    visible:
+      text: 'Status message changed successfully.'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Dismiss message'
+    timeout: 15000
+- tapOn:
+    id: dismiss-private-message
+- extendedWaitUntil:
+    notVisible:
+      text: 'Status message changed successfully.'
+    timeout: 15000
+
+# send a private slash command, go back to room list and return to same channel
+- tapOn:
+    id: message-composer-input
+- inputText: '/status'
+- extendedWaitUntil:
+    visible:
+      id: autocomplete-item-status
+    timeout: 15000
+- tapOn:
+    id: autocomplete-item-status
+- extendedWaitUntil:
+    notVisible:
+      id: autocomplete-item-status
+    timeout: 15000
+- tapOn:
+    id: message-composer-send
+- extendedWaitUntil:
+    visible:
+      text: 'Status message changed successfully.'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Dismiss message'
+    timeout: 15000
+- tapOn:
+    id: header-back
+- tapOn:
+    id: rooms-list-view-item-${output.channel.name}
+- extendedWaitUntil:
+    notVisible:
+      text: 'Status message changed successfully.'
+    timeout: 15000

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, type ViewStyle } from 'react-native';
+import { View, Text, type ViewStyle, Pressable } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
 
@@ -26,6 +26,7 @@ import { getInfoMessage } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import Quote from './Components/Attachments/Quote';
+import { deletePrivateMessages } from '../../lib/methods/deletePrivateMessages';
 import translationLanguages from '../../lib/constants/translationLanguages';
 
 const MessageInner = React.memo((props: IMessageInner) => {
@@ -193,6 +194,14 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 					<MessageAvatar {...props} />
 					<View style={styles.messageContent}>
 						<MessageInner {...props} />
+						{props.private && (
+							<View style={styles.privateIndicator}>
+								<Text style={styles.privateIndicatorText}>{i18n.t('Only_you_can_see_this_message')} • </Text>
+								<Pressable testID='dismiss-private-message' onPress={() => deletePrivateMessages(props.id)}>
+									<Text style={styles.privateMessageDismiss}>{i18n.t('Dismiss_message')}</Text>
+								</Pressable>
+							</View>
+						)}
 					</View>
 					{!props.isHeader ? (
 						<RightIcons
