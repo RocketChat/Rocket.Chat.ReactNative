@@ -2,13 +2,13 @@ import React from 'react';
 import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
-import moment from 'moment';
 import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
 
+import dayjs from '../../lib/dayjs';
 import {
 	getRoutingConfig,
 	getUserInfo,
@@ -1088,10 +1088,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		logEvent(events.ROOM_JOIN);
 		try {
 			const { room } = this.state;
+			const { serverVersion } = this.props;
 
 			if (this.isOmnichannel) {
 				if ('_id' in room) {
-					await takeInquiry(room._id);
+					await takeInquiry(room._id, serverVersion as string);
 				}
 				this.onJoin();
 			} else {
@@ -1353,11 +1354,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
-			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
+			showUnreadSeparator = lastOpen ? dayjs(item.ts).isAfter(lastOpen) : false;
 		} else {
 			showUnreadSeparator =
-				(lastOpen && moment(item.ts).isSameOrAfter(lastOpen) && moment(previousItem.ts).isBefore(lastOpen)) ?? false;
-			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
+				(lastOpen &&
+					(dayjs(item.ts).isSame(lastOpen) || dayjs(item.ts).isAfter(lastOpen)) &&
+					dayjs(previousItem.ts).isBefore(lastOpen)) ??
+				false;
+			if (!dayjs(item.ts).isSame(previousItem.ts, 'day')) {
 				dateSeparator = item.ts;
 			}
 		}
