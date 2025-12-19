@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { memo, useContext } from 'react';
-import { RefreshControl } from 'react-native';
+import React, { memo, useContext, useEffect } from 'react';
+import { BackHandler, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import { FlashList } from '@shopify/flash-list';
