@@ -41,7 +41,7 @@ export interface IUpdatedAtProps {
 
 export interface IWrapperProps {
 	accessibilityLabel: string;
-	avatar: string;
+	avatar?: string;
 	type: string;
 	userId: string | null;
 	rid: string;
@@ -93,8 +93,8 @@ interface IBaseRoomItem extends IRoomItemTouchables {
 export interface IRoomItemContainerProps extends IBaseRoomItem {
 	item: any;
 	id?: string;
-	getRoomTitle: (item: any) => string;
-	getRoomAvatar: (item: any) => string;
+	getRoomTitle: (item: any) => string | undefined;
+	getRoomAvatar: (item: any) => string | undefined;
 	getIsRead?: (item: any) => boolean;
 }
 
@@ -103,7 +103,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	type: SubscriptionType;
 	prid: string;
 	name: string;
-	avatar: string;
+	avatar?: string;
 	testID: string;
 	status: TUserStatus;
 	isGroupChat: boolean;
@@ -149,7 +149,7 @@ export interface ITouchableProps extends IRoomItemTouchables {
 }
 
 export interface IIconOrAvatar {
-	avatar: string;
+	avatar?: string;
 	type: string;
 	rid: string;
 	userId: string | null;

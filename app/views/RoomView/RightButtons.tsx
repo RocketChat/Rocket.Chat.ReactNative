@@ -360,7 +360,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		const { toggleRoomE2EEncryptionPermission } = this.props;
 		const permissions = await hasPermission([toggleRoomE2EEncryptionPermission], rid);
 
-		const canToggleEncryption = permissions[0];
+		const canToggleEncryption = permissions[0] || false;
 		this.setState({ canToggleEncryption });
 	};
 

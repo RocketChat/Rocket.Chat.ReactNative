@@ -165,11 +165,13 @@ const RoomInfoView = (): React.ReactElement => {
 		if (isEmpty(roomUser)) {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
-				const result = await getUserInfo(roomUserId);
-				if (result.success) {
-					const { user } = result;
-					const r = handleRoles(user);
-					setRoomUser({ ...user, roles: r });
+				if (roomUserId) {
+					const result = await getUserInfo(roomUserId);
+					if (result.success) {
+						const { user } = result;
+						const r = handleRoles(user);
+						setRoomUser({ ...user, roles: r });
+					}
 				}
 			} catch {
 				// do nothing
@@ -231,7 +233,7 @@ const RoomInfoView = (): React.ReactElement => {
 			rid: r?.rid,
 			name: getRoomTitle(r),
 			t: roomType,
-			roomUserId: getUidDirectMessage(r)
+			roomUserId: getUidDirectMessage(r || null)
 		};
 
 		if (r?.rid) {

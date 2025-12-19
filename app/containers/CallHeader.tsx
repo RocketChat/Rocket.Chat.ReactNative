@@ -19,7 +19,7 @@ type TCallHeader = {
 	setCam: Function;
 	setMic: Function;
 	title: string;
-	avatar: string;
+	avatar?: string;
 	uid: string;
 	name: string;
 	direct: boolean;

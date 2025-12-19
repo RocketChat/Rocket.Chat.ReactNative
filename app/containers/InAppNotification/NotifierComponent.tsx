@@ -23,7 +23,7 @@ export interface INotifierComponent {
 			message?: { message?: string; msg?: string; t?: string };
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
-		avatar: string;
+		avatar?: string;
 	};
 	isMasterDetail: boolean;
 }

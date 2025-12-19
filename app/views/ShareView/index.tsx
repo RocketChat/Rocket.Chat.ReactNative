@@ -194,7 +194,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					file: item,
 					allowList: mediaAllowList,
 					maxFileSize,
-					permissionToUploadFile
+					permissionToUploadFile: permissionToUploadFile || false
 				});
 				item.canUpload = canUpload;
 				item.error = error;

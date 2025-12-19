@@ -33,7 +33,7 @@ const SelectUsers = ({
 			setUsers(items);
 			return items.map((user: IUser) => ({
 				value: user.name,
-				text: { text: getRoomTitle(user) },
+				text: { text: getRoomTitle(user) || '' },
 				imageUrl: getAvatar(user)
 			}));
 		} catch {
@@ -66,7 +66,7 @@ const SelectUsers = ({
 				onChange={onUserSelect}
 				options={users.map((user: IUser) => ({
 					value: user.name,
-					text: { text: getRoomTitle(user) },
+					text: { text: getRoomTitle(user) || '' },
 					imageUrl: getAvatar(user)
 				}))}
 				placeholder={{ text: I18n.t('Select_Users') }}

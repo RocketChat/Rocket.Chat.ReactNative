@@ -58,7 +58,7 @@ const RoomItemContainer = React.memo(
 
 		return (
 			<RoomItem
-				name={name}
+				name={name || ''}
 				avatar={avatar}
 				isGroupChat={isGroupChat(item)}
 				isRead={isRead}
