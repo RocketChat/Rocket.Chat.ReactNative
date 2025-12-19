@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { type NativeScrollEvent, type NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
 
 const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
-	const [userScrolled, setUserScrolled] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 
 	const maintainVisibleContentPositionConfig = useMemo(
@@ -38,7 +37,6 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			setVisible(true);
 		} else {
 			setVisible(false);
-			setUserScrolled(false);
 		}
 	};
 

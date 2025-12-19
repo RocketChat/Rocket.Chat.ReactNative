@@ -1,6 +1,5 @@
 import { type RefObject } from 'react';
-import { type FlatListProps } from 'react-native';
-import { type FlatList } from 'react-native-gesture-handler';
+import { type FlashListProps, type FlashListRef } from '@shopify/flash-list';
 
 import { type TAnyMessageModel } from '../../../definitions';
 
