@@ -47,6 +47,18 @@ const RoomsListView = memo(function RoomsListView() {
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 
+	useEffect(() => {
+		const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+			if (searchEnabled) {
+				stopSearch();
+				navigation.goBack();
+				return true;
+			}
+			return false;
+		});
+		return () => subscription.remove();
+	}, [searchEnabled]);
+
 	const onPressItem = (item = {} as IRoomItem) => {
 		if (!navigation.isFocused()) {
 			return;
