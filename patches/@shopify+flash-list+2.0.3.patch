@@ -1,0 +1,252 @@
+diff --git a/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx b/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
+index 5447a5c..357179d 100644
+--- a/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
++++ b/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
+@@ -97,6 +97,13 @@ const RecyclerViewComponent = <T,>(
+   const firstChildViewRef = useRef<CompatView>(null);
+   const containerViewSizeRef = useRef<RVDimension | undefined>(undefined);
+   const pendingChildIds = useRef<Set<string>>(new Set()).current;
++  const hasInitialScrolledToBottomRef = useRef(false);
++  const lastDataLengthRef = useRef(0);
++
++  // Track user scroll state
++  const isScrolledByUserRef = useRef(false);
++  const lastScrollOffsetRef = useRef(0);
++  const isUserTouchingRef = useRef(false); // Track if user is actively touching/dragging
+ 
+   // Track scroll position
+   const scrollY = useRef(new Animated.Value(0)).current;
+@@ -229,6 +236,17 @@ const RecyclerViewComponent = <T,>(
+     }
+   });
+ 
++  /**
++   * Helper function to determine if the list is scrolled to the bottom
++   */
++  const isAtBottom = useCallback(
++    (scrollOffset: number, contentSize: number, viewportSize: number): boolean => {
++      const threshold = 50; // pixels tolerance for "at bottom" detection
++      return scrollOffset + viewportSize >= contentSize - threshold;
++    },
++    []
++  );
++
+   /**
+    * Scroll event handler that manages scroll position, velocity, and RTL support
+    */
+@@ -251,6 +269,42 @@ const RecyclerViewComponent = <T,>(
+         );
+       }
+ 
++      // Detect user scroll state changes ONLY when user is actively touching
++      if (isUserTouchingRef.current) {
++        const contentSize = horizontal
++          ? event.nativeEvent.contentSize.width
++          : event.nativeEvent.contentSize.height;
++        const viewportSize = horizontal
++          ? event.nativeEvent.layoutMeasurement.width
++          : event.nativeEvent.layoutMeasurement.height;
++        
++        const atBottom = isAtBottom(scrollOffset, contentSize, viewportSize);
++        const wasScrolledByUser = isScrolledByUserRef.current;
++
++        // Update scroll state based on position
++        if (!atBottom && !wasScrolledByUser) {
++          // User scrolled away from bottom
++          isScrolledByUserRef.current = true;
++          console.log('[FlashList] User scroll state: NOT scrolled by user → Scrolled by user');
++          console.log(`  - Scroll offset: ${scrollOffset.toFixed(2)}px`);
++          console.log(`  - Content size: ${contentSize.toFixed(2)}px`);
++          console.log(`  - Viewport size: ${viewportSize.toFixed(2)}px`);
++          console.log(`  - At bottom: false`);
++          console.log(`  - User touching: true`);
++        } else if (atBottom && wasScrolledByUser) {
++          // User scrolled back to bottom
++          isScrolledByUserRef.current = false;
++          console.log('[FlashList] User scroll state: Scrolled by user → NOT scrolled by user');
++          console.log(`  - Scroll offset: ${scrollOffset.toFixed(2)}px`);
++          console.log(`  - Content size: ${contentSize.toFixed(2)}px`);
++          console.log(`  - Viewport size: ${viewportSize.toFixed(2)}px`);
++          console.log(`  - At bottom: true`);
++          console.log(`  - User touching: true`);
++        }
++
++        lastScrollOffsetRef.current = scrollOffset;
++      }
++
+       velocityTracker.computeVelocity(
+         scrollOffset,
+         recyclerViewManager.getAbsoluteLastScrollOffset(),
+@@ -290,11 +344,38 @@ const RecyclerViewComponent = <T,>(
+       computeFirstVisibleIndexForOffsetCorrection,
+       horizontal,
+       isHorizontalRTL,
++      isAtBottom,
+       recyclerViewManager,
+       velocityTracker,
+     ]
+   );
+ 
++  /**
++   * Handler for when user starts dragging/touching the list
++   */
++  const onScrollBeginDragHandler = useCallback(
++    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
++      isUserTouchingRef.current = true;
++      console.log('[FlashList] User started touching the list');
++      // Call user-provided handler if exists
++      recyclerViewManager.props.onScrollBeginDrag?.(event);
++    },
++    [recyclerViewManager]
++  );
++
++  /**
++   * Handler for when user stops dragging/touching the list
++   */
++  const onScrollEndDragHandler = useCallback(
++    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
++      isUserTouchingRef.current = false;
++      console.log('[FlashList] User stopped touching the list');
++      // Call user-provided handler if exists
++      recyclerViewManager.props.onScrollEndDrag?.(event);
++    },
++    [recyclerViewManager]
++  );
++
+   const parentRecyclerViewContext = useRecyclerViewContext();
+   const recyclerViewId = useId();
+ 
+@@ -436,10 +517,15 @@ const RecyclerViewComponent = <T,>(
+ 
+   const maintainVisibleContentPositionInternal = useMemo(() => {
+     if (shouldMaintainVisibleContentPosition) {
+-      return {
++      const config: typeof maintainVisibleContentPosition = {
+         ...maintainVisibleContentPosition,
+-        minIndexForVisible: 0,
+       };
++      // For inverted lists starting from bottom, don't set minIndexForVisible
++      // as it interferes with maintaining position of items at the bottom
++      if (!maintainVisibleContentPosition?.startRenderingFromBottom) {
++        config.minIndexForVisible = 0;
++      }
++      return config;
+     }
+     return undefined;
+   }, [maintainVisibleContentPosition, shouldMaintainVisibleContentPosition]);
+@@ -448,6 +534,63 @@ const RecyclerViewComponent = <T,>(
+     recyclerViewManager.getDataLength() > 0 &&
+     (maintainVisibleContentPosition?.startRenderingFromBottom ?? false);
+ 
++  // Handle onContentSizeChange to ensure we scroll to bottom on first render
++  // and when data changes significantly (e.g., from 1 to 50 messages)
++  const handleContentSizeChange = useCallback(
++    (contentWidth: number, contentHeight: number) => {
++      const currentDataLength = recyclerViewManager.getDataLength();
++      
++      // Check if this is a significant data change (e.g., 1 message -> 50 messages)
++      // This handles the case where initial DB query returns 1 message, then sync loads 50
++      const isSignificantDataChange = 
++        lastDataLengthRef.current > 0 && 
++        currentDataLength > lastDataLengthRef.current &&
++        (currentDataLength - lastDataLengthRef.current) >= 10;
++      
++      // Reset the flag if we detect a significant data change
++      if (isSignificantDataChange) {
++        hasInitialScrolledToBottomRef.current = false;
++      }
++      
++      lastDataLengthRef.current = currentDataLength;
++      
++      if (
++        shouldRenderFromBottom &&
++        !hasInitialScrolledToBottomRef.current &&
++        currentDataLength > 0 &&
++        contentHeight > 0
++      ) {
++        // Mark as attempted before scrolling to prevent multiple attempts
++        hasInitialScrolledToBottomRef.current = true;
++        
++        // Use requestAnimationFrame to ensure layout measurements are complete
++        // Double RAF ensures we're past the layout phase
++        requestAnimationFrame(() => {
++          requestAnimationFrame(() => {
++            if (handlerMethods) {
++              handlerMethods.scrollToEnd({ animated: false });
++              
++              // One more attempt after a delay to handle cases where
++              // items are still measuring (variable height items)
++              // Use longer delay for significant data changes
++              const delay = isSignificantDataChange ? 150 : 100;
++              setTimeout(() => {
++                if (handlerMethods) {
++                  handlerMethods.scrollToEnd({ animated: false });
++                }
++              }, delay);
++            }
++          });
++        });
++      }
++    },
++    [
++      shouldRenderFromBottom,
++      recyclerViewManager,
++      handlerMethods,
++    ]
++  );
++
+   // Create view for measuring bounded size
+   const viewToMeasureBoundedSize = useMemo(() => {
+     return (
+@@ -512,6 +655,9 @@ const RecyclerViewComponent = <T,>(
+           horizontal={horizontal}
+           ref={scrollViewRef}
+           onScroll={animatedEvent}
++          onScrollBeginDrag={onScrollBeginDragHandler}
++          onScrollEndDrag={onScrollEndDragHandler}
++          onContentSizeChange={handleContentSizeChange}
+           maintainVisibleContentPosition={
+             maintainVisibleContentPositionInternal
+           }
+diff --git a/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx b/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
+index 4d99406..5516f1d 100644
+--- a/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
++++ b/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
+@@ -52,6 +52,7 @@ export function useRecyclerViewController<T>(
+   const [_, setRenderId] = useState(0);
+   const pauseOffsetCorrection = useRef(false);
+   const initialScrollCompletedRef = useRef(false);
++  const initialScrollToBottomAttemptedRef = useRef(false);
+   const lastDataLengthRef = useRef(recyclerViewManager.getDataLength());
+   const { setTimeout } = useUnmountAwareTimeout();
+ 
+@@ -569,6 +570,9 @@ export function useRecyclerViewController<T>(
+     const initialScrollIndex =
+       recyclerViewManager.getInitialScrollIndex() ?? -1;
+     const dataLength = data?.length ?? 0;
++    const shouldRenderFromBottom =
++      recyclerViewManager.props.maintainVisibleContentPosition?.startRenderingFromBottom ?? false;
++    
+     if (
+       initialScrollIndex >= 0 &&
+       initialScrollIndex < dataLength &&
+@@ -598,6 +602,19 @@ export function useRecyclerViewController<T>(
+           animated: false,
+           skipFirstItemOffset: false,
+         });
++        
++        // For startRenderingFromBottom, ensure we scroll to actual bottom after layout
++        // This handles variable height items where initial scroll index position might not be accurate
++        if (shouldRenderFromBottom && dataLength > 0 && !initialScrollToBottomAttemptedRef.current) {
++          initialScrollToBottomAttemptedRef.current = true;
++          // Use multiple requestAnimationFrame calls to ensure layout measurements are complete
++          requestAnimationFrame(() => {
++            requestAnimationFrame(() => {
++              // Scroll to end to ensure we're at the actual bottom
++              handlerMethods.scrollToEnd({ animated: false });
++            });
++          });
++        }
+       }, 0);
+     }
+   }, [handlerMethods, recyclerViewManager, setTimeout]);
