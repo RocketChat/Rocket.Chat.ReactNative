@@ -155,6 +155,8 @@ export const ComposerInput = memo(
 						const text = textRef.current;
 						const newText = `${text.substr(0, start)}@${text.substr(start, end - start)}${text.substr(end)}`;
 						setInput(newText, { start: start + 1, end: start === end ? start + 1 : end + 1 });
+						// todo mention command here
+
 						setAutocompleteParams({ text: '', type: '@' });
 					});
 				});
@@ -214,7 +216,7 @@ export const ComposerInput = memo(
 		const onChangeText: TextInputProps['onChangeText'] = text => {
 			textRef.current = text;
 			debouncedOnChangeText(text);
-			setInput(text, undefined, true);
+			setInput(text);
 		};
 
 		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
