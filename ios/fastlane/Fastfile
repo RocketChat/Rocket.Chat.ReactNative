@@ -136,7 +136,7 @@ platform :ios do
       build_path: "./fastlane/build",
       configuration: "Release",
       derived_data_path: "./fastlane/derived_data",
-      xcargs: "-parallelizeTargets -jobs 4"
+      xcargs: "-parallelizeTargets -jobs 4 ARCHS=arm64"
     )
   end
 
