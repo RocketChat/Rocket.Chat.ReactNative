@@ -187,6 +187,3 @@ export interface IServerSubscription extends IRocketChatRecord {
 
 	department?: unknown;
 }
-
-export const isInviteSubscription = (subscription: ISubscription): subscription is IInviteSubscription =>
-	subscription?.status === 'INVITED' && !!subscription.inviter;

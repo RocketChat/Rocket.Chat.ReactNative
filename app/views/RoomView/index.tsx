@@ -66,8 +66,7 @@ import {
 	type TSubscriptionModel,
 	type IEmoji,
 	type TGetCustomEmoji,
-	type RoomType,
-	isInviteSubscription
+	type RoomType
 } from '../../definitions';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
@@ -105,6 +104,7 @@ import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
+import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
