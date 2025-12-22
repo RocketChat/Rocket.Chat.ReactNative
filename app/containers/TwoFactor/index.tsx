@@ -155,7 +155,6 @@ const TwoFactor = React.memo(() => {
 		<Modal
 			deviceHeight={deviceHeight}
 			deviceWidth={deviceWidth}
-			style={styles.modal}
 			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
 			avoidKeyboard
 			useNativeDriver
