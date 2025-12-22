@@ -42,9 +42,7 @@ const SKIN_TONE_MODIFIERS = [
 	'\u{1F3FF}' // Dark Skin Tone
 ];
 
-const isSkinToneModifier = (unicode: string): boolean => {
-	return SKIN_TONE_MODIFIERS.includes(unicode);
-};
+const isSkinToneModifier = (unicode: string): boolean => SKIN_TONE_MODIFIERS.includes(unicode);
 
 const combineEmojisWithSkinTones = (items: any[]): any[] => {
 	if (!Array.isArray(items) || items.length === 0) return items;
