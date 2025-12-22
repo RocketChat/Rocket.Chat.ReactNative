@@ -52,9 +52,5 @@ export default StyleSheet.create({
 	},
 	containerInput: {
 		marginBottom: 0
-	},
-	modal: {
-		margin: 0,
-		justifyContent: 'center'
 	}
 });
