@@ -34,6 +34,65 @@ interface IMarkdownProps {
 	isTranslated?: boolean;
 }
 
+const SKIN_TONE_MODIFIERS = [
+	'\u{1F3FB}', // Light Skin Tone
+	'\u{1F3FC}', // Medium-Light Skin Tone
+	'\u{1F3FD}', // Medium Skin Tone
+	'\u{1F3FE}', // Medium-Dark Skin Tone
+	'\u{1F3FF}' // Dark Skin Tone
+];
+
+const isSkinToneModifier = (unicode: string): boolean => {
+	return SKIN_TONE_MODIFIERS.includes(unicode);
+};
+
+const combineEmojisWithSkinTones = (items: any[]): any[] => {
+	if (!Array.isArray(items) || items.length === 0) return items;
+
+	const combined: any[] = [];
+	let i = 0;
+
+	while (i < items.length) {
+		const current = items[i];
+
+		if (
+			current?.type === 'EMOJI' &&
+			i + 1 < items.length &&
+			items[i + 1]?.type === 'EMOJI' &&
+			isSkinToneModifier(items[i + 1].unicode)
+		) {
+			combined.push({
+				...current,
+				unicode: current.unicode + items[i + 1].unicode
+			});
+			i += 2;
+		} else {
+			combined.push(current);
+			i += 1;
+		}
+	}
+
+	return combined;
+};
+
+const processBlock = (block: any): any => {
+	if (!block || typeof block !== 'object') return block;
+
+	if (Array.isArray(block.value)) {
+		const processedValue = combineEmojisWithSkinTones(block.value.map((item: any) => processBlock(item)));
+		return { ...block, value: processedValue };
+	}
+
+	if (block.items && Array.isArray(block.items)) {
+		return {
+			...block,
+			items: block.items.map((item: any) => processBlock(item))
+		};
+	}
+
+	return block;
+};
+
 const Markdown: React.FC<IMarkdownProps> = ({
 	msg,
 	md,
@@ -57,6 +116,9 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	}
 
 	if (isEmpty(tokens)) return null;
+
+	const processedTokens = tokens.map(block => processBlock(block));
+
 	return (
 		<View style={{ gap: 2 }}>
 			<MarkdownContext.Provider
@@ -69,7 +131,7 @@ const Markdown: React.FC<IMarkdownProps> = ({
 					getCustomEmoji,
 					onLinkPress
 				}}>
-				{tokens?.map(block => {
+				{processedTokens?.map(block => {
 					switch (block.type) {
 						case 'BIG_EMOJI':
 							return <BigEmoji value={block.value} />;
