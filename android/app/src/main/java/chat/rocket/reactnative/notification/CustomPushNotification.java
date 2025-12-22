@@ -517,8 +517,11 @@ public class CustomPushNotification {
         }
         if (ejson != null && ejson.type != null && !ejson.type.equals("d")) {
             int pos = message.indexOf(":");
-            int start = pos == -1 ? 0 : pos + 2;
-            return message.substring(start);
+            if (pos == -1) {
+                return message;
+            }
+            int start = pos + 2;
+            return start <= message.length() ? message.substring(start) : "";
         }
         return message;
     }

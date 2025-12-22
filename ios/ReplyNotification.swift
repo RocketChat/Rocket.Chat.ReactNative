@@ -88,6 +88,11 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
           let ejsonData = ejsonString.data(using: .utf8),
           let payload = try? JSONDecoder().decode(Payload.self, from: ejsonData),
           let rid = payload.rid else {
+      // Show failure notification to user
+      let content = UNMutableNotificationContent()
+      content.body = "Failed to send reply. Invalid notification data."
+      let request = UNNotificationRequest(identifier: "replyPayloadFailure", content: content, trigger: nil)
+      UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
       completionHandler()
       return
     }
@@ -102,6 +107,7 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
         UIApplication.shared.endBackgroundTask(backgroundTask)
         backgroundTask = .invalid
       }
+      completionHandler()
     }
     
     rocketchat.sendMessage(rid: rid, message: message, threadIdentifier: payload.tmid) { response in
@@ -118,7 +124,7 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
         guard let response = response, response.success else {
           // Show failure notification
           let content = UNMutableNotificationContent()
-          content.body = "Failed to reply message."
+          content.body = "Failed to send reply."
           let request = UNNotificationRequest(identifier: "replyFailure", content: content, trigger: nil)
           UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
           return
