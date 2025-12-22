@@ -90,7 +90,7 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 				</>
 			) : null}
 
-			{['c', 'p'].includes(t) && canInviteUser && !abacAttributes ? (
+			{['c', 'p'].includes(t) && canInviteUser ? (
 				<>
 					<List.Item
 						title='Invite_users'
@@ -103,6 +103,8 @@ export default function ActionsSection({ rid, t, joined, abacAttributes }: IActi
 						testID='room-actions-invite-user'
 						left={() => <List.Icon name='user-add' />}
 						showActionIndicator
+						disabled={!!abacAttributes}
+						disabledReason={abacAttributes ? i18n.t('ABAC_disabled_action_reason') : undefined}
 					/>
 					<List.Separator />
 				</>
