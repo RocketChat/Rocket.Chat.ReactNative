@@ -1089,10 +1089,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		logEvent(events.ROOM_JOIN);
 		try {
 			const { room } = this.state;
+			const { serverVersion } = this.props;
 
 			if (this.isOmnichannel) {
 				if ('_id' in room) {
-					await takeInquiry(room._id);
+					await takeInquiry(room._id, serverVersion as string);
 				}
 				this.onJoin();
 			} else {
