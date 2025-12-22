@@ -5,12 +5,6 @@
 #import "SecureStorage.h"
 #import "MMKVKeyManager.h"
 #import "Shared/RocketChat/MMKVBridge.h"
-#import <react-native-notifications/RNNotificationEventHandler.h>
-#import <react-native-notifications/RNNotificationCenter.h>
-#import <react-native-notifications/RCTConvert+RNNotifications.h>
-#import <react-native-notifications/RNEventEmitter.h>
-#import <react-native-notifications/RNNotificationParser.h>
-#import <RNNotifications.h>
 #import <RNBootSplash.h>
 #import <MobileCrypto/RSACrypto.h>
 #import <MobileCrypto/AESCrypto.h>
