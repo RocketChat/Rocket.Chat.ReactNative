@@ -27,8 +27,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import com.wix.reactnativenotifications.core.NotificationIntentAdapter;
-
 public class ReplyBroadcast extends BroadcastReceiver {
     private Context mContext;
     private Bundle bundle;
@@ -43,7 +41,14 @@ public class ReplyBroadcast extends BroadcastReceiver {
             }
 
             mContext = context;
-            bundle = NotificationIntentAdapter.extractPendingNotificationDataFromIntent(intent);
+            // Extract bundle directly from intent extras
+            bundle = intent.getBundleExtra("pushNotification");
+            if (bundle == null) {
+                bundle = intent.getExtras();
+            }
+            if (bundle == null) {
+                return;
+            }
             notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             String notId = bundle.getString("notId");
@@ -79,6 +84,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         Request request = new Request.Builder()
                 .header("x-auth-token", ejson.token())
                 .header("x-user-id", ejson.userId())
+                .header("User-Agent", NotificationHelper.getUserAgent())
                 .url(String.format("%s/api/v1/chat.sendMessage", serverURL))
                 .post(body)
                 .build();

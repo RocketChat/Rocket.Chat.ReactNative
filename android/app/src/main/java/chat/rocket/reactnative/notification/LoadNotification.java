@@ -126,6 +126,7 @@ public class LoadNotification {
         Request request = new Request.Builder()
                 .header("x-user-id", userId)
                 .header("x-auth-token", userToken)
+                .header("User-Agent", NotificationHelper.getUserAgent())
                 .url(urlBuilder.addQueryParameter("id", messageId).build())
                 .build();
         
