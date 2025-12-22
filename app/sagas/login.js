@@ -31,14 +31,15 @@ import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
-import { connect, loginWithPassword, login } from '../lib/services/connect';
-import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
+import { loginWithPassword, login } from '../lib/services/connect';
+import { saveUserProfile, registerPushToken, getUsersRoles, getCustomUserStatus } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
+import { setCustomUserStatus } from '../actions/customUserStatus';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -223,6 +224,17 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const fetchCustomUserStatus = function* fetchCustomUserStatusFork() {
+	try {
+		const customUserStatus = yield getCustomUserStatus();
+		if (customUserStatus.length) {
+			yield put(setCustomUserStatus(customUserStatus));
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
@@ -239,6 +251,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield fork(fetchCustomUserStatus);
 
 		setLanguage(user?.language);
 

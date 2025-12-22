@@ -86,6 +86,7 @@ export const ENCRYPTION = createRequestTypes('ENCRYPTION', [
 
 export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET', 'UPDATE']);
 export const ROLES = createRequestTypes('ROLES', ['SET', 'UPDATE', 'REMOVE']);
+export const CUSTOM_USER_STATUS = createRequestTypes('CUSTOM_USER_STATUS', ['SET']);
 export const USERS_ROLES = createRequestTypes('USERS_ROLES', ['SET']);
 export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 	'HANDLE_INCOMING_WEBSOCKET_MESSAGES',
