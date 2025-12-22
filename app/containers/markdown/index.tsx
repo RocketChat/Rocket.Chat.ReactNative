@@ -42,7 +42,62 @@ const SKIN_TONE_MODIFIERS = [
 	'\u{1F3FF}' // Dark Skin Tone
 ];
 
+const ZERO_WIDTH_JOINER = '\u200D';
+
 const isSkinToneModifier = (unicode: string): boolean => SKIN_TONE_MODIFIERS.includes(unicode);
+
+const startsWithEmojiModifier = (text: string): boolean => {
+	if (!text) return false;
+	
+	for (const tone of SKIN_TONE_MODIFIERS) {
+		if (text.startsWith(tone)) return true;
+	}
+	
+	return text.startsWith(ZERO_WIDTH_JOINER);
+};
+
+const extractEmojiModifiers = (text: string): { modifiers: string; remaining: string } => {
+	let modifiers = '';
+	let remaining = text;
+	
+	while (remaining.length > 0) {
+		let matched = false;
+		
+		for (const tone of SKIN_TONE_MODIFIERS) {
+			if (remaining.startsWith(tone)) {
+				modifiers += tone;
+				remaining = remaining.slice(tone.length);
+				matched = true;
+				break;
+			}
+		}
+		
+		if (!matched) {
+			if (remaining.startsWith(ZERO_WIDTH_JOINER)) {
+				modifiers += ZERO_WIDTH_JOINER;
+				remaining = remaining.slice(ZERO_WIDTH_JOINER.length);
+				matched = true;
+			}
+		}
+		
+		if (!matched) {
+			const char = remaining.charAt(0);
+			const codePoint = char.codePointAt(0);
+			if (codePoint && (
+				(codePoint >= 0x2600 && codePoint <= 0x27BF) || // Misc symbols
+				(codePoint >= 0x1F300 && codePoint <= 0x1F9FF) || // Emoji ranges
+				(codePoint >= 0xFE00 && codePoint <= 0xFE0F) // Variation selectors
+			)) {
+				modifiers += char;
+				remaining = remaining.slice(char.length);
+			} else {
+				break;
+			}
+		}
+	}
+	
+	return { modifiers, remaining };
+};
 
 const combineEmojisWithSkinTones = (items: any[]): any[] => {
 	if (!Array.isArray(items) || items.length === 0) return items;
@@ -56,6 +111,33 @@ const combineEmojisWithSkinTones = (items: any[]): any[] => {
 		if (
 			current?.type === 'EMOJI' &&
 			i + 1 < items.length &&
+			items[i + 1]?.type === 'PLAIN_TEXT'
+		) {
+			const nextText = items[i + 1].value;
+			
+			if (startsWithEmojiModifier(nextText)) {
+				const { modifiers, remaining } = extractEmojiModifiers(nextText);
+				
+				combined.push({
+					...current,
+					unicode: current.unicode + modifiers
+				});
+				
+				if (remaining) {
+					combined.push({
+						type: 'PLAIN_TEXT',
+						value: remaining
+					});
+				}
+				
+				i += 2;
+				continue;
+			}
+		}
+		
+		if (
+			current?.type === 'EMOJI' &&
+			i + 1 < items.length &&
 			items[i + 1]?.type === 'EMOJI' &&
 			isSkinToneModifier(items[i + 1].unicode)
 		) {
@@ -64,10 +146,11 @@ const combineEmojisWithSkinTones = (items: any[]): any[] => {
 				unicode: current.unicode + items[i + 1].unicode
 			});
 			i += 2;
-		} else {
-			combined.push(current);
-			i += 1;
+			continue;
 		}
+		
+		combined.push(current);
+		i += 1;
 	}
 
 	return combined;
