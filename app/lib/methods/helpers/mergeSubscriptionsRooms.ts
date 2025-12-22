@@ -14,6 +14,7 @@ import {
 } from '../../../definitions';
 import { compareServerVersion } from './compareServerVersion';
 
+// eslint-disable-next-line complexity
 export const merge = (
 	subscription: ISubscription | IServerSubscription,
 	room?: IRoom | IServerRoom | IOmnichannelRoom
@@ -101,6 +102,10 @@ export const merge = (
 		}
 		if (room && 'usersCount' in room) {
 			mergedSubscription.usersCount = room.usersCount;
+		}
+
+		if (room && 'federation' in room) {
+			mergedSubscription.federation = room.federation;
 		}
 	}
 

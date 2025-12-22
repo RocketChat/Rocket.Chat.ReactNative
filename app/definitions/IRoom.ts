@@ -163,7 +163,11 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	username?: string;
 	nickname?: string;
-	federation?: any;
+	federation?: {
+		version: number;
+		mrid: string;
+		origin: string;
+	};
 	roomsCount?: number;
 
 	u: Pick<IUser, '_id' | 'username' | 'name'>;

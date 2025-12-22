@@ -102,7 +102,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
-import { isRoomFederated } from '../../lib/methods/isRoomFederated';
+import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../lib/methods/isRoomFederated';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -1336,8 +1336,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	getText = () => this.messageComposerRef.current?.getText();
 
-	getFederatedFooterDescription = () => {
+	getFederatedFooterDescription = (room: IRoomFederated) => {
 		const { isFederationEnabled, isFederationModuleEnabled } = this.props;
+
+		if (!isRoomNativeFederated(room)) {
+			return I18n.t('Federation_Matrix_room_description_invalid_version');
+		}
 
 		if (!isFederationEnabled) {
 			return I18n.t('Federation_Matrix_room_description_disabled');
@@ -1521,7 +1525,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		if ('id' in room && isRoomFederated(room)) {
-			const description = this.getFederatedFooterDescription();
+			const description = this.getFederatedFooterDescription(room);
 
 			if (description) {
 				return (

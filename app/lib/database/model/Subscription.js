@@ -153,6 +153,8 @@ export default class Subscription extends Model {
 
 	@field('federated') federated;
 
+	@json('federation', sanitizer) federation;
+
 	asPlain() {
 		return {
 			_id: this._id,
@@ -219,7 +221,8 @@ export default class Subscription extends Model {
 			usersCount: this.usersCount,
 			source: this.source,
 			disableNotifications: this.disableNotifications,
-			federated: this.federated
+			federated: this.federated,
+			federation: this.federation
 		};
 	}
 }
