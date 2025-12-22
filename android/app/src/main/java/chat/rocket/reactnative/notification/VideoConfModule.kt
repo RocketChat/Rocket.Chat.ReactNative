@@ -4,6 +4,8 @@ import android.content.Context
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.modules.core.DeviceEventManagerModule
+import java.lang.ref.WeakReference
 
 /**
  * Native module to expose video conference notification actions to JavaScript.
@@ -14,9 +16,20 @@ class VideoConfModule(reactContext: ReactApplicationContext) : NativeVideoConfSp
     companion object {
         private const val PREFS_NAME = "RocketChatPrefs"
         private const val KEY_VIDEO_CONF_ACTION = "videoConfAction"
+        private const val EVENT_VIDEO_CONF_ACTION = "VideoConfAction"
+
+        private var reactContextRef: WeakReference<ReactApplicationContext>? = null
 
         /**
-         * Stores a video conference action.
+         * Sets the React context reference for event emission.
+         */
+        @JvmStatic
+        fun setReactContext(context: ReactApplicationContext) {
+            reactContextRef = WeakReference(context)
+        }
+
+        /**
+         * Stores a video conference action and emits event to JS if app is running.
          * Called from native code when user interacts with video conf notification.
          */
         @JvmStatic
@@ -25,7 +38,32 @@ class VideoConfModule(reactContext: ReactApplicationContext) : NativeVideoConfSp
                 .edit()
                 .putString(KEY_VIDEO_CONF_ACTION, actionJson)
                 .apply()
+
+            // Emit event to JS if React context is available (app is running)
+            emitVideoConfActionEvent(actionJson)
         }
+
+        /**
+         * Emits a video conf action event to JavaScript.
+         */
+        private fun emitVideoConfActionEvent(actionJson: String) {
+            try {
+                reactContextRef?.get()?.let { context ->
+                    if (context.hasActiveReactInstance()) {
+                        context
+                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                            .emit(EVENT_VIDEO_CONF_ACTION, actionJson)
+                    }
+                }
+            } catch (e: Exception) {
+                // Ignore - React context not available
+            }
+        }
+    }
+
+    init {
+        // Store reference for event emission
+        setReactContext(reactApplicationContext)
     }
 
     /**
