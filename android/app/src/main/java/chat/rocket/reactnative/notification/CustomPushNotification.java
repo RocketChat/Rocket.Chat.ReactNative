@@ -379,10 +379,27 @@ public class CustomPushNotification {
         Boolean notificationLoaded = mBundle.getBoolean("notificationLoaded", false);
         Ejson ejson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
 
+        // Determine the correct title based on notification type
+        String notificationTitle = title;
+        if (ejson != null && ejson.type != null) {
+            if ("p".equals(ejson.type) || "c".equals(ejson.type)) {
+                // For groups/channels, use room name if available, otherwise fall back to title
+                notificationTitle = (ejson.name != null && !ejson.name.isEmpty()) ? ejson.name : title;
+            } else if ("d".equals(ejson.type)) {
+                // For direct messages, use title (sender name from server)
+                notificationTitle = title;
+            } else if ("l".equals(ejson.type)) {
+                // For omnichannel, use sender name if available, otherwise fall back to title
+                notificationTitle = (ejson.sender != null && ejson.sender.name != null && !ejson.sender.name.isEmpty()) 
+                    ? ejson.sender.name : title;
+            }
+        }
+
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[buildNotification] notId=" + notId);
             Log.d(TAG, "[buildNotification] notificationLoaded=" + notificationLoaded);
             Log.d(TAG, "[buildNotification] title=" + (title != null ? "[present]" : "[null]"));
+            Log.d(TAG, "[buildNotification] notificationTitle=" + (notificationTitle != null ? "[present]" : "[null]"));
             Log.d(TAG, "[buildNotification] message length=" + (message != null ? message.length() : 0));
         }
 
@@ -406,7 +423,7 @@ public class CustomPushNotification {
         }
 
         notification
-                .setContentTitle(title)
+                .setContentTitle(notificationTitle)
                 .setContentText(message)
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_HIGH)
@@ -562,7 +579,23 @@ public class CustomPushNotification {
             }
 
             String title = bundle.getString("title");
-            messageStyle.setConversationTitle(title);
+            // Determine the correct conversation title based on notification type
+            Ejson bundleEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+            String conversationTitle = title;
+            if (bundleEjson != null && bundleEjson.type != null) {
+                if ("p".equals(bundleEjson.type) || "c".equals(bundleEjson.type)) {
+                    // For groups/channels, use room name if available, otherwise fall back to title
+                    conversationTitle = (bundleEjson.name != null && !bundleEjson.name.isEmpty()) ? bundleEjson.name : title;
+                } else if ("d".equals(bundleEjson.type)) {
+                    // For direct messages, use title (sender name from server)
+                    conversationTitle = title;
+                } else if ("l".equals(bundleEjson.type)) {
+                    // For omnichannel, use sender name if available, otherwise fall back to title
+                    conversationTitle = (bundleEjson.sender != null && bundleEjson.sender.name != null && !bundleEjson.sender.name.isEmpty()) 
+                        ? bundleEjson.sender.name : title;
+                }
+            }
+            messageStyle.setConversationTitle(conversationTitle);
 
             if (bundles != null) {
                 for (Bundle data : bundles) {

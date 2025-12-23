@@ -170,7 +170,6 @@ class NotificationService: UNNotificationServiceExtension {
                 if let messageId = data.messageId {
                     self.rocketchat?.getPushWithId(messageId) { notification in
                         if let notification = notification {
-                            self.bestAttemptContent?.title = notification.title
                             self.bestAttemptContent?.body = notification.text
                             
                             // Update ejson with full payload from server for correct navigation
@@ -226,6 +225,25 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processPayload(payload: Payload) {
+        // Set notification title based on payload type
+        let senderName = payload.sender?.name ?? payload.senderName ?? "Unknown"
+        if let roomType = payload.type {
+            switch roomType {
+            case .group, .channel:
+                // For groups/channels, use room name if available, otherwise fall back to sender name
+                bestAttemptContent?.title = payload.name ?? senderName
+            case .direct:
+                // For direct messages, use sender name
+                bestAttemptContent?.title = senderName
+            case .livechat:
+                // For omnichannel, use sender name
+                bestAttemptContent?.title = payload.sender?.name ?? senderName
+            }
+        } else {
+            // Fallback to sender name if type is not available
+            bestAttemptContent?.title = senderName
+        }
+        
         // If is a encrypted message
         if payload.messageType == .e2e {
             if let rid = payload.rid {

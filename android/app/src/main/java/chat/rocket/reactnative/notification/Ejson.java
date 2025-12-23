@@ -42,6 +42,7 @@ public class Ejson {
     String notificationType;
     String messageType;
     String senderName;
+    String name; // Room name for groups/channels
     String msg;
     Integer status; // For video conf: 0=incoming, 4=cancelled
 
