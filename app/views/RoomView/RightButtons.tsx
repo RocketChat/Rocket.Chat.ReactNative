@@ -479,6 +479,10 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return null;
 		}
 
+		if (status === 'INVITED') {
+			return null;
+		}
+
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
 				return (
