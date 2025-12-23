@@ -354,7 +354,7 @@
   "Favorites": "Favorites",
   "Federation_Matrix_room_description_disabled": "Federation is currently disabled on this workspace",
   "Federation_Matrix_room_description_invalid_version": "This room was created by an old Federation version and it's blocked indeterminately.",
-  "Federation_Matrix_room_description_missing_module": "Join federated rooms is a Premium feature",
+  "Federation_Matrix_room_description_missing_module": "Joining federated rooms is a Premium feature",
   "Fetch_image_from_URL": "Fetch image from URL",
   "Field_are_required": "{{field}} are required",
   "Field_is_required": "{{field}} is required",
