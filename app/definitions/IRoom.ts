@@ -167,6 +167,7 @@ export interface IServerRoom extends IRocketChatRecord {
 		version: number;
 		mrid: string;
 		origin: string;
+		peer?: string;
 	};
 	roomsCount?: number;
 
