@@ -23,7 +23,9 @@ export const onNotification = (push: INotification): void => {
 		if (push?.payload?.ejson) {
 			try {
 				const notification = EJSON.parse(push.payload.ejson);
-				store.dispatch(deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' }));
+				store.dispatch(
+					deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' })
+				);
 				return;
 			} catch (e) {
 				console.warn('Failed to parse video conf notification:', e);
