@@ -24,9 +24,6 @@ public class AppDelegate: ExpoAppDelegate {
     
     FirebaseApp.configure()
     Bugsnag.start()
-    
-    // Initialize notifications
-    RNNotifications.startMonitorNotifications()
     ReplyNotification.configure()
       
     let delegate = ReactNativeDelegate()
@@ -59,19 +56,6 @@ public class AppDelegate: ExpoAppDelegate {
     watchConnection = WatchConnection(session: WCSession.default)
 
     return result
-  }
-
-  // Remote Notification handling
-  public override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    RNNotifications.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
-  }
-  
-  public override func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    RNNotifications.didFailToRegisterForRemoteNotificationsWithError(error)
-  }
-  
-  public override func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-    RNNotifications.didReceiveBackgroundNotification(userInfo, withCompletionHandler: completionHandler)
   }
 
   // Linking API
