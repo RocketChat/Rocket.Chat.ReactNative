@@ -102,6 +102,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import { isRoomFederated } from '../../lib/methods/isRoomFederated';
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
@@ -1366,6 +1367,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
+		const federated = 'id' in room && isRoomFederated(room);
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
@@ -1433,7 +1435,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					Message_GroupingPeriod={Message_GroupingPeriod}
 					timeFormat={Message_TimeFormat}
 					useRealName={useRealName}
-					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
+					isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
