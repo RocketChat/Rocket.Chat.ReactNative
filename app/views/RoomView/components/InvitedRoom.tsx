@@ -34,7 +34,7 @@ export const InvitedRoom = ({ title, description, inviter, loading, onAccept, on
 					<Text style={styles.title}>{title}</Text>
 					<Text style={styles.description}>{description}</Text>
 					<View style={styles.username}>
-						<Chip avatar={inviter.username} text={inviter.name || inviter.username} />
+						<Chip avatar={inviter.username} text={inviter.name || inviter.username} fullWidth />
 					</View>
 				</View>
 				<Button title={I18n.t('accept')} loading={loading} onPress={onAccept} />
