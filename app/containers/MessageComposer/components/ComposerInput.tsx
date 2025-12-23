@@ -190,7 +190,7 @@ export const ComposerInput = memo(
 			}
 
 			if (isAndroid) {
-				inputRef.current?.setValue(text);
+				inputRef.current?.setText(text);
 			} else {
 				inputRef.current?.setNativeProps?.({ text }); // keep TextInput path
 			}
