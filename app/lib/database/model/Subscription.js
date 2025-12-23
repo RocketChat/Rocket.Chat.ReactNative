@@ -155,6 +155,12 @@ export default class Subscription extends Model {
 
 	@json('abac_attributes', sanitizer) abacAttributes;
 
+	@json('federation', sanitizer) federation;
+
+	@field('status') status;
+
+	@json('inviter', sanitizer) inviter;
+
 	asPlain() {
 		return {
 			_id: this._id,
@@ -222,7 +228,10 @@ export default class Subscription extends Model {
 			source: this.source,
 			disableNotifications: this.disableNotifications,
 			federated: this.federated,
-			abacAttributes: this.abacAttributes
+			abacAttributes: this.abacAttributes,
+			federation: this.federation,
+			status: this.status,
+			inviter: this.inviter
 		};
 	}
 }

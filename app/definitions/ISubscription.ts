@@ -117,6 +117,17 @@ export interface ISubscription {
 	disableNotifications?: boolean;
 	federated?: boolean;
 	abacAttributes?: { key: string; values: string[] }[];
+	federation?: {
+		version: number;
+		mrid: string;
+		origin: string;
+	};
+	inviter?: Required<Pick<IUser, '_id' | 'username'>> & Pick<IUser, 'name'>;
+}
+
+export interface IInviteSubscription extends ISubscription {
+	status: 'INVITED';
+	inviter: NonNullable<ISubscription['inviter']>;
 }
 
 export type TSubscriptionModel = ISubscription &

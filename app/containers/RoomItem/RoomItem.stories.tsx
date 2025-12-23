@@ -191,3 +191,10 @@ export const OmnichannelIcon = () => (
 		<RoomItem type='l' sourceType={{ type: 'other' }} />
 	</>
 );
+
+export const InvitedRoom = () => (
+	<>
+		<RoomItem isInvited />
+		<RoomItem isInvited displayMode={DisplayMode.Condensed} />
+	</>
+);

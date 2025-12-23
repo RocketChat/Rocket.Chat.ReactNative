@@ -337,7 +337,12 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'subscriptions',
-					columns: [{ name: 'abac_attributes', type: 'string', isOptional: true }]
+					columns: [
+						{ name: 'abac_attributes', type: 'string', isOptional: true },
+						{ name: 'federation', type: 'string', isOptional: true },
+						{ name: 'status', type: 'string', isOptional: true },
+						{ name: 'inviter', type: 'string', isOptional: true }
+					]
 				})
 			]
 		}

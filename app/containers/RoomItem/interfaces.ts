@@ -108,6 +108,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	testID: string;
 	status: TUserStatus;
 	isGroupChat: boolean;
+	isInvited?: boolean;
 	isRead: boolean;
 	teamMain: boolean;
 	date: string;

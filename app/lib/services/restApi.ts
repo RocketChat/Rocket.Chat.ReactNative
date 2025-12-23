@@ -1100,6 +1100,8 @@ export function getUserInfo(userId: string) {
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
 
+export const sendInvitationReply = (roomId: string, action: 'accept' | 'reject') => sdk.post('rooms.invite', { roomId, action });
+
 export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
 	sdk.post('video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });
 
