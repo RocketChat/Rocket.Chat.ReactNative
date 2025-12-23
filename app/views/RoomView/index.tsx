@@ -544,6 +544,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
+					abacAttributes={iSubRoom.abacAttributes}
 					disabled={isInviteSubscription(iSubRoom)}
 				/>
 			),
