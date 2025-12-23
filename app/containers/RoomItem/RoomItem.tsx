@@ -16,6 +16,8 @@ import { type IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { CustomIcon } from '../CustomIcon';
+import { useTheme } from '../../theme';
 
 const RoomItem = ({
 	rid,
@@ -53,10 +55,12 @@ const RoomItem = ({
 	displayMode,
 	sourceType,
 	hideMentionStatus,
-	accessibilityDate
+	accessibilityDate,
+	isInvited
 }: IRoomItemProps) => {
 	'use memo';
 
+	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
@@ -137,6 +141,15 @@ const RoomItem = ({
 								hideMentionStatus={hideMentionStatus}
 								hideUnreadStatus={hideUnreadStatus}
 							/>
+							{isInvited ? (
+								<CustomIcon
+									size={24}
+									name='mail'
+									role='status'
+									accessibilityLabel={I18n.t('Invited')}
+									color={colors.badgeBackgroundLevel2}
+								/>
+							) : null}
 						</View>
 						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
 					</>

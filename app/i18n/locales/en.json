@@ -417,6 +417,7 @@
   "Invite_user_to_join_channel_all_from": "Invite all users from [#channel] to join this channel",
   "Invite_user_to_join_channel_all_to": "Invite all users from this channel to join [#channel]",
   "Invite_users": "Invite users",
+  "Invited": "Invited",
   "invited_room_description_channel": "You've been invited by",
   "invited_room_description_dm": "You've been invited to have a conversation with",
   "invited_room_title_channel": "Invitation to join {{room_name}}",
