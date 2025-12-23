@@ -169,6 +169,15 @@ const RoomItem = ({
 							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
+							{isInvited ? (
+								<CustomIcon
+									size={24}
+									name='mail'
+									role='status'
+									accessibilityLabel={I18n.t('Invited')}
+									color={colors.badgeBackgroundLevel2}
+								/>
+							) : null}
 
 							<View style={styles.wrapUpdatedAndBadge}>
 								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
