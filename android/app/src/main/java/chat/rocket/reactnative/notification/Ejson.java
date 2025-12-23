@@ -7,7 +7,7 @@ import com.tencent.mmkv.MMKV;
 
 import java.math.BigInteger;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
@@ -85,11 +85,11 @@ public class Ejson {
                 return null;
             }
             try {
-                avatarPath = "/avatar/" + URLEncoder.encode(sender.username, StandardCharsets.UTF_8);
+                avatarPath = "/avatar/" + URLEncoder.encode(sender.username, "UTF-8");
                 if (BuildConfig.DEBUG) {
                     Log.d(TAG, "Generated avatar URI for user: " + sender.username);
                 }
-            } catch (Exception e) {
+            } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, "Failed to encode username", e);
                 return null;
             }
@@ -100,11 +100,11 @@ public class Ejson {
                 return null;
             }
             try {
-                avatarPath = "/avatar/room/" + URLEncoder.encode(rid, StandardCharsets.UTF_8);
+                avatarPath = "/avatar/room/" + URLEncoder.encode(rid, "UTF-8");
                 if (BuildConfig.DEBUG) {
                     Log.d(TAG, "Generated avatar URI for room: " + rid);
                 }
-            } catch (Exception e) {
+            } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, "Failed to encode rid", e);
                 return null;
             }
