@@ -70,7 +70,6 @@ class NotificationService: UNNotificationServiceExtension {
         guard let bestAttemptContent = bestAttemptContent else { return }
         
         let senderName = payload.sender?.name ?? payload.senderName ?? "Unknown"
-        let senderId = payload.sender?._id ?? ""
         let senderUsername = payload.sender?.username ?? ""
         
         // Create avatar image for the sender
@@ -86,31 +85,43 @@ class NotificationService: UNNotificationServiceExtension {
             displayName: senderName,
             image: senderImage,
             contactIdentifier: nil,
-            customIdentifier: senderId
+            customIdentifier: nil
         )
         
-        // Determine conversation name (room name for groups, sender name for DMs)
-        let conversationName: String
-        if payload.type == .group, let roomName = payload.name {
-            conversationName = roomName
-        } else {
-            conversationName = senderName
-        }
+        // Determine if this is a group or channel conversation
+        let roomName = payload.name
+        let isGroupOrChannel = (payload.type == .group || payload.type == .channel) && roomName != nil && !roomName!.isEmpty
+        
+        // Create speakable group name for group/channel conversations
+        let speakableGroupName: INSpeakableString? = isGroupOrChannel && roomName != nil
+            ? INSpeakableString(spokenPhrase: roomName!)
+            : nil
+        
+        // Create a dummy recipient to ensure iOS treats this as a group conversation
+        // This is necessary for iOS to use speakableGroupName instead of sender name
+        let dummyRecipient = INPerson(
+            personHandle: INPersonHandle(value: "placeholder", type: .unknown),
+            nameComponents: nil,
+            displayName: nil,
+            image: nil,
+            contactIdentifier: nil,
+            customIdentifier: "recipient_\(payload.rid ?? "group")"
+        )
         
         // Create the messaging intent
         let intent = INSendMessageIntent(
-            recipients: nil,
+            recipients: isGroupOrChannel ? [dummyRecipient] : nil,
             outgoingMessageType: .outgoingMessageText,
             content: bestAttemptContent.body,
-            speakableGroupName: INSpeakableString(spokenPhrase: conversationName),
+            speakableGroupName: speakableGroupName,
             conversationIdentifier: payload.rid ?? "",
             serviceName: nil,
             sender: sender,
             attachments: nil
         )
         
-        // If it's a group chat, set the group avatar
-        if payload.type == .group {
+        // Set group avatar for group/channel conversations
+        if isGroupOrChannel {
             intent.setImage(senderImage, forParameterNamed: \.speakableGroupName)
         }
         
@@ -122,10 +133,9 @@ class NotificationService: UNNotificationServiceExtension {
         // Update the notification content with the intent
         do {
             let updatedContent = try bestAttemptContent.updating(from: intent)
-            // Store the updated content directly - don't use mutableCopy() as it strips the intent association
             self.finalContent = updatedContent
         } catch {
-            // Keep bestAttemptContent as fallback
+            // Fallback to bestAttemptContent if intent update fails
             self.finalContent = bestAttemptContent
         }
     }
@@ -170,6 +180,7 @@ class NotificationService: UNNotificationServiceExtension {
                 if let messageId = data.messageId {
                     self.rocketchat?.getPushWithId(messageId) { notification in
                         if let notification = notification {
+                            // Set body first, processPayload will strip sender prefix for groups/channels
                             self.bestAttemptContent?.body = notification.text
                             
                             // Update ejson with full payload from server for correct navigation
@@ -227,11 +238,28 @@ class NotificationService: UNNotificationServiceExtension {
     func processPayload(payload: Payload) {
         // Set notification title based on payload type
         let senderName = payload.sender?.name ?? payload.senderName ?? "Unknown"
+        let senderUsername = payload.sender?.username ?? payload.senderName ?? ""
+        
         if let roomType = payload.type {
             switch roomType {
             case .group, .channel:
                 // For groups/channels, use room name if available, otherwise fall back to sender name
                 bestAttemptContent?.title = payload.name ?? senderName
+                
+                // Remove sender name prefix from body for groups/channels
+                // Server sends body as "senderName: message", but we only want "message"
+                if let body = bestAttemptContent?.body {
+                    let senderPrefix = "\(senderUsername): "
+                    if body.hasPrefix(senderPrefix) {
+                        bestAttemptContent?.body = String(body.dropFirst(senderPrefix.count))
+                    } else {
+                        // Try with sender name (display name) as fallback
+                        let senderNamePrefix = "\(senderName): "
+                        if body.hasPrefix(senderNamePrefix) {
+                            bestAttemptContent?.body = String(body.dropFirst(senderNamePrefix.count))
+                        }
+                    }
+                }
             case .direct:
                 // For direct messages, use sender name
                 bestAttemptContent?.title = senderName
@@ -260,9 +288,6 @@ class NotificationService: UNNotificationServiceExtension {
                 
                 if let decryptedMessage = decryptedMessage {
                     bestAttemptContent?.body = decryptedMessage
-                    if let roomType = payload.type, roomType == .group, let sender = payload.senderName {
-                            bestAttemptContent?.body = "\(sender): \(decryptedMessage)"
-                    }
                 }
             }
         }
