@@ -117,6 +117,8 @@ export const merge = (
 		mergedSubscription.autoTranslate = false;
 	}
 
+	mergedSubscription.status = mergedSubscription.status ?? undefined;
+	mergedSubscription.inviter = mergedSubscription.inviter ?? undefined;
 	mergedSubscription.blocker = !!mergedSubscription.blocker;
 	mergedSubscription.blocked = !!mergedSubscription.blocked;
 	mergedSubscription.hideMentionStatus = !!mergedSubscription.hideMentionStatus;

@@ -155,6 +155,10 @@ export default class Subscription extends Model {
 
 	@json('federation', sanitizer) federation;
 
+	@field('status') status;
+
+	@json('inviter', sanitizer) inviter;
+
 	asPlain() {
 		return {
 			_id: this._id,
@@ -222,7 +226,9 @@ export default class Subscription extends Model {
 			source: this.source,
 			disableNotifications: this.disableNotifications,
 			federated: this.federated,
-			federation: this.federation
+			federation: this.federation,
+			status: this.status,
+			inviter: this.inviter
 		};
 	}
 }

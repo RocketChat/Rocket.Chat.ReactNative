@@ -71,7 +71,9 @@ export default appSchema({
 				{ name: 'unmuted', type: 'string', isOptional: true },
 				{ name: 'disable_notifications', type: 'boolean', isOptional: true },
 				{ name: 'federated', type: 'boolean', isOptional: true },
-				{ name: 'federation', type: 'string', isOptional: true }
+				{ name: 'federation', type: 'string', isOptional: true },
+				{ name: 'status', type: 'string', isOptional: true },
+				{ name: 'inviter', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
