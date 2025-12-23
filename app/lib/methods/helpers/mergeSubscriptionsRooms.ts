@@ -65,6 +65,9 @@ export const merge = (
 		mergedSubscription.teamId = room?.teamId;
 		mergedSubscription.teamMain = room?.teamMain;
 		mergedSubscription.federated = room?.federated;
+		if (room && 'abacAttributes' in room) {
+			mergedSubscription.abacAttributes = room.abacAttributes || [];
+		}
 		if (!mergedSubscription.roles || !mergedSubscription.roles.length) {
 			mergedSubscription.roles = [];
 		}
