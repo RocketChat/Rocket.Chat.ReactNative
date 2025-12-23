@@ -34,20 +34,18 @@ public class Ejson {
     String rid;
     String type;
     Sender sender;
+    Caller caller; // For video conf notifications
     String messageId;
+    String callId; // For video conf notifications
     String notificationType;
     String messageType;
     String senderName;
     String msg;
+    Integer status; // For video conf: 0=incoming, 4=cancelled
+
     String tmid;
     Content content;
 
-    /**
-     * Get MMKV instance with encryption.
-     * MMKV is already initialized in MainApplication.onCreate().
-     * Uses the encryption key from MMKVKeyManager which was set at app startup.
-     * MMKV internally caches instances, so calling this multiple times is efficient.
-     */
     private MMKV getMMKV() {
         String encryptionKey = MMKVKeyManager.getEncryptionKey();
         if (encryptionKey != null && !encryptionKey.isEmpty()) {
@@ -190,6 +188,11 @@ public class Ejson {
     static class Sender {
         String _id;
         String username;
+        String name;
+    }
+
+    static class Caller {
+        String _id;
         String name;
     }
 
