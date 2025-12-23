@@ -32,6 +32,8 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	inAppFeedback?: { [key: string]: string };
 	encryptionEnabled: boolean;
 	airGappedRestrictionRemainingDays: number | undefined;
+	isFederationEnabled: boolean;
+	isFederationModuleEnabled: boolean;
 }
 
 export type TStateAttrsUpdate = keyof IRoomViewState;

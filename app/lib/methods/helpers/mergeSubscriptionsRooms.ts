@@ -103,6 +103,10 @@ export const merge = (
 		if (room && 'usersCount' in room) {
 			mergedSubscription.usersCount = room.usersCount;
 		}
+
+		if (room && 'federation' in room) {
+			mergedSubscription.federation = room.federation;
+		}
 	}
 
 	if (!mergedSubscription.name) {

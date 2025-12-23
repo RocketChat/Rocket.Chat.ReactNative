@@ -102,7 +102,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
-import { isRoomFederated } from '../../lib/methods/isRoomFederated';
+import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../lib/methods/isRoomFederated';
 import { InvitedRoom } from './components/InvitedRoom';
 import { getInvitationData } from '../../lib/methods/getInvitationData';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
@@ -1351,6 +1351,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	getText = () => this.messageComposerRef.current?.getText();
 
+	getFederatedFooterDescription = (room: IRoomFederated) => {
+		const { isFederationEnabled, isFederationModuleEnabled } = this.props;
+
+		if (!isRoomNativeFederated(room)) {
+			return I18n.t('Federation_Matrix_room_description_invalid_version');
+		}
+
+		if (!isFederationEnabled) {
+			return I18n.t('Federation_Matrix_room_description_disabled');
+		}
+
+		if (!isFederationModuleEnabled) {
+			return I18n.t('Federation_Matrix_room_description_missing_module');
+		}
+
+		return undefined;
+	};
+
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -1521,6 +1539,19 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
+
+		if ('id' in room && isRoomFederated(room)) {
+			const description = this.getFederatedFooterDescription(room);
+
+			if (description) {
+				return (
+					<View style={styles.readOnly}>
+						<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{description}</Text>
+					</View>
+				);
+			}
+		}
+
 		return <MessageComposerContainer ref={this.messageComposerRef} />;
 	};
 
@@ -1667,7 +1698,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
 	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
 	inAppFeedback: state.inAppFeedback,
-	encryptionEnabled: state.encryption.enabled
+	encryptionEnabled: state.encryption.enabled,
+	isFederationEnabled: (state.settings.Federation_Matrix_enabled || state.settings.Federation_Service_Enabled) as boolean,
+	isFederationModuleEnabled: state.enterpriseModules.includes('federation') as boolean
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
