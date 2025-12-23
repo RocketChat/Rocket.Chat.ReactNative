@@ -116,6 +116,12 @@ export interface ISubscription {
 	uploads: RelationModified<TUploadModel>;
 	disableNotifications?: boolean;
 	federated?: boolean;
+	inviter?: Required<Pick<IUser, '_id' | 'username'>> & Pick<IUser, 'name'>;
+}
+
+export interface IInviteSubscription extends ISubscription {
+	status: 'INVITED';
+	inviter: NonNullable<ISubscription['inviter']>;
 }
 
 export type TSubscriptionModel = ISubscription &
