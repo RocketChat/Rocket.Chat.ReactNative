@@ -60,10 +60,14 @@ public class Ejson {
         return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE);
     }
 
-    public String getAvatarUri() {
+    /**
+     * Helper method to build avatar URI from avatar path.
+     * Validates server URL and credentials, then constructs the full URI.
+     */
+    private String buildAvatarUri(String avatarPath, String errorContext) {
         String server = serverURL();
         if (server == null || server.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: serverURL is null");
+            Log.w(TAG, "Cannot generate " + errorContext + " avatar URI: serverURL is null");
             return null;
         }
         
@@ -71,10 +75,14 @@ public class Ejson {
         String uid = userId();
         
         if (userToken.isEmpty() || uid.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: missing auth credentials");
+            Log.w(TAG, "Cannot generate " + errorContext + " avatar URI: missing auth credentials");
             return null;
         }
         
+        return server + avatarPath + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+    }
+
+    public String getAvatarUri() {
         String avatarPath;
         
         // For DMs, show sender's avatar; for groups/channels, show room avatar
@@ -104,7 +112,27 @@ public class Ejson {
             }
         }
         
-        return server + avatarPath + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+        return buildAvatarUri(avatarPath, "");
+    }
+
+    /**
+     * Generates avatar URI for video conference caller.
+     * Returns null if caller username is not available (username is required for avatar endpoint).
+     */
+    public String getCallerAvatarUri() {
+        // Check if caller exists and has username (required - /avatar/{userId} endpoint doesn't exist)
+        if (caller == null || caller.username == null || caller.username.isEmpty()) {
+            Log.w(TAG, "Cannot generate caller avatar URI: caller or username is null");
+            return null;
+        }
+        
+        try {
+            String avatarPath = "/avatar/" + URLEncoder.encode(caller.username, "UTF-8");
+            return buildAvatarUri(avatarPath, "caller");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "Failed to encode caller username", e);
+            return null;
+        }
     }
 
     public String token() {
@@ -215,6 +243,7 @@ public class Ejson {
     static class Caller {
         String _id;
         String name;
+        String username;
     }
 
     static class Content {

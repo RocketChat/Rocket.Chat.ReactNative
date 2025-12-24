@@ -18,9 +18,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.gson.Gson;
 
@@ -30,9 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.MainActivity;
@@ -469,25 +463,7 @@ public class CustomPushNotification {
     }
 
     private Bitmap getAvatar(String uri) {
-        if (uri == null || uri.isEmpty()) {
-            return largeIcon();
-        }
-        
-        try {
-            // Use a 3-second timeout to avoid blocking the FCM service for too long
-            // FCM has a 10-second limit, so we need to fail fast and use fallback icon
-            Bitmap avatar = Glide.with(mContext)
-                    .asBitmap()
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                    .load(uri)
-                    .submit(100, 100)
-                    .get(3, TimeUnit.SECONDS);
-            
-            return avatar != null ? avatar : largeIcon();
-        } catch (final ExecutionException | InterruptedException | TimeoutException e) {
-            Log.e(TAG, "Failed to fetch avatar", e);
-            return largeIcon();
-        }
+        return NotificationHelper.fetchAvatarBitmap(mContext, uri, largeIcon());
     }
 
     private Bitmap largeIcon() {
