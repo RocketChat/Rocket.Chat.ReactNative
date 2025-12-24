@@ -18,6 +18,8 @@ import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { CustomIcon } from '../CustomIcon';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { LISTENER } from '../Toast';
 
 const styles = StyleSheet.create({
 	container: {
@@ -90,6 +92,7 @@ interface IListItemContent {
 	left?: () => JSX.Element | null;
 	right?: () => JSX.Element | null;
 	disabled?: boolean;
+	disabledReason?: string;
 	testID?: string;
 	color?: string;
 	translateTitle?: boolean;
@@ -154,7 +157,15 @@ const Content = React.memo(
 				}
 			}
 			return label;
-		}, [title, subtitle, translateTitle, translateSubtitle, additionalAccessibilityLabel, additionalAccessibilityLabelCheck]);
+		}, [
+			accessibilityLabel,
+			title,
+			subtitle,
+			translateTitle,
+			translateSubtitle,
+			additionalAcessibilityLabel,
+			additionalAcessibilityLabelCheck
+		]);
 
 		return (
 			<View
@@ -205,6 +216,7 @@ interface IListButtonPress extends IListItemButton {
 interface IListItemButton {
 	title: string | (() => JSX.Element | null);
 	disabled?: boolean;
+	disabledReason?: string;
 	backgroundColor?: string;
 	underlayColor?: string;
 }
@@ -214,12 +226,20 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 
 	const { colors } = useTheme();
 
+	const handlePress = () => {
+		if (props.disabled && props.disabledReason) {
+			EventEmitter.emit(LISTENER, { message: props.disabledReason });
+		} else if (!props.disabled) {
+			onPress(props.title);
+		}
+	};
+
 	return (
 		<Touch
-			onPress={() => onPress(props.title)}
+			onPress={handlePress}
 			style={{ backgroundColor: backgroundColor || colors.surfaceRoom }}
 			underlayColor={underlayColor}
-			enabled={!props.disabled}>
+			enabled={!props.disabled || !!props.disabledReason}>
 			<Content {...props} />
 		</Touch>
 	);

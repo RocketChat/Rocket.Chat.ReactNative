@@ -16,6 +16,7 @@ export type TActionSheetOptionsItem = {
 	right?: () => React.ReactElement;
 	enabled?: boolean;
 	accessibilityRole?: AccessibilityRole;
+	disabledReason?: string;
 };
 
 export type TActionSheetOptions = {
