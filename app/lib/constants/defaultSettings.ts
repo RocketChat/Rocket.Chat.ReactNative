@@ -300,5 +300,11 @@ export const defaultSettings = {
 	Cloud_Workspace_AirGapped_Restrictions_Remaining_Days: {
 		type: 'valueAsNumber'
 	},
+	Federation_Service_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Federation_Matrix_enabled: {
+		type: 'valueAsBoolean'
+	},
 	...deprecatedSettings
 } as const;
