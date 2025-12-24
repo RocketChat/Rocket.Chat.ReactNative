@@ -10,6 +10,32 @@ class NotificationService: UNNotificationServiceExtension {
     
     // MARK: - Avatar Fetching
     
+    /// Fetches avatar image data from a given avatar path
+    private func fetchAvatarDataFromPath(avatarPath: String, server: String, credentials: Credentials, completion: @escaping (Data?) -> Void) {
+        let fullPath = "\(avatarPath)?format=png&size=100&rc_token=\(credentials.userToken)&rc_uid=\(credentials.userId)"
+        guard let avatarURL = URL(string: server + fullPath) else {
+            completion(nil)
+            return
+        }
+        
+        // Create request with 3-second timeout
+        var request = URLRequest(url: avatarURL, timeoutInterval: 3)
+        request.httpMethod = "GET"
+        request.addValue(Bundle.userAgent, forHTTPHeaderField: "User-Agent")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard error == nil,
+                  let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200,
+                  let data = data else {
+                completion(nil)
+                return
+            }
+            completion(data)
+        }
+        task.resume()
+    }
+    
     /// Fetches avatar image data - sender's avatar for DMs, room avatar for groups/channels
     func fetchAvatarData(from payload: Payload, completion: @escaping (Data?) -> Void) {
         let server = payload.host.removeTrailingSlash()
@@ -39,28 +65,27 @@ class NotificationService: UNNotificationServiceExtension {
             avatarPath = "/avatar/room/\(rid)"
         }
         
-        let fullPath = "\(avatarPath)?format=png&size=100&rc_token=\(credentials.userToken)&rc_uid=\(credentials.userId)"
-        guard let avatarURL = URL(string: server + fullPath) else {
+        fetchAvatarDataFromPath(avatarPath: avatarPath, server: server, credentials: credentials, completion: completion)
+    }
+    
+    /// Fetches avatar image data for video conference caller
+    func fetchCallerAvatarData(from payload: Payload, completion: @escaping (Data?) -> Void) {
+        let server = payload.host.removeTrailingSlash()
+        
+        guard let credentials = Storage().getCredentials(server: server) else {
             completion(nil)
             return
         }
         
-        // Create request with 3-second timeout
-        var request = URLRequest(url: avatarURL, timeoutInterval: 3)
-        request.httpMethod = "GET"
-        request.addValue(Bundle.userAgent, forHTTPHeaderField: "User-Agent")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil,
-                  let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200,
-                  let data = data else {
-                completion(nil)
-                return
-            }
-            completion(data)
+        // Check if caller has username (required - /avatar/{userId} endpoint doesn't exist)
+        guard let username = payload.caller?.username,
+              let encodedUsername = username.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
+            completion(nil)
+            return
         }
-        task.resume()
+        
+        let avatarPath = "/avatar/\(encodedUsername)"
+        fetchAvatarDataFromPath(avatarPath: avatarPath, server: server, credentials: credentials, completion: completion)
     }
     
     // MARK: - Communication Notification
@@ -225,6 +250,7 @@ class NotificationService: UNNotificationServiceExtension {
         
         // Status 0 (or nil) means incoming call - show notification with actions
         let callerName = payload.caller?.name ?? "Unknown"
+        let callerUsername = payload.caller?.username ?? ""
         
         bestAttemptContent.title = NSLocalizedString("Video Call", comment: "")
         bestAttemptContent.body = String(format: NSLocalizedString("Incoming call from %@", comment: ""), callerName)
@@ -232,8 +258,58 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent.sound = UNNotificationSound(named: UNNotificationSoundName("ringtone.mp3"))
         bestAttemptContent.interruptionLevel = .timeSensitive
         
-        contentHandler?(bestAttemptContent)
+        // Fetch caller avatar if username is available
+        fetchCallerAvatarData(from: payload) { [weak self] avatarData in
+            guard let self = self, let bestAttemptContent = self.bestAttemptContent else {
+                self?.contentHandler?(bestAttemptContent ?? UNNotificationContent())
+                return
+            }
+            
+            // Create caller image from avatar data
+            var callerImage: INImage? = nil
+            if let data = avatarData {
+                callerImage = INImage(imageData: data)
+            }
+            
+            // Create caller as INPerson with avatar (similar to regular message notifications)
+            let caller = INPerson(
+                personHandle: INPersonHandle(value: callerUsername, type: .unknown),
+                nameComponents: nil,
+                displayName: callerName,
+                image: callerImage,
+                contactIdentifier: nil,
+                customIdentifier: nil
+            )
+            
+            // Use INSendMessageIntent to display avatar (works better than attachments for call notifications)
+            // This uses the Communication Notifications API which properly displays avatars
+            let intent = INSendMessageIntent(
+                recipients: nil, // No recipients for incoming calls
+                outgoingMessageType: .outgoingMessageText,
+                content: bestAttemptContent.body,
+                speakableGroupName: nil,
+                conversationIdentifier: payload.rid ?? "",
+                serviceName: nil,
+                sender: caller, // Set caller as sender to display avatar
+                attachments: nil
+            )
+            
+            // Donate the interaction for Siri suggestions
+            let interaction = INInteraction(intent: intent, response: nil)
+            interaction.direction = .incoming
+            interaction.donate(completion: nil)
+            
+            // Update the notification content with the intent to display avatar
+            do {
+                let updatedContent = try bestAttemptContent.updating(from: intent)
+                self.contentHandler?(updatedContent)
+            } catch {
+                // Fallback to bestAttemptContent if intent update fails
+                self.contentHandler?(bestAttemptContent)
+            }
+        }
     }
+    
     
     func processPayload(payload: Payload) {
         // Set notification title based on payload type
