@@ -153,6 +153,8 @@ export default class Subscription extends Model {
 
 	@field('federated') federated;
 
+	@json('abac_attributes', sanitizer) abacAttributes;
+
 	@json('federation', sanitizer) federation;
 
 	@field('status') status;
@@ -226,6 +228,7 @@ export default class Subscription extends Model {
 			source: this.source,
 			disableNotifications: this.disableNotifications,
 			federated: this.federated,
+			abacAttributes: this.abacAttributes,
 			federation: this.federation,
 			status: this.status,
 			inviter: this.inviter

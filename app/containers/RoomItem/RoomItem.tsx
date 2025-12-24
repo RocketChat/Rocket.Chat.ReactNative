@@ -56,6 +56,7 @@ const RoomItem = ({
 	sourceType,
 	hideMentionStatus,
 	accessibilityDate,
+	abacAttributes,
 	isInvited
 }: IRoomItemProps) => {
 	'use memo';
@@ -116,6 +117,7 @@ const RoomItem = ({
 									isGroupChat={isGroupChat}
 									teamMain={teamMain}
 									sourceType={sourceType}
+									abacAttributes={abacAttributes}
 								/>
 							) : null}
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
@@ -166,6 +168,7 @@ const RoomItem = ({
 								size={22}
 								style={{ marginRight: 8 }}
 								sourceType={sourceType}
+								abacAttributes={abacAttributes}
 							/>
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
