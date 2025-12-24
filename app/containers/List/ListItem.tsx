@@ -163,8 +163,8 @@ const Content = React.memo(
 			subtitle,
 			translateTitle,
 			translateSubtitle,
-			additionalAcessibilityLabel,
-			additionalAcessibilityLabelCheck
+			additionalAccessibilityLabel,
+			additionalAccessibilityLabelCheck
 		]);
 
 		return (
