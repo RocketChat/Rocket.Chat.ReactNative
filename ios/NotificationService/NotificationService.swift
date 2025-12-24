@@ -86,7 +86,7 @@ class NotificationService: UNNotificationServiceExtension {
             if roomType == .group || roomType == .channel {
                 bestAttemptContent.title = payload.name ?? senderName
                 // Strip sender prefix if present
-                if let body = bestAttemptContent.body as String? {
+                if let body = bestAttemptContent.body as? String {
                     let prefix = "\(senderUsername): "
                     if body.hasPrefix(prefix) {
                         bestAttemptContent.body = String(body.dropFirst(prefix.count))
@@ -136,7 +136,7 @@ class NotificationService: UNNotificationServiceExtension {
         guard let bestAttemptContent = bestAttemptContent else { return }
 
         // 1. Create Sender
-        var senderImage: INImage? = nil
+        var senderImage: INImage?
         if let data = avatarData {
             senderImage = INImage(imageData: data)
         }
@@ -151,8 +151,8 @@ class NotificationService: UNNotificationServiceExtension {
         )
         
         // 2. Handle Group Logic
-        var recipients: [INPerson]? = nil
-        var speakableGroupName: INSpeakableString? = nil
+        var recipients: [INPerson]?
+        var speakableGroupName: INSpeakableString?
         
         if isGroup {
             speakableGroupName = (groupName != nil) ? INSpeakableString(spokenPhrase: groupName!) : nil
@@ -259,11 +259,18 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        var request = URLRequest(url: avatarURL, timeoutInterval: 3)
+        // Create URLSessionConfiguration with proper timeouts for notification service extension
+        // timeoutIntervalForResource ensures total download time is limited (not just inactivity)
+        let config = URLSessionConfiguration.default
+        config.timeoutIntervalForRequest = 3 // Inactivity timeout
+        config.timeoutIntervalForResource = 3 // Total download timeout (critical for notification extensions)
+        let session = URLSession(configuration: config)
+        
+        var request = URLRequest(url: avatarURL)
         request.httpMethod = "GET"
         request.addValue(Bundle.userAgent, forHTTPHeaderField: "User-Agent")
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = session.dataTask(with: request) { data, response, error in
             guard error == nil,
                   let httpResponse = response as? HTTPURLResponse,
                   httpResponse.statusCode == 200,
