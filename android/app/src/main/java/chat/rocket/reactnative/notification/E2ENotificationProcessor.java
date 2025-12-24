@@ -24,7 +24,7 @@ public class E2ENotificationProcessor {
     
     // Configuration constants
     private static final int POLLING_INTERVAL_MS = 100;  // Check every 100ms
-    private static final int MAX_WAIT_TIME_MS = 3000;    // Wait up to 3 seconds
+    private static final int MAX_WAIT_TIME_MS = 15000;   // Wait up to 15 seconds (for cold start)
     private static final int MAX_ATTEMPTS = MAX_WAIT_TIME_MS / POLLING_INTERVAL_MS;
     
     private final Handler mainHandler;
@@ -109,7 +109,7 @@ public class E2ENotificationProcessor {
         // Decrypt in background thread to avoid blocking
         new Thread(() -> {
             try {
-                String decrypted = Encryption.shared.decryptMessage(ejson, reactContext);
+                String decrypted = Encryption.shared.decryptMessage(ejson);
                 
                 if (decrypted != null) {
                     bundle.putString("message", decrypted);

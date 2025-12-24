@@ -26,7 +26,6 @@ public class MMKVKeyManager {
     
     // Static field to hold the encryption key for other native code
     private static String encryptionKey = null;
-    private static Context appContext = null;
 
     /**
      * Get the MMKV encryption key.
@@ -46,8 +45,6 @@ public class MMKVKeyManager {
      * @param context Application context
      */
     public static void initialize(Context context) {
-        appContext = context.getApplicationContext();
-        
         try {
             Log.i(TAG, "Initializing MMKV encryption...");
 

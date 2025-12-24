@@ -37,6 +37,12 @@ import chat.rocket.reactnative.notification.VideoConfTurboPackage
  *   - Message-id-only notification loading
  */
 open class MainApplication : Application(), ReactApplication {
+  companion object {
+      // Change from private to public (default) to allow Java access
+      @JvmStatic
+      lateinit var instance: MainApplication
+          private set
+  }
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
@@ -61,6 +67,8 @@ open class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    instance = this // Set the static reference here
+    
     SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
     
