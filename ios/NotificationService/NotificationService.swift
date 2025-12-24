@@ -253,7 +253,14 @@ class NotificationService: UNNotificationServiceExtension {
     
     /// Fetches avatar image data from a given avatar path
     private func fetchAvatarDataFromPath(avatarPath: String, server: String, credentials: Credentials, completion: @escaping (Data?) -> Void) {
-        let fullPath = "\(avatarPath)?format=png&size=100&rc_token=\(credentials.userToken)&rc_uid=\(credentials.userId)"
+        // URL-encode credentials to prevent malformed URLs if they contain special characters
+        guard let encodedToken = credentials.userToken.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let encodedUserId = credentials.userId.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            completion(nil)
+            return
+        }
+        
+        let fullPath = "\(avatarPath)?format=png&size=100&rc_token=\(encodedToken)&rc_uid=\(encodedUserId)"
         guard let avatarURL = URL(string: server + fullPath) else {
             completion(nil)
             return
