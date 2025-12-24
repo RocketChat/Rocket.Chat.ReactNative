@@ -300,9 +300,6 @@ public class CustomPushNotification {
         bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         
         String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
-        if (ENABLE_VERBOSE_LOGS) {
-            Log.d(TAG, "[showNotification] avatarUri=" + (avatarUri != null ? "[present]" : "[null]"));
-        }
         bundle.putString("avatarUri", avatarUri);
 
         // Handle special notification types
@@ -473,19 +470,7 @@ public class CustomPushNotification {
 
     private Bitmap getAvatar(String uri) {
         if (uri == null || uri.isEmpty()) {
-            if (ENABLE_VERBOSE_LOGS) {
-                Log.w(TAG, "getAvatar called with null/empty URI");
-            }
             return largeIcon();
-        }
-        
-        if (ENABLE_VERBOSE_LOGS) {
-            String sanitizedUri = uri;
-            int queryStart = uri.indexOf("?");
-            if (queryStart != -1) {
-                sanitizedUri = uri.substring(0, queryStart) + "?[auth_params]";
-            }
-            Log.d(TAG, "Fetching avatar from: " + sanitizedUri);
         }
         
         try {
@@ -500,7 +485,7 @@ public class CustomPushNotification {
             
             return avatar != null ? avatar : largeIcon();
         } catch (final ExecutionException | InterruptedException | TimeoutException e) {
-            Log.e(TAG, "Failed to fetch avatar: " + e.getMessage(), e);
+            Log.e(TAG, "Failed to fetch avatar", e);
             return largeIcon();
         }
     }
@@ -523,7 +508,10 @@ public class CustomPushNotification {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
             if (avatarUri != null) {
-                notification.setLargeIcon(getAvatar(avatarUri));
+                Bitmap avatar = getAvatar(avatarUri);
+                if (avatar != null) {
+                    notification.setLargeIcon(avatar);
+                }
             }
         }
     }

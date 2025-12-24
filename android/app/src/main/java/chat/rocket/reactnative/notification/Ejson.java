@@ -71,7 +71,7 @@ public class Ejson {
         String uid = userId();
         
         if (userToken.isEmpty() || uid.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: missing auth credentials (token=" + !userToken.isEmpty() + ", uid=" + !uid.isEmpty() + ")");
+            Log.w(TAG, "Cannot generate avatar URI: missing auth credentials");
             return null;
         }
         
@@ -86,9 +86,6 @@ public class Ejson {
             }
             try {
                 avatarPath = "/avatar/" + URLEncoder.encode(sender.username, "UTF-8");
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Generated avatar URI for user: " + sender.username);
-                }
             } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, "Failed to encode username", e);
                 return null;
@@ -101,9 +98,6 @@ public class Ejson {
             }
             try {
                 avatarPath = "/avatar/room/" + URLEncoder.encode(rid, "UTF-8");
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Generated avatar URI for room: " + rid);
-                }
             } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, "Failed to encode rid", e);
                 return null;
