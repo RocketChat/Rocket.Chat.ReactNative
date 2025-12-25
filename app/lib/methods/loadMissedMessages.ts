@@ -21,7 +21,7 @@ const getSyncMessagesFromCursor = async (
 ) => {
 	const promises = [];
 
-	if (lastOpen && !updatedNext && !deletedNext) {
+	if ((lastOpen || lastOpen === 0) && !updatedNext && !deletedNext) {
 		promises.push(syncMessages({ roomId, next: lastOpen, type: 'UPDATED' }));
 		promises.push(syncMessages({ roomId, next: lastOpen, type: 'DELETED' }));
 	}
@@ -67,7 +67,7 @@ async function load({
 			lastOpenTimestamp = new Date(lastOpen).getTime();
 		} else {
 			const lastUpdate = await getLastUpdate(roomId);
-			lastOpenTimestamp = lastUpdate?.getTime();
+			lastOpenTimestamp = lastUpdate?.getTime() ?? 0;
 		}
 		const result = await getSyncMessagesFromCursor(roomId, lastOpenTimestamp, updatedNext, deletedNext);
 		return result;
