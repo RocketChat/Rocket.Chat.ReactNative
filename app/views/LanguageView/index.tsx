@@ -103,7 +103,7 @@ const LanguageView = () => {
 						value={item.value}
 						translateTitle={false}
 						isSelected={item.value === (language || languageDefault)}
-						onPress={submit}
+						onPress={() => submit(item.value)}
 					/>
 				)}
 				ItemSeparatorComponent={List.Separator}
