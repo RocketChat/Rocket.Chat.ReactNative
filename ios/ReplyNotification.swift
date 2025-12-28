@@ -16,20 +16,20 @@ import UserNotifications
 class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
   private static var shared: ReplyNotification?
   private weak var originalDelegate: UNUserNotificationCenterDelegate?
-  
+
   @objc
   public static func configure() {
     let instance = ReplyNotification()
     shared = instance
-    
+
     // Store the original delegate (expo-notifications) and set ourselves as the delegate
     let center = UNUserNotificationCenter.current()
     instance.originalDelegate = center.delegate
     center.delegate = instance
   }
-  
+
   // MARK: - UNUserNotificationCenterDelegate
-  
+
   func userNotificationCenter(
     _ center: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
@@ -40,7 +40,13 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
       handleReplyAction(response: response, completionHandler: completionHandler)
       return
     }
-    
+
+    // Handle MARK_AS_READ_ACTION natively
+    if response.actionIdentifier == "MARK_AS_READ_ACTION" {
+      handleMarkAsReadAction(response: response, completionHandler: completionHandler)
+      return
+    }
+
     // Forward to original delegate (expo-notifications)
     if let originalDelegate = originalDelegate {
       originalDelegate.userNotificationCenter?(center, didReceive: response, withCompletionHandler: completionHandler)
@@ -48,7 +54,7 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
       completionHandler()
     }
   }
-  
+
   func userNotificationCenter(
     _ center: UNUserNotificationCenter,
     willPresent notification: UNNotification,
@@ -61,7 +67,7 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
       completionHandler([])
     }
   }
-  
+
   func userNotificationCenter(
     _ center: UNUserNotificationCenter,
     openSettingsFor notification: UNNotification?
@@ -73,17 +79,17 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
       }
     }
   }
-  
+
   // MARK: - Reply Handling
-  
+
   private func handleReplyAction(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
     guard let textResponse = response as? UNTextInputNotificationResponse else {
       completionHandler()
       return
     }
-    
+
     let userInfo = response.notification.request.content.userInfo
-    
+
     guard let ejsonString = userInfo["ejson"] as? String,
           let ejsonData = ejsonString.data(using: .utf8),
           let payload = try? JSONDecoder().decode(Payload.self, from: ejsonData),
@@ -91,11 +97,11 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
       completionHandler()
       return
     }
-    
+
     let message = textResponse.userText
     let rocketchat = RocketChat(server: payload.host.removeTrailingSlash())
     let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-    
+
     rocketchat.sendMessage(rid: rid, message: message, threadIdentifier: payload.tmid) { response in
       // Ensure we're on the main thread for UI operations
       DispatchQueue.main.async {
@@ -103,7 +109,7 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
           UIApplication.shared.endBackgroundTask(backgroundTask)
           completionHandler()
         }
-        
+
         guard let response = response, response.success else {
           // Show failure notification
           let content = UNMutableNotificationContent()
@@ -112,6 +118,28 @@ class ReplyNotification: NSObject, UNUserNotificationCenterDelegate {
           UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
           return
         }
+      }
+    }
+  }
+
+  private func handleMarkAsReadAction(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
+    let userInfo = response.notification.request.content.userInfo
+
+    guard let ejsonString = userInfo["ejson"] as? String,
+          let ejsonData = ejsonString.data(using: .utf8),
+          let payload = try? JSONDecoder().decode(Payload.self, from: ejsonData),
+          let rid = payload.rid else {
+      completionHandler()
+      return
+    }
+
+    let rocketchat = RocketChat(server: payload.host.removeTrailingSlash())
+    let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+
+    rocketchat.markAsRead(rid: rid) { response in
+      DispatchQueue.main.async {
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        completionHandler()
       }
     }
   }
