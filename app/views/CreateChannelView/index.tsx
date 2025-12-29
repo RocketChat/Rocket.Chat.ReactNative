@@ -24,7 +24,7 @@ import { ControlledFormTextInput } from '../../containers/TextInput';
 import { RoomSettings } from './RoomSettings';
 import { type ISelectedUser } from '../../reducers/selectedUsers';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
-import SelectedUsersList from '../../containers/SelectedUsersList';
+import SelectedUsers from '../../containers/SelectedUsers';
 
 const styles = StyleSheet.create({
 	containerTextInput: {
@@ -154,7 +154,7 @@ const CreateChannelView = () => {
 							e2eEnabledDefaultPrivateRooms={e2eEnabledDefaultPrivateRooms}
 						/>
 					</View>
-					{users.length > 0 ? <SelectedUsersList onPress={removeUser} users={users} useRealName={useRealName} /> : null}
+					{users.length > 0 ? <SelectedUsers onPress={removeUser} users={users} useRealName={useRealName} /> : null}
 					<Button
 						title={isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')}
 						type='primary'

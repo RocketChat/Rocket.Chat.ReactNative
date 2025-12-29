@@ -27,7 +27,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
-import SelectedUsersList from '../../containers/SelectedUsersList';
+import SelectedUsers from '../../containers/SelectedUsers';
 import { type ISelectedUser } from '../../reducers/selectedUsers';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
@@ -178,7 +178,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 						</>
 					) : null}
 
-					{users.length > 0 ? <SelectedUsersList onPress={removeUser} users={users} useRealName={useRealName} /> : null}
+					{users.length > 0 ? <SelectedUsers onPress={removeUser} users={users} useRealName={useRealName} /> : null}
 
 					<Button
 						testID='create-discussion-submit'

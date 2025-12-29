@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-export interface ISelectedUsersList {
+export interface ISelectedUsers {
 	users: any[];
 	useRealName?: boolean;
 	onPress: (item: any) => void;
 }
 
-const SelectedUsersList = ({ users, useRealName, onPress }: ISelectedUsersList) => {
+const SelectedUsers = ({ users, useRealName, onPress }: ISelectedUsers) => {
 	const { colors } = useTheme();
 
 	return (
@@ -76,4 +76,4 @@ const SelectedUsersList = ({ users, useRealName, onPress }: ISelectedUsersList) 
 	);
 };
 
-export default SelectedUsersList;
+export default SelectedUsers;

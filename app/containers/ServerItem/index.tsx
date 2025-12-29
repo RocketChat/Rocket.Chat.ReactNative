@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import * as List from '../List/index';
+import * as List from '../List';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';

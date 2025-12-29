@@ -1326,7 +1326,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         style={{}}
       >
         <View
-          accessibilityLabel="[missing "en.Option 1" translation] Selected"
+          accessibilityLabel="Option 1 Selected"
           accessibilityRole="radio"
           accessible={true}
           style={
@@ -1380,7 +1380,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                   ]
                 }
               >
-                [missing "en.Option 1" translation]
+                Option 1
               </Text>
             </View>
           </View>
@@ -1507,7 +1507,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         style={{}}
       >
         <View
-          accessibilityLabel="[missing "en.Option 2" translation] Unselected"
+          accessibilityLabel="Option 2 Unselected"
           accessibilityRole="radio"
           accessible={true}
           style={
@@ -1561,7 +1561,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                   ]
                 }
               >
-                [missing "en.Option 2" translation]
+                Option 2
               </Text>
             </View>
           </View>
@@ -1688,7 +1688,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         style={{}}
       >
         <View
-          accessibilityLabel="[missing "en.Option 3" translation] Unselected"
+          accessibilityLabel="Option 3 Unselected"
           accessibilityRole="radio"
           accessible={true}
           style={
@@ -1742,7 +1742,7 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
                   ]
                 }
               >
-                [missing "en.Option 3" translation]
+                Option 3
               </Text>
             </View>
           </View>

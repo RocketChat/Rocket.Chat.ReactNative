@@ -72,11 +72,32 @@ export const Separator = () => (
 export const Radio = () => (
 	<List.Container>
 		<List.Separator />
-		<List.Radio title='Option 1' value='option1' isSelected={true} onPress={() => alert('Option 1 selected')} />
+		<List.Radio
+			translateTitle={false}
+			translateSubtitle={false}
+			title='Option 1'
+			value='option1'
+			isSelected={true}
+			onPress={() => alert('Option 1 selected')}
+		/>
 		<List.Separator />
-		<List.Radio title='Option 2' value='option2' isSelected={false} onPress={() => alert('Option 2 selected')} />
+		<List.Radio
+			translateTitle={false}
+			translateSubtitle={false}
+			title='Option 2'
+			value='option2'
+			isSelected={false}
+			onPress={() => alert('Option 2 selected')}
+		/>
 		<List.Separator />
-		<List.Radio title='Option 3' value='option3' isSelected={false} onPress={() => alert('Option 3 selected')} />
+		<List.Radio
+			translateTitle={false}
+			translateSubtitle={false}
+			title='Option 3'
+			value='option3'
+			isSelected={false}
+			onPress={() => alert('Option 3 selected')}
+		/>
 		<List.Separator />
 		<List.Radio
 			title={longText}
