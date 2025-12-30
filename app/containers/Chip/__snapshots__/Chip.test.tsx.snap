@@ -45,12 +45,12 @@ exports[`Story Snapshots: ChipFullWidth should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
           "maxWidth": undefined,
         },
         undefined,
@@ -70,7 +70,7 @@ exports[`Story Snapshots: ChipFullWidth should match snapshot 1`] = `
           [
             {
               "marginRight": 8,
-              "maxWidth": 120,
+              "maxWidth": 110,
             },
             {
               "maxWidth": undefined,
@@ -148,12 +148,12 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
           "maxWidth": 192,
         },
         undefined,
@@ -228,7 +228,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           [
             {
               "marginRight": 8,
-              "maxWidth": 120,
+              "maxWidth": 110,
             },
             undefined,
           ]
@@ -330,12 +330,12 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
           "maxWidth": 192,
         },
         undefined,
@@ -410,7 +410,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           [
             {
               "marginRight": 8,
-              "maxWidth": 120,
+              "maxWidth": 110,
             },
             undefined,
           ]
@@ -512,12 +512,12 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
           "maxWidth": 192,
         },
         undefined,
@@ -537,7 +537,7 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
           [
             {
               "marginRight": 8,
-              "maxWidth": 120,
+              "maxWidth": 110,
             },
             undefined,
           ]
@@ -639,12 +639,12 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
           "maxWidth": 192,
         },
         undefined,
@@ -664,7 +664,7 @@ exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
           [
             {
               "marginRight": 8,
-              "maxWidth": 120,
+              "maxWidth": 110,
             },
             undefined,
           ]
@@ -740,12 +740,12 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         {
           "borderRadius": 4,
           "justifyContent": "center",
-          "marginRight": 8,
+          "marginHorizontal": 4,
           "maxWidth": 192,
-          "paddingHorizontal": 8,
+          "paddingHorizontal": 4,
         },
         {
-          "backgroundColor": "#F2F3F5",
+          "backgroundColor": "#E4E7EA",
           "maxWidth": 192,
         },
         undefined,
@@ -820,7 +820,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
           [
             {
               "marginRight": 8,
-              "maxWidth": 120,
+              "maxWidth": 110,
             },
             undefined,
           ]
