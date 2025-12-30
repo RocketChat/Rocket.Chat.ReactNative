@@ -83,11 +83,12 @@ export type ModalStackParamList = {
 		showCloseModal?: boolean;
 	};
 	SelectedUsersView: {
-		maxUsers: number;
-		showButton: boolean;
-		title: string;
-		buttonText: string;
-		nextAction: Function;
+		maxUsers?: number;
+		showButton?: boolean;
+		title?: string;
+		buttonText?: string;
+		showSkipText?: boolean;
+		nextAction?: Function;
 	};
 	InviteUsersView: {
 		rid: string;
@@ -170,13 +171,6 @@ export type ModalStackParamList = {
 	DisplayPrefsView: undefined;
 	AdminPanelView: undefined;
 	NewMessageView: undefined;
-	SelectedUsersViewCreateChannel: {
-		maxUsers: number;
-		showButton: boolean;
-		title: string;
-		buttonText: string;
-		nextAction: Function;
-	}; // TODO: Change
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
 		teamId?: string;
