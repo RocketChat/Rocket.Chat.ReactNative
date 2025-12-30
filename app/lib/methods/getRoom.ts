@@ -1,4 +1,4 @@
-import { TSubscriptionModel } from '../../definitions';
+import { type TSubscriptionModel } from '../../definitions';
 import database from '../database';
 
 export async function getRoom(rid: string): Promise<TSubscriptionModel> {

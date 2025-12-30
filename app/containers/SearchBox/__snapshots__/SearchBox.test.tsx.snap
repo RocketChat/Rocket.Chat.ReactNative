@@ -9,11 +9,16 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
   }
   testID="searchbox"
 >
-  <View>
-    <View>
+  <A11yOrderView
+    orderKey=":r4:"
+  >
+    <A11yIndexView
+      importantForAccessibility="yes"
+      orderFocusType={0}
+      orderIndex={1}
+      orderKey=":r4:"
+    >
       <View
-        accessibilityLabel=""
-        accessible={true}
         style={
           [
             {
@@ -28,7 +33,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
         }
       >
         <View
-          accessible={true}
+          accessible={false}
           style={
             {
               "justifyContent": "center",
@@ -37,6 +42,8 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           }
         >
           <TextInput
+            accessibilityLabel=""
+            accessible={true}
             autoCapitalize="none"
             autoCorrect={false}
             blurOnSubmit={true}
@@ -118,7 +125,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           </Text>
         </View>
       </View>
-    </View>
-  </View>
+    </A11yIndexView>
+  </A11yOrderView>
 </View>
 `;

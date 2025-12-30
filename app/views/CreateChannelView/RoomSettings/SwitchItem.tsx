@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SwitchProps } from 'react-native';
+import { StyleSheet, Text, View, type SwitchProps } from 'react-native';
 
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
 		minHeight: 54,
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		flexDirection: 'row',
-		maxHeight: 80
+		flexDirection: 'row'
 	},
 	switchTextContainer: {
 		flex: 1,
@@ -41,7 +40,7 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.switchContainer, { backgroundColor: colors.surfaceRoom }]}>
+		<View style={[styles.switchContainer, { backgroundColor: colors.surfaceTint }]}>
 			<View accessible accessibilityLabel={`${I18n.t(label)}, ${I18n.t(hint)}`} style={styles.switchTextContainer}>
 				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
 				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>

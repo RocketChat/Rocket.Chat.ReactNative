@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { forwardRoom, ITransferData } from '../actions/room';
+import { forwardRoom, type ITransferData } from '../actions/room';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
-import { IServerRoom } from '../definitions';
+import { type IServerRoom } from '../definitions';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { Services } from '../lib/services';
-import { TNavigation } from '../stacks/stackType';
+import { usersAutoComplete, getRoomInfo, getDepartments } from '../lib/services/restApi';
+import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
-import { IOptionsField } from './NotificationPreferencesView/options';
+import { type IOptionsField } from './NotificationPreferencesView/options';
 
 const styles = StyleSheet.create({
 	container: {
@@ -37,9 +37,9 @@ const ForwardLivechatView = (): React.ReactElement => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 
-	const getDepartments = async (text = '', offset = 0) => {
+	const handleGetDepartments = async (text = '', offset = 0) => {
 		try {
-			const result = await Services.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
+			const result = await getDepartments({ count: COUNT_DEPARTMENT, text, offset });
 			if (result.success) {
 				const parsedDepartments = result.departments.map(department => ({
 					label: department.name,
@@ -60,7 +60,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 		try {
 			const { servedBy: { _id: agentId } = {} } = room;
 			const _id = agentId && { $ne: agentId };
-			const result = await Services.usersAutoComplete({
+			const result = await usersAutoComplete({
 				conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
 				term
 			});
@@ -78,7 +78,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 
 	const getRoom = async () => {
 		try {
-			const result = await Services.getRoomInfo(rid);
+			const result = await getRoomInfo(rid);
 			if (result.success) {
 				setRoom(result.room as IServerRoom);
 			}
@@ -113,7 +113,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 	useEffect(() => {
 		if (!isEmpty(room)) {
 			getUsers();
-			getDepartments();
+			handleGetDepartments();
 		}
 	}, [room]);
 
@@ -129,8 +129,8 @@ const ForwardLivechatView = (): React.ReactElement => {
 			value: room?.departmentId,
 			data: departments,
 			onChangeValue: setDepartment,
-			onSearch: getDepartments,
-			onEndReached: getDepartments,
+			onSearch: handleGetDepartments,
+			onEndReached: handleGetDepartments,
 			total: departmentTotal
 		});
 	};

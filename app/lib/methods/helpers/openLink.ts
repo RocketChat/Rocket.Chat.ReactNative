@@ -2,8 +2,8 @@ import { Linking } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import parse from 'url-parse';
 
-import { themes } from '../../constants';
-import { TSupportedThemes } from '../../../theme';
+import { themes } from '../../constants/colors';
+import { type TSupportedThemes } from '../../../theme';
 import UserPreferences from '../userPreferences';
 import ensureSecureProtocol from './ensureSecureProtocol';
 import log from './log';

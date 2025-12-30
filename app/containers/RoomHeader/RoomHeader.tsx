@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -7,11 +7,11 @@ import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
 import { useTheme } from '../../theme';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
-import { IUsersTyping } from '../../reducers/usersTyping';
+import { type IUsersTyping } from '../../reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,
@@ -80,6 +80,7 @@ interface IRoomHeader {
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
 	rightButtonsWidth?: number;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
@@ -148,7 +149,8 @@ const Header = React.memo(
 		testID,
 		usersTyping = [],
 		sourceType,
-		disabled
+		disabled,
+		abacAttributes
 	}: IRoomHeader) => {
 		const statusAccessibilityLabel = useStatusAccessibilityLabel({
 			isGroupChat,
@@ -182,6 +184,7 @@ const Header = React.memo(
 						isGroupChat={isGroupChat}
 						status={status}
 						teamMain={teamMain}
+						abacAttributes={abacAttributes}
 					/>
 					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 						{parentTitle}
@@ -190,7 +193,7 @@ const Header = React.memo(
 			);
 		}
 
-		const handleOnPress = useCallback(() => onPress(), []);
+		const handleOnPress = () => onPress();
 
 		return (
 			<View
@@ -208,6 +211,7 @@ const Header = React.memo(
 								status={status}
 								teamMain={teamMain}
 								sourceType={sourceType}
+								abacAttributes={abacAttributes}
 							/>
 						)}
 						<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />

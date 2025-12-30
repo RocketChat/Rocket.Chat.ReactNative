@@ -1,5 +1,5 @@
 import database from '..';
-import { TAppDatabase } from '../interfaces';
+import { type TAppDatabase } from '../interfaces';
 import { THREAD_MESSAGES_TABLE } from '../model/ThreadMessage';
 
 const getCollection = (db: TAppDatabase) => db.get(THREAD_MESSAGES_TABLE);

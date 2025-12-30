@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableNativeFeedback, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { TouchableNativeFeedback, TouchableOpacity, type TouchableOpacityProps, View } from 'react-native';
 
 import { isIOS } from '../../lib/methods/helpers';
 

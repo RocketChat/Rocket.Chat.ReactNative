@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import i18n from '../../../i18n';
-import { SwitchItem, ISwitch } from './SwitchItem';
+import { SwitchItem, type ISwitch } from './SwitchItem';
 import { mockedStore as store } from '../../../reducers/mockedStore';
 import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
 import * as stories from './SwitchItem.stories';

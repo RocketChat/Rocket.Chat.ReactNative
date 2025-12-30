@@ -4,8 +4,8 @@ inputs:
   type:
     description: 'Build type: official or experimental'
     required: true
-  VERSIONCODE:
-    description: 'Version Code'
+  BUILD_VERSION:
+    description: 'Build version'
     required: true
   APP_STORE_CONNECT_API_KEY_BASE64:
     description: 'Base64 encoded App Store Connect API Key'
@@ -34,14 +34,26 @@ inputs:
   BUGSNAG_KEY_OFFICIAL:
     description: 'Bugsnag API Key Official'
     required: true
+  GOOGLE_SERVICES_IOS:
+    description: 'Google service file for official version'
+    required: true
+  GOOGLE_SERVICES_IOS_EXPERIMENTAL:
+    description: 'Google service file for experimental version'
+    required: true
 
 runs:
   using: "composite"
   steps:
+    - name: Remove simulator and its cache
+      run : |
+        xcrun simctl delete all
+        sudo rm -rf ~/Library/Developer/CoreSimulator/Caches/*
+      shell: bash
+
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.2'
+        xcode-version: '16.4'
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -72,7 +84,7 @@ runs:
     - name: Configure Info.plist and build version
       working-directory: ios
       run: |
-        agvtool new-version -all ${{ inputs.VERSIONCODE }}
+        agvtool new-version -all ${{ inputs.BUILD_VERSION }}
         if [[ ${{ inputs.type }} == "official" ]]; then
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist
@@ -86,6 +98,18 @@ runs:
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
+        fi
+      shell: bash
+
+    - name: Set Google Services
+      working-directory: ios
+      run: |
+        if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+          if [[ ${{ inputs.type }}  == "official" ]]; then
+            echo ${{ inputs.GOOGLE_SERVICES_IOS }} | base64 --decode > GoogleService-Info.plist
+          else 
+            echo ${{ inputs.GOOGLE_SERVICES_IOS_EXPERIMENTAL }} | base64 --decode > GoogleService-Info.plist
+          fi
         fi
       shell: bash
 

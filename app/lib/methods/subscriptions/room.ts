@@ -16,18 +16,19 @@ import { debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import {
-	IMessage,
-	TMessageModel,
-	TSubscriptionModel,
-	TThreadMessageModel,
-	TThreadModel,
-	IDeleteMessageBulkParams
+	type IMessage,
+	type TMessageModel,
+	type TSubscriptionModel,
+	type TThreadMessageModel,
+	type TThreadModel,
+	type IDeleteMessageBulkParams
 } from '../../../definitions';
-import { IDDPMessage } from '../../../definitions/IDDPMessage';
+import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import { updateLastOpen } from '../updateLastOpen';
+import markMessagesRead from '../helpers/markMessagesRead';
 
 export default class RoomSubscription {
 	private rid: string;
@@ -102,7 +103,7 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDDPMessage) => {
+	handleNotifyRoomReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
@@ -133,10 +134,10 @@ export default class RoomSubscription {
 			const [name, activities] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (activities.includes('user-typing')) {
+				if (!!activities && activities.includes('user-typing')) {
 					reduxStore.dispatch(addUserTyping(name));
 				}
-				if (!activities.length) {
+				if (!activities?.length) {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}
@@ -231,6 +232,9 @@ export default class RoomSubscription {
 					log(e);
 				}
 			});
+		} else if (ev === 'messagesRead') {
+			const lastOpen = ddpMessage.fields.args[0]?.until?.$date;
+			await markMessagesRead({ rid: this.rid, lastOpen });
 		}
 	});
 
@@ -251,12 +255,29 @@ export default class RoomSubscription {
 			const threadMessagesCollection = db.get('thread_messages');
 
 			// Decrypt the message if necessary
-			message = await Encryption.decryptMessage(message);
+			message = (await Encryption.decryptMessage(message)) as IMessage;
 
 			// Create or update message
 			try {
 				const messageRecord = await getMessageById(message._id);
 				if (messageRecord) {
+					if (messageRecord.t === 'e2e' && message.attachments) {
+						message.attachments = message.attachments?.map(att => {
+							const existing = messageRecord.attachments?.find(
+								a =>
+									(a.image_url && a.image_url === att.image_url) ||
+									(a.video_url && a.video_url === att.video_url) ||
+									(a.audio_url && a.audio_url === att.audio_url) ||
+									(a.thumb_url && a.thumb_url === att.thumb_url)
+							);
+
+							return {
+								...att,
+								e2e: existing?.e2e,
+								title_link: existing?.e2e === 'done' ? existing?.title_link : att.title_link
+							};
+						});
+					}
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {

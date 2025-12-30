@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 import { sendLoadingEvent } from '../../containers/Loading';
 import { createChannelRequest } from '../../actions/createChannel';
 import { removeUser as removeUserAction } from '../../actions/selectedUsers';
@@ -15,13 +18,13 @@ import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { Review } from '../../lib/methods/helpers/review';
 import SafeAreaView from '../../containers/SafeAreaView';
-import sharedStyles from '../Styles';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import Button from '../../containers/Button';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import Chip from '../../containers/Chip';
 import { RoomSettings } from './RoomSettings';
-import { ISelectedUser } from '../../reducers/selectedUsers';
+import { type ISelectedUser } from '../../reducers/selectedUsers';
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
+import SelectedUsers from '../../containers/SelectedUsers';
 
 const styles = StyleSheet.create({
 	containerTextInput: {
@@ -30,23 +33,6 @@ const styles = StyleSheet.create({
 	},
 	containerStyle: {
 		marginBottom: 16
-	},
-	list: {
-		width: '100%'
-	},
-	invitedHeader: {
-		marginVertical: 12,
-		marginHorizontal: 16,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-	},
-	invitedCount: {
-		fontSize: 12,
-		...sharedStyles.textRegular
-	},
-	invitedList: {
-		paddingHorizontal: 16
 	},
 	buttonCreate: {
 		marginTop: 32,
@@ -63,6 +49,10 @@ export interface IFormData {
 }
 
 const CreateChannelView = () => {
+	const schema = yup.object().shape({
+		channelName: yup.string().trim().required(I18n.t('Channel_name_required'))
+	});
+
 	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
 	const { isFetching, useRealName, users, e2eEnabledDefaultPrivateRooms } = useAppSelector(
@@ -78,8 +68,9 @@ const CreateChannelView = () => {
 	const {
 		control,
 		handleSubmit,
-		formState: { isDirty },
-		setValue
+		setValue,
+		watch,
+		formState: { errors }
 	} = useForm<IFormData>({
 		defaultValues: {
 			channelName: '',
@@ -87,7 +78,9 @@ const CreateChannelView = () => {
 			encrypted: e2eEnabledDefaultPrivateRooms,
 			readOnly: false,
 			type: createPrivateChannelPermission
-		}
+		},
+		mode: 'onChange',
+		resolver: yupResolver(schema)
 	});
 
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
@@ -96,6 +89,9 @@ const CreateChannelView = () => {
 	const teamId = params?.teamId;
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
+	const inputValues = watch();
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
 		sendLoadingEvent({ visible: isFetching });
@@ -137,7 +133,7 @@ const CreateChannelView = () => {
 
 	return (
 		<KeyboardView>
-			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
+			<SafeAreaView style={{ backgroundColor: colors.surfaceTint }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
 					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>
 						<ControlledFormTextInput
@@ -148,6 +144,7 @@ const CreateChannelView = () => {
 							containerStyle={styles.containerStyle}
 							name={'channelName'}
 							control={control}
+							error={errors?.channelName?.message}
 						/>
 						<RoomSettings
 							createChannelPermission={createChannelPermission}
@@ -157,48 +154,11 @@ const CreateChannelView = () => {
 							e2eEnabledDefaultPrivateRooms={e2eEnabledDefaultPrivateRooms}
 						/>
 					</View>
-					{users.length > 0 ? (
-						<>
-							<View style={styles.invitedHeader}>
-								<Text style={[styles.invitedCount, { color: colors.fontSecondaryInfo }]}>
-									{I18n.t('N_Selected_members', { n: users.length })}
-								</Text>
-							</View>
-							<FlatList
-								data={users}
-								extraData={users}
-								keyExtractor={item => item._id}
-								style={[
-									styles.list,
-									{
-										backgroundColor: colors.surfaceRoom,
-										borderColor: colors.strokeLight
-									}
-								]}
-								contentContainerStyle={styles.invitedList}
-								renderItem={({ item }) => {
-									const name = useRealName && item.fname ? item.fname : item.name;
-									const username = item.name;
-
-									return (
-										<Chip
-											text={name}
-											avatar={username}
-											onPress={() => removeUser(item)}
-											testID={`create-channel-view-item-${item.name}`}
-										/>
-									);
-								}}
-								keyboardShouldPersistTaps='always'
-								horizontal
-							/>
-						</>
-					) : null}
+					{users.length > 0 ? <SelectedUsers onPress={removeUser} users={users} useRealName={useRealName} /> : null}
 					<Button
 						title={isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')}
 						type='primary'
 						onPress={handleSubmit(submit)}
-						disabled={!isDirty}
 						testID='create-channel-submit'
 						loading={isFetching}
 						style={styles.buttonCreate}

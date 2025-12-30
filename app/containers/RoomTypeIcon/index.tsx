@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, type ViewStyle } from 'react-native';
+import { type ImageStyle } from 'expo-image';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
-import { CustomIcon, TIconsName } from '../CustomIcon';
-import { themes } from '../../lib/constants';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
+import { themes } from '../../lib/constants/colors';
 import Status from '../Status';
 import { useTheme } from '../../theme';
-import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -23,10 +24,11 @@ interface IRoomTypeIcon {
 	size?: number;
 	style?: ViewStyle;
 	sourceType?: IOmnichannelSource;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 const RoomTypeIcon = React.memo(
-	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType }: IRoomTypeIcon) => {
+	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, abacAttributes }: IRoomTypeIcon) => {
 		const { theme } = useTheme();
 
 		if (!type) {
@@ -41,12 +43,16 @@ const RoomTypeIcon = React.memo(
 		}
 
 		if (type === 'l') {
-			return <OmnichannelRoomIcon style={iconStyle} size={size} type={type} status={status} sourceType={sourceType} />;
+			return (
+				<OmnichannelRoomIcon style={iconStyle as ImageStyle} size={size} type={type} status={status} sourceType={sourceType} />
+			);
 		}
 
 		// TODO: move this to a separate function
 		let icon: TIconsName = 'channel-private';
-		if (teamMain) {
+		if (abacAttributes?.length) {
+			icon = teamMain ? 'team-shield' : 'hash-shield';
+		} else if (teamMain) {
 			icon = `teams${type === 'p' ? '-private' : ''}`;
 		} else if (type === 'discussion') {
 			icon = 'discussions';

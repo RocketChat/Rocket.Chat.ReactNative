@@ -1,5 +1,5 @@
 import database from '..';
-import { TAppDatabase } from '../interfaces';
+import { type TAppDatabase } from '../interfaces';
 import { UPLOADS_TABLE } from '../model';
 
 const getCollection = (db: TAppDatabase) => db.get(UPLOADS_TABLE);

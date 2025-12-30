@@ -45,7 +45,7 @@ const Render = () => (
 				onLongPress: () => {},
 				user: { username: 'Marcos' }
 			}}>
-			<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
+			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
 		</MessageContext.Provider>
 	</Provider>
 );

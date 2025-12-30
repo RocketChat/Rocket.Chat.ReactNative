@@ -3,9 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
-import { IThemePreference, TDarkLevel, TThemeMode } from '../definitions/ITheme';
+import { type IThemePreference, type TDarkLevel, type TThemeMode } from '../definitions/ITheme';
 import I18n from '../i18n';
-import { THEME_PREFERENCES_KEY } from '../lib/constants';
+import { THEME_PREFERENCES_KEY } from '../lib/constants/keys';
 import { supportSystemTheme } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -56,32 +56,18 @@ interface ITheme {
 	group: string;
 }
 
-const Item = ({
-	onPress,
-	label,
-	value,
-	isSelected
-}: {
-	onPress: () => void;
-	label: string;
-	value: string;
-	isSelected: boolean;
-}) => {
-	const { colors } = useTheme();
-	return (
-		<>
-			<List.Item
-				title={label}
-				onPress={onPress}
-				testID={`theme-view-${value}`}
-				right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
-				additionalAcessibilityLabel={isSelected}
-				additionalAcessibilityLabelCheck
-			/>
-			<List.Separator />
-		</>
-	);
-};
+const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme; isSelected: boolean }) => (
+	<>
+		<List.Radio
+			isSelected={isSelected}
+			title={item.label}
+			value={item.value}
+			onPress={onPress}
+			testID={`theme-view-${item.value}`}
+		/>
+		<List.Separator />
+	</>
+);
 
 const ThemeView = (): React.ReactElement => {
 	const { themePreferences, setTheme } = useTheme();
@@ -134,13 +120,7 @@ const ThemeView = (): React.ReactElement => {
 					<List.Separator />
 					<>
 						{themeGroup.map(theme => (
-							<Item
-								onPress={() => onClick(theme)}
-								label={theme.label}
-								value={theme.value}
-								isSelected={!!isSelected(theme)}
-								key={theme.label}
-							/>
+							<Item onPress={() => onClick(theme)} item={theme} isSelected={!!isSelected(theme)} key={theme.label} />
 						))}
 					</>
 				</List.Section>
@@ -148,13 +128,7 @@ const ThemeView = (): React.ReactElement => {
 					<List.Separator />
 					<>
 						{darkGroup.map(theme => (
-							<Item
-								onPress={() => onClick(theme)}
-								label={theme.label}
-								value={theme.value}
-								isSelected={!!isSelected(theme)}
-								key={theme.label}
-							/>
+							<Item onPress={() => onClick(theme)} item={theme} isSelected={!!isSelected(theme)} key={theme.label} />
 						))}
 					</>
 				</List.Section>

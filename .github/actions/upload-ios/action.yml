@@ -135,10 +135,10 @@ runs:
         plist="ios/RocketChatRN/Info.plist"
 
         version_name=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$plist")
-        version_code=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$plist")
+        build_version=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$plist")
 
         echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
-        echo "VERSION_CODE=$version_code" >> $GITHUB_ENV
+        echo "BUILD_VERSION=$build_version" >> $GITHUB_ENV
       shell: bash
 
     - name: Comment on PR with TestFlight Info
@@ -154,7 +154,7 @@ runs:
           app_name="Rocket.Chat Experimental"
         fi
 
-        message="**iOS Build Available**"$'\n\n'"$app_name $VERSION_NAME.$VERSION_CODE"
+        message="**iOS Build Available**"$'\n\n'"$app_name $VERSION_NAME.$BUILD_VERSION"
 
         gh pr comment "$PR_NUMBER" --body "$message"
       shell: bash

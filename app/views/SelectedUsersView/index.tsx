@@ -3,9 +3,9 @@ import orderBy from 'lodash/orderBy';
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
-import { Subscription } from 'rxjs';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type Subscription } from 'rxjs';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { addUser, removeUser, reset } from '../../actions/selectedUsers';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
@@ -15,19 +15,23 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import UserItem from '../../containers/UserItem';
-import { ISelectedUser } from '../../reducers/selectedUsers';
+import { type ISelectedUser } from '../../reducers/selectedUsers';
 import { getUserSelector } from '../../selectors/login';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList, type NewMessageStackParamList } from '../../stacks/types';
+import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { search as searchMethod, TSearch } from '../../lib/methods';
+import { search as searchMethod, type TSearch } from '../../lib/methods/search';
 import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Header from './Header';
 
-type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
-type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
+type TRoute = RouteProp<ChatsStackParamList & NewMessageStackParamList & ModalStackParamList, 'SelectedUsersView'>;
+type TNavigation = NativeStackNavigationProp<
+	ChatsStackParamList & NewMessageStackParamList & ModalStackParamList,
+	'SelectedUsersView'
+>;
 
 const SelectedUsersView = () => {
 	const [chats, setChats] = useState<ISelectedUser[]>([]);
@@ -66,8 +70,8 @@ const SelectedUsersView = () => {
 
 	useLayoutEffect(() => {
 		const titleHeader = title ?? I18n.t('Select_Members');
-		const buttonTextHeader = buttonText ?? I18n.t('Next');
-		const nextActionHeader = nextAction ?? (() => {});
+		const buttonTextHeader = buttonText || I18n.t('Next');
+		const nextActionHeader = nextAction || (() => {});
 		const buttonTitle = handleButtonTitle(buttonTextHeader);
 		const options = {
 			title: titleHeader,
@@ -80,7 +84,7 @@ const SelectedUsersView = () => {
 				)
 		};
 		navigation.setOptions(options);
-	}, [navigation, users.length, maxUsers]);
+	}, [navigation, users.length, maxUsers, buttonText, nextAction]);
 
 	useEffect(() => {
 		if (isGroupChat()) {

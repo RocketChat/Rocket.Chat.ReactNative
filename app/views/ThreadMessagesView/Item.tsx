@@ -5,11 +5,11 @@ import Touchable from 'react-native-platform-touchable';
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import ThreadDetails from '../../containers/ThreadDetails';
-import { TThreadModel } from '../../definitions';
+import { type TThreadModel } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {

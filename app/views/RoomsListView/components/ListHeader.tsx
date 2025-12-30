@@ -3,7 +3,8 @@ import React, { memo, useContext } from 'react';
 
 import * as List from '../../../containers/List';
 import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelHeader';
-import { E2E_BANNER_TYPE, themes } from '../../../lib/constants';
+import { E2E_BANNER_TYPE } from '../../../lib/constants/keys';
+import { themes } from '../../../lib/constants/colors';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { useTheme } from '../../../theme';
@@ -12,6 +13,8 @@ import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
 
 const ListHeader = () => {
+	'use memo';
+
 	const { theme } = useTheme();
 	const { searchEnabled } = useContext(RoomsSearchContext);
 	const encryptionBanner = useAppSelector(state => state.encryption.banner);

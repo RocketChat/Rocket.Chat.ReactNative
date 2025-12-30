@@ -1,5 +1,5 @@
 import { TROUBLESHOOTING_NOTIFICATION } from '../actions/actionsTypes';
-import { TActionTroubleshootingNotification } from '../actions/troubleshootingNotification';
+import { type TActionTroubleshootingNotification } from '../actions/troubleshootingNotification';
 
 export interface ITroubleshootingNotification {
 	deviceNotificationEnabled: boolean;

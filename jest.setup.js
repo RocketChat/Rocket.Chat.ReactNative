@@ -1,7 +1,7 @@
 import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
@@ -16,8 +16,8 @@ jest.mock('react-native-safe-area-context', () => {
 	};
 });
 
-const getSizeMock = jest.spyOn(Image, 'getSize');
-getSizeMock.mockImplementation(() => {});
+const loadAsyncMock = jest.spyOn(Image, 'loadAsync');
+loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300 }));
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
@@ -84,14 +84,6 @@ jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	})
 }));
 
-jest.mock('./app/lib/database/services/Message', () => ({
-	getMessageById: messageId => ({
-		id: messageId,
-		rid: 'rid',
-		msg: `Message ${messageId}`
-	})
-}));
-
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
 	__esModule: true,
 	default: jest.fn(() => ({
@@ -121,6 +113,10 @@ jest.mock('./app/containers/CustomIcon', () => {
 	};
 });
 
+jest.mock('./app/lib/encryption', () => ({
+	encryptMessage: jest.fn(() => ({ rid: 'test', msg: 'test' }))
+}));
+
 jest.mock('@react-navigation/native', () => {
 	const actualNav = jest.requireActual('@react-navigation/native');
 	const { useEffect } = require('react');
@@ -140,18 +136,23 @@ jest.mock('@react-navigation/native', () => {
 	};
 });
 
-jest.mock('react-native-notifications', () => ({
-	Notifications: {
-		getInitialNotification: jest.fn(() => Promise.resolve()),
-		registerRemoteNotifications: jest.fn(),
-		events: () => ({
-			registerRemoteNotificationsRegistered: jest.fn(),
-			registerRemoteNotificationsRegistrationFailed: jest.fn(),
-			registerNotificationReceivedForeground: jest.fn(),
-			registerNotificationReceivedBackground: jest.fn(),
-			registerNotificationOpened: jest.fn()
-		})
-	}
+jest.mock('expo-notifications', () => ({
+	getDevicePushTokenAsync: jest.fn(() => Promise.resolve({ data: 'mock-token' })),
+	getPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
+	requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
+	setBadgeCountAsync: jest.fn(() => Promise.resolve(true)),
+	dismissAllNotificationsAsync: jest.fn(() => Promise.resolve()),
+	setNotificationHandler: jest.fn(),
+	setNotificationCategoryAsync: jest.fn(() => Promise.resolve()),
+	addNotificationReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
+	addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
+	addPushTokenListener: jest.fn(() => ({ remove: jest.fn() })),
+	getLastNotificationResponse: jest.fn(() => null),
+	DEFAULT_ACTION_IDENTIFIER: 'expo.modules.notifications.actions.DEFAULT'
+}));
+
+jest.mock('expo-device', () => ({
+	isDevice: true
 }));
 
 jest.mock('@discord/bottom-sheet', () => {
@@ -173,3 +174,11 @@ jest.mock('react-native-math-view', () => {
 });
 
 jest.mock('react-native-keyboard-controller');
+
+jest.mock('react-native-webview', () => {
+	const React = require('react');
+	const { View } = require('react-native');
+	const WebView = React.forwardRef(() => <View />);
+	WebView.defaultProps = {};
+	return { WebView };
+});

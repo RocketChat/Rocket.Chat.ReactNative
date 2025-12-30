@@ -1,8 +1,15 @@
-import { EdgeInsets } from 'react-native-safe-area-context';
+import { type EdgeInsets } from 'react-native-safe-area-context';
 
-import { ChatsStackParamList } from '../../stacks/types';
-import { IBaseScreen, ILastMessage, ILoggedUser, TSubscriptionModel, ICustomEmojis, TMessageAction } from '../../definitions';
-import { IActionSheetProvider } from '../../containers/ActionSheet';
+import { type ChatsStackParamList } from '../../stacks/types';
+import {
+	type IBaseScreen,
+	type ILastMessage,
+	type ILoggedUser,
+	type TSubscriptionModel,
+	type ICustomEmojis,
+	type TMessageAction
+} from '../../definitions';
+import { type IActionSheetProvider } from '../../containers/ActionSheet';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
@@ -25,6 +32,8 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	inAppFeedback?: { [key: string]: string };
 	encryptionEnabled: boolean;
 	airGappedRestrictionRemainingDays: number | undefined;
+	isFederationEnabled: boolean;
+	isFederationModuleEnabled: boolean;
 }
 
 export type TStateAttrsUpdate = keyof IRoomViewState;
@@ -62,4 +71,6 @@ export interface IRoomViewState {
 	action: TMessageAction;
 	selectedMessages: string[];
 	isAutocompleteVisible: boolean;
+	showMissingE2EEKey: boolean;
+	showE2EEDisabledRoom: boolean;
 }

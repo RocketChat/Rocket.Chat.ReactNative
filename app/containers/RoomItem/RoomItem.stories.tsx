@@ -7,7 +7,7 @@ import {
 	ResponsiveLayoutContext
 } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { longText } from '../../../.rnstorybook/utils';
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import RoomItemComponent from './RoomItem';
 
 const { width } = Dimensions.get('window');
@@ -71,6 +71,8 @@ export const Type = () => (
 		<RoomItem type='l' />
 		<RoomItem type='discussion' />
 		<RoomItem type='d' isGroupChat />
+		<RoomItem type='p' abacAttributes={[{ key: 'Attribute', values: ['Value 1', 'Value 2'] }]} />
+		<RoomItem type='p' abacAttributes={[{ key: 'Attribute', values: ['Value 1', 'Value 2'] }]} teamMain />
 		<RoomItem type='&' />
 	</>
 );
@@ -187,5 +189,12 @@ export const OmnichannelIcon = () => (
 		<RoomItem type='l' sourceType={{ type: 'sms' }} />
 		<RoomItem type='l' sourceType={{ type: 'other' }} status='online' />
 		<RoomItem type='l' sourceType={{ type: 'other' }} />
+	</>
+);
+
+export const InvitedRoom = () => (
+	<>
+		<RoomItem isInvited />
+		<RoomItem isInvited displayMode={DisplayMode.Condensed} />
 	</>
 );

@@ -10,37 +10,27 @@ export default StyleSheet.create({
 	container: {
 		paddingVertical: 4,
 		width: '100%',
-		paddingHorizontal: 14,
-		flexDirection: 'column'
+		paddingHorizontal: 12,
+		flexDirection: 'column',
+		gap: 8
 	},
 	contentContainer: {
 		flex: 1
 	},
 	messageContent: {
 		flex: 1,
-		marginLeft: 46
-	},
-	messageContentWithHeader: {
 		marginLeft: 10
-	},
-	messageContentWithError: {
-		marginLeft: 0
 	},
 	flex: {
 		flexDirection: 'row'
 	},
 	temp: { opacity: 0.3 },
-	marginTop: {
-		marginTop: 6
-	},
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 8
+		gap: 4
 	},
 	reactionButton: {
-		marginRight: 8,
-		marginBottom: 8,
 		borderRadius: 4
 	},
 	reactionContainer: {
@@ -49,32 +39,27 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 4,
 		borderWidth: 1,
-		minWidth: 46.3
+		minWidth: 46.3,
+		gap: 4,
+		paddingHorizontal: 4
 	},
 	reactionCount: {
 		fontSize: 14,
-		marginLeft: 3,
-		marginRight: 8.5,
+		lineHeight: 18,
 		...sharedStyles.textSemibold
 	},
 	reactionEmoji: {
 		fontSize: 13,
-		marginLeft: 7,
 		color: '#ffffff'
 	},
 	reactionCustomEmoji: {
 		width: 19,
-		height: 19,
-		marginLeft: 7
+		height: 19
 	},
 	avatar: {
 		marginTop: 4
 	},
-	avatarSmall: {
-		marginLeft: 16
-	},
 	buttonContainer: {
-		marginTop: 8,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -86,27 +71,29 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		borderRadius: 4
 	},
-	buttonIcon: {
-		marginRight: 8
+	buttonInnerContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8
 	},
 	buttonText: {
 		fontSize: 12,
+		lineHeight: 16,
 		...sharedStyles.textSemibold
 	},
 	imageContainer: {
 		flexDirection: 'column',
-		borderRadius: 4,
-		marginTop: 4
+		borderRadius: 4
 	},
 	image: {
 		width: '100%',
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
-		overflow: 'hidden',
-		marginTop: 4
+		overflow: 'hidden'
 	},
-	text: {
+	discussionText: {
 		fontSize: 16,
+		lineHeight: 20,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
@@ -116,23 +103,18 @@ export default StyleSheet.create({
 	startedDiscussion: {
 		fontStyle: 'italic',
 		fontSize: 16,
-		marginBottom: 6,
+		lineHeight: 20,
 		...sharedStyles.textRegular
 	},
 	time: {
 		fontSize: 13,
-		marginLeft: 8,
+		lineHeight: 18,
 		...sharedStyles.textRegular
 	},
 	repliedThread: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 6,
-		marginBottom: 12
-	},
-	repliedThreadIcon: {
-		marginRight: 10,
-		marginLeft: 16
+		gap: 10
 	},
 	repliedThreadName: {
 		fontSize: 16,

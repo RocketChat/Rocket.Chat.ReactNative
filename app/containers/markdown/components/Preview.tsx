@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, TextStyle } from 'react-native';
+import { Text, type TextStyle } from 'react-native';
 
-import { themes } from '../../../lib/constants';
+import { themes } from '../../../lib/constants/colors';
 import { useTheme } from '../../../theme';
 import usePreviewFormatText from '../../../lib/hooks/usePreviewFormatText';
 import styles from '../styles';

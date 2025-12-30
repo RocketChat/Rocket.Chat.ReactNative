@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 
-import { TMarkdownStyle } from '../../../containers/MessageComposer/interfaces';
+import { type TMarkdownStyle } from '../../../containers/MessageComposer/interfaces';
 
 type TDynamicMediaDownloadEvents = {
 	[key: `downloadMedia${string}`]: string;

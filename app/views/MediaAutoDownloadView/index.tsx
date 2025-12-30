@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -9,11 +9,11 @@ import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
 	AUDIO_PREFERENCE_DOWNLOAD,
 	IMAGE_PREFERENCE_DOWNLOAD,
-	MediaDownloadOption,
+	type MediaDownloadOption,
 	VIDEO_PREFERENCE_DOWNLOAD
-} from '../../lib/constants';
+} from '../../lib/constants/mediaAutoDownload';
 import i18n from '../../i18n';
-import { SettingsStackParamList } from '../../stacks/types';
+import { type SettingsStackParamList } from '../../stacks/types';
 
 const MediaAutoDownload = () => {
 	const [imagesPreference, setImagesPreference] = useUserPreferences<MediaDownloadOption>(
@@ -35,11 +35,11 @@ const MediaAutoDownload = () => {
 			<List.Container>
 				<List.Section>
 					<List.Separator />
-					<ListPicker onChangeValue={setImagesPreference} value={imagesPreference} title='Image' />
+					<ListPicker onChangeValue={setImagesPreference} value={imagesPreference as MediaDownloadOption} title='Image' />
 					<List.Separator />
-					<ListPicker onChangeValue={setVideoPreference} value={videoPreference} title='Video' />
+					<ListPicker onChangeValue={setVideoPreference} value={videoPreference as MediaDownloadOption} title='Video' />
 					<List.Separator />
-					<ListPicker onChangeValue={setAudioPreference} value={audioPreference} title='Audio' />
+					<ListPicker onChangeValue={setAudioPreference} value={audioPreference as MediaDownloadOption} title='Audio' />
 					<List.Separator />
 				</List.Section>
 			</List.Container>

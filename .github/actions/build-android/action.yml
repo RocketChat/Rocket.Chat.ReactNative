@@ -4,8 +4,8 @@ inputs:
   type:
     description: 'Build type: official or experimental'
     required: true
-  VERSIONCODE:
-    description: 'Version code for build'
+  BUILD_VERSION:
+    description: 'Build version for build'
     required: true
   BUGSNAG_KEY:
     description: 'Bugsnag API key for build'
@@ -88,9 +88,9 @@ runs:
         echo -e "android.useAndroidX=true" >> ./gradle.properties
         echo -e "android.enableJetifier=true" >> ./gradle.properties
         echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
-        echo -e "newArchEnabled=false" >> ./gradle.properties
+        echo -e "newArchEnabled=true" >> ./gradle.properties
         echo -e "hermesEnabled=true" >> ./gradle.properties
-        echo -e "VERSIONCODE=${{ inputs.VERSIONCODE }}" >> ./gradle.properties
+        echo -e "VERSIONCODE=${{ inputs.BUILD_VERSION }}" >> ./gradle.properties
 
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties

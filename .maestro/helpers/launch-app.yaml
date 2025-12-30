@@ -1,0 +1,22 @@
+appId: chat.rocket.reactnative
+name: Launch app
+tags:
+  - 'util'
+
+---
+- retry:
+    maxRetries: 3
+    commands:
+      - launchApp:
+          clearState: true
+          permissions:
+            all: allow
+      - waitForAnimationToEnd:
+          timeout: 60000
+      - runFlow:
+          when:
+            visible: '.*Pixel Launcher.*'
+            platform: Android
+          commands:
+            - tapOn: 'Close App'
+      - assertVisible: 'Add workspace'

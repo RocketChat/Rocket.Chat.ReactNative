@@ -9,6 +9,8 @@ import ShareView from '../views/ShareView';
 
 const ShareExtension = createNativeStackNavigator<any>();
 const ShareExtensionStack = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (

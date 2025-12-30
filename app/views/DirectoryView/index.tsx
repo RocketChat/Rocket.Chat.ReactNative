@@ -1,12 +1,12 @@
 import React from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { AccessibilityInfo, FlatList, type ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp } from '@react-navigation/native';
 
 import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
-import { ChatsStackParamList } from '../../stacks/types';
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
@@ -16,15 +16,15 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { debounce } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { type TSupportedThemes, withTheme } from '../../theme';
+import { themes } from '../../lib/constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
+import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { type IApplicationState, type IServerRoom, type IUser, SubscriptionType } from '../../definitions';
 import styles from './styles';
 import Options from './Options';
-import { Services } from '../../lib/services';
+import { getDirectory, createDirectMessage, getRoomByTypeAndName } from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IDirectoryViewProps {
@@ -106,8 +106,13 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		this.setState({ loading: true });
 
 		try {
-			const { data, type, globalUsers } = this.state;
-			const directories = await Services.getDirectory({
+			const { type, globalUsers } = this.state;
+			let { data } = this.state;
+			// TODO: workaround to fix Fabric batch behavior. It should be fixed when we migrate to function components
+			if (newSearch) {
+				data = [];
+			}
+			const directories = await getDirectory({
 				text,
 				type,
 				workspace: globalUsers ? 'all' : 'local',
@@ -116,11 +121,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
 			if (directories.success) {
-				this.setState({
-					data: [...data, ...(directories.result as IServerRoom[])],
+				this.setState(prev => ({
+					data: [...prev.data, ...(directories.result as IServerRoom[])],
 					loading: false,
 					total: directories.total
-				});
+				}));
+				this.announceSearchResults(directories.count);
 			} else {
 				this.setState({ loading: false });
 			}
@@ -132,6 +138,15 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 	search = () => {
 		this.load({ newSearch: true });
+	};
+
+	announceSearchResults = (count: number) => {
+		if (!count) {
+			AccessibilityInfo.announceForAccessibility(I18n.t('No_results_found'));
+			return;
+		}
+		const message = count === 1 ? I18n.t('One_result_found') : I18n.t('Search_Results_found', { count: count.toString() });
+		AccessibilityInfo.announceForAccessibility(message);
 	};
 
 	changeType = (type: string) => {
@@ -179,7 +194,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		try {
 			const { type } = this.state;
 			if (type === 'users') {
-				const result = await Services.createDirectMessage(item.username as string);
+				const result = await createDirectMessage(item.username as string);
 				if (result.success) {
 					this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
 				}
@@ -191,7 +206,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				return;
 			}
 			if (['p', 'c'].includes(item.t) && !item.teamMain) {
-				const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
+				const result = await getRoomByTypeAndName(item.t, item.name || item.fname);
 				if (result) {
 					this.goRoom({
 						rid: item._id,

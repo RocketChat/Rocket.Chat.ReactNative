@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { Plain as PlainProps } from '@rocket.chat/message-parser';
+import { type Plain as PlainProps } from '@rocket.chat/message-parser';
 
 import { useTheme } from '../../../theme';
 import styles from '../styles';

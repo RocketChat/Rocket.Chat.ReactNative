@@ -1,0 +1,17 @@
+appId: chat.rocket.reactnative
+name: Search room
+tags:
+  - 'util'
+---
+- assertVisible:
+    id: 'rooms-list-view'
+- tapOn:
+    id: 'rooms-list-view-search'
+- tapOn:
+    id: 'rooms-list-view-search-input'
+- inputText:
+    text: ${ROOM}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-item-${ROOM}'
+    timeout: 10000
