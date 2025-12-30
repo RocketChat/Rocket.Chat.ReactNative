@@ -22,6 +22,8 @@ import okhttp3.Response;
 public class MarkAsReadBroadcast extends BroadcastReceiver {
     private static final String TAG = "RocketChat.MarkAsRead";
     public static final String KEY_MARK_AS_READ = "KEY_MARK_AS_READ";
+    private static final OkHttpClient client = new OkHttpClient();
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -51,12 +53,7 @@ public class MarkAsReadBroadcast extends BroadcastReceiver {
             return;
         }
 
-        final OkHttpClient client = new OkHttpClient();
-        final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
         String json = String.format("{\"rid\":\"%s\"}", rid);
-
-        CustomPushNotification.clearMessages(notId);
 
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
@@ -74,11 +71,18 @@ public class MarkAsReadBroadcast extends BroadcastReceiver {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "Mark as read SUCCESS");
-                    notificationManager.cancel(notId);
-                } else {
-                    Log.e(TAG, String.format("Mark as read FAILED status %s", response.code()));
+                try {
+                    if (response.isSuccessful()) {
+                        Log.d(TAG, "Mark as read SUCCESS");
+                        CustomPushNotification.clearMessages(notId);
+                        notificationManager.cancel(notId);
+                    } else {
+                        Log.e(TAG, String.format("Mark as read FAILED status %s", response.code()));
+                    }
+                } finally {
+                    if (response.body() != null) {
+                        response.body().close();
+                    }
                 }
             }
         });

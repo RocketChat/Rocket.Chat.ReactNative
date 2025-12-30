@@ -22,7 +22,7 @@ final class RocketChat {
     self.api = API(server: server)
   }
 
-  func getPushWithId(_ msgId: String, completion: @escaping((Notification?) -> Void)) {
+  func getPushWithId(_ msgId: String, completion: @escaping (Notification?) -> Void) {
     api?.fetch(request: PushRequest(msgId: msgId), retry: Retry(retries: 4)) { response in
       switch response {
       case .resource(let response):
@@ -31,12 +31,11 @@ final class RocketChat {
 
       case .error:
         completion(nil)
-        break
       }
     }
   }
 
-  func sendMessage(rid: String, message: String, threadIdentifier: String?, completion: @escaping((MessageResponse?) -> Void)) {
+  func sendMessage(rid: String, message: String, threadIdentifier: String?, completion: @escaping (MessageResponse?) -> Void) {
     let id = String.random(length: 17)
 
     let encrypted = Database(server: server).readRoomEncrypted(for: rid)
@@ -57,7 +56,6 @@ final class RocketChat {
 
         case .error:
           completion(nil)
-          break
         }
       }
     } else {
@@ -68,7 +66,6 @@ final class RocketChat {
 
         case .error:
           completion(nil)
-          break
         }
       }
     }
@@ -81,7 +78,7 @@ final class RocketChat {
     }
   }
 
-  func markAsRead(rid: String, completion: @escaping((MarkAsReadResponse?) -> Void)) {
+  func markAsRead(rid: String, completion: @escaping (MarkAsReadResponse?) -> Void) {
     api?.fetch(request: MarkAsReadRequest(rid: rid)) { response in
       switch response {
       case .resource(let response):
@@ -89,7 +86,6 @@ final class RocketChat {
 
       case .error:
         completion(nil)
-        break
       }
     }
   }
