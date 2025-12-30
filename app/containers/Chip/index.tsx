@@ -8,8 +8,8 @@ import Avatar from '../Avatar';
 
 const styles = StyleSheet.create({
 	pressable: {
-		paddingHorizontal: 8,
-		marginRight: 8,
+		paddingHorizontal: 4,
+		marginHorizontal: 4,
 		borderRadius: 4,
 		justifyContent: 'center',
 		maxWidth: 192
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	},
 	textContainer: {
 		marginRight: 8,
-		maxWidth: 120
+		maxWidth: 110
 	},
 	name: {
 		fontSize: 16,
@@ -50,7 +50,7 @@ const Chip = ({ avatar, text, onPress, testID, style, fullWidth }: IChip) => {
 			style={({ pressed }) => [
 				styles.pressable,
 				{
-					backgroundColor: pressed ? colors.surfaceNeutral : colors.surfaceHover,
+					backgroundColor: pressed ? colors.surfaceNeutral : colors.buttonBackgroundSecondaryDefault,
 					maxWidth: fullWidth ? undefined : styles.pressable.maxWidth
 				},
 				style
