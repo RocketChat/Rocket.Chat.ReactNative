@@ -3,6 +3,7 @@
 exports[`Story Snapshots: Content should match snapshot 1`] = `
 [
   <RNGestureHandlerButton
+    accessibilityRole="radio"
     activeOpacity={1}
     collapsable={false}
     delayLongPress={600}
@@ -58,7 +59,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     />
     <View
       accessibilityHint="Activate to select server"
-      accessibilityLabel="Rocket.Chat, https://open.rocket.chat/"
+      accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Selected"
+      accessibilityRole="radio"
       accessible={true}
       style={{}}
     >
@@ -161,36 +163,49 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             https://open.rocket.chat/
           </Text>
         </View>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
           style={
             [
               {
-                "color": "#156FF5",
-                "fontSize": 24,
+                "alignItems": "center",
+                "justifyContent": "center",
               },
-              [
-                {
-                  "lineHeight": 24,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1D74F5",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </RNGestureHandlerButton>,
   <RNGestureHandlerButton
+    accessibilityRole="radio"
     activeOpacity={1}
     collapsable={false}
     delayLongPress={600}
@@ -246,7 +261,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     />
     <View
       accessibilityHint="Activate to select server"
-      accessibilityLabel="Super Long Server Name in Rocket.Chat, https://superlongservername.tologintoasuperlongservername/"
+      accessibilityLabel="Super Long Server Name in Rocket.Chat. https://superlongservername.tologintoasuperlongservername/. Unselected"
+      accessibilityRole="radio"
       accessible={true}
       style={{}}
     >
@@ -349,36 +365,49 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             https://superlongservername.tologintoasuperlongservername/
           </Text>
         </View>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
           style={
             [
               {
-                "color": "#9EA2A8",
-                "fontSize": 24,
+                "alignItems": "center",
+                "justifyContent": "center",
               },
-              [
-                {
-                  "lineHeight": 24,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#9EA2A8",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </RNGestureHandlerButton>,
   <RNGestureHandlerButton
+    accessibilityRole="radio"
     activeOpacity={1}
     collapsable={false}
     delayLongPress={600}
@@ -434,7 +463,8 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
     />
     <View
       accessibilityHint="Activate to select server"
-      accessibilityLabel="Rocket.Chat, https://stable.rocket.chat/"
+      accessibilityLabel="Rocket.Chat. https://stable.rocket.chat/. Unselected"
+      accessibilityRole="radio"
       accessible={true}
       style={{}}
     >
@@ -537,32 +567,44 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
             https://stable.rocket.chat/
           </Text>
         </View>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
           style={
             [
               {
-                "color": "#9EA2A8",
-                "fontSize": 24,
+                "alignItems": "center",
+                "justifyContent": "center",
               },
-              [
-                {
-                  "lineHeight": 24,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#9EA2A8",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </RNGestureHandlerButton>,
@@ -773,7 +815,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             ]
           }
           accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="Rocket.Chat, https://open.rocket.chat/"
+          accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
           accessible={true}
           onAccessibilityAction={[Function]}
           style={{}}
@@ -877,32 +919,44 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                 https://open.rocket.chat/
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
               style={
                 [
                   {
-                    "color": "#9EA2A8",
-                    "fontSize": 24,
+                    "alignItems": "center",
+                    "justifyContent": "center",
                   },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
+                  undefined,
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -1110,7 +1164,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
             ]
           }
           accessibilityHint="Activate to select server. Available actions: delete"
-          accessibilityLabel="Another Server, https://example.com/"
+          accessibilityLabel="Another Server. https://example.com/. Unselected"
           accessible={true}
           onAccessibilityAction={[Function]}
           style={{}}
@@ -1214,32 +1268,44 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
                 https://example.com/
               </Text>
             </View>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
+            <View
               style={
                 [
                   {
-                    "color": "#9EA2A8",
-                    "fontSize": 24,
+                    "alignItems": "center",
+                    "justifyContent": "center",
                   },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
+                  undefined,
                 ]
               }
             >
-              
-            </Text>
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#9EA2A8",
+                      "fontSize": 24,
+                    },
+                    [
+                      {
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
           </View>
         </View>
       </RNGestureHandlerButton>
@@ -1251,6 +1317,7 @@ exports[`Story Snapshots: SwipeActions should match snapshot 1`] = `
 exports[`Story Snapshots: Themes should match snapshot 1`] = `
 [
   <RNGestureHandlerButton
+    accessibilityRole="radio"
     activeOpacity={1}
     collapsable={false}
     delayLongPress={600}
@@ -1306,7 +1373,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     />
     <View
       accessibilityHint="Activate to select server"
-      accessibilityLabel="Rocket.Chat, https://open.rocket.chat/"
+      accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
+      accessibilityRole="radio"
       accessible={true}
       style={{}}
     >
@@ -1409,36 +1477,49 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             https://open.rocket.chat/
           </Text>
         </View>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
           style={
             [
               {
-                "color": "#9EA2A8",
-                "fontSize": 24,
+                "alignItems": "center",
+                "justifyContent": "center",
               },
-              [
-                {
-                  "lineHeight": 24,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#9EA2A8",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </RNGestureHandlerButton>,
   <RNGestureHandlerButton
+    accessibilityRole="radio"
     activeOpacity={1}
     collapsable={false}
     delayLongPress={600}
@@ -1494,7 +1575,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     />
     <View
       accessibilityHint="Activate to select server"
-      accessibilityLabel="Rocket.Chat, https://open.rocket.chat/"
+      accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
+      accessibilityRole="radio"
       accessible={true}
       style={{}}
     >
@@ -1597,36 +1679,49 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             https://open.rocket.chat/
           </Text>
         </View>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
           style={
             [
               {
-                "color": "#404754",
-                "fontSize": 24,
+                "alignItems": "center",
+                "justifyContent": "center",
               },
-              [
-                {
-                  "lineHeight": 24,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#404754",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </RNGestureHandlerButton>,
   <RNGestureHandlerButton
+    accessibilityRole="radio"
     activeOpacity={1}
     collapsable={false}
     delayLongPress={600}
@@ -1682,7 +1777,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
     />
     <View
       accessibilityHint="Activate to select server"
-      accessibilityLabel="Rocket.Chat, https://open.rocket.chat/"
+      accessibilityLabel="Rocket.Chat. https://open.rocket.chat/. Unselected"
+      accessibilityRole="radio"
       accessible={true}
       style={{}}
     >
@@ -1785,32 +1881,44 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             https://open.rocket.chat/
           </Text>
         </View>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
+        <View
           style={
             [
               {
-                "color": "#404754",
-                "fontSize": 24,
+                "alignItems": "center",
+                "justifyContent": "center",
               },
-              [
-                {
-                  "lineHeight": 24,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#404754",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
     </View>
   </RNGestureHandlerButton>,
