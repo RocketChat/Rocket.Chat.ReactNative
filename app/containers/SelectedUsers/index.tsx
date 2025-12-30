@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../theme';
+import { type ISelectedUser } from '../../reducers/selectedUsers';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import Chip from '../Chip';
@@ -29,9 +30,9 @@ const styles = StyleSheet.create({
 });
 
 export interface ISelectedUsers {
-	users: any[];
+	users: ISelectedUser[];
 	useRealName?: boolean;
-	onPress: (item: any) => void;
+	onPress: (item: ISelectedUser) => void;
 }
 
 const SelectedUsers = ({ users, useRealName, onPress }: ISelectedUsers) => {
@@ -62,12 +63,7 @@ const SelectedUsers = ({ users, useRealName, onPress }: ISelectedUsers) => {
 					const username = item.name;
 
 					return (
-						<Chip
-							text={name}
-							avatar={username}
-							onPress={() => onPress(item._id)}
-							testID={`create-channel-view-item-${item.name}`}
-						/>
+						<Chip text={name} avatar={username} onPress={() => onPress(item)} testID={`create-channel-view-item-${item.name}`} />
 					);
 				}}
 				keyboardShouldPersistTaps='always'

@@ -95,8 +95,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		setEncrypted(value);
 	};
 
-	const removeUser = (id: string) => {
-		setUsers(prevState => prevState.filter(item => item._id !== id));
+	const removeUser = (user: ISelectedUser) => {
+		setUsers(prevState => prevState.filter(item => item._id !== user._id));
 	};
 
 	const submit = () => {
