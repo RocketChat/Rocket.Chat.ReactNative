@@ -23,11 +23,11 @@ tags:
 - assertVisible:
     id: 'action-sheet'
 - assertVisible:
-    id: 'servers-history-https://mobile.rocket.chat'
+    id: 'servers-history-https://mobile.qa.rocket.chat'
 
 # should tap on a server history and navigate to login
 - tapOn:
-    id: 'servers-history-https://mobile.rocket.chat'
+    id: 'servers-history-https://mobile.qa.rocket.chat'
 - assertVisible:
     id: 'login-view-submit'
 - assertVisible: ${output.user.username}
@@ -43,17 +43,17 @@ tags:
 - tapOn:
     id: 'servers-history-button'
 - assertVisible:
-    id: 'servers-history-https://mobile.rocket.chat'
+    id: 'servers-history-https://mobile.qa.rocket.chat'
 
 # swipe left to reveal delete button and delete the server history
 - swipe:
     direction: LEFT
     from:
-      id: 'servers-history-https://mobile.rocket.chat'
+      id: 'servers-history-https://mobile.qa.rocket.chat'
 - waitForAnimationToEnd:
     timeout: 500
 - tapOn:
-    id: 'servers-history-https://mobile.rocket.chat-delete'
+    id: 'servers-history-https://mobile.qa.rocket.chat-delete'
 - extendedWaitUntil:
     notVisible:
       id: 'servers-history-button'
