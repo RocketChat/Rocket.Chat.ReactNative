@@ -27,6 +27,9 @@ public class MarkAsReadBroadcast extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // Keep receiver alive for async network operation
+        final PendingResult pendingResult = goAsync();
+
         Bundle bundle = NotificationIntentAdapter.extractPendingNotificationDataFromIntent(intent);
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -38,18 +41,22 @@ public class MarkAsReadBroadcast extends BroadcastReceiver {
 
         try {
             int id = Integer.parseInt(notId);
-            markAsRead(ejson, id, notificationManager);
+            markAsRead(ejson, id, notificationManager, pendingResult);
         } catch (NumberFormatException e) {
             Log.e(TAG, "Invalid notification ID: " + notId, e);
+            pendingResult.finish();
         }
     }
 
-    protected void markAsRead(final Ejson ejson, final int notId, final NotificationManager notificationManager) {
+    protected void markAsRead(final Ejson ejson, final int notId,
+            final NotificationManager notificationManager,
+            final PendingResult pendingResult) {
         String serverURL = ejson.serverURL();
         String rid = ejson.rid;
 
         if (serverURL == null || rid == null) {
             Log.e(TAG, "Missing serverURL or rid");
+            pendingResult.finish();
             return;
         }
 
@@ -67,6 +74,7 @@ public class MarkAsReadBroadcast extends BroadcastReceiver {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "Mark as read FAILED: " + e.getMessage());
+                pendingResult.finish();
             }
 
             @Override
@@ -83,6 +91,7 @@ public class MarkAsReadBroadcast extends BroadcastReceiver {
                     if (response.body() != null) {
                         response.body().close();
                     }
+                    pendingResult.finish();
                 }
             }
         });
