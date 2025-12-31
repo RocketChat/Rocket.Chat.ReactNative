@@ -61,7 +61,8 @@ interface ITabViewProps {
 // Mock TabView to better match the actual implementation
 jest.mock('../TabView', () => {
 	const React = require('react');
-	const { View, TouchableOpacity } = require('react-native');
+	const { View } = require('react-native');
+	const PressableOpacity = require('../PressableOpacity');
 
 	return {
 		TabView: ({ routes, renderScene, renderTabItem }: ITabViewProps) => {
@@ -76,9 +77,13 @@ jest.mock('../TabView', () => {
 				<View testID='tabView'>
 					<View style={{ flexDirection: 'row' }}>
 						{routes.map((route, idx) => (
-							<TouchableOpacity key={route.key} testID={`tab-${route.key}`} onPress={() => jumpTo(route.key)}>
+							<PressableOpacity
+								key={route.key}
+								testID={`tab-${route.key}`}
+								onPress={() => jumpTo(route.key)}
+								disableAndroidRipple>
 								{renderTabItem(route, idx === index ? '#FF0000' : '#666666')}
-							</TouchableOpacity>
+							</PressableOpacity>
 						))}
 					</View>
 					{renderScene({ route: routes[index] })}

@@ -1,14 +1,14 @@
 import React from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
-import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { isIOS } from '../../lib/methods/helpers';
 import { THUMBS_HEIGHT } from './constants';
 import { type TSupportedThemes } from '../../theme';
 import { type IShareAttachment } from '../../definitions';
+import PressableOpacity from '../../containers/PressableOpacity';
 
 const THUMB_SIZE = 64;
 
@@ -92,10 +92,18 @@ const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
 	);
 });
 
-const ThumbButton = isIOS ? TouchableOpacity : TouchableNativeFeedback;
-
 const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => (
-	<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>
+	<PressableOpacity
+		style={styles.item}
+		onPress={() => onPress(item)}
+		opacityAnimationConfig={{
+			dimOpacity: 0.7
+		}}
+		android_ripple={{
+			color: `${themes[theme].surfaceLight}33`, // to reduce opacity
+			foreground: true
+		}}
+		disableOpacityOnAndroid>
 		<>
 			<ThumbContent item={item} theme={theme} isShareExtension={isShareExtension} />
 			<RectButton
@@ -112,7 +120,7 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 				<CustomIcon name='warning' size={20} color={themes[theme].buttonBackgroundDangerDefault} style={styles.dangerIcon} />
 			) : null}
 		</>
-	</ThumbButton>
+	</PressableOpacity>
 );
 
 const Thumbs = ({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {

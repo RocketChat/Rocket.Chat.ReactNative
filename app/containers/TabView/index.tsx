@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { TabView as ReanimatedTabView, type Route, type NavigationState } from 'reanimated-tab-view';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
+import PressableOpacity from '../PressableOpacity';
 
 interface TabViewProps {
 	routes: Route[];
@@ -28,9 +28,9 @@ export const TabView = ({ routes, renderTabItem, renderScene }: TabViewProps) =>
 			<View style={styles.tabsContainer}>
 				{routes.map((tab: Route, index: number) => (
 					<View key={tab.key} style={styles.tab}>
-						<TouchableOpacity onPress={() => jumpTo(tab.key)} hitSlop={10}>
+						<PressableOpacity onPress={() => jumpTo(tab.key)} hitSlop={10} disableAndroidRipple>
 							{renderTabItem(tab, routeIndex === index ? colors.strokeHighlight : colors.fontSecondaryInfo)}
-						</TouchableOpacity>
+						</PressableOpacity>
 						<View
 							style={[
 								styles.tabLine,

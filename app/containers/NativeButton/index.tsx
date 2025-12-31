@@ -1,3 +1,5 @@
+// since we are using PressableOpacity in Play / Pause Button this file is safe to delete
+
 import React from 'react';
 import { TouchableNativeFeedback, TouchableOpacity, type TouchableOpacityProps, View } from 'react-native';
 

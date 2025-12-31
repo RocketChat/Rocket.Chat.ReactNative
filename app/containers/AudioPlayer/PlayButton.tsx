@@ -6,8 +6,8 @@ import styles from './styles';
 import RCActivityIndicator from '../ActivityIndicator';
 import { AUDIO_BUTTON_HIT_SLOP } from './constants';
 import { type TAudioState } from './types';
-import NativeButton from '../NativeButton';
 import getPlayButtonAccessibilityLabel from './getPlayButtonAccessibilityLabel';
+import PressableOpacity from '../PressableOpacity';
 
 interface IButton {
 	disabled?: boolean;
@@ -45,15 +45,19 @@ const PlayButton = ({ onPress, disabled = false, audioState }: IButton): React.R
 	const { colors } = useTheme();
 
 	return (
-		<NativeButton
+		<PressableOpacity
 			accessible
 			accessibilityLabel={getPlayButtonAccessibilityLabel(audioState)}
 			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
+			android_ripple={{
+				color: colors.buttonBackgroundPrimaryPress
+			}}
 			disabled={disabled}
 			onPress={onPress}
-			hitSlop={AUDIO_BUTTON_HIT_SLOP}>
+			hitSlop={AUDIO_BUTTON_HIT_SLOP}
+			disableOpacityOnAndroid>
 			<Icon audioState={audioState} disabled={disabled} />
-		</NativeButton>
+		</PressableOpacity>
 	);
 };
 

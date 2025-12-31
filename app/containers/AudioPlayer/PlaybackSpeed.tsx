@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import i18n from '../../i18n';
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS } from './constants';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
-import NativeButton from '../NativeButton';
+import PressableOpacity from '../PressableOpacity';
 
 const PlaybackSpeed = () => {
 	const [playbackSpeed, setPlaybackSpeed] = useUserPreferences<number>(AUDIO_PLAYBACK_SPEED, AVAILABLE_SPEEDS[1]);
@@ -19,13 +19,16 @@ const PlaybackSpeed = () => {
 	};
 
 	return (
-		<NativeButton
-			accessible
-			accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
-			onPress={onPress}
-			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
-			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{playbackSpeed}x</Text>
-		</NativeButton>
+		<View style={{ overflow: 'hidden' }}>
+			<PressableOpacity
+				accessible
+				accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
+				onPress={onPress}
+				style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
+				disableOpacityOnAndroid>
+				<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{playbackSpeed}x</Text>
+			</PressableOpacity>
+		</View>
 	);
 };
 
