@@ -32,7 +32,7 @@ import {
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
 import { initializePushNotifications, onNotification } from './lib/notifications';
-import { getInitialNotification } from './lib/notifications/videoConf/getInitialNotification';
+import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { type TSupportedThemes, ThemeContext } from './theme';
@@ -85,6 +85,7 @@ const parseDeepLinking = (url: string) => {
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
 	private dimensionsListener?: EmitterSubscription;
+	private videoConfActionCleanup?: () => void;
 
 	constructor(props: any) {
 		super(props);
@@ -116,11 +117,15 @@ export default class Root extends React.Component<{}, IState> {
 			});
 		}, 5000);
 		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
+
+		// Set up video conf action listener for background accept/decline
+		this.videoConfActionCleanup = setupVideoConfActionListener();
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
 		this.dimensionsListener?.remove?.();
+		this.videoConfActionCleanup?.();
 
 		unsubscribeTheme();
 	}
@@ -138,7 +143,10 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		await getInitialNotification();
+		const handledVideoConf = await getInitialNotification();
+		if (handledVideoConf) {
+			return;
+		}
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
