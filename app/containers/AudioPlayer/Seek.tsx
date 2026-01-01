@@ -14,6 +14,7 @@ import Animated, {
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
+import PressableOpacity from '../PressableOpacity';
 
 Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -106,7 +107,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 
 	// TouchableNativeFeedback is avoiding do a long press message when seeking the audio
 	return (
-		<TouchableNativeFeedback>
+		<PressableOpacity style={{ flex: 1 }} disableAndroidRipple>
 			<View style={styles.seekContainer}>
 				<AnimatedTextInput
 					defaultValue={DEFAULT_TIME_LABEL}
@@ -123,7 +124,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 					</PanGestureHandler>
 				</View>
 			</View>
-		</TouchableNativeFeedback>
+		</PressableOpacity>
 	);
 };
 

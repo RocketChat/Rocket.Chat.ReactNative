@@ -6,7 +6,6 @@ import { dequal } from 'dequal';
 import axios from 'axios';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import Touchable from './Touchable';
 import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
@@ -16,6 +15,7 @@ import I18n from '../../i18n';
 import MessageContext from './Context';
 import { type IUrl } from '../../definitions';
 import { WidthAwareContext } from './Components/WidthAwareView';
+import PressableOpacity from '../PressableOpacity';
 
 const styles = StyleSheet.create({
 	container: {
@@ -165,7 +165,7 @@ const Url = ({ url }: { url: IUrl }) => {
 	}
 
 	return (
-		<Touchable
+		<PressableOpacity
 			onPress={onPress}
 			onLongPress={onLongPress}
 			style={[
@@ -178,12 +178,15 @@ const Url = ({ url }: { url: IUrl }) => {
 					overflow: 'hidden'
 				}
 			]}
-			background={Touchable.Ripple(colors.surfaceNeutral)}>
+			android_ripple={{
+				color: colors.surfaceNeutral
+			}}
+			disableOpacityOnAndroid>
 			<>
 				{imageUrl ? <UrlImage image={imageUrl} hasContent={hasContent} /> : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
 			</>
-		</Touchable>
+		</PressableOpacity>
 	);
 };
 const Urls = React.memo(

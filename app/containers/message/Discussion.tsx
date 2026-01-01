@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 
-import Touchable from './Touchable';
 import { BUTTON_HIT_SLOP, formatMessageCount } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
@@ -11,6 +10,7 @@ import MessageContext from './Context';
 import { formatDateThreads } from '../../lib/methods/helpers/room';
 import { type IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
+import PressableOpacity from '../PressableOpacity';
 
 // TODO: Create a reusable button component for message
 const Discussion = React.memo(
@@ -29,16 +29,19 @@ const Discussion = React.memo(
 				<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
 				<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{msg}</Text>
 				<View style={[styles.buttonContainer, { gap: 8 }]}>
-					<Touchable
+					<PressableOpacity
 						onPress={onDiscussionPress}
-						background={Touchable.Ripple(colors.surfaceNeutral)}
 						style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
-						hitSlop={BUTTON_HIT_SLOP}>
+						hitSlop={BUTTON_HIT_SLOP}
+						android_ripple={{
+							color: colors.buttonBackgroundPrimaryPress
+						}}
+						disableOpacityOnAndroid>
 						<View style={styles.buttonInnerContainer}>
 							<CustomIcon name='discussions' size={16} color={colors.fontWhite} />
 							<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{buttonText}</Text>
 						</View>
-					</Touchable>
+					</PressableOpacity>
 					<Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>
 				</View>
 			</View>
