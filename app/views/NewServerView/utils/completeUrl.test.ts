@@ -14,11 +14,11 @@ describe('completeUrl', () => {
 	});
 
 	it('should not modify a valid URL', () => {
-		expect(completeUrl('https://mobile.rocket.chat')).toBe('https://mobile.rocket.chat');
+		expect(completeUrl('https://mobile.qa.rocket.chat')).toBe('https://mobile.qa.rocket.chat');
 	});
 
 	it('should add https:// if missing', () => {
-		expect(completeUrl('mobile.rocket.chat')).toBe('https://mobile.rocket.chat');
+		expect(completeUrl('mobile.qa.rocket.chat')).toBe('https://mobile.qa.rocket.chat');
 	});
 
 	it('should handle localhost correctly', () => {
@@ -31,6 +31,6 @@ describe('completeUrl', () => {
 	});
 
 	it('should remove trailing slashes', () => {
-		expect(completeUrl('https://mobile.rocket.chat/')).toBe('https://mobile.rocket.chat');
+		expect(completeUrl('https://mobile.qa.rocket.chat/')).toBe('https://mobile.qa.rocket.chat');
 	});
 });
