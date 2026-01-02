@@ -1,5 +1,5 @@
 import React from 'react';
-import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
+import { type LayoutChangeEvent, View, TextInput, type TextInputProps } from 'react-native';
 import { PanGestureHandler, type PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, {
 	type SharedValue,

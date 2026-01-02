@@ -150,6 +150,11 @@ const getProcessedStyles = (style: PressableProps['style']): IGetProccessedStyle
 		marginTop: flattenedStyle.marginTop,
 		borderRadius: flattenedStyle.borderRadius,
 		flex: flattenedStyle.flex,
+		position: flattenedStyle.position,
+		top: flattenedStyle.top,
+		bottom: flattenedStyle.bottom,
+		left: flattenedStyle.left,
+		right: flattenedStyle.right,
 		overflow: flattenedStyle.overflow ?? 'hidden'
 	};
 
@@ -170,6 +175,10 @@ const getCleanedStyles = ({ containerStyle }: IRemoveStylesParams): ViewStyle | 
 		if (value !== undefined && value !== null) {
 			// overflow isnt numeric so we skip it
 			if (key === 'overflow' || key === 'flex') continue;
+			if (key === 'position') {
+				cleanedStyles.position = 'relative';
+				continue;
+			}
 			(cleanedStyles as any)[key] = 0;
 		}
 	}

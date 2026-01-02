@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { useTheme } from '../../../../../theme';
-import Touchable from '../../../Touchable';
 import styles from '../../../styles';
+import PressableOpacity from '../../../../PressableOpacity';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -15,12 +15,16 @@ export const Button = ({ children, onPress, disabled }: IMessageButton) => {
 
 	const { colors } = useTheme();
 	return (
-		<Touchable
+		<PressableOpacity
 			disabled={disabled}
 			onPress={onPress}
 			style={styles.imageContainer}
-			background={Touchable.Ripple(colors.surfaceNeutral)}>
+			android_ripple={{
+				color: colors.surfaceNeutral
+				// foreground: true		// if the effect should be applied above the image
+			}}
+			disableOpacityOnAndroid>
 			{children}
-		</Touchable>
+		</PressableOpacity>
 	);
 };

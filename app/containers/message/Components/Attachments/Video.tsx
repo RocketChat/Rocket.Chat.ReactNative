@@ -13,11 +13,11 @@ import { type TIconsName } from '../../../CustomIcon';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
-import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import BlurComponent from '../OverlayComponent';
 import { type TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
+import PressableOpacity from '../../../PressableOpacity';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -103,9 +103,16 @@ const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVi
 	return (
 		<View style={{ gap: 4 }}>
 			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
-			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
+			<PressableOpacity
+				onPress={_onPress}
+				style={messageStyles.image}
+				android_ripple={{
+					color: colors.surfaceLight,
+					foreground: true
+				}}
+				disableOpacityOnAndroid>
 				<Thumbnail status={status} encrypted={isEncrypted} />
-			</Touchable>
+			</PressableOpacity>
 		</View>
 	);
 };
