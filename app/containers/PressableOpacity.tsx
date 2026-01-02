@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/immutability */
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useContext } from 'react';
 import {
 	Pressable,
 	type PressableProps,
@@ -13,6 +13,7 @@ import { View } from 'react-native-animatable';
 
 import { isAndroid } from '../lib/methods/helpers';
 import { useTheme } from '../theme';
+import MessageContext from './message/Context';
 
 export interface IPressableOpacityProps extends PressableProps {
 	opacityAnimationConfig?: {
@@ -41,11 +42,14 @@ const PressableOpacity = forwardRef<React.ComponentRef<typeof Pressable>, IPress
 			disableAndroidRipple,
 			disableOpacityOnAndroid,
 			opacityAnimationConfig,
+			onLongPress: onLongPressPropEvent,
 			...restProps
 		},
 		ref
 	) => {
 		const { colors } = useTheme();
+		const messageContext = useContext(MessageContext);
+		const onLongPressFromContext = messageContext?.onLongPress;
 		const opacity = useSharedValue(1);
 
 		const rStyle = useAnimatedStyle(() => ({
@@ -78,6 +82,13 @@ const PressableOpacity = forwardRef<React.ComponentRef<typeof Pressable>, IPress
 			opacity.value = withTiming(1, { duration: fadeOutDuration });
 			onPressOut?.(e);
 		};
+
+		// for message component to open modal after long press
+		const handleLongPress = (e: GestureResponderEvent) => {
+			onLongPressPropEvent?.(e);
+			onLongPressFromContext?.(e);
+		};
+
 		const shouldBlockOpacityAnimationOnAndroid = isAndroid && disableOpacityOnAndroid;
 
 		return (
@@ -88,6 +99,7 @@ const PressableOpacity = forwardRef<React.ComponentRef<typeof Pressable>, IPress
 					style={[style, pressableStyles, rStyle]}
 					onPressIn={!shouldBlockOpacityAnimationOnAndroid ? handlePressIn : null}
 					onPressOut={!shouldBlockOpacityAnimationOnAndroid ? handlePressOut : null}
+					onLongPress={handleLongPress}
 					android_ripple={!disableAndroidRipple ? androidRippleConfig : null}
 					{...restProps}>
 					{children}
