@@ -232,14 +232,14 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	returnLivechat = () => {
-		const { rid } = this.props;
+		const { rid, departmentId } = this.props;
 		if (rid) {
 			showConfirmationAlert({
 				message: i18n.t('Would_you_like_to_return_the_inquiry'),
 				confirmationText: i18n.t('Yes'),
 				onPress: async () => {
 					try {
-						await returnLivechat(rid);
+						await returnLivechat(rid, departmentId);
 					} catch (e: any) {
 						showErrorAlert(e.reason, i18n.t('Oops'));
 					}
@@ -476,6 +476,10 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				? roomName
 				: getRoomAccessibilityLabel({ type: t, userId, isGroupChat, status: status as TUserStatus, teamMain });
 		if (!rid) {
+			return null;
+		}
+
+		if (status === 'INVITED') {
 			return null;
 		}
 

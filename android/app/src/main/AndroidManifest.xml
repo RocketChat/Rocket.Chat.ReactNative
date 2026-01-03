@@ -76,6 +76,14 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <!-- Custom Firebase Messaging Service for Rocket.Chat notifications -->
+        <service
+            android:name="chat.rocket.reactnative.notification.RCFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter android:priority="100">
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <receiver
             android:name="chat.rocket.reactnative.notification.ReplyBroadcast"
             android:enabled="true"
@@ -84,6 +92,15 @@
             android:name="chat.rocket.reactnative.notification.DismissNotification"
             android:enabled="true"
             android:exported="true" >
+        </receiver>
+        <receiver
+            android:name="chat.rocket.reactnative.notification.VideoConfBroadcast"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="chat.rocket.reactnative.ACTION_VIDEO_CONF_ACCEPT" />
+                <action android:name="chat.rocket.reactnative.ACTION_VIDEO_CONF_DECLINE" />
+            </intent-filter>
         </receiver>
         <meta-data
             android:name="com.bugsnag.android.API_KEY"

@@ -149,6 +149,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
         >
           <View
             accessible={true}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
           >
             <Text
               allowFontScaling={false}
@@ -199,6 +204,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                 ]
               }
+              testID="unread-badge-1"
             >
               <Text
                 numberOfLines={1}
@@ -259,6 +265,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
         >
           <View
             accessible={true}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
           >
             <Text
               allowFontScaling={false}
@@ -309,6 +320,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                 ]
               }
+              testID="unread-badge-1"
             >
               <Text
                 numberOfLines={1}
@@ -369,6 +381,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
         >
           <View
             accessible={true}
+            style={
+              {
+                "opacity": 1,
+              }
+            }
           >
             <Text
               allowFontScaling={false}
@@ -419,6 +436,7 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                 ]
               }
+              testID="unread-badge-1"
             >
               <Text
                 numberOfLines={1}
@@ -497,6 +515,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
             <View
               accessibilityLabel="Menu"
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -767,6 +790,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             <View
               accessibilityLabel="Menu"
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -1012,6 +1040,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             <View
               accessibilityLabel="Close"
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -1255,6 +1288,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 style={
@@ -1551,6 +1589,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -1793,6 +1836,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -2035,6 +2083,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -2279,6 +2332,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
             <View
               accessibilityLabel="More"
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -2465,6 +2523,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -2607,6 +2670,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -2788,6 +2856,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -2851,6 +2924,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -2993,6 +3071,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -3056,6 +3139,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
@@ -3267,6 +3355,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 <View
                   accessibilityLabel="Menu"
                   accessible={true}
+                  style={
+                    {
+                      "opacity": 1,
+                    }
+                  }
                 >
                   <Text
                     allowFontScaling={false}
@@ -3351,6 +3444,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   allowFontScaling={false}
@@ -3493,6 +3591,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   style={
@@ -3548,6 +3651,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   allowFontScaling={false}
@@ -3598,6 +3706,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                     ]
                   }
+                  testID="unread-badge-1"
                 >
                   <Text
                     numberOfLines={1}
@@ -3802,6 +3911,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 <View
                   accessibilityLabel="Menu"
                   accessible={true}
+                  style={
+                    {
+                      "opacity": 1,
+                    }
+                  }
                 >
                   <Text
                     allowFontScaling={false}
@@ -3886,6 +4000,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   allowFontScaling={false}
@@ -4028,6 +4147,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   style={
@@ -4083,6 +4207,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   allowFontScaling={false}
@@ -4133,6 +4262,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                     ]
                   }
+                  testID="unread-badge-1"
                 >
                   <Text
                     numberOfLines={1}
@@ -4337,6 +4467,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                 <View
                   accessibilityLabel="Menu"
                   accessible={true}
+                  style={
+                    {
+                      "opacity": 1,
+                    }
+                  }
                 >
                   <Text
                     allowFontScaling={false}
@@ -4421,6 +4556,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   allowFontScaling={false}
@@ -4563,6 +4703,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   style={
@@ -4618,6 +4763,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             >
               <View
                 accessible={true}
+                style={
+                  {
+                    "opacity": 1,
+                  }
+                }
               >
                 <Text
                   allowFontScaling={false}
@@ -4668,6 +4818,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                     ]
                   }
+                  testID="unread-badge-1"
                 >
                   <Text
                     numberOfLines={1}
@@ -4852,6 +5003,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 style={
@@ -4986,6 +5142,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 style={
@@ -5159,6 +5320,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 style={
@@ -5214,6 +5380,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 style={
@@ -5348,6 +5519,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 style={
@@ -5403,6 +5579,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
           >
             <View
               accessible={true}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
             >
               <Text
                 style={

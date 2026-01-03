@@ -13,7 +13,9 @@ const config = {
 		unstable_allowRequireContext: true
 	},
 	resolver: {
-		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts
+		// When running E2E tests, prioritize .mock.ts files for app code
+		// Note: react-native-mmkv's internal mock file is disabled via patch-package
+		sourceExts: process.env.RUNNING_E2E_TESTS === 'true' ? ['mock.ts', ...sourceExts] : sourceExts
 	}
 };
 
