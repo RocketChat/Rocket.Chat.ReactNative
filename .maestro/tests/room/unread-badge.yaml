@@ -4,6 +4,7 @@ onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 tags:
   - test-13
+  - android-only
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
@@ -21,6 +22,8 @@ tags:
     visible:
       id: 'rooms-list-view-item-${output.otherUser.username}'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 10000
 - extendedWaitUntil:
     visible:
       id: 'unread-badge-1'
@@ -31,6 +34,9 @@ tags:
     id: 'rooms-list-view-item-${output.otherUser.username}'
 - tapOn:
     id: header-back
+    retryTapIfNoChange: true
+- waitForAnimationToEnd:
+    timeout: 5000
 - extendedWaitUntil:
     notVisible:
       id: 'unread-badge-1'
@@ -44,6 +50,8 @@ tags:
     visible:
       id: 'rooms-list-view-item-${output.otherUser.username}'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 10000
 - extendedWaitUntil:
     visible:
       id: 'mention-badge-1'
@@ -54,6 +62,9 @@ tags:
     id: 'rooms-list-view-item-${output.otherUser.username}'
 - tapOn:
     id: header-back
+    retryTapIfNoChange: true
+- waitForAnimationToEnd:
+    timeout: 5000
 - extendedWaitUntil:
     notVisible:
       id: 'mention-badge-1'
@@ -68,6 +79,8 @@ tags:
     visible:
       id: 'rooms-list-view-item-${output.otherUser.username}'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 10000
 - extendedWaitUntil:
     visible:
       id: 'mention-badge-2'
@@ -78,6 +91,9 @@ tags:
     id: 'rooms-list-view-item-${output.otherUser.username}'
 - tapOn:
     id: header-back
+    retryTapIfNoChange: true
+- waitForAnimationToEnd:
+    timeout: 5000
 - extendedWaitUntil:
     notVisible:
       id: 'mention-badge-2'
@@ -92,6 +108,8 @@ tags:
     visible:
       id: 'rooms-list-view-item-${output.otherUser.username}'
     timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 10000
 - extendedWaitUntil:
     visible:
       id: 'mention-badge-2'
@@ -102,6 +120,9 @@ tags:
     id: 'rooms-list-view-item-${output.otherUser.username}'
 - tapOn:
     id: header-back
+    retryTapIfNoChange: true
+- waitForAnimationToEnd:
+    timeout: 5000
 - extendedWaitUntil:
     notVisible:
       id: 'mention-badge-2'

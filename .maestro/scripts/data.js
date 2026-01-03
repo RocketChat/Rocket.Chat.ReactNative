@@ -1,5 +1,5 @@
 const data = {
-	server: 'https://mobile.rocket.chat',
+	server: 'https://mobile.qa.rocket.chat',
 	alternateServer: 'https://stable.rocket.chat',
 	...output.account,
     accounts: [],

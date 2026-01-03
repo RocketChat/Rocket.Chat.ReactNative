@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { type AccessibilityRole } from 'react-native';
 
 import SwipeableDeleteTouchable from './SwipeableDeleteItem/Touchable';
 import Touch from '../Touch';
@@ -13,6 +14,7 @@ export interface IServerItemTouchableProps {
 	onDeletePress?(): void;
 	accessibilityLabel?: string;
 	accessibilityHint?: string;
+	accessibilityRole?: AccessibilityRole;
 }
 
 const Touchable = ({
@@ -22,7 +24,8 @@ const Touchable = ({
 	onPress,
 	onDeletePress,
 	accessibilityLabel,
-	accessibilityHint
+	accessibilityHint,
+	accessibilityRole = 'button'
 }: IServerItemTouchableProps): React.ReactElement => {
 	const { colors } = useTheme();
 
@@ -52,7 +55,8 @@ const Touchable = ({
 			style={{ backgroundColor: colors.surfaceLight }}
 			accessible
 			accessibilityLabel={accessibilityLabel}
-			accessibilityHint={accessibilityHint}>
+			accessibilityHint={accessibilityHint}
+			accessibilityRole={accessibilityRole}>
 			{children}
 		</Touch>
 	);
