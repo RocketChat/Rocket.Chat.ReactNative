@@ -16,13 +16,33 @@ import { useTheme } from '../theme';
 import MessageContext from './message/Context';
 
 export interface IPressableOpacityProps extends PressableProps {
+	/**
+	 * configuration for opacity animation
+	 * @param fadeInDuration: fade in timing
+	 * @param fadeOutDuration: fade out timing
+	 * @param dimOpacity: lowest opacity when component is pressed
+	 */
 	opacityAnimationConfig?: {
 		fadeInDuration?: number;
 		fadeOutDuration?: number;
 		dimOpacity?: number;
 	};
+
+	/**
+	 * this option disables opacity animation when pressed on android
+	 */
 	disableOpacityOnAndroid?: boolean;
+
+	/**
+	 * this option disables ripple on android when pressed
+	 */
 	disableAndroidRipple?: boolean;
+
+	/**
+	 * use this when using pressable outside the roomview
+	 * disable the modal when item is long pressed
+	 */
+	disableOpeningMessageModal?: boolean;
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -41,6 +61,7 @@ const PressableOpacity = forwardRef<React.ComponentRef<typeof Pressable>, IPress
 			android_ripple,
 			disableAndroidRipple,
 			disableOpacityOnAndroid,
+			disableOpeningMessageModal,
 			opacityAnimationConfig,
 			onLongPress: onLongPressPropEvent,
 			...restProps
@@ -49,7 +70,8 @@ const PressableOpacity = forwardRef<React.ComponentRef<typeof Pressable>, IPress
 	) => {
 		const { colors } = useTheme();
 		const messageContext = useContext(MessageContext);
-		const onLongPressFromContext = messageContext?.onLongPress;
+		const onLongPressFromContext = !disableOpeningMessageModal ? messageContext?.onLongPress : undefined;
+
 		const opacity = useSharedValue(1);
 
 		const rStyle = useAnimatedStyle(() => ({
