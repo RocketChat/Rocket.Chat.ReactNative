@@ -1,7 +1,4 @@
 {
-  "name": "RocketChatRN",
-  "plugins": [
-    "@react-native-community/datetimepicker",
-    "expo-web-browser"
-  ]
+	"name": "RocketChatRN",
+	"plugins": ["@react-native-community/datetimepicker", "expo-web-browser"]
 }
