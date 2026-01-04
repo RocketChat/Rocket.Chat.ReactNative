@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, type View } from 'react-native';
+import { FlatList, type Pressable, StyleSheet, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
 
 import { CustomIcon } from '../CustomIcon';
@@ -48,7 +48,7 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable: { [key: string]: View | null } = {};
+const touchable: { [key: string]: React.ComponentRef<typeof Pressable> | null } = {};
 
 export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	const { theme } = useTheme();
