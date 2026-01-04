@@ -430,9 +430,16 @@ export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ er
 	return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData }) as any;
 };
 
-export const returnLivechat = (rid: string): Promise<boolean> =>
+export const returnLivechat = (rid: string, departmentId?: string): Promise<any> => {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.12.0')) {
+		return sdk.post('livechat/inquiries.returnAsInquiry', { roomId: rid, departmentId });
+	}
+
 	// RC 0.72.0
-	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
+	return sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
+};
 
 export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
 
@@ -461,7 +468,7 @@ export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0
 	sdk.get('users.autocomplete', { selector });
 
-export const getRoutingConfig = (): Promise<{
+export const getRoutingConfig = async (): Promise<{
 	previewRoom: boolean;
 	showConnecting: boolean;
 	showQueue: boolean;
@@ -469,9 +476,18 @@ export const getRoutingConfig = (): Promise<{
 	returnQueue: boolean;
 	enableTriggerAction: boolean;
 	autoAssignAgent: boolean;
-}> =>
+}> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.11.0')) {
+		const result = await sdk.get('livechat/config/routing');
+		if (result.success) {
+			return result.config;
+		}
+	}
+
 	// RC 2.0.0
-	sdk.methodCallWrapper('livechat:getRoutingConfig');
+	return sdk.methodCallWrapper('livechat:getRoutingConfig');
+};
 
 export const getTagsList = (): Promise<ILivechatTag[]> =>
 	// RC 2.0.0
@@ -515,17 +531,13 @@ export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
-export const toggleMuteUserInRoom = (
-	rid: string,
-	username: string,
-	mute: boolean
-): Promise<{ message: { msg: string; result: boolean }; success: boolean }> => {
-	if (mute) {
-		// RC 0.51.0
-		return sdk.methodCallWrapper('muteUserInRoom', { rid, username });
+export const toggleMuteUserInRoom = (rid: string, username: string, userId: string, mute: boolean) => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
+		return sdk.post(mute ? 'rooms.muteUser' : 'rooms.unmuteUser', { roomId: rid, userId });
 	}
 	// RC 0.51.0
-	return sdk.methodCallWrapper('unmuteUserInRoom', { rid, username });
+	return sdk.methodCallWrapper(mute ? 'muteUserInRoom' : 'unmuteUserInRoom', { rid, username });
 };
 
 export const toggleRoomOwner = ({
@@ -963,10 +975,27 @@ export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): 
 	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
-export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
-	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
+export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
+	const result = await Encryption.encryptMessage(message as IMessage);
+	if (!result) {
+		throw new Error('Failed to encrypt message');
+	}
+
+	if (result.content) {
+		// RC 0.49.0
+		return sdk.post('chat.update', {
+			roomId: message.rid,
+			msgId: message.id,
+			content: result.content
+		});
+	}
+
 	// RC 0.49.0
-	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+	return sdk.post('chat.update', {
+		roomId: message.rid,
+		msgId: message.id,
+		text: message.msg || ''
+	});
 };
 
 export const registerPushToken = () =>
@@ -1070,6 +1099,8 @@ export function getUserInfo(userId: string) {
 }
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
+
+export const sendInvitationReply = (roomId: string, action: 'accept' | 'reject') => sdk.post('rooms.invite', { roomId, action });
 
 export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
 	sdk.post('video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });

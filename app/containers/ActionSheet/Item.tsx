@@ -26,7 +26,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 			hide();
 			item?.onPress();
 		} else {
-			EventEmitter.emit(LISTENER, { message: I18n.t('You_dont_have_permission_to_perform_this_action') });
+			EventEmitter.emit(LISTENER, { message: item?.disabledReason || I18n.t('You_dont_have_permission_to_perform_this_action') });
 		}
 	};
 
