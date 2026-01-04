@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+// TODO: Once we migrate all endpoints to use @rocket.chat/rest-typings,
+// we can replace this with direct imports from the package
+// For now, we keep our implementation that works with current Endpoints
 import { type Endpoints } from '../v1';
 
 type ReplacePlaceholders<TPath extends string> = string extends TPath

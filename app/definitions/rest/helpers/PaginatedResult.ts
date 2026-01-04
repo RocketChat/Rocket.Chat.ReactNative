@@ -1,5 +1,1 @@
-export type PaginatedResult<T = {}> = {
-	count: number;
-	offset: number;
-	total: number;
-} & T;
+export type { PaginatedResult } from '@rocket.chat/rest-typings';
