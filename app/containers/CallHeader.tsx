@@ -81,7 +81,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 								disabled={calling}
 								disableOpacityOnAndroid
 								android_ripple={{
-									color: handleColors(cam).buttonRipple
+									color: handleColors(mic).buttonRipple
 								}}>
 								<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={24} color={handleColors(mic).icon} />
 							</PressableOpacity>
