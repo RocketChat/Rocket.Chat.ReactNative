@@ -7,6 +7,7 @@ import ReactionsList from './index';
 import { type IReaction } from '../../definitions';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 import * as stories from './ReactionsList.stories';
+import type { IPressableOpacityProps } from '../PressableOpacity';
 
 // Mock i18n
 jest.mock('../../i18n', () => ({
@@ -62,7 +63,7 @@ interface ITabViewProps {
 jest.mock('../TabView', () => {
 	const React = require('react');
 	const { View } = require('react-native');
-	const PressableOpacity = require('../PressableOpacity');
+	const PressableOpacity: React.FC<IPressableOpacityProps> = require('../PressableOpacity').default;
 
 	return {
 		TabView: ({ routes, renderScene, renderTabItem }: ITabViewProps) => {
@@ -81,7 +82,8 @@ jest.mock('../TabView', () => {
 								key={route.key}
 								testID={`tab-${route.key}`}
 								onPress={() => jumpTo(route.key)}
-								disableAndroidRipple>
+								disableAndroidRipple
+								disableOpeningMessageModal>
 								{renderTabItem(route, idx === index ? '#FF0000' : '#666666')}
 							</PressableOpacity>
 						))}
