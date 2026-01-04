@@ -68,60 +68,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const { theme } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
-	const mockCannedResponses: ICannedResponse[] = [
-		{
-			_id: 'cr_1',
-			shortcut: 'greeting',
-			text: 'Hello! 👋 How can I help you today?',
-			scope: 'global',
-			tags: ['greeting', 'welcome'],
-			createdBy: { _id: 'u1', username: 'admin' },
-			userId: 'u1',
-			scopeName: 'Global'
-		},
-		{
-			_id: 'cr_2',
-			shortcut: 'thanks',
-			text: 'Thanks for reaching out! Let me check that for you.',
-			scope: 'global',
-			tags: ['thanks', 'polite'],
-			createdBy: { _id: 'u1', username: 'admin' },
-			userId: 'u1',
-			scopeName: 'Global'
-		},
-		{
-			_id: 'cr_3',
-			shortcut: 'followup',
-			text: 'Just following up to see if you need any further assistance.',
-			scope: 'department',
-			tags: ['followup', 'support'],
-			createdBy: { _id: 'u2', username: 'support.agent' },
-			userId: 'u2',
-			scopeName: 'Support',
-			departmentId: 'dep_support'
-		},
-		{
-			_id: 'cr_4',
-			shortcut: 'closing',
-			text: 'I’m glad I could help! Feel free to reach out if you have more questions.',
-			scope: 'global',
-			tags: ['closing', 'polite'],
-			createdBy: { _id: 'u1', username: 'admin' },
-			userId: 'u1',
-			scopeName: 'Global'
-		},
-		{
-			_id: 'cr_5',
-			shortcut: 'outofoffice',
-			text: 'I’m currently out of the office but will get back to you as soon as possible.',
-			scope: 'user',
-			tags: ['ooo', 'availability'],
-			createdBy: { _id: 'u3', username: 'john.doe' },
-			userId: 'u3',
-			scopeName: 'Personal'
-		}
-	];
-
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
 		const db = database.active;
@@ -187,10 +133,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			}
 		} catch (e) {
 			log(e);
-		} finally {
-			setCannedResponses(mockCannedResponses);
-			setLoading(false);
-			setOffset(prevOffset => prevOffset + COUNT);
 		}
 	};
 
