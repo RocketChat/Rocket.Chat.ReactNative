@@ -37,7 +37,9 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*&format=png&size=112",
         },
       ]
@@ -92,7 +94,9 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=112",
         },
       ]
@@ -147,7 +151,9 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/room/devWBbYr7inwupPqK?format=png&size=112",
         },
       ]
@@ -202,7 +208,9 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
         },
       ]
@@ -257,7 +265,9 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg",
         },
       ]
@@ -312,7 +322,9 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/@general?format=png&size=112",
         },
       ]
@@ -367,7 +379,9 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
         },
       ]
@@ -462,7 +476,9 @@ exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
         },
       ]
@@ -519,7 +535,9 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
         },
       ]
@@ -574,7 +592,9 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=112",
         },
       ]
@@ -696,7 +716,9 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://cdn.pensador.com/img/authors/ho/me/homer-simpson-l.jpg?format=png&size=112",
         },
       ]
@@ -751,7 +773,9 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg",
         },
       ]
@@ -785,76 +809,95 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
   testID="avatar"
 >
   <View
-    accessibilityLabel="Avatar's avatar"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
     collapsable={false}
-    focusable={true}
-    onClick={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
     style={
-      {
-        "opacity": 1,
-      }
+      [
+        undefined,
+        {},
+        {},
+      ]
     }
   >
-    <ViewManagerAdapter_ExpoImage
-      borderRadius={4}
-      containerViewRef={"[React.ref]"}
-      contentFit="cover"
-      contentPosition={
+    <View
+      accessibilityLabel="Avatar's avatar"
+      accessibilityState={
         {
-          "left": "50%",
-          "top": "50%",
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
         }
       }
-      height={56}
-      nativeViewRef={"[React.ref]"}
-      onError={[Function]}
-      onLoad={[Function]}
-      onLoadStart={[Function]}
-      onProgress={[Function]}
-      placeholder={[]}
-      priority="high"
-      source={
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
         [
+          undefined,
+          undefined,
           {
-            "headers": undefined,
-            "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
+            "opacity": 1,
           },
         ]
       }
-      style={
-        {
-          "borderRadius": 4,
-          "height": 56,
-          "width": 56,
+    >
+      <ViewManagerAdapter_ExpoImage
+        borderRadius={4}
+        containerViewRef={"[React.ref]"}
+        contentFit="cover"
+        contentPosition={
+          {
+            "left": "50%",
+            "top": "50%",
+          }
         }
-      }
-      transition={null}
-      width={56}
-    />
+        height={56}
+        nativeViewRef={"[React.ref]"}
+        onError={[Function]}
+        onLoad={[Function]}
+        onLoadStart={[Function]}
+        onProgress={[Function]}
+        placeholder={[]}
+        priority="high"
+        source={
+          [
+            {
+              "headers": {
+                "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+              },
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=112",
+            },
+          ]
+        }
+        style={
+          {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          }
+        }
+        transition={null}
+        width={56}
+      />
+    </View>
   </View>
 </View>
 `;
@@ -896,7 +939,9 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=112&etag=5ag8KffJcZj9m5rCv",
         },
       ]
@@ -951,7 +996,9 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=112",
         },
       ]
@@ -1006,7 +1053,9 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
     source={
       [
         {
-          "headers": undefined,
+          "headers": {
+            "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+          },
           "uri": "https://google.com/avatar/Avatar?format=png&size=112",
         },
       ]
