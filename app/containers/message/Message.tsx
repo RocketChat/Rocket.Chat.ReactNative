@@ -249,7 +249,9 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 					android_ripple={{
 						color: rippleColor
 					}}
-					disableOpacityOnAndroid>
+					disableOpacityOnAndroid
+					disableOpeningMessageModal // redunant call to openActionSheet
+				>
 					<Message {...props} />
 				</PressableOpacity>
 			</A11y.Index>

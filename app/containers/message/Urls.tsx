@@ -181,7 +181,8 @@ const Url = ({ url }: { url: IUrl }) => {
 			android_ripple={{
 				color: colors.surfaceNeutral
 			}}
-			disableOpacityOnAndroid>
+			disableOpacityOnAndroid
+			disableOpeningMessageModal>
 			<>
 				{imageUrl ? <UrlImage image={imageUrl} hasContent={hasContent} /> : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}

@@ -70,7 +70,8 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			android_ripple={{
 				color: themes[theme].surfaceNeutral
 			}}
-			disableOpacityOnAndroid>
+			disableOpacityOnAndroid
+			disableOpeningMessageModal>
 			<View
 				style={[
 					styles.reactionContainer,
