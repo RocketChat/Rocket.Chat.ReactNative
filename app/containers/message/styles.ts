@@ -91,7 +91,6 @@ export default StyleSheet.create({
 		borderRadius: 4,
 		overflow: 'hidden',
 		flex: 1
-		// backgroundColor: 'red'
 	},
 	discussionText: {
 		fontSize: 16,
