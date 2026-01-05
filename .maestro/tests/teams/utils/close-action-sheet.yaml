@@ -6,7 +6,7 @@ tags:
 - swipe:
     from:
       id: action-sheet-handle
-    direction: down
+    direction: DOWN
 - extendedWaitUntil:
     notVisible:
       id: action-sheet-handle
