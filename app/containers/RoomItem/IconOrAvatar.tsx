@@ -20,7 +20,8 @@ const IconOrAvatar = ({
 	teamMain,
 	showLastMessage,
 	displayMode,
-	sourceType
+	sourceType,
+	abacAttributes
 }: IIconOrAvatar): React.ReactElement | null => {
 	const { rowHeight } = useResponsiveLayout();
 
@@ -43,6 +44,7 @@ const IconOrAvatar = ({
 					size={24}
 					style={{ marginRight: 12 }}
 					sourceType={sourceType}
+					abacAttributes={abacAttributes}
 				/>
 			</View>
 		);

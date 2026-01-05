@@ -447,14 +447,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	handleReturnLivechat = () => {
 		const {
-			room: { rid }
+			room: { rid, departmentId }
 		} = this.state;
 		showConfirmationAlert({
 			message: I18n.t('Would_you_like_to_return_the_inquiry'),
 			confirmationText: I18n.t('Yes'),
 			onPress: async () => {
 				try {
-					await returnLivechat(rid);
+					await returnLivechat(rid, departmentId);
 				} catch (e: any) {
 					showErrorAlert(e.reason, I18n.t('Oops'));
 				}
@@ -795,6 +795,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										teamMain={room.teamMain}
 										status={room.visitor?.status}
 										sourceType={source}
+										abacAttributes={room.abacAttributes}
 									/>
 									<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 										{getRoomTitle(room)}
