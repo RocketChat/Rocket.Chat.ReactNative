@@ -1,5 +1,5 @@
 diff --git a/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx b/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
-index 5447a5c..9270781 100644
+index 5447a5c..17ba1a7 100644
 --- a/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
 +++ b/node_modules/@shopify/flash-list/src/recyclerview/RecyclerView.tsx
 @@ -15,6 +15,7 @@ import React, {
@@ -32,7 +32,7 @@ index 5447a5c..9270781 100644
  
    // Track scroll position
    const scrollY = useRef(new Animated.Value(0)).current;
-@@ -133,12 +149,27 @@ const RecyclerViewComponent = <T,>(
+@@ -133,12 +149,107 @@ const RecyclerViewComponent = <T,>(
    // Initialize view holder collection ref
    const viewHolderCollectionRef = useRef<ViewHolderCollectionRef>(null);
  
@@ -47,6 +47,86 @@ index 5447a5c..9270781 100644
    // Hook to detect when scrolling reaches list bounds
    const { checkBounds } = useBoundDetection(recyclerViewManager, scrollViewRef);
  
++  // Layout effect to detect when data length changes significantly and scroll to new bottom
++  // This handles the case where app opens with 1 item, then fetches 50 items
++  // Using useLayoutEffect to scroll synchronously before paint to prevent flickering
++  useLayoutEffect(() => {
++    const currentDataLength = recyclerViewManager.getDataLength();
++    const previousDataLength = lastDataLengthRef.current;
++    
++    // Detect significant data change (e.g., 1 -> 50 items)
++    // This happens when initial data is small, then more data is loaded
++    const isSignificantDataChange = 
++      previousDataLength > 0 && 
++      currentDataLength > previousDataLength &&
++      (currentDataLength - previousDataLength) >= 5; // Threshold for "significant" change
++    
++    if (
++      shouldRenderFromBottom &&
++      isSignificantDataChange &&
++      !isScrolledByUserRef.current &&
++      !isUserTouchingRef.current &&
++      handlerMethods &&
++      recyclerViewManager.getIsFirstLayoutComplete()
++    ) {
++      // Check if we're already at the bottom before scrolling
++      const cachedScrollOffset = lastScrollOffsetRef.current;
++      const cachedContentHeight = lastContentHeightRef.current;
++      const cachedViewportSize = lastViewportSizeRef.current;
++      
++      // Simple bottom detection: check if scroll offset + viewport is near content size
++      const threshold = 50;
++      const alreadyAtBottom = cachedContentHeight > 0 && 
++                              cachedViewportSize > 0 && 
++                              cachedScrollOffset + cachedViewportSize >= cachedContentHeight - threshold;
++      
++      if (alreadyAtBottom) {
++        console.log(
++          `[FlashList] Data length changed significantly (${previousDataLength} -> ${currentDataLength}), but already at bottom - skipping scroll`
++        );
++        lastDataLengthRef.current = currentDataLength;
++        return;
++      }
++      
++      console.log(
++        `[FlashList] Data length changed significantly (${previousDataLength} -> ${currentDataLength}), scrolling to new bottom`
++      );
++      
++      // Reset initial scroll state to allow scrolling to new bottom
++      hasInitialScrolledToBottomRef.current = false;
++      isVeryFirstScrollAttemptRef.current = true;
++      
++      // Scroll immediately in layout effect to prevent flickering
++      // This runs synchronously before paint
++      const newLastIndex = currentDataLength - 1;
++      if (newLastIndex >= 0 && recyclerViewManager.hasLayout()) {
++        try {
++          // Try to scroll to the new last index immediately
++          const layout = recyclerViewManager.getLayout(newLastIndex);
++          if (layout) {
++            const offset = horizontal ? layout.x : layout.y;
++            handlerMethods.scrollToOffset({
++              offset,
++              animated: false,
++              skipFirstItemOffset: false,
++            });
++          } else {
++            // If layout not ready, use scrollToEnd as fallback
++            handlerMethods.scrollToEnd({ animated: false });
++          }
++        } catch (e) {
++          // Fallback to scrollToEnd if anything fails
++          handlerMethods.scrollToEnd({ animated: false });
++        }
++      } else {
++        // Fallback to scrollToEnd if index is invalid
++        handlerMethods.scrollToEnd({ animated: false });
++      }
++    }
++    
++    lastDataLengthRef.current = currentDataLength;
++  }, [data?.length, shouldRenderFromBottom, handlerMethods, recyclerViewManager, horizontal]);
++
 +  // Cleanup timeouts on unmount
 +  React.useEffect(() => {
 +    return () => {
@@ -60,7 +140,7 @@ index 5447a5c..9270781 100644
    const isHorizontalRTL = I18nManager.isRTL && horizontal;
  
    /**
-@@ -182,34 +213,50 @@ const RecyclerViewComponent = <T,>(
+@@ -182,34 +293,50 @@ const RecyclerViewComponent = <T,>(
    /**
     * Effect to handle layout updates for list items
     * This ensures proper positioning and recycling of items
@@ -124,7 +204,7 @@ index 5447a5c..9270781 100644
      const hasExceededMaxRendersWithoutCommit =
        renderTimeTracker.hasExceededMaxRendersWithoutCommit();
  
-@@ -217,18 +264,181 @@ const RecyclerViewComponent = <T,>(
+@@ -217,18 +344,182 @@ const RecyclerViewComponent = <T,>(
        console.warn(WarningMessages.exceededMaxRendersWithoutCommit);
      }
  
@@ -176,6 +256,7 @@ index 5447a5c..9270781 100644
 +  const isAtBottom = useCallback(
 +    (scrollOffset: number, contentSize: number, viewportSize: number): boolean => {
 +      const threshold = 50; // pixels tolerance for "at bottom" detection
++      console.log('[FlashList] isAtBottom: scrollOffset', scrollOffset + viewportSize >= contentSize - threshold);
 +      return scrollOffset + viewportSize >= contentSize - threshold;
 +    },
 +    []
@@ -190,14 +271,14 @@ index 5447a5c..9270781 100644
 +    const cachedScrollOffset = lastScrollOffsetRef.current;
 +    const cachedContentHeight = lastContentHeightRef.current;
 +    const cachedViewportSize = lastViewportSizeRef.current;
-+
++/* 
 +    if (cachedContentHeight > 0 && cachedViewportSize > 0) {
 +      const atBottomUsingCache = isAtBottom(cachedScrollOffset, cachedContentHeight, cachedViewportSize);
 +      console.log(
-+        `[FlashList] checkIfAtBottom: Using cached state - offset=${cachedScrollOffset.toFixed(2)}, content=${cachedContentHeight.toFixed(2)}, viewport=${cachedViewportSize.toFixed(2)}, atBottom=${atBottomUsingCache}`
++        `[FlashList] isAtBottom : Using cached state - offset=${cachedScrollOffset.toFixed(2)}, content=${cachedContentHeight.toFixed(2)}, viewport=${cachedViewportSize.toFixed(2)}, atBottom=${atBottomUsingCache}`
 +      );
 +      return atBottomUsingCache;
-+    }
++    } */
 +
 +    // Fallback: Try to measure ScrollView directly (slower but more accurate)
 +    if (scrollViewRef.current) {
@@ -273,13 +354,13 @@ index 5447a5c..9270781 100644
 +          // For first attempt, skip double-check since we know we're not at bottom
 +          // For subsequent attempts, double-check we're still not at bottom
 +          if (isFirstAttempt) {
-+            handlerMethods.scrollToEnd({ animated: false });
++            handlerMethods.scrollToEnd({animated: true});
 +            scrollToBottomAttemptsRef.current += 1;
 +            console.log(`[FlashList] attemptScrollToBottom: Scroll attempt #${scrollToBottomAttemptsRef.current} executed (first attempt)`);
 +          } else {
 +            const stillNotAtBottom = !checkIfAtBottom();
 +            if (stillNotAtBottom) {
-+              handlerMethods.scrollToEnd({ animated: false });
++              handlerMethods.scrollToEnd({ animated: true });
 +              scrollToBottomAttemptsRef.current += 1;
 +              console.log(`[FlashList] attemptScrollToBottom: Scroll attempt #${scrollToBottomAttemptsRef.current} executed`);
 +            } else {
@@ -310,7 +391,7 @@ index 5447a5c..9270781 100644
    /**
     * Scroll event handler that manages scroll position, velocity, and RTL support
     */
-@@ -251,6 +461,49 @@ const RecyclerViewComponent = <T,>(
+@@ -251,6 +542,49 @@ const RecyclerViewComponent = <T,>(
          );
        }
  
@@ -360,7 +441,7 @@ index 5447a5c..9270781 100644
        velocityTracker.computeVelocity(
          scrollOffset,
          recyclerViewManager.getAbsoluteLastScrollOffset(),
-@@ -290,11 +543,38 @@ const RecyclerViewComponent = <T,>(
+@@ -290,11 +624,38 @@ const RecyclerViewComponent = <T,>(
        computeFirstVisibleIndexForOffsetCorrection,
        horizontal,
        isHorizontalRTL,
@@ -399,7 +480,7 @@ index 5447a5c..9270781 100644
    const parentRecyclerViewContext = useRecyclerViewContext();
    const recyclerViewId = useId();
  
-@@ -435,18 +715,119 @@ const RecyclerViewComponent = <T,>(
+@@ -435,18 +796,78 @@ const RecyclerViewComponent = <T,>(
      recyclerViewManager.shouldMaintainVisibleContentPosition();
  
    const maintainVisibleContentPositionInternal = useMemo(() => {
@@ -434,8 +515,6 @@ index 5447a5c..9270781 100644
 +
 +      const currentDataLength = recyclerViewManager.getDataLength();
 +      const previousContentHeight = lastContentHeightRef.current;
-+      const contentHeightChanged = Math.abs(contentHeight - previousContentHeight) > 1;
-+      const contentHeightIncreased = contentHeight > previousContentHeight;
 +      
 +      // Check if this is a significant data change (e.g., 1 message -> 50 messages)
 +      // This handles the case where initial DB query returns 1 message, then sync loads 50
@@ -470,50 +549,11 @@ index 5447a5c..9270781 100644
 +        // Mark as attempted before scrolling to prevent multiple attempts
 +        hasInitialScrolledToBottomRef.current = true;
 +        
-+        // For initial scroll, use faster timing (single RAF) to reduce flicker
-+        // Skip InteractionManager as it's too slow and causes visible flicker
-+        requestAnimationFrame(() => {
-+          attemptScrollToBottom('content-size-change-initial', false, isVeryFirstScrollAttemptRef.current);
-+          
-+          // Additional attempts with shorter delays for initial load (reduces flicker)
-+          const delays = isSignificantDataChange ? [50, 100, 150] : [50, 100, 150];
-+          delays.forEach((delay, index) => {
-+            setTimeout(() => {
-+              if (!isScrolledByUserRef.current && !isUserTouchingRef.current && handlerMethods) {
-+                attemptScrollToBottom(`content-size-change-retry-${index + 1}`, false, false);
-+              }
-+            }, delay);
-+          });
-+        });
-+      } else if (
-+        shouldRenderFromBottom &&
-+        contentHeightChanged &&
-+        contentHeightIncreased &&
-+        !isScrolledByUserRef.current &&
-+        !isUserTouchingRef.current &&
-+        currentDataLength > 0
-+      ) {
-+        // Content height increased (items expanded) - attempt to maintain bottom position
-+        console.log(
-+          `[FlashList] handleContentSizeChange: Content height increased (${previousContentHeight.toFixed(2)} -> ${contentHeight.toFixed(2)}), attempting to maintain bottom position`
-+        );
-+        
-+        // Use a debounced approach to handle rapid successive changes
-+        if (layoutStabilizationTimeoutRef.current) {
-+          clearTimeout(layoutStabilizationTimeoutRef.current);
++        // For initial scroll, scroll to bottom immediately without animation
++        // Use synchronous scroll to prevent flickering
++        if (!isScrolledByUserRef.current && !isUserTouchingRef.current && handlerMethods) {
++          handlerMethods.scrollToEnd({ animated: false });
 +        }
-+        
-+        layoutStabilizationTimeoutRef.current = setTimeout(() => {
-+          // Double-check user is still not touching before scrolling
-+          if (!isUserTouchingRef.current && !isScrolledByUserRef.current) {
-+            // Only scroll if layout has been stable for a bit and content height increased
-+            const timeSinceLastStable = Date.now() - lastLayoutStableTimeRef.current;
-+            if (timeSinceLastStable > 50) {
-+              attemptScrollToBottom('content-height-increase', true);
-+            }
-+          }
-+          layoutStabilizationTimeoutRef.current = null;
-+        }, 150);
 +      }
 +    },
 +    [
@@ -526,7 +566,7 @@ index 5447a5c..9270781 100644
  
    // Create view for measuring bounded size
    const viewToMeasureBoundedSize = useMemo(() => {
-@@ -512,6 +893,9 @@ const RecyclerViewComponent = <T,>(
+@@ -512,6 +933,9 @@ const RecyclerViewComponent = <T,>(
            horizontal={horizontal}
            ref={scrollViewRef}
            onScroll={animatedEvent}
@@ -537,7 +577,7 @@ index 5447a5c..9270781 100644
              maintainVisibleContentPositionInternal
            }
 diff --git a/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx b/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
-index 4d99406..5516f1d 100644
+index 4d99406..93e962a 100644
 --- a/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
 +++ b/node_modules/@shopify/flash-list/src/recyclerview/hooks/useRecyclerViewController.tsx
 @@ -52,6 +52,7 @@ export function useRecyclerViewController<T>(
@@ -548,33 +588,72 @@ index 4d99406..5516f1d 100644
    const lastDataLengthRef = useRef(recyclerViewManager.getDataLength());
    const { setTimeout } = useUnmountAwareTimeout();
  
-@@ -569,6 +570,9 @@ export function useRecyclerViewController<T>(
+@@ -569,6 +570,26 @@ export function useRecyclerViewController<T>(
      const initialScrollIndex =
        recyclerViewManager.getInitialScrollIndex() ?? -1;
      const dataLength = data?.length ?? 0;
 +    const shouldRenderFromBottom =
 +      recyclerViewManager.props.maintainVisibleContentPosition?.startRenderingFromBottom ?? false;
 +    
++    // Detect if data length changed significantly (e.g., 1 -> 50 items)
++    // If so, reset initial scroll state to allow scrolling to new bottom
++    const previousDataLength = lastDataLengthRef.current;
++    const isSignificantDataChange = 
++      previousDataLength > 0 && 
++      dataLength > previousDataLength &&
++      (dataLength - previousDataLength) >= 5;
++    
++    if (isSignificantDataChange && shouldRenderFromBottom) {
++      console.log(
++        `[FlashList] applyInitialScrollIndex: Significant data change detected (${previousDataLength} -> ${dataLength}), resetting initial scroll state`
++      );
++      // Reset to allow scrolling to new bottom
++      initialScrollCompletedRef.current = false;
++      initialScrollToBottomAttemptedRef.current = false;
++    }
++    
      if (
        initialScrollIndex >= 0 &&
        initialScrollIndex < dataLength &&
-@@ -598,6 +602,19 @@ export function useRecyclerViewController<T>(
-           animated: false,
-           skipFirstItemOffset: false,
-         });
-+        
-+        // For startRenderingFromBottom, ensure we scroll to actual bottom after layout
-+        // This handles variable height items where initial scroll index position might not be accurate
-+        if (shouldRenderFromBottom && dataLength > 0 && !initialScrollToBottomAttemptedRef.current) {
-+          initialScrollToBottomAttemptedRef.current = true;
-+          // Use multiple requestAnimationFrame calls to ensure layout measurements are complete
-+          requestAnimationFrame(() => {
-+            requestAnimationFrame(() => {
-+              // Scroll to end to ensure we're at the actual bottom
-+              handlerMethods.scrollToEnd({ animated: false });
-+            });
+@@ -592,14 +613,34 @@ export function useRecyclerViewController<T>(
+         skipFirstItemOffset: false,
+       });
+ 
+-      setTimeout(() => {
+-        handlerMethods.scrollToOffset({
+-          offset,
+-          animated: false,
+-          skipFirstItemOffset: false,
+-        });
+-      }, 0);
++      // For startRenderingFromBottom, ensure we scroll to actual bottom after layout
++      // This handles variable height items where initial scroll index position might not be accurate
++      if (shouldRenderFromBottom && dataLength > 0 && !initialScrollToBottomAttemptedRef.current) {
++        initialScrollToBottomAttemptedRef.current = true;
++        // Scroll immediately after the first offset scroll to minimize flickering
++        setTimeout(() => {
++          handlerMethods.scrollToOffset({
++            offset,
++            animated: false,
++            skipFirstItemOffset: false,
 +          });
-+        }
-       }, 0);
++          
++          // Scroll to end immediately after to ensure we're at the actual bottom
++          handlerMethods.scrollToEnd({ animated: false });
++        }, 0);
++      } else {
++        setTimeout(() => {
++          handlerMethods.scrollToOffset({
++            offset,
++            animated: false,
++            skipFirstItemOffset: false,
++          });
++        }, 0);
++      }
      }
++    
++    // Update last data length for next comparison
++    lastDataLengthRef.current = dataLength;
    }, [handlerMethods, recyclerViewManager, setTimeout]);
+ 
+   // Expose imperative methods through the ref
