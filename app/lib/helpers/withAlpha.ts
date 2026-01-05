@@ -1,3 +1,19 @@
+/**
+ * Applies an alpha (opacity) value to a color string.
+ *
+ * Supported formats:
+ * - `rgba(r,g,b,a)` → updates alpha
+ * - `rgb(r,g,b)` → converted to `rgba`
+ * - `#rgb`, `#rrggbb`, `#rrggbbaa` → normalized to `#rrggbbaa`
+ *
+ * Unsupported formats (returned unchanged):
+ * - Named colors (`red`)
+ * - `hsl()` / `hsla()`
+ * - Invalid color strings
+ *
+ * @param color Input color string
+ * @param alpha Opacity value between `0` and `1` (default: `1`)
+ */
 const withAlpha = (color: string, alpha: number = 1) => {
 	if (!color) {
 		return color;
