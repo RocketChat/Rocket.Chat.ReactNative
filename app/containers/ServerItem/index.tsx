@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import Radio from '../Radio';
+import * as List from '../List';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../theme';
 import Touchable from './Touchable';
@@ -31,20 +31,23 @@ const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServ
 	const { colors } = useTheme();
 	const { width } = useResponsiveLayout();
 
-	const serverName = item.name || item.id;
-	const accessibilityLabel = `${serverName}, ${item.id}`;
+	const iconName = hasCheck ? 'radio-checked' : 'radio-unchecked';
+	const iconColor = hasCheck ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+	const accessibilityLabel = `${item.name || item.id}. ${item.id}. ${I18n.t(hasCheck ? 'Selected' : 'Unselected')}`;
+
 	const accessibilityHint = onDeletePress
 		? I18n.t('Activate_to_select_server_Available_actions_delete')
 		: I18n.t('Activate_to_select_server');
 
 	return (
 		<Touchable
+			accessibilityLabel={accessibilityLabel}
+			accessibilityRole='radio'
+			accessibilityHint={accessibilityHint}
 			onPress={onPress}
 			onDeletePress={onDeletePress}
 			testID={`server-item-${item.id}`}
-			width={width}
-			accessibilityLabel={accessibilityLabel}
-			accessibilityHint={accessibilityHint}>
+			width={width}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<Image
@@ -67,7 +70,8 @@ const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServ
 						{item.id}
 					</Text>
 				</View>
-				<Radio check={hasCheck || false} size={24} />
+
+				<List.Icon name={iconName} color={iconColor} />
 			</View>
 		</Touchable>
 	);
