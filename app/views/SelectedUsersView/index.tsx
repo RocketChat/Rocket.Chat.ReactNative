@@ -17,7 +17,8 @@ import database from '../../lib/database';
 import UserItem from '../../containers/UserItem';
 import { type ISelectedUser } from '../../reducers/selectedUsers';
 import { getUserSelector } from '../../selectors/login';
-import { type ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList, type NewMessageStackParamList } from '../../stacks/types';
+import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -26,8 +27,11 @@ import { isGroupChat as isGroupChatMethod } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Header from './Header';
 
-type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
-type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
+type TRoute = RouteProp<ChatsStackParamList & NewMessageStackParamList & ModalStackParamList, 'SelectedUsersView'>;
+type TNavigation = NativeStackNavigationProp<
+	ChatsStackParamList & NewMessageStackParamList & ModalStackParamList,
+	'SelectedUsersView'
+>;
 
 const SelectedUsersView = () => {
 	const [chats, setChats] = useState<ISelectedUser[]>([]);
@@ -66,8 +70,8 @@ const SelectedUsersView = () => {
 
 	useLayoutEffect(() => {
 		const titleHeader = title ?? I18n.t('Select_Members');
-		const buttonTextHeader = buttonText ?? I18n.t('Next');
-		const nextActionHeader = nextAction ?? (() => {});
+		const buttonTextHeader = buttonText || I18n.t('Next');
+		const nextActionHeader = nextAction || (() => {});
 		const buttonTitle = handleButtonTitle(buttonTextHeader);
 		const options = {
 			title: titleHeader,
@@ -80,7 +84,7 @@ const SelectedUsersView = () => {
 				)
 		};
 		navigation.setOptions(options);
-	}, [navigation, users.length, maxUsers]);
+	}, [navigation, users.length, maxUsers, buttonText, nextAction]);
 
 	useEffect(() => {
 		if (isGroupChat()) {

@@ -55,6 +55,21 @@ export const Icons = () => (
 		<HeaderExample title={() => <RoomHeader title='busy dm' type='d' status='busy' />} />
 		<HeaderExample title={() => <RoomHeader title='loading dm' type='d' status='loading' />} />
 		<HeaderExample title={() => <RoomHeader title='offline dm' type='d' />} />
+		<HeaderExample
+			title={() => (
+				<RoomHeader title='classified' type='p' abacAttributes={[{ key: 'Attribute', values: ['Value 1', 'Value 2'] }]} />
+			)}
+		/>
+		<HeaderExample
+			title={() => (
+				<RoomHeader
+					title='classified'
+					type='p'
+					abacAttributes={[{ key: 'Attribute', values: ['Value 1', 'Value 2'] }]}
+					teamMain
+				/>
+			)}
+		/>
 	</>
 );
 
