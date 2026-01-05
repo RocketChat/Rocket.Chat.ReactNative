@@ -81,6 +81,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				{...props}>
 				<View
 					accessible={accessible}
+					accessibilityRole={props.accessibilityRole}
 					accessibilityLabel={accessibilityLabel}
 					accessibilityHint={accessibilityHint}
 					accessibilityActions={accessibilityActions}

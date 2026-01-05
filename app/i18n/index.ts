@@ -1,10 +1,9 @@
 import i18n from 'i18n-js';
 import { I18nManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
-import moment from 'moment';
-import 'moment/min/locales';
 
-import { toMomentLocale } from './moment';
+import dayjs from '../lib/dayjs/index';
+import { toDayJsLocale } from './dayjs';
 import { isRTL } from './isRTL';
 import englishJson from './locales/en.json';
 
@@ -177,7 +176,7 @@ export const setLanguage = (l: string) => {
 	// TODO: Review this logic
 	// @ts-ignore
 	i18n.isRTL = I18nManager.isRTL;
-	moment.locale(toMomentLocale(locale));
+	dayjs.locale(toDayJsLocale(locale));
 };
 
 i18n.translations = { en: translations.en?.() };

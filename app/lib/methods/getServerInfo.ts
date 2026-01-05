@@ -1,6 +1,6 @@
 import { KJUR } from 'jsrsasign';
-import moment from 'moment';
 
+import dayjs from '../dayjs';
 import { getSupportedVersionsCloud } from '../services/restApi';
 import {
 	type TCloudInfo,
@@ -81,7 +81,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 				const serverRecord = await getServerById(server);
 				if (
 					serverRecord?.supportedVersionsUpdatedAt &&
-					moment(new Date()).diff(serverRecord?.supportedVersionsUpdatedAt, 'hours') <= SV_CLOUD_UPDATE_INTERVAL
+					dayjs(new Date()).diff(serverRecord?.supportedVersionsUpdatedAt, 'hours') <= SV_CLOUD_UPDATE_INTERVAL
 				) {
 					return {
 						...serverInfo,
