@@ -52,7 +52,6 @@
 		"@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
 		"@rocket.chat/ui-kit": "0.31.19",
 		"bytebuffer": "5.0.1",
-		"color2k": "1.2.4",
 		"dayjs": "^1.11.18",
 		"dequal": "2.0.3",
 		"ejson": "2.2.3",
