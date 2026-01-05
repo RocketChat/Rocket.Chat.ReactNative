@@ -163,7 +163,12 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	username?: string;
 	nickname?: string;
-	federation?: any;
+	federation?: {
+		version: number;
+		mrid: string;
+		origin: string;
+		peer?: string;
+	};
 	roomsCount?: number;
 
 	u: Pick<IUser, '_id' | 'username' | 'name'>;
@@ -233,6 +238,7 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	isLastOwner?: boolean;
 	federated?: boolean;
+	abacAttributes?: { key: string; values: string[] }[];
 }
 
 export interface IRoomNotifications {
