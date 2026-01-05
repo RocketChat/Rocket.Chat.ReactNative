@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { type NativeScrollEvent, type NativeSyntheticEvent, StyleSheet, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { type NativeScrollEvent, type NativeSyntheticEvent, StyleSheet, View, Keyboard } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 
 import { type IListProps } from '../definitions';
@@ -39,6 +39,19 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			setVisible(false);
 		}
 	};
+
+	// Scroll to end when keyboard opens
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			if (listRef?.current) {
+				listRef.current.scrollToEnd({ animated: true });
+			}
+		});
+
+		return () => {
+			keyboardDidShowListener.remove();
+		};
+	}, [listRef]);
 
 	return (
 		<View style={styles.list}>
