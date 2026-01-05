@@ -150,6 +150,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	changeType = (type: string) => {
+		this.load.stop();
 		this.setState({ type, data: [], total: -1 }, () => this.search());
 
 		if (type === 'users') {
@@ -163,6 +164,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	toggleWorkspace = () => {
+		this.load.stop();
 		this.setState(
 			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [], total: -1 }),
 			() => this.search()
