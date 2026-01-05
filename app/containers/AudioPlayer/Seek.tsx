@@ -1,10 +1,9 @@
 import React from 'react';
 import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
-import { PanGestureHandler, type PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
 	type SharedValue,
 	runOnJS,
-	useAnimatedGestureHandler,
 	useAnimatedProps,
 	useAnimatedStyle,
 	useDerivedValue,
@@ -50,6 +49,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	const timeLabel = useSharedValue(DEFAULT_TIME_LABEL);
 	const scale = useSharedValue(1);
 	const isPanning = useSharedValue(false);
+	const panOffsetX = useSharedValue(0);
 
 	const styleLine = useAnimatedStyle(() => ({
 		width: translateX.value
@@ -64,21 +64,22 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		maxWidth.value = width;
 	};
 
-	const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetX: number }>({
-		onStart: (event, ctx) => {
+	const panGesture = Gesture.Pan()
+		.enabled(loaded)
+		.activeOffsetX([-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X])
+		.onBegin(() => {
 			isPanning.value = true;
-			ctx.offsetX = translateX.value;
-		},
-		onActive: ({ translationX }, ctx) => {
-			translateX.value = clamp(ctx.offsetX + translationX, 0, maxWidth.value);
+			panOffsetX.value = translateX.value;
+		})
+		.onUpdate(({ translationX }) => {
+			translateX.value = clamp(panOffsetX.value + translationX, 0, maxWidth.value);
 			scale.value = 1.3;
-		},
-		onFinish() {
+		})
+		.onFinalize(() => {
 			scale.value = 1;
 			isPanning.value = false;
 			runOnJS(onChangeTime)(Math.round(currentTime.value * 1000));
-		}
-	});
+		});
 
 	useDerivedValue(() => {
 		if (isPanning.value) {
@@ -118,9 +119,9 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 					<View style={[styles.line, { backgroundColor: colors.strokeLight }]}>
 						<Animated.View style={[styles.line, styleLine, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]} />
 					</View>
-					<PanGestureHandler enabled={loaded} onGestureEvent={onGestureEvent} activeOffsetX={[-ACTIVE_OFFSET_X, ACTIVE_OFFSET_X]}>
+					<GestureDetector gesture={panGesture}>
 						<Animated.View hitSlop={SEEK_HIT_SLOP} style={[styles.thumbSeek, { backgroundColor: thumbColor }, styleThumb]} />
-					</PanGestureHandler>
+					</GestureDetector>
 				</View>
 			</View>
 		</TouchableNativeFeedback>
