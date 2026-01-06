@@ -20,4 +20,12 @@ describe('withAlpha', () => {
 	test('hex #rrggbbaa to be hex #rrggbbaa with updated alpha', () => {
 		expect(withAlpha('#ff000022', 0.8)).toBe('#ff0000cc');
 	});
+
+	test("'red' to be 'red' without change in alpha", () => {
+		expect(withAlpha('red', 0.8)).toBe('red');
+	});
+
+	test('hsl to be hsl without change in alpha', () => {
+		expect(withAlpha('hsl(0, 100%, 50%)', 0.8)).toBe('hsl(0, 100%, 50%)');
+	});
 });
