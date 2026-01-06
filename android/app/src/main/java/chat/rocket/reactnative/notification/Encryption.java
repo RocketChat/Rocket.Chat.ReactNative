@@ -191,6 +191,20 @@ class Encryption {
                 cursor.close();
                 return null;
             }
+            
+           cursor.moveToFirst();
+           int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");
+           int encryptedColumnIndex = cursor.getColumnIndex("encrypted");
+           
+           if (e2eKeyColumnIndex == -1) {
+               Log.e(TAG, "e2e_key column not found in subscriptions table");
+               cursor.close();
+               return null;
+           }
+           
+           String e2eKey = cursor.getString(e2eKeyColumnIndex);
+           Boolean encrypted = encryptedColumnIndex != -1 && cursor.getInt(encryptedColumnIndex) > 0;
+           cursor.close();
 
             cursor.moveToFirst();
             int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");

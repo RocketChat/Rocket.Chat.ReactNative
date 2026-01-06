@@ -316,6 +316,14 @@ public class CustomPushNotification {
             }
         }
 
+        if (ENABLE_VERBOSE_LOGS) {
+            Log.d(TAG, "[buildNotification] notId=" + notId);
+            Log.d(TAG, "[buildNotification] notificationLoaded=" + notificationLoaded);
+            Log.d(TAG, "[buildNotification] title=" + (title != null ? "[present]" : "[null]"));
+            Log.d(TAG, "[buildNotification] notificationTitle=" + (notificationTitle != null ? "[present]" : "[null]"));
+            Log.d(TAG, "[buildNotification] message length=" + (message != null ? message.length() : 0));
+        }
+
         // Create pending intent to open the app
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
