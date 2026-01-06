@@ -108,5 +108,29 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+<key>UIApplicationShortcutItems</key>
+<array>
+  <dict>
+    <key>UIApplicationShortcutItemType</key>
+    <string>add-server</string>
+
+    <key>UIApplicationShortcutItemTitle</key>
+    <string>Add Server</string>
+
+    <key>UIApplicationShortcutItemIconType</key>
+    <string>UIApplicationShortcutIconTypeAdd</string>
+  </dict>
+
+  <dict>
+    <key>UIApplicationShortcutItemType</key>
+    <string>search</string>
+
+    <key>UIApplicationShortcutItemTitle</key>
+    <string>Search Rooms</string>
+
+    <key>UIApplicationShortcutItemIconType</key>
+    <string>UIApplicationShortcutIconTypeSearch</string>
+  </dict>
+</array>
 </dict>
 </plist>

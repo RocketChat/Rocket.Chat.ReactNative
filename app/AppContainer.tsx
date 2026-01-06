@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
+import { registerQuickActions } from './lib/quickActions';
 import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
@@ -34,6 +35,11 @@ const SetUsernameStack = () => (
 const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
+
+	useEffect(() => {
+		registerQuickActions();
+	}, []);
+
 	useEffect(() => {
 		if (root) {
 			const state = Navigation.navigationRef.current?.getRootState();
