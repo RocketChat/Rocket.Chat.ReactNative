@@ -42,6 +42,13 @@ open class MainApplication : Application(), ReactApplication {
       @JvmStatic
       lateinit var instance: MainApplication
           private set
+      
+      /**
+       * Get the MainApplication instance.
+       * Provides Java-friendly access to the instance.
+       */
+      @JvmStatic
+      fun getInstance(): MainApplication = instance
   }
 
   override val reactNativeHost: ReactNativeHost =
