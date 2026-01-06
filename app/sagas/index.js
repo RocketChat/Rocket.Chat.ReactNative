@@ -15,10 +15,12 @@ import createDiscussion from './createDiscussion';
 import encryption from './encryption';
 import videoConf from './videoConf';
 import troubleshootingNotification from './troubleshootingNotification';
+import quickActions from './quickActions';
 
 const root = function* root() {
 	yield all([
 		init(),
+		quickActions(),
 		createChannel(),
 		rooms(),
 		room(),

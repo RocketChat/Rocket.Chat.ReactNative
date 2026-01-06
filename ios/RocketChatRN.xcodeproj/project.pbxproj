@@ -10,6 +10,10 @@
 		0745F30D29A18A45DDDF8568 /* Pods_defaults_NotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5DA03EEFD8CEA0E9578CEFA /* Pods_defaults_NotificationService.framework */; };
 		0C6E2DE448364EA896869ADF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B37C79D9BD0742CE936B6982 /* libc++.tbd */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		16A6D54E2F0D95FC000FCD09 /* QuickActionsStore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A6D54D2F0D95FC000FCD09 /* QuickActionsStore.mm */; };
+		16A6D54F2F0D95FC000FCD09 /* QuickActionsStore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A6D54D2F0D95FC000FCD09 /* QuickActionsStore.mm */; };
+		16A6D5522F0D969B000FCD09 /* QuickActionsConnector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A6D5512F0D969B000FCD09 /* QuickActionsConnector.mm */; };
+		16A6D5532F0D969B000FCD09 /* QuickActionsConnector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A6D5512F0D969B000FCD09 /* QuickActionsConnector.mm */; };
 		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
 		1E01C8212511301400FEF824 /* PushResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8202511301400FEF824 /* PushResponse.swift */; };
 		1E01C8252511303100FEF824 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8242511303100FEF824 /* Notification.swift */; };
@@ -469,6 +473,10 @@
 		13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
+		16A6D54C2F0D95E3000FCD09 /* QuickActionsStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickActionsStore.h; sourceTree = "<group>"; };
+		16A6D54D2F0D95FC000FCD09 /* QuickActionsStore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QuickActionsStore.mm; sourceTree = "<group>"; };
+		16A6D5502F0D9674000FCD09 /* QuickActionsConnector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickActionsConnector.h; sourceTree = "<group>"; };
+		16A6D5512F0D969B000FCD09 /* QuickActionsConnector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = QuickActionsConnector.mm; path = "#import <React/RCTBridgeModule.h>  @interface QuickActionsConnector : NSObject <RCTBridgeModule> @end #import <React/QuickActionsConnector.mm"; sourceTree = "<group>"; };
 		194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-NotificationService/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		1E01C81B2511208400FEF824 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		1E01C8202511301400FEF824 /* PushResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushResponse.swift; sourceTree = "<group>"; };
@@ -728,6 +736,10 @@
 				66C2701E2EBBCB780062725F /* SecureStorage.h */,
 				66C2701F2EBBCB780062725F /* SecureStorage.m */,
 				7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */,
+				16A6D54C2F0D95E3000FCD09 /* QuickActionsStore.h */,
+				16A6D54D2F0D95FC000FCD09 /* QuickActionsStore.mm */,
+				16A6D5502F0D9674000FCD09 /* QuickActionsConnector.h */,
+				16A6D5512F0D969B000FCD09 /* QuickActionsConnector.mm */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
 				A48B46D82D3FFBD200945489 /* A11yFlowModule.m */,
 				7A8B30742BCD9D3F00146A40 /* SSLPinning.h */,
@@ -2118,6 +2130,7 @@
 				66C2701B2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
 				1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */,
 				1E76CBC2251529560067298C /* Storage.swift in Sources */,
+				16A6D54F2F0D95FC000FCD09 /* QuickActionsStore.mm in Sources */,
 				1E76CBD925152C8C0067298C /* Push.swift in Sources */,
 				1E0426E6251A5467008F022C /* RoomType.swift in Sources */,
 				1E76CBCD25152C2C0067298C /* MessageType.swift in Sources */,
@@ -2143,6 +2156,7 @@
 				1ED038C12B50A1E400C007D4 /* DBUser.swift in Sources */,
 				1E76CBD525152C7F0067298C /* API.swift in Sources */,
 				1E76CBD625152C820067298C /* Response.swift in Sources */,
+				16A6D5532F0D969B000FCD09 /* QuickActionsConnector.mm in Sources */,
 				1ED038BE2B50A1D400C007D4 /* DBServer.swift in Sources */,
 				1E068D0124FD2E0500A0FFC1 /* AppGroup.m in Sources */,
 				1ED038C42B50A1F500C007D4 /* WatchMessage.swift in Sources */,
@@ -2393,6 +2407,7 @@
 				66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
 				7AAB3E17257E6A6E00707CF6 /* ReplyNotification.swift in Sources */,
 				7AAB3E18257E6A6E00707CF6 /* Storage.swift in Sources */,
+				16A6D54E2F0D95FC000FCD09 /* QuickActionsStore.mm in Sources */,
 				7AAB3E19257E6A6E00707CF6 /* Push.swift in Sources */,
 				7AAB3E1A257E6A6E00707CF6 /* RoomType.swift in Sources */,
 				7AAB3E1B257E6A6E00707CF6 /* MessageType.swift in Sources */,
@@ -2418,6 +2433,7 @@
 				1ED038C22B50A1E400C007D4 /* DBUser.swift in Sources */,
 				7AAB3E28257E6A6E00707CF6 /* API.swift in Sources */,
 				7AAB3E29257E6A6E00707CF6 /* Response.swift in Sources */,
+				16A6D5522F0D969B000FCD09 /* QuickActionsConnector.mm in Sources */,
 				1ED038BF2B50A1D400C007D4 /* DBServer.swift in Sources */,
 				7AAB3E2A257E6A6E00707CF6 /* AppGroup.m in Sources */,
 				1ED038C52B50A1F500C007D4 /* WatchMessage.swift in Sources */,

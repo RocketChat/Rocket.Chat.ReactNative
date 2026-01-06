@@ -12,13 +12,30 @@ interface IParams {
 	token: string;
 }
 
+interface IQuickActionParams {
+	type: string;
+	action: string;
+}
+
 interface IDeepLinkingOpen extends Action {
 	params: Partial<IParams>;
+}
+
+interface IDeepLinkingQuickAction extends Action {
+	params: Partial<IQuickActionParams>;
 }
 
 export function deepLinkingOpen(params: Partial<IParams>): IDeepLinkingOpen {
 	return {
 		type: DEEP_LINKING.OPEN,
+		params
+	};
+}
+
+export function deepLinkingQuickAction(params: Partial<IQuickActionParams>): IDeepLinkingQuickAction {
+	console.log('call to deep linking quick actions');
+	return {
+		type: DEEP_LINKING.QUICK_ACTION,
 		params
 	};
 }

@@ -9,7 +9,8 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
-import { deepLinkingOpen } from './actions/deepLinking';
+import { getInitialQuickAction } from './lib/quickActions/getInitialQuickAction';
+import { deepLinkingOpen, deepLinkingQuickAction } from './actions/deepLinking';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
@@ -61,6 +62,14 @@ interface IState {
 
 const parseDeepLinking = (url: string) => {
 	if (url) {
+		if (url.startsWith('rocketchat://quick-action/')) {
+			const action = url.replace('rocketchat://quick-action/', '');
+			return {
+				type: 'quick-action',
+				action
+			};
+		}
+
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
 		const regex = /^(room|auth|invite|shareextension)\?/;
 		const match = url.match(regex);
@@ -111,7 +120,10 @@ export default class Root extends React.Component<{}, IState> {
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
-				if (parsedDeepLinkingURL) {
+				console.log(parsedDeepLinkingURL, 'deeplink url========================');
+				if (parsedDeepLinkingURL?.type === 'quick-action') {
+					store.dispatch(deepLinkingQuickAction(parsedDeepLinkingURL));
+				} else if (parsedDeepLinkingURL) {
 					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 				}
 			});
@@ -151,6 +163,12 @@ export default class Root extends React.Component<{}, IState> {
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
+		const quickAction = await getInitialQuickAction();
+
+		if (quickAction) {
+			store.dispatch(deepLinkingQuickAction({ type: 'quick-action', action: quickAction }));
+			return;
+		}
 		if (parsedDeepLinkingURL) {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
