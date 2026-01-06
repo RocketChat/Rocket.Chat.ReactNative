@@ -9,8 +9,9 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
-import { getInitialQuickAction } from './lib/quickActions/getInitialQuickAction';
-import { deepLinkingOpen, deepLinkingQuickAction } from './actions/deepLinking';
+import { getRecentQuickAction } from './lib/quickActions/getInitialQuickAction';
+import { deepLinkingOpen } from './actions/deepLinking';
+import { quickActionHandle } from './actions/quickActions';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
@@ -118,12 +119,15 @@ export default class Root extends React.Component<{}, IState> {
 
 	componentDidMount() {
 		this.listenerTimeout = setTimeout(() => {
-			Linking.addEventListener('url', ({ url }) => {
+			Linking.addEventListener('url', async ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
-				console.log(parsedDeepLinkingURL, 'deeplink url========================');
-				if (parsedDeepLinkingURL?.type === 'quick-action') {
-					store.dispatch(deepLinkingQuickAction(parsedDeepLinkingURL));
-				} else if (parsedDeepLinkingURL) {
+				const quickAction = await getRecentQuickAction();
+				console.log(quickAction, 'inside the listerner=========================');
+				if (quickAction) {
+					store.dispatch(quickActionHandle({ type: 'quick-action', action: quickAction }));
+					return;
+				}
+				if (parsedDeepLinkingURL) {
 					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 				}
 			});
@@ -163,10 +167,10 @@ export default class Root extends React.Component<{}, IState> {
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
-		const quickAction = await getInitialQuickAction();
+		const quickAction = await getRecentQuickAction();
 
 		if (quickAction) {
-			store.dispatch(deepLinkingQuickAction({ type: 'quick-action', action: quickAction }));
+			store.dispatch(quickActionHandle({ type: 'quick-action', action: quickAction }));
 			return;
 		}
 		if (parsedDeepLinkingURL) {

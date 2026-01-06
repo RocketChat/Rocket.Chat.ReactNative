@@ -3,24 +3,19 @@ import { InteractionManager, AppState } from 'react-native';
 
 import { navigateToAddServer } from '../navigation/addServer.ts';
 import store from '../store';
-
-let pendingQuickAction: string | null = null;
-let quickActionConsumed = false;
+import { getRecentQuickAction } from './getInitialQuickAction';
 
 let registered = false;
 
-let currentAppState = AppState.currentState;
-
-AppState.addEventListener('change', nextState => {
-	if (currentAppState === 'active' && nextState !== 'active') {
-		quickActionConsumed = false;
-	}
-
+AppState.addEventListener('change', async nextState => {
 	if (nextState === 'active') {
-		consumePendingQuickAction();
+		const nativeAction = await getRecentQuickAction();
+		if (nativeAction) {
+			InteractionManager.runAfterInteractions(() => {
+				handleQuickAction(nativeAction);
+			});
+		}
 	}
-
-	currentAppState = nextState;
 });
 
 export function registerQuickActions() {
@@ -28,6 +23,8 @@ export function registerQuickActions() {
 		return;
 	}
 	registered = true;
+
+	console.log('quickactions registered=======================');
 
 	QuickActions.setItems([
 		{ id: 'add-server', title: 'Add Server', icon: 'plus', href: '' },
@@ -42,25 +39,6 @@ export function registerQuickActions() {
 			return;
 		}
 		console.log('else block');
-
-		pendingQuickAction = action.id;
-	});
-}
-
-function consumePendingQuickAction() {
-	if (!pendingQuickAction || quickActionConsumed) {
-		return;
-	}
-
-	quickActionConsumed = true;
-
-	console.log('consume block');
-
-	const action = pendingQuickAction;
-	pendingQuickAction = null;
-
-	InteractionManager.runAfterInteractions(() => {
-		handleQuickAction(action);
 	});
 }
 

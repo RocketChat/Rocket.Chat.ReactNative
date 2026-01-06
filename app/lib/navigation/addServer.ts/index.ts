@@ -3,14 +3,14 @@ import { batch } from 'react-redux';
 import { appStart } from '../../../actions/app';
 import { serverInitAdd } from '../../../actions/server';
 import { RootEnum } from '../../../definitions';
-import store from '../../store';
 import { logEvent, events } from '../../methods/helpers/log';
+import { type AppDispatch } from '../../store';
 
-export function navigateToAddServer(previousServer: string) {
+export function navigateToAddServer(dispatch: AppDispatch, previousServer: string) {
 	logEvent(events.RL_ADD_SERVER);
 
 	batch(() => {
-		store.dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		store.dispatch(serverInitAdd(previousServer));
+		dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		dispatch(serverInitAdd(previousServer));
 	});
 }

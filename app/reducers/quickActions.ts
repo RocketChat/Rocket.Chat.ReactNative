@@ -1,6 +1,6 @@
 import { type Action } from 'redux';
 
-import { DEEP_LINKING } from '../actions/actionsTypes';
+import { QUICK_ACTIONS } from '../actions/actionsTypes';
 
 interface IQuickActionsState {
 	lastAction: string | null;
@@ -11,7 +11,7 @@ export const initialState: IQuickActionsState = {
 	handled: false
 };
 
-interface IQuickActionAction extends Action<typeof DEEP_LINKING.QUICK_ACTION> {
+interface IQuickActionAction extends Action<typeof QUICK_ACTIONS.QUICK_ACTION_HANDLE> {
 	payload: {
 		action: string;
 	};
@@ -21,14 +21,14 @@ type QuickActionsAction = IQuickActionAction | Action;
 
 export default function quickActions(state = initialState, action: QuickActionsAction) {
 	switch (action.type) {
-		case DEEP_LINKING.QUICK_ACTION:
+		case QUICK_ACTIONS.QUICK_ACTION_HANDLE:
 			console.log('call to reducer quick action');
 			return {
 				...state,
 				lastAction: (action as IQuickActionAction).payload.action,
 				handled: false
 			};
-		case DEEP_LINKING.QUICK_ACTION_HANDLED:
+		case QUICK_ACTIONS.QUICK_ACTION_HANDLED:
 			return {
 				...state,
 				handled: true

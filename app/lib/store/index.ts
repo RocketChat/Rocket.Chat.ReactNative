@@ -27,6 +27,7 @@ if (__DEV__) {
 }
 
 const store = createStore(reducers, enhancers);
+export type AppDispatch = typeof store.dispatch;
 sagaMiddleware.run(sagas);
 
 export default store;
