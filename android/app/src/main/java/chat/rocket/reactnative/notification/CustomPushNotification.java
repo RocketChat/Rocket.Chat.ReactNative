@@ -18,9 +18,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.gson.Gson;
 
@@ -30,9 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.MainActivity;
@@ -61,7 +55,7 @@ public class CustomPushNotification {
     
     // Instance fields
     private final Context mContext;
-    private Bundle mBundle;
+    private volatile Bundle mBundle;
     private final NotificationManager notificationManager;
     
     public CustomPushNotification(Context context, Bundle bundle) {
@@ -300,9 +294,6 @@ public class CustomPushNotification {
         bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         
         String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
-        if (ENABLE_VERBOSE_LOGS) {
-            Log.d(TAG, "[showNotification] avatarUri=" + (avatarUri != null ? "[present]" : "[null]"));
-        }
         bundle.putString("avatarUri", avatarUri);
 
         // Handle special notification types
@@ -379,10 +370,27 @@ public class CustomPushNotification {
         Boolean notificationLoaded = mBundle.getBoolean("notificationLoaded", false);
         Ejson ejson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
 
+        // Determine the correct title based on notification type
+        String notificationTitle = title;
+        if (ejson != null && ejson.type != null) {
+            if ("p".equals(ejson.type) || "c".equals(ejson.type)) {
+                // For groups/channels, use room name if available, otherwise fall back to title
+                notificationTitle = (ejson.name != null && !ejson.name.isEmpty()) ? ejson.name : title;
+            } else if ("d".equals(ejson.type)) {
+                // For direct messages, use title (sender name from server)
+                notificationTitle = title;
+            } else if ("l".equals(ejson.type)) {
+                // For omnichannel, use sender name if available, otherwise fall back to title
+                notificationTitle = (ejson.sender != null && ejson.sender.name != null && !ejson.sender.name.isEmpty()) 
+                    ? ejson.sender.name : title;
+            }
+        }
+
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[buildNotification] notId=" + notId);
             Log.d(TAG, "[buildNotification] notificationLoaded=" + notificationLoaded);
             Log.d(TAG, "[buildNotification] title=" + (title != null ? "[present]" : "[null]"));
+            Log.d(TAG, "[buildNotification] notificationTitle=" + (notificationTitle != null ? "[present]" : "[null]"));
             Log.d(TAG, "[buildNotification] message length=" + (message != null ? message.length() : 0));
         }
 
@@ -406,7 +414,7 @@ public class CustomPushNotification {
         }
 
         notification
-                .setContentTitle(title)
+                .setContentTitle(notificationTitle)
                 .setContentText(message)
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_HIGH)
@@ -455,37 +463,7 @@ public class CustomPushNotification {
     }
 
     private Bitmap getAvatar(String uri) {
-        if (uri == null || uri.isEmpty()) {
-            if (ENABLE_VERBOSE_LOGS) {
-                Log.w(TAG, "getAvatar called with null/empty URI");
-            }
-            return largeIcon();
-        }
-        
-        if (ENABLE_VERBOSE_LOGS) {
-            String sanitizedUri = uri;
-            int queryStart = uri.indexOf("?");
-            if (queryStart != -1) {
-                sanitizedUri = uri.substring(0, queryStart) + "?[auth_params]";
-            }
-            Log.d(TAG, "Fetching avatar from: " + sanitizedUri);
-        }
-        
-        try {
-            // Use a 3-second timeout to avoid blocking the FCM service for too long
-            // FCM has a 10-second limit, so we need to fail fast and use fallback icon
-            Bitmap avatar = Glide.with(mContext)
-                    .asBitmap()
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                    .load(uri)
-                    .submit(100, 100)
-                    .get(3, TimeUnit.SECONDS);
-            
-            return avatar != null ? avatar : largeIcon();
-        } catch (final ExecutionException | InterruptedException | TimeoutException e) {
-            Log.e(TAG, "Failed to fetch avatar: " + e.getMessage(), e);
-            return largeIcon();
-        }
+        return NotificationHelper.fetchAvatarBitmap(mContext, uri, largeIcon());
     }
 
     private Bitmap largeIcon() {
@@ -506,7 +484,10 @@ public class CustomPushNotification {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
             if (avatarUri != null) {
-                notification.setLargeIcon(getAvatar(avatarUri));
+                Bitmap avatar = getAvatar(avatarUri);
+                if (avatar != null) {
+                    notification.setLargeIcon(avatar);
+                }
             }
         }
     }
@@ -517,8 +498,11 @@ public class CustomPushNotification {
         }
         if (ejson != null && ejson.type != null && !ejson.type.equals("d")) {
             int pos = message.indexOf(":");
-            int start = pos == -1 ? 0 : pos + 2;
-            return message.substring(start);
+            if (pos == -1) {
+                return message;
+            }
+            int start = pos + 2;
+            return start <= message.length() ? message.substring(start) : "";
         }
         return message;
     }
@@ -559,7 +543,23 @@ public class CustomPushNotification {
             }
 
             String title = bundle.getString("title");
-            messageStyle.setConversationTitle(title);
+            // Determine the correct conversation title based on notification type
+            Ejson bundleEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+            String conversationTitle = title;
+            if (bundleEjson != null && bundleEjson.type != null) {
+                if ("p".equals(bundleEjson.type) || "c".equals(bundleEjson.type)) {
+                    // For groups/channels, use room name if available, otherwise fall back to title
+                    conversationTitle = (bundleEjson.name != null && !bundleEjson.name.isEmpty()) ? bundleEjson.name : title;
+                } else if ("d".equals(bundleEjson.type)) {
+                    // For direct messages, use title (sender name from server)
+                    conversationTitle = title;
+                } else if ("l".equals(bundleEjson.type)) {
+                    // For omnichannel, use sender name if available, otherwise fall back to title
+                    conversationTitle = (bundleEjson.sender != null && bundleEjson.sender.name != null && !bundleEjson.sender.name.isEmpty()) 
+                        ? bundleEjson.sender.name : title;
+                }
+            }
+            messageStyle.setConversationTitle(conversationTitle);
 
             if (bundles != null) {
                 for (Bundle data : bundles) {

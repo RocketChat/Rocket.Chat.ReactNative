@@ -21,9 +21,15 @@ export const onNotification = (push: INotification): void => {
 	// Handle video conf notification actions (Accept/Decline buttons)
 	if (identifier === 'ACCEPT_ACTION' || identifier === 'DECLINE_ACTION') {
 		if (push?.payload?.ejson) {
-			const notification = EJSON.parse(push.payload.ejson);
-			store.dispatch(deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' }));
-			return;
+			try {
+				const notification = EJSON.parse(push.payload.ejson);
+				store.dispatch(
+					deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' })
+				);
+				return;
+			} catch (e) {
+				console.warn('Failed to parse video conf notification:', e);
+			}
 		}
 	}
 
@@ -38,6 +44,10 @@ export const onNotification = (push: INotification): void => {
 			}
 
 			// Handle regular message notifications
+			if (!notification?.rid || !notification?.type || !notification?.host) {
+				store.dispatch(appInit());
+				return;
+			}
 			const { rid, name, sender, type, host, messageId }: IEjson = notification;
 			const types: Record<string, string> = {
 				c: 'channel',
@@ -45,9 +55,11 @@ export const onNotification = (push: INotification): void => {
 				p: 'group',
 				l: 'channels'
 			};
-			let roomName = type === SubscriptionType.DIRECT ? sender.username : name;
-			if (type === SubscriptionType.OMNICHANNEL) {
-				roomName = sender.name;
+			let roomName = name;
+			if (type === SubscriptionType.DIRECT) {
+				roomName = sender?.username ?? name;
+			} else if (type === SubscriptionType.OMNICHANNEL) {
+				roomName = sender?.name ?? name;
 			}
 
 			const params = {
