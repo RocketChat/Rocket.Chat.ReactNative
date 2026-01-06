@@ -5,11 +5,8 @@ import android.content.res.Configuration
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
-import com.facebook.react.ReactInstanceEventListener
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
-import com.facebook.react.bridge.ReactContext
-import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
@@ -21,7 +18,6 @@ import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
-import chat.rocket.reactnative.notification.CustomPushNotification;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 
 /**
@@ -70,13 +66,6 @@ open class MainApplication : Application(), ReactApplication {
 
     // Load the native entry point for the New Architecture
     load()
-    
-    // Register listener to set React context when initialized
-    reactHost.addReactInstanceEventListener(object : ReactInstanceEventListener {
-      override fun onReactContextInitialized(context: ReactContext) {
-        CustomPushNotification.setReactContext(context as ReactApplicationContext)
-      }
-    })
     
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }

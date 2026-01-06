@@ -18,7 +18,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ public class CustomPushNotification {
     private static final boolean ENABLE_VERBOSE_LOGS = BuildConfig.DEBUG;
     
     // Shared state
-    public static volatile ReactApplicationContext reactApplicationContext;
     private static final Gson gson = new Gson();
     private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
     
@@ -65,14 +63,6 @@ public class CustomPushNotification {
         
         // Ensure notification channel exists
         createNotificationChannel();
-    }
-
-    /**
-     * Sets the React application context when React Native initializes.
-     * Called from MainApplication when React context is ready.
-     */
-    public static void setReactContext(ReactApplicationContext context) {
-        reactApplicationContext = context;
     }
 
     public static void clearMessages(int notId) {
