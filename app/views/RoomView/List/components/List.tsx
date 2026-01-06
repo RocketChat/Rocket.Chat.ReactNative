@@ -22,9 +22,9 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 
 	const maintainVisibleContentPositionConfig = useMemo(
 		() => ({
-			autoscrollToBottomThreshold: 0.05,
+			autoscrollToBottomThreshold: 0.1,
 			startRenderingFromBottom: true,
-			animateAutoScrollToBottom: true
+			animateAutoScrollToBottom: false
 		}),
 		[]
 	);
