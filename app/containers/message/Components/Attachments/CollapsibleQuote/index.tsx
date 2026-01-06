@@ -144,9 +144,7 @@ const CollapsibleQuote = React.memo(
 
 		try {
 			if (attachment.color) {
-				console.log(attachment.color);
 				backgroundColor = withAlpha(attachment.color, 0.2); // works for rgba, rgb, hex (#rgb, #rrggbb)
-				console.log(backgroundColor);
 				strokeExtraLight = attachment.color;
 				strokeLight = attachment.color;
 				strokeMedium = attachment.color;
