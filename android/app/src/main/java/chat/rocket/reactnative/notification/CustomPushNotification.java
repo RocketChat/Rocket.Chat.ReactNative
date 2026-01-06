@@ -208,7 +208,13 @@ public class CustomPushNotification {
             ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
             showNotification(bundle, ejson, notId);
         } else {
-            Log.e(TAG, "E2E decryption failed, notification will not be shown");
+            Log.e(TAG, "E2E decryption failed, showing fallback notification");
+            // Show fallback notification instead of silently dropping it
+            // This ensures users are notified even if decryption fails
+            bundle.putString("message", "Encrypted message");
+            mBundle = bundle;
+            ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+            showNotification(bundle, ejson, notId);
         }
     }
 
