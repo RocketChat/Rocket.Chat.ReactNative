@@ -1,9 +1,9 @@
 import * as QuickActions from 'expo-quick-actions';
 import { InteractionManager, AppState } from 'react-native';
 
-import { navigateToAddServer } from '../navigation/addServer.ts';
 import store from '../store';
 import { getRecentQuickAction } from './getInitialQuickAction';
+import { quickActionHandle } from '../../actions/quickActions';
 
 let registered = false;
 
@@ -45,9 +45,11 @@ export function registerQuickActions() {
 function handleQuickAction(id: string) {
 	switch (id) {
 		case 'add-server':
-			const state = store.getState();
-			const server = state?.server?.server;
-			navigateToAddServer(server);
+			store.dispatch(
+				quickActionHandle({
+					action: 'add-server'
+				})
+			);
 			break;
 
 		case 'search':
