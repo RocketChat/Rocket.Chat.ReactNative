@@ -6,6 +6,8 @@ import com.facebook.react.bridge.Callback;
 import com.tencent.mmkv.MMKV;
 
 import java.math.BigInteger;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
@@ -40,6 +42,7 @@ public class Ejson {
     String notificationType;
     String messageType;
     String senderName;
+    String name; // Room name for groups/channels
     String msg;
     Integer status; // For video conf: 0=incoming, 4=cancelled
 
@@ -57,15 +60,14 @@ public class Ejson {
         return MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE);
     }
 
-    public String getAvatarUri() {
-        if (sender == null || sender.username == null || sender.username.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
-            return null;
-        }
-        
+    /**
+     * Helper method to build avatar URI from avatar path.
+     * Validates server URL and credentials, then constructs the full URI.
+     */
+    private String buildAvatarUri(String avatarPath, String errorContext) {
         String server = serverURL();
         if (server == null || server.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: serverURL is null");
+            Log.w(TAG, "Cannot generate " + errorContext + " avatar URI: serverURL is null");
             return null;
         }
         
@@ -73,17 +75,64 @@ public class Ejson {
         String uid = userId();
         
         if (userToken.isEmpty() || uid.isEmpty()) {
-            Log.w(TAG, "Cannot generate avatar URI: missing auth credentials (token=" + !userToken.isEmpty() + ", uid=" + !uid.isEmpty() + ")");
+            Log.w(TAG, "Cannot generate " + errorContext + " avatar URI: missing auth credentials");
             return null;
         }
         
-        String uri = server + "/avatar/" + sender.username + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+        return server + avatarPath + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+    }
+
+    public String getAvatarUri() {
+        String avatarPath;
         
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Generated avatar URI for user: " + sender.username);
+        // For DMs, show sender's avatar; for groups/channels, show room avatar
+        if ("d".equals(type)) {
+            // Direct message: use sender's avatar
+            if (sender == null || sender.username == null || sender.username.isEmpty()) {
+                Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
+                return null;
+            }
+            try {
+                avatarPath = "/avatar/" + URLEncoder.encode(sender.username, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                Log.e(TAG, "Failed to encode username", e);
+                return null;
+            }
+        } else {
+            // Group/Channel/Livechat: use room avatar
+            if (rid == null || rid.isEmpty()) {
+                Log.w(TAG, "Cannot generate avatar URI: rid is null for non-DM");
+                return null;
+            }
+            try {
+                avatarPath = "/avatar/room/" + URLEncoder.encode(rid, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                Log.e(TAG, "Failed to encode rid", e);
+                return null;
+            }
         }
         
-        return uri;
+        return buildAvatarUri(avatarPath, "");
+    }
+
+    /**
+     * Generates avatar URI for video conference caller.
+     * Returns null if caller username is not available (username is required for avatar endpoint).
+     */
+    public String getCallerAvatarUri() {
+        // Check if caller exists and has username (required - /avatar/{userId} endpoint doesn't exist)
+        if (caller == null || caller.username == null || caller.username.isEmpty()) {
+            Log.w(TAG, "Cannot generate caller avatar URI: caller or username is null");
+            return null;
+        }
+        
+        try {
+            String avatarPath = "/avatar/" + URLEncoder.encode(caller.username, "UTF-8");
+            return buildAvatarUri(avatarPath, "caller");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "Failed to encode caller username", e);
+            return null;
+        }
     }
 
     public String token() {
@@ -194,6 +243,7 @@ public class Ejson {
     static class Caller {
         String _id;
         String name;
+        String username;
     }
 
     static class Content {
