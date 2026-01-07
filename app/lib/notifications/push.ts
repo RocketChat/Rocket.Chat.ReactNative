@@ -36,14 +36,6 @@ const transformNotificationResponse = (response: Notifications.NotificationRespo
 	const { notification, actionIdentifier, userText } = response;
 	const { trigger, content } = notification.request;
 
-	console.log('[push.ts] transformNotificationResponse - raw data:', {
-		hasTrigger: !!trigger,
-		triggerType: trigger && 'type' in trigger ? trigger.type : 'unknown',
-		hasContent: !!content,
-		hasContentData: !!content.data,
-		actionIdentifier
-	});
-
 	// Get the raw data from the notification
 	let payload: Record<string, any> = {};
 
@@ -51,30 +43,15 @@ const transformNotificationResponse = (response: Notifications.NotificationRespo
 		if (Platform.OS === 'android' && 'remoteMessage' in trigger && trigger.remoteMessage) {
 			// Android: data comes from remoteMessage.data
 			payload = trigger.remoteMessage.data || {};
-			console.log('[push.ts] Android - extracted from remoteMessage.data:', {
-				keys: Object.keys(payload),
-				hasEjson: !!payload.ejson,
-				ejsonLength: payload.ejson?.length || 0
-			});
 		} else if (Platform.OS === 'ios' && 'payload' in trigger && trigger.payload) {
 			// iOS: data comes from payload (userInfo)
 			payload = trigger.payload as Record<string, any>;
-			console.log('[push.ts] iOS - extracted from trigger.payload:', {
-				keys: Object.keys(payload),
-				hasEjson: !!payload.ejson,
-				ejsonLength: payload.ejson?.length || 0
-			});
 		}
 	}
 
 	// Fallback to content.data if trigger data is not available
 	if (Object.keys(payload).length === 0 && content.data) {
 		payload = content.data as Record<string, any>;
-		console.log('[push.ts] Fallback - extracted from content.data:', {
-			keys: Object.keys(payload),
-			hasEjson: !!payload.ejson,
-			ejsonLength: payload.ejson?.length || 0
-		});
 	}
 
 	// Add action identifier if it's a specific action (not default tap)
@@ -85,7 +62,7 @@ const transformNotificationResponse = (response: Notifications.NotificationRespo
 		}
 	}
 
-	const transformed = {
+	return {
 		payload: {
 			message: content.body || payload.message || '',
 			style: payload.style || '',
@@ -101,15 +78,6 @@ const transformNotificationResponse = (response: Notifications.NotificationRespo
 		},
 		identifier: notification.request.identifier
 	};
-
-	console.log('[push.ts] transformNotificationResponse - transformed:', {
-		hasEjson: !!transformed.payload.ejson,
-		ejsonLength: transformed.payload.ejson?.length || 0,
-		notId: transformed.payload.notId,
-		title: transformed.payload.title
-	});
-
-	return transformed;
 };
 
 /**
@@ -234,34 +202,14 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 
 	// Listen for notification responses (when user taps on notification)
 	Notifications.addNotificationResponseReceivedListener(response => {
-		console.log('[push.ts] Notification response received:', {
-			actionIdentifier: response.actionIdentifier,
-			notificationId: response.notification.request.identifier,
-			hasTrigger: !!response.notification.request.trigger,
-			hasContent: !!response.notification.request.content
-		});
-
 		const notification = transformNotificationResponse(response);
-
-		console.log('[push.ts] Transformed notification:', {
-			hasPayload: !!notification.payload,
-			hasEjson: !!notification.payload?.ejson,
-			ejsonLength: notification.payload?.ejson?.length || 0,
-			notId: notification.payload?.notId,
-			title: notification.payload?.title,
-			message: notification.payload?.message ? `${notification.payload.message.substring(0, 50)}...` : undefined
-		});
 
 		if (isIOS) {
 			const { background } = reduxStore.getState().app;
 			if (background) {
-				console.log('[push.ts] iOS background, calling onNotification');
 				onNotification(notification);
-			} else {
-				console.log('[push.ts] iOS foreground, skipping onNotification');
 			}
 		} else {
-			console.log('[push.ts] Android, calling onNotification');
 			onNotification(notification);
 		}
 	});
