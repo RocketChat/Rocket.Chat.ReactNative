@@ -107,24 +107,62 @@ class MainActivity : ReactActivity() {
       return
     }
     
-    // Extract all notification data from Intent extras
-    val notificationData = mutableMapOf<String, Any?>()
-    
-    // Copy all extras to the notification data map
-    extras.keySet().forEach { key ->
-      when (val value = extras.get(key)) {
-        is String -> notificationData[key] = value
-        is Int -> notificationData[key] = value
-        is Boolean -> notificationData[key] = value
-        else -> notificationData[key] = value?.toString()
+    try {
+      // Extract all notification data from Intent extras
+      // Only include serializable types to avoid JSON serialization errors
+      val notificationData = mutableMapOf<String, Any?>()
+      
+      // Copy all extras to the notification data map, filtering out non-serializable types
+      extras.keySet().forEach { key ->
+        try {
+          when (val value = extras.get(key)) {
+            is String -> notificationData[key] = value
+            is Int -> notificationData[key] = value
+            is Boolean -> notificationData[key] = value
+            is Long -> notificationData[key] = value
+            is Float -> notificationData[key] = value
+            is Double -> notificationData[key] = value
+            is Byte -> notificationData[key] = value
+            is Char -> notificationData[key] = value
+            is Short -> notificationData[key] = value
+            // Skip complex types that can't be serialized (Bundle, Parcelable, etc.)
+            is Bundle -> {
+              // Skip Bundle objects - they're not JSON serializable
+              android.util.Log.w("RocketChat.MainActivity", "Skipping Bundle extra: $key")
+            }
+            null -> {
+              // Skip null values
+            }
+            else -> {
+              // For other types, try to convert to String only if it's a simple type
+              // Skip complex objects that might not serialize properly
+              val stringValue = value.toString()
+              // Only include if it's a reasonable string representation (not object reference)
+              if (!stringValue.startsWith("android.") && !stringValue.contains("@")) {
+                notificationData[key] = stringValue
+              } else {
+                android.util.Log.w("RocketChat.MainActivity", "Skipping non-serializable extra: $key (type: ${value.javaClass.simpleName})")
+              }
+            }
+          }
+        } catch (e: Exception) {
+          android.util.Log.w("RocketChat.MainActivity", "Error processing extra $key: ${e.message}")
+        }
       }
+      
+      // Convert to JSON and store for React Native
+      val gson = GsonBuilder().create()
+      val jsonData = gson.toJson(notificationData)
+      
+      // Store notification data with error handling
+      try {
+        PushNotificationModule.storePendingNotification(this, jsonData)
+      } catch (e: Exception) {
+        android.util.Log.e("RocketChat.MainActivity", "Failed to store pending notification: ${e.message}", e)
+      }
+    } catch (e: Exception) {
+      android.util.Log.e("RocketChat.MainActivity", "Error handling notification intent: ${e.message}", e)
     }
-    
-    // Convert to JSON and store for React Native
-    val gson = GsonBuilder().create()
-    val jsonData = gson.toJson(notificationData)
-    
-    PushNotificationModule.storePendingNotification(this, jsonData)
   }
 
   override fun invokeDefaultOnBackPressed() {

@@ -18,13 +18,24 @@ class PushNotificationModule(reactContext: ReactApplicationContext) : NativePush
         /**
          * Stores notification Intent data from a notification tap.
          * Called from MainActivity when receiving a notification Intent.
+         * @throws Exception if storage fails
          */
         @JvmStatic
         fun storePendingNotification(context: Context, notificationJson: String) {
-            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                .edit()
-                .putString(KEY_PENDING_NOTIFICATION, notificationJson)
-                .apply()
+            try {
+                val success = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .putString(KEY_PENDING_NOTIFICATION, notificationJson)
+                    .commit() // Use commit() instead of apply() to ensure synchronous write and catch errors
+                
+                if (!success) {
+                    android.util.Log.e("RocketChat.PushNotificationModule", "Failed to store pending notification: commit() returned false")
+                    throw RuntimeException("Failed to store pending notification")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("RocketChat.PushNotificationModule", "Error storing pending notification: ${e.message}", e)
+                throw e
+            }
         }
     }
 
