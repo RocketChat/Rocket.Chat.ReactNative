@@ -26,4 +26,5 @@ export interface IAvatar {
 	roomAvatarExternalProviderUrl?: string;
 	cdnPrefix?: string;
 	accessibilityLabel?: string;
+	accessible?: boolean;
 }

@@ -1,5 +1,4 @@
-import moment from 'moment';
-
+import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { type IMessage, type TMessageModel } from '../../definitions';
 import log from './helpers/log';
@@ -82,7 +81,7 @@ export function loadMessagesForRoom(args: {
 					const loadMoreMessage = {
 						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,
-						ts: moment(lastMessage.ts).subtract(1, 'millisecond').toString(),
+						ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
 						t: MessageTypeLoad.MORE,
 						msg: lastMessage.msg
 					} as IMessage;
