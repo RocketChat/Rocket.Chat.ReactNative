@@ -132,8 +132,10 @@ const RoomInfoView = (): React.ReactElement => {
 					const params: { os?: string; browser?: string } = {};
 					if (visitor.userAgent) {
 						const ua = Bowser.getParser(visitor.userAgent);
-						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
-						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
+						params.os = `${ua.getOS().name ?? ua.getOSName()} ${ua.getOS().version ?? ua.getOSVersion()}`;
+						params.browser = `${ua.getBrowser().name ?? ua.getBrowserName()} ${
+							ua.getBrowser().version ?? ua.getBrowserVersion()
+						}`;
 					}
 					setRoomUser({ ...visitor, ...params });
 					setHeader();
