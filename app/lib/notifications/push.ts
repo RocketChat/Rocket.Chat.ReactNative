@@ -7,6 +7,7 @@ import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
 import { registerPushToken } from '../services/restApi';
 import I18n from '../../i18n';
+import NativePushNotificationModule from '../native/NativePushNotificationAndroid';
 
 export let deviceToken = '';
 
@@ -35,6 +36,14 @@ const transformNotificationResponse = (response: Notifications.NotificationRespo
 	const { notification, actionIdentifier, userText } = response;
 	const { trigger, content } = notification.request;
 
+	console.log('[push.ts] transformNotificationResponse - raw data:', {
+		hasTrigger: !!trigger,
+		triggerType: trigger && 'type' in trigger ? trigger.type : 'unknown',
+		hasContent: !!content,
+		hasContentData: !!content.data,
+		actionIdentifier
+	});
+
 	// Get the raw data from the notification
 	let payload: Record<string, any> = {};
 
@@ -42,15 +51,30 @@ const transformNotificationResponse = (response: Notifications.NotificationRespo
 		if (Platform.OS === 'android' && 'remoteMessage' in trigger && trigger.remoteMessage) {
 			// Android: data comes from remoteMessage.data
 			payload = trigger.remoteMessage.data || {};
+			console.log('[push.ts] Android - extracted from remoteMessage.data:', {
+				keys: Object.keys(payload),
+				hasEjson: !!payload.ejson,
+				ejsonLength: payload.ejson?.length || 0
+			});
 		} else if (Platform.OS === 'ios' && 'payload' in trigger && trigger.payload) {
 			// iOS: data comes from payload (userInfo)
 			payload = trigger.payload as Record<string, any>;
+			console.log('[push.ts] iOS - extracted from trigger.payload:', {
+				keys: Object.keys(payload),
+				hasEjson: !!payload.ejson,
+				ejsonLength: payload.ejson?.length || 0
+			});
 		}
 	}
 
 	// Fallback to content.data if trigger data is not available
 	if (Object.keys(payload).length === 0 && content.data) {
 		payload = content.data as Record<string, any>;
+		console.log('[push.ts] Fallback - extracted from content.data:', {
+			keys: Object.keys(payload),
+			hasEjson: !!payload.ejson,
+			ejsonLength: payload.ejson?.length || 0
+		});
 	}
 
 	// Add action identifier if it's a specific action (not default tap)
@@ -61,7 +85,7 @@ const transformNotificationResponse = (response: Notifications.NotificationRespo
 		}
 	}
 
-	return {
+	const transformed = {
 		payload: {
 			message: content.body || payload.message || '',
 			style: payload.style || '',
@@ -77,6 +101,15 @@ const transformNotificationResponse = (response: Notifications.NotificationRespo
 		},
 		identifier: notification.request.identifier
 	};
+
+	console.log('[push.ts] transformNotificationResponse - transformed:', {
+		hasEjson: !!transformed.payload.ejson,
+		ejsonLength: transformed.payload.ejson?.length || 0,
+		notId: transformed.payload.notId,
+		title: transformed.payload.title
+	});
+
+	return transformed;
 };
 
 /**
@@ -201,19 +234,98 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 
 	// Listen for notification responses (when user taps on notification)
 	Notifications.addNotificationResponseReceivedListener(response => {
+		console.log('[push.ts] Notification response received:', {
+			actionIdentifier: response.actionIdentifier,
+			notificationId: response.notification.request.identifier,
+			hasTrigger: !!response.notification.request.trigger,
+			hasContent: !!response.notification.request.content
+		});
+
 		const notification = transformNotificationResponse(response);
+
+		console.log('[push.ts] Transformed notification:', {
+			hasPayload: !!notification.payload,
+			hasEjson: !!notification.payload?.ejson,
+			ejsonLength: notification.payload?.ejson?.length || 0,
+			notId: notification.payload?.notId,
+			title: notification.payload?.title,
+			message: notification.payload?.message ? `${notification.payload.message.substring(0, 50)}...` : undefined
+		});
 
 		if (isIOS) {
 			const { background } = reduxStore.getState().app;
 			if (background) {
+				console.log('[push.ts] iOS background, calling onNotification');
 				onNotification(notification);
+			} else {
+				console.log('[push.ts] iOS foreground, skipping onNotification');
 			}
 		} else {
+			console.log('[push.ts] Android, calling onNotification');
 			onNotification(notification);
 		}
 	});
 
 	// Get initial notification (app was opened by tapping a notification)
+	// First check native module for stored notification data (Android - when notification was created natively)
+	if (Platform.OS === 'android' && NativePushNotificationModule) {
+		return NativePushNotificationModule.getPendingNotification()
+			.then(pendingNotification => {
+				if (pendingNotification) {
+					try {
+						// Parse the stored notification data
+						const notificationData = JSON.parse(pendingNotification);
+
+						// Transform to INotification format
+						const transformed: INotification = {
+							payload: {
+								message: notificationData.message || '',
+								style: notificationData.style || '',
+								ejson: notificationData.ejson || '',
+								collapse_key: notificationData.collapse_key || '',
+								notId: notificationData.notId || '',
+								msgcnt: notificationData.msgcnt || '',
+								title: notificationData.title || '',
+								from: notificationData.from || '',
+								image: notificationData.image || '',
+								soundname: notificationData.soundname || '',
+								action: notificationData.action
+							},
+							identifier: notificationData.notId || ''
+						};
+
+						return transformed;
+					} catch (parseError) {
+						console.error('[push.ts] Error parsing notification data:', parseError);
+						return null;
+					}
+				}
+				return null;
+			})
+			.catch(e => {
+				console.error('[push.ts] Error getting pending notification from native module:', e);
+				return null;
+			})
+			.then(nativeNotification => {
+				if (nativeNotification) {
+					return nativeNotification;
+				}
+
+				// Fallback to expo-notifications (for iOS or if native module doesn't have data)
+				const lastResponse = Notifications.getLastNotificationResponse();
+				if (lastResponse) {
+					return transformNotificationResponse(lastResponse);
+				}
+
+				return null;
+			})
+			.catch(e => {
+				console.error('[push.ts] Error in promise chain:', e);
+				return null;
+			});
+	}
+
+	// Fallback to expo-notifications (for iOS or if native module doesn't have data)
 	const lastResponse = Notifications.getLastNotificationResponse();
 	if (lastResponse) {
 		return Promise.resolve(transformNotificationResponse(lastResponse));

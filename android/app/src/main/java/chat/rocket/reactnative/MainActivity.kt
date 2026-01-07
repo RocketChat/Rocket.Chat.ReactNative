@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import chat.rocket.reactnative.notification.VideoConfModule
 import chat.rocket.reactnative.notification.VideoConfNotification
+import chat.rocket.reactnative.notification.PushNotificationModule
 import com.google.gson.GsonBuilder
  
 class MainActivity : ReactActivity() {
@@ -34,12 +35,20 @@ class MainActivity : ReactActivity() {
     
     // Handle video conf action from notification
     intent?.let { handleVideoConfIntent(it) }
+    
+    // Handle regular notification tap (non-video conf)
+    intent?.let { handleNotificationIntent(it) }
   }
   
   public override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
+    setIntent(intent)
+    
     // Handle video conf action when activity is already running
     handleVideoConfIntent(intent)
+    
+    // Handle regular notification tap when activity is already running
+    handleNotificationIntent(intent)
   }
   
   private fun handleVideoConfIntent(intent: Intent) {
@@ -51,8 +60,6 @@ class MainActivity : ReactActivity() {
       val callerName = intent.getStringExtra("callerName") ?: ""
       val host = intent.getStringExtra("host") ?: ""
       val callId = intent.getStringExtra("callId") ?: ""
-      
-      android.util.Log.d("RocketChat.MainActivity", "Handling video conf intent - event: $event, rid: $rid, host: $host, callId: $callId")
       
       // Cancel the notification
       if (notificationId != 0) {
@@ -75,13 +82,49 @@ class MainActivity : ReactActivity() {
       val gson = GsonBuilder().create()
       val jsonData = gson.toJson(data)
       
-      android.util.Log.d("RocketChat.MainActivity", "Storing video conf action: $jsonData")
-      
       VideoConfModule.storePendingAction(this, jsonData)
       
       // Clear the video conf flag to prevent re-processing
       intent.removeExtra("videoConfAction")
     }
+  }
+  
+  /**
+   * Handles regular notification tap (non-video conf).
+   * Extracts Intent extras and stores them for React Native to pick up.
+   */
+  private fun handleNotificationIntent(intent: Intent) {
+    // Skip if this is a video conf action (handled separately)
+    if (intent.getBooleanExtra("videoConfAction", false)) {
+      return
+    }
+    
+    val extras = intent.extras ?: return
+    
+    // Check if this Intent has notification data (ejson)
+    val ejson = extras.getString("ejson")
+    if (ejson.isNullOrEmpty()) {
+      return
+    }
+    
+    // Extract all notification data from Intent extras
+    val notificationData = mutableMapOf<String, Any?>()
+    
+    // Copy all extras to the notification data map
+    extras.keySet().forEach { key ->
+      when (val value = extras.get(key)) {
+        is String -> notificationData[key] = value
+        is Int -> notificationData[key] = value
+        is Boolean -> notificationData[key] = value
+        else -> notificationData[key] = value?.toString()
+      }
+    }
+    
+    // Convert to JSON and store for React Native
+    val gson = GsonBuilder().create()
+    val jsonData = gson.toJson(notificationData)
+    
+    PushNotificationModule.storePendingNotification(this, jsonData)
   }
 
   override fun invokeDefaultOnBackPressed() {

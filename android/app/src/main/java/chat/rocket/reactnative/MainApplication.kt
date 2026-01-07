@@ -19,6 +19,7 @@ import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
+import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 
 /**
  * Main Application class.
@@ -41,6 +42,7 @@ open class MainApplication : Application(), ReactApplication {
               add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
               add(VideoConfTurboPackage())
+              add(PushNotificationTurboPackage())
               add(SecureStoragePackage())
             }
 

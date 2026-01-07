@@ -209,6 +209,12 @@ public class CustomPushNotification {
         String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
         bundle.putString("avatarUri", avatarUri);
 
+        // Ensure mBundle is updated with all modifications before building notification
+        // This ensures buildNotification() sees the complete bundle with all fields (including ejson)
+        synchronized(this) {
+            mBundle = bundle;
+        }
+
         // Handle special notification types
         if (ejson != null && "videoconf".equals(ejson.notificationType)) {
             handleVideoConfNotification(bundle, ejson);
@@ -311,6 +317,18 @@ public class CustomPushNotification {
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtras(mBundle);
+        
+        // Log intent extras for debugging
+        Log.d(TAG, "[buildNotification] Creating intent with extras:");
+        Log.d(TAG, "[buildNotification]   - ejson: " + (mBundle.getString("ejson") != null ? "[present, length=" + mBundle.getString("ejson").length() + "]" : "[null]"));
+        Log.d(TAG, "[buildNotification]   - rid: " + (ejson != null && ejson.rid != null ? ejson.rid : "[null]"));
+        Log.d(TAG, "[buildNotification]   - type: " + (ejson != null && ejson.type != null ? ejson.type : "[null]"));
+        Log.d(TAG, "[buildNotification]   - host: " + (ejson != null && ejson.host != null ? "[present]" : "[null]"));
+        Log.d(TAG, "[buildNotification]   - messageId: " + (ejson != null && ejson.messageId != null ? ejson.messageId : "[null]"));
+        Log.d(TAG, "[buildNotification]   - notificationType: " + (ejson != null && ejson.notificationType != null ? ejson.notificationType : "[null]"));
+        Log.d(TAG, "[buildNotification]   - notId: " + mBundle.getString("notId"));
+        Log.d(TAG, "[buildNotification]   - title: " + (title != null ? "[present]" : "[null]"));
+        Log.d(TAG, "[buildNotification]   - message: " + (message != null ? "[present, length=" + message.length() + "]" : "[null]"));
         
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
