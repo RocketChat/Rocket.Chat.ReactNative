@@ -950,14 +950,14 @@ export const addUsersToRoom = (rid: string): Promise<boolean> => {
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
 };
 
-export const emitTyping = (room: IRoom, typing = true) => {
+export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } = {}) => {
 	const { login, settings, server } = reduxStore.getState();
 	const { UI_Use_Real_Name } = settings;
 	const { version: serverVersion } = server;
 	const { user } = login;
 	const name = UI_Use_Real_Name ? user.name : user.username;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
-		return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : []);
+        return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : [], args);
 	}
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
