@@ -27,7 +27,7 @@ import { useTheme } from '../../theme';
 export const MessageComposer = ({
 	forwardedRef,
 	children
-}: { 
+}: {
 	forwardedRef: any;
 	children?: ReactElement;
 }): ReactElement | null => {

@@ -957,7 +957,7 @@ export const emitTyping = (room: IRoom, typing = true, args: { tmid?: string } =
 	const { user } = login;
 	const name = UI_Use_Real_Name ? user.name : user.username;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
-        return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : [], args);
+		return sdk.methodCall('stream-notify-room', `${room}/user-activity`, name, typing ? ['user-typing'] : [], args);
 	}
 	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 };
