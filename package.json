@@ -5,8 +5,8 @@
 	"packageManager": "yarn@1.22.22",
 	"scripts": {
 		"start": "react-native start",
-		"test": "jest",
-		"test-update": "jest --updateSnapshot",
+		"test": "TZ=UTC jest",
+		"test-update": "TZ=UTC jest --updateSnapshot",
 		"lint": "eslint . && tsc",
 		"prettier-lint": "prettier --write . && yarn lint",
 		"ios": "npx react-native run-ios",
