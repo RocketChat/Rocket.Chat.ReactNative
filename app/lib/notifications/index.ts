@@ -22,9 +22,15 @@ export const onNotification = (push: INotification): void => {
 	// Handle video conf notification actions (Accept/Decline buttons)
 	if (identifier === 'ACCEPT_ACTION' || identifier === 'DECLINE_ACTION') {
 		if (push?.payload?.ejson) {
-			const notification = EJSON.parse(push.payload.ejson);
-			store.dispatch(deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' }));
-			return;
+			try {
+				const notification = EJSON.parse(push.payload.ejson);
+				store.dispatch(
+					deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' })
+				);
+				return;
+			} catch (e) {
+				console.warn('[notifications/index.ts] Failed to parse video conf notification:', e);
+			}
 		}
 	}
 
@@ -66,7 +72,7 @@ export const onNotification = (push: INotification): void => {
 			store.dispatch(deepLinkingOpen(params));
 			return;
 		} catch (e) {
-			console.warn(e);
+			console.warn('[notifications/index.ts] Failed to parse ejson:', e);
 		}
 	}
 	store.dispatch(appInit());

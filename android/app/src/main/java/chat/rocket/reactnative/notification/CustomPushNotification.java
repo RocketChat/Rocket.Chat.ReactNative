@@ -231,54 +231,19 @@ public class CustomPushNotification {
     }
 
     /**
-     * Handles E2E encrypted notifications by delegating to the async processor.
+     * Handles E2E encrypted notifications
      */
     private void handleE2ENotification(Bundle bundle, Ejson ejson, String notId) {
-        // Check if React context is immediately available
-        if (reactApplicationContext != null) {
-            // Fast path: decrypt immediately
-            String decrypted = Encryption.shared.decryptMessage(ejson, reactApplicationContext);
-            
-            if (decrypted != null) {
-                bundle.putString("message", decrypted);
-                mBundle = bundle;
-                ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
-                showNotification(bundle, ejson, notId);
-            } else {
-                Log.w(TAG, "E2E decryption failed for notification");
-            }
-            return;
+        String decrypted = Encryption.shared.decryptMessage(ejson, mContext);
+        
+        if (decrypted != null) {
+            bundle.putString("message", decrypted);
+            mBundle = bundle;
+            Ejson updatedEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+            showNotification(bundle, updatedEjson, notId);
+        } else {
+            Log.w(TAG, "E2E decryption failed for notification");
         }
-        
-        // Slow path: wait for React context asynchronously
-        Log.i(TAG, "Waiting for React context to decrypt E2E notification");
-        
-        E2ENotificationProcessor processor = new E2ENotificationProcessor(
-            // Context provider
-            () -> reactApplicationContext,
-            
-            // Callback
-            new E2ENotificationProcessor.NotificationCallback() {
-                @Override
-                public void onDecryptionComplete(Bundle decryptedBundle, Ejson decryptedEjson, String notificationId) {
-                    mBundle = decryptedBundle;
-                    Ejson finalEjson = safeFromJson(decryptedBundle.getString("ejson", "{}"), Ejson.class);
-                    showNotification(decryptedBundle, finalEjson, notificationId);
-                }
-                
-                @Override
-                public void onDecryptionFailed(Bundle originalBundle, Ejson originalEjson, String notificationId) {
-                    Log.w(TAG, "E2E decryption failed for notification");
-                }
-                
-                @Override
-                public void onTimeout(Bundle originalBundle, Ejson originalEjson, String notificationId) {
-                    Log.w(TAG, "Timeout waiting for React context for E2E notification");
-                }
-            }
-        );
-        
-        processor.processAsync(bundle, ejson, notId);
     }
 
     /**
