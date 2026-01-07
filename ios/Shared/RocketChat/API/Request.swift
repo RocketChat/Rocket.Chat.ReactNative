@@ -55,7 +55,7 @@ extension Request {
     request.httpMethod = method.rawValue
     request.httpBody = body()
     request.addValue(contentType, forHTTPHeaderField: "Content-Type")
-    request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
+    request.addValue(Bundle.userAgent, forHTTPHeaderField: "User-Agent")
     
     if let userId = api.credentials?.userId {
       request.addValue(userId, forHTTPHeaderField: "x-user-id")
@@ -69,15 +69,5 @@ extension Request {
     }
     
     return request
-  }
-  
-  private var userAgent: String {
-    let osVersion = ProcessInfo.processInfo.operatingSystemVersion
-    let systemVersion = "\(osVersion.majorVersion).\(osVersion.minorVersion)"
-    
-    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
-    let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "unknown"
-    
-    return "RC Mobile; ios \(systemVersion); v\(appVersion) (\(buildNumber))"
   }
 }
