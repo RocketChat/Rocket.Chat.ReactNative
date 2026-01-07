@@ -112,7 +112,7 @@ export function removedRoom(): Action {
 	};
 }
 
-export function userTyping(rid: string, status = true, args: {}): IUserTyping {
+export function userTyping(rid: string, status = true, args?: { tmid?: string }): IUserTyping {
 	return {
 		type: ROOM.USER_TYPING,
 		rid,
