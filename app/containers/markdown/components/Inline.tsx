@@ -74,9 +74,9 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 						return <InlineCode key={block._id} value={block.value} />;
 					case 'INLINE_KATEX':
 						// return <InlineKaTeX value={block.value} />;
-						return <Text>{block.value}</Text>;
+						return <Text key={block._id}>{block.value}</Text>;
 					case 'TIMESTAMP':
-						return <Timestamp value={block.value} />;
+						return <Timestamp key={block._id} value={block.value} />;
 					default:
 						return null;
 				}
