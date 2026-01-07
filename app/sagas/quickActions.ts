@@ -1,4 +1,5 @@
 import { select, takeEvery, put, take } from 'redux-saga/effects';
+import { Alert } from 'react-native';
 import { type Action } from 'redux';
 
 import { QUICK_ACTIONS, APP } from '../actions/actionsTypes';
@@ -36,6 +37,8 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			yield put(serverInitAdd(server));
 			break;
 		}
+		default:
+			Alert.alert('Other Quick Action', `this is ${quickAction} action`);
 	}
 
 	yield put({ type: QUICK_ACTIONS.QUICK_ACTION_HANDLED });

@@ -38,7 +38,7 @@ export function registerQuickActions() {
 			console.log('return block');
 			return;
 		}
-		console.log('else block');
+		handleQuickAction(action.id);
 	});
 }
 

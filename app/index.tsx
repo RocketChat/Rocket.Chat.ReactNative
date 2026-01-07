@@ -123,8 +123,8 @@ export default class Root extends React.Component<{}, IState> {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
 				const quickAction = await getRecentQuickAction();
 				console.log(quickAction, 'inside the listerner=========================');
-				if (quickAction) {
-					store.dispatch(quickActionHandle({ type: 'quick-action', action: quickAction }));
+				if (parsedDeepLinkingURL?.type === 'quick-action') {
+					store.dispatch(quickActionHandle({ type: 'quick-action', action: parsedDeepLinkingURL.action }));
 					return;
 				}
 				if (parsedDeepLinkingURL) {
@@ -168,9 +168,14 @@ export default class Root extends React.Component<{}, IState> {
 		const deepLinking = await Linking.getInitialURL();
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
 		const quickAction = await getRecentQuickAction();
+		console.log(deepLinking, 'deeplinking========================');
 
 		if (quickAction) {
 			store.dispatch(quickActionHandle({ type: 'quick-action', action: quickAction }));
+			return;
+		}
+		if (parsedDeepLinkingURL?.type === 'quick-action') {
+			store.dispatch(quickActionHandle({ type: 'quick-action', action: parsedDeepLinkingURL.action }));
 			return;
 		}
 		if (parsedDeepLinkingURL) {
