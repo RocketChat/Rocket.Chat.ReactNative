@@ -39,12 +39,14 @@ interface IForwardRoom extends Action {
 	rid: string;
 }
 
+type IUserTypingArgs = {
+	tmid?: string;
+};
+
 interface IUserTyping extends Action {
 	rid: string;
 	status: boolean;
-	args?: {
-		tmid?: string;
-	};
+	args?: IUserTypingArgs;
 }
 
 export interface IRoomHistoryRequest extends Action {
@@ -112,7 +114,7 @@ export function removedRoom(): Action {
 	};
 }
 
-export function userTyping(rid: string, status = true, args?: { tmid?: string }): IUserTyping {
+export function userTyping(rid: string, status = true, args?: IUserTypingArgs): IUserTyping {
 	return {
 		type: ROOM.USER_TYPING,
 		rid,
