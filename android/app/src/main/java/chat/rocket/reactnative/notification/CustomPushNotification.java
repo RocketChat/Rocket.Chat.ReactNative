@@ -154,7 +154,7 @@ public class CustomPushNotification {
             return;
         }
 
-        // Handle regular (non-E2E) notifications
+        // Handle regular notifications
         showNotification(mBundle, loadedEjson, notId);
     }
 
