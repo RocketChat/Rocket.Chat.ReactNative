@@ -131,9 +131,7 @@ export default class RoomSubscription {
 			if (subscribedRoom !== _rid) {
 				return;
 			}
-			const [name, activities, args] = ddpMessage.fields.args;
-
-			if (args && args.tmid) return;
+			const [name, activities] = ddpMessage.fields.args;
 
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
