@@ -2,19 +2,12 @@ package chat.rocket.reactnative.notification;
 
 import android.util.Log;
 
-import com.facebook.react.bridge.Callback;
 import com.tencent.mmkv.MMKV;
 
 import java.math.BigInteger;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
-
-class RNCallback implements Callback {
-    public void invoke(Object... args) {
-
-    }
-}
 
 class Utils {
     static public String toHex(String arg) {

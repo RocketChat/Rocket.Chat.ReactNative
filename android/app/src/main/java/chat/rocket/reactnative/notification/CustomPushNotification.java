@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -49,7 +48,6 @@ public class CustomPushNotification {
     private static final boolean ENABLE_VERBOSE_LOGS = BuildConfig.DEBUG;
     
     // Shared state
-    public static volatile ReactApplicationContext reactApplicationContext;
     private static final Gson gson = new Gson();
     private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
     
@@ -61,7 +59,7 @@ public class CustomPushNotification {
     
     // Instance fields
     private final Context mContext;
-    private Bundle mBundle;
+    private volatile Bundle mBundle;
     private final NotificationManager notificationManager;
     
     public CustomPushNotification(Context context, Bundle bundle) {
@@ -73,23 +71,8 @@ public class CustomPushNotification {
         createNotificationChannel();
     }
 
-    /**
-     * Sets the React application context when React Native initializes.
-     * Called from MainApplication when React context is ready.
-     */
-    public static void setReactContext(ReactApplicationContext context) {
-        reactApplicationContext = context;
-    }
-
     public static void clearMessages(int notId) {
         notificationMessages.remove(Integer.toString(notId));
-    }
-    
-    /**
-     * Check if React Native is initialized
-     */
-    private boolean isReactInitialized() {
-        return reactApplicationContext != null;
     }
 
     public void onReceived() {
@@ -107,58 +90,10 @@ public class CustomPushNotification {
             return;
         }
         
-        // Check if React is ready - needed for MMKV access (avatars, encryption, message-id-only)
-        if (!isReactInitialized()) {
-            Log.w(TAG, "React not initialized yet, waiting before processing notification...");
-            
-            // Wait for React to initialize with timeout
-            new Thread(() -> {
-                int attempts = 0;
-                int maxAttempts = 50; // 5 seconds total (50 * 100ms)
-                
-                while (!isReactInitialized() && attempts < maxAttempts) {
-                    try {
-                        Thread.sleep(100); // Wait 100ms
-                        attempts++;
-                        
-                        if (attempts % 10 == 0 && ENABLE_VERBOSE_LOGS) {
-                            Log.d(TAG, "Still waiting for React initialization... (" + (attempts * 100) + "ms elapsed)");
-                        }
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, "Wait interrupted", e);
-                        Thread.currentThread().interrupt();
-                        return;
-                    }
-                }
-                
-                if (isReactInitialized()) {
-                    Log.i(TAG, "React initialized after " + (attempts * 100) + "ms, proceeding with notification");
-                    try {
-                        handleNotification();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Failed to process notification after React initialization", e);
-                    }
-                } else {
-                    Log.e(TAG, "Timeout waiting for React initialization after " + (maxAttempts * 100) + "ms, processing without MMKV");
-                    try {
-                        handleNotification();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Failed to process notification without React context", e);
-                    }
-                }
-            }).start();
-            
-            return; // Exit early, notification will be processed in the thread
-        }
-        
-        if (ENABLE_VERBOSE_LOGS) {
-            Log.d(TAG, "React already initialized, proceeding with notification");
-        }
-        
         try {
             handleNotification();
         } catch (Exception e) {
-            Log.e(TAG, "Failed to process notification on main thread", e);
+            Log.e(TAG, "Failed to process notification", e);
         }
     }
     
@@ -216,7 +151,7 @@ public class CustomPushNotification {
         // Handle E2E encrypted notifications
         if (isE2ENotification(loadedEjson)) {
             handleE2ENotification(mBundle, loadedEjson, notId);
-            return; // E2E processor will handle showing the notification
+            return;
         }
 
         // Handle regular (non-E2E) notifications
@@ -238,11 +173,18 @@ public class CustomPushNotification {
         
         if (decrypted != null) {
             bundle.putString("message", decrypted);
-            mBundle = bundle;
-            Ejson updatedEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
-            showNotification(bundle, updatedEjson, notId);
+            synchronized(this) {
+                mBundle = bundle;
+            }
+            showNotification(bundle, ejson, notId);
         } else {
-            Log.w(TAG, "E2E decryption failed for notification");
+            Log.w(TAG, "E2E decryption failed for notification, showing fallback notification");
+            // Show fallback notification so user knows a message arrived
+            bundle.putString("message", "Encrypted message");
+            synchronized(this) {
+                mBundle = bundle;
+            }
+            showNotification(bundle, ejson, notId);
         }
     }
 
@@ -269,6 +211,10 @@ public class CustomPushNotification {
             Log.d(TAG, "[showNotification] avatarUri=" + (avatarUri != null ? "[present]" : "[null]"));
         }
         bundle.putString("avatarUri", avatarUri);
+
+        synchronized(this) {
+            mBundle = bundle;
+        }
 
         // Handle special notification types
         if (ejson != null && "videoconf".equals(ejson.notificationType)) {
