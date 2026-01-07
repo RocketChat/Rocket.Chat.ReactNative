@@ -132,7 +132,6 @@ export default class RoomSubscription {
 				return;
 			}
 			const [name, activities] = ddpMessage.fields.args;
-
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
 				if (!!activities && activities.includes('user-typing')) {
