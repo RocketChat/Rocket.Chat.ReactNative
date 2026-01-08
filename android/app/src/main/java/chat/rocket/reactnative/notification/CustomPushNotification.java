@@ -469,7 +469,7 @@ public class CustomPushNotification {
 
                     String displaySenderName = (ejson != null && ejson.senderName != null && !ejson.senderName.isEmpty())
                             ? ejson.senderName
-                            : (ejson != null && ejson.sender != null ? ejson.sender.name : "Unknown");
+                            : (ejson != null && ejson.sender != null ? ejson.sender.username : title);
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                         messageStyle.addMessage(m, timestamp, displaySenderName);
