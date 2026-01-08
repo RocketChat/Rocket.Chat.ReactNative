@@ -17,9 +17,9 @@ jobs:
       - name: Generate changelog
         shell: bash
         run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)
+          LATEST_RELEASE_TAG=$(gh release view --json tagName -q .tagName)
 
-          git log "$LAST_TAG"..HEAD --pretty=format:"- %s" > changelog.txt
+          git log "$LATEST_RELEASE_TAG"..HEAD --pretty=format:"- %s" > changelog.txt
 
           if [ ! -s changelog.txt ]; then
             echo "- Improvements and bug fixes" > changelog.txt
