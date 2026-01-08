@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [upload-hold]
     if: ${{ inputs.type == 'official' && inputs.trigger == 'pr' }}
-   steps:
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
       
