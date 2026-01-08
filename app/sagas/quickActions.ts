@@ -6,6 +6,8 @@ import { QUICK_ACTIONS, APP } from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
+import UserPreferences from '../lib/methods/userPreferences';
+import { CURRENT_SERVER } from '../lib/constants/keys';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -31,10 +33,11 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 
 	switch (quickAction) {
 		case 'add-server': {
-			const server = yield select(state => state?.server?.server);
+			const server = UserPreferences.getString(CURRENT_SERVER);
+
 			console.log('it reached here==========');
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-			yield put(serverInitAdd(server));
+			yield put(serverInitAdd(server || ''));
 			break;
 		}
 		default:
