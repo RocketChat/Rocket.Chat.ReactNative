@@ -10,10 +10,10 @@
 		059517F8FF85756835127879 /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BABABB66676C60622674D15E /* Pods_defaults_Rocket_Chat.framework */; };
 		0C6E2DE448364EA896869ADF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B37C79D9BD0742CE936B6982 /* libc++.tbd */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		167D56822F104B7D00880439 /* QuickActionsConnector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 167D56812F104B7D00880439 /* QuickActionsConnector.mm */; };
+		167D56832F104B7D00880439 /* QuickActionsConnector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 167D56812F104B7D00880439 /* QuickActionsConnector.mm */; };
 		16A6D54E2F0D95FC000FCD09 /* QuickActionsStore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A6D54D2F0D95FC000FCD09 /* QuickActionsStore.mm */; };
 		16A6D54F2F0D95FC000FCD09 /* QuickActionsStore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A6D54D2F0D95FC000FCD09 /* QuickActionsStore.mm */; };
-		16A6D5522F0D969B000FCD09 /* QuickActionsConnector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A6D5512F0D969B000FCD09 /* QuickActionsConnector.mm */; };
-		16A6D5532F0D969B000FCD09 /* QuickActionsConnector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A6D5512F0D969B000FCD09 /* QuickActionsConnector.mm */; };
 		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
 		1E01C8212511301400FEF824 /* PushResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8202511301400FEF824 /* PushResponse.swift */; };
 		1E01C8252511303100FEF824 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8242511303100FEF824 /* Notification.swift */; };
@@ -474,10 +474,10 @@
 		13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
+		167D56812F104B7D00880439 /* QuickActionsConnector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QuickActionsConnector.mm; sourceTree = "<group>"; };
 		16A6D54C2F0D95E3000FCD09 /* QuickActionsStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickActionsStore.h; sourceTree = "<group>"; };
 		16A6D54D2F0D95FC000FCD09 /* QuickActionsStore.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QuickActionsStore.mm; sourceTree = "<group>"; };
 		16A6D5502F0D9674000FCD09 /* QuickActionsConnector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickActionsConnector.h; sourceTree = "<group>"; };
-		16A6D5512F0D969B000FCD09 /* QuickActionsConnector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = QuickActionsConnector.mm; path = "#import <React/RCTBridgeModule.h>  @interface QuickActionsConnector : NSObject <RCTBridgeModule> @end #import <React/QuickActionsConnector.mm"; sourceTree = "<group>"; };
 		194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-NotificationService/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		1E01C81B2511208400FEF824 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		1E01C8202511301400FEF824 /* PushResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushResponse.swift; sourceTree = "<group>"; };
@@ -739,7 +739,6 @@
 				16A6D54C2F0D95E3000FCD09 /* QuickActionsStore.h */,
 				16A6D54D2F0D95FC000FCD09 /* QuickActionsStore.mm */,
 				16A6D5502F0D9674000FCD09 /* QuickActionsConnector.h */,
-				16A6D5512F0D969B000FCD09 /* QuickActionsConnector.mm */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
 				A48B46D82D3FFBD200945489 /* A11yFlowModule.m */,
 				7A8B30742BCD9D3F00146A40 /* SSLPinning.h */,
@@ -758,6 +757,7 @@
 				65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */,
 				66C270192EBBCB570062725F /* MMKVKeyManager.h */,
 				66C2701A2EBBCB570062725F /* MMKVKeyManager.mm */,
+				167D56812F104B7D00880439 /* QuickActionsConnector.mm */,
 			);
 			name = RocketChatRN;
 			sourceTree = "<group>";
@@ -2060,13 +2060,13 @@
 				1ED038A52B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
 				1E76CBC325152A460067298C /* String+Extensions.swift in Sources */,
 				1ED038BA2B50A1B800C007D4 /* WatchConnection.swift in Sources */,
+				167D56822F104B7D00880439 /* QuickActionsConnector.mm in Sources */,
 				7AACF8A82C94AB8B0082844E /* EncryptedContent.swift in Sources */,
 				1ED038A12B508FE700C007D4 /* FileManager+Extensions.swift in Sources */,
 				1E76CBCA25152C220067298C /* Notification.swift in Sources */,
 				1ED038C12B50A1E400C007D4 /* DBUser.swift in Sources */,
 				1E76CBD525152C7F0067298C /* API.swift in Sources */,
 				1E76CBD625152C820067298C /* Response.swift in Sources */,
-				16A6D5532F0D969B000FCD09 /* QuickActionsConnector.mm in Sources */,
 				1ED038BE2B50A1D400C007D4 /* DBServer.swift in Sources */,
 				1E068D0124FD2E0500A0FFC1 /* AppGroup.m in Sources */,
 				1ED038C42B50A1F500C007D4 /* WatchMessage.swift in Sources */,
@@ -2337,13 +2337,13 @@
 				1ED038A72B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
 				7AAB3E26257E6A6E00707CF6 /* String+Extensions.swift in Sources */,
 				1ED038BB2B50A1B800C007D4 /* WatchConnection.swift in Sources */,
+				167D56832F104B7D00880439 /* QuickActionsConnector.mm in Sources */,
 				7AACF8AA2C94AB8B0082844E /* EncryptedContent.swift in Sources */,
 				1ED038A32B508FE700C007D4 /* FileManager+Extensions.swift in Sources */,
 				7AAB3E27257E6A6E00707CF6 /* Notification.swift in Sources */,
 				1ED038C22B50A1E400C007D4 /* DBUser.swift in Sources */,
 				7AAB3E28257E6A6E00707CF6 /* API.swift in Sources */,
 				7AAB3E29257E6A6E00707CF6 /* Response.swift in Sources */,
-				16A6D5522F0D969B000FCD09 /* QuickActionsConnector.mm in Sources */,
 				1ED038BF2B50A1D400C007D4 /* DBServer.swift in Sources */,
 				7AAB3E2A257E6A6E00707CF6 /* AppGroup.m in Sources */,
 				1ED038C52B50A1F500C007D4 /* WatchMessage.swift in Sources */,
@@ -3191,10 +3191,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -3258,10 +3255,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
