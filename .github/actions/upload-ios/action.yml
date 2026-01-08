@@ -36,10 +36,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
     - name: Download iOS build
       uses: actions/download-artifact@v4
       if: ${{ inputs.type == 'experimental' }}
@@ -113,22 +109,10 @@ runs:
         yarn pod-install
       shell: bash
 
-    - name: Generate shared release changelog
-      run: |
-        LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)
-
-        git log "$LAST_TAG"..HEAD --pretty=format:"- %s" > changelog.txt
-
-        if [ ! -s changelog.txt ]; then
-          echo "- Improvements and bug fixes" > changelog.txt
-        fi
-      shell: bash
-
-    - name: Save changelog
-      uses: actions/upload-artifact@v4
+    - uses: actions/download-artifact@v4
       with:
-        name: iOS Changelog
-        path: changelog.txt
+        name: release-changelog
+        path: .
 
     - name: Fastlane Submit to TestFlight
       working-directory: ios

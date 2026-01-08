@@ -1,0 +1,32 @@
+name: Generate Release Changelog
+
+on:
+  workflow_call:
+
+jobs:
+  generate-changelog:
+    name: Generate changelog
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        shell: bash
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)
+
+          git log "$LAST_TAG"..HEAD --pretty=format:"- %s" > changelog.txt
+
+          if [ ! -s changelog.txt ]; then
+            echo "- Improvements and bug fixes" > changelog.txt
+          fi
+
+      - name: Upload changelog artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-changelog
+          path: changelog.txt
