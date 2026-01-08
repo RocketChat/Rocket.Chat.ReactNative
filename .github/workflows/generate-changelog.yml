@@ -17,15 +17,13 @@ jobs:
       - name: Generate changelog
         shell: bash
         run: |
-          LATEST_RELEASE_TAG=$(gh release view --json tagName -q .tagName)
+          LATEST_RELEASE_TAG=$(git tag --sort=creatordate | head -n 1)
 
           git log "$LATEST_RELEASE_TAG"..HEAD --pretty=format:"- %s" > changelog.txt
 
           if [ ! -s changelog.txt ]; then
             echo "- Improvements and bug fixes" > changelog.txt
           fi
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name: Upload changelog artifact
         uses: actions/upload-artifact@v4
