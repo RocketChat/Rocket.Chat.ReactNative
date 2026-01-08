@@ -136,26 +136,27 @@ public class CustomPushNotification {
     }
     
     private void processNotification() {
-        Ejson loadedEjson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
-        String notId = mBundle.getString("notId", "1");
+        final Bundle bundle = mBundle;
+        Ejson loadedEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        String notId = bundle.getString("notId", "1");
 
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[processNotification] notId=" + notId);
-            Log.d(TAG, "[processNotification] bundle.notificationLoaded=" + mBundle.getBoolean("notificationLoaded", false));
-            Log.d(TAG, "[processNotification] bundle.title=" + (mBundle.getString("title") != null ? "[present]" : "[null]"));
-            Log.d(TAG, "[processNotification] bundle.message length=" + (mBundle.getString("message") != null ? mBundle.getString("message").length() : 0));
+            Log.d(TAG, "[processNotification] bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
+            Log.d(TAG, "[processNotification] bundle.title=" + (bundle.getString("title") != null ? "[present]" : "[null]"));
+            Log.d(TAG, "[processNotification] bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0));
             Log.d(TAG, "[processNotification] loadedEjson.notificationType=" + (loadedEjson != null ? loadedEjson.notificationType : "null"));
             Log.d(TAG, "[processNotification] loadedEjson.sender=" + (loadedEjson != null && loadedEjson.sender != null ? loadedEjson.sender.username : "null"));
         }
 
         // Handle E2E encrypted notifications
         if (isE2ENotification(loadedEjson)) {
-            handleE2ENotification(mBundle, loadedEjson, notId);
+            handleE2ENotification(bundle, loadedEjson, notId);
             return;
         }
 
         // Handle regular notifications
-        showNotification(mBundle, loadedEjson, notId);
+        showNotification(bundle, loadedEjson, notId);
     }
 
     /**
@@ -169,6 +170,16 @@ public class CustomPushNotification {
      * Handles E2E encrypted notifications
      */
     private void handleE2ENotification(Bundle bundle, Ejson ejson, String notId) {
+        if (Encryption.shared == null) {
+            Log.e(TAG, "Encryption singleton is null, cannot decrypt E2E notification");
+            bundle.putString("message", "Encrypted message");
+            synchronized(this) {
+                mBundle = bundle;
+            }
+            showNotification(bundle, ejson, notId);
+            return;
+        }
+        
         String decrypted = Encryption.shared.decryptMessage(ejson, mContext);
         
         if (decrypted != null) {
@@ -284,11 +295,12 @@ public class CustomPushNotification {
     }
 
     private Notification.Builder buildNotification(int notificationId) {
+        final Bundle bundle = mBundle;
         String notId = Integer.toString(notificationId);
-        String title = mBundle.getString("title");
-        String message = mBundle.getString("message");
-        Boolean notificationLoaded = mBundle.getBoolean("notificationLoaded", false);
-        Ejson ejson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
+        String title = bundle.getString("title");
+        String message = bundle.getString("message");
+        Boolean notificationLoaded = bundle.getBoolean("notificationLoaded", false);
+        Ejson ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[buildNotification] notId=" + notId);
@@ -300,7 +312,7 @@ public class CustomPushNotification {
         // Create pending intent to open the app
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtras(mBundle);
+        intent.putExtras(bundle);
         
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -325,14 +337,14 @@ public class CustomPushNotification {
                 .setAutoCancel(true);
 
         notificationColor(notification);
-        notificationIcons(notification, mBundle);
+        notificationIcons(notification, bundle);
         notificationDismiss(notification, notificationId);
 
         // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
         if (ejson == null || ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
             Log.i(TAG, "[buildNotification] ✅ Rendering FULL notification style");
-            notificationStyle(notification, notificationId, mBundle);
-            notificationReply(notification, notificationId, mBundle);
+            notificationStyle(notification, notificationId, bundle);
+            notificationReply(notification, notificationId, bundle);
         } else {
             Log.w(TAG, "[buildNotification] ⚠️ Rendering FALLBACK notification");
             // Cancel previous fallback notifications from same server
