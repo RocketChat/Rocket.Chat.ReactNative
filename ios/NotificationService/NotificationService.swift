@@ -84,7 +84,7 @@ class NotificationService: UNNotificationServiceExtension {
         
         if let roomType = payload.type {
             if roomType == .group || roomType == .channel {
-                bestAttemptContent.title = payload.name ?? senderName
+                bestAttemptContent.title = payload.fname ?? payload.name ?? senderName
                 // Strip sender prefix if present
                 if let body = bestAttemptContent.body as? String {
                     let prefix = "\(senderUsername): "
@@ -100,6 +100,18 @@ class NotificationService: UNNotificationServiceExtension {
                 }
             } else if roomType == .livechat {
                 bestAttemptContent.title = payload.sender?.name ?? senderName
+            }
+        }
+        
+        if let tmid = payload.tmid {
+            if let threadName = Database(server: payload.host).readThreadName(for: tmid) {
+                bestAttemptContent.title = threadName
+            }
+        } else if let prid = payload.prid {
+            if payload.fname == nil {
+                if let roomFname = Database(server: payload.host).readRoomFname(for: payload.rid ?? "") {
+                    bestAttemptContent.title = roomFname
+                }
             }
         }
         
@@ -302,7 +314,7 @@ class NotificationService: UNNotificationServiceExtension {
         fetchAvatarDataFromPath(avatarPath: "/avatar/\(encoded)", server: server, credentials: credentials, completion: completion)
     }
 
-    /// Fetches avatar image data - sender's avatar for DMs, room avatar for groups/channels
+    /// Fetches avatar image data - sender's avatar for DMs and threads, room avatar for groups/channels
     func fetchAvatarData(from payload: Payload, completion: @escaping (Data?) -> Void) {
         let server = payload.host.removeTrailingSlash()
         guard let credentials = Storage().getCredentials(server: server) else {
@@ -311,7 +323,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         let avatarPath: String
-        if payload.type == .direct {
+        if payload.type == .direct || payload.tmid != nil {
             guard let username = payload.sender?.username,
                   let encoded = username.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
                 completion(nil)

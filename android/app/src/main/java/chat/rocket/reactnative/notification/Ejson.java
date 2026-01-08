@@ -36,10 +36,12 @@ public class Ejson {
     String messageType;
     String senderName;
     String name; // Room name for groups/channels
+    String fname; // Room friendly name for groups/channels
     String msg;
     Integer status; // For video conf: 0=incoming, 4=cancelled
 
     String tmid;
+    String prid;
     Content content;
 
     private MMKV getMMKV() {
@@ -78,9 +80,9 @@ public class Ejson {
     public String getAvatarUri() {
         String avatarPath;
         
-        // For DMs, show sender's avatar; for groups/channels, show room avatar
-        if ("d".equals(type)) {
-            // Direct message: use sender's avatar
+        // For DMs and threads, show sender's avatar; for groups/channels, show room avatar
+        if ("d".equals(type) || tmid != null) {
+            // Direct message or thread: use sender's avatar
             if (sender == null || sender.username == null || sender.username.isEmpty()) {
                 Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
                 return null;

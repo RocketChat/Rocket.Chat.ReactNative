@@ -294,7 +294,13 @@ public class CustomPushNotification {
         if (ejson != null && ejson.type != null) {
             if ("p".equals(ejson.type) || "c".equals(ejson.type)) {
                 // For groups/channels, use room name if available, otherwise fall back to title
-                notificationTitle = (ejson.name != null && !ejson.name.isEmpty()) ? ejson.name : title;
+                if (ejson.fname != null && !ejson.fname.isEmpty()) {
+                    notificationTitle = ejson.fname;
+                } else if (ejson.name != null && !ejson.name.isEmpty()) {
+                    notificationTitle = ejson.name;
+                } else {
+                    notificationTitle = title;
+                }
             } else if ("d".equals(ejson.type)) {
                 // For direct messages, use title (sender name from server)
                 notificationTitle = title;
@@ -468,7 +474,13 @@ public class CustomPushNotification {
             if (bundleEjson != null && bundleEjson.type != null) {
                 if ("p".equals(bundleEjson.type) || "c".equals(bundleEjson.type)) {
                     // For groups/channels, use room name if available, otherwise fall back to title
-                    conversationTitle = (bundleEjson.name != null && !bundleEjson.name.isEmpty()) ? bundleEjson.name : title;
+                    if (bundleEjson.fname != null && !bundleEjson.fname.isEmpty()) {
+                        conversationTitle = bundleEjson.fname;
+                    } else if (bundleEjson.name != null && !bundleEjson.name.isEmpty()) {
+                        conversationTitle = bundleEjson.name;
+                    } else {
+                        conversationTitle = title;
+                    }
                 } else if ("d".equals(bundleEjson.type)) {
                     // For direct messages, use title (sender name from server)
                     conversationTitle = title;

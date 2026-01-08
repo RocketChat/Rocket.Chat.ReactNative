@@ -22,10 +22,12 @@ struct Payload: Codable {
   let messageId: String?
   let notificationType: NotificationType?
   let name: String?
+  let fname: String?
   let messageType: MessageType?
   let msg: String?
   let senderName: String?
   let tmid: String?
+  let prid: String?
   let content: EncryptedContent?
   
   // Video conference fields
