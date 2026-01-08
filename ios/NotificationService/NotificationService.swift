@@ -48,7 +48,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         // 1. Setup Basic Content
-        let callerName = payload.caller?.name ?? "Unknown"
+        let callerName = payload.senderName ?? payload.caller?.name ?? "Unknown"
         bestAttemptContent.title = NSLocalizedString("Video Call", comment: "")
         bestAttemptContent.body = String(format: NSLocalizedString("Incoming call from %@", comment: ""), callerName)
         bestAttemptContent.categoryIdentifier = "VIDEOCONF"
@@ -76,7 +76,7 @@ class NotificationService: UNNotificationServiceExtension {
         guard let bestAttemptContent = bestAttemptContent else { return }
 
         // 1. Setup Basic Content (Title/Body)
-        let senderName = payload.sender?.name ?? payload.senderName ?? "Unknown"
+        let senderName = payload.senderName ?? payload.sender?.name ?? "Unknown"
         let senderUsername = payload.sender?.username ?? payload.senderName ?? ""
         
         if bestAttemptContent.title.isEmpty {

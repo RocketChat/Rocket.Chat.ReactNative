@@ -202,8 +202,12 @@ public class CustomPushNotification {
         boolean hasSender = ejson != null && ejson.sender != null;
         String title = bundle.getString("title");
 
+        String displaySenderName = (ejson != null && ejson.senderName != null && !ejson.senderName.isEmpty())
+                ? ejson.senderName
+                : (hasSender ? ejson.sender.username : title);
+
         bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", hasSender ? ejson.sender.username : title);
+        bundle.putString("username", displaySenderName);
         bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         
         String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
@@ -463,15 +467,17 @@ public class CustomPushNotification {
                     Ejson ejson = safeFromJson(data.getString("ejson", "{}"), Ejson.class);
                     String m = extractMessage(message, ejson);
 
+                    String displaySenderName = (ejson != null && ejson.senderName != null && !ejson.senderName.isEmpty())
+                            ? ejson.senderName
+                            : (ejson != null && ejson.sender != null ? ejson.sender.name : "Unknown");
+
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                        String senderName = ejson != null ? ejson.senderName : "Unknown";
-                        messageStyle.addMessage(m, timestamp, senderName);
+                        messageStyle.addMessage(m, timestamp, displaySenderName);
                     } else {
                         Bitmap avatar = getAvatar(avatarUri);
-                        String senderName = ejson != null ? ejson.senderName : "Unknown";
                         Person.Builder senderBuilder = new Person.Builder()
                                 .setKey(senderId)
-                                .setName(senderName);
+                                .setName(displaySenderName);
 
                         if (avatar != null) {
                             senderBuilder.setIcon(Icon.createWithBitmap(avatar));
