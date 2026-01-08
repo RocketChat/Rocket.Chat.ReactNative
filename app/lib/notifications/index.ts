@@ -1,4 +1,5 @@
 import EJSON from 'ejson';
+import { Platform } from 'react-native';
 
 import { appInit } from '../../actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
@@ -28,7 +29,7 @@ export const onNotification = (push: INotification): void => {
 				);
 				return;
 			} catch (e) {
-				console.warn('Failed to parse video conf notification:', e);
+				console.warn('[notifications/index.ts] Failed to parse video conf notification:', e);
 			}
 		}
 	}
@@ -71,8 +72,10 @@ export const onNotification = (push: INotification): void => {
 			store.dispatch(deepLinkingOpen(params));
 			return;
 		} catch (e) {
-			console.warn(e);
+			console.warn('[notifications/index.ts] Failed to parse ejson:', e);
 		}
+	} else {
+		console.warn('[notifications/index.ts] No ejson in payload, dispatching appInit');
 	}
 	store.dispatch(appInit());
 };
@@ -88,4 +91,45 @@ export const removeNotificationsAndBadge = async (): Promise<void> => {
 export const initializePushNotifications = async (): Promise<INotification | { configured: boolean } | null> => {
 	await setNotificationsBadgeCount();
 	return pushNotificationConfigure(onNotification);
+};
+
+/**
+ * Check for pending notification from native module (Android - when app comes to foreground)
+ * This handles the case when app is in background and user taps a notification.
+ */
+export const checkPendingNotification = async (): Promise<void> => {
+	if (Platform.OS === 'android') {
+		try {
+			const NativePushNotificationModule = require('../native/NativePushNotificationAndroid').default;
+			if (NativePushNotificationModule) {
+				const pendingNotification = await NativePushNotificationModule.getPendingNotification();
+				if (pendingNotification) {
+					try {
+						const notificationData = JSON.parse(pendingNotification);
+						const notification: INotification = {
+							payload: {
+								message: notificationData.message || '',
+								style: notificationData.style || '',
+								ejson: notificationData.ejson || '',
+								collapse_key: notificationData.collapse_key || '',
+								notId: notificationData.notId || '',
+								msgcnt: notificationData.msgcnt || '',
+								title: notificationData.title || '',
+								from: notificationData.from || '',
+								image: notificationData.image || '',
+								soundname: notificationData.soundname || '',
+								action: notificationData.action
+							},
+							identifier: notificationData.notId || ''
+						};
+						onNotification(notification);
+					} catch (e) {
+						console.warn('[notifications/index.ts] Failed to parse pending notification:', e);
+					}
+				}
+			}
+		} catch (e) {
+			console.warn('[notifications/index.ts] Error checking pending notification:', e);
+		}
+	}
 };

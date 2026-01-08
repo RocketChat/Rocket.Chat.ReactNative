@@ -14,6 +14,8 @@ import chat.rocket.reactnative.notification.VideoConfModule
 import chat.rocket.reactnative.notification.VideoConfNotification
 import com.google.gson.GsonBuilder
 
+import chat.rocket.reactnative.notification.NotificationIntentHandler
+ 
 class MainActivity : ReactActivity() {
 
   /**
@@ -41,6 +43,9 @@ class MainActivity : ReactActivity() {
     intent?.let {
       handleVideoConfIntent(it)
     }
+    
+    // Handle notification intents
+    intent?.let { NotificationIntentHandler.handleIntent(this, it) }
   }
 
   public override fun onNewIntent(intent: Intent) {
@@ -90,6 +95,10 @@ class MainActivity : ReactActivity() {
       // Clear the video conf flag to prevent re-processing
       intent.removeExtra("videoConfAction")
     }
+    setIntent(intent)
+    
+    // Handle notification intents when activity is already running
+    NotificationIntentHandler.handleIntent(this, intent)
   }
 
   private fun embedQuickActionIntoLinking(intent: Intent) {
