@@ -14,22 +14,21 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
-        guard let bestAttemptContent = bestAttemptContent,
-              let ejsonString = bestAttemptContent.userInfo["ejson"] as? String,
-              let ejson = ejsonString.data(using: .utf8),
-              let payload = try? JSONDecoder().decode(Payload.self, from: ejson) else {
-            contentHandler(request.content)
-            return
-        }
-        
-        rocketchat = RocketChat(server: payload.host.removeTrailingSlash())
-        
-        if payload.notificationType == .videoconf {
-            processVideoConf(payload: payload)
-        } else if payload.notificationType == .messageIdOnly {
-            fetchMessageContent(payload: payload)
+        if let bestAttemptContent = bestAttemptContent,
+           let ejsonString = bestAttemptContent.userInfo["ejson"] as? String,
+           let ejson = ejsonString.data(using: .utf8),
+           let payload = try? JSONDecoder().decode(Payload.self, from: ejson) {
+            rocketchat = RocketChat(server: payload.host.removeTrailingSlash())
+            
+            if payload.notificationType == .videoconf {
+                processVideoConf(payload: payload)
+            } else if payload.notificationType == .messageIdOnly {
+                fetchMessageContent(payload: payload)
+            } else {
+                processPayload(payload: payload)
+            }
         } else {
-            processPayload(payload: payload)
+            contentHandler(request.content)
         }
     }
     
@@ -80,11 +79,12 @@ class NotificationService: UNNotificationServiceExtension {
         let senderName = payload.sender?.name ?? payload.senderName ?? "Unknown"
         let senderUsername = payload.sender?.username ?? payload.senderName ?? ""
         
-        bestAttemptContent.title = senderName
+        if bestAttemptContent.title.isEmpty {
+            bestAttemptContent.title = senderName
+        }
         
         if let roomType = payload.type {
             if roomType == .group || roomType == .channel {
-                bestAttemptContent.title = payload.fname ?? payload.name ?? senderName
                 // Strip sender prefix if present
                 if let body = bestAttemptContent.body as? String {
                     let prefix = "\(senderUsername): "
@@ -97,20 +97,6 @@ class NotificationService: UNNotificationServiceExtension {
                             bestAttemptContent.body = String(body.dropFirst(senderNamePrefix.count))
                         }
                     }
-                }
-            } else if roomType == .livechat {
-                bestAttemptContent.title = payload.sender?.name ?? senderName
-            }
-        }
-        
-        if let tmid = payload.tmid {
-            if let threadName = Database(server: payload.host).readThreadName(for: tmid) {
-                bestAttemptContent.title = threadName
-            }
-        } else if let prid = payload.prid {
-            if payload.fname == nil {
-                if let roomFname = Database(server: payload.host).readRoomFname(for: payload.rid ?? "") {
-                    bestAttemptContent.title = roomFname
                 }
             }
         }
@@ -134,7 +120,7 @@ class NotificationService: UNNotificationServiceExtension {
                 avatarData: avatarData,
                 conversationId: payload.rid ?? "",
                 isGroup: isGroup,
-                groupName: payload.name
+                groupName: bestAttemptContent.title
             )
             
             self.contentHandler?(self.finalContent ?? bestAttemptContent)
@@ -226,7 +212,8 @@ class NotificationService: UNNotificationServiceExtension {
             if let messageId = payload.messageId {
                 self.rocketchat?.getPushWithId(messageId) { notification in
                     if let notification = notification {
-                        // Set body first, processPayload will strip sender prefix for groups/channels
+                        // Set title and body first, processPayload will strip sender prefix for groups/channels
+                        self.bestAttemptContent?.title = notification.title
                         self.bestAttemptContent?.body = notification.text
                         
                         // Update ejson with full payload from server for correct navigation
@@ -314,7 +301,7 @@ class NotificationService: UNNotificationServiceExtension {
         fetchAvatarDataFromPath(avatarPath: "/avatar/\(encoded)", server: server, credentials: credentials, completion: completion)
     }
 
-    /// Fetches avatar image data - sender's avatar for DMs and threads, room avatar for groups/channels
+    /// Fetches avatar image data - sender's avatar for DMs, room avatar for groups/channels
     func fetchAvatarData(from payload: Payload, completion: @escaping (Data?) -> Void) {
         let server = payload.host.removeTrailingSlash()
         guard let credentials = Storage().getCredentials(server: server) else {
@@ -323,7 +310,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         let avatarPath: String
-        if payload.type == .direct || payload.tmid != nil {
+        if payload.type == .direct {
             guard let username = payload.sender?.username,
                   let encoded = username.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
                 completion(nil)

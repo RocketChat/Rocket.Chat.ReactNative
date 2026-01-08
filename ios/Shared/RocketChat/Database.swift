@@ -123,20 +123,4 @@ class Database {
         }
         return false
     }
-    
-    func readThreadName(for tmid: String) -> String? {
-        let query = "SELECT msg FROM threads WHERE id = ? LIMIT 1"
-        if let results = self.query(query, args: [tmid]), let firstResult = results.first {
-            return firstResult["msg"] as? String
-        }
-        return nil
-    }
-    
-    func readRoomFname(for rid: String) -> String? {
-        let query = "SELECT fname FROM subscriptions WHERE rid = ? LIMIT 1"
-        if let results = self.query(query, args: [rid]), let firstResult = results.first {
-            return firstResult["fname"] as? String
-        }
-        return nil
-    }
 }
