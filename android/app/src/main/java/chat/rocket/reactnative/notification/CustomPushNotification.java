@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -49,7 +48,6 @@ public class CustomPushNotification {
     private static final boolean ENABLE_VERBOSE_LOGS = BuildConfig.DEBUG;
     
     // Shared state
-    public static volatile ReactApplicationContext reactApplicationContext;
     private static final Gson gson = new Gson();
     private static final Map<String, List<Bundle>> notificationMessages = new ConcurrentHashMap<>();
     
@@ -61,7 +59,7 @@ public class CustomPushNotification {
     
     // Instance fields
     private final Context mContext;
-    private Bundle mBundle;
+    private volatile Bundle mBundle;
     private final NotificationManager notificationManager;
     
     public CustomPushNotification(Context context, Bundle bundle) {
@@ -73,23 +71,8 @@ public class CustomPushNotification {
         createNotificationChannel();
     }
 
-    /**
-     * Sets the React application context when React Native initializes.
-     * Called from MainApplication when React context is ready.
-     */
-    public static void setReactContext(ReactApplicationContext context) {
-        reactApplicationContext = context;
-    }
-
     public static void clearMessages(int notId) {
         notificationMessages.remove(Integer.toString(notId));
-    }
-    
-    /**
-     * Check if React Native is initialized
-     */
-    private boolean isReactInitialized() {
-        return reactApplicationContext != null;
     }
 
     public void onReceived() {
@@ -107,58 +90,10 @@ public class CustomPushNotification {
             return;
         }
         
-        // Check if React is ready - needed for MMKV access (avatars, encryption, message-id-only)
-        if (!isReactInitialized()) {
-            Log.w(TAG, "React not initialized yet, waiting before processing notification...");
-            
-            // Wait for React to initialize with timeout
-            new Thread(() -> {
-                int attempts = 0;
-                int maxAttempts = 50; // 5 seconds total (50 * 100ms)
-                
-                while (!isReactInitialized() && attempts < maxAttempts) {
-                    try {
-                        Thread.sleep(100); // Wait 100ms
-                        attempts++;
-                        
-                        if (attempts % 10 == 0 && ENABLE_VERBOSE_LOGS) {
-                            Log.d(TAG, "Still waiting for React initialization... (" + (attempts * 100) + "ms elapsed)");
-                        }
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, "Wait interrupted", e);
-                        Thread.currentThread().interrupt();
-                        return;
-                    }
-                }
-                
-                if (isReactInitialized()) {
-                    Log.i(TAG, "React initialized after " + (attempts * 100) + "ms, proceeding with notification");
-                    try {
-                        handleNotification();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Failed to process notification after React initialization", e);
-                    }
-                } else {
-                    Log.e(TAG, "Timeout waiting for React initialization after " + (maxAttempts * 100) + "ms, processing without MMKV");
-                    try {
-                        handleNotification();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Failed to process notification without React context", e);
-                    }
-                }
-            }).start();
-            
-            return; // Exit early, notification will be processed in the thread
-        }
-        
-        if (ENABLE_VERBOSE_LOGS) {
-            Log.d(TAG, "React already initialized, proceeding with notification");
-        }
-        
         try {
             handleNotification();
         } catch (Exception e) {
-            Log.e(TAG, "Failed to process notification on main thread", e);
+            Log.e(TAG, "Failed to process notification", e);
         }
     }
     
@@ -201,26 +136,27 @@ public class CustomPushNotification {
     }
     
     private void processNotification() {
-        Ejson loadedEjson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
-        String notId = mBundle.getString("notId", "1");
+        final Bundle bundle = mBundle;
+        Ejson loadedEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        String notId = bundle.getString("notId", "1");
 
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[processNotification] notId=" + notId);
-            Log.d(TAG, "[processNotification] bundle.notificationLoaded=" + mBundle.getBoolean("notificationLoaded", false));
-            Log.d(TAG, "[processNotification] bundle.title=" + (mBundle.getString("title") != null ? "[present]" : "[null]"));
-            Log.d(TAG, "[processNotification] bundle.message length=" + (mBundle.getString("message") != null ? mBundle.getString("message").length() : 0));
+            Log.d(TAG, "[processNotification] bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
+            Log.d(TAG, "[processNotification] bundle.title=" + (bundle.getString("title") != null ? "[present]" : "[null]"));
+            Log.d(TAG, "[processNotification] bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0));
             Log.d(TAG, "[processNotification] loadedEjson.notificationType=" + (loadedEjson != null ? loadedEjson.notificationType : "null"));
             Log.d(TAG, "[processNotification] loadedEjson.sender=" + (loadedEjson != null && loadedEjson.sender != null ? loadedEjson.sender.username : "null"));
         }
 
         // Handle E2E encrypted notifications
         if (isE2ENotification(loadedEjson)) {
-            handleE2ENotification(mBundle, loadedEjson, notId);
-            return; // E2E processor will handle showing the notification
+            handleE2ENotification(bundle, loadedEjson, notId);
+            return;
         }
 
-        // Handle regular (non-E2E) notifications
-        showNotification(mBundle, loadedEjson, notId);
+        // Handle regular notifications
+        showNotification(bundle, loadedEjson, notId);
     }
 
     /**
@@ -231,54 +167,36 @@ public class CustomPushNotification {
     }
 
     /**
-     * Handles E2E encrypted notifications by delegating to the async processor.
+     * Handles E2E encrypted notifications
      */
     private void handleE2ENotification(Bundle bundle, Ejson ejson, String notId) {
-        // Check if React context is immediately available
-        if (reactApplicationContext != null) {
-            // Fast path: decrypt immediately
-            String decrypted = Encryption.shared.decryptMessage(ejson, reactApplicationContext);
-            
-            if (decrypted != null) {
-                bundle.putString("message", decrypted);
+        if (Encryption.shared == null) {
+            Log.e(TAG, "Encryption singleton is null, cannot decrypt E2E notification");
+            bundle.putString("message", "Encrypted message");
+            synchronized(this) {
                 mBundle = bundle;
-                ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
-                showNotification(bundle, ejson, notId);
-            } else {
-                Log.w(TAG, "E2E decryption failed for notification");
             }
+            showNotification(bundle, ejson, notId);
             return;
         }
         
-        // Slow path: wait for React context asynchronously
-        Log.i(TAG, "Waiting for React context to decrypt E2E notification");
+        String decrypted = Encryption.shared.decryptMessage(ejson, mContext);
         
-        E2ENotificationProcessor processor = new E2ENotificationProcessor(
-            // Context provider
-            () -> reactApplicationContext,
-            
-            // Callback
-            new E2ENotificationProcessor.NotificationCallback() {
-                @Override
-                public void onDecryptionComplete(Bundle decryptedBundle, Ejson decryptedEjson, String notificationId) {
-                    mBundle = decryptedBundle;
-                    Ejson finalEjson = safeFromJson(decryptedBundle.getString("ejson", "{}"), Ejson.class);
-                    showNotification(decryptedBundle, finalEjson, notificationId);
-                }
-                
-                @Override
-                public void onDecryptionFailed(Bundle originalBundle, Ejson originalEjson, String notificationId) {
-                    Log.w(TAG, "E2E decryption failed for notification");
-                }
-                
-                @Override
-                public void onTimeout(Bundle originalBundle, Ejson originalEjson, String notificationId) {
-                    Log.w(TAG, "Timeout waiting for React context for E2E notification");
-                }
+        if (decrypted != null) {
+            bundle.putString("message", decrypted);
+            synchronized(this) {
+                mBundle = bundle;
             }
-        );
-        
-        processor.processAsync(bundle, ejson, notId);
+            showNotification(bundle, ejson, notId);
+        } else {
+            Log.w(TAG, "E2E decryption failed for notification, showing fallback notification");
+            // Show fallback notification so user knows a message arrived
+            bundle.putString("message", "Encrypted message");
+            synchronized(this) {
+                mBundle = bundle;
+            }
+            showNotification(bundle, ejson, notId);
+        }
     }
 
     /**
@@ -304,6 +222,10 @@ public class CustomPushNotification {
             Log.d(TAG, "[showNotification] avatarUri=" + (avatarUri != null ? "[present]" : "[null]"));
         }
         bundle.putString("avatarUri", avatarUri);
+
+        synchronized(this) {
+            mBundle = bundle;
+        }
 
         // Handle special notification types
         if (ejson != null && "videoconf".equals(ejson.notificationType)) {
@@ -373,11 +295,12 @@ public class CustomPushNotification {
     }
 
     private Notification.Builder buildNotification(int notificationId) {
+        final Bundle bundle = mBundle;
         String notId = Integer.toString(notificationId);
-        String title = mBundle.getString("title");
-        String message = mBundle.getString("message");
-        Boolean notificationLoaded = mBundle.getBoolean("notificationLoaded", false);
-        Ejson ejson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
+        String title = bundle.getString("title");
+        String message = bundle.getString("message");
+        Boolean notificationLoaded = bundle.getBoolean("notificationLoaded", false);
+        Ejson ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[buildNotification] notId=" + notId);
@@ -389,7 +312,7 @@ public class CustomPushNotification {
         // Create pending intent to open the app
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtras(mBundle);
+        intent.putExtras(bundle);
         
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -414,14 +337,14 @@ public class CustomPushNotification {
                 .setAutoCancel(true);
 
         notificationColor(notification);
-        notificationIcons(notification, mBundle);
+        notificationIcons(notification, bundle);
         notificationDismiss(notification, notificationId);
 
         // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
         if (ejson == null || ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
             Log.i(TAG, "[buildNotification] ✅ Rendering FULL notification style");
-            notificationStyle(notification, notificationId, mBundle);
-            notificationReply(notification, notificationId, mBundle);
+            notificationStyle(notification, notificationId, bundle);
+            notificationReply(notification, notificationId, bundle);
         } else {
             Log.w(TAG, "[buildNotification] ⚠️ Rendering FALLBACK notification");
             // Cancel previous fallback notifications from same server
