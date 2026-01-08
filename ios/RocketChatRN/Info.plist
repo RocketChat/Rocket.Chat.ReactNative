@@ -11,8 +11,8 @@
 		<key>apiKey</key>
 		<string>apiKeyValue</string>
 	</dict>
-  <key>CADisableMinimumFrameDurationOnPhone</key>
-  <true/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -60,13 +60,13 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-  <key>NSAppTransportSecurity</key>
-  <dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <false/>
-    <key>NSAllowsLocalNetworking</key>
-    <true/>
-  </dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Take photos to share with other users</string>
 	<key>NSFaceIDUsageDescription</key>
@@ -108,30 +108,6 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-<key>UIApplicationShortcutItems</key>
-<array>
-  <dict>
-    <key>UIApplicationShortcutItemType</key>
-    <string>add-server</string>
-
-    <key>UIApplicationShortcutItemTitle</key>
-    <string>Add Server</string>
-
-    <key>UIApplicationShortcutItemIconType</key>
-    <string>UIApplicationShortcutIconTypeAdd</string>
-  </dict>
-
-  <dict>
-    <key>UIApplicationShortcutItemType</key>
-    <string>search</string>
-
-    <key>UIApplicationShortcutItemTitle</key>
-    <string>Search Rooms</string>
-
-    <key>UIApplicationShortcutItemIconType</key>
-    <string>UIApplicationShortcutIconTypeSearch</string>
-  </dict>
-</array>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>INSendMessageIntent</string>

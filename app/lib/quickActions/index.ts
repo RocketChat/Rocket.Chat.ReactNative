@@ -1,5 +1,5 @@
 import * as QuickActions from 'expo-quick-actions';
-import { InteractionManager, AppState } from 'react-native';
+import { InteractionManager, AppState, Platform } from 'react-native';
 
 import store from '../store';
 import { getRecentQuickAction } from './getInitialQuickAction';
@@ -27,9 +27,27 @@ export function registerQuickActions() {
 	console.log('quickactions registered=======================');
 
 	QuickActions.setItems([
-		{ id: 'add-server', title: 'Add Server', icon: 'plus', href: '' },
-		{ id: 'search', title: 'Search', icon: 'search', href: '' },
-		{ id: 'recent', title: 'Recent Rooms', icon: 'clock', href: '' }
+		{
+			id: 'add-server',
+			title: 'Add Server',
+			icon: Platform.select({ ios: 'symbol:plus', android: 'ic_quickaction_add' }),
+			href: ''
+		},
+		{
+			id: 'search',
+			title: 'Search',
+			icon: Platform.select({ ios: 'symbol:magnifyingglass', android: 'ic_quickaction_find' }),
+			href: ''
+		},
+		{
+			id: 'recent',
+			title: 'Recent Rooms',
+			icon: Platform.select({
+				ios: 'symbol:clock.arrow.trianglehead.counterclockwise.rotate.90',
+				android: 'ic_quickaction_recent'
+			}),
+			href: ''
+		}
 	]);
 
 	QuickActions.addListener(action => {
@@ -53,11 +71,19 @@ function handleQuickAction(id: string) {
 			break;
 
 		case 'search':
-			console.log('search =========================');
+			store.dispatch(
+				quickActionHandle({
+					action: 'search'
+				})
+			);
 			break;
 
 		case 'recent':
-			console.log('recent =========================');
+			store.dispatch(
+				quickActionHandle({
+					action: 'recent'
+				})
+			);
 			break;
 	}
 }

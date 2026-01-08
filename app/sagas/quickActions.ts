@@ -1,13 +1,14 @@
-import { select, takeEvery, put, take } from 'redux-saga/effects';
+import { select, takeEvery, put, take, type Effect } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { type Action } from 'redux';
 
-import { QUICK_ACTIONS, APP } from '../actions/actionsTypes';
-import { appStart } from '../actions/app';
+import { QUICK_ACTIONS, APP, UI } from '../actions/actionsTypes';
+import { appStart, appInit } from '../actions/app';
 import { serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { CURRENT_SERVER } from '../lib/constants/keys';
+import Navigation from '../lib/navigation/appNavigation';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -16,6 +17,15 @@ interface IQuickActionOpen extends Action {
 	payload?: {
 		action?: string;
 	};
+}
+
+function* waitForAppReady(): Generator<Effect, void, any> {
+	const isReady: boolean = yield select((state: any) => state.app.ready);
+
+	if (!isReady) {
+		yield put(appInit());
+		yield take(APP.READY);
+	}
 }
 
 function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
@@ -40,6 +50,15 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			yield put(serverInitAdd(server || ''));
 			break;
 		}
+		case 'search':
+			yield waitForAppReady();
+			const currentRoute = Navigation.getCurrentRoute();
+
+			if (currentRoute?.name !== 'RoomsListView') {
+				Navigation.navigate('RoomsListView');
+			}
+			yield put({ type: UI.TRIGGER_SEARCH });
+			break;
 		default:
 			Alert.alert('Other Quick Action', `this is ${quickAction} action`);
 	}

@@ -28,6 +28,9 @@ export default function quickActions(state = initialState, action: QuickActionsA
 	switch (action.type) {
 		case QUICK_ACTIONS.QUICK_ACTION_HANDLE:
 			console.log('call to reducer quick action');
+			if (!('payload' in action) || !action.payload?.action) {
+				return state;
+			}
 			return {
 				...state,
 				lastAction: (action as IQuickActionPayloadAction).payload.action,
@@ -35,6 +38,9 @@ export default function quickActions(state = initialState, action: QuickActionsA
 			};
 
 		case QUICK_ACTIONS.SET_PENDING_QUICK_ACTION:
+			if (!('payload' in action) || !action.payload?.action) {
+				return state;
+			}
 			return {
 				...state,
 				pending: (action as IQuickActionPayloadAction).payload.action

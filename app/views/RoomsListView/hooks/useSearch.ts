@@ -1,10 +1,13 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 import { AccessibilityInfo } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
 import { search as searchLib } from '../../../lib/methods/search';
 import { useDebounce } from '../../../lib/methods/helpers/debounce';
 import i18n from '../../../i18n';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { UI } from '../../../actions/actionsTypes';
 
 interface SearchState {
 	searchEnabled: boolean;
@@ -59,7 +62,8 @@ export const useSearch = () => {
 	'use memo';
 
 	const [state, dispatch] = useReducer(searchReducer, initialState);
-
+	const triggerSearch = useAppSelector(state => state.ui?.triggerSearch);
+	const storeDispatch = useDispatch();
 	const announceSearchResultsForAccessibility = (count: number) => {
 		if (count < 1) {
 			AccessibilityInfo.announceForAccessibility(i18n.t('No_results_found'));
@@ -80,12 +84,24 @@ export const useSearch = () => {
 
 	const startSearch = useCallback(() => {
 		dispatch({ type: 'START_SEARCH' });
-		search('');
-	}, [search]);
+	}, []);
 
 	const stopSearch = useCallback(() => {
 		dispatch({ type: 'STOP_SEARCH' });
 	}, []);
+
+	useEffect(() => {
+		if (triggerSearch) {
+			startSearch();
+			storeDispatch({ type: UI.CLEAR_TRIGGERED_SEARCH });
+		}
+	}, [startSearch, storeDispatch, triggerSearch]);
+
+	useEffect(() => {
+		if (state.searchEnabled) {
+			search('');
+		}
+	}, [state.searchEnabled, search]);
 
 	return {
 		searching: state.searching,
