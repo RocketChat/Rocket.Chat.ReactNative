@@ -36,12 +36,10 @@ public class Ejson {
     String messageType;
     String senderName;
     String name; // Room name for groups/channels
-    String fname; // Room friendly name for groups/channels
     String msg;
     Integer status; // For video conf: 0=incoming, 4=cancelled
 
     String tmid;
-    String prid;
     Content content;
 
     private MMKV getMMKV() {
@@ -69,20 +67,18 @@ public class Ejson {
         String userToken = token();
         String uid = userId();
         
-        if (userToken.isEmpty() || uid.isEmpty()) {
-            Log.w(TAG, "Cannot generate " + errorContext + " avatar URI: missing auth credentials");
-            return null;
+        String finalUri = server + avatarPath + "?format=png&size=100";
+        if (!userToken.isEmpty() && !uid.isEmpty()) {
+            finalUri += "&rc_token=" + userToken + "&rc_uid=" + uid;
         }
         
-        return server + avatarPath + "?format=png&size=100&rc_token=" + userToken + "&rc_uid=" + uid;
+        return finalUri;
     }
 
     public String getAvatarUri() {
         String avatarPath;
         
-        // For DMs and threads, show sender's avatar; for groups/channels, show room avatar
-        if ("d".equals(type) || tmid != null) {
-            // Direct message or thread: use sender's avatar
+        if ("d".equals(type)) {
             if (sender == null || sender.username == null || sender.username.isEmpty()) {
                 Log.w(TAG, "Cannot generate avatar URI: sender or username is null");
                 return null;
@@ -94,7 +90,6 @@ public class Ejson {
                 return null;
             }
         } else {
-            // Group/Channel/Livechat: use room avatar
             if (rid == null || rid.isEmpty()) {
                 Log.w(TAG, "Cannot generate avatar URI: rid is null for non-DM");
                 return null;

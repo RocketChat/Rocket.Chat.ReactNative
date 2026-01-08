@@ -95,7 +95,7 @@ public class CustomPushNotification {
     
     private void handleNotification() {
         Ejson receivedEjson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
-
+        
         if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
             Log.d(TAG, "Detected message-id-only notification, will fetch full content from server");
             loadNotificationAndProcess(receivedEjson);
@@ -291,25 +291,6 @@ public class CustomPushNotification {
 
         // Determine the correct title based on notification type
         String notificationTitle = title;
-        if (ejson != null && ejson.type != null) {
-            if ("p".equals(ejson.type) || "c".equals(ejson.type)) {
-                // For groups/channels, use room name if available, otherwise fall back to title
-                if (ejson.fname != null && !ejson.fname.isEmpty()) {
-                    notificationTitle = ejson.fname;
-                } else if (ejson.name != null && !ejson.name.isEmpty()) {
-                    notificationTitle = ejson.name;
-                } else {
-                    notificationTitle = title;
-                }
-            } else if ("d".equals(ejson.type)) {
-                // For direct messages, use title (sender name from server)
-                notificationTitle = title;
-            } else if ("l".equals(ejson.type)) {
-                // For omnichannel, use sender name if available, otherwise fall back to title
-                notificationTitle = (ejson.sender != null && ejson.sender.name != null && !ejson.sender.name.isEmpty()) 
-                    ? ejson.sender.name : title;
-            }
-        }
 
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[buildNotification] notId=" + notId);
@@ -471,25 +452,6 @@ public class CustomPushNotification {
             // Determine the correct conversation title based on notification type
             Ejson bundleEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
             String conversationTitle = title;
-            if (bundleEjson != null && bundleEjson.type != null) {
-                if ("p".equals(bundleEjson.type) || "c".equals(bundleEjson.type)) {
-                    // For groups/channels, use room name if available, otherwise fall back to title
-                    if (bundleEjson.fname != null && !bundleEjson.fname.isEmpty()) {
-                        conversationTitle = bundleEjson.fname;
-                    } else if (bundleEjson.name != null && !bundleEjson.name.isEmpty()) {
-                        conversationTitle = bundleEjson.name;
-                    } else {
-                        conversationTitle = title;
-                    }
-                } else if ("d".equals(bundleEjson.type)) {
-                    // For direct messages, use title (sender name from server)
-                    conversationTitle = title;
-                } else if ("l".equals(bundleEjson.type)) {
-                    // For omnichannel, use sender name if available, otherwise fall back to title
-                    conversationTitle = (bundleEjson.sender != null && bundleEjson.sender.name != null && !bundleEjson.sender.name.isEmpty()) 
-                        ? bundleEjson.sender.name : title;
-                }
-            }
             messageStyle.setConversationTitle(conversationTitle);
 
             if (bundles != null) {
