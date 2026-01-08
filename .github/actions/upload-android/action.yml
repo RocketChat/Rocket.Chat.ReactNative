@@ -21,6 +21,10 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Download Experimental AAB
       if: ${{ inputs.type == 'experimental' }}
       uses: actions/download-artifact@v4
@@ -53,11 +57,29 @@ runs:
         echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
       shell: bash
 
+    - name: Generate shared release changelog
+      run: |
+        LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)
+
+        git log "$LAST_TAG"..HEAD --pretty=format:"- %s" > changelog.txt
+
+        if [ ! -s changelog.txt ]; then
+          echo "- Improvements and bug fixes" > changelog.txt
+        fi
+      shell: bash
+
+    - name: Save changelog
+      uses: actions/upload-artifact@v4
+      with:
+        name: Android Changelog
+        path: changelog.txt
+
     - name: Fastlane Play Store Upload
       working-directory: android
       run: |
         if [[ ${{ inputs.trigger }} == "pr" ]]; then
-          bundle exec fastlane android beta official:${{ inputs.type == 'official' }}
+          bundle exec fastlane android official_open_testing
+          # bundle exec fastlane android beta official:${{ inputs.type == 'official' }}
         fi
         if [[ ${{ inputs.trigger }} == "develop" ]] && [[ ${{ inputs.type }} == 'experimental' ]]; then
           bundle exec fastlane android experimental_production

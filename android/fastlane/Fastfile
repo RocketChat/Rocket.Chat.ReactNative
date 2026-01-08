@@ -75,10 +75,19 @@ platform :android do
 
   desc "Upload App to Play Store Open Testing"
   lane :official_open_testing do
+    changelog_path = File.expand_path('../../changelog.txt', __dir__)
+
+    changelog = if File.exist?(changelog_path)
+        File.read(changelog_path)
+    else
+        "Internal improvements and bug fixes"
+    end
+
     upload_to_play_store(
       package_name: 'chat.rocket.android',
       track: 'beta',
-      aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
+      aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab',
+      changelog: changelog
     )
   end
 end
