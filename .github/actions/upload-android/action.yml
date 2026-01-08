@@ -21,10 +21,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
     - name: Download Experimental AAB
       if: ${{ inputs.type == 'experimental' }}
       uses: actions/download-artifact@v4
@@ -62,6 +58,15 @@ runs:
         name: release-changelog
         path: .
 
+    - name: Prepare Play Store changelog metadata
+      run: |
+        mkdir -p android/fastlane/metadata/android/en-US/changelogs
+
+        cp changelog.txt android/fastlane/metadata/android/en-US/changelogs/$BUILD_VERSION.txt
+      shell: bash
+      env:
+        BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
+
     - name: Fastlane Play Store Upload
       working-directory: android
       run: |
@@ -75,7 +80,6 @@ runs:
         if [[ ${{ inputs.trigger }} == "develop" ]] && [[ ${{ inputs.type }} == 'official' ]]; then
           bundle exec fastlane android official_open_testing
         fi
-          
       shell: bash
     
     - name: Leave a comment on PR
