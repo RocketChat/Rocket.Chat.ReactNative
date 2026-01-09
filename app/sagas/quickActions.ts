@@ -9,6 +9,7 @@ import { RootEnum } from '../definitions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import Navigation from '../lib/navigation/appNavigation';
+import { sendEmail } from '../views/SettingsView';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -58,6 +59,10 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 				Navigation.navigate('RoomsListView');
 			}
 			yield put({ type: UI.TRIGGER_SEARCH });
+			break;
+		case 'contact':
+			sendEmail();
+			yield waitForAppReady(); // if user navigates back to app just init it
 			break;
 		default:
 			Alert.alert('Other Quick Action', `this is ${quickAction} action`);
