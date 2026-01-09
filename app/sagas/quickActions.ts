@@ -1,16 +1,17 @@
-import { select, takeEvery, put, take, type Effect } from 'redux-saga/effects';
-import { Alert } from 'react-native';
+import { select, takeEvery, put, take, type Effect, call } from 'redux-saga/effects';
+import { Alert, InteractionManager } from 'react-native';
 import { type Action } from 'redux';
 
 import { QUICK_ACTIONS, APP, UI } from '../actions/actionsTypes';
 import { appStart, appInit } from '../actions/app';
 import { serverInitAdd } from '../actions/server';
-import { IApplicationState, RootEnum } from '../definitions';
+import { type IApplicationState, RootEnum, type TSubscriptionModel } from '../definitions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import Navigation from '../lib/navigation/appNavigation';
 import { sendEmail } from '../views/SettingsView';
 import { goRoom } from '../lib/methods/helpers/goRoom';
+import { getRoom } from '../lib/methods/getRoom';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -28,6 +29,16 @@ function* waitForAppReady(): Generator<Effect, void, any> {
 		yield put(appInit());
 		yield take(APP.READY);
 	}
+}
+
+function* waitForRoomInDB(rid: string): Generator {
+	try {
+		yield call(getRoom, rid);
+	} catch {
+		yield take(APP.START);
+	}
+
+	return yield call(getRoom, rid);
 }
 
 function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
@@ -65,16 +76,24 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			sendEmail();
 			yield waitForAppReady(); // if user navigates back to app just init it
 			break;
-		case 'recent':
+		case 'recent': {
 			yield waitForAppReady();
-			// goRoom()
-			console.log('room===========');
-			console.log(
-				yield select((state: IApplicationState) => state.rooms.lastVisitedRid),
-				'last visited room ===================='
-			);
-			Alert.alert('last visited room', yield select((state: IApplicationState) => state.rooms.lastVisitedRid));
+
+			const rid: string = yield select((state: IApplicationState) => state.rooms.lastVisitedRid);
+
+			if (!rid) return;
+
+			try {
+				const room: TSubscriptionModel = yield call(waitForRoomInDB, rid);
+				console.log(room, 'room============================');
+				yield call(goRoom, { item: { rid: room.id }, isMasterDetail: true });
+			} catch (e) {
+				console.log(e);
+				Alert.alert('Error', 'Error finding room in this server, try switching server');
+			}
+
 			break;
+		}
 		default:
 			Alert.alert('Other Quick Action', `this is ${quickAction} action`);
 	}
