@@ -18,6 +18,7 @@ import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import BlurComponent from '../OverlayComponent';
 import { type TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -29,8 +30,7 @@ const styles = StyleSheet.create({
 		right: 8
 	},
 	text: {
-		...sharedStyles.textRegular,
-		fontSize: 12
+		...sharedStyles.textRegular
 	}
 });
 
@@ -44,9 +44,10 @@ interface IMessageVideo {
 
 const CancelIndicator = () => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	return (
 		<View style={styles.cancelContainer}>
-			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(12) }]}>{I18n.t('Cancel')}</Text>
 		</View>
 	);
 };

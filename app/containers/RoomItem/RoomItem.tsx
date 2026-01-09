@@ -107,7 +107,7 @@ const RoomItem = ({
 				sourceType={sourceType}>
 				{showLastMessage && displayMode === DisplayMode.Expanded ? (
 					<>
-						<View style={styles.titleContainer}>
+						<View style={[styles.titleContainer, styles.flex]}>
 							{showAvatar ? (
 								<TypeIcon
 									userId={userId}
@@ -125,14 +125,16 @@ const RoomItem = ({
 							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
 						</View>
 						<View style={styles.row} testID='room-item-last-message-container'>
-							<LastMessage
-								lastMessage={lastMessage}
-								type={type}
-								showLastMessage={showLastMessage}
-								username={username || ''}
-								alert={alert && !hideUnreadStatus}
-								useRealName={useRealName}
-							/>
+							<View style={styles.flex}>
+								<LastMessage
+									lastMessage={lastMessage}
+									type={type}
+									showLastMessage={showLastMessage}
+									username={username || ''}
+									alert={alert && !hideUnreadStatus}
+									useRealName={useRealName}
+								/>
+							</View>
 							<UnreadBadge
 								unread={unread}
 								userMentions={userMentions}

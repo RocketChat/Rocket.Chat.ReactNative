@@ -21,6 +21,7 @@ import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { getUsernameSuggestion, saveUserProfile } from '../lib/services/restApi';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -49,6 +50,7 @@ const SetUsernameView = () => {
 	const [loading, setLoading] = useState(false);
 
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const dispatch = useDispatch();
 	const { server, user } = useAppSelector(state => ({
 		server: state.server.server,
@@ -94,10 +96,10 @@ const SetUsernameView = () => {
 		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView testID='set-username-view'>
-					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.fontTitlesLabels }]}>
+					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(20), lineHeight: scaleFontSize(28) }]}>
 						{I18n.t('Username')}
 					</Text>
-					<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: colors.fontTitlesLabels }]}>
+					<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(20) }]}>
 						{I18n.t('Set_username_subtitle')}
 					</Text>
 					<ControlledFormTextInput
@@ -116,7 +118,7 @@ const SetUsernameView = () => {
 							sharedStyles.loginTitle,
 							sharedStyles.textBold,
 							styles.loginTitle,
-							{ color: colors.fontTitlesLabels, marginBottom: 10 }
+							{ color: colors.fontTitlesLabels, marginBottom: 10, fontSize: scaleFontSize(20), lineHeight: scaleFontSize(28) }
 						]}>
 						{I18n.t('Name')}
 					</Text>

@@ -9,6 +9,7 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 import ServersList from './ServersList';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,6 +42,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	const server = useAppSelector(state => state.server.server);
 	const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const { fontScale } = useWindowDimensions();
 
 	const onPress = () => {
@@ -68,14 +70,14 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 		<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
 			<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
 				<View style={styles.button}>
-					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+					<Text style={[styles.title, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16) }]} numberOfLines={1}>
 						{serverName}
 					</Text>
 				</View>
 				{subtitle ? (
 					<Text
 						testID='rooms-list-header-server-subtitle'
-						style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
+						style={[styles.subtitle, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]}
 						numberOfLines={1}>
 						{subtitle}
 					</Text>

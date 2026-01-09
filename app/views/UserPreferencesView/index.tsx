@@ -13,6 +13,7 @@ import { type ProfileStackParamList } from '../../stacks/types';
 import { saveUserPreferences } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
+import FontSizePicker from './FontSizePicker';
 import Switch from '../../containers/Switch';
 import { type IUser } from '../../definitions';
 
@@ -115,6 +116,15 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						onPress={() => toggleConvertAsciiToEmoji(!convertAsciiEmoji)}
 					/>
 					<List.Separator />
+				</List.Section>
+				<List.Section>
+					<List.Separator />
+					<FontSizePicker
+						title='Font_Size'
+						testID='preferences-view-font-size'
+					/>
+					<List.Separator />
+					<List.Info info='Font_Size_Description' />
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

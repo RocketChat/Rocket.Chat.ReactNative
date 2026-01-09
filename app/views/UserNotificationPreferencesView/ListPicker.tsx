@@ -8,6 +8,7 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { useActionSheet } from '../../containers/ActionSheet';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -36,6 +37,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const option = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
 	const insets = useSafeAreaInsets();
 
@@ -66,7 +68,7 @@ const ListPicker = ({
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ children: getOptions() })}
-			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo }]}>{label}</Text>}
+			right={() => <Text style={[styles.pickerText, { color: colors.fontInfo, fontSize: scaleFontSize(16) }]}>{label}</Text>}
 			additionalAccessibilityLabel={label}
 		/>
 	);

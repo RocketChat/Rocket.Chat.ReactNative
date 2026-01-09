@@ -14,6 +14,7 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export const SendThreadToChannel = (): React.ReactElement | null => {
 	'use memo';
@@ -23,6 +24,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 	const { showEmojiSearchbar } = useEmojiKeyboard();
 	const { tmid } = useRoomContext();
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const subscription = useRef<Subscription | null>(null);
 	const alsoSendThreadToChannelUserPref = useAppSelector(state => state.login.user.alsoSendThreadToChannel);
 	const serverVersion = useAppSelector(state => state.server.version);
@@ -80,7 +82,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 				size={24}
 				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.fontDefault}
 			/>
-			<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
+			<Text style={[styles.text, { color: colors.fontDefault, fontSize: scaleFontSize(14) }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
 		</TouchableWithoutFeedback>
 	);
 };
@@ -92,7 +94,6 @@ const styles = StyleSheet.create({
 		marginBottom: 12
 	},
 	text: {
-		fontSize: 14,
 		marginLeft: 8,
 		...sharedStyles.textRegular
 	}

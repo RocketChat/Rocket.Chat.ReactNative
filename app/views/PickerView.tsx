@@ -12,6 +12,7 @@ import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { type IOptionsField } from './NotificationPreferencesView/options';
 import sharedStyles from './Styles';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	noResult: {
@@ -56,6 +57,7 @@ const PickerView = (): React.ReactElement => {
 	} = useAppRoute<TNavigation, 'PickerView'>();
 
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	const [data, setData] = useState(paramData);
 	const [total, setTotal] = useState(paramTotal ?? 0);
@@ -108,7 +110,7 @@ const PickerView = (): React.ReactElement => {
 				ListHeaderComponent={<RenderSearch onChangeText={onChangeText} />}
 				ListFooterComponent={List.Separator}
 				ListEmptyComponent={() => (
-					<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
+					<Text style={[styles.noResult, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16) }]}>{I18n.t('No_results_found')}</Text>
 				)}
 			/>
 		</SafeAreaView>

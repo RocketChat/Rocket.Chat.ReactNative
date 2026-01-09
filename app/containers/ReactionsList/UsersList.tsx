@@ -6,9 +6,11 @@ import { useTheme } from '../../theme';
 import { type IApplicationState } from '../../definitions';
 import Avatar from '../Avatar';
 import styles from './styles';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: string[]; names: string[] }): React.ReactElement => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 
 	const users =
@@ -22,7 +24,7 @@ const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: stri
 			contentContainerStyle={styles.listContainer}
 			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
-					<Text style={[styles.emojiName, { color: colors.fontSecondaryInfo }]} testID='usersListEmojiName'>
+					<Text style={[styles.emojiName, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]} testID='usersListEmojiName'>
 						{emoji}
 					</Text>
 				</View>
@@ -31,7 +33,7 @@ const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: stri
 				<View style={styles.listItemContainer} testID='userItem'>
 					<Avatar text={item.username} size={36} />
 					<View style={styles.textContainer}>
-						<Text style={[styles.usernameText, { color: colors.fontDefault }]} numberOfLines={1}>
+						<Text style={[styles.usernameText, { color: colors.fontDefault, fontSize: scaleFontSize(16) }]} numberOfLines={1}>
 							{useRealName && item.name ? item.name : item.username}
 						</Text>
 					</View>

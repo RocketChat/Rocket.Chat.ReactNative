@@ -16,6 +16,7 @@ import { Attachments } from './components';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import dayjs from '../../../../lib/dayjs';
 
 const styles = StyleSheet.create({
@@ -49,7 +50,6 @@ const styles = StyleSheet.create({
 		gap: 4
 	},
 	author: {
-		fontSize: 16,
 		...sharedStyles.textMedium,
 		flexShrink: 1
 	},
@@ -63,11 +63,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 	fieldTitle: {
-		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
 	fieldValue: {
-		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	marginTop: {
@@ -86,7 +84,6 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flex: 1,
-		fontSize: 16,
 		...sharedStyles.textMedium
 	}
 });
@@ -103,16 +100,17 @@ const Title = React.memo(
 	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
 		'use memo';
 
+		const { scaleFontSize } = useResponsiveLayout();
 		const time = attachment.message_link && attachment.ts ? dayjs(attachment.ts).format(timeFormat) : null;
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (
-					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].fontHint }]}>
+					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].fontHint, fontSize: scaleFontSize(16) }]}>
 						{attachment.author_name}
 					</Text>
 				) : null}
 				{time ? <Text style={[messageStyles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text> : null}
-				{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault }]}>{attachment.title}</Text> : null}
+				{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault, fontSize: scaleFontSize(16) }]}>{attachment.title}</Text> : null}
 			</View>
 		);
 	}
@@ -184,6 +182,7 @@ const Fields = React.memo(
 		'use memo';
 
 		const { user } = useContext(MessageContext);
+		const { scaleFontSize } = useResponsiveLayout();
 
 		if (!attachment.fields) {
 			return null;
@@ -193,7 +192,7 @@ const Fields = React.memo(
 			<View style={styles.fieldsContainer}>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
+						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault, fontSize: scaleFontSize(14) }]}>{field.title}</Text>
 						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}

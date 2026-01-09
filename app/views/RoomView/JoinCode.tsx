@@ -11,6 +11,7 @@ import { themes } from '../../lib/constants/colors';
 import { type IApplicationState } from '../../definitions';
 import { joinRoom } from '../../lib/services/restApi';
 import { type TSupportedThemes } from '../../theme';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,6 +60,7 @@ const JoinCode = React.memo(
 		const [visible, setVisible] = useState(false);
 		const [error, setError] = useState(false);
 		const [code, setCode] = useState('');
+		const { scaleFontSize } = useResponsiveLayout();
 
 		const show = () => setVisible(true);
 
@@ -85,7 +87,7 @@ const JoinCode = React.memo(
 							isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 							{ backgroundColor: themes[theme].surfaceRoom }
 						]}>
-						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
+						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels, fontSize: scaleFontSize(16) }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}
 							inputRef={(e: any) => {

@@ -6,6 +6,7 @@ import { useTheme } from '../theme';
 import openLink from '../lib/methods/helpers/openLink';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import I18n from '../i18n';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	bottomContainer: {
@@ -16,8 +17,6 @@ const styles = StyleSheet.create({
 	},
 	bottomContainerText: {
 		...sharedStyles.textMedium,
-		fontSize: 14,
-		lineHeight: 22,
 		textAlign: 'center'
 	},
 	bottomContainerTextUnderline: {
@@ -27,6 +26,7 @@ const styles = StyleSheet.create({
 
 const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 	const { colors, theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const { server } = useAppSelector(state => ({
 		server: state.server.server
 	}));
@@ -39,14 +39,14 @@ const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 	};
 	return (
 		<View style={[styles.bottomContainer, styleContainer]}>
-			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Onboarding_agree_terms')}</Text>
+			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(22) }]}>{I18n.t('Onboarding_agree_terms')}</Text>
 			<Text
-				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo }]}
+				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(22) }]}
 				onPress={() => openContract('terms-of-service')}>
 				{I18n.t('Terms_of_Service')}
 			</Text>
 			<Text
-				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo }]}
+				style={[styles.bottomContainerTextUnderline, styles.bottomContainerText, { color: colors.fontInfo, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(22) }]}
 				onPress={() => openContract('privacy-policy')}>
 				{I18n.t('Privacy_Policy')}
 			</Text>

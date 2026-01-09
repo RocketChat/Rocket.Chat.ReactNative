@@ -16,6 +16,7 @@ import I18n from '../../i18n';
 import MessageContext from './Context';
 import { type IUrl } from '../../definitions';
 import { WidthAwareContext } from './Components/WidthAwareView';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,11 +32,9 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start'
 	},
 	title: {
-		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	description: {
-		fontSize: 16,
 		...sharedStyles.textRegular
 	},
 	loading: {
@@ -48,15 +47,16 @@ const UrlContent = ({ title, description }: { title: string; description: string
 	'use memo';
 
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	return (
 		<View style={styles.textContainer}>
 			{title ? (
-				<Text style={[styles.title, { color: colors.fontInfo }]} numberOfLines={2}>
+				<Text style={[styles.title, { color: colors.fontInfo, fontSize: scaleFontSize(16) }]} numberOfLines={2}>
 					{title}
 				</Text>
 			) : null}
 			{description ? (
-				<Text style={[styles.description, { color: colors.fontSecondaryInfo }]} numberOfLines={2}>
+				<Text style={[styles.description, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(16) }]} numberOfLines={2}>
 					{description}
 				</Text>
 			) : null}

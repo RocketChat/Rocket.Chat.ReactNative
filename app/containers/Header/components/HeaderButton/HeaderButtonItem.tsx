@@ -5,6 +5,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { CustomIcon, type TIconsName } from '../../../CustomIcon';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export interface IHeaderButtonItem {
 	title?: string;
@@ -29,14 +30,6 @@ const styles = StyleSheet.create({
 		padding: 6
 	},
 	title: {
-		...Platform.select({
-			android: {
-				fontSize: 14
-			},
-			default: {
-				fontSize: 17
-			}
-		}),
 		...sharedStyles.textRegular
 	}
 });
@@ -56,6 +49,11 @@ const Item = memo(
 		'use memo';
 
 		const { colors } = useTheme();
+		const { scaleFontSize } = useResponsiveLayout();
+		const fontSize = Platform.select({
+			android: scaleFontSize(14),
+			default: scaleFontSize(17)
+		});
 		return (
 			<BorderlessButton onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} enabled={!disabled} style={styles.container}>
 				<View
@@ -67,7 +65,7 @@ const Item = memo(
 					{iconName ? (
 						<CustomIcon name={iconName} size={24} color={color} {...props} />
 					) : (
-						<Text style={[styles.title, { color: color || colors.fontDefault }]} {...props}>
+						<Text style={[styles.title, { color: color || colors.fontDefault, fontSize }]} {...props}>
 							{title}
 						</Text>
 					)}

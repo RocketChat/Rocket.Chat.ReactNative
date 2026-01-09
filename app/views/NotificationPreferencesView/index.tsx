@@ -19,6 +19,7 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import Switch from '../../containers/Switch';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 type TOptions = keyof typeof OPTIONS;
 type TRoomNotifications = keyof IRoomNotifications;
@@ -42,6 +43,7 @@ const RenderListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	const pref = room[preference]
 		? OPTIONS[preference as TOptions].find(option => option.value === room[preference])
@@ -66,7 +68,7 @@ const RenderListPicker = ({
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
-			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
+			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: scaleFontSize(16) }, { color: colors.fontHint }]}>{label}</Text>}
 			additionalAccessibilityLabel={label}
 		/>
 	);

@@ -12,6 +12,7 @@ import sharedStyles from '../../views/Styles';
 import { type IEmoji, type TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
 import I18n from '../../i18n';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export interface IHeader {
 	handleReaction: (emoji: IEmoji | null, message: TAnyMessageModel) => void;
@@ -53,7 +54,6 @@ const styles = StyleSheet.create({
 	},
 	headerIcon: {
 		...sharedStyles.textAlignCenter,
-		fontSize: 20,
 		color: '#fff'
 	},
 	customEmoji: {
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
 
 const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const { scaleFontSize } = useResponsiveLayout();
 	const unicodeEmoji = formatShortnameToUnicode(`:${item}:`);
 	return (
 		<Touch
@@ -73,7 +74,7 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 			onPress={() => onReaction({ emoji: item })}
 			style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
 			{typeof item === 'string' ? (
-				<Text style={styles.headerIcon}>{unicodeEmoji}</Text>
+				<Text style={[styles.headerIcon, { fontSize: scaleFontSize(20) }]}>{unicodeEmoji}</Text>
 			) : (
 				<CustomEmoji style={styles.customEmoji} emoji={item} />
 			)}

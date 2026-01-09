@@ -20,12 +20,11 @@ import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	error: {
-		...sharedStyles.textRegular,
-		lineHeight: 20,
-		fontSize: 14
+		...sharedStyles.textRegular
 	},
 	inputContainer: {
 		marginBottom: 10,
@@ -38,17 +37,13 @@ const styles = StyleSheet.create({
 		paddingVertical: 4
 	},
 	label: {
-		fontSize: 16,
-		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
 	required: {
-		fontSize: 14,
 		...sharedStyles.textMedium
 	},
 	input: {
 		...sharedStyles.textRegular,
-		fontSize: 16,
 		paddingHorizontal: 16,
 		paddingVertical: 14,
 		borderWidth: 1,
@@ -122,6 +117,7 @@ export const FormTextInput = ({
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
@@ -142,10 +138,10 @@ export const FormTextInput = ({
 			<A11y.Index index={1}>
 				<View style={[styles.inputContainer, containerStyle]}>
 					{label ? (
-						<Text accessible={false} style={[styles.label, { color: colors.fontTitlesLabels }]}>
+						<Text accessible={false} style={[styles.label, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(22) }]}>
 							{label}{' '}
 							{required && (
-								<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>
+								<Text style={[styles.required, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]}>{`(${i18n.t('Required')})`}</Text>
 							)}
 						</Text>
 					) : null}
@@ -161,7 +157,8 @@ export const FormTextInput = ({
 								{
 									backgroundColor: colors.surfaceLight,
 									borderColor: colors.strokeMedium,
-									color: colors.fontTitlesLabels
+									color: colors.fontTitlesLabels,
+									fontSize: scaleFontSize(16)
 								},
 								inputError
 									? {
@@ -238,7 +235,7 @@ export const FormTextInput = ({
 					{showErrorMessage && inputError ? (
 						<View accessible={false} style={styles.errorContainer}>
 							<CustomIcon accessible={false} name='warning' size={16} color={colors.fontDanger} />
-							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger }}>
+							<Text accessible={false} style={{ ...styles.error, color: colors.fontDanger, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(20) }}>
 								{inputError}
 							</Text>
 						</View>

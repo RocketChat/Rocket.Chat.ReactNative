@@ -7,15 +7,17 @@ import CustomFields from './CustomFields';
 import Timezone from './Timezone';
 import styles from './styles';
 import { type IUser } from '../../definitions';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { RoomInfoTag, RoomInfoTagContainer } from './components/RoomInfoTag';
 
 const Roles = ({ roles }: { roles?: string[] }) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	if (roles?.length) {
 		return (
 			<View style={styles.item} testID='user-roles'>
-				<Text style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Roles')}</Text>
+				<Text style={[styles.itemLabel, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(14) }]}>{I18n.t('Roles')}</Text>
 				<RoomInfoTagContainer>
 					{roles.map(role =>
 						role ? <RoomInfoTag name={role} key={role} testID={`user-role-${role.replace(/ /g, '-')}`} /> : null

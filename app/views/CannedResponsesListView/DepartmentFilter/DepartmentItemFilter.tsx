@@ -6,6 +6,7 @@ import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IDepartmentItemFilter {
 	currentDepartment: ILivechatDepartment;
@@ -32,12 +33,13 @@ const styles = StyleSheet.create({
 
 const DepartmentItemFilter = ({ currentDepartment, value, onPress }: IDepartmentItemFilter): JSX.Element => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const iconName = currentDepartment?._id === value?._id ? 'check' : null;
 
 	return (
 		<Touch onPress={() => onPress(value)} style={{ backgroundColor: colors.surfaceRoom }}>
 			<View style={styles.container}>
-				<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{value?.name}</Text>
+				<Text style={[styles.text, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(16) }]}>{value?.name}</Text>
 				{iconName ? <CustomIcon name={iconName} size={22} color={colors.fontSecondaryInfo} /> : null}
 			</View>
 		</Touch>

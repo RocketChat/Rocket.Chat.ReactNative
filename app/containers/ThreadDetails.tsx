@@ -8,6 +8,7 @@ import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
 import { type TThreadModel } from '../definitions/IThread';
 import i18n from '../i18n';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
 		marginRight: 8
 	},
 	detailText: {
-		fontSize: 10,
 		marginLeft: 2,
 		...sharedStyles.textSemibold
 	},
@@ -53,6 +53,7 @@ interface IThreadDetails {
 
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	let count: string | number | undefined | null = item.tcount;
 	if (count && count >= 1000) {
 		count = '+999';
@@ -72,7 +73,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 					<CustomIcon name='threads' size={24} />
 					<Text
 						testID={`thread-count-${count}`}
-						style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]}
+						style={[styles.detailText, { color: themes[theme].fontSecondaryInfo, fontSize: scaleFontSize(10) }]}
 						numberOfLines={1}>
 						{count}
 					</Text>
@@ -80,7 +81,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 
 				<View style={styles.detailContainer}>
 					<CustomIcon name='user' size={24} />
-					<Text style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
+					<Text style={[styles.detailText, { color: themes[theme].fontSecondaryInfo, fontSize: scaleFontSize(10) }]} numberOfLines={1}>
 						{replies}
 					</Text>
 				</View>

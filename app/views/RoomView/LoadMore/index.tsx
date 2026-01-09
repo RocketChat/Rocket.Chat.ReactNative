@@ -11,6 +11,7 @@ import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	button: {
@@ -44,6 +45,7 @@ const LoadMore = React.memo(
 		showUnreadSeparator?: boolean;
 	}): React.ReactElement => {
 		const { colors } = useTheme();
+		const { scaleFontSize } = useResponsiveLayout();
 		const dispatch = useDispatch();
 		const loading = useAppSelector(state => state.room.historyLoaders.some(historyLoader => historyLoader === loaderId));
 
@@ -70,7 +72,7 @@ const LoadMore = React.memo(
 					{loading ? (
 						<ActivityIndicator color={colors.fontSecondaryInfo} />
 					) : (
-						<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
+						<Text style={[styles.text, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16) }]}>{I18n.t(text)}</Text>
 					)}
 				</Touch>
 			</>

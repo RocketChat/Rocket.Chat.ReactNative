@@ -5,6 +5,7 @@ import Touchable, { type PlatformTouchableProps } from 'react-native-platform-to
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 // @ts-ignore
 interface IButtonProps extends PlatformTouchableProps {
@@ -40,9 +41,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textAlignCenter
 	},
 	smallText: {
-		...sharedStyles.textBold,
-		fontSize: 12,
-		lineHeight: 18
+		...sharedStyles.textBold
 	},
 	disabled: {
 		opacity: 0.3
@@ -64,6 +63,7 @@ const Button: React.FC<IButtonProps> = ({
 	...otherProps
 }) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const isPrimary = type === 'primary';
 	const isDisabled = disabled || loading;
 
@@ -82,7 +82,11 @@ const Button: React.FC<IButtonProps> = ({
 	];
 
 	const textStyle = [
-		{ color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize },
+		{ 
+			color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, 
+			fontSize: small ? scaleFontSize(12) : scaleFontSize(fontSize),
+			lineHeight: small ? scaleFontSize(18) : undefined
+		},
 		small ? styles.smallText : styles.text,
 		styleText
 	];

@@ -9,6 +9,7 @@ import { BaseButton } from '../Buttons';
 import { useMessage } from '../../hooks';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { MarkdownPreview } from '../../../markdown';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export const Quote = ({ messageId }: { messageId: string }) => {
 	'use memo';
@@ -56,6 +57,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 
 function useStyle() {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const style = {
 		root: {
 			backgroundColor: colors.surfaceTint,
@@ -75,22 +77,22 @@ function useStyle() {
 		username: {
 			...sharedStyles.textBold,
 			color: colors.fontTitlesLabels,
-			fontSize: 14,
-			lineHeight: 20,
+			fontSize: scaleFontSize(14),
+			lineHeight: scaleFontSize(20),
 			flexShrink: 1,
 			paddingRight: 4
 		},
 		time: {
 			...sharedStyles.textRegular,
 			color: colors.fontAnnotation,
-			fontSize: 12,
-			lineHeight: 16
+			fontSize: scaleFontSize(12),
+			lineHeight: scaleFontSize(16)
 		},
 		message: {
 			...sharedStyles.textRegular,
 			color: colors.fontDefault,
-			fontSize: 14,
-			lineHeight: 20
+			fontSize: scaleFontSize(14),
+			lineHeight: scaleFontSize(20)
 		}
 	} as const;
 	return [style, colors] as const;

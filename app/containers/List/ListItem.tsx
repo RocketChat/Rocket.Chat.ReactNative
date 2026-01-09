@@ -52,11 +52,9 @@ const styles = StyleSheet.create({
 	title: {
 		flex: 1,
 		flexShrink: 1,
-		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	subtitle: {
-		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	actionIndicator: {
@@ -132,7 +130,7 @@ const Content = React.memo(
 	}: IListItemContent) => {
 		'use memo';
 
-		const { fontScale } = useResponsiveLayout();
+		const { fontScale, scaleFontSize } = useResponsiveLayout();
 		const { colors } = useTheme();
 
 		const handleAcessibilityLabel = useMemo(() => {
@@ -182,7 +180,7 @@ const Content = React.memo(
 								<ListTitle
 									title={title}
 									color={color}
-									styleTitle={styleTitle}
+									styleTitle={[styleTitle, { fontSize: scaleFontSize(16) }]}
 									translateTitle={translateTitle}
 									numberOfLines={numberOfLines}
 								/>
@@ -192,7 +190,7 @@ const Content = React.memo(
 							) : null}
 						</View>
 						{subtitle ? (
-							<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+							<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]} numberOfLines={1}>
 								{translateSubtitle ? I18n.t(subtitle) : subtitle}
 							</Text>
 						) : null}

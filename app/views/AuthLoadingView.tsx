@@ -5,6 +5,7 @@ import I18n from '../i18n';
 import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,12 +24,13 @@ const styles = StyleSheet.create({
 const AuthLoadingView = React.memo((): React.ReactElement => {
 	const text = useAppSelector(state => state.app.text);
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 			{text ? (
 				<>
 					<ActivityIndicator color={colors.fontSecondaryInfo} size='large' />
-					<Text style={[styles.text, { color: colors.fontDefault }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
+					<Text style={[styles.text, { color: colors.fontDefault, fontSize: scaleFontSize(16) }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
 				</>
 			) : null}
 		</View>

@@ -5,6 +5,7 @@ import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 import Switch from '../../../containers/Switch';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	switchContainer: {
@@ -38,12 +39,13 @@ export interface ISwitch extends SwitchProps {
 
 export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = false }: ISwitch) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	return (
 		<View style={[styles.switchContainer, { backgroundColor: colors.surfaceTint }]}>
 			<View accessible accessibilityLabel={`${I18n.t(label)}, ${I18n.t(hint)}`} style={styles.switchTextContainer}>
-				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
-				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(24) }]}>{I18n.t(label)}</Text>
+				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(20) }]}>
 					{I18n.t(hint)}
 				</Text>
 			</View>
