@@ -3,11 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
-import { registerQuickActions } from './lib/quickActions';
+import { registerQuickActions, updateQuickActions } from './lib/quickActions';
 import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
-import { RootEnum } from './definitions';
+import { type IApplicationState, RootEnum } from './definitions';
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
 // SetUsername Stack
@@ -20,6 +20,8 @@ import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
+import { useAppSelector } from './lib/hooks/useAppSelector';
+import { getRoom } from './lib/methods/getRoom';
 
 const createStackNavigator = createNativeStackNavigator;
 
@@ -35,7 +37,7 @@ const SetUsernameStack = () => (
 const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
-
+	const lastVisitedRid = useAppSelector((state: IApplicationState) => state.rooms.lastVisitedRid);
 	useEffect(() => {
 		registerQuickActions();
 	}, []);
@@ -48,6 +50,14 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 			setCurrentScreen(currentRouteName);
 		}
 	}, [root]);
+
+	useEffect(() => {
+		const updateAsync = async () => {
+			const room = await getRoom(lastVisitedRid);
+			updateQuickActions({ recentRoomName: room.name });
+		};
+		updateAsync();
+	}, [lastVisitedRid]);
 
 	if (!root) {
 		return null;
