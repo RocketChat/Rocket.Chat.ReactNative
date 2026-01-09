@@ -14,7 +14,11 @@ export interface IRoomsFailure extends Action {
 	err: Record<string, any> | string;
 }
 
-export type IRoomsAction = IRoomsRequest & ISetSearch & IRoomsFailure;
+export interface IRoomsLastVisited extends Action {
+	lastVisitedRoomId: string;
+}
+
+export type IRoomsAction = IRoomsRequest & ISetSearch & IRoomsFailure & IRoomsLastVisited;
 
 export function roomsRequest(
 	params: {
@@ -43,5 +47,12 @@ export function roomsFailure(err: string): IRoomsFailure {
 export function roomsRefresh(): Action {
 	return {
 		type: ROOMS.REFRESH
+	};
+}
+
+export function roomsStoreLastVisited(rid: string): IRoomsLastVisited {
+	return {
+		type: ROOMS.STORE_LAST_VISITED,
+		lastVisitedRoomId: rid
 	};
 }

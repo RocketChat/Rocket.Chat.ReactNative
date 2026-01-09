@@ -6,13 +6,15 @@ export interface IRooms {
 	refreshing: boolean;
 	failure: boolean;
 	errorMessage: Record<string, any> | string;
+	lastVisitedRid: string;
 }
 
 export const initialState: IRooms = {
 	isFetching: false,
 	refreshing: false,
 	failure: false,
-	errorMessage: {}
+	errorMessage: {},
+	lastVisitedRid: ''
 };
 
 export default function rooms(state = initialState, action: IRoomsAction): IRooms {
@@ -44,6 +46,12 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 				isFetching: true,
 				refreshing: true
 			};
+		case ROOMS.STORE_LAST_VISITED:
+			return {
+				...state,
+				lastVisitedRid: action.lastVisitedRoomId
+			};
+
 		default:
 			return state;
 	}

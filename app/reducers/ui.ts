@@ -11,7 +11,6 @@ export const initialState: IUIState = {
 };
 
 export default function ui(state = initialState, action: Action): IUIState {
-	console.log(action, 'action========================');
 	switch (action.type) {
 		case UI.TRIGGER_SEARCH:
 			return {

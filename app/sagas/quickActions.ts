@@ -5,11 +5,12 @@ import { type Action } from 'redux';
 import { QUICK_ACTIONS, APP, UI } from '../actions/actionsTypes';
 import { appStart, appInit } from '../actions/app';
 import { serverInitAdd } from '../actions/server';
-import { RootEnum } from '../definitions';
+import { IApplicationState, RootEnum } from '../definitions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import Navigation from '../lib/navigation/appNavigation';
 import { sendEmail } from '../views/SettingsView';
+import { goRoom } from '../lib/methods/helpers/goRoom';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -63,6 +64,16 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 		case 'contact':
 			sendEmail();
 			yield waitForAppReady(); // if user navigates back to app just init it
+			break;
+		case 'recent':
+			yield waitForAppReady();
+			// goRoom()
+			console.log('room===========');
+			console.log(
+				yield select((state: IApplicationState) => state.rooms.lastVisitedRid),
+				'last visited room ===================='
+			);
+			Alert.alert('last visited room', yield select((state: IApplicationState) => state.rooms.lastVisitedRid));
 			break;
 		default:
 			Alert.alert('Other Quick Action', `this is ${quickAction} action`);
