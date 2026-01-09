@@ -10,6 +10,7 @@ import styles from './styles';
 import { type IItemData } from '.';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
+import I18n from '../../../i18n';
 
 interface IItem {
 	item: IItemData;
@@ -29,8 +30,17 @@ const keyExtractor = (item: IItemData) => item.value?.name || item.text?.text;
 const Item = ({ item, selected, onSelect }: IItem) => {
 	const itemName = item.value?.name || item.text.text.toLowerCase();
 	const { colors } = useTheme();
+	const iconName = selected ? 'checkbox-checked' : 'checkbox-unchecked';
+	const iconColor = selected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+
 	return (
-		<Touchable testID={`multi-select-item-${itemName}`} key={itemName} onPress={() => onSelect(item)}>
+		<Touchable
+			accessible
+			accessibilityLabel={`${textParser([item.text])}. ${selected ? I18n.t('Selected') : ''}`}
+			accessibilityRole='checkbox'
+			testID={`multi-select-item-${itemName}`}
+			key={itemName}
+			onPress={() => onSelect(item)}>
 			<View style={styles.item}>
 				<View style={styles.flexZ}>
 					{item.imageUrl ? <Image style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
@@ -41,7 +51,7 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 					</Text>
 				</View>
 				<View style={styles.flexZ}>
-					{selected ? <CustomIcon color={colors.badgeBackgroundLevel2} size={22} name='check' /> : null}
+					<CustomIcon color={iconColor} size={22} name={iconName} />
 				</View>
 			</View>
 		</Touchable>

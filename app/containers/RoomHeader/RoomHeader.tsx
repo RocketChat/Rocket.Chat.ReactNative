@@ -7,7 +7,7 @@ import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { type TUserStatus, type IOmnichannelSource } from '../../definitions';
+import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
@@ -67,6 +67,7 @@ interface IRoomHeader {
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
 	rightButtonsWidth?: number;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
@@ -119,7 +120,8 @@ const Header = React.memo(
 		testID,
 		usersTyping = [],
 		sourceType,
-		disabled
+		disabled,
+		abacAttributes
 	}: IRoomHeader) => {
 		const statusAccessibilityLabel = useStatusAccessibilityLabel({
 			isGroupChat,
@@ -153,6 +155,7 @@ const Header = React.memo(
 						isGroupChat={isGroupChat}
 						status={status}
 						teamMain={teamMain}
+						abacAttributes={abacAttributes}
 					/>
 					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 						{parentTitle}
@@ -179,6 +182,7 @@ const Header = React.memo(
 								status={status}
 								teamMain={teamMain}
 								sourceType={sourceType}
+								abacAttributes={abacAttributes}
 							/>
 						)}
 						<HeaderTitle headerTitle={title ?? ''} testID={testID} position='left' />
