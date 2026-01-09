@@ -67,6 +67,7 @@ export const QUICK_ACTIONS = createRequestTypes('QUICK_ACTIONS', [
 	'CLEAR_PENDING',
 	'MARK_LAUNCHED_FROM_QUICK_ACTION'
 ]);
+export const NAVIGATION = createRequestTypes('NAVIGATION', ['NAVIGATION_READY']);
 export const UI = createRequestTypes('UI', ['TRIGGER_SEARCH', 'CLEAR_TRIGGERED_SEARCH']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';

@@ -1,7 +1,7 @@
 import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import { registerQuickActions, updateQuickActions } from './lib/quickActions';
 import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
@@ -22,6 +22,7 @@ import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import { useAppSelector } from './lib/hooks/useAppSelector';
 import { getRoom } from './lib/methods/getRoom';
+import { NAVIGATION } from './actions/actionsTypes';
 
 const createStackNavigator = createNativeStackNavigator;
 
@@ -37,6 +38,7 @@ const SetUsernameStack = () => (
 const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
+	const dispatch = useDispatch();
 	const lastVisitedRid = useAppSelector((state: IApplicationState) => state.rooms.lastVisitedRid);
 	useEffect(() => {
 		registerQuickActions();
@@ -71,6 +73,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 			ref={Navigation.navigationRef}
 			onReady={() => {
 				emitter.emit('navigationReady');
+				dispatch({ type: NAVIGATION.NAVIGATION_READY });
 			}}
 			onStateChange={state => {
 				const previousRouteName = Navigation.routeNameRef.current;

@@ -1,8 +1,8 @@
 import { select, takeEvery, put, take, type Effect, call } from 'redux-saga/effects';
-import { Alert, InteractionManager } from 'react-native';
+import { Alert } from 'react-native';
 import { type Action } from 'redux';
 
-import { QUICK_ACTIONS, APP, UI } from '../actions/actionsTypes';
+import { QUICK_ACTIONS, APP, UI, NAVIGATION } from '../actions/actionsTypes';
 import { appStart, appInit } from '../actions/app';
 import { serverInitAdd } from '../actions/server';
 import { type IApplicationState, RootEnum, type TSubscriptionModel } from '../definitions';
@@ -39,6 +39,14 @@ function* waitForRoomInDB(rid: string): Generator {
 	}
 
 	return yield call(getRoom, rid);
+}
+
+function* waitForNavigationReady(): Generator {
+	if (Navigation.navigationRef.current) {
+		return;
+	}
+
+	yield take(NAVIGATION.NAVIGATION_READY);
 }
 
 function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
@@ -86,6 +94,7 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			try {
 				const room: TSubscriptionModel = yield call(waitForRoomInDB, rid);
 				console.log(room, 'room============================');
+				yield waitForNavigationReady();
 				yield call(goRoom, { item: { rid: room.id }, isMasterDetail: true });
 			} catch (e) {
 				console.log(e);
