@@ -14,7 +14,8 @@ import { createDirectMessage } from '../../services/restApi';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 import store from '../../store';
 import { roomsStoreLastVisited } from '../../../actions/rooms';
-import { storeLastVisitedRoomId } from './storeLastVisitedRoom';
+import { storeLastVisitedRoom } from './storeLastVisitedRoom';
+import { getRoom } from '../getRoom';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -101,7 +102,10 @@ export const goRoom = async ({
 			const { username } = item;
 			const result = await createDirectMessage(username as string);
 			if (result.success && result?.room?._id) {
-				store.dispatch(roomsStoreLastVisited(result.room._id));
+				try {
+					const room = await getRoom(result?.room?.rid || '');
+					store.dispatch(roomsStoreLastVisited(result.room._id, room.name));
+				} catch {}
 				console.log('storing last visited room ====================');
 				return navigate({
 					item: {
@@ -125,7 +129,8 @@ export const goRoom = async ({
 	 */
 	let _item = item;
 	if (item.rid) {
-		storeLastVisitedRoomId(item.rid);
+		const roomName = await getRoom(item.rid);
+		storeLastVisitedRoom(item.rid, roomName.name);
 		const sub = await getSubscriptionByRoomId(item.rid);
 		if (sub) {
 			_item = sub;

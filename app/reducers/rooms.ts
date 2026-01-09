@@ -7,6 +7,7 @@ export interface IRooms {
 	failure: boolean;
 	errorMessage: Record<string, any> | string;
 	lastVisitedRid: string;
+	lastVisitedName: string;
 }
 
 export const initialState: IRooms = {
@@ -14,7 +15,8 @@ export const initialState: IRooms = {
 	refreshing: false,
 	failure: false,
 	errorMessage: {},
-	lastVisitedRid: ''
+	lastVisitedRid: '',
+	lastVisitedName: ''
 };
 
 export default function rooms(state = initialState, action: IRoomsAction): IRooms {
@@ -49,7 +51,8 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 		case ROOMS.STORE_LAST_VISITED:
 			return {
 				...state,
-				lastVisitedRid: action.lastVisitedRoomId
+				lastVisitedRid: action.lastVisitedRoomId,
+				lastVisitedName: action.lastVisitedRoomName
 			};
 
 		default:

@@ -12,6 +12,7 @@ import Navigation from '../lib/navigation/appNavigation';
 import { sendEmail } from '../views/SettingsView';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { getRoom } from '../lib/methods/getRoom';
+import { roomsStoreLastVisited } from '../actions/rooms';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -95,6 +96,7 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 				const room: TSubscriptionModel = yield call(waitForRoomInDB, rid);
 				console.log(room, 'room============================');
 				yield waitForNavigationReady();
+				yield put(roomsStoreLastVisited(room.id, room.name));
 				yield call(goRoom, { item: { rid: room.id }, isMasterDetail: true });
 			} catch (e) {
 				console.log(e);

@@ -16,6 +16,7 @@ export interface IRoomsFailure extends Action {
 
 export interface IRoomsLastVisited extends Action {
 	lastVisitedRoomId: string;
+	lastVisitedRoomName: string;
 }
 
 export type IRoomsAction = IRoomsRequest & ISetSearch & IRoomsFailure & IRoomsLastVisited;
@@ -50,9 +51,10 @@ export function roomsRefresh(): Action {
 	};
 }
 
-export function roomsStoreLastVisited(rid: string): IRoomsLastVisited {
+export function roomsStoreLastVisited(rid: string, name: string): IRoomsLastVisited {
 	return {
 		type: ROOMS.STORE_LAST_VISITED,
-		lastVisitedRoomId: rid
+		lastVisitedRoomId: rid,
+		lastVisitedRoomName: name
 	};
 }

@@ -21,7 +21,6 @@ import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 import { useAppSelector } from './lib/hooks/useAppSelector';
-import { getRoom } from './lib/methods/getRoom';
 import { NAVIGATION } from './actions/actionsTypes';
 
 const createStackNavigator = createNativeStackNavigator;
@@ -39,7 +38,7 @@ const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
 	const dispatch = useDispatch();
-	const lastVisitedRid = useAppSelector((state: IApplicationState) => state.rooms.lastVisitedRid);
+	const lastVisitedRoomName = useAppSelector((state: IApplicationState) => state.rooms.lastVisitedName);
 	useEffect(() => {
 		registerQuickActions();
 	}, []);
@@ -54,12 +53,8 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 	}, [root]);
 
 	useEffect(() => {
-		const updateAsync = async () => {
-			const room = await getRoom(lastVisitedRid);
-			updateQuickActions({ recentRoomName: room.name });
-		};
-		updateAsync();
-	}, [lastVisitedRid]);
+		updateQuickActions({ recentRoomName: lastVisitedRoomName });
+	}, [lastVisitedRoomName]);
 
 	if (!root) {
 		return null;
