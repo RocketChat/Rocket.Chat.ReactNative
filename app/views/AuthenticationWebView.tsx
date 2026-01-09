@@ -105,11 +105,13 @@ const AuthenticationWebView = () => {
 		}
 		if (authType === 'saml' || authType === 'cas') {
 			const parsedUrl = parse(url, true);
-			
-		const isRocketChatServer = url.startsWith(server);
-		if (isRocketChatServer && (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket || parsedUrl.query?.saml_idp_credentialToken)) {
-				let payload;
-				if (parsedUrl.query?.saml_idp_credentialToken) {
+			// Only close the webview when redirected back to the Rocket.Chat server
+			// This prevents premature closure when CAS delegates to another CAS server for MFA
+			const isRocketChatServer = url.startsWith(server);
+			// ticket -> cas / validate & saml_idp_credentialToken -> saml
+			if (isRocketChatServer && (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket || parsedUrl.query?.saml_idp_credentialToken)) {
+				let payload: ICredentials;
+				if (authType === 'saml') {
 					const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
 					const credentialToken = { credentialToken: token };
 					payload = { ...credentialToken, saml: true };
