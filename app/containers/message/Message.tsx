@@ -167,7 +167,8 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 						accessible={props.isTranslated}
 						accessibilityLabel={props?.msg || ''}
 						accessibilityLanguage={props.autoTranslateLanguage}
-						index={2}>
+						index={2}
+						style={{ flex: 1 }}>
 						<View style={styles.messageContent}>
 							<Content {...props} />
 							{props.isInfo && props.type === 'message_pinned' ? (
