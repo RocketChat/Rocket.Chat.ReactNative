@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 // Outside Stack
-import NewServerView from '../views/NewServerView';
+// import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
 import LoginView from '../views/LoginView';
 import ForgotPasswordView from '../views/ForgotPasswordView';
@@ -25,7 +25,7 @@ const OutsideStackComponent = () => {
 	return (
 		<Outside.Navigator screenOptions={themedHeader(theme)}>
 			{/* @ts-ignore */}
-			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
+			{/* <Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} /> */}
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} options={defaultHeader} />
 
 			<Outside.Screen name='LoginView' component={LoginView} options={defaultHeader} />
