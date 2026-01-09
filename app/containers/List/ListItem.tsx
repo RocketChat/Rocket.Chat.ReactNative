@@ -33,7 +33,10 @@ const styles = StyleSheet.create({
 		paddingRight: PADDING_HORIZONTAL
 	},
 	rightContainer: {
-		paddingLeft: PADDING_HORIZONTAL
+		paddingLeft: PADDING_HORIZONTAL,
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8
 	},
 	disabled: {
 		opacity: 0.3

@@ -13,15 +13,20 @@ export default StyleSheet.create({
 		marginRight: PADDING_HORIZONTAL
 	},
 	roomTitleContainer: {
-		flex: 1
+		flex: 1,
+		justifyContent: 'center',
+		flexDirection: 'column'
 	},
 	roomTitle: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		includeFontPadding: false
 	},
 	roomDescription: {
 		fontSize: 13,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		includeFontPadding: false,
+		marginTop: 2
 	},
 	roomTitleRow: {
 		paddingRight: 16,

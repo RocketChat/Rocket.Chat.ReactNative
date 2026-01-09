@@ -13,9 +13,14 @@ import { type ProfileStackParamList } from '../../stacks/types';
 import { saveUserPreferences } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
-import FontSizePicker from './FontSizePicker';
 import Switch from '../../containers/Switch';
 import { type IUser } from '../../definitions';
+import { FONT_SIZE_PREFERENCES_KEY } from '../../lib/constants/keys';
+import { FONT_SIZE_OPTIONS, useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { Text, StyleSheet } from 'react-native';
+import sharedStyles from '../Styles';
+import { useTheme } from '../../theme';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -28,6 +33,19 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
+	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
+	const [fontSize] = useUserPreferences<string>(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL.toString());
+	
+	const FONT_SIZE_LABELS = {
+		[FONT_SIZE_OPTIONS.SMALL]: 'Small',
+		[FONT_SIZE_OPTIONS.NORMAL]: 'Normal',
+		[FONT_SIZE_OPTIONS.LARGE]: 'Large',
+		[FONT_SIZE_OPTIONS.EXTRA_LARGE]: 'Extra_Large'
+	};
+	
+	const fontSizeValue = fontSize || FONT_SIZE_OPTIONS.NORMAL.toString();
+	const currentLabel = FONT_SIZE_LABELS[parseFloat(fontSizeValue) as keyof typeof FONT_SIZE_LABELS] || 'Normal';
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -119,9 +137,16 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 				</List.Section>
 				<List.Section>
 					<List.Separator />
-					<FontSizePicker
+					<List.Item
 						title='Font_Size'
+						onPress={() => navigateToScreen('FontSizePickerView')}
+						showActionIndicator
 						testID='preferences-view-font-size'
+						right={() => (
+							<Text style={[styles.fontSizeLabel, { color: colors.fontHint, fontSize: scaleFontSize(16) }]}>
+								{I18n.t(currentLabel, { defaultValue: currentLabel }) ?? currentLabel}
+							</Text>
+						)}
 					/>
 					<List.Separator />
 					<List.Info info='Font_Size_Description' />
@@ -130,5 +155,11 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		</SafeAreaView>
 	);
 };
+
+const styles = StyleSheet.create({
+	fontSizeLabel: {
+		...sharedStyles.textRegular
+	}
+});
 
 export default UserPreferencesView;
