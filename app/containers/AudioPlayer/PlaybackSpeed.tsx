@@ -23,7 +23,7 @@ const PlaybackSpeed = () => {
 	return (
 		<NativeButton
 			accessible
-			accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed} x` })}
+			accessibilityLabel={i18n.t('Playback_speed', { playbackSpeed: `${playbackSpeed}x` })}
 			onPress={onPress}
 			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
 			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary, fontSize: scaleFontSize(14) }]}>{playbackSpeed}x</Text>

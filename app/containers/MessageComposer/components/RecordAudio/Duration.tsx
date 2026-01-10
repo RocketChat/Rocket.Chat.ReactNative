@@ -35,8 +35,8 @@ function useStyle() {
 	const styles = {
 		text: {
 			marginLeft: 12,
-			fontSize: scaleFontSize(16),
 			...sharedStyles.textRegular,
+			fontSize: scaleFontSize(16),
 			color: colors.fontDefault,
 			fontVariant: ['tabular-nums'] as FontVariant[]
 		}

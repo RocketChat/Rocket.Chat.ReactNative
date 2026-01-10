@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
 	selectedText: {
 		marginLeft: 16,
 		marginBottom: 12,
-		fontSize: 12,
 		...sharedStyles.textRegular
 	},
 	contentContainerList: {

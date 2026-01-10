@@ -1,5 +1,6 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
+import { Text, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
@@ -18,7 +19,6 @@ import { type IUser } from '../../definitions';
 import { FONT_SIZE_PREFERENCES_KEY } from '../../lib/constants/keys';
 import { FONT_SIZE_OPTIONS, useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
-import { Text, StyleSheet } from 'react-native';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
 

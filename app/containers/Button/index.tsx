@@ -82,13 +82,13 @@ const Button: React.FC<IButtonProps> = ({
 	];
 
 	const textStyle = [
+		small ? styles.smallText : styles.text,
+		styleText,
 		{ 
 			color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, 
 			fontSize: small ? scaleFontSize(12) : scaleFontSize(fontSize),
 			lineHeight: small ? scaleFontSize(18) : undefined
-		},
-		small ? styles.smallText : styles.text,
-		styleText
+		}
 	];
 
 	return (

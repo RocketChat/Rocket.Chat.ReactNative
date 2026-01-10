@@ -12,7 +12,6 @@ import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
-import { MarkdownPreview } from '../../containers/markdown';
 import usePreviewFormatText from '../../lib/hooks/usePreviewFormatText';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -31,7 +30,7 @@ import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { getUserSelector } from '../../selectors/login';
 import { type ChatsStackParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
+import { withTheme, type TSupportedThemes } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import Touch from '../../containers/Touch';
@@ -79,24 +78,24 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 
 type StackType = ChatsStackParamList & TNavigation;
 
-const RoomTitle = ({ children, theme }: { children: React.ReactNode; theme: string }) => {
+const RoomTitle = ({ children, theme }: { children: React.ReactNode; theme: TSupportedThemes }) => {
 	const { scaleFontSize } = useResponsiveLayout();
 	return (
-		<Text style={[styles.roomTitle, { color: themes[theme as keyof typeof themes].fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(22) }]} numberOfLines={1}>
+		<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(22) }]} numberOfLines={1}>
 			{children}
 		</Text>
 	);
 };
 
-const RoomDescription = ({ msg, theme }: { msg: string; theme: string }) => {
+const RoomDescription = ({ msg, theme }: { msg: string | undefined; theme: TSupportedThemes }) => {
 	const { scaleFontSize } = useResponsiveLayout();
-	const formattedText = usePreviewFormatText(msg ?? '');
+	const formattedText = usePreviewFormatText(msg || '');
 	if (!msg) {
 		return null;
 	}
 	return (
 		<Text
-			style={[styles.roomDescription, { color: themes[theme as keyof typeof themes].fontSecondaryInfo, fontSize: scaleFontSize(13), lineHeight: scaleFontSize(18) }]}
+			style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo, fontSize: scaleFontSize(13), lineHeight: scaleFontSize(18) }]}
 			numberOfLines={1}
 			ellipsizeMode='tail'>
 			{formattedText}
@@ -825,8 +824,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									<RoomTitle theme={theme}>{getRoomTitle(room)}</RoomTitle>
 								</View>
 							)}
-							<RoomDescription msg={t === 'd' ? `@${name}` : topic} theme={theme} />
-							{room.t === 'd' && <RoomDescription msg={member.statusText} theme={theme} />}
+							<RoomDescription msg={t === 'd' ? `@${name}` : topic || ''} theme={theme} />
+							{room.t === 'd' && member.statusText && <RoomDescription msg={member.statusText} theme={theme} />}
 						</View>
 						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>

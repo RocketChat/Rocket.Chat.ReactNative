@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useWindowDimensions } from 'react-native';
 
 import { FONT_SIZE_PREFERENCES_KEY } from '../../constants/keys';
-import userPreferences from '../../methods/userPreferences';
+import userPreferences, { initializeStorage } from '../../methods/userPreferences';
 
 interface IResponsiveLayoutContextData {
 	fontScale: number;
@@ -28,7 +28,6 @@ export const BASE_ROW_HEIGHT_SMALL_FONT = 82;
 export const BASE_ROW_HEIGHT_CONDENSED_SMALL_FONT = 68;
 const SMALL_FONT_THRESHOLD = 0.9;
 
-// Font size options: Small (0.9), Normal (1.0), Large (1.1), Extra Large (1.2)
 export const FONT_SIZE_OPTIONS = {
 	SMALL: 0.9,
 	NORMAL: 1.0,
@@ -39,51 +38,66 @@ export const FONT_SIZE_OPTIONS = {
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	// `fontScale` is the current font scaling value of the device.
 	const { fontScale: systemFontScale, width, height } = useWindowDimensions();
-	const [updateTrigger, setUpdateTrigger] = useState(0);
+	const [customFontSize, setCustomFontSize] = useState(
+		() => userPreferences.getString(FONT_SIZE_PREFERENCES_KEY) || FONT_SIZE_OPTIONS.NORMAL.toString()
+	);
 	
-	// Poll for font size changes (simple approach since MMKV doesn't have change listeners)
 	useEffect(() => {
-		const interval = setInterval(() => {
-			setUpdateTrigger(prev => prev + 1);
-		}, 500); // Check every 500ms for font size changes
+		const listener = initializeStorage.addOnValueChangedListener((changedKey: string) => {
+			if (changedKey === FONT_SIZE_PREFERENCES_KEY) {
+				const newFontSize = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY) || FONT_SIZE_OPTIONS.NORMAL.toString();
+				setCustomFontSize(newFontSize);
+			}
+		});
 		
-		return () => clearInterval(interval);
+		return () => listener.remove();
 	}, []);
-	
-	// Read custom font size directly from storage (MMKV is fast and synchronous)
-	// updateTrigger is used to force re-render when font size changes
-	const customFontSize = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY) || FONT_SIZE_OPTIONS.NORMAL.toString();
-	// Reference updateTrigger to ensure component re-renders when it changes
-	if (updateTrigger) {
-		// This ensures the value is re-read on each render when updateTrigger changes
-	}
 
-	// Use custom font size if set, otherwise use system font scale
 	const fontSizeMultiplier = customFontSize ? parseFloat(customFontSize) : 1.0;
 	const fontScale = systemFontScale * fontSizeMultiplier;
 	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
 	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
 	const fontScaleLimited = isLargeFontScale ? FONT_SCALE_LIMIT : fontScale;
-	// Use increased height only for smallest font sizes to prevent text cutting
 	const isSmallFont = fontScale < SMALL_FONT_THRESHOLD;
 	const baseRowHeight = isSmallFont ? BASE_ROW_HEIGHT_SMALL_FONT : BASE_ROW_HEIGHT;
 	const baseRowHeightCondensed = isSmallFont ? BASE_ROW_HEIGHT_CONDENSED_SMALL_FONT : BASE_ROW_HEIGHT_CONDENSED;
 	const rowHeight = baseRowHeight * fontScale;
 	const rowHeightCondensed = baseRowHeightCondensed * fontScale;
 
-	// Function to scale font sizes based on custom font size preference
-	const scaleFontSize = (size: number): number => size * fontSizeMultiplier;
+	const scaleFontSize = useCallback((size: number): number => size * fontSizeMultiplier, [fontSizeMultiplier]);
 
-	return (
-		<ResponsiveLayoutContext.Provider
-			value={{ fontScale, width, height, isLargeFontScale, fontScaleLimited, rowHeight, rowHeightCondensed, scaleFontSize }}>
-			{children}
-		</ResponsiveLayoutContext.Provider>
+	const contextValue = useMemo(
+		() => ({
+			fontScale,
+			width,
+			height,
+			isLargeFontScale,
+			fontScaleLimited,
+			rowHeight,
+			rowHeightCondensed,
+			scaleFontSize
+		}),
+		[fontScale, width, height, isLargeFontScale, fontScaleLimited, rowHeight, rowHeightCondensed, scaleFontSize]
 	);
+
+	return <ResponsiveLayoutContext.Provider value={contextValue}>{children}</ResponsiveLayoutContext.Provider>;
 };
 
 export const useResponsiveLayout = () => {
 	const context = useContext(ResponsiveLayoutContext);
+
+	if (!context || Object.keys(context).length === 0) {
+		return {
+			fontScale: 1.0,
+			width: 0,
+			height: 0,
+			isLargeFontScale: false,
+			fontScaleLimited: 1.0,
+			rowHeight: BASE_ROW_HEIGHT,
+			rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
+			scaleFontSize: (size: number) => size
+		};
+	}
 
 	return context;
 };
