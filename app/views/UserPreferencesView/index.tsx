@@ -35,7 +35,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 	const { colors } = useTheme();
 	const { scaleFontSize } = useResponsiveLayout();
-	const [fontSize] = useUserPreferences<string>(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL.toString());
+	const [fontSize] = useUserPreferences<number>(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL);
 	
 	const FONT_SIZE_LABELS = {
 		[FONT_SIZE_OPTIONS.SMALL]: 'Small',
@@ -44,8 +44,8 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		[FONT_SIZE_OPTIONS.EXTRA_LARGE]: 'Extra_Large'
 	};
 	
-	const fontSizeValue = fontSize || FONT_SIZE_OPTIONS.NORMAL.toString();
-	const currentLabel = FONT_SIZE_LABELS[parseFloat(fontSizeValue) as keyof typeof FONT_SIZE_LABELS] || 'Normal';
+	const fontSizeValue = fontSize ?? FONT_SIZE_OPTIONS.NORMAL;
+	const currentLabel = FONT_SIZE_LABELS[fontSizeValue as keyof typeof FONT_SIZE_LABELS] || 'Normal';
 
 	useEffect(() => {
 		navigation.setOptions({
