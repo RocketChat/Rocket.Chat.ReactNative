@@ -79,7 +79,7 @@ const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProp
 	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
 	const fontScaleLimited = isLargeFontScale ? FONT_SCALE_LIMIT : fontScale;
 
-	const scaleFontSize = useCallback((size: number): number => size * fontSizeMultiplier, [fontSizeMultiplier]);
+	const scaleFontSize = useCallback((size: number): number => size * fontScale, [fontScale]);
 
 	const contextValue = useMemo(
 		() => ({
