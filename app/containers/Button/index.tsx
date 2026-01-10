@@ -84,12 +84,12 @@ const Button: React.FC<IButtonProps> = ({
 
 	const textStyle = [
 		small ? styles.smallText : styles.text,
-		styleText,
 		{
 			color: isDisabled ? disabledTextColor : resolvedTextColor,
 			fontSize: small ? scaleFontSize(12) : scaleFontSize(fontSize),
 			lineHeight: small ? scaleFontSize(18) : undefined
-		}
+		},
+		styleText
 	];
 
 	return (
