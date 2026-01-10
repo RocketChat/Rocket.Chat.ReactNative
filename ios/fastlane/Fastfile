@@ -32,7 +32,8 @@ platform :ios do
     changelog_path = File.expand_path('../../changelog.txt', __dir__)
 
     changelog = if File.exist?(changelog_path)
-        File.read(changelog_path)
+        content = File.read(changelog_path)
+        content.length > 4000 ? content[0, 3997] + "..." : content
     else
         "Improvements and bug fixes"
     end

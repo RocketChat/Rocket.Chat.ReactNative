@@ -62,7 +62,18 @@ runs:
       run: |
         mkdir -p android/fastlane/metadata/android/en-US/changelogs
 
-        cp changelog.txt android/fastlane/metadata/android/en-US/changelogs/$BUILD_VERSION.txt
+        if [ -f changelog.txt ]; then
+          size=$(wc -c < changelog.txt)
+
+          if [ "$size" -gt 500 ]; then
+            head -c 497 changelog.txt > android/fastlane/metadata/android/en-US/changelogs/$BUILD_VERSION.txt
+            printf "..." >> android/fastlane/metadata/android/en-US/changelogs/$BUILD_VERSION.txt
+          else
+            cat changelog.txt > android/fastlane/metadata/android/en-US/changelogs/$BUILD_VERSION.txt
+          fi
+        else
+          printf "Internal improvements and bug fixes" > android/fastlane/metadata/android/en-US/changelogs/$BUILD_VERSION.txt
+        fi
       shell: bash
       env:
         BUILD_VERSION: ${{ inputs.BUILD_VERSION }}
