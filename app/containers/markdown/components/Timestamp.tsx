@@ -14,7 +14,7 @@ interface ITimestampProps {
 const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
 	const { colors } = useTheme();
 
-    const timestampMs = React.useMemo(() => parseInt(value.timestamp, 10) * 1000, [value.timestamp]);
+	const timestampMs = React.useMemo(() => parseInt(value.timestamp, 10) * 1000, [value.timestamp]);
 
 	const formatDate = React.useMemo(() => {
 		if (value.format === 't') {
