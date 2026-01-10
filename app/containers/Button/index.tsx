@@ -66,6 +66,7 @@ const Button: React.FC<IButtonProps> = ({
 	const { scaleFontSize } = useResponsiveLayout();
 	const isPrimary = type === 'primary';
 	const isDisabled = disabled || loading;
+	const disabledTextColor = isPrimary ? colors.buttonPrimaryDisabled : colors.buttonSecondaryDisabled;
 
 	const defaultBackgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault;
 	const disabledBackgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDisabled : colors.buttonBackgroundSecondaryDisabled;
@@ -84,8 +85,8 @@ const Button: React.FC<IButtonProps> = ({
 	const textStyle = [
 		small ? styles.smallText : styles.text,
 		styleText,
-		{ 
-			color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, 
+		{
+			color: isDisabled ? disabledTextColor : resolvedTextColor,
 			fontSize: small ? scaleFontSize(12) : scaleFontSize(fontSize),
 			lineHeight: small ? scaleFontSize(18) : undefined
 		}

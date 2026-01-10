@@ -85,8 +85,8 @@ const ExampleMessage = ({ previewFontSize }: { previewFontSize: number }) => {
 const FontSizePickerView = ({ navigation }: IFontSizePickerViewProps) => {
 	const { colors } = useTheme();
 	const { scaleFontSize } = useResponsiveLayout();
-	const [fontSize, setFontSize] = useUserPreferences<string>(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL.toString());
-	const [previewFontSize, setPreviewFontSize] = useState(parseFloat(fontSize || FONT_SIZE_OPTIONS.NORMAL.toString()));
+	const [fontSize, setFontSize] = useUserPreferences<number>(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL);
+	const [previewFontSize, setPreviewFontSize] = useState(fontSize ?? FONT_SIZE_OPTIONS.NORMAL);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -94,7 +94,7 @@ const FontSizePickerView = ({ navigation }: IFontSizePickerViewProps) => {
 		});
 	}, [navigation]);
 
-	const currentIndex = FONT_SIZE_OPTIONS_ARRAY.findIndex(opt => opt.toString() === fontSize);
+	const currentIndex = FONT_SIZE_OPTIONS_ARRAY.findIndex(opt => opt === fontSize);
 	const sliderValue = currentIndex >= 0 ? currentIndex : 1;
 
 	const handleSliderChange = (value: number) => {
@@ -106,12 +106,12 @@ const FontSizePickerView = ({ navigation }: IFontSizePickerViewProps) => {
 	const handleSliderComplete = (value: number) => {
 		const index = Math.round(value);
 		const selectedFontSize = FONT_SIZE_OPTIONS_ARRAY[index];
-		setFontSize(selectedFontSize.toString());
+		setFontSize(selectedFontSize);
 		setPreviewFontSize(selectedFontSize);
 	};
 
-	const fontSizeValue = fontSize || FONT_SIZE_OPTIONS.NORMAL.toString();
-	const currentLabel = FONT_SIZE_LABELS[parseFloat(fontSizeValue) as keyof typeof FONT_SIZE_LABELS] || 'Normal';
+	const fontSizeValue = fontSize ?? FONT_SIZE_OPTIONS.NORMAL;
+	const currentLabel = FONT_SIZE_LABELS[fontSizeValue as keyof typeof FONT_SIZE_LABELS] || 'Normal';
 	const primaryColor = colors.buttonBackgroundPrimaryDefault;
 	const trackColor = colors.strokeLight;
 

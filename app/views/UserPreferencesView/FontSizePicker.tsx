@@ -36,14 +36,16 @@ const ExampleMessage = ({ previewFontSize }: { previewFontSize: number }) => {
 	const server = useAppSelector(state => state.server.server);
 	
 	const previewFontScale = systemFontScale * previewFontSize;
-	const previewScaleFontSize = (size: number) => size * previewFontSize;
+	const previewFontScaleLimited = previewFontScale > 1.3 ? 1.3 : previewFontScale;
+	const previewScaleFontSize = (size: number) => size * (systemFontScale ? previewFontScaleLimited / systemFontScale : previewFontSize);
+	const previewAvatarSize = previewScaleFontSize(36);
 	
 	const previewContextValue = {
 		fontScale: previewFontScale,
 		width: 0,
 		height: 0,
 		isLargeFontScale: previewFontScale > 1.3,
-		fontScaleLimited: previewFontScale > 1.3 ? 1.3 : previewFontScale,
+		fontScaleLimited: previewFontScaleLimited,
 		rowHeight: 75 * previewFontScale,
 		rowHeightCondensed: 60 * previewFontScale,
 		scaleFontSize: previewScaleFontSize
@@ -53,10 +55,10 @@ const ExampleMessage = ({ previewFontSize }: { previewFontSize: number }) => {
 		<ResponsiveLayoutContext.Provider value={previewContextValue}>
 			<View style={styles.exampleMessageContainer}>
 				<View style={styles.exampleMessage}>
-					<View style={styles.avatarContainer}>
+					<View style={[styles.avatarContainer, { width: previewAvatarSize }]}>
 						<Avatar
 							text='RC'
-							size={previewScaleFontSize(36)}
+							size={previewAvatarSize}
 							borderRadius={4}
 							server={server || 'https://open.rocket.chat'}
 						/>
@@ -83,10 +85,10 @@ const ExampleMessage = ({ previewFontSize }: { previewFontSize: number }) => {
 const FontSizePicker = ({ title, testID }: IFontSizePickerProps) => {
 	const { colors } = useTheme();
 	const { scaleFontSize } = useResponsiveLayout();
-	const [fontSize, setFontSize] = useUserPreferences<string>(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL.toString());
-	const [previewFontSize, setPreviewFontSize] = useState(parseFloat(fontSize || FONT_SIZE_OPTIONS.NORMAL.toString()));
+	const [fontSize, setFontSize] = useUserPreferences<number>(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL);
+	const [previewFontSize, setPreviewFontSize] = useState(fontSize ?? FONT_SIZE_OPTIONS.NORMAL);
 
-	const currentIndex = FONT_SIZE_OPTIONS_ARRAY.findIndex(opt => opt.toString() === fontSize);
+	const currentIndex = FONT_SIZE_OPTIONS_ARRAY.findIndex(opt => opt === fontSize);
 	const sliderValue = currentIndex >= 0 ? currentIndex : 1;
 
 	const handleSliderChange = (value: number) => {
@@ -98,12 +100,12 @@ const FontSizePicker = ({ title, testID }: IFontSizePickerProps) => {
 	const handleSliderComplete = (value: number) => {
 		const index = Math.round(value);
 		const selectedFontSize = FONT_SIZE_OPTIONS_ARRAY[index];
-		setFontSize(selectedFontSize.toString());
+		setFontSize(selectedFontSize);
 		setPreviewFontSize(selectedFontSize);
 	};
 
-	const fontSizeValue = fontSize || FONT_SIZE_OPTIONS.NORMAL.toString();
-	const currentLabel = FONT_SIZE_LABELS[parseFloat(fontSizeValue) as keyof typeof FONT_SIZE_LABELS] || 'Normal';
+	const fontSizeValue = fontSize ?? FONT_SIZE_OPTIONS.NORMAL;
+	const currentLabel = FONT_SIZE_LABELS[fontSizeValue as keyof typeof FONT_SIZE_LABELS] || 'Normal';
 	const primaryColor = colors.buttonBackgroundPrimaryDefault;
 	const trackColor = colors.strokeLight;
 

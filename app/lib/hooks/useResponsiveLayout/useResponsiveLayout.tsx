@@ -38,22 +38,34 @@ export const FONT_SIZE_OPTIONS = {
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	// `fontScale` is the current font scaling value of the device.
 	const { fontScale: systemFontScale, width, height } = useWindowDimensions();
-	const [customFontSize, setCustomFontSize] = useState(
-		() => userPreferences.getString(FONT_SIZE_PREFERENCES_KEY) || FONT_SIZE_OPTIONS.NORMAL.toString()
-	);
+	const [customFontSize, setCustomFontSize] = useState(() => {
+		const storedNumber = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
+		if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber)) {
+			return storedNumber;
+		}
+		const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
+		const parsed = storedString !== null ? Number(storedString) : undefined;
+		return !Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL;
+	});
 	
 	useEffect(() => {
 		const listener = initializeStorage.addOnValueChangedListener((changedKey: string) => {
 			if (changedKey === FONT_SIZE_PREFERENCES_KEY) {
-				const newFontSize = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY) || FONT_SIZE_OPTIONS.NORMAL.toString();
-				setCustomFontSize(newFontSize);
+				const newValue = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
+				if (typeof newValue === 'number' && !Number.isNaN(newValue)) {
+					setCustomFontSize(newValue);
+					return;
+				}
+				const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
+				const parsed = storedString !== null ? Number(storedString) : undefined;
+				setCustomFontSize(!Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL);
 			}
 		});
 		
 		return () => listener.remove();
 	}, []);
 
-	const fontSizeMultiplier = customFontSize ? parseFloat(customFontSize) : 1.0;
+	const fontSizeMultiplier = typeof customFontSize === 'number' && !Number.isNaN(customFontSize) ? customFontSize : 1.0;
 	const fontScale = systemFontScale * fontSizeMultiplier;
 	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
 	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
