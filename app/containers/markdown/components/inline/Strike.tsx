@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { type Strike as StrikeProps } from '@rocket.chat/message-parser';
 
 import { Bold, Italic, Link } from './index';
 import Plain from '../Plain';
+import AtMention from '../mentions/AtMention';
+import Hashtag from '../mentions/Hashtag';
+import MarkdownContext from '../../contexts/MarkdownContext';
 
 interface IStrikeProps {
 	value: StrikeProps['value'];
@@ -15,25 +18,47 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Strike = ({ value }: IStrikeProps) => (
-	<Text style={styles.text}>
-		{value.map(block => {
-			switch (block.type) {
-				case 'LINK':
-					return <Link value={block.value} />;
-				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
-				case 'BOLD':
-					return <Bold value={block.value} />;
-				case 'ITALIC':
-					return <Italic value={block.value} />;
-				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} />;
-				default:
-					return null;
-			}
-		})}
-	</Text>
-);
+const Strike = ({ value }: IStrikeProps) => {
+	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
+
+	return (
+		<Text style={styles.text}>
+			{value.map(block => {
+				switch (block.type) {
+					case 'LINK':
+						return <Link value={block.value} />;
+					case 'PLAIN_TEXT':
+						return <Plain value={block.value} />;
+					case 'BOLD':
+						return <Bold value={block.value} />;
+					case 'ITALIC':
+						return <Italic value={block.value} />;
+					case 'MENTION_CHANNEL':
+						return (
+							<Hashtag
+								hashtag={block.value.value}
+								channels={channels}
+								navToRoomInfo={navToRoomInfo}
+								style={[{ textDecorationLine: 'line-through' }]}
+							/>
+						);
+					case 'MENTION_USER':
+						return (
+							<AtMention
+								mention={block.value.value}
+								username={username}
+								navToRoomInfo={navToRoomInfo}
+								style={[{ textDecorationLine: 'line-through' }]}
+								useRealName={useRealName}
+								mentions={mentions}
+							/>
+						);
+					default:
+						return null;
+				}
+			})}
+		</Text>
+	);
+};
 
 export default Strike;
