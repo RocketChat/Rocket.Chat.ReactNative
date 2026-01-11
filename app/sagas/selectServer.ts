@@ -43,7 +43,6 @@ import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
-import { roomsStoreLastVisited } from '../actions/rooms';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -217,7 +216,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// we'll set serverVersion as metadata for bugsnag
 		logServerVersion(serverVersion);
 		yield put(selectServerSuccess({ server, version: serverVersion, name: serverInfo?.name || 'Rocket.Chat' }));
-		yield put(roomsStoreLastVisited('', ''));
 	} catch (e) {
 		yield put(selectServerFailure());
 		log(e);
