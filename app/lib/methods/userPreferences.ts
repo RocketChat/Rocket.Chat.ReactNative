@@ -1,4 +1,4 @@
-import { MMKV, Mode, useMMKVString } from 'react-native-mmkv';
+import { MMKV, Mode, useMMKVString, useMMKVNumber } from 'react-native-mmkv';
 import type { Configuration } from 'react-native-mmkv';
 import { NativeModules } from 'react-native';
 
@@ -61,28 +61,62 @@ const getAppGroupPath = (): string => {
 const MMKV_INSTANCE = new MMKV(buildConfiguration());
 
 export const useUserPreferences = <T>(key: string, defaultValue?: T): [T | undefined, (value: T | undefined) => void] => {
-	const [storedValue, setStoredValue] = useMMKVString(key, MMKV_INSTANCE);
+	// Use native number storage for numbers to ensure consistency
+	const isNumberType = typeof defaultValue === 'number';
+	const [storedNumber, setStoredNumber] = useMMKVNumber(key, MMKV_INSTANCE);
+	const [storedString, setStoredString] = useMMKVString(key, MMKV_INSTANCE);
 
 	let value: T | undefined = defaultValue;
-	if (storedValue !== undefined) {
-		if (typeof defaultValue === 'string' || defaultValue === undefined) {
-			value = storedValue as T;
-		} else {
+	
+	if (isNumberType) {
+		// For numbers, use native number storage
+		if (storedNumber !== undefined && storedNumber !== null) {
+			value = storedNumber as T;
+		}
+		// Fallback: check if stored as JSON string (for migration)
+		else if (storedString !== undefined) {
 			try {
-				value = JSON.parse(storedValue) as T;
+				const parsed = JSON.parse(storedString);
+				if (typeof parsed === 'number') {
+					// Migrate to native number storage
+					setStoredNumber(parsed);
+					value = parsed as T;
+				}
 			} catch {
-				value = defaultValue;
+				// Ignore parse errors
+			}
+		}
+	} else {
+		// For non-numbers, use string storage
+		if (storedString !== undefined) {
+			if (typeof defaultValue === 'string' || defaultValue === undefined) {
+				value = storedString as T;
+			} else {
+				try {
+					value = JSON.parse(storedString) as T;
+				} catch {
+					value = defaultValue;
+				}
 			}
 		}
 	}
 
 	const setValue = (newValue: T | undefined) => {
 		if (newValue === undefined) {
-			setStoredValue(undefined);
+			if (isNumberType) {
+				setStoredNumber(undefined);
+			}
+			setStoredString(undefined);
+		} else if (isNumberType && typeof newValue === 'number') {
+			setStoredNumber(newValue);
+			// Also clear string storage if it exists (migration cleanup)
+			if (storedString !== undefined) {
+				setStoredString(undefined);
+			}
 		} else if (typeof newValue === 'string') {
-			setStoredValue(newValue);
+			setStoredString(newValue);
 		} else {
-			setStoredValue(JSON.stringify(newValue));
+			setStoredString(JSON.stringify(newValue));
 		}
 	};
 
