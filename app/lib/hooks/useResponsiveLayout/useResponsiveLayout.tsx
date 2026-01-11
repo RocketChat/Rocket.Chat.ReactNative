@@ -35,34 +35,30 @@ export const FONT_SIZE_OPTIONS = {
 	EXTRA_LARGE: 1.2
 };
 
-const getFontSizeFromStorage = (): number => {
-	const storedNumber = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
-	if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber)) {
-		return storedNumber;
-	}
-
-	const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
-	const parsed = storedString !== null ? Number(storedString) : undefined;
-	if (!Number.isNaN(parsed ?? NaN)) {
-		// Normalize storage to numeric to avoid mixed types across the app.
-		userPreferences.setNumber(FONT_SIZE_PREFERENCES_KEY, parsed as number);
-		return parsed as number;
-	}
-
-	// Default to normal size if nothing is set or parsing failed.
-	userPreferences.setNumber(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL);
-	return FONT_SIZE_OPTIONS.NORMAL;
-};
-
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	// `fontScale` is the current font scaling value of the device.
 	const { fontScale: systemFontScale, width, height } = useWindowDimensions();
-	const [customFontSize, setCustomFontSize] = useState(() => getFontSizeFromStorage());
+	const [customFontSize, setCustomFontSize] = useState(() => {
+		const storedNumber = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
+		if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber)) {
+			return storedNumber;
+		}
+		const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
+		const parsed = storedString !== null ? Number(storedString) : undefined;
+		return !Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL;
+	});
 	
 	useEffect(() => {
 		const listener = initializeStorage.addOnValueChangedListener((changedKey: string) => {
 			if (changedKey === FONT_SIZE_PREFERENCES_KEY) {
-				setCustomFontSize(getFontSizeFromStorage());
+				const newValue = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
+				if (typeof newValue === 'number' && !Number.isNaN(newValue)) {
+					setCustomFontSize(newValue);
+					return;
+				}
+				const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
+				const parsed = storedString !== null ? Number(storedString) : undefined;
+				setCustomFontSize(!Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL);
 			}
 		});
 		
@@ -83,8 +79,7 @@ const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProp
 	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
 	const fontScaleLimited = isLargeFontScale ? FONT_SCALE_LIMIT : fontScale;
 
-	// Use limited scale for text sizing to avoid unbounded compound scaling.
-	const scaleFontSize = useCallback((size: number): number => size * fontScaleLimited, [fontScaleLimited]);
+	const scaleFontSize = useCallback((size: number): number => size * fontScale, [fontScale]);
 
 	const contextValue = useMemo(
 		() => ({

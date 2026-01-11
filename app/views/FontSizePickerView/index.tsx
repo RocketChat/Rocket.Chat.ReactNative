@@ -94,19 +94,7 @@ const FontSizePickerView = ({ navigation }: IFontSizePickerViewProps) => {
 		});
 	}, [navigation]);
 
-	// Find the closest matching option to handle floating point precision issues
-	const findClosestOption = (value: number | undefined): number => {
-		if (value === undefined || value === null) {
-			return FONT_SIZE_OPTIONS.NORMAL;
-		}
-		const closest = FONT_SIZE_OPTIONS_ARRAY.reduce(
-			(prev, curr) => (Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev)
-		);
-		return closest;
-	};
-
-	const normalizedFontSize = findClosestOption(fontSize);
-	const currentIndex = FONT_SIZE_OPTIONS_ARRAY.findIndex(opt => Math.abs(opt - normalizedFontSize) < 0.01);
+	const currentIndex = FONT_SIZE_OPTIONS_ARRAY.findIndex(opt => opt === fontSize);
 	const sliderValue = currentIndex >= 0 ? currentIndex : 1;
 
 	const handleSliderChange = (value: number) => {
@@ -122,7 +110,7 @@ const FontSizePickerView = ({ navigation }: IFontSizePickerViewProps) => {
 		setPreviewFontSize(selectedFontSize);
 	};
 
-	const fontSizeValue = normalizedFontSize;
+	const fontSizeValue = fontSize ?? FONT_SIZE_OPTIONS.NORMAL;
 	const currentLabel = FONT_SIZE_LABELS[fontSizeValue as keyof typeof FONT_SIZE_LABELS] || 'Normal';
 	const primaryColor = colors.buttonBackgroundPrimaryDefault;
 	const trackColor = colors.strokeLight;
