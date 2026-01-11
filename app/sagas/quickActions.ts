@@ -89,12 +89,12 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 		case 'recent': {
 			yield waitForAppReady();
 
-			const rid: string = yield select((state: IApplicationState) => state.rooms.lastVisitedRid);
+			const rid = (yield select((state: IApplicationState) => state.rooms.lastVisitedRid)) as string | undefined;
 
 			if (!rid) return;
 
 			try {
-				const room: TSubscriptionModel = yield call(waitForRoomInDB, rid);
+				const room = (yield call(waitForRoomInDB, rid)) as TSubscriptionModel;
 				console.log(room, 'room============================');
 				yield waitForNavigationReady();
 				yield put(roomsStoreLastVisited(room.id, room.name));

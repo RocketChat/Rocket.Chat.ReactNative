@@ -12,10 +12,10 @@ import {
 import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { createDirectMessage } from '../../services/restApi';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
-import store from '../../store';
-import { roomsStoreLastVisited } from '../../../actions/rooms';
-import { storeLastVisitedRoom } from './storeLastVisitedRoom';
+// import store from '../../store';
+// import { roomsStoreLastVisited } from '../../../actions/rooms';
 import { getRoom } from '../getRoom';
+import { emitter } from './emitter';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -104,8 +104,13 @@ export const goRoom = async ({
 			if (result.success && result?.room?._id) {
 				try {
 					const room = await getRoom(result?.room?.rid || '');
-					store.dispatch(roomsStoreLastVisited(result.room._id, room.name));
-				} catch {}
+					emitter.emit('roomVisited', {
+						rid: result.room._id,
+						name: room.name
+					});
+				} catch {
+					// do nothing
+				}
 				console.log('storing last visited room ====================');
 				return navigate({
 					item: {
@@ -129,8 +134,11 @@ export const goRoom = async ({
 	 */
 	let _item = item;
 	if (item.rid) {
-		const roomName = await getRoom(item.rid);
-		storeLastVisitedRoom(item.rid, roomName.name);
+		const room = await getRoom(item.rid);
+		emitter.emit('roomVisited', {
+			rid: room.rid,
+			name: room.name
+		});
 		const sub = await getSubscriptionByRoomId(item.rid);
 		if (sub) {
 			_item = sub;

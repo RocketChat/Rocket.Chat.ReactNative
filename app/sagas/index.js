@@ -16,11 +16,13 @@ import encryption from './encryption';
 import videoConf from './videoConf';
 import troubleshootingNotification from './troubleshootingNotification';
 import quickActions from './quickActions';
+import roomVisited from './roomVisited';
 
 const root = function* root() {
 	yield all([
 		init(),
 		quickActions(),
+		roomVisited(),
 		createChannel(),
 		rooms(),
 		room(),
