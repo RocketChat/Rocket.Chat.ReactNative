@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect, useDispatch } from 'react-redux';
 
-import { registerQuickActions, updateQuickActions } from './lib/quickActions';
+import { registerQuickActions, unregisterQuickActions, updateQuickActions } from './lib/quickActions';
 import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
@@ -39,8 +39,13 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 	const { theme } = useContext(ThemeContext);
 	const dispatch = useDispatch();
 	const lastVisitedRoomName = useAppSelector((state: IApplicationState) => state.rooms.lastVisitedName);
+
 	useEffect(() => {
 		registerQuickActions();
+
+		return () => {
+			unregisterQuickActions();
+		};
 	}, []);
 
 	useEffect(() => {

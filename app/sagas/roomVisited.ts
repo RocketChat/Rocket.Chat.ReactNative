@@ -5,7 +5,7 @@ import type { SagaIterator } from 'redux-saga';
 import { emitter } from '../lib/methods/helpers';
 import { roomsStoreLastVisited } from '../actions/rooms';
 import UserPreferences from '../lib/methods/userPreferences';
-import { LAST_VISITED_ROOM_ID_KEY, LAST_VISITED_ROOM_Name_KEY } from '../lib/constants/keys';
+import { LAST_VISITED_ROOM_ID_KEY, LAST_VISITED_ROOM_NAME_KEY } from '../lib/constants/keys';
 
 function createRoomVisitedChannel() {
 	return eventChannel<{ rid: string; name: string }>(emit => {
@@ -26,7 +26,7 @@ function* watchRoomVisited(): SagaIterator {
 		yield put(roomsStoreLastVisited(rid, name));
 
 		UserPreferences.setString(LAST_VISITED_ROOM_ID_KEY, rid);
-		UserPreferences.setString(LAST_VISITED_ROOM_Name_KEY, name);
+		UserPreferences.setString(LAST_VISITED_ROOM_NAME_KEY, name);
 	}
 }
 

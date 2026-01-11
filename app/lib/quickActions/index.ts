@@ -8,19 +8,11 @@ import I18n from '../../i18n';
 
 let registered = false;
 
-AppState.addEventListener('change', async nextState => {
-	if (nextState === 'active') {
-		const nativeAction = await getRecentQuickAction();
-		if (nativeAction) {
-			InteractionManager.runAfterInteractions(() => {
-				handleQuickAction(nativeAction);
-			});
-		}
-	}
-});
+let quickActionSubscription: { remove(): void } | null = null;
+let appStateSubscription: { remove(): void } | null = null;
 
-export function updateQuickActions({ recentRoomName }: { recentRoomName?: string } = {}) {
-	QuickActions.setItems([
+export async function updateQuickActions({ recentRoomName }: { recentRoomName?: string } = {}) {
+	await QuickActions.setItems([
 		{
 			id: 'search',
 			title: I18n.t('Search'),
@@ -52,20 +44,38 @@ export function updateQuickActions({ recentRoomName }: { recentRoomName?: string
 	]);
 }
 
-export function registerQuickActions() {
+export async function registerQuickActions() {
 	if (registered) {
 		return;
 	}
 	registered = true;
 
-	updateQuickActions();
+	await updateQuickActions();
 
-	QuickActions.addListener(action => {
+	quickActionSubscription = QuickActions.addListener(action => {
 		if (!action?.id) {
 			return;
 		}
 		handleQuickAction(action.id);
 	});
+
+	appStateSubscription = AppState.addEventListener('change', async nextState => {
+		if (nextState === 'active') {
+			const nativeAction = await getRecentQuickAction();
+			if (nativeAction) {
+				InteractionManager.runAfterInteractions(() => {
+					handleQuickAction(nativeAction);
+				});
+			}
+		}
+	});
+}
+
+export function unregisterQuickActions() {
+	quickActionSubscription?.remove();
+	appStateSubscription?.remove();
+	quickActionSubscription = null;
+	registered = false;
 }
 
 function handleQuickAction(id: string) {

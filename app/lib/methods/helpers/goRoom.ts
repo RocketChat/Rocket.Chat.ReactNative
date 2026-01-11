@@ -138,13 +138,17 @@ export const goRoom = async ({
 	 */
 	let _item = item;
 	if (item.rid) {
-		const room = await getRoom(item.rid);
+		try {
+			const room = await getRoom(item.rid);
 
-		// storing last visited room
-		emitter.emit('roomVisited', {
-			rid: room.rid,
-			name: room.name
-		});
+			// storing last visited room
+			emitter.emit('roomVisited', {
+				rid: room.rid,
+				name: room.name
+			});
+		} catch {
+			// do nothing
+		}
 
 		const sub = await getSubscriptionByRoomId(item.rid);
 		if (sub) {

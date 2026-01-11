@@ -10,8 +10,7 @@ RCT_EXPORT_METHOD(
   (RCTPromiseResolveBlock)resolve
   rejecter:(RCTPromiseRejectBlock)reject
 ) {
-  NSString *action = RCPendingQuickActionType;
-  RCPendingQuickActionType = nil;
+  NSString *action = RCConsumePendingQuickActionType();
   resolve(action);
 }
 

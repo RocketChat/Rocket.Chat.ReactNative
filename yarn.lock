@@ -2934,6 +2934,21 @@
     temp-dir "~2.0.0"
     unique-string "~2.0.0"
 
+"@expo/image-utils@~0.7.4":
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/@expo/image-utils/-/image-utils-0.7.6.tgz#b8442bef770e1c7b39997d57f666bffeeced0a7a"
+  integrity sha512-GKnMqC79+mo/1AFrmAcUcGfbsXXTRqOMNS1umebuevl3aaw+ztsYEFEiuNhHZW7PQ3Xs3URNT513ZxKhznDscw==
+  dependencies:
+    "@expo/spawn-async" "^1.7.2"
+    chalk "^4.0.0"
+    getenv "^2.0.0"
+    jimp-compact "0.16.1"
+    parse-png "^2.1.0"
+    resolve-from "^5.0.0"
+    semver "^7.6.0"
+    temp-dir "~2.0.0"
+    unique-string "~2.0.0"
+
 "@expo/json-file@^10.0.8", "@expo/json-file@~10.0.7":
   version "10.0.8"
   resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-10.0.8.tgz#05e524d1ecc0011db0a6d66b525ea2f58cfe6d43"
@@ -8578,13 +8593,13 @@ expo-notifications@0.32.11:
     expo-application "~7.0.7"
     expo-constants "~18.0.8"
 
-expo-quick-actions@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/expo-quick-actions/-/expo-quick-actions-6.0.0.tgz#57c2c664896fcb50190521cec8966c9373389356"
-  integrity sha512-jxfvuZSiBxlRAggMibfw17L6w/1xsleB1AKJUC8QWQmGZq099hET4ycvZK9szaX4hOk5hqbkTxSLxTCk8qmPLw==
+expo-quick-actions@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/expo-quick-actions/-/expo-quick-actions-5.0.0.tgz#6b3c5c21190607f779be1588ebaf119577a3c120"
+  integrity sha512-NSsDhfbal11gXsHkJbvYVw7x0QUCKrEth2kBBKZUv03dX4J7ZPADSV89LyEpOVYXCkrw6LuanlEtKavg/BFaRA==
   dependencies:
-    "@expo/image-utils" "^0.8.7"
-    schema-utils "^4.3.2"
+    "@expo/image-utils" "~0.7.4"
+    schema-utils "^4.2.0"
     sf-symbols-typescript "^2.1.0"
 
 expo-status-bar@^2.2.3:
@@ -13514,7 +13529,7 @@ schema-utils@^4.0.0:
     ajv-formats "^2.1.1"
     ajv-keywords "^5.1.0"
 
-schema-utils@^4.3.2:
+schema-utils@^4.2.0:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.3.3.tgz#5b1850912fa31df90716963d45d9121fdfc09f46"
   integrity sha512-eflK8wEtyOE6+hsaRVPxvUKYCpRgzLqDTb8krvAsRIwOGlHoSgYLgBXoubGgLd2fT41/OUYdb48v4k4WWHQurA==

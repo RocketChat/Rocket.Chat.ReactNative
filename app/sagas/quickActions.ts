@@ -1,4 +1,4 @@
-import { select, takeEvery, put, take, type Effect, call } from 'redux-saga/effects';
+import { select, takeEvery, put, take, type Effect, call, race, delay } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { type Action } from 'redux';
 
@@ -25,7 +25,7 @@ interface IQuickActionOpen extends Action {
 }
 
 function* waitForAppReady(): Generator<Effect, void, any> {
-	const isReady: boolean = yield select((state: any) => state.app.ready);
+	const isReady: boolean = yield select((state: IApplicationState) => state.app.ready);
 
 	if (!isReady) {
 		yield put(appInit());
@@ -37,7 +37,15 @@ function* waitForRoomInDB(rid: string): Generator {
 	try {
 		yield call(getRoom, rid);
 	} catch {
-		yield take(APP.START);
+		// Wait for APP.START OR timeout
+		const { timeout } = yield race({
+			started: take(APP.START),
+			timeout: delay(3000)
+		});
+
+		if (timeout) {
+			throw new Error('Timed out waiting for APP.START');
+		}
 	}
 
 	return yield call(getRoom, rid);
@@ -66,7 +74,7 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			yield put(serverInitAdd(server || ''));
 			break;
 		}
-		case 'search':
+		case 'search': {
 			yield waitForAppReady();
 			const currentRoute = Navigation.getCurrentRoute();
 
@@ -75,16 +83,21 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			}
 			yield put({ type: UI.TRIGGER_SEARCH });
 			break;
-		case 'contact':
+		}
+		case 'contact': {
 			sendEmail();
 			yield waitForAppReady(); // if user navigates back to app just init it
 			break;
+		}
 		case 'recent': {
 			yield waitForAppReady();
 
 			const rid = (yield select((state: IApplicationState) => state.rooms.lastVisitedRid)) as string | undefined;
 
-			if (!rid) return;
+			if (!rid) {
+				showRoomNotFoundError();
+				break;
+			}
 
 			try {
 				const room = (yield call(waitForRoomInDB, rid)) as TSubscriptionModel;
@@ -93,7 +106,7 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 				yield call(goRoom, { item: { rid: room.id }, isMasterDetail: true });
 			} catch (e) {
 				console.log(e);
-				Alert.alert(I18n.t('Room_not_found'), I18n.t('Error_finding_room'));
+				showRoomNotFoundError();
 			}
 
 			break;
@@ -102,6 +115,10 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 
 	yield put({ type: QUICK_ACTIONS.QUICK_ACTION_HANDLED });
 }
+
+const showRoomNotFoundError = () => {
+	Alert.alert(I18n.t('Room_not_found'), I18n.t('Error_finding_room'));
+};
 
 export default function* root(): Generator {
 	yield takeEvery(QUICK_ACTIONS.QUICK_ACTION_HANDLE, handleQuickActionOpen);

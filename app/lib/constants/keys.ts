@@ -26,4 +26,4 @@ export const TOKEN_KEY = 'reactnativemeteor_usertoken';
 export const CURRENT_SERVER = 'currentServer';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const LAST_VISITED_ROOM_ID_KEY = 'RC_LAST_VISITED_ROOM_ID_KEY';
-export const LAST_VISITED_ROOM_Name_KEY = 'RC_LAST_VISITED_ROOM_Name_KEY';
+export const LAST_VISITED_ROOM_NAME_KEY = 'RC_LAST_VISITED_ROOM_NAME_KEY';
