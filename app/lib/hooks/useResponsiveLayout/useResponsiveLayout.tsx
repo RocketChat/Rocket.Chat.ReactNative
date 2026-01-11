@@ -72,11 +72,9 @@ const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProp
 	const baseRowHeightCondensed = isSmallFont ? BASE_ROW_HEIGHT_CONDENSED_SMALL_FONT : BASE_ROW_HEIGHT_CONDENSED;
 	const scaledRowHeight = baseRowHeight * fontScale;
 	const scaledRowHeightCondensed = baseRowHeightCondensed * fontScale;
-	// Apply cap to prevent extreme scaling
 	const rowHeight = Math.min(scaledRowHeight, baseRowHeight * FONT_SCALE_LIMIT);
 	const rowHeightCondensed = Math.min(scaledRowHeightCondensed, baseRowHeightCondensed * FONT_SCALE_LIMIT);
 	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
-	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
 	const fontScaleLimited = isLargeFontScale ? FONT_SCALE_LIMIT : fontScale;
 
 	const scaleFontSize = useCallback((size: number): number => size * fontScale, [fontScale]);
