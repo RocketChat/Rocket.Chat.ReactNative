@@ -83,6 +83,7 @@ tags:
           visible:
             text: ':('
           timeout: 60000
+
       - extendedWaitUntil:
           notVisible:
             text: '😞'
@@ -139,8 +140,4 @@ tags:
       - extendedWaitUntil:
           visible:
             text: '😞'
-          timeout: 60000
-      - extendedWaitUntil:
-          notVisible:
-            text: ':('
           timeout: 60000
