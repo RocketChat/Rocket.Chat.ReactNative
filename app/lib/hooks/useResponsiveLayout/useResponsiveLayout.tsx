@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useSyncExternalStore } from 'react';
 import { useWindowDimensions } from 'react-native';
 
 import { FONT_SIZE_PREFERENCES_KEY } from '../../constants/keys';
@@ -36,13 +36,14 @@ export const FONT_SIZE_OPTIONS = {
 };
 
 const getFontSizeFromStorage = (): number => {
+	const MAX_FONT_SIZE = 5.0;
 	const storedNumber = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
-	if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber) && Number.isFinite(storedNumber) && storedNumber > 0) {
+	if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber) && Number.isFinite(storedNumber) && storedNumber > 0 && storedNumber <= MAX_FONT_SIZE) {
 		return storedNumber;
 	}
 	const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
 	const parsed = storedString !== null ? Number(storedString) : undefined;
-	if (parsed !== undefined && !Number.isNaN(parsed) && Number.isFinite(parsed) && parsed > 0) {
+	if (parsed !== undefined && !Number.isNaN(parsed) && Number.isFinite(parsed) && parsed > 0 && parsed <= MAX_FONT_SIZE) {
 		return parsed as number;
 	}
 	return FONT_SIZE_OPTIONS.NORMAL;
@@ -51,17 +52,19 @@ const getFontSizeFromStorage = (): number => {
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	// `fontScale` is the current font scaling value of the device.
 	const { fontScale: systemFontScale, width, height } = useWindowDimensions();
-	const [customFontSize, setCustomFontSize] = useState(() => getFontSizeFromStorage());
 	
-	useEffect(() => {
-		const listener = initializeStorage.addOnValueChangedListener((changedKey: string) => {
-			if (changedKey === FONT_SIZE_PREFERENCES_KEY) {
-				setCustomFontSize(getFontSizeFromStorage());
-			}
-		});
-		
-		return () => listener.remove();
-	}, []);
+	const customFontSize = useSyncExternalStore(
+		(callback) => {
+			const listener = initializeStorage.addOnValueChangedListener((changedKey: string) => {
+				if (changedKey === FONT_SIZE_PREFERENCES_KEY) {
+					callback();
+				}
+			});
+			return () => listener.remove();
+		},
+		() => getFontSizeFromStorage(),
+		() => getFontSizeFromStorage()
+	);
 
 	const fontSizeMultiplier = typeof customFontSize === 'number' && !Number.isNaN(customFontSize) ? customFontSize : 1.0;
 	const fontScale = systemFontScale * fontSizeMultiplier;
