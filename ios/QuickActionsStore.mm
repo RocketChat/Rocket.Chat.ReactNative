@@ -12,7 +12,7 @@ static void RCInitQuickActionQueue(void) {
 }
 
 void RCSetPendingQuickActionType(NSString * _Nullable type) {
-  dispatch_async(rcQuickActionQueue, ^{
+  dispatch_sync(rcQuickActionQueue, ^{
     RCPendingQuickActionType = type;
   });
 }

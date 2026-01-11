@@ -85,7 +85,7 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			break;
 		}
 		case 'contact': {
-			sendEmail();
+			yield call(sendEmail);
 			yield waitForAppReady(); // if user navigates back to app just init it
 			break;
 		}
