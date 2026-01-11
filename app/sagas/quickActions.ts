@@ -52,12 +52,6 @@ function* waitForNavigationReady(): Generator {
 }
 
 function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
-	// yield take(APP.READY);
-
-	// const state = yield select();
-	// if (!state?.quickActions || state.quickActions.handled) {
-	// 	return;
-	// }
 	const quickAction = action.params?.action ?? action.payload?.action;
 
 	if (!quickAction) {
@@ -68,7 +62,6 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 		case 'add-server': {
 			const server = UserPreferences.getString(CURRENT_SERVER);
 
-			console.log('it reached here==========');
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			yield put(serverInitAdd(server || ''));
 			break;
@@ -95,7 +88,6 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 
 			try {
 				const room = (yield call(waitForRoomInDB, rid)) as TSubscriptionModel;
-				console.log(room, 'room============================');
 				yield waitForNavigationReady();
 				yield put(roomsStoreLastVisited(room.id, room.name));
 				yield call(goRoom, { item: { rid: room.id }, isMasterDetail: true });
@@ -106,8 +98,6 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 
 			break;
 		}
-		default:
-			Alert.alert('Other Quick Action', `this is ${quickAction} action`);
 	}
 
 	yield put({ type: QUICK_ACTIONS.QUICK_ACTION_HANDLED });

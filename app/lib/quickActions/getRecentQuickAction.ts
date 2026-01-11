@@ -7,7 +7,6 @@ const { QuickActionsConnector } = NativeModules;
  * Returns the action type once, then clears it on native side.
  */
 export async function getRecentQuickAction(): Promise<string | null> {
-	console.log(QuickActionsConnector, 'connector=======================');
 	if (!QuickActionsConnector?.getInitialQuickAction) {
 		return null;
 	}

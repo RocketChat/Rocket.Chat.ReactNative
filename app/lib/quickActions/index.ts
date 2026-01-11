@@ -2,7 +2,7 @@ import * as QuickActions from 'expo-quick-actions';
 import { InteractionManager, AppState, Platform } from 'react-native';
 
 import store from '../store';
-import { getRecentQuickAction } from './getInitialQuickAction';
+import { getRecentQuickAction } from './getRecentQuickAction';
 import { quickActionHandle } from '../../actions/quickActions';
 import I18n from '../../i18n';
 
@@ -58,14 +58,10 @@ export function registerQuickActions() {
 	}
 	registered = true;
 
-	console.log('quickactions registered=======================');
-
 	updateQuickActions();
 
 	QuickActions.addListener(action => {
-		console.log(action, 'quickactions=======================');
 		if (!action?.id) {
-			console.log('return block');
 			return;
 		}
 		handleQuickAction(action.id);

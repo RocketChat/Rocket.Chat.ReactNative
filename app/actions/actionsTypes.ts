@@ -60,13 +60,7 @@ export const LOGOUT = 'LOGOUT'; // logout is always success
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN', 'OPEN_VIDEO_CONF']);
-export const QUICK_ACTIONS = createRequestTypes('QUICK_ACTIONS', [
-	'QUICK_ACTION_HANDLE',
-	'QUICK_ACTION_HANDLED',
-	'SET_PENDING_QUICK_ACTION',
-	'CLEAR_PENDING',
-	'MARK_LAUNCHED_FROM_QUICK_ACTION'
-]);
+export const QUICK_ACTIONS = createRequestTypes('QUICK_ACTIONS', ['QUICK_ACTION_HANDLE', 'QUICK_ACTION_HANDLED']);
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['NAVIGATION_READY']);
 export const UI = createRequestTypes('UI', ['TRIGGER_SEARCH', 'CLEAR_TRIGGERED_SEARCH']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);

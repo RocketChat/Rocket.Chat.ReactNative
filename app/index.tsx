@@ -9,7 +9,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
-import { getRecentQuickAction } from './lib/quickActions/getInitialQuickAction';
+import { getRecentQuickAction } from './lib/quickActions/getRecentQuickAction';
 import { deepLinkingOpen } from './actions/deepLinking';
 import { quickActionHandle } from './actions/quickActions';
 import { ActionSheetProvider } from './containers/ActionSheet';
@@ -63,6 +63,10 @@ interface IState {
 
 const parseDeepLinking = (url: string) => {
 	if (url) {
+		/**
+		 * android only
+		 * restores quick action from intent / Linking
+		 */
 		if (url.startsWith('rocketchat://quick-action/')) {
 			const action = url.replace('rocketchat://quick-action/', '');
 			return {
@@ -119,14 +123,8 @@ export default class Root extends React.Component<{}, IState> {
 
 	componentDidMount() {
 		this.listenerTimeout = setTimeout(() => {
-			Linking.addEventListener('url', async ({ url }) => {
+			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
-				const quickAction = await getRecentQuickAction();
-				console.log(quickAction, 'inside the listerner=========================');
-				if (parsedDeepLinkingURL?.type === 'quick-action') {
-					store.dispatch(quickActionHandle({ type: 'quick-action', action: parsedDeepLinkingURL.action }));
-					return;
-				}
 				if (parsedDeepLinkingURL) {
 					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 				}
@@ -167,17 +165,24 @@ export default class Root extends React.Component<{}, IState> {
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
-		const quickAction = await getRecentQuickAction();
-		console.log(deepLinking, 'deeplinking========================');
 
+		/**
+		 * ios only
+		 * fetched recent quick action stored on native side
+		 * automatically cleared after we call to `getRecentQuickAction()`
+		 */
+		const quickAction = await getRecentQuickAction();
 		if (quickAction) {
-			store.dispatch(quickActionHandle({ type: 'quick-action', action: quickAction }));
+			store.dispatch(quickActionHandle({ action: quickAction }));
 			return;
 		}
+
+		// android quick action handling via intent
 		if (parsedDeepLinkingURL?.type === 'quick-action') {
-			store.dispatch(quickActionHandle({ type: 'quick-action', action: parsedDeepLinkingURL.action }));
+			store.dispatch(quickActionHandle({ action: parsedDeepLinkingURL.action }));
 			return;
 		}
+
 		if (parsedDeepLinkingURL) {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
