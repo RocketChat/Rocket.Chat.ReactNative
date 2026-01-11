@@ -24,7 +24,7 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 			return;
 		}
 
-		const params = { roomId, count: COUNT, ...(lastTs && { latest: lastTs }) };
+		const params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
 
 		let data;
 		switch (apiType) {
