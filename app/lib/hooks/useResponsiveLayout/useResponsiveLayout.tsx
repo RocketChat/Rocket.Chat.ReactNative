@@ -40,9 +40,18 @@ const getFontSizeFromStorage = (): number => {
 	if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber)) {
 		return storedNumber;
 	}
+
 	const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
 	const parsed = storedString !== null ? Number(storedString) : undefined;
-	return !Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL;
+	if (!Number.isNaN(parsed ?? NaN)) {
+		// Normalize storage to numeric to avoid mixed types across the app.
+		userPreferences.setNumber(FONT_SIZE_PREFERENCES_KEY, parsed as number);
+		return parsed as number;
+	}
+
+	// Default to normal size if nothing is set or parsing failed.
+	userPreferences.setNumber(FONT_SIZE_PREFERENCES_KEY, FONT_SIZE_OPTIONS.NORMAL);
+	return FONT_SIZE_OPTIONS.NORMAL;
 };
 
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
