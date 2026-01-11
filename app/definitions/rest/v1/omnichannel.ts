@@ -8,8 +8,7 @@ import { type ILivechatVisitor, type ILivechatVisitorDTO } from '../../ILivechat
 import { type IMessage } from '../../IMessage';
 import { type IOmnichannelRoom, type IServerRoom } from '../../IRoom';
 import { type ISetting } from '../../ISetting';
-import { type PaginatedRequest } from '../helpers/PaginatedRequest';
-import { type PaginatedResult } from '../helpers/PaginatedResult';
+import type { PaginatedRequest, PaginatedResult } from '@rocket.chat/rest-typings';
 
 type booleanString = 'true' | 'false';
 

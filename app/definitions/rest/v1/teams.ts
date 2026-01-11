@@ -1,6 +1,6 @@
 import { type IServerRoom } from '../../IRoom';
 import { type IServerTeamUpdateRoom, type ITeam, type TEAM_TYPE } from '../../ITeam';
-import { type PaginatedResult } from '../helpers/PaginatedResult';
+import type { PaginatedResult } from '@rocket.chat/rest-typings';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {

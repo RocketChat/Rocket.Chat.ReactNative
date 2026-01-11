@@ -9,7 +9,7 @@ import {
 	type VideoConfListProps,
 	type VideoConfStartProps
 } from '../../IVideoConference';
-import { type PaginatedResult } from '../helpers/PaginatedResult';
+import type { PaginatedResult } from '@rocket.chat/rest-typings';
 
 export type VideoConferenceEndpoints = {
 	'video-conference.start': {

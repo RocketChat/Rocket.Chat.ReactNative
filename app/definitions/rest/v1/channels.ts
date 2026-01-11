@@ -4,7 +4,7 @@ import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 import { type IGetRoomRoles } from '../../IRole';
 import { type IServerAttachment } from '../../IAttachment';
-import { type PaginatedRequest } from '../helpers/PaginatedRequest';
+import type { PaginatedRequest } from '@rocket.chat/rest-typings';
 
 export type ChannelsEndpoints = {
 	'channels.files': {
