@@ -1,8 +1,9 @@
+import type { PaginatedRequest } from '@rocket.chat/rest-typings';
+
 import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom, RoomID, RoomType } from '../../IRoom';
 import type { IUser } from '../../IUser';
 import { type IServerAttachment } from '../../IAttachment';
-import type { PaginatedRequest } from '@rocket.chat/rest-typings';
 
 export type ImEndpoints = {
 	'im.create': {

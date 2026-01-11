@@ -1,5 +1,6 @@
-import { type IServerRoom } from '../../IRoom';
 import type { PaginatedResult } from '@rocket.chat/rest-typings';
+
+import { type IServerRoom } from '../../IRoom';
 
 export type DirectoryEndpoint = {
 	directory: {

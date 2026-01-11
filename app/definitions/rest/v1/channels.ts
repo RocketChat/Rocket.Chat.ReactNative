@@ -1,10 +1,11 @@
+import type { PaginatedRequest } from '@rocket.chat/rest-typings';
+
 import { type ITeam } from '../../ITeam';
 import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 import { type IGetRoomRoles } from '../../IRole';
 import { type IServerAttachment } from '../../IAttachment';
-import type { PaginatedRequest } from '@rocket.chat/rest-typings';
 
 export type ChannelsEndpoints = {
 	'channels.files': {

@@ -1,5 +1,6 @@
-import { type ISetting, type ISettingColor } from '../../ISetting';
 import type { PaginatedResult } from '@rocket.chat/rest-typings';
+
+import { type ISetting, type ISettingColor } from '../../ISetting';
 
 type SettingsUpdateProps = SettingsUpdatePropDefault | SettingsUpdatePropsActions | SettingsUpdatePropsColor;
 

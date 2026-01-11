@@ -1,6 +1,7 @@
+import type { PaginatedResult } from '@rocket.chat/rest-typings';
+
 import type { EncryptedContent, IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
-import type { PaginatedResult } from '@rocket.chat/rest-typings';
 
 export type ChatEndpoints = {
 	'chat.getMessage': {

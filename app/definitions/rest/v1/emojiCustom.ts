@@ -1,5 +1,6 @@
-import type { ICustomEmojiDescriptor } from '../../ICustomEmojiDescriptor';
 import type { PaginatedRequest, PaginatedResult } from '@rocket.chat/rest-typings';
+
+import type { ICustomEmojiDescriptor } from '../../ICustomEmojiDescriptor';
 
 export type EmojiCustomEndpoints = {
 	'emoji-custom.all': {

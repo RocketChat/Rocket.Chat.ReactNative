@@ -1,3 +1,5 @@
+import type { PaginatedRequest, PaginatedResult } from '@rocket.chat/rest-typings';
+
 import { type ICannedResponse } from '../../ICannedResponse';
 import { type ILivechatAgent } from '../../ILivechatAgent';
 import { type ILivechatDepartment } from '../../ILivechatDepartment';
@@ -8,7 +10,6 @@ import { type ILivechatVisitor, type ILivechatVisitorDTO } from '../../ILivechat
 import { type IMessage } from '../../IMessage';
 import { type IOmnichannelRoom, type IServerRoom } from '../../IRoom';
 import { type ISetting } from '../../ISetting';
-import type { PaginatedRequest, PaginatedResult } from '@rocket.chat/rest-typings';
 
 type booleanString = 'true' | 'false';
 
