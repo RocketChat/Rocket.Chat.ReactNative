@@ -13,6 +13,7 @@ import { sendEmail } from '../views/SettingsView';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { getRoom } from '../lib/methods/getRoom';
 import { roomsStoreLastVisited } from '../actions/rooms';
+import I18n from '../i18n';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -100,7 +101,7 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 				yield call(goRoom, { item: { rid: room.id }, isMasterDetail: true });
 			} catch (e) {
 				console.log(e);
-				Alert.alert('Error', 'Error finding room in this server, try switching server');
+				Alert.alert(I18n.t('Room_not_found'), I18n.t('Error_finding_room'));
 			}
 
 			break;
