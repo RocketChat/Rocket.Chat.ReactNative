@@ -2,13 +2,13 @@ import React from 'react';
 import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
-import moment from 'moment';
 import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { type Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
 
+import dayjs from '../../lib/dayjs';
 import {
 	getRoutingConfig,
 	getUserInfo,
@@ -102,6 +102,10 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { type IRoomViewProps, type IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import { type IRoomFederated, isRoomFederated, isRoomNativeFederated } from '../../lib/methods/isRoomFederated';
+import { InvitedRoom } from './components/InvitedRoom';
+import { getInvitationData } from '../../lib/methods/getInvitationData';
+import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -328,6 +332,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		) {
 			this.updateE2EEState();
 		}
+
+		// init() is skipped for invite subscriptions. Initialize when invite has been accepted
+		if (prevState.roomUpdate.status === 'INVITED' && roomUpdate.status !== 'INVITED') {
+			this.init();
+		}
 	}
 
 	updateOmnichannel = async () => {
@@ -535,6 +544,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
+					abacAttributes={iSubRoom.abacAttributes}
+					disabled={isInviteSubscription(iSubRoom)}
 				/>
 			),
 			headerRight: () => (
@@ -637,6 +648,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (!this.rid) {
 				return;
 			}
+
+			if ('id' in room && isInviteSubscription(room)) {
+				this.setState({ loading: false });
+				return;
+			}
+
 			if (this.tmid) {
 				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
 			} else {
@@ -1088,10 +1105,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		logEvent(events.ROOM_JOIN);
 		try {
 			const { room } = this.state;
+			const { serverVersion } = this.props;
 
 			if (this.isOmnichannel) {
 				if ('_id' in room) {
-					await takeInquiry(room._id);
+					await takeInquiry(room._id, serverVersion as string);
 				}
 				this.onJoin();
 			} else {
@@ -1334,6 +1352,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	getText = () => this.messageComposerRef.current?.getText();
 
+	getFederatedFooterDescription = (room: IRoomFederated) => {
+		const { isFederationEnabled, isFederationModuleEnabled } = this.props;
+
+		if (!isRoomNativeFederated(room)) {
+			return I18n.t('Federation_Matrix_room_description_invalid_version');
+		}
+
+		if (!isFederationEnabled) {
+			return I18n.t('Federation_Matrix_room_description_disabled');
+		}
+
+		if (!isFederationModuleEnabled) {
+			return I18n.t('Federation_Matrix_room_description_missing_module');
+		}
+
+		return undefined;
+	};
+
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -1350,14 +1386,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
+		const federated = 'id' in room && isRoomFederated(room);
 
 		if (!previousItem) {
 			dateSeparator = item.ts;
-			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
+			showUnreadSeparator = lastOpen ? dayjs(item.ts).isAfter(lastOpen) : false;
 		} else {
 			showUnreadSeparator =
-				(lastOpen && moment(item.ts).isSameOrAfter(lastOpen) && moment(previousItem.ts).isBefore(lastOpen)) ?? false;
-			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
+				(lastOpen &&
+					(dayjs(item.ts).isSame(lastOpen) || dayjs(item.ts).isAfter(lastOpen)) &&
+					dayjs(previousItem.ts).isBefore(lastOpen)) ??
+				false;
+			if (!dayjs(item.ts).isSame(previousItem.ts, 'day')) {
 				dateSeparator = item.ts;
 			}
 		}
@@ -1414,7 +1454,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					Message_GroupingPeriod={Message_GroupingPeriod}
 					timeFormat={Message_TimeFormat}
 					useRealName={useRealName}
-					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
+					isReadReceiptEnabled={Message_Read_Receipt_Enabled && !federated}
 					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
@@ -1500,6 +1540,19 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
+
+		if ('id' in room && isRoomFederated(room)) {
+			const description = this.getFederatedFooterDescription(room);
+
+			if (description) {
+				return (
+					<View style={styles.readOnly}>
+						<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{description}</Text>
+					</View>
+				);
+			}
+		}
+
 		return <MessageComposerContainer ref={this.messageComposerRef} />;
 	};
 
@@ -1557,6 +1610,16 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let announcement;
 		if ('id' in room) {
 			({ bannerClosed, announcement } = room);
+		}
+
+		if ('id' in room && isInviteSubscription(room)) {
+			const { title, description, inviter, accept, reject } = getInvitationData(room);
+
+			return (
+				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view-invited'>
+					<InvitedRoom title={title} description={description} inviter={inviter} onAccept={accept} onReject={reject} />
+				</SafeAreaView>
+			);
 		}
 
 		if ('encrypted' in room) {
@@ -1636,7 +1699,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
 	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
 	inAppFeedback: state.inAppFeedback,
-	encryptionEnabled: state.encryption.enabled
+	encryptionEnabled: state.encryption.enabled,
+	isFederationEnabled: (state.settings.Federation_Matrix_enabled || state.settings.Federation_Service_Enabled) as boolean,
+	isFederationModuleEnabled: state.enterpriseModules.includes('federation') as boolean
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
