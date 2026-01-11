@@ -38,10 +38,10 @@ function* waitForRoomInDB(rid: string): Generator {
 		yield call(getRoom, rid);
 	} catch {
 		// Wait for APP.START OR timeout
-		const { timeout } = yield race({
+		const { timeout } = (yield race({
 			started: take(APP.START),
 			timeout: delay(3000)
-		});
+		})) as { started?: unknown; timeout?: true };
 
 		if (timeout) {
 			throw new Error('Timed out waiting for APP.START');
