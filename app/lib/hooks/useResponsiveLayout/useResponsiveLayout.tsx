@@ -37,12 +37,15 @@ export const FONT_SIZE_OPTIONS = {
 
 const getFontSizeFromStorage = (): number => {
 	const storedNumber = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
-	if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber)) {
+	if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber) && Number.isFinite(storedNumber) && storedNumber > 0) {
 		return storedNumber;
 	}
 	const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
 	const parsed = storedString !== null ? Number(storedString) : undefined;
-	return !Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL;
+	if (parsed !== undefined && !Number.isNaN(parsed) && Number.isFinite(parsed) && parsed > 0) {
+		return parsed as number;
+	}
+	return FONT_SIZE_OPTIONS.NORMAL;
 };
 
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
