@@ -35,30 +35,25 @@ export const FONT_SIZE_OPTIONS = {
 	EXTRA_LARGE: 1.2
 };
 
+const getFontSizeFromStorage = (): number => {
+	const storedNumber = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
+	if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber)) {
+		return storedNumber;
+	}
+	const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
+	const parsed = storedString !== null ? Number(storedString) : undefined;
+	return !Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL;
+};
+
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	// `fontScale` is the current font scaling value of the device.
 	const { fontScale: systemFontScale, width, height } = useWindowDimensions();
-	const [customFontSize, setCustomFontSize] = useState(() => {
-		const storedNumber = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
-		if (typeof storedNumber === 'number' && !Number.isNaN(storedNumber)) {
-			return storedNumber;
-		}
-		const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
-		const parsed = storedString !== null ? Number(storedString) : undefined;
-		return !Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL;
-	});
+	const [customFontSize, setCustomFontSize] = useState(() => getFontSizeFromStorage());
 	
 	useEffect(() => {
 		const listener = initializeStorage.addOnValueChangedListener((changedKey: string) => {
 			if (changedKey === FONT_SIZE_PREFERENCES_KEY) {
-				const newValue = userPreferences.getNumber(FONT_SIZE_PREFERENCES_KEY);
-				if (typeof newValue === 'number' && !Number.isNaN(newValue)) {
-					setCustomFontSize(newValue);
-					return;
-				}
-				const storedString = userPreferences.getString(FONT_SIZE_PREFERENCES_KEY);
-				const parsed = storedString !== null ? Number(storedString) : undefined;
-				setCustomFontSize(!Number.isNaN(parsed ?? NaN) ? (parsed as number) : FONT_SIZE_OPTIONS.NORMAL);
+				setCustomFontSize(getFontSizeFromStorage());
 			}
 		});
 		
