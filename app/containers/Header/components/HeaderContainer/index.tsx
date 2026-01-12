@@ -35,7 +35,7 @@ const HeaderContainer = memo(
 					paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
 					gap: isMasterDetail ? 4 : 12,
 					backgroundColor: colors.surfaceNeutral,
-					borderBottomWidth: StyleSheet.hairlineWidth,
+					borderBottomWidth: 1,
 					borderBottomColor: colors.strokeLight
 				}}>
 				{children}
