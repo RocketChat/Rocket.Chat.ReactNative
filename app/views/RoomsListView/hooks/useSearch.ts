@@ -84,7 +84,8 @@ export const useSearch = () => {
 
 	const startSearch = useCallback(() => {
 		dispatch({ type: 'START_SEARCH' });
-	}, []);
+		search('');
+	}, [search]);
 
 	const stopSearch = useCallback(() => {
 		dispatch({ type: 'STOP_SEARCH' });
