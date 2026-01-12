@@ -187,7 +187,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen name='AdminPanelView' component={AdminPanelView} />
 				<ModalStack.Screen name='NewMessageView' component={NewMessageView} />
-				<ModalStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
 				<ModalStack.Screen name='CreateChannelView' component={CreateChannelView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />

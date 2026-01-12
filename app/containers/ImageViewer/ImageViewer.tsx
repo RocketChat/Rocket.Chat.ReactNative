@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 });
 
 export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerProps): React.ReactElement => {
-	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY);
+	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);
 

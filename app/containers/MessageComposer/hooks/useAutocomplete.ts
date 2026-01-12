@@ -16,6 +16,7 @@ import { getCommandPreview, getListCannedResponse } from '../../../lib/services/
 import log from '../../../lib/methods/helpers/log';
 import I18n from '../../../i18n';
 import { NO_CANNED_RESPONSES } from '../constants';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 
 const MENTIONS_COUNT_TO_DISPLAY = 4;
 
@@ -52,6 +53,8 @@ export const useAutocomplete = ({
 	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
 }): TAutocompleteItem[] => {
 	const [items, setItems] = useState<TAutocompleteItem[]>([]);
+	const [mentionAll, mentionHere] = usePermissions(['mention-all', 'mention-here']);
+
 	useEffect(() => {
 		const getAutocomplete = async () => {
 			try {
@@ -87,7 +90,7 @@ export const useAutocomplete = ({
 							type
 						})) as IAutocompleteUserRoom[];
 					if (type === '@') {
-						if ('all'.includes(text.toLocaleLowerCase())) {
+						if (mentionAll && 'all'.includes(text.toLocaleLowerCase())) {
 							parsedRes.push({
 								id: 'all',
 								title: 'all',
@@ -96,7 +99,7 @@ export const useAutocomplete = ({
 								t: 'd'
 							});
 						}
-						if ('here'.includes(text.toLocaleLowerCase())) {
+						if (mentionHere && 'here'.includes(text.toLocaleLowerCase())) {
 							parsedRes.push({
 								id: 'here',
 								title: 'here',

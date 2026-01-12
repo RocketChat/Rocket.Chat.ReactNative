@@ -9,6 +9,10 @@
 import Foundation
 
 struct Message: Codable {
+  let msg: String
+}
+
+struct FallbackMessage: Codable {
   let _id: String
   let text: String
   let userId: String
