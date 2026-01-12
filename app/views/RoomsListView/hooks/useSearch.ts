@@ -98,12 +98,6 @@ export const useSearch = () => {
 		}
 	}, [startSearch, storeDispatch, triggerSearch]);
 
-	useEffect(() => {
-		if (state.searchEnabled) {
-			search('');
-		}
-	}, [state.searchEnabled, search]);
-
 	return {
 		searching: state.searching,
 		searchEnabled: state.searchEnabled,

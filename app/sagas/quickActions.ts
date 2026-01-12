@@ -102,8 +102,9 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			try {
 				const room = (yield call(waitForRoomInDB, rid)) as TSubscriptionModel;
 				yield waitForNavigationReady();
-				yield put(roomsStoreLastVisited(room.id, room.name));
-				yield call(goRoom, { item: { rid: room.id }, isMasterDetail: true });
+				yield put(roomsStoreLastVisited(room.rid, room.name));
+				const isMasterDetail = yield select((state: IApplicationState) => state.app.isMasterDetail);
+				yield call(goRoom, { item: { rid: room.rid }, isMasterDetail });
 			} catch (e) {
 				console.log(e);
 				showRoomNotFoundError();
