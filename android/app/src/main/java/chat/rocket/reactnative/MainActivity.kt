@@ -13,6 +13,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import chat.rocket.reactnative.notification.NotificationIntentHandler
 import androidx.core.net.toUri
+import java.util.Locale
 
 class MainActivity : ReactActivity() {
 
@@ -46,6 +47,11 @@ class MainActivity : ReactActivity() {
     super.onNewIntent(intent)
     setIntent(intent)
 
+    /* Keep this after super:
+      - onNewIntent is required for background quick actions
+      - Expo handles background shortcuts via JS listeners
+      - Normalizing before super breaks that flow
+     */
     // quick actions handling
     embedQuickActionIntoLinking(intent)
 
@@ -121,7 +127,7 @@ class MainActivity : ReactActivity() {
 
     val quickAction = action
       .removePrefix("chat.rocket.reactnative.")
-      .lowercase()
+      .lowercase(Locale.ROOT)
       .replace('_', '-')
 
     val uri = "rocketchat://quick-action/$quickAction".toUri()
