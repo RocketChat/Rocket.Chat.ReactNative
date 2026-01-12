@@ -5,6 +5,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Components/Attachments/Image';
 import Navigation from '../../lib/navigation/appNavigation';
+import { normalizeImageUrl } from '../../lib/methods/helpers/normalizeImageUrl';
 import { type IThumb, type IImage, type IElement } from './interfaces';
 import { type IAttachment } from '../../definitions';
 
@@ -23,9 +24,15 @@ const ThumbContext = (args: IThumb) => (
 	</View>
 );
 
-export const Thumb = ({ element, size = 88 }: IThumb) => (
-	<ExpoImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element?.imageUrl }} />
-);
+export const Thumb = ({ element, size = 88 }: IThumb) => {
+	const normalizedUrl = normalizeImageUrl(element?.imageUrl);
+
+	if (!normalizedUrl) {
+		return null;
+	}
+
+	return <ExpoImage style={[{ width: size, height: size }, styles.image]} source={{ uri: normalizedUrl }} />;
+};
 
 export const Media = ({ element }: IImage) => {
 	const showAttachment = (attachment: IAttachment) => Navigation.navigate('AttachmentView', { attachment });
