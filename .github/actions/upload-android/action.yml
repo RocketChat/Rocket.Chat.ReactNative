@@ -82,8 +82,7 @@ runs:
       working-directory: android
       run: |
         if [[ ${{ inputs.trigger }} == "pr" ]]; then
-          bundle exec fastlane android official_open_testing
-          # bundle exec fastlane android beta official:${{ inputs.type == 'official' }}
+          bundle exec fastlane android beta official:${{ inputs.type == 'official' }}
         fi
         if [[ ${{ inputs.trigger }} == "develop" ]] && [[ ${{ inputs.type }} == 'experimental' ]]; then
           bundle exec fastlane android experimental_production
