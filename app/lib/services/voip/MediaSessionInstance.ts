@@ -12,6 +12,7 @@ import { randomUuid } from '@rocket.chat/mobile-crypto';
 import { mediaSessionStore } from './MediaSessionStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
+import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
@@ -90,6 +91,8 @@ class MediaSessionInstance {
 			if (mainCall && mainCall.callId === callId) {
 				await mainCall.accept();
 				RNCallKeep.setCurrentCallActive(callUUID);
+				// Navigate to CallView - call data fetched from mediaSessionStore
+				Navigation.navigate('CallView', { callUUID });
 			} else {
 				RNCallKeep.endCall(callUUID);
 			}
