@@ -62,8 +62,6 @@ runs:
     - name: Prepare Play Store changelog metadata
       if: ${{ inputs.trigger == 'develop' }}
       run: |
-        echo "Build version: $BUILD_VERSION"
-
         mkdir -p android/fastlane/metadata/android/en-US/changelogs
 
         if [ -f changelog.txt ]; then
