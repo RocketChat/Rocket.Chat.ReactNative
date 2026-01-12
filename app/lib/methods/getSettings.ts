@@ -155,7 +155,7 @@ export async function getSettings(): Promise<void> {
 		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
 		// RC 0.60.0
 		let offset = 0;
-		let remaining;
+		let remaining
 		let settings: IData[] = [];
 		const serverVersion = reduxStore.getState().server.version;
 		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
@@ -165,7 +165,7 @@ export async function getSettings(): Promise<void> {
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(`${url}&offset=${offset}`);
+			const response = await fetch(`https://${url}&offset=${offset}`);
 
 			const result = await response.json();
 			if (!result.success) {

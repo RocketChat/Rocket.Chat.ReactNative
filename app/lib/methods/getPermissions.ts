@@ -186,7 +186,7 @@ export function getPermissions(): Promise<void> {
 				params.updatedSince = updatedSince;
 			}
 			// RC 0.73.0
-			const result = await sdk.get('permissions.listAll', params);
+			const result = await sdk.methodCall('permissions/get', params);
 
 			if (!result.success) {
 				return resolve();
