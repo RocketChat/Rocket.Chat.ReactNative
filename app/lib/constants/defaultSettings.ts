@@ -306,5 +306,11 @@ export const defaultSettings = {
 	Federation_Matrix_enabled: {
 		type: 'valueAsBoolean'
 	},
+	VoIP_TeamCollab_Ice_Servers: {
+		type: 'valueAsString'
+	},
+	VoIP_TeamCollab_Ice_Gathering_Timeout: {
+		type: 'valueAsNumber'
+	},
 	...deprecatedSettings
 } as const;
