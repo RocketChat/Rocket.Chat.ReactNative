@@ -340,7 +340,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			try {
 				let params = {};
 				const result = await getRoomInfo(item._id);
-				if (result.success) {
+				if (result && result.room) {
 					params = {
 						rid: item._id,
 						name: getRoomTitle(result.room),
@@ -367,7 +367,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		try {
 			const { data } = this.state;
 			const result = await updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
-			if (result.success) {
+			if (result) {
 				const newData = data.map(i => {
 					if (i._id === item._id) {
 						i.teamDefault = !i.teamDefault;
@@ -406,7 +406,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		try {
 			const { data } = this.state;
 			const result = await removeTeamRoom({ roomId: item._id, teamId: this.team.teamId as string });
-			if (result.success) {
+			if (result) {
 				const newData = data.filter(room => result.room._id !== room._id);
 				this.setState({ data: newData });
 			}

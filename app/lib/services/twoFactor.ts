@@ -1,5 +1,3 @@
-import { settings } from '@rocket.chat/sdk';
-
 import { TWO_FACTOR } from '../../containers/TwoFactor';
 import EventEmitter from '../methods/helpers/events';
 import { type ICredentials } from '../../definitions';
@@ -18,11 +16,6 @@ export const twoFactor = ({ method, invalid, params }: ITwoFactor): Promise<{ tw
 			params,
 			cancel: () => reject(),
 			submit: (code: string) => {
-				settings.customHeaders = {
-					...settings.customHeaders,
-					'x-2fa-code': code,
-					'x-2fa-method': method
-				};
 				resolve({ twoFactorCode: code, twoFactorMethod: method });
 			}
 		});

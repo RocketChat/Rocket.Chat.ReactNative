@@ -39,7 +39,7 @@ export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, up
 	try {
 		const type = roomType;
 		const result = await getRoomRoles(rid, type);
-		if (result?.success) {
+		if (result) {
 			updateState({ roomRoles: result.roles });
 		}
 	} catch (e) {

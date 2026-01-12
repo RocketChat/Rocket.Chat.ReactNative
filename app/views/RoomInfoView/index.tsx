@@ -127,7 +127,7 @@ const RoomInfoView = (): React.ReactElement => {
 		try {
 			if (room?.visitor?._id) {
 				const result = await getVisitorInfo(room.visitor._id);
-				if (result.success) {
+				if (result) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
 					if (visitor.userAgent) {
@@ -166,7 +166,7 @@ const RoomInfoView = (): React.ReactElement => {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
 				const result = await getUserInfo(roomUserId);
-				if (result.success) {
+				if (result) {
 					const { user } = result;
 					const r = handleRoles(user);
 					setRoomUser({ ...user, roles: r });

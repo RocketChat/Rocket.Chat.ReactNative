@@ -43,10 +43,10 @@ const UserNotificationPreferencesView = () => {
 	useEffect(() => {
 		async function getPreferences() {
 			try {
-				const result = await getUserPreferences(userId);
-				if (result.success) {
+				const result = await getUserPreferences();
+				if (result.preferences) {
 					setLoading(false);
-					setPreferences(result.preferences);
+					setPreferences(result.preferences as INotificationPreferences);
 				}
 			} catch (error) {
 				setLoading(false);
@@ -61,7 +61,7 @@ const UserNotificationPreferencesView = () => {
 		try {
 			setPreferences({ ...previousPreferences, ...param });
 			const result = await setUserPreferences(userId, param);
-			if (!result.success) {
+			if (!result) {
 				setPreferences(previousPreferences);
 			}
 		} catch (error) {
