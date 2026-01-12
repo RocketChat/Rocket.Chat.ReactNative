@@ -60,7 +60,9 @@ class MainActivity : ReactActivity() {
   private fun embedQuickActionIntoLinking(intent: Intent) {
     val action = intent.action ?: return
 
-    android.util.Log.d("RocketChat.QuickAction", "Original action: $action")
+    if (BuildConfig.DEBUG){
+      android.util.Log.d("RocketChat.QuickAction", "Original action: $action")
+    }
 
     // Handle Expo quick actions
     if (action == "expo.modules.quickactions.SHORTCUT") {
@@ -86,23 +88,34 @@ class MainActivity : ReactActivity() {
         if (shortcutId != null) {
           val uri = "rocketchat://quick-action/$shortcutId".toUri()
 
-          android.util.Log.d("RocketChat.QuickAction", "Converted to: $uri")
+          if (BuildConfig.DEBUG) {
+            android.util.Log.d("RocketChat.QuickAction", "Converted to: $uri")
+          }
 
           intent.action = Intent.ACTION_VIEW
           intent.data = uri
           setIntent(intent)
 
-          android.util.Log.d("RocketChat.QuickAction", "Intent set with data: ${getIntent().data}")
+          if (BuildConfig.DEBUG) {
+            android.util.Log.d(
+              "RocketChat.QuickAction",
+              "Intent set with data: ${getIntent().data}"
+            )
+          }
         }
       } else {
-        android.util.Log.d("RocketChat.QuickAction", "No shortcut_data bundle found")
+        if (BuildConfig.DEBUG){
+          android.util.Log.d("RocketChat.QuickAction", "No shortcut_data bundle found")
+        }
       }
       return
     }
 
     // skip for non-Expo quick actions (app launches)
     if (!action.startsWith("chat.rocket.reactnative.")) {
-      android.util.Log.d("RocketChat.QuickAction", "Not a quick action, skipping")
+      if (BuildConfig.DEBUG) {
+        android.util.Log.d("RocketChat.QuickAction", "Not a quick action, skipping")
+      }
       return
     }
 
@@ -117,6 +130,8 @@ class MainActivity : ReactActivity() {
     intent.data = uri
     setIntent(intent)
 
-    android.util.Log.d("RocketChat.QuickAction", "Intent set with data: ${getIntent().data}")
+    if (BuildConfig.DEBUG){
+      android.util.Log.d("RocketChat.QuickAction", "Intent set with data: ${getIntent().data}")
+    }
   }
 }
