@@ -12,6 +12,7 @@ import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
+import { isValidImageUri } from '../../../../../lib/methods/helpers/normalizeImageUrl';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	'use memo';
@@ -24,7 +25,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 	const isGif = imageType === 'image/gif';
 
 	useEffect(() => {
-		if (status === 'downloaded') {
+		if (status === 'downloaded' && isValidImageUri(uri)) {
 			Image.loadAsync(uri, {
 				onError: e => {
 					log(e);
@@ -65,9 +66,12 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 		);
 	}
 
+	// Validate URI before rendering to prevent crashes
+	const isValidUri = isValidImageUri(uri);
+
 	return (
 		<>
-			{showImage ? (
+			{showImage && isValidUri ? (
 				<View style={[containerStyle, borderStyle]}>
 					<Image autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
 				</View>

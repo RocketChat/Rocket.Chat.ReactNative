@@ -1,6 +1,61 @@
 import { URL } from 'react-native-url-polyfill';
 
 /**
+ * Validates if a URI is safe to use with expo-image.
+ * Prevents crashes by checking if the URI can be safely converted to a URL object.
+ *
+ * @param uri - The URI string to validate
+ * @returns true if the URI is safe to use, false otherwise
+ */
+export const isValidImageUri = (uri: string | null | undefined): boolean => {
+	if (!uri || typeof uri !== 'string') {
+		return false;
+	}
+
+	// Trim whitespace
+	const trimmedUri = uri.trim();
+
+	// Empty strings will cause crashes in expo-modules-core's URL(fileURLWithPath:)
+	if (!trimmedUri) {
+		return false;
+	}
+
+	// Data URIs are safe
+	if (trimmedUri.startsWith('data:')) {
+		return true;
+	}
+
+	// File URIs need to be valid
+	if (trimmedUri.startsWith('file://')) {
+		try {
+			new URL(trimmedUri);
+			return true;
+		} catch {
+			return false;
+		}
+	}
+
+	// HTTP/HTTPS URLs need to be valid
+	if (trimmedUri.startsWith('http://') || trimmedUri.startsWith('https://')) {
+		try {
+			new URL(trimmedUri);
+			return true;
+		} catch {
+			return false;
+		}
+	}
+
+	// For absolute file paths (starting with /), check if they're not empty
+	// Empty paths will crash URL(fileURLWithPath:)
+	if (trimmedUri.startsWith('/')) {
+		return trimmedUri.length > 1;
+	}
+
+	// Reject other formats that might cause issues
+	return false;
+};
+
+/**
  * Normalizes and validates image URLs for use with expo-image.
  * Ensures URLs are valid HTTP/HTTPS URLs and not file paths to prevent
  * iOS crashes when expo-image's native code incorrectly uses URL(fileURLWithPath:)
