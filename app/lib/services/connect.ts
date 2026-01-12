@@ -19,12 +19,11 @@ import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { compareServerVersion, isIOS } from '../methods/helpers';
-import { onRolesChanged } from 'lib/methods/getRoles';
-import { getSettings } from 'lib/methods/getSettings';
-import { setPresenceCap } from 'lib/methods/getUsersPresence';
-import { _setUser, _activeUsers, _setUserTimer } from 'lib/methods/setUser';
-import { unsubscribeRooms } from 'lib/methods/subscribeRooms';
-import { IActiveUsers } from 'reducers/activeUsers';
+import { onRolesChanged } from '../../lib/methods/getRoles';
+import { getSettings } from '../../lib/methods/getSettings';
+import { setPresenceCap } from '../../lib/methods/getUsersPresence';
+import { _setUser, _activeUsers, _setUserTimer } from '../../lib/methods/setUser';
+import { unsubscribeRooms } from '../../lib/methods/subscribeRooms';
 
 interface IServices {
 	[index: string]: string | boolean;

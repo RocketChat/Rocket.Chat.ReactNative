@@ -8,7 +8,7 @@ import { twoFactor } from './twoFactor';
 import { store as reduxStore } from '../store/auxStore';
 import { random } from '../methods/helpers';
 import UserPreferences from '../methods/userPreferences';
-import { BASIC_AUTH_KEY } from 'lib/methods/helpers/fetch';
+import { BASIC_AUTH_KEY } from '../methods/helpers/fetch';
 
 class Sdk {
 	private sdk: DDPSDK | undefined;
