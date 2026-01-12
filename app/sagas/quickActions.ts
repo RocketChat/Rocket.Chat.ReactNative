@@ -12,7 +12,6 @@ import Navigation from '../lib/navigation/appNavigation';
 import { sendEmail } from '../views/SettingsView';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { getRoom } from '../lib/methods/getRoom';
-import { roomsStoreLastVisited } from '../actions/rooms';
 import I18n from '../i18n';
 
 interface IQuickActionOpen extends Action {
@@ -35,7 +34,8 @@ function* waitForAppReady(): Generator<Effect, void, any> {
 
 function* waitForRoomInDB(rid: string): Generator {
 	try {
-		yield call(getRoom, rid);
+		const room = (yield call(getRoom, rid)) as TSubscriptionModel;
+		return room;
 	} catch {
 		// Wait for APP.START OR timeout
 		const { timeout } = (yield race({
@@ -102,7 +102,6 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			try {
 				const room = (yield call(waitForRoomInDB, rid)) as TSubscriptionModel;
 				yield waitForNavigationReady();
-				yield put(roomsStoreLastVisited(room.rid, room.name));
 				const isMasterDetail = yield select((state: IApplicationState) => state.app.isMasterDetail);
 				yield call(goRoom, { item: { rid: room.rid }, isMasterDetail });
 			} catch (e) {
