@@ -6,10 +6,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
-import com.wix.reactnativenotifications.core.AppLifecycleFacade;
-import com.wix.reactnativenotifications.core.AppLifecycleFacadeHolder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import chat.rocket.mobilecrypto.algorithms.AESCrypto;
@@ -134,7 +131,6 @@ class Encryption {
     private static final String TAG = "RocketChat.E2E";
     
     public static Encryption shared = new Encryption();
-    private ReactApplicationContext reactContext;
 
     private PrefixedData decodePrefixedBase64(String input) {
         // A 256-byte array always encodes to 344 characters in Base64.
@@ -192,14 +188,23 @@ class Encryption {
            }
 
            cursor.moveToFirst();
-           String e2eKey = cursor.getString(cursor.getColumnIndex("e2e_key"));
-           Boolean encrypted = cursor.getInt(cursor.getColumnIndex("encrypted")) > 0;
+           int e2eKeyColumnIndex = cursor.getColumnIndex("e2e_key");
+           int encryptedColumnIndex = cursor.getColumnIndex("encrypted");
+           
+           if (e2eKeyColumnIndex == -1) {
+               Log.e(TAG, "e2e_key column not found in subscriptions table");
+               cursor.close();
+               return null;
+           }
+           
+           String e2eKey = cursor.getString(e2eKeyColumnIndex);
+           Boolean encrypted = encryptedColumnIndex != -1 && cursor.getInt(encryptedColumnIndex) > 0;
            cursor.close();
 
            return new Room(e2eKey, encrypted);
 
         } catch (Exception e) {
-            Log.e("[ENCRYPTION]", "Error reading room", e);
+            Log.e(TAG, "Error reading room", e);
             return null;
 
         } finally {
@@ -240,7 +245,31 @@ class Encryption {
             return null;
         }
 
-        PrivateKey privKey = gson.fromJson(privateKey, PrivateKey.class);
+        PrivateKey privKey;
+        try {
+            // First, try parsing as direct JSON object
+            privKey = gson.fromJson(privateKey, PrivateKey.class);
+        } catch (com.google.gson.JsonSyntaxException e) {
+            // If that fails, it might be a JSON-encoded string (double-encoded)
+            // Try parsing as a string first, then parse that string as JSON
+            try {
+                String decoded = gson.fromJson(privateKey, String.class);
+                privKey = gson.fromJson(decoded, PrivateKey.class);
+            } catch (Exception e2) {
+                Log.e(TAG, "Failed to parse private key", e2);
+                throw new Exception("Failed to parse private key: " + e2.getMessage(), e2);
+            }
+        }
+
+        if (privKey == null) {
+            return null;
+        }
+
+        // Validate that required fields are present
+        if (privKey.n == null || privKey.e == null || privKey.d == null) {
+            Log.e(TAG, "PrivateKey missing required fields (n, e, or d)");
+            return null;
+        }
 
         WritableMap jwk = Arguments.createMap();
         jwk.putString("n", privKey.n);
@@ -256,9 +285,19 @@ class Encryption {
     }
 
     public RoomKeyResult decryptRoomKey(final String e2eKey, final Ejson ejson) throws Exception {
+        if (e2eKey == null || e2eKey.isEmpty()) {
+            return null;
+        }
+        
         // Parse using prefixed base64
-        PrefixedData parsed = decodePrefixedBase64(e2eKey);
-        keyId = parsed.prefix;
+        PrefixedData parsed;
+        try {
+            parsed = decodePrefixedBase64(e2eKey);
+            keyId = parsed.prefix;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to decode prefixed base64", e);
+            throw e;
+        }
         
         // Decrypt the session key
         String userKey = readUserKey(ejson);
@@ -267,22 +306,54 @@ class Encryption {
         }
         
         String base64EncryptedData = Base64.encodeToString(parsed.data, Base64.NO_WRAP);
-        String decrypted = RSACrypto.INSTANCE.decrypt(base64EncryptedData, userKey);
+        String decrypted;
+        try {
+            decrypted = RSACrypto.INSTANCE.decrypt(base64EncryptedData, userKey);
+            if (decrypted == null) {
+                return null;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "RSA decryption failed", e);
+            throw e;
+        }
         
         // Parse sessionKey to determine v1 vs v2 from "alg" field
-        JsonObject sessionKey = gson.fromJson(decrypted, JsonObject.class);
+        JsonObject sessionKey;
+        try {
+            sessionKey = gson.fromJson(decrypted, JsonObject.class);
+            if (sessionKey == null) {
+                return null;
+            }
+        } catch (com.google.gson.JsonSyntaxException e) {
+            Log.e(TAG, "Failed to parse decrypted session key as JSON", e);
+            throw new Exception("Failed to parse decrypted session key as JSON: " + e.getMessage(), e);
+        }
+        
+        if (!sessionKey.has("k")) {
+            return null;
+        }
+        
         String k = sessionKey.get("k").getAsString();
-        byte[] decoded = Base64.decode(k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
+        byte[] decoded;
+        try {
+            decoded = Base64.decode(k, Base64.NO_PADDING | Base64.NO_WRAP | Base64.URL_SAFE);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to decode 'k' from base64", e);
+            throw e;
+        }
+        
         String decryptedKey = CryptoUtils.INSTANCE.bytesToHex(decoded);
         
         // Determine format from "alg" field
+        String algorithm;
         if (sessionKey.has("alg") && "A256GCM".equals(sessionKey.get("alg").getAsString())) {
             algorithm = "rc.v2.aes-sha2";
-            return new RoomKeyResult(decryptedKey, "rc.v2.aes-sha2");
         } else {
             algorithm = "rc.v1.aes-sha2";
-            return new RoomKeyResult(decryptedKey, "rc.v1.aes-sha2");
         }
+        this.algorithm = algorithm;
+        
+        return new RoomKeyResult(decryptedKey, algorithm);
     }
 
     private String decryptContent(Ejson.Content content, String e2eKey) throws Exception {
@@ -315,22 +386,12 @@ class Encryption {
 
     public String decryptMessage(final Ejson ejson, final Context context) {
         try {
-            // Get ReactApplicationContext for MMKV access
-            if (context instanceof ReactApplicationContext) {
-                this.reactContext = (ReactApplicationContext) context;
-            } else {
-                AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
-                if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
-                    this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
-                }
-            }
-
-            if (this.reactContext == null) {
-                Log.e(TAG, "Cannot decrypt: ReactApplicationContext not available");
+            if (context == null) {
+                Log.e(TAG, "Cannot decrypt: context is null");
                 return null;
             }
             
-            Room room = readRoom(ejson, this.reactContext);
+            Room room = readRoom(ejson, context);
             if (room == null || room.e2eKey == null) {
                 Log.w(TAG, "Cannot decrypt: room or e2eKey not found");
                 return null;
@@ -368,18 +429,14 @@ class Encryption {
         }
     }
 
-    public EncryptionContent encryptMessageContent(final String message, final String id, final Ejson ejson) {
+    public EncryptionContent encryptMessageContent(final String message, final String id, final Ejson ejson, final Context context) {
         try {
-            AppLifecycleFacade facade = AppLifecycleFacadeHolder.get();
-            if (facade != null && facade.getRunningReactContext() instanceof ReactApplicationContext) {
-                this.reactContext = (ReactApplicationContext) facade.getRunningReactContext();
-            }
-            
-            // Use reactContext for database access
-            if (this.reactContext == null) {
+            if (context == null) {
+                Log.e(TAG, "Cannot encrypt: context is null");
                 return null;
             }
-            Room room = readRoom(ejson, this.reactContext);
+            
+            Room room = readRoom(ejson, context);
             if (room == null || !room.encrypted || room.e2eKey == null) {
                 return null;
             }
