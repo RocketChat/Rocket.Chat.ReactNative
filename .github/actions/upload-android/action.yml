@@ -54,12 +54,16 @@ runs:
       shell: bash
 
     - uses: actions/download-artifact@v4
+      if: ${{ inputs.trigger == 'develop' }}
       with:
         name: release-changelog
         path: .
 
     - name: Prepare Play Store changelog metadata
+      if: ${{ inputs.trigger == 'develop' }}
       run: |
+        echo "Build version: $BUILD_VERSION"
+
         mkdir -p android/fastlane/metadata/android/en-US/changelogs
 
         if [ -f changelog.txt ]; then
