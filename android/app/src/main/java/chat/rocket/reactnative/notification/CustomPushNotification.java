@@ -95,7 +95,7 @@ public class CustomPushNotification {
     
     private void handleNotification() {
         Ejson receivedEjson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
-
+        
         if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
             Log.d(TAG, "Detected message-id-only notification, will fetch full content from server");
             loadNotificationAndProcess(receivedEjson);
@@ -202,8 +202,12 @@ public class CustomPushNotification {
         boolean hasSender = ejson != null && ejson.sender != null;
         String title = bundle.getString("title");
 
+        String displaySenderName = (ejson != null && ejson.senderName != null && !ejson.senderName.isEmpty())
+                ? ejson.senderName
+                : (hasSender ? ejson.sender.username : title);
+
         bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", hasSender ? ejson.sender.username : title);
+        bundle.putString("username", displaySenderName);
         bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         
         String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
@@ -291,19 +295,6 @@ public class CustomPushNotification {
 
         // Determine the correct title based on notification type
         String notificationTitle = title;
-        if (ejson != null && ejson.type != null) {
-            if ("p".equals(ejson.type) || "c".equals(ejson.type)) {
-                // For groups/channels, use room name if available, otherwise fall back to title
-                notificationTitle = (ejson.name != null && !ejson.name.isEmpty()) ? ejson.name : title;
-            } else if ("d".equals(ejson.type)) {
-                // For direct messages, use title (sender name from server)
-                notificationTitle = title;
-            } else if ("l".equals(ejson.type)) {
-                // For omnichannel, use sender name if available, otherwise fall back to title
-                notificationTitle = (ejson.sender != null && ejson.sender.name != null && !ejson.sender.name.isEmpty()) 
-                    ? ejson.sender.name : title;
-            }
-        }
 
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[buildNotification] notId=" + notId);
@@ -465,19 +456,6 @@ public class CustomPushNotification {
             // Determine the correct conversation title based on notification type
             Ejson bundleEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
             String conversationTitle = title;
-            if (bundleEjson != null && bundleEjson.type != null) {
-                if ("p".equals(bundleEjson.type) || "c".equals(bundleEjson.type)) {
-                    // For groups/channels, use room name if available, otherwise fall back to title
-                    conversationTitle = (bundleEjson.name != null && !bundleEjson.name.isEmpty()) ? bundleEjson.name : title;
-                } else if ("d".equals(bundleEjson.type)) {
-                    // For direct messages, use title (sender name from server)
-                    conversationTitle = title;
-                } else if ("l".equals(bundleEjson.type)) {
-                    // For omnichannel, use sender name if available, otherwise fall back to title
-                    conversationTitle = (bundleEjson.sender != null && bundleEjson.sender.name != null && !bundleEjson.sender.name.isEmpty()) 
-                        ? bundleEjson.sender.name : title;
-                }
-            }
             messageStyle.setConversationTitle(conversationTitle);
 
             if (bundles != null) {
@@ -489,15 +467,17 @@ public class CustomPushNotification {
                     Ejson ejson = safeFromJson(data.getString("ejson", "{}"), Ejson.class);
                     String m = extractMessage(message, ejson);
 
+                    String displaySenderName = (ejson != null && ejson.senderName != null && !ejson.senderName.isEmpty())
+                            ? ejson.senderName
+                            : (ejson != null && ejson.sender != null ? ejson.sender.username : title);
+
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                        String senderName = ejson != null ? ejson.senderName : "Unknown";
-                        messageStyle.addMessage(m, timestamp, senderName);
+                        messageStyle.addMessage(m, timestamp, displaySenderName);
                     } else {
                         Bitmap avatar = getAvatar(avatarUri);
-                        String senderName = ejson != null ? ejson.senderName : "Unknown";
                         Person.Builder senderBuilder = new Person.Builder()
                                 .setKey(senderId)
-                                .setName(senderName);
+                                .setName(displaySenderName);
 
                         if (avatar != null) {
                             senderBuilder.setIcon(Icon.createWithBitmap(avatar));
