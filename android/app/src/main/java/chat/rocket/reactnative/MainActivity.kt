@@ -77,18 +77,6 @@ class MainActivity : ReactActivity() {
         }
 
       if (shortcutData != null) {
-        /**
-         * Log all keys in the bundle
-         * kept for debugging later
-         */
-        /*
-        android.util.Log.d("RocketChat.QuickAction", "=== Shortcut Data Bundle ===")
-            for (key in shortcutData.keySet()) {
-              val value = shortcutData.get(key)
-              android.util.Log.d("RocketChat.QuickAction", "Key: $key, Value: $value")
-            }
-         android.util.Log.d("RocketChat.QuickAction", "============================")
-         */
 
         // Try to get the shortcut ID from various possible keys
         val shortcutId = shortcutData.getString("id")
