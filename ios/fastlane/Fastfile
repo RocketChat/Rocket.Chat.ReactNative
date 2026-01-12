@@ -48,13 +48,13 @@ platform :ios do
         app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
         skip_waiting_for_build_processing: true,
         reject_build_waiting_for_review: true,
-        distribute_external: true,
-        notify_external_testers: true,
-        groups: ["External Testers"]
     }
 
     if options[:official] && changelog
         pilot_options[:changelog] = changelog
+        pilot_options[:distribute_external] = true
+        pilot_options[:notify_external_testers] = true
+        pilot_options[:groups] = ["External Testers"]
     end
 
     pilot(pilot_options)
