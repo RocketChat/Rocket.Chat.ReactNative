@@ -30,3 +30,4 @@ jobs:
         with:
           name: release-changelog
           path: changelog.txt
+          retention-days: 15
