@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import { Text, View, Pressable } from 'react-native';
 
 import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
 import { styles } from '../styles';
+import { useTheme } from '../../../theme';
 
 type TCallActionButtonVariant = 'default' | 'active' | 'danger';
 
@@ -24,41 +24,38 @@ const CallActionButton = ({
 	disabled = false,
 	testID
 }: ICallActionButton): React.ReactElement => {
-	const getIconStyle = () => {
-		switch (variant) {
-			case 'active':
-				return styles.actionButtonIconActive;
-			case 'danger':
-				return styles.actionButtonIconDanger;
-			default:
-				return styles.actionButtonIconDefault;
-		}
-	};
+	const { colors } = useTheme();
 
 	const getIconColor = () => {
 		switch (variant) {
 			case 'active':
-				return '#1F2329';
+				return colors.buttonFontSecondaryDanger;
 			case 'danger':
-				return '#FFFFFF';
+				return colors.buttonFontDanger;
 			default:
-				return '#FFFFFF';
+				return colors.buttonFontSecondary;
 		}
 	};
 
 	return (
-		<Touchable
+		<Pressable
 			onPress={onPress}
 			disabled={disabled}
-			style={[styles.actionButton, disabled && { opacity: 0.5 }]}
+			style={[disabled && { opacity: 0.5 }]}
 			accessibilityLabel={label}
 			accessibilityRole='button'
 			testID={testID}>
-			<View style={[styles.actionButtonIcon, getIconStyle()]}>
-				<CustomIcon name={icon} size={24} color={getIconColor()} />
+			<View
+				style={[
+					styles.actionButton,
+					{
+						backgroundColor: variant === 'danger' ? colors.buttonBackgroundDangerDefault : colors.buttonBackgroundSecondaryDefault
+					}
+				]}>
+				<CustomIcon name={icon} size={32} color={getIconColor()} />
 			</View>
-			<Text style={styles.actionButtonLabel}>{label}</Text>
-		</Touchable>
+			<Text style={[styles.actionButtonLabel, { color: colors.fontDefault }]}>{label}</Text>
+		</Pressable>
 	);
 };
 

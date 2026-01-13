@@ -1,154 +1,74 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import RNCallKeep from 'react-native-callkeep';
-import Touchable from 'react-native-platform-touchable';
-import type { IClientMediaCall } from '@rocket.chat/media-signaling';
+import { useNavigation } from '@react-navigation/native';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 import I18n from '../../i18n';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { mediaSessionStore } from '../../lib/services/voip/MediaSessionStore';
-import { type InsideStackParamList } from '../../stacks/types';
+import { useCallStore } from '../../lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
 import CallActionButton from './components/CallActionButton';
 import CallStatusText from './components/CallStatusText';
-import CallTimer from './components/CallTimer';
+// import { useCallTimer } from './components/CallTimer';
 import { styles } from './styles';
+import { useTheme } from '../../theme';
 
 const CallView = (): React.ReactElement | null => {
-	const {
-		params: { callUUID }
-	} = useRoute<RouteProp<InsideStackParamList, 'CallView'>>();
 	const { goBack } = useNavigation();
+	const { colors } = useTheme();
 
-	const [call, setCall] = useState<IClientMediaCall | null>(null);
-	const [callState, setCallState] = useState<string>('connecting');
-	const [isMuted, setIsMuted] = useState(false);
-	const [isOnHold, setIsOnHold] = useState(false);
-	const [isSpeakerOn, setIsSpeakerOn] = useState(false);
-	const [callStartTime, setCallStartTime] = useState<number | null>(null);
+	// Get state from store
+	const call = useCallStore(state => state.call);
+	const callState = useCallStore(state => state.callState);
+	const isMuted = useCallStore(state => state.isMuted);
+	const isOnHold = useCallStore(state => state.isOnHold);
+	const isSpeakerOn = useCallStore(state => state.isSpeakerOn);
+	const callStartTime = useCallStore(state => state.callStartTime);
+	const contact = useCallStore(state => state.contact);
 
-	// Get call from mediaSessionStore
-	useEffect(() => {
-		const session = mediaSessionStore.getCurrentInstance();
-		const mainCall = session?.getMainCall();
+	// Get actions from store
+	const toggleMute = useCallStore(state => state.toggleMute);
+	const toggleHold = useCallStore(state => state.toggleHold);
+	const toggleSpeaker = useCallStore(state => state.toggleSpeaker);
+	const endCall = useCallStore(state => state.endCall);
 
-		if (mainCall) {
-			setCall(mainCall);
-			setCallState(mainCall.state);
-			setIsMuted(mainCall.muted);
-			setIsOnHold(mainCall.held);
-
-			// Set call start time when call is active
-			if (mainCall.state === 'active') {
-				setCallStartTime(Date.now());
-			}
-		}
-
-		return () => {
-			// Cleanup
-		};
-	}, []);
-
-	// Subscribe to call state changes
-	useEffect(() => {
-		if (!call) {
-			return;
-		}
-
-		const handleStateChange = () => {
-			setCallState(call.state);
-
-			// Set start time when call becomes active
-			if (call.state === 'active' && !callStartTime) {
-				setCallStartTime(Date.now());
-			}
-		};
-
-		const handleTrackStateChange = () => {
-			setIsMuted(call.muted);
-			setIsOnHold(call.held);
-		};
-
-		const handleEnded = () => {
-			goBack();
-		};
-
-		call.emitter.on('stateChange', handleStateChange);
-		call.emitter.on('trackStateChange', handleTrackStateChange);
-		call.emitter.on('ended', handleEnded);
-
-		return () => {
-			call.emitter.off('stateChange', handleStateChange);
-			call.emitter.off('trackStateChange', handleTrackStateChange);
-			call.emitter.off('ended', handleEnded);
-		};
-	}, [call, callStartTime, goBack]);
+	// Get formatted call duration
+	// const callDuration = useCallTimer(callStartTime);
+	const callDuration = '00:00';
 
 	// Keep screen awake during call
 	useEffect(() => {
-		activateKeepAwake();
+		activateKeepAwakeAsync();
 		return () => {
 			deactivateKeepAwake();
 		};
 	}, []);
 
-	const handleToggleSpeaker = useCallback(() => {
-		// TODO: Implement speaker toggle via RNCallKeep or WebRTC audio routing
-		setIsSpeakerOn(prev => !prev);
-	}, []);
-
-	const handleToggleHold = useCallback(() => {
-		if (!call) {
-			return;
-		}
-		call.setHeld(!isOnHold);
-	}, [call, isOnHold]);
-
-	const handleToggleMute = useCallback(() => {
-		if (!call) {
-			return;
-		}
-		call.setMuted(!isMuted);
-	}, [call, isMuted]);
-
-	const handleMessage = useCallback(() => {
+	const handleMessage = () => {
 		// TODO: Navigate to chat with caller
 		// Navigation.navigate('RoomView', { rid, t: 'd' });
-	}, []);
+	};
 
-	const handleEndCall = useCallback(() => {
-		if (!call) {
-			RNCallKeep.endCall(callUUID);
-			goBack();
-			return;
-		}
-
-		if (callState === 'ringing') {
-			call.reject();
-		} else {
-			call.hangup();
-		}
-		RNCallKeep.endCall(callUUID);
-	}, [call, callState, callUUID, goBack]);
-
-	const handleMore = useCallback(() => {
+	const handleMore = () => {
 		// TODO: Show action sheet with more options (DTMF, transfer, etc.)
-	}, []);
+	};
 
-	const handleMinimize = useCallback(() => {
+	const handleMinimize = () => {
 		goBack();
-	}, [goBack]);
+	};
+
+	const handleEndCall = () => {
+		endCall();
+		goBack();
+	};
 
 	if (!call) {
 		return null;
 	}
 
-	const callerName = call.contact.displayName || call.contact.username || I18n.t('Unknown');
-	const callerExtension = call.contact.sipExtension;
-	const isConnecting = callState === 'connecting' || callState === 'ringing';
+	const callerName = contact.displayName || contact.username || I18n.t('Unknown');
+	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
 	const isConnected = callState === 'active';
 
 	const getHeaderTitle = () => {
@@ -156,36 +76,32 @@ const CallView = (): React.ReactElement | null => {
 			return I18n.t('Connecting');
 		}
 		if (isConnected && callStartTime) {
-			return `${callerName} – ${CallTimer({ startTime: callStartTime })}`;
+			return `${callerName} – ${callDuration}`;
 		}
 		return callerName;
 	};
 
 	return (
-		<SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-			<View style={styles.contentContainer}>
+		<SafeAreaView style={styles.container} testID='call-view'>
+			<View style={[styles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
 				{/* Header */}
-				<View style={styles.header}>
-					<Touchable onPress={handleMinimize} style={styles.headerButton} accessibilityLabel={I18n.t('Minimize')}>
-						<CustomIcon name='arrow-down' size={24} color='#FFFFFF' />
-					</Touchable>
-					<Text style={styles.headerTitle}>{getHeaderTitle()}</Text>
-					<Touchable onPress={handleEndCall} style={styles.headerButton} accessibilityLabel={I18n.t('End')}>
-						<CustomIcon name='phone-end' size={24} color='#F5455C' />
-					</Touchable>
+				<View style={[styles.header, { backgroundColor: colors.surfaceNeutral }]}>
+					<Pressable onPress={handleMinimize} style={styles.headerButton} accessibilityLabel={I18n.t('Minimize')}>
+						<CustomIcon name='arrow-down' size={24} color={colors.fontDefault} />
+					</Pressable>
+					<Text style={styles.headerTitle} testID='call-view-header-title'>
+						{getHeaderTitle()}
+					</Text>
+					<Pressable onPress={handleEndCall} style={styles.headerButton} accessibilityLabel={I18n.t('End')}>
+						<CustomIcon name='phone-end' size={24} color={colors.fontDanger} />
+					</Pressable>
 				</View>
 
 				{/* Caller Info */}
-				<CallerInfo
-					name={callerName}
-					extension={callerExtension}
-					avatarText={call.contact.username}
-					isMuted={isMuted && isConnected}
-					showOnlineStatus={isConnected}
-				/>
+				<CallerInfo isMuted={isMuted && isConnected} />
 
 				{/* Status Text */}
-				{isConnected && <CallStatusText isOnHold={isOnHold} isMuted={isMuted} />}
+				{isConnected && <CallStatusText />}
 
 				{/* Action Buttons */}
 				<View style={styles.buttonsContainer}>
@@ -194,14 +110,14 @@ const CallView = (): React.ReactElement | null => {
 						<CallActionButton
 							icon={isSpeakerOn ? 'audio' : 'audio-disabled'}
 							label={I18n.t('Speaker')}
-							onPress={handleToggleSpeaker}
+							onPress={toggleSpeaker}
 							variant={isSpeakerOn ? 'active' : 'default'}
 							testID='call-view-speaker'
 						/>
 						<CallActionButton
-							icon={isOnHold ? 'pause-filled' : 'pause'}
+							icon={'pause-shape-unfilled'}
 							label={isOnHold ? I18n.t('Unhold') : I18n.t('Hold')}
-							onPress={handleToggleHold}
+							onPress={toggleHold}
 							variant={isOnHold ? 'active' : 'default'}
 							disabled={isConnecting}
 							testID='call-view-hold'
@@ -209,7 +125,7 @@ const CallView = (): React.ReactElement | null => {
 						<CallActionButton
 							icon={isMuted ? 'microphone-disabled' : 'microphone'}
 							label={isMuted ? I18n.t('Unmute') : I18n.t('Mute')}
-							onPress={handleToggleMute}
+							onPress={toggleMute}
 							variant={isMuted ? 'active' : 'default'}
 							disabled={isConnecting}
 							testID='call-view-mute'
@@ -218,12 +134,7 @@ const CallView = (): React.ReactElement | null => {
 
 					{/* Second row of buttons */}
 					<View style={styles.buttonsRow}>
-						<CallActionButton
-							icon='message'
-							label={I18n.t('Message')}
-							onPress={handleMessage}
-							testID='call-view-message'
-						/>
+						<CallActionButton icon='message' label={I18n.t('Message')} onPress={handleMessage} testID='call-view-message' />
 						<CallActionButton
 							icon='phone-end'
 							label={isConnecting ? I18n.t('Cancel') : I18n.t('End')}

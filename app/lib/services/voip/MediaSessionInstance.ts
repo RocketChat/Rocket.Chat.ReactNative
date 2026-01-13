@@ -10,6 +10,7 @@ import { registerGlobals } from 'react-native-webrtc';
 import { randomUuid } from '@rocket.chat/mobile-crypto';
 
 import { mediaSessionStore } from './MediaSessionStore';
+import { useCallStore } from './useCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
@@ -91,7 +92,8 @@ class MediaSessionInstance {
 			if (mainCall && mainCall.callId === callId) {
 				await mainCall.accept();
 				RNCallKeep.setCurrentCallActive(callUUID);
-				// Navigate to CallView - call data fetched from mediaSessionStore
+				// Set call in Zustand store and navigate to CallView
+				useCallStore.getState().setCall(mainCall, callUUID);
 				Navigation.navigate('CallView', { callUUID });
 			} else {
 				RNCallKeep.endCall(callUUID);
@@ -108,6 +110,8 @@ class MediaSessionInstance {
 					mainCall.hangup();
 				}
 			}
+			// Reset Zustand store
+			useCallStore.getState().reset();
 			delete localCallIdMap[callUUID];
 		});
 
@@ -118,6 +122,8 @@ class MediaSessionInstance {
 				const mainCall = this.instance?.getMainCall();
 				if (mainCall && mainCall.callId === callId) {
 					mainCall.setMuted(muted);
+					// Sync with Zustand store
+					useCallStore.getState().updateFromCall();
 				}
 			}
 		);
