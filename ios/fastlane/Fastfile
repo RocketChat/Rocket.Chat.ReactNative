@@ -46,7 +46,7 @@ platform :ios do
     pilot_options = {
         ipa: 'Rocket.Chat.ipa',
         app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
-        skip_waiting_for_build_processing: !options[:official],
+        skip_waiting_for_build_processing: !(options[:official] && changelog),
         reject_build_waiting_for_review: true,
     }
 
