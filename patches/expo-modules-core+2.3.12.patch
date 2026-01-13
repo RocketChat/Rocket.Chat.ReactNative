@@ -67,7 +67,7 @@ index 0000000..483638f
 +	</filteredResources>
 +</projectDescription>
 diff --git a/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift b/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
-index a126e11..b9a67af 100644
+index a126e11..b050e10 100644
 --- a/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
 +++ b/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
 @@ -1,6 +1,7 @@
@@ -78,7 +78,7 @@ index a126e11..b9a67af 100644
  
  // Here we extend some common iOS types to implement `Convertible` protocol and
  // describe how they can be converted from primitive types received from JavaScript runtime.
-@@ -19,22 +20,47 @@ extension URL: Convertible {
+@@ -19,22 +20,79 @@ extension URL: Convertible {
        throw Conversions.ConvertingException<URL>(value)
      }
  
@@ -93,27 +93,59 @@ index a126e11..b9a67af 100644
      }
  
      // File path doesn't need to be percent-encoded.
++    // iOS 18.6+ CRITICAL: Has stricter validation for fileURLWithPath that causes assertion failures
++    // in production builds. We must validate extensively before calling it.
      if isFileUrlPath(value) {
 -      return URL(fileURLWithPath: value)
 +      os_log("📁 [URL.convert] Detected file path, using fileURLWithPath: %{public}@ (length: %d, isEmpty: %{public}@)", log: logger, type: .default, value, value.count, value.isEmpty ? "YES" : "NO")
 +      
-+      // Validate path is not empty to prevent crashes
++      // iOS 18.6+ CRITICAL: Empty paths will crash with assertion failure in production
 +      guard !value.isEmpty else {
 +        os_log("❌ [URL.convert] CRASH PREVENTION: Empty file path detected! Throwing exception instead of crashing.", log: logger, type: .error)
 +        throw UrlContainsInvalidCharactersException()
 +      }
 +      
-+      // Try to create the file URL and catch any assertion failures
-+      // Note: URL(fileURLWithPath:) can crash with assertion failures for invalid paths
-+      // We log extensively before this call to identify problematic URIs
-+      do {
-+        let fileURL = URL(fileURLWithPath: value)
-+        os_log("✅ [URL.convert] Successfully created file URL: %{public}@", log: logger, type: .default, fileURL.absoluteString)
-+        return fileURL
-+      } catch {
-+        os_log("❌ [URL.convert] EXCEPTION creating file URL from path: %{public}@ - Error: %{public}@", log: logger, type: .error, value, error.localizedDescription)
++      // iOS 18.6+ requires stricter validation - check for invalid characters
++      let trimmedPath = value.trimmingCharacters(in: .whitespacesAndNewlines)
++      guard !trimmedPath.isEmpty else {
++        os_log("❌ [URL.convert] CRASH PREVENTION: Path is empty after trimming: %{public}@", log: logger, type: .error, value)
 +        throw UrlContainsInvalidCharactersException()
 +      }
++      
++      // Validate path format for iOS 18.6+ strict requirements
++      // Must be absolute path (starts with /) or already a file:// URL
++      let isAbsolutePath = trimmedPath.hasPrefix("/")
++      let isFileURL = trimmedPath.hasPrefix("file://")
++      
++      guard isAbsolutePath || isFileURL else {
++        os_log("❌ [URL.convert] CRASH PREVENTION: Path is not absolute and not file:// URL (iOS 18.6 strict): %{public}@", log: logger, type: .error, value)
++        throw UrlContainsInvalidCharactersException()
++      }
++      
++      // Check for null characters and control characters that iOS 18.6 rejects
++      if trimmedPath.contains("\0") || trimmedPath.rangeOfCharacter(from: CharacterSet.controlCharacters) != nil {
++        os_log("❌ [URL.convert] CRASH PREVENTION: Path contains invalid control characters (iOS 18.6 strict): %{public}@", log: logger, type: .error, value)
++        throw UrlContainsInvalidCharactersException()
++      }
++      
++      // Create file URL - iOS 18.6 will assert if path is still invalid
++      // Note: We can't catch assertion failures, so validation above is critical
++      let fileURL: URL
++      if isFileURL {
++        // Already a file:// URL, parse it safely
++        guard let parsedURL = URL(string: trimmedPath) else {
++          os_log("❌ [URL.convert] CRASH PREVENTION: Invalid file:// URL format: %{public}@", log: logger, type: .error, value)
++          throw UrlContainsInvalidCharactersException()
++        }
++        fileURL = parsedURL
++      } else {
++        // Absolute path - iOS 18.6 will assert if malformed
++        // We've validated above, but if it still crashes, the logs will show the exact path
++        fileURL = URL(fileURLWithPath: trimmedPath)
++      }
++      
++      os_log("✅ [URL.convert] Successfully created file URL: %{public}@", log: logger, type: .default, fileURL.absoluteString)
++      return fileURL
      }
  
      // If we get here, the string is not the file url and may require percent-encoding characters that are not URL-safe according to RFC 3986.
