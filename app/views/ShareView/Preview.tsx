@@ -13,7 +13,6 @@ import { THUMBS_HEIGHT } from './constants';
 import { type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { type IShareAttachment } from '../../definitions';
-import { isValidImageUri } from '../../lib/methods/helpers/normalizeImageUrl';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
 
@@ -99,19 +98,6 @@ const Preview = React.memo(({ item, theme, length }: IPreview) => {
 		}
 
 		if (type?.match(/image/)) {
-			// Validate URI before rendering to prevent crashes
-			if (!isValidImageUri(item.path)) {
-				return (
-					<IconPreview
-						iconName={'attach'}
-						title={item?.filename}
-						description={prettyBytes(item?.size ?? 0)}
-						theme={theme}
-						width={width}
-						height={calculatedHeight}
-					/>
-				);
-			}
 			const imageViewerWidth = width - insets.left - insets.right;
 			return <ImageViewer uri={item.path} width={imageViewerWidth} height={calculatedHeight} />;
 		}

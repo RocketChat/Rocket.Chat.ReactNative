@@ -7,7 +7,6 @@ import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions'
 import { themes } from '../../../../lib/constants/colors';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
-import { normalizeImageUrl } from '../../../../lib/methods/helpers/normalizeImageUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import { type TSupportedThemes, useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
@@ -166,17 +165,8 @@ const UrlImage = React.memo(
 			return null;
 		}
 
-		// Build the full URL if it's a relative path
-		const fullImageUrl = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-
-		// Normalize the URL to ensure it's a valid HTTP/HTTPS URL
-		const normalizedUrl = normalizeImageUrl(fullImageUrl);
-
-		if (!normalizedUrl) {
-			return null;
-		}
-
-		return <Image source={{ uri: normalizedUrl }} style={styles.image} contentFit='cover' />;
+		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+		return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );

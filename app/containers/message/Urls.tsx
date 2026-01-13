@@ -8,7 +8,6 @@ import axios from 'axios';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Touchable from './Touchable';
 import openLink from '../../lib/methods/helpers/openLink';
-import { normalizeImageUrl } from '../../lib/methods/helpers/normalizeImageUrl';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
@@ -69,12 +68,9 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const maxSize = useContext(WidthAwareContext);
 
-	// Normalize the URL to ensure it's a valid HTTP/HTTPS URL
-	const normalizedUrl = normalizeImageUrl(image);
-
 	useLayoutEffect(() => {
-		if (normalizedUrl && maxSize) {
-			Image.loadAsync(normalizedUrl, {
+		if (image && maxSize) {
+			Image.loadAsync(image, {
 				onError: () => {
 					setImageDimensions({ width: -1, height: -1 });
 				},
@@ -83,11 +79,7 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 				setImageDimensions({ width: image.width, height: image.height });
 			});
 		}
-	}, [normalizedUrl, maxSize]);
-
-	if (!normalizedUrl) {
-		return null;
-	}
+	}, [image, maxSize]);
 
 	if (!imageDimensions.width || !imageDimensions.height) {
 		return <View style={styles.loading} />;
@@ -120,7 +112,7 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	return (
 		<View style={containerStyle}>
-			<Image source={{ uri: normalizedUrl }} style={imageStyle} contentFit='contain' />
+			<Image source={{ uri: image }} style={imageStyle} contentFit='contain' />
 		</View>
 	);
 };

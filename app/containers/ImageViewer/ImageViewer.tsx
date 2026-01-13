@@ -8,7 +8,6 @@ import Touch from '../Touch';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
 import { useTheme } from '../../theme';
-import { isValidImageUri } from '../../lib/methods/helpers/normalizeImageUrl';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;
@@ -126,15 +125,6 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
 	const { colors } = useTheme();
-
-	// Validate URI before rendering to prevent crashes
-	if (!isValidImageUri(uri)) {
-		return (
-			<View style={[styles.flex, { width, height, backgroundColor: colors.surfaceNeutral }]}>
-				<View style={styles.flex} />
-			</View>
-		);
-	}
 
 	return (
 		<View style={[styles.flex, { width, height, backgroundColor: colors.surfaceNeutral }]}>
