@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - 'beta-changelog'
+      - 'develop'
 
 jobs:
   run-eslint-and-test:
