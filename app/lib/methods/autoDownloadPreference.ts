@@ -1,15 +1,15 @@
 import { NetInfoStateType } from '@react-native-community/netinfo';
 
 import {
-	IMAGES_PREFERENCE_DOWNLOAD,
-	AUDIO_PREFERENCE_DOWNLOAD,
-	VIDEO_PREFERENCE_DOWNLOAD,
-	MediaDownloadOption
-} from '../constants';
+	type IMAGE_PREFERENCE_DOWNLOAD,
+	type AUDIO_PREFERENCE_DOWNLOAD,
+	type VIDEO_PREFERENCE_DOWNLOAD,
+	type MediaDownloadOption
+} from '../constants/mediaAutoDownload';
 import userPreferences from './userPreferences';
 import { store } from '../store/auxStore';
 
-type TMediaType = typeof IMAGES_PREFERENCE_DOWNLOAD | typeof AUDIO_PREFERENCE_DOWNLOAD | typeof VIDEO_PREFERENCE_DOWNLOAD;
+type TMediaType = typeof IMAGE_PREFERENCE_DOWNLOAD | typeof AUDIO_PREFERENCE_DOWNLOAD | typeof VIDEO_PREFERENCE_DOWNLOAD;
 
 export const fetchAutoDownloadEnabled = (mediaType: TMediaType) => {
 	const { netInfoState } = store.getState().app;
@@ -24,7 +24,7 @@ export const fetchAutoDownloadEnabled = (mediaType: TMediaType) => {
 	}
 
 	if (mediaDownloadPreference === null) {
-		if (mediaType === 'imagesPreferenceDownload') {
+		if (mediaType === 'imagePreferenceDownload') {
 			return true;
 		}
 		if (mediaType === 'audioPreferenceDownload' || mediaType === 'videoPreferenceDownload') {

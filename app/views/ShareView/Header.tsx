@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import { themes } from '../../lib/constants';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../lib/methods/helpers/room';
-import { ISubscription, TThreadModel } from '../../definitions';
+import { type ISubscription, type TThreadModel } from '../../definitions';
 import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { getMessageById } from '../../lib/database/services/Message';
 
@@ -31,7 +31,9 @@ const styles = StyleSheet.create({
 		marginRight: 4
 	},
 	name: {
-		...sharedStyles.textSemibold
+		fontSize: 16,
+		...sharedStyles.textSemibold,
+		flex: 1
 	}
 });
 
@@ -96,7 +98,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 	}, []);
 
 	return (
-		<View style={styles.container}>
+		<View style={styles.container} accessible accessibilityLabel={`${I18n.t('Sending_to')} ${title}`} accessibilityRole='header'>
 			<View style={styles.inner}>
 				<Text numberOfLines={1} style={styles.text}>
 					<Text style={[styles.text, { color: textColor }]} numberOfLines={1}>

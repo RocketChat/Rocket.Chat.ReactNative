@@ -1,22 +1,21 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useLayoutEffect } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import { inviteLinksCreate } from '../../actions/inviteLinks';
 import Button from '../../containers/Button';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 import Picker from './Picker';
 
 const InviteUsersEditView = () => {
-	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'InviteUsersEditView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'InviteUsersEditView'>>();
 	const { rid } = useRoute<RouteProp<ChatsStackParamList, 'InviteUsersEditView'>>().params;
 	const dispatch = useDispatch();
 
@@ -35,7 +34,6 @@ const InviteUsersEditView = () => {
 	return (
 		<SafeAreaView>
 			<List.Container>
-				<StatusBar />
 				<List.Section>
 					<List.Separator />
 					<List.Item title='Expiration_Days' right={() => <Picker param={'days'} first={'Never'} />} />

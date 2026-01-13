@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, ImageStyle, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { Image, type ImageStyle } from 'expo-image';
 
+import Touch from '../Touch';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants/keys';
 import { useTheme } from '../../theme';
-import { ImageComponent } from './ImageComponent';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;
@@ -12,7 +15,6 @@ interface ImageViewerProps {
 	imageContainerStyle?: StyleProp<ViewStyle>;
 
 	uri: string;
-	imageComponentType?: string;
 	width: number;
 	height: number;
 	onLoadEnd?: () => void;
@@ -27,7 +29,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...props }: ImageViewerProps): React.ReactElement => {
+export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerProps): React.ReactElement => {
+	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
+	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
+	const expoImageRef = useRef<Image>(null);
+
+	const handleGifPlayback = async () => {
+		if (isPlaying) {
+			setIsPlaying(false);
+			await expoImageRef.current?.stopAnimating();
+			return;
+		}
+		setIsPlaying(true);
+		await expoImageRef.current?.startAnimating();
+	};
 	const [centerX, setCenterX] = useState(0);
 	const [centerY, setCenterY] = useState(0);
 
@@ -109,21 +124,22 @@ export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...pr
 
 	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
-	const Component = ImageComponent({ type: imageComponentType, uri });
-
 	const { colors } = useTheme();
 
 	return (
 		<View style={[styles.flex, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
-					<Component
-						// @ts-ignore
-						style={styles.image}
-						resizeMode='contain'
-						source={{ uri }}
-						{...props}
-					/>
+					<Touch onPress={handleGifPlayback} style={styles.flex} rectButtonStyle={styles.flex}>
+						<Image
+							// @ts-ignore
+							style={styles.image}
+							contentFit='contain'
+							source={{ uri }}
+							ref={expoImageRef}
+							{...props}
+						/>
+					</Touch>
 				</Animated.View>
 			</GestureDetector>
 		</View>

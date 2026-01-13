@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import styles from './styles';
 import { capitalize } from '../../lib/methods/helpers/room';
-import { IUpdatedAtProps } from './interfaces';
+import { type IUpdatedAtProps } from './interfaces';
 import { useTheme } from '../../theme';
 
 const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
@@ -17,7 +17,7 @@ const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps
 			style={[
 				styles.date,
 				{
-					color: colors.fontSecondaryInfo
+					color: colors.fontDefault
 				},
 				alert &&
 					!hideUnreadStatus && [

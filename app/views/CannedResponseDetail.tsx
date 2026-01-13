@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
-import { TSupportedThemes, useTheme } from '../theme';
+import { type TSupportedThemes, useTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 import Markdown from '../containers/markdown';
-import { ICannedResponse } from '../definitions/ICannedResponse';
-import { ChatsStackParamList } from '../stacks/types';
+import { type ICannedResponse } from '../definitions/ICannedResponse';
+import { type ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
-import { useAppSelector } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	scroll: {
@@ -62,10 +61,6 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		fontSize: 14,
 		...sharedStyles.textMedium
-	},
-	itemContent: {
-		fontSize: 14,
-		...sharedStyles.textRegular
 	}
 });
 
@@ -82,16 +77,14 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>
 				{label}
 			</Text>
-			<Markdown style={[styles.itemContent, { color: themes[theme].fontSecondaryInfo }]} msg={content} theme={theme} />
+			<Markdown msg={content} />
 		</View>
 	) : null;
 
-interface ICannedResponseDetailProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>;
-	route: RouteProp<ChatsStackParamList, 'CannedResponseDetail'>;
-}
+const CannedResponseDetail = (): JSX.Element => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 
-const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps): JSX.Element => {
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
 	const { isMasterDetail } = useAppSelector(state => state.app);
@@ -100,20 +93,19 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 		navigation.setOptions({
 			title: `!${cannedResponse?.shortcut}`
 		});
-	}, []);
+	}, [navigation, cannedResponse?.shortcut]);
 
 	const navigateToRoom = (item: ICannedResponse) => {
 		const { room } = route.params;
 
 		if (room.rid) {
-			goRoom({ item: room, isMasterDetail, popToRoot: true, usedCannedResponse: item.text });
+			goRoom({ item: room, isMasterDetail, usedCannedResponse: item.text });
 		}
 	};
 
 	return (
 		<SafeAreaView>
 			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].surfaceTint }]}>
-				<StatusBar />
 				<View style={styles.container}>
 					<Item label={I18n.t('Shortcut')} content={`!${cannedResponse?.shortcut}`} theme={theme} />
 					<Item label={I18n.t('Content')} content={cannedResponse?.text} theme={theme} />

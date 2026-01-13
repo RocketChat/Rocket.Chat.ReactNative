@@ -1,25 +1,25 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 import { delay, put, takeEvery } from 'redux-saga/effects';
 import { call } from 'typed-redux-saga';
+import { AccessibilityInfo } from 'react-native';
 
 import { VIDEO_CONF } from '../actions/actionsTypes';
-import { removeVideoConfCall, setCalling, setVideoConfCall, TCallProps } from '../actions/videoConf';
+import { removeVideoConfCall, setCalling, setVideoConfCall, type TCallProps } from '../actions/videoConf';
 import { hideActionSheetRef } from '../containers/ActionSheet';
 import { INAPP_NOTIFICATION_EMITTER } from '../containers/InAppNotification';
 import IncomingCallNotification from '../containers/InAppNotification/IncomingCallNotification';
 import i18n from '../i18n';
 import { getSubscriptionByRoomId } from '../lib/database/services/Subscription';
-import { appSelector } from '../lib/hooks';
-import { callJitsi } from '../lib/methods';
+import { appSelector } from '../lib/hooks/useAppSelector';
+import { callJitsi } from '../lib/methods/callJitsi';
 import { compareServerVersion, showErrorAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import log from '../lib/methods/helpers/log';
 import { hideNotification } from '../lib/methods/helpers/notifications';
 import { showToast } from '../lib/methods/helpers/showToast';
 import { videoConfJoin } from '../lib/methods/videoConf';
-import { Services } from '../lib/services';
-import { notifyUser } from '../lib/services/restApi';
-import { ICallInfo } from '../reducers/videoConf';
+import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
+import { type ICallInfo } from '../reducers/videoConf';
 
 interface IGenericAction extends Action {
 	type: string;
@@ -72,16 +72,24 @@ function* onDirectCallCanceled(payload: ICallInfo) {
 	if (currentCall) {
 		yield put(removeVideoConfCall(currentCall));
 		hideNotification();
+		// Delay to hide the notification and move the accessibility focus
+		setTimeout(() => {
+			AccessibilityInfo.announceForAccessibility(i18n.t('Call_was_canceled_before_being_answered'));
+		}, 1200);
 	}
 }
 
 function* onDirectCallAccepted({ callId, rid, uid, action }: ICallInfo) {
-	const calls = yield* appSelector(state => state.videoConf.calls);
-	const userId = yield* appSelector(state => state.login.user.id);
-	const currentCall = calls.find(c => c.callId === callId);
-	if (currentCall && currentCall.action === 'calling') {
-		yield call(notifyUser, `${uid}/video-conference`, { action: 'confirmed', params: { uid: userId, rid, callId } });
-		yield put(setVideoConfCall({ callId, rid, uid, action }));
+	try {
+		const calls = yield* appSelector(state => state.videoConf.calls);
+		const userId = yield* appSelector(state => state.login.user.id);
+		const currentCall = calls.find(c => c.callId === callId);
+		if (currentCall && currentCall.action === 'calling') {
+			yield call(notifyUser, `${uid}/video-conference`, { action: 'confirmed', params: { uid: userId, rid, callId } });
+			yield put(setVideoConfCall({ callId, rid, uid, action }));
+		}
+	} catch {
+		// do nothing
 	}
 }
 
@@ -97,7 +105,11 @@ function* onDirectCallConfirmed(payload: ICallInfo) {
 	if (currentCall) {
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
-		videoConfJoin(payload.callId, false, true);
+		if (currentCall.action === 'accepted') {
+			videoConfJoin(payload.callId, false, true);
+		} else {
+			hideNotification();
+		}
 	}
 }
 
@@ -162,7 +174,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 	const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
 	if (isServer5OrNewer) {
 		try {
-			const videoConfResponse = yield* call(Services.videoConferenceStart, rid);
+			const videoConfResponse = yield* call(videoConferenceStart, rid);
 			if (videoConfResponse.success) {
 				if (direct && videoConfResponse.data.type === 'direct') {
 					yield call(callUser, { rid, uid: videoConfResponse.data.calleeId, callId: videoConfResponse.data.callId });
@@ -191,56 +203,68 @@ function* giveUp({ rid, uid, callId, rejected }: { rid: string; uid: string; cal
 	yield call(notifyUser, `${uid}/video-conference`, { action: rejected ? 'rejected' : 'canceled', params: { uid, rid, callId } });
 	if (!rejected) {
 		yield put(setCalling(false));
-		yield call(Services.videoConferenceCancel, callId);
+		yield call(videoConferenceCancel, callId);
 	}
 }
 
 function* cancelCall({ payload }: { payload?: { callId?: string } }) {
-	const calls = yield* appSelector(state => state.videoConf.calls);
-	if (payload?.callId) {
-		const currentCall = calls.find(c => c.callId === payload.callId);
-		if (currentCall) {
-			yield call(giveUp, { ...currentCall, rejected: true });
+	try {
+		const calls = yield* appSelector(state => state.videoConf.calls);
+		if (payload?.callId) {
+			const currentCall = calls.find(c => c.callId === payload.callId);
+			if (currentCall) {
+				yield call(giveUp, { ...currentCall, rejected: true });
+			}
+		} else {
+			const currentCall = calls.find(c => c.action === 'calling');
+			if (currentCall && currentCall.callId) {
+				yield call(giveUp, currentCall);
+			}
 		}
-	} else {
-		const currentCall = calls.find(c => c.action === 'calling');
-		if (currentCall && currentCall.callId) {
-			yield call(giveUp, currentCall);
-		}
+	} catch {
+		// do nothing
 	}
 }
 
 function* callUser({ rid, uid, callId }: { rid: string; uid: string; callId: string }) {
-	const userId = yield* appSelector(state => state.login.user.id);
-	yield put(setVideoConfCall({ rid, uid, callId, action: 'calling' }));
-	for (let attempt = 1; attempt <= CALL_ATTEMPT_LIMIT; attempt++) {
-		if (attempt < CALL_ATTEMPT_LIMIT) {
-			const calls = yield* appSelector(state => state.videoConf.calls);
-			const currentCall = calls.find(c => c.callId === callId);
-			if (!currentCall || currentCall.action !== 'calling') {
+	try {
+		const userId = yield* appSelector(state => state.login.user.id);
+		yield put(setVideoConfCall({ rid, uid, callId, action: 'calling' }));
+		for (let attempt = 1; attempt <= CALL_ATTEMPT_LIMIT; attempt++) {
+			if (attempt < CALL_ATTEMPT_LIMIT) {
+				const calls = yield* appSelector(state => state.videoConf.calls);
+				const currentCall = calls.find(c => c.callId === callId);
+				if (!currentCall || currentCall.action !== 'calling') {
+					break;
+				}
+				yield call(notifyUser, `${uid}/video-conference`, { action: 'call', params: { uid: userId, rid, callId } });
+				yield delay(CALL_INTERVAL);
+			} else {
+				hideActionSheetRef();
+				yield call(giveUp, { uid, rid, callId });
 				break;
 			}
-			yield call(notifyUser, `${uid}/video-conference`, { action: 'call', params: { uid: userId, rid, callId } });
-			yield delay(CALL_INTERVAL);
-		} else {
-			hideActionSheetRef();
-			yield call(giveUp, { uid, rid, callId });
-			break;
 		}
+	} catch {
+		// do nothing
 	}
 }
 
 function* acceptCall({ payload: { callId } }: { payload: { callId: string } }) {
-	const calls = yield* appSelector(state => state.videoConf.calls);
-	const currentCall = calls.find(c => c.callId === callId);
-	if (currentCall && currentCall.action === 'call') {
-		const userId = yield* appSelector(state => state.login.user.id);
-		yield call(notifyUser, `${currentCall.uid}/video-conference`, {
-			action: 'accepted',
-			params: { uid: userId, rid: currentCall.rid, callId: currentCall.callId }
-		});
-		yield put(setVideoConfCall({ ...currentCall, action: 'accepted' }));
-		hideNotification();
+	try {
+		const calls = yield* appSelector(state => state.videoConf.calls);
+		const currentCall = calls.find(c => c.callId === callId);
+		if (currentCall && currentCall.action === 'call') {
+			const userId = yield* appSelector(state => state.login.user.id);
+			yield call(notifyUser, `${currentCall.uid}/video-conference`, {
+				action: 'accepted',
+				params: { uid: userId, rid: currentCall.rid, callId: currentCall.callId }
+			});
+			yield put(setVideoConfCall({ ...currentCall, action: 'accepted' }));
+			hideNotification();
+		}
+	} catch {
+		// do nothing
 	}
 }
 

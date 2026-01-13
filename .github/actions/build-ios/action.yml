@@ -1,0 +1,174 @@
+name: 'Build iOS'
+description: 'Build iOS app'
+inputs:
+  type:
+    description: 'Build type: official or experimental'
+    required: true
+  BUILD_VERSION:
+    description: 'Build version'
+    required: true
+  APP_STORE_CONNECT_API_KEY_BASE64:
+    description: 'Base64 encoded App Store Connect API Key'
+    required: true
+  BUGSNAG_KEY:
+    description: 'Bugsnag API Key'
+    required: true
+  MATCH_KEYCHAIN_NAME:
+    description: 'Match Keychain Name'
+    required: true
+  MATCH_KEYCHAIN_PASSWORD:
+    description: 'Match Keychain Password'
+    required: true
+  MATCH_PASSWORD:
+    description: 'Match Password'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ID:
+    description: 'App Store Connect API Key ID'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ISSUER_ID:
+    description: 'App Store Connect API Key Issuer ID'
+    required: true
+  FASTLANE_REPO_PAT:
+    description: 'Fastlane Repo PAT'
+    required: true
+  BUGSNAG_KEY_OFFICIAL:
+    description: 'Bugsnag API Key Official'
+    required: true
+  GOOGLE_SERVICES_IOS:
+    description: 'Google service file for official version'
+    required: true
+  GOOGLE_SERVICES_IOS_EXPERIMENTAL:
+    description: 'Google service file for experimental version'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Remove simulator and its cache
+      run : |
+        xcrun simctl delete all
+        sudo rm -rf ~/Library/Developer/CoreSimulator/Caches/*
+      shell: bash
+
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '16.4'
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Pod Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pods
+          ios/Pods
+        key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+        restore-keys: |
+          pods-v1-
+
+    - name: pod install 
+      run: |
+        yarn pod-install
+      shell: bash
+
+    - name: Decode p8
+      run: |
+        echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+      shell: bash
+
+    - name: Configure Info.plist and build version
+      working-directory: ios
+      run: |
+        agvtool new-version -all ${{ inputs.BUILD_VERSION }}
+        if [[ ${{ inputs.type }} == "official" ]]; then
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
+        fi
+        if [[ ${{ inputs.type }} == "experimental" ]]; then
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY }}" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY }}" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
+        fi
+      shell: bash
+
+    - name: Set Google Services
+      working-directory: ios
+      run: |
+        if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+          if [[ ${{ inputs.type }}  == "official" ]]; then
+            echo ${{ inputs.GOOGLE_SERVICES_IOS }} | base64 --decode > GoogleService-Info.plist
+          else 
+            echo ${{ inputs.GOOGLE_SERVICES_IOS_EXPERIMENTAL }} | base64 --decode > GoogleService-Info.plist
+          fi
+        fi
+      shell: bash
+
+    - name: Build iOS app
+      working-directory: ios
+      run: |
+        if [[ ${{ inputs.type }} == "official" ]]; then
+          bundle exec fastlane ios build_official
+        fi
+        if [[ ${{ inputs.type }} == "experimental" ]]; then
+          bundle exec fastlane ios build_experimental
+        fi
+      env:
+        MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
+        MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
+        MATCH_PASSWORD: ${{ inputs.MATCH_PASSWORD }}
+        APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
+        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+        FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
+      shell: bash
+
+    - name: Upload IPA artifact
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
+      with:
+        name: ios-build-experimental
+        path: ios/Rocket.Chat.ipa
+
+    - name: Upload IPA artifact
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official
+        path: ios/Rocket.Chat.ipa
+
+    - name: Upload Rocket.Chat.app.dSYM.zip
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
+      with:
+        name: ios-build-experimental-dSYM
+        path: ios/Rocket.Chat.app.dSYM.zip
+
+    - name: Upload Rocket.Chat.app.dSYM.zip
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official-dSYM
+        path: ios/Rocket.Chat.app.dSYM.zip
+
+    - name: Upload RocketChatRN/Info.plist
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
+      with:
+        name: ios-build-experimental-info-plist
+        path: ios/RocketChatRN/Info.plist
+
+    - name: Upload RocketChatRN/Info.plist
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official-info-plist
+        path: ios/RocketChatRN/Info.plist

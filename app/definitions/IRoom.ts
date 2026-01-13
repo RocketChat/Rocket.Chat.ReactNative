@@ -1,10 +1,10 @@
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
-import { IMessage } from './IMessage';
-import { IRocketChatRecord } from './IRocketChatRecord';
-import { IServedBy } from './IServedBy';
-import { IVisitor, SubscriptionType } from './ISubscription';
-import { IUser, TNotifications } from './IUser';
+import { type IMessage } from './IMessage';
+import { type IRocketChatRecord } from './IRocketChatRecord';
+import { type IServedBy } from './IServedBy';
+import { type IVisitor, type SubscriptionType } from './ISubscription';
+import { type IUser, type TNotifications } from './IUser';
 
 interface IRequestTranscript {
 	email: string;
@@ -12,6 +12,8 @@ interface IRequestTranscript {
 	requestedBy: IUser;
 	subject: string;
 }
+
+export type TUserWaitingForE2EKeys = { userId: string; ts: Date };
 
 export interface IRoom {
 	fname?: string;
@@ -34,6 +36,7 @@ export interface IRoom {
 	livechatData?: any;
 	tags?: string[];
 	e2eKeyId?: string;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	avatarETag?: string;
 	latest?: string;
 	default?: boolean;
@@ -58,6 +61,7 @@ export interface IRoom {
 	sysMes?: string[];
 	onHold?: boolean;
 	waitingResponse?: boolean;
+	federated?: boolean;
 }
 
 export interface IRoomSettings {
@@ -159,7 +163,12 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	username?: string;
 	nickname?: string;
-	federation?: any;
+	federation?: {
+		version: number;
+		mrid: string;
+		origin: string;
+		peer?: string;
+	};
 	roomsCount?: number;
 
 	u: Pick<IUser, '_id' | 'username' | 'name'>;
@@ -217,6 +226,7 @@ export interface IServerRoom extends IRocketChatRecord {
 	reactWhenReadOnly?: boolean;
 	joinCodeRequired?: boolean;
 	e2eKeyId?: string;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	v?: {
 		_id?: string;
 		token?: string;
@@ -227,6 +237,8 @@ export interface IServerRoom extends IRocketChatRecord {
 	tags?: string[];
 
 	isLastOwner?: boolean;
+	federated?: boolean;
+	abacAttributes?: { key: string; values: string[] }[];
 }
 
 export interface IRoomNotifications {

@@ -1,7 +1,6 @@
 export default {
 	// NEW SERVER VIEW
 	NS_CONNECT_TO_WORKSPACE: 'ns_connect_to_workspace',
-	NS_JOIN_OPEN_WORKSPACE: 'ns_join_open_workspace',
 
 	// LOGIN VIEW
 	LOGIN_DEFAULT_LOGIN: 'login_default_login',
@@ -54,7 +53,6 @@ export default {
 	SET_STATUS_FAIL: 'set_status_fail',
 
 	// ROOMS LIST VIEW
-	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',
 	RL_ADD_SERVER: 'rl_add_server',
 	RL_CHANGE_SERVER: 'rl_change_server',
 	RL_GO_NEW_MSG: 'rl_go_new_msg',
@@ -65,12 +63,9 @@ export default {
 	RL_GO_ROOM: 'rl_go_room',
 	RL_FAVORITE_CHANNEL: 'rl_favorite_channel',
 	RL_UNFAVORITE_CHANNEL: 'rl_unfavorite_channel',
-	RL_TOGGLE_FAVORITE_F: 'rl_toggle_favorite_f',
 	RL_READ_CHANNEL: 'rl_read_channel',
 	RL_UNREAD_CHANNEL: 'rl_unread_channel',
-	RL_TOGGLE_READ_F: 'rl_toggle_read_f',
 	RL_HIDE_CHANNEL: 'rl_hide_channel',
-	RL_HIDE_CHANNEL_F: 'rl_hide_channel_f',
 	RL_CREATE_NEW_WORKSPACE: 'rl_create_new_workspace',
 
 	// DISPLAY PREFERENCES VIEW
@@ -217,7 +212,6 @@ export default {
 	ROOM_MSG_ACTION_PERMALINK_F: 'room_msg_action_permalink_f',
 	ROOM_MSG_ACTION_DISCUSSION: 'room_msg_action_discussion',
 	ROOM_MSG_ACTION_UNREAD: 'room_msg_action_unread',
-	ROOM_MSG_ACTION_UNREAD_F: 'room_msg_action_unread_f',
 	ROOM_MSG_ACTION_COPY: 'room_msg_action_copy',
 	ROOM_MSG_ACTION_SHARE: 'room_msg_action_share',
 	ROOM_MSG_ACTION_SHARE_F: 'room_msg_action_share_f',
@@ -355,6 +349,7 @@ export default {
 	// E2E ENCRYPTION SECURITY VIEW
 	E2E_SEC_CHANGE_PASSWORD: 'e2e_sec_change_password',
 	E2E_SEC_RESET_OWN_KEY: 'e2e_sec_reset_own_key',
+	E2E_SEC_COPY_PASSWORD: 'e2e_sec_copy_password',
 
 	// TEAM CHANNELS VIEW
 	TC_SEARCH: 'tc_search',

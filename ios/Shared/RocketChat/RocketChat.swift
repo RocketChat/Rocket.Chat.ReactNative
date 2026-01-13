@@ -14,28 +14,12 @@ final class RocketChat {
   
   let server: Server
   let api: API?
-  
-  static var instances: [Server: RocketChat] = [:]
-  var encryptionInstances: [RoomId: Encryption] = [:]
-  
-  static private var queue = DispatchQueue(label: "chat.rocket.instanceQueue")
+
   private var encryptionQueue = DispatchQueue(label: "chat.rocket.encryptionQueue")
   
   init(server: Server) {
     self.server = server
     self.api = API(server: server)
-  }
-  
-  static func instanceForServer(server: Server) -> RocketChat {
-    queue.sync {
-      if let rocketchat = instances[server] {
-        return rocketchat
-      }
-      
-      let rocketchat = RocketChat(server: server)
-      instances[server] = rocketchat
-      return rocketchat
-    }
   }
   
   func getPushWithId(_ msgId: String, completion: @escaping((Notification?) -> Void)) {
@@ -55,45 +39,45 @@ final class RocketChat {
   func sendMessage(rid: String, message: String, threadIdentifier: String?, completion: @escaping((MessageResponse?) -> Void)) {
     let id = String.random(length: 17)
     
-    var msg = message
-    let encrypted = Database(server: server).readRoomEncrypted(rid: rid)
-    if encrypted {
-      msg = encryptMessage(rid: rid, id: id, message: message)
-    }
+    let encrypted = Database(server: server).readRoomEncrypted(for: rid)
     
-    api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, threadIdentifier: threadIdentifier, messageType: encrypted ? .e2e : nil )) { response in
-      switch response {
-      case .resource(let response):
-        completion(response)
-        
-      case .error:
-        completion(nil)
-        break
+    if encrypted {
+      let encryption = Encryption(server: server, rid: rid)
+      guard let content = encryption.encryptContent(message) else {
+        return
+      }
+      
+      // For backward compatibility, also set msg field
+      let msg = content.algorithm == "rc.v2.aes-sha2" ? "" : content.ciphertext
+      
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, content: content, threadIdentifier: threadIdentifier, messageType: .e2e)) { response in
+        switch response {
+        case .resource(let response):
+          completion(response)
+          
+        case .error:
+          completion(nil)
+          break
+        }
+      }
+    } else {
+      api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: message, threadIdentifier: threadIdentifier, messageType: nil)) { response in
+        switch response {
+        case .resource(let response):
+          completion(response)
+          
+        case .error:
+          completion(nil)
+          break
+        }
       }
     }
   }
   
-  func decryptMessage(rid: String, message: String) -> String? {
+  func decryptContent(rid: String, content: EncryptedContent) -> String? {
     encryptionQueue.sync {
-      if let encryption = encryptionInstances[rid] {
-        return encryption.decryptMessage(message: message)
-      }
-      
       let encryption = Encryption(server: server, rid: rid)
-      encryptionInstances[rid] = encryption
-      return encryption.decryptMessage(message: message)
-    }
-  }
-  
-  func encryptMessage(rid: String, id: String, message: String) -> String {
-    encryptionQueue.sync {
-      if let encryption = encryptionInstances[rid] {
-        return encryption.encryptMessage(id: id, message: message)
-      }
-      
-      let encryption = Encryption(server: server, rid: rid)
-      encryptionInstances[rid] = encryption
-      return encryption.encryptMessage(id: id, message: message)
+      return encryption.decryptContent(content: content)
     }
   }
 }

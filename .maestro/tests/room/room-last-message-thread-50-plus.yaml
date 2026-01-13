@@ -1,0 +1,32 @@
+appId: chat.rocket.reactnative
+name: Open room with last message as thread with more than 50 messages
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+tags:
+  - test-12
+
+---
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.account.adminUser}
+      PASSWORD: ${output.account.adminPassword}
+
+# should open a room where the last message is a thread containing more than 50 messages.
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: 'maestro_test_load_threads'
+- extendedWaitUntil:
+    visible:
+      text: '.*message 50.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'thread-count-55'
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: 'message-content-message 1'
+    direction: UP
+    timeout: 60000

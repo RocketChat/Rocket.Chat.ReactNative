@@ -1,9 +1,9 @@
 import React from 'react';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
 import { ThemeContext } from '../theme';
-import { ModalAnimation, StackAnimation, defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
+import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 // Outside Stack
 import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
@@ -13,27 +13,28 @@ import SendEmailConfirmationView from '../views/SendEmailConfirmationView';
 import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
-import { OutsideModalParamList, OutsideParamList } from './types';
+import { type OutsideModalParamList, type OutsideParamList } from './types';
 
 // Outside
-const Outside = createStackNavigator<OutsideParamList>();
-const _OutsideStack = () => {
+const Outside = createNativeStackNavigator<OutsideParamList>();
+const OutsideStackComponent = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
+		<Outside.Navigator screenOptions={themedHeader(theme)}>
 			{/* @ts-ignore */}
 			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
-			<Outside.Screen name='WorkspaceView' component={WorkspaceView} />
+			<Outside.Screen name='WorkspaceView' component={WorkspaceView} options={defaultHeader} />
+
+			<Outside.Screen name='LoginView' component={LoginView} options={defaultHeader} />
+			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} options={defaultHeader} />
+			<Outside.Screen name='SendEmailConfirmationView' component={SendEmailConfirmationView} options={defaultHeader} />
 			{/* @ts-ignore */}
-			<Outside.Screen name='LoginView' component={LoginView} options={LoginView.navigationOptions} />
-			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} />
+			<Outside.Screen name='RegisterView' component={RegisterView} options={defaultHeader} />
 			{/* @ts-ignore */}
-			<Outside.Screen name='SendEmailConfirmationView' component={SendEmailConfirmationView} />
-			{/* @ts-ignore */}
-			<Outside.Screen name='RegisterView' component={RegisterView} options={RegisterView.navigationOptions} />
-			{/* @ts-ignore */}
-			<Outside.Screen name='LegalView' component={LegalView} />
+			<Outside.Screen name='LegalView' component={LegalView} options={defaultHeader} />
 		</Outside.Navigator>
 	);
 };
@@ -42,18 +43,19 @@ const mapStateToProps = (state: any) => ({
 	root: state.app.root
 });
 
-const OutsideStack = connect(mapStateToProps)(_OutsideStack);
+const OutsideStack = connect(mapStateToProps)(OutsideStackComponent);
 
 // OutsideStackModal
-const OutsideModal = createStackNavigator<OutsideModalParamList>();
+const OutsideModal = createNativeStackNavigator<OutsideModalParamList>();
 const OutsideStackModal = () => {
+	'use memo';
+
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<OutsideModal.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'transparentModal' }}>
-			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false }} />
-			<OutsideModal.Screen name='AuthenticationWebView' component={AuthenticationWebView} />
+		<OutsideModal.Navigator screenOptions={{ ...themedHeader(theme), presentation: 'containedTransparentModal' }}>
+			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false, ...defaultHeader }} />
+			<OutsideModal.Screen name='AuthenticationWebView' component={AuthenticationWebView} options={defaultHeader} />
 		</OutsideModal.Navigator>
 	);
 };

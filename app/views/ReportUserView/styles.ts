@@ -10,7 +10,8 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	containerView: {
-		padding: 16
+		paddingHorizontal: 16,
+		paddingTop: 32
 	},
 	containerAvatarAndName: {
 		flexDirection: 'row',
@@ -20,10 +21,11 @@ export default StyleSheet.create({
 	nameText: {
 		marginLeft: 8,
 		fontSize: 16,
-		...sharedStyles.textMedium
+		lineHeight: 24,
+		...sharedStyles.textBold
 	},
 	containerTextInput: {
-		marginBottom: 24
+		marginBottom: 36
 	},
 	textInput: {
 		minHeight: 100,

@@ -1,15 +1,15 @@
-import { ICannedResponse } from '../../ICannedResponse';
-import { ILivechatAgent } from '../../ILivechatAgent';
-import { ILivechatDepartment } from '../../ILivechatDepartment';
-import { ILivechatDepartmentAgents } from '../../ILivechatDepartmentAgents';
-import { ILivechatMonitor } from '../../ILivechatMonitor';
-import { ILivechatTag } from '../../ILivechatTag';
-import { ILivechatVisitor, ILivechatVisitorDTO } from '../../ILivechatVisitor';
-import { IMessage } from '../../IMessage';
-import { IOmnichannelRoom, IServerRoom } from '../../IRoom';
-import { ISetting } from '../../ISetting';
-import { PaginatedRequest } from '../helpers/PaginatedRequest';
-import { PaginatedResult } from '../helpers/PaginatedResult';
+import { type ICannedResponse } from '../../ICannedResponse';
+import { type ILivechatAgent } from '../../ILivechatAgent';
+import { type ILivechatDepartment } from '../../ILivechatDepartment';
+import { type ILivechatDepartmentAgents } from '../../ILivechatDepartmentAgents';
+import { type ILivechatMonitor } from '../../ILivechatMonitor';
+import { type ILivechatTag } from '../../ILivechatTag';
+import { type ILivechatVisitor, type ILivechatVisitorDTO } from '../../ILivechatVisitor';
+import { type IMessage } from '../../IMessage';
+import { type IOmnichannelRoom, type IServerRoom } from '../../IRoom';
+import { type ISetting } from '../../ISetting';
+import { type PaginatedRequest } from '../helpers/PaginatedRequest';
+import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 type booleanString = 'true' | 'false';
 
@@ -17,6 +17,19 @@ export type OmnichannelEndpoints = {
 	'livechat/appearance': {
 		GET: () => {
 			appearance: ISetting[];
+		};
+	};
+	'livechat/config/routing': {
+		GET: () => {
+			config: {
+				previewRoom: boolean;
+				showConnecting: boolean;
+				showQueue: boolean;
+				showQueueLink: boolean;
+				returnQueue: boolean;
+				enableTriggerAction: boolean;
+				autoAssignAgent: boolean;
+			};
 		};
 	};
 	'livechat/visitors.info': {
@@ -109,6 +122,27 @@ export type OmnichannelEndpoints = {
 			];
 		}>;
 	};
+
+	'livechat/inquiries.queued': {
+		GET: () => PaginatedResult<{
+			inquiries: IOmnichannelRoom[];
+		}>;
+	};
+
+	'livechat/inquiries.queuedForUser': {
+		GET: () => PaginatedResult<{
+			inquiries: IOmnichannelRoom[];
+		}>;
+	};
+
+	'livechat/inquiries.take': {
+		POST: (params: { inquiryId: string }) => void;
+	};
+
+	'livechat/inquiries.returnAsInquiry': {
+		POST: (params: { roomId: string; departmentId?: string }) => boolean;
+	};
+
 	'livechat/rooms': {
 		GET: (params: {
 			guest: string;
@@ -202,5 +236,19 @@ export type OmnichannelEndpoints = {
 		GET: (params: PaginatedRequest<{ scope?: string; departmentId?: string; text?: string }>) => PaginatedResult<{
 			cannedResponses: ICannedResponse[];
 		}>;
+	};
+
+	'livechat/room.saveInfo': {
+		POST: (params: {
+			guestData: { _id: string; name?: string; email?: string; phone?: string; livechatData?: Record<string, string> };
+			roomData: {
+				_id: string;
+				topic?: string;
+				tags?: string[];
+				livechatData?: Record<string, string>;
+				priorityId?: string;
+				slaId?: string;
+			};
+		}) => void;
 	};
 };

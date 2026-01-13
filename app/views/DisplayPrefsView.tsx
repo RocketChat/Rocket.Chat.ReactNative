@@ -1,45 +1,37 @@
-import React, { useEffect } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useLayoutEffect } from 'react';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native';
-import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 
+import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
-import { DisplayMode, SortBy } from '../lib/constants';
-import * as HeaderButton from '../containers/HeaderButton';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
-import { IPreferences } from '../definitions';
+import Radio from '../containers/Radio';
+import { type IPreferences } from '../definitions';
 import I18n from '../i18n';
-import { SettingsStackParamList } from '../stacks/types';
+import { type SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { saveSortPreference } from '../lib/methods';
-import { useAppSelector } from '../lib/hooks';
+import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const DisplayPrefsView = (): React.ReactElement => {
-	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
 	const { colors } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
 		state => state.sortPreferences
 	);
-	const { isMasterDetail } = useAppSelector(state => state.app);
 	const dispatch = useDispatch();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Display')
 		});
-		if (!isMasterDetail) {
-			navigation.setOptions({
-				headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
-			});
-		}
-	}, [isMasterDetail, navigation]);
+	}, []);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));
@@ -91,16 +83,13 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
-		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
+		<Switch accessible={false} value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
-	const renderRadio = (value: boolean) => (
-		<RadioButton selected={!!value} color={value ? colors.fontHint : colors.fontSecondaryInfo} size={ICON_SIZE} />
-	);
+	const renderRadio = (value: boolean) => <Radio check={value} size={ICON_SIZE} />;
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container testID='display-view-list'>
 				<List.Section title='Display'>
 					<List.Separator />
@@ -110,6 +99,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-expanded'
 						right={() => renderRadio(displayMode === DisplayMode.Expanded)}
 						onPress={displayExpanded}
+						additionalAccessibilityLabel={displayMode === DisplayMode.Expanded}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -118,6 +109,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-condensed'
 						right={() => renderRadio(displayMode === DisplayMode.Condensed)}
 						onPress={displayCondensed}
+						additionalAccessibilityLabel={displayMode === DisplayMode.Condensed}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -125,6 +118,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						title='Avatars'
 						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
+						additionalAccessibilityLabel={showAvatar}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 				</List.Section>
@@ -137,6 +132,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
 						right={() => renderRadio(sortBy === SortBy.Activity)}
+						additionalAccessibilityLabel={sortBy === SortBy.Activity}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -145,6 +142,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
 						right={() => renderRadio(sortBy === SortBy.Alphabetical)}
+						additionalAccessibilityLabel={sortBy === SortBy.Alphabetical}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 				</List.Section>
@@ -157,6 +156,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
 						right={() => renderCheckBox(showUnread)}
+						additionalAccessibilityLabel={showUnread}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
@@ -165,6 +166,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
 						right={() => renderCheckBox(showFavorites)}
+						additionalAccessibilityLabel={showFavorites}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
@@ -173,6 +176,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleGroupByType}
 						right={() => renderCheckBox(groupByType)}
+						additionalAccessibilityLabel={groupByType}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 				</List.Section>

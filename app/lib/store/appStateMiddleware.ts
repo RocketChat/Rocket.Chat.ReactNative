@@ -17,7 +17,7 @@ export default () =>
 					let type;
 					if (nextAppState === 'active') {
 						type = APP_STATE.FOREGROUND;
-						removeNotificationsAndBadge();
+						removeNotificationsAndBadge().catch(e => console.warn('Failed to clear notifications', e));
 					} else if (nextAppState === 'background') {
 						type = APP_STATE.BACKGROUND;
 					}

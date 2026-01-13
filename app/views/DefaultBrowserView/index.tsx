@@ -3,14 +3,12 @@ import { FlatList, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { DEFAULT_BROWSER_KEY } from '../../lib/methods/helpers/openLink';
 import { isIOS } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import Item from './Item';
 
 export type TValue = 'inApp' | 'systemDefault:' | 'googlechrome:' | 'firefox:' | 'brave:';
 
@@ -83,20 +81,26 @@ const DefaultBrowserView = () => {
 			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
 	}, []);
-
 	return (
 		<SafeAreaView testID='default-browser-view'>
-			<StatusBar />
 			<FlatList
 				data={DEFAULT_BROWSERS.concat(supported)}
 				keyExtractor={item => item.value}
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				renderItem={({ item }) => (
-					<Item browser={browser} changeDefaultBrowser={changeDefaultBrowser} title={item.title} value={item.value} />
+					<List.Radio
+						isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}
+						title={item.title}
+						value={item.value}
+						translateTitle={false}
+						translateSubtitle={false}
+						onPress={changeDefaultBrowser}
+						testID={`default-browser-view-${item.value}`}
+					/>
 				)}
 				ListHeaderComponent={
 					<>
-						<List.Header title='Choose_where_you_want_links_be_opened' />
+						<List.Header title='Choose_where_you_want_links_be_opened' numberOfLines={2} />
 						<List.Separator />
 					</>
 				}

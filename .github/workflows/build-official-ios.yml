@@ -1,0 +1,97 @@
+name: Build iOS And Upload
+
+on:
+  workflow_call:
+    inputs:
+      type:
+        type: string
+        required: true
+      trigger:
+        type: string
+        required: false
+        default: pr
+
+jobs:
+  build-hold:
+    name: Hold
+    runs-on: ubuntu-latest
+    if: ${{ inputs.trigger == 'pr' }}
+    environment: official_ios_build
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  build-ios:
+    name: Build
+    runs-on: macos-15
+    needs: [build-hold]
+    if: ${{ inputs.type == 'official' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Fetch supported versions from Cloud
+        uses: ./.github/actions/fetch-supported-versions
+        with:
+          build_name: 'ios-official'
+
+      - name: Generate Build Version
+        id: version
+        uses: ./.github/actions/generate-build-version
+        with:
+          RN_VARIABLES_PAT: ${{ secrets.RN_VARIABLES_PAT }}
+
+      - name: Build iOS
+        uses: ./.github/actions/build-ios
+        timeout-minutes: 60
+        with:
+          type: official
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
+          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
+          BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          GOOGLE_SERVICES_IOS: ${{ secrets.GOOGLE_SERVICES_IOS }}
+          GOOGLE_SERVICES_IOS_EXPERIMENTAL: ${{ secrets.GOOGLE_SERVICES_IOS_EXPERIMENTAL }}
+          BUILD_VERSION: ${{ steps.version.outputs.BUILD_VERSION }}
+
+  upload-hold:
+    name: Upload Hold
+    runs-on: ubuntu-latest
+    if: ${{ inputs.trigger == 'pr' }}
+    environment: upload_official_ios
+    needs: [build-ios]
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  upload-ios:
+    name: Upload
+    runs-on: macos-15
+    needs: [upload-hold]
+    if: ${{ inputs.type == 'official' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped')) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+      
+      - name: Upload iOS
+        uses: ./.github/actions/upload-ios
+        with:
+          type: official
+          trigger: ${{ inputs.trigger }}
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

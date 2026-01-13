@@ -9,79 +9,25 @@ export default StyleSheet.create({
 	listContainer: {
 		paddingBottom: 30
 	},
-	separator: {
-		marginLeft: 60
-	},
-	toggleDropdownContainer: {
-		height: 46,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	toggleDropdownIcon: {
-		marginLeft: 20,
-		marginRight: 17
-	},
-	toggleDropdownText: {
+	filterItemContainer: {
 		flex: 1,
-		fontSize: 17,
-		...sharedStyles.textRegular
-	},
-	toggleDropdownArrow: {
-		marginRight: 15
-	},
-	dropdownContainer: {
-		width: '100%',
-		position: 'absolute',
-		top: 0
-	},
-	backdrop: {
-		// @ts-ignore
-		...StyleSheet.absoluteFill
-	},
-	dropdownContainerHeader: {
-		height: 46,
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		flexDirection: 'row',
 		alignItems: 'center',
-		flexDirection: 'row'
+		paddingRight: 15
 	},
-	dropdownItemButton: {
-		height: 46,
-		justifyContent: 'center'
-	},
-	dropdownItemContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	dropdownItemText: {
+	filterItemText: {
 		fontSize: 18,
 		flex: 1,
 		...sharedStyles.textRegular
 	},
-	dropdownItemDescription: {
+	filterItemDescription: {
 		fontSize: 14,
 		flex: 1,
 		marginTop: 2,
 		...sharedStyles.textRegular
 	},
-	dropdownToggleText: {
-		fontSize: 15,
-		flex: 1,
-		marginLeft: 15,
-		...sharedStyles.textRegular
-	},
-	dropdownItemIcon: {
-		width: 22,
-		height: 22,
+	filterItemIcon: {
 		marginHorizontal: 15
-	},
-	dropdownSeparator: {
-		height: StyleSheet.hairlineWidth,
-		marginHorizontal: 15,
-		flex: 1
-	},
-	inverted: {
-		transform: [{ scaleY: -1 }]
 	},
 	globalUsersContainer: {
 		padding: 15

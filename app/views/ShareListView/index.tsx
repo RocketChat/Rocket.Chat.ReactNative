@@ -1,8 +1,7 @@
 import React from 'react';
-import { Dispatch } from 'redux';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { BackHandler, FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
-import ShareExtension from 'rn-extensions-share';
+import { type Dispatch } from 'redux';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
@@ -13,24 +12,20 @@ import database from '../../lib/database';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../containers/DirectoryItem';
 import ServerItem from '../../containers/ServerItem';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
-import { themes } from '../../lib/constants';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
-import { TSupportedThemes, withTheme } from '../../theme';
+import SearchHeader from '../../containers/SearchHeader';
+import { themes } from '../../lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
-import ShareListHeader from './Header';
-import { IApplicationState, TServerModel, TSubscriptionModel } from '../../definitions';
-import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
-import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../../lib/methods/helpers';
-
-interface IDataFromShare {
-	value: string;
-	type: string;
-}
+import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../../definitions';
+import { type ShareInsideStackParamList } from '../../definitions/navigationTypes';
+import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
+import { shareSetParams } from '../../actions/share';
+import { appStart } from '../../actions/app';
 
 interface IFileToShare {
 	filename: string;
@@ -50,18 +45,21 @@ interface IState {
 	text: string;
 	loading: boolean;
 	serverInfo: TServerModel;
-	needsPermission: boolean;
 }
 
 interface INavigationOption {
-	navigation: StackNavigationProp<ShareInsideStackParamList, 'ShareListView'>;
+	navigation: NativeStackNavigationProp<ShareInsideStackParamList, 'ShareListView'>;
 }
 
 interface IShareListViewProps extends INavigationOption {
 	server: string;
+	connecting: boolean;
+	isAuthenticated: boolean;
 	token: string;
 	userId: string;
 	theme: TSupportedThemes;
+	airGappedRestrictionRemainingDays: number | undefined;
+	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
 }
 
@@ -73,6 +71,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	private unsubscribeBlur: (() => void) | undefined;
 
+	private backHandler: NativeEventSubscription | undefined;
+
 	constructor(props: IShareListViewProps) {
 		super(props);
 		this.state = {
@@ -82,79 +82,85 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			chats: [],
 			serversCount: 0,
 			attachments: [],
-			text: '',
+			text: props.shareExtensionParams.text,
 			loading: true,
-			serverInfo: {} as TServerModel,
-			needsPermission: isAndroid || false
+			serverInfo: {} as TServerModel
 		};
 		this.setHeader();
 		if (isAndroid) {
-			this.unsubscribeFocus = props.navigation.addListener('focus', () =>
-				BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+			this.unsubscribeFocus = props.navigation.addListener(
+				'focus',
+				() => (this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress))
 			);
-			this.unsubscribeBlur = props.navigation.addListener('blur', () =>
-				BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
-			);
+			this.unsubscribeBlur = props.navigation.addListener('blur', () => this.backHandler?.remove());
 		}
 	}
 
 	async componentDidMount() {
-		try {
-			const data = (await ShareExtension.data()) as IDataFromShare[];
-			if (isAndroid) {
-				await this.askForPermission(data);
-			}
-			const info = await Promise.all(
-				data
-					.filter(item => item.type === 'media')
-					.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true }))
-			);
-			const attachments = info.map(file => {
-				if (!file.exists) {
-					return null;
-				}
+		const { shareExtensionParams } = this.props;
+		const { mediaUris } = shareExtensionParams;
+		if (mediaUris) {
+			try {
+				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri, { size: true })));
+				const attachments = info.map(file => {
+					if (!file.exists) {
+						return null;
+					}
 
-				return {
-					filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
-					description: '',
-					size: file.size,
-					mime: mime.lookup(file.uri),
-					path: file.uri
-				};
-			}) as IFileToShare[];
-			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
-			this.setState({
-				text,
-				attachments
-			});
-		} catch {
-			// Do nothing
+					return {
+						filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+						description: '',
+						size: file.size,
+						mime: mime.lookup(file.uri),
+						path: file.uri
+					};
+				}) as IFileToShare[];
+				this.setState({
+					// text,
+					attachments
+				});
+			} catch {
+				// Do nothing
+			}
 		}
 
 		this.getSubscriptions();
 	}
 
-	componentDidUpdate(previousProps: IShareListViewProps) {
-		const { server } = this.props;
-		if (previousProps.server !== server) {
+	componentDidUpdate(previousProps: IShareListViewProps, previousState: IState) {
+		const { searching } = this.state;
+		const { server, connecting, isAuthenticated } = this.props;
+		if (
+			previousProps.server !== server ||
+			(previousProps.connecting !== connecting && !connecting) ||
+			(previousProps.isAuthenticated !== isAuthenticated && isAuthenticated)
+		) {
 			this.getSubscriptions();
+		}
+		if (previousProps.connecting !== connecting && connecting) {
+			this.setState({ chats: [], searchResults: [], searching: false, searchText: '' });
+		}
+		if (previousState.searching !== searching) {
+			this.setHeader();
 		}
 	}
 
 	shouldComponentUpdate(nextProps: IShareListViewProps, nextState: IState) {
-		const { searching, needsPermission } = this.state;
+		const { searching } = this.state;
 		if (nextState.searching !== searching) {
 			return true;
 		}
-		if (nextState.needsPermission !== needsPermission) {
-			return true;
-		}
-
-		const { server, userId } = this.props;
+		const { server, userId, isAuthenticated, connecting } = this.props;
 		if (server !== nextProps.server) {
 			return true;
 		}
 		if (userId !== nextProps.userId) {
+			return true;
+		}
+		if (isAuthenticated !== nextProps.isAuthenticated) {
+			return true;
+		}
+		if (connecting !== nextProps.connecting) {
 			return true;
 		}
 
@@ -174,53 +180,41 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
+		const { dispatch } = this.props;
+		dispatch(shareSetParams({}));
 	}
 
 	setHeader = () => {
 		const { searching } = this.state;
-		const { navigation, theme } = this.props;
+		const { navigation } = this.props;
 
-		if (isIOS) {
+		if (searching) {
 			navigation.setOptions({
-				header: () => (
-					<ShareListHeader
-						searching={searching}
-						initSearch={this.initSearch}
-						cancelSearch={this.cancelSearch}
-						onChangeSearchText={this.search}
-						theme={theme}
-					/>
-				)
+				headerLeft: () => (
+					<HeaderButton.Container left>
+						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
+					</HeaderButton.Container>
+				),
+				headerTitle: () => <SearchHeader onSearchChangeText={this.search} />,
+				headerRight: () => null
 			});
 			return;
 		}
 
 		navigation.setOptions({
-			headerLeft: () =>
-				searching ? (
-					<HeaderButton.Container left>
-						<HeaderButton.Item title='cancel' iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				) : (
-					<HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
-				),
-			headerTitle: () => <ShareListHeader searching={searching} onChangeSearchText={this.search} theme={theme} />,
+			headerLeft: () => (
+				<HeaderButton.Container left>
+					<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />
+				</HeaderButton.Container>
+			),
+			headerTitle: I18n.t('Send_to'),
 			headerRight: () =>
-				searching ? null : (
+				this.airGappedReadOnly ? null : (
 					<HeaderButton.Container>
 						<HeaderButton.Item iconName='search' onPress={this.initSearch} />
 					</HeaderButton.Container>
 				)
 		});
-	};
-
-	internalSetState = (...args: object[]) => {
-		const { navigation } = this.props;
-		if (navigation.isFocused()) {
-			animateNextTransition();
-		}
-		// @ts-ignore
-		this.setState(...args);
 	};
 
 	query = async (text?: string) => {
@@ -265,21 +259,35 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	getSubscriptions = async () => {
-		const { server } = this.props;
-		const serversDB = database.servers;
+		const { server, connecting, isAuthenticated } = this.props;
+		if (connecting || !isAuthenticated) {
+			return;
+		}
 
 		if (server) {
-			const chats = await this.query();
+			const chats = (await this.query()) as TSubscriptionModel[];
+			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
-			let serverInfo = {};
+			let serverInfo = {} as TServerModel;
 			try {
 				serverInfo = await serversCollection.find(server);
 			} catch (error) {
 				// Do nothing
 			}
 
-			this.internalSetState({
+			if (this.airGappedReadOnly) {
+				this.setState({
+					chats: [],
+					serversCount,
+					loading: false,
+					serverInfo
+				});
+				this.forceUpdate();
+				return;
+			}
+
+			this.setState({
 				chats: chats ?? [],
 				serversCount,
 				loading: false,
@@ -287,19 +295,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			});
 			this.forceUpdate();
 		}
-	};
-
-	askForPermission = async (data: IDataFromShare[]) => {
-		const mediaIndex = data.findIndex(item => item.type === 'media');
-		if (mediaIndex !== -1) {
-			const result = await askAndroidMediaPermissions();
-			if (!result) {
-				this.setState({ needsPermission: true });
-				return Promise.reject();
-			}
-		}
-		this.setState({ needsPermission: false });
-		return Promise.resolve();
 	};
 
 	uriToPath = (uri: string) => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
@@ -323,8 +318,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	search = async (text: string) => {
-		const result = await this.query(text);
-		this.internalSetState({
+		const result = (await this.query(text)) as TSubscriptionModel[];
+		this.setState({
 			searchResults: result,
 			searchText: text
 		});
@@ -336,7 +331,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	cancelSearch = () => {
-		this.internalSetState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
+		this.setState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
 		Keyboard.dismiss();
 	};
 
@@ -348,6 +343,16 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 		return false;
 	};
+
+	closeShareExtension = () => {
+		const { dispatch } = this.props;
+		dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+	};
+
+	get airGappedReadOnly() {
+		const { airGappedRestrictionRemainingDays } = this.props;
+		return airGappedRestrictionRemainingDays !== undefined && airGappedRestrictionRemainingDays === 0;
+	}
 
 	renderSectionHeader = (header: string) => {
 		const { searching } = this.state;
@@ -397,8 +402,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	renderSelectServer = () => {
-		const { serverInfo } = this.state;
+		const { serverInfo, serversCount } = this.state;
 		const { navigation } = this.props;
+		if (serversCount === 1) {
+			return null;
+		}
 		return (
 			<>
 				{this.renderSectionHeader('Select_Server')}
@@ -409,23 +417,23 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	renderEmptyComponent = () => {
+		const { searching, searchText } = this.state;
 		const { theme } = this.props;
-		return (
-			<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].surfaceHover }]}>
-				<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
-			</View>
-		);
+		if (searching && searchText) {
+			return (
+				<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].surfaceHover }]}>
+					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
+				</View>
+			);
+		}
+		return null;
 	};
 
 	renderHeader = () => {
-		const { searching, serversCount } = this.state;
+		const { searching } = this.state;
 
 		if (searching) {
 			return null;
-		}
-
-		if (serversCount === 1) {
-			return this.renderSectionHeader('Chats');
 		}
 
 		return (
@@ -437,43 +445,54 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	render = () => {
-		const { chats, loading, searchResults, searching, searchText, needsPermission } = this.state;
+		const { chats, loading, searchResults, searching, serversCount } = this.state;
 		const { theme } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
 		}
 
-		if (needsPermission) {
+		if (this.airGappedReadOnly) {
 			return (
-				<SafeAreaView>
-					<ScrollView
-						style={{ backgroundColor: themes[theme].surfaceRoom }}
-						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}>
-						<Text style={[styles.permissionTitle, { color: themes[theme].fontTitlesLabels }]}>
-							{I18n.t('Read_External_Permission')}
+				<SafeAreaView testID='share-list-view'>
+					{this.renderSelectServer()}
+					{serversCount > 1 ? (
+						<>
+							<View style={styles.readOnlyServerSeparator} />
+							<List.Separator />
+						</>
+					) : null}
+					<View
+						style={[
+							styles.readOnlyContainer,
+							{
+								backgroundColor: themes[theme].surfaceRoom,
+								...(serversCount > 1 ? { justifyContent: 'center' } : { paddingTop: 250 })
+							}
+						]}>
+						<Text style={[styles.readOnlyTitle, { color: themes[theme].fontDefault }]}>
+							{I18n.t('AirGapped_workspace_read_only_share_extension_title')}
 						</Text>
-						<Text style={[styles.permissionMessage, { color: themes[theme].fontDefault }]}>
-							{I18n.t('Read_External_Permission_Message')}
+						<Text style={[styles.readOnlyDescription, { color: themes[theme].fontDefault }]}>
+							{I18n.t('AirGapped_workspace_read_only_description')}
 						</Text>
-					</ScrollView>
+					</View>
 				</SafeAreaView>
 			);
 		}
 
 		return (
-			<SafeAreaView>
+			<SafeAreaView testID='share-list-view'>
 				<FlatList
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
-					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={this.renderHeader}
 					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
-					ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
+					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
 				/>
@@ -482,10 +501,17 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 }
 
-const mapStateToProps = ({ share }: IApplicationState) => ({
-	userId: share.user && (share.user.id as string),
-	token: share.user && (share.user.token as string),
-	server: share.server.server as string
+const mapStateToProps = ({ login, server, share, settings }: IApplicationState) => ({
+	userId: login?.user?.id as string,
+	token: login?.user?.token as string,
+	isAuthenticated: login?.isAuthenticated,
+	server: server?.server,
+	connecting: server?.connecting,
+	shareExtensionParams: share?.params,
+	airGappedRestrictionRemainingDays:
+		typeof settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days === 'number'
+			? settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days
+			: undefined
 });
 
 export default connect(mapStateToProps)(withTheme(ShareListView));

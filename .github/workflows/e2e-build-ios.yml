@@ -1,0 +1,107 @@
+name: E2E Build iOS
+
+on:
+  workflow_call:
+    secrets:
+      APP_STORE_CONNECT_API_KEY_BASE64:
+        required: true
+      BUGSNAG_KEY:
+        required: true
+      MATCH_KEYCHAIN_NAME:
+        required: true
+      MATCH_KEYCHAIN_PASSWORD:
+        required: true
+      MATCH_PASSWORD:
+        required: true
+      APP_STORE_CONNECT_API_KEY_ID:
+        required: true
+      APP_STORE_CONNECT_API_KEY_ISSUER_ID:
+        required: true
+      FASTLANE_REPO_PAT:
+        required: true
+
+jobs:
+  ios-build:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: ./.github/actions/setup-node
+    
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.4'
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.7
+          bundler-cache: true
+
+      - name: Cache CocoaPods and derived data
+        uses: actions/cache@v4
+        with:
+          path: |
+            ios/Pods
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods/repos
+            ~/Library/Developer/Xcode/DerivedData
+          key: ios-cache-${{ runner.os }}-${{ hashFiles('ios/Podfile.lock', 'ios/Podfile') }}
+          restore-keys: |
+            ios-cache-${{ runner.os }}-
+
+      - name: Cache Xcode DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: derived-data-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            derived-data-${{ runner.os }}-
+
+      - name: pod install
+        run: |
+          yarn pod-install
+
+      - name: Decode p8
+        run: |
+          echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+
+      - name: Set bugsnag key
+        run: |
+          cd ios
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
+
+      - name: Build iOS app
+        run: |
+          cd ios
+          export RUNNING_E2E_TESTS=true
+          bundle exec fastlane ios build_experimental_simulator \
+            disable_xcpretty:false \
+            skip_package_ipa:true \
+            skip_archive:true
+        env:
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
+          RUNNING_E2E_TESTS: true
+
+      - name: Find latest xcarchive path
+        id: find_xcarchive
+        run: |
+          ARCHIVE_PATH=$(ls -td ios/fastlane/build/*.xcarchive | head -n 1)
+          echo "Latest archive path is $ARCHIVE_PATH"
+          echo "archive_path=$ARCHIVE_PATH" >> $GITHUB_OUTPUT
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-simulator-app
+          path: ${{ steps.find_xcarchive.outputs.archive_path }}/Products/Applications/Rocket.Chat Experimental.app

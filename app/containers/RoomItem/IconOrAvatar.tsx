@@ -2,10 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 
 import Avatar from '../Avatar';
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
-import { IIconOrAvatar } from './interfaces';
+import { type IIconOrAvatar } from './interfaces';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const IconOrAvatar = ({
 	avatar,
@@ -19,8 +20,11 @@ const IconOrAvatar = ({
 	teamMain,
 	showLastMessage,
 	displayMode,
-	sourceType
+	sourceType,
+	abacAttributes
 }: IIconOrAvatar): React.ReactElement | null => {
+	const { rowHeight } = useResponsiveLayout();
+
 	if (showAvatar) {
 		return (
 			<Avatar text={avatar} size={displayMode === DisplayMode.Condensed ? 36 : 48} type={type} style={styles.avatar} rid={rid} />
@@ -29,7 +33,7 @@ const IconOrAvatar = ({
 
 	if (displayMode === DisplayMode.Expanded && showLastMessage) {
 		return (
-			<View style={styles.typeIcon}>
+			<View style={[styles.typeIcon, { height: rowHeight }]}>
 				<TypeIcon
 					userId={userId}
 					type={type}
@@ -40,6 +44,7 @@ const IconOrAvatar = ({
 					size={24}
 					style={{ marginRight: 12 }}
 					sourceType={sourceType}
+					abacAttributes={abacAttributes}
 				/>
 			</View>
 		);

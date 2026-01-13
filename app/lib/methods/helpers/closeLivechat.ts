@@ -1,6 +1,6 @@
 import I18n from '../../../i18n';
 import Navigation from '../../navigation/appNavigation';
-import { Services } from '../../services';
+import { closeLivechat as closeLivechatService } from '../../services/restApi';
 import { showErrorAlert } from './info';
 import log from './log';
 
@@ -16,7 +16,7 @@ export const closeLivechat = async ({
 	tags?: string[];
 }) => {
 	try {
-		await Services.closeLivechat(rid, comment, tags);
+		await closeLivechatService(rid, comment, tags);
 		if (isMasterDetail) {
 			Navigation.navigate('DrawerNavigator');
 		} else {

@@ -1,12 +1,10 @@
 import React from 'react';
 import { Linking } from 'react-native';
 
+import NewWindowIcon from '../../../containers/NewWindowIcon';
 import * as List from '../../../containers/List';
-import { useTheme } from '../../../theme';
 
 export default function NotificationDelay(): React.ReactElement {
-	const { colors } = useTheme();
-
 	const openNotificationDocumentation = () => Linking.openURL('https://go.rocket.chat/i/push-notifications');
 
 	return (
@@ -15,7 +13,8 @@ export default function NotificationDelay(): React.ReactElement {
 			<List.Item
 				title='Documentation'
 				onPress={openNotificationDocumentation}
-				right={() => <List.Icon size={32} name='new-window' color={colors.fontAnnotation} />}
+				accessibilityRole='link'
+				right={() => <NewWindowIcon size={32} />}
 				testID='push-troubleshoot-view-notification-delay'
 			/>
 			<List.Separator />

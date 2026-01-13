@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, TextStyle } from 'react-native';
+import { Platform, StyleSheet, type TextStyle } from 'react-native';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 
@@ -18,8 +18,9 @@ export default StyleSheet.create({
 		flexDirection: 'column'
 	},
 	containerScrollView: {
-		padding: 16,
-		paddingBottom: 30
+		paddingTop: 12,
+		paddingHorizontal: 16,
+		paddingBottom: 24
 	},
 	tabletScreenContent: {
 		justifyContent: 'center',

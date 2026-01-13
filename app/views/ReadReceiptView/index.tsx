@@ -1,23 +1,22 @@
 import React from 'react';
 import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
-import moment from 'moment';
 import { connect } from 'react-redux';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/core';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp } from '@react-navigation/core';
 
+import dayjs from '../../lib/dayjs';
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { type TSupportedThemes, withTheme } from '../../theme';
+import { themes } from '../../lib/constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
-import { ChatsStackParamList } from '../../stacks/types';
-import { IApplicationState, IReadReceipts } from '../../definitions';
-import { Services } from '../../lib/services';
+import { type ChatsStackParamList } from '../../stacks/types';
+import { type IApplicationState, type IReadReceipts } from '../../definitions';
+import { getReadReceipts } from '../../lib/services/restApi';
 
 interface IReadReceiptViewState {
 	loading: boolean;
@@ -25,7 +24,7 @@ interface IReadReceiptViewState {
 }
 
 interface INavigationOption {
-	navigation: StackNavigationProp<ChatsStackParamList, 'ReadReceiptsView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'ReadReceiptsView'>;
 	route: RouteProp<ChatsStackParamList, 'ReadReceiptsView'>;
 	isMasterDetail: boolean;
 }
@@ -39,7 +38,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 	private messageId: string;
 
 	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOption) => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Read_Receipt')
 		};
 		if (isMasterDetail) {
@@ -85,7 +84,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getReadReceipts(this.messageId);
+			const result = await getReadReceipts(this.messageId);
 			if (result.success) {
 				this.setState({
 					receipts: result.receipts,
@@ -113,7 +112,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 
 	renderItem = ({ item }: { item: IReadReceipts }) => {
 		const { theme, Message_TimeAndDateFormat } = this.props;
-		const time = moment(item.ts).format(Message_TimeAndDateFormat);
+		const time = dayjs(item.ts).format(Message_TimeAndDateFormat);
 		if (!item?.user?.username) {
 			return null;
 		}
@@ -131,8 +130,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 							{
 								color: themes[theme].fontSecondaryInfo
 							}
-						]}
-					>{`@${item.user.username}`}</Text>
+						]}>{`@${item.user.username}`}</Text>
 				</View>
 			</View>
 		);
@@ -144,7 +142,6 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 
 		return (
 			<SafeAreaView testID='read-receipt-view'>
-				<StatusBar />
 				<FlatList
 					data={receipts}
 					renderItem={this.renderItem}

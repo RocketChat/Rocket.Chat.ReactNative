@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { IApplicationState, TServerModel } from '../../definitions';
+import { type IApplicationState, type TServerModel } from '../../definitions';
 import database from '../database';
-import { useAppSelector } from '../hooks';
+import { useAppSelector } from '../hooks/useAppSelector';
 
 export default function useServer() {
 	const [server, setServer] = useState<TServerModel | null>(null);
-	const shareServer = useAppSelector((state: IApplicationState) => state.share.server.server);
 	const appServer = useAppSelector((state: IApplicationState) => state.server.server);
 
 	useEffect(() => {
@@ -15,7 +14,7 @@ export default function useServer() {
 			const serversCollection = serversDB.get('servers');
 			let serverInfo = null;
 			try {
-				serverInfo = await serversCollection.find(shareServer || appServer);
+				serverInfo = await serversCollection.find(appServer);
 				setServer(serverInfo);
 			} catch {
 				setServer(serverInfo);

@@ -15,12 +15,16 @@ interface IListSection {
 	translateTitle?: boolean;
 }
 
-const ListSection = ({ children, title, translateTitle }: IListSection) => (
-	<View style={styles.container}>
-		{title ? <Header {...{ title, translateTitle }} /> : null}
-		{children}
-	</View>
-);
+const ListSection = ({ children, title, translateTitle }: IListSection) => {
+	'use memo';
+
+	return (
+		<View style={styles.container}>
+			{title ? <Header {...{ title, translateTitle }} /> : null}
+			{children}
+		</View>
+	);
+};
 
 ListSection.displayName = 'List.Section';
 

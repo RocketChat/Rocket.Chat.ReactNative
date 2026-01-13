@@ -2,8 +2,7 @@ import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-
-import moment from 'moment';
+import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
@@ -23,31 +22,27 @@ import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry'
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import {
-	getCustomEmojis,
-	getEnterpriseModules,
-	getPermissions,
-	getRoles,
-	getSlashCommands,
-	getUserPresence,
-	isOmnichannelModuleAvailable,
-	logout,
-	removeServerData,
-	removeServerDatabase,
-	subscribeSettings,
-	subscribeUsersPresence
-} from '../lib/methods';
-import { Services } from '../lib/services';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
+import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/methods/enterpriseModules';
+import { getPermissions } from '../lib/methods/getPermissions';
+import { getRoles } from '../lib/methods/getRoles';
+import { getSlashCommands } from '../lib/methods/getSlashCommands';
+import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
+import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
+import { subscribeSettings } from '../lib/methods/getSettings';
+import { connect, loginWithPassword, login } from '../lib/services/connect';
+import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { isIOS } from '../lib/methods/helpers';
 
 const getServer = state => state.server.server;
-const loginWithPasswordCall = args => Services.loginWithPassword(args);
-const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
+const loginWithPasswordCall = args => loginWithPassword(args);
+const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
 
 const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
@@ -57,13 +52,13 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 	const serverRecord = yield getServerById(server);
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	if (!serverRecord || moment(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
+	if (!serverRecord || dayjs(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
 		return;
 	}
 
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
-		await serverRecord.update(r => {
+		await serverRecord.update((r) => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
@@ -74,17 +69,12 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 };
 
-const handleLoginRequest = function* handleLoginRequest({
-	credentials,
-	logoutOnError = false,
-	isFromWebView = false,
-	registerCustomFields
-}) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, registerCustomFields }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
-			result = yield loginCall(credentials, isFromWebView);
+			result = yield loginCall(credentials);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
@@ -99,15 +89,27 @@ const handleLoginRequest = function* handleLoginRequest({
 			// Saves username on server history
 			const serversDB = database.servers;
 			const serversHistoryCollection = serversDB.get('servers_history');
-			yield serversDB.action(async () => {
+			const serversCollection = serversDB.get('servers');
+			yield serversDB.write(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (serversHistory?.length) {
 						const serverHistoryRecord = serversHistory[0];
+						// Get server iconURL from servers table
+						let iconURL = null;
+						try {
+							const serverRecord = await serversCollection.find(server);
+							iconURL = serverRecord.iconURL;
+						} catch (e) {
+							// Server record might not exist yet
+						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update(s => {
+						await serverHistoryRecord.update((s) => {
 							s.username = result.username;
+							if (iconURL) {
+								s.iconURL = iconURL;
+							}
 						});
 					}
 				} catch (e) {
@@ -116,7 +118,7 @@ const handleLoginRequest = function* handleLoginRequest({
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
+				const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
 				yield put(setUser({ ...result, ...updatedUser.user }));
 			}
 		}
@@ -127,54 +129,97 @@ const handleLoginRequest = function* handleLoginRequest({
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
 			logEvent(events.LOGOUT_TOKEN_EXPIRED);
 			yield put(logoutAction(true, 'Token_expired'));
-		} else {
+		} else if (e?.status === 401) {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
+			const userId = yield select(state => state.login.user.id);
+			if (!userId) {
+				yield put(loginFailure(e));
+				return;
+			}
+			yield put(logoutAction(true));
+		} else {
 			yield put(loginFailure(e));
 		}
 	}
 };
 
 const subscribeSettingsFork = function* subscribeSettingsFork() {
-	yield subscribeSettings();
+	try {
+		yield subscribeSettings();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchPermissionsFork = function* fetchPermissionsFork() {
-	yield getPermissions();
+	try {
+		yield getPermissions();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchCustomEmojisFork = function* fetchCustomEmojisFork() {
-	yield getCustomEmojis();
+	try {
+		yield getCustomEmojis();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchRolesFork = function* fetchRolesFork() {
-	sdk.subscribe('stream-roles', 'roles');
-	yield getRoles();
+	try {
+		sdk.subscribe('stream-roles', 'roles');
+		yield getRoles();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
-	yield getSlashCommands();
+	try {
+		yield getSlashCommands();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const registerPushTokenFork = function* registerPushTokenFork() {
-	yield Services.registerPushToken();
+	try {
+		yield registerPushToken();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
-	subscribeUsersPresence();
+	try {
+		yield subscribeUsersPresence();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
-	yield getEnterpriseModules();
+	try {
+		yield getEnterpriseModules();
 
-	if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
-		yield put(inquiryRequest());
+		if (isOmnichannelStatusAvailable(user.statusLivechat) && isOmnichannelModuleAvailable()) {
+			yield put(inquiryRequest());
+		}
+	} catch (e) {
+		log(e);
 	}
 };
 
 const fetchUsersRoles = function* fetchRoomsFork() {
-	const roles = yield Services.getUsersRoles();
-	if (roles.length) {
-		yield put(setUsersRoles(roles));
+	try {
+		const roles = yield getUsersRoles();
+		if (roles.length) {
+			yield put(setUsersRoles(roles));
+		}
+	} catch (e) {
+		log(e);
 	}
 };
 
@@ -183,8 +228,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield put(encryptionInit());
 		yield put(roomsRequest());
+		yield put(encryptionInit());
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
@@ -207,22 +252,21 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			statusText: user.statusText,
 			roles: user.roles,
-			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag,
 			bio: user.bio,
 			nickname: user.nickname,
 			requirePasswordChange: user.requirePasswordChange
 		};
-		yield serversDB.action(async () => {
+		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				await userRecord.update(record => {
+				await userRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
 				});
 			} catch (e) {
-				await usersCollection.create(record => {
+				await usersCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
 					Object.assign(record, u);
 				});
@@ -234,7 +278,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(CURRENT_SERVER, server);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
-		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const currentRoot = yield select(state => state.app.root);
+		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		}
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));
@@ -274,7 +321,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 						const newServer = servers[i].id;
 						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 						if (token) {
-							yield put(selectServerRequest(newServer));
+							yield put(selectServerRequest(newServer, newServer.version));
 							return;
 						}
 					}
@@ -297,7 +344,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const record = await userCollections.find(userId);
-				await record.update(userRecord => {
+				await record.update((userRecord) => {
 					if ('avatarETag' in user) {
 						userRecord.avatarETag = user.avatarETag;
 					}
@@ -314,7 +361,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
 
 	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
-		if (isOmnichannelStatusAvailable(user)) {
+		if (isOmnichannelStatusAvailable(user.statusLivechat)) {
 			yield put(inquiryRequest());
 		} else {
 			yield put(inquiryReset());
@@ -341,7 +388,7 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 					const newServer = servers[i].id;
 					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 					if (token) {
-						yield put(selectServerRequest(newServer));
+						yield put(selectServerRequest(newServer, newServer.version));
 						return;
 					}
 				}

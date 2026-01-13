@@ -1,23 +1,23 @@
-import { NavigatorScreenParams } from '@react-navigation/core';
+import { type NavigatorScreenParams } from '@react-navigation/core';
 
 import {
-	IAttachment,
-	ICannedResponse,
-	ILivechatDepartment,
-	ILivechatTag,
-	IMessage,
-	IServer,
-	ISubscription,
-	SubscriptionType,
-	TAnyMessageModel,
-	TChangeAvatarViewContext,
-	TDataSelect,
-	TMessageAction,
-	TSubscriptionModel,
-	TThreadModel
+	type IAttachment,
+	type ICannedResponse,
+	type ILivechatDepartment,
+	type ILivechatTag,
+	type IMessage,
+	type IServer,
+	type ISubscription,
+	type SubscriptionType,
+	type TAnyMessageModel,
+	type TChangeAvatarViewContext,
+	type TDataSelect,
+	type TMessageAction,
+	type TSubscriptionModel,
+	type TThreadModel
 } from '../definitions';
-import { ModalStackParamList } from './MasterDetailStack/types';
-import { TNavigation } from './stackType';
+import { type ModalStackParamList } from './MasterDetailStack/types';
+import { type TNavigation } from './stackType';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;
@@ -119,6 +119,9 @@ export type ChatsStackParamList = {
 		room: TSubscriptionModel;
 	};
 	DirectoryView: undefined;
+	E2EEToggleRoomView: {
+		rid: string;
+	};
 	NotificationPrefView: {
 		rid: string;
 		room: TSubscriptionModel;
@@ -148,13 +151,11 @@ export type ChatsStackParamList = {
 	};
 	AddChannelTeamView: {
 		teamId: string;
+		rid: string;
+		t: 'c' | 'p';
 	};
 	AddExistingChannelView: {
 		teamId: string;
-	};
-	MarkdownTableView: {
-		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
-		tableWidth: number;
 	};
 	ReadReceiptsView: {
 		messageId: string;
@@ -197,24 +198,33 @@ export type ProfileStackParamList = {
 		room?: ISubscription;
 		t?: SubscriptionType;
 	};
+	ChangePasswordView: undefined;
 };
 
 export type SettingsStackParamList = {
+	LegalView: undefined;
 	SettingsView: undefined;
 	SecurityPrivacyView: undefined;
 	E2EEncryptionSecurityView: undefined;
 	LanguageView: undefined;
-	ThemeView: undefined;
 	DefaultBrowserView: undefined;
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
 	DisplayPrefsView: undefined;
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
+	GetHelpView: undefined;
+	AccessibilityAndAppearanceView: undefined;
 };
 
 export type AdminPanelStackParamList = {
 	AdminPanelView: undefined;
+};
+
+export type AccessibilityStackParamList = {
+	AccessibilityAndAppearanceView: undefined;
+	DisplayPrefsView: undefined;
+	ThemeView: undefined;
 };
 
 export type DisplayPrefStackParamList = {
@@ -226,17 +236,18 @@ export type DrawerParamList = {
 	ProfileStackNavigator: NavigatorScreenParams<ProfileStackParamList>;
 	SettingsStackNavigator: NavigatorScreenParams<SettingsStackParamList>;
 	AdminPanelStackNavigator: NavigatorScreenParams<AdminPanelStackParamList>;
-	DisplayPrefStackNavigator: NavigatorScreenParams<DisplayPrefStackParamList>;
+	AccessibilityStackNavigator: NavigatorScreenParams<AccessibilityStackParamList>;
 };
 
 export type NewMessageStackParamList = {
 	NewMessageView: undefined;
-	SelectedUsersViewCreateChannel: {
+	SelectedUsersView: {
 		maxUsers?: number;
 		showButton?: boolean;
 		title?: string;
 		buttonText?: string;
 		nextAction?: Function;
+		showSkipText?: boolean;
 	}; // TODO: Change
 	CreateChannelView?: {
 		isTeam?: boolean; // TODO: To check
@@ -261,6 +272,7 @@ export type E2ESaveYourPasswordStackParamList = {
 
 export type E2EEnterYourPasswordStackParamList = {
 	E2EEnterYourPasswordView: undefined;
+	E2EEncryptionSecurityView: undefined;
 };
 
 export type InsideStackParamList = {

@@ -2,7 +2,7 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
 
-import { appGroupPath } from './appGroup';
+import { appGroupPath } from '../methods/appGroup';
 import { isOfficial } from '../constants/environment';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
@@ -24,10 +24,10 @@ import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
-import { TAppDatabase, TServerDatabase } from './interfaces';
+import { type TAppDatabase, type TServerDatabase } from './interfaces';
 
 if (__DEV__) {
-	console.log(`📂 ${appGroupPath}`);
+	console.log(appGroupPath);
 }
 
 const getDatabasePath = (name: string) => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
@@ -40,7 +40,9 @@ export const getDatabase = (database = ''): Database => {
 		dbName,
 		schema: appSchema,
 		migrations,
-		jsi: true
+		jsi: true,
+		// @ts-expect-error
+		experimentalUnsafeNativeReuse: true
 	});
 
 	return new Database({
@@ -64,7 +66,6 @@ export const getDatabase = (database = ''): Database => {
 };
 
 interface IDatabases {
-	shareDB?: TAppDatabase | null;
 	serversDB: TServerDatabase;
 	activeDB?: TAppDatabase;
 }
@@ -76,55 +77,20 @@ class DB {
 				dbName: getDatabasePath('default'),
 				schema: serversSchema,
 				migrations: serversMigrations,
-				jsi: true
+				jsi: true,
+				// @ts-expect-error
+				experimentalUnsafeNativeReuse: true
 			}),
 			modelClasses: [Server, LoggedUser, ServersHistory]
 		}) as TServerDatabase
 	};
 
-	// Expected at least one database
 	get active(): TAppDatabase {
-		return this.databases.shareDB || this.databases.activeDB!;
-	}
-
-	get share() {
-		return this.databases.shareDB;
-	}
-
-	set share(db) {
-		this.databases.shareDB = db;
+		return this.databases.activeDB!;
 	}
 
 	get servers() {
 		return this.databases.serversDB;
-	}
-
-	setShareDB(database = '') {
-		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
-		const dbName = getDatabasePath(path);
-
-		const adapter = new SQLiteAdapter({
-			dbName,
-			schema: appSchema,
-			migrations,
-			jsi: true
-		});
-
-		this.databases.shareDB = new Database({
-			adapter,
-			modelClasses: [
-				Subscription,
-				Message,
-				Thread,
-				ThreadMessage,
-				Upload,
-				Permission,
-				CustomEmoji,
-				FrequentlyUsedEmoji,
-				Setting,
-				User
-			]
-		}) as TAppDatabase;
 	}
 
 	setActiveDB(database: string) {

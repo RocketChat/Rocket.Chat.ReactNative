@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import orderBy from 'lodash/orderBy';
 
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
-import { IPermission, TPermissionModel } from '../../definitions';
+import { type IPermission, type TPermissionModel } from '../../definitions';
 import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
@@ -61,7 +61,14 @@ export const SUPPORTED_PERMISSIONS = [
 	'mobile-upload-file',
 	'delete-own-message',
 	'call-management',
-	'test-push-notifications'
+	'test-push-notifications',
+	'move-room-to-team',
+	'create-team-channel',
+	'create-team-group',
+	'delete-team-channel',
+	'delete-team-group',
+	'mention-all',
+	'mention-here'
 ] as const;
 
 export async function setPermissions(): Promise<void> {
@@ -142,7 +149,7 @@ const updatePermissions = async ({
 
 	try {
 		await db.write(async () => {
-			await db.batch(...batch);
+			await db.batch(batch);
 		});
 		return true;
 	} catch (e) {

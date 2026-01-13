@@ -4,13 +4,14 @@ import Button from '.';
 
 const buttonProps = {
 	title: 'Press me!',
-	type: 'primary',
+	type: 'primary' as const,
 	onPress: () => {},
 	testID: 'testButton'
 };
 
 export default {
-	title: 'Button'
+	title: 'Button',
+	component: Button
 };
 
 export const PrimaryButton = () => <Button {...buttonProps} />;
@@ -22,6 +23,8 @@ export const LoadingButton = () => <Button loading {...buttonProps} />;
 export const DisabledButton = () => <Button disabled {...buttonProps} />;
 
 export const DisabledLoadingButton = () => <Button disabled loading {...buttonProps} />;
+
+export const SmallButton = () => <Button small {...buttonProps} />;
 
 export const CustomButton = () => (
 	<Button

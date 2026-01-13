@@ -10,6 +10,10 @@
  */
 
 export default function (query: string) {
+	if (query.startsWith('url=')) {
+		return { text: decodeURIComponent(query.replace('url=', '').trim()) };
+	}
+
 	return (/^[?#]/.test(query) ? query.slice(1) : query).split('&').reduce((params: { [key: string]: string }, param) => {
 		const [key, value] = param.split('=');
 		params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';

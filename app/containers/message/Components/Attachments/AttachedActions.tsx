@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import Button from '../../../Button';
 import MessageContext from '../../Context';
-import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
+import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import Markdown from '../../../markdown';
 
@@ -14,6 +14,8 @@ export type TElement = {
 };
 
 const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
+	'use memo';
+
 	const { onAnswerButtonPress } = useContext(MessageContext);
 
 	if (!attachment.actions) {

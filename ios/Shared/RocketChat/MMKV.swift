@@ -1,24 +1,27 @@
 import Foundation
 
-extension MMKV {
-	static func build() -> MMKV {
+extension MMKVBridge {
+	static func build() -> MMKVBridge {
 		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
 		
-		MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: MMKVLogLevel.none)
-		
-		guard let mmkv = MMKV(mmapID: "default", cryptKey: password?.data(using: .utf8), mode: MMKVMode.multiProcess) else {
-			fatalError("Could not initialize MMKV instance.")
+		var mmkvPath: String?
+		if !groupDir.isEmpty {
+			mmkvPath = "\(groupDir)/mmkv"
+			// Ensure the directory exists
+			if let path = mmkvPath {
+				try? FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+			}
 		}
 		
-		return mmkv
+		let cryptKey = password?.data(using: .utf8)
+		return MMKVBridge(id: "default", cryptKey: cryptKey, rootPath: mmkvPath)
 	}
 	
 	func userToken(for userId: String) -> String? {
 		guard let userToken = string(forKey: "reactnativemeteor_usertoken-\(userId)") else {
 			return nil
 		}
-		
 		return userToken
 	}
 	
@@ -26,7 +29,6 @@ extension MMKV {
 		guard let userId = string(forKey: "reactnativemeteor_usertoken-\(server)") else {
 			return nil
 		}
-		
 		return userId
 	}
 	
@@ -34,7 +36,6 @@ extension MMKV {
 		guard let privateKey = string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") else {
 			return nil
 		}
-		
 		return privateKey
 	}
 }

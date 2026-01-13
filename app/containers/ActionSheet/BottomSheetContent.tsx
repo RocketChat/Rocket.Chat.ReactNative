@@ -1,12 +1,12 @@
-import { Text, ViewProps } from 'react-native';
+import { Text, useWindowDimensions, type ViewProps } from 'react-native';
 import React from 'react';
 import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
-import { IActionSheetItem, Item } from './Item';
-import { TActionSheetOptionsItem } from './Provider';
+import { type IActionSheetItem, Item } from './Item';
+import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';
@@ -20,16 +20,19 @@ interface IBottomSheetContentProps {
 }
 
 const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
+	const { fontScale } = useWindowDimensions();
+	const height = 48 * fontScale;
 
 	const renderFooter = () =>
 		hasCancel ? (
 			<Touch
 				onPress={hide}
-				style={[styles.button, { backgroundColor: colors.surfaceHover }]}
-				accessibilityLabel={I18n.t('Cancel')}
-			>
+				style={[styles.button, { backgroundColor: colors.surfaceHover, height }]}
+				accessibilityLabel={I18n.t('Cancel')}>
 				<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>
 			</Touch>
 		) : null;

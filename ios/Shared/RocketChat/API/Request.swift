@@ -55,12 +55,17 @@ extension Request {
     request.httpMethod = method.rawValue
     request.httpBody = body()
     request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+    request.addValue(Bundle.userAgent, forHTTPHeaderField: "User-Agent")
     
     if let userId = api.credentials?.userId {
       request.addValue(userId, forHTTPHeaderField: "x-user-id")
+    } else {
+        return nil
     }
     if let userToken = api.credentials?.userToken {
       request.addValue(userToken, forHTTPHeaderField: "x-auth-token")
+    } else {
+        return nil
     }
     
     return request

@@ -1,14 +1,14 @@
-import Model from '@nozbe/watermelondb/Model';
-import Relation from '@nozbe/watermelondb/Relation';
+import type Model from '@nozbe/watermelondb/Model';
+import type Relation from '@nozbe/watermelondb/Relation';
 
-import { ILastMessage, TMessageModel } from './IMessage';
-import { IRocketChatRecord } from './IRocketChatRecord';
-import { IOmnichannelSource, RoomID, RoomType } from './IRoom';
-import { IServedBy } from './IServedBy';
-import { TThreadModel } from './IThread';
-import { TThreadMessageModel } from './IThreadMessage';
-import { TUploadModel } from './IUpload';
-import { IUser } from './IUser';
+import { type ILastMessage, type TMessageModel } from './IMessage';
+import { type IRocketChatRecord } from './IRocketChatRecord';
+import { type IOmnichannelSource, type RoomID, type RoomType, type TUserWaitingForE2EKeys } from './IRoom';
+import { type IServedBy } from './IServedBy';
+import { type TThreadModel } from './IThread';
+import { type TThreadMessageModel } from './IThreadMessage';
+import { type TUploadModel } from './IUpload';
+import { type IUser } from './IUser';
 
 export enum SubscriptionType {
 	GROUP = 'p',
@@ -34,6 +34,8 @@ export enum ERoomTypes {
 }
 
 type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
+
+type OldKey = { e2eKeyId: string; ts: Date; E2EKey: string };
 
 export interface ISubscription {
 	_id: string;
@@ -93,9 +95,11 @@ export interface ISubscription {
 	livechatData?: any;
 	tags?: string[];
 	E2EKey?: string;
-	E2ESuggestedKey?: string;
+	oldRoomKeys?: OldKey[];
+	E2ESuggestedKey?: string | null;
 	encrypted?: boolean;
 	e2eKeyId?: string;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
@@ -111,6 +115,19 @@ export interface ISubscription {
 	threadMessages: RelationModified<TThreadMessageModel>;
 	uploads: RelationModified<TUploadModel>;
 	disableNotifications?: boolean;
+	federated?: boolean;
+	abacAttributes?: { key: string; values: string[] }[];
+	federation?: {
+		version: number;
+		mrid: string;
+		origin: string;
+	};
+	inviter?: Required<Pick<IUser, '_id' | 'username'>> & Pick<IUser, 'name'>;
+}
+
+export interface IInviteSubscription extends ISubscription {
+	status: 'INVITED';
+	inviter: NonNullable<ISubscription['inviter']>;
 }
 
 export type TSubscriptionModel = ISubscription &
@@ -153,7 +170,9 @@ export interface IServerSubscription extends IRocketChatRecord {
 	onHold?: boolean;
 	encrypted?: boolean;
 	E2EKey?: string;
-	E2ESuggestedKey?: string;
+	oldRoomKeys?: OldKey[];
+	E2ESuggestedKey?: string | null;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	unreadAlert?: 'default' | 'all' | 'mentions' | 'nothing';
 
 	fname?: unknown;

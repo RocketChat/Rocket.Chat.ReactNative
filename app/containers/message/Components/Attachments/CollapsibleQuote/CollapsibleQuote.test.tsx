@@ -1,12 +1,16 @@
 import { fireEvent, render, within } from '@testing-library/react-native';
 import React from 'react';
+import { Provider } from 'react-redux';
 
+import { setUser } from '../../../../../actions/login';
+import { mockedStore } from '../../../../../reducers/mockedStore';
 import MessageContext from '../../../Context';
 import CollapsibleQuote from '.';
 
 const testAttachment = {
 	ts: '1970-01-01T00:00:00.000Z',
 	title: 'Engineering (9 today)',
+	text: 'Test title',
 	fields: [
 		{
 			title: 'Out Today:\n',
@@ -20,14 +24,30 @@ const testAttachment = {
 
 const mockFn = jest.fn();
 
+const initialMockedStoreState = () => {
+	mockedStore.dispatch(
+		setUser({
+			settings: {
+				preferences: {
+					convertAsciiEmoji: true
+				}
+			}
+		})
+	);
+};
+
+initialMockedStoreState();
+
 const Render = () => (
-	<MessageContext.Provider
-		value={{
-			onLongPress: () => {},
-			user: { username: 'Marcos' }
-		}}>
-		<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
-	</MessageContext.Provider>
+	<Provider store={mockedStore}>
+		<MessageContext.Provider
+			value={{
+				onLongPress: () => {},
+				user: { username: 'Marcos' }
+			}}>
+			<CollapsibleQuote attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
+		</MessageContext.Provider>
+	</Provider>
 );
 
 const touchableTestID = `collapsibleQuoteTouchable-${testAttachment.title}`;
@@ -44,6 +64,22 @@ describe('CollapsibleQuote', () => {
 		const collapsibleQuoteTitle = await findByText(testAttachment.title);
 		expect(collapsibleQuoteTitle).toBeTruthy();
 		expect(collapsibleQuoteTitle.props.children).toEqual(testAttachment.title);
+	});
+
+	test('text exists and is correct', async () => {
+		const collapsibleQuote = render(<Render />);
+		const collapsibleQuoteTouchable = await collapsibleQuote.findByTestId(touchableTestID);
+		// open
+		fireEvent.press(collapsibleQuoteTouchable);
+		const open = within(collapsibleQuoteTouchable);
+		const textOpen = open.getByLabelText(testAttachment.text);
+		expect(textOpen).toBeTruthy();
+		// close
+		fireEvent.press(collapsibleQuoteTouchable);
+		collapsibleQuote.rerender(<Render />);
+		const close = within(collapsibleQuoteTouchable);
+		const textClosed = close.queryByText(testAttachment.text);
+		expect(textClosed).toBeNull();
 	});
 
 	test('fields render title correctly', async () => {

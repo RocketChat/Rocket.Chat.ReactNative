@@ -1,14 +1,11 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
-import I18n from '../../i18n';
 import { isGroupChat } from '../../lib/methods/helpers';
-import { formatDate } from '../../lib/methods/helpers/room';
-import { IRoomItemContainerProps } from './interfaces';
+import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
+import { type IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
-import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
-
-export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
+import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
@@ -19,9 +16,6 @@ const RoomItemContainer = React.memo(
 		onPress,
 		onLongPress,
 		width,
-		toggleFav,
-		toggleRead,
-		hideChannel,
 		isFocused,
 		showLastMessage,
 		username,
@@ -43,6 +37,7 @@ const RoomItemContainer = React.memo(
 		const [_, forceUpdate] = useReducer(x => x + 1, 1);
 		const roomSubscription = useRef<Subscription | null>(null);
 		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
+		const accessibilityDate = formatDateAccessibility(item.roomUpdatedAt);
 
 		useEffect(() => {
 			const init = () => {
@@ -62,36 +57,21 @@ const RoomItemContainer = React.memo(
 
 		const handleOnLongPress = () => onLongPress && onLongPress(item);
 
-		let accessibilityLabel = '';
-		if (item.unread === 1) {
-			accessibilityLabel = `, ${item.unread} ${I18n.t('alert')}`;
-		} else if (item.unread > 1) {
-			accessibilityLabel = `, ${item.unread} ${I18n.t('alerts')}`;
-		}
-		if (item.userMentions > 0) {
-			accessibilityLabel = `, ${I18n.t('you_were_mentioned')}`;
-		}
-		if (date) {
-			accessibilityLabel = `, ${I18n.t('last_message')} ${date}`;
-		}
-
 		return (
 			<RoomItem
 				name={name}
 				avatar={avatar}
 				isGroupChat={isGroupChat(item)}
+				isInvited={isInviteSubscription(item)}
 				isRead={isRead}
 				onPress={handleOnPress}
 				onLongPress={handleOnLongPress}
 				date={date}
-				accessibilityLabel={accessibilityLabel}
+				accessibilityDate={accessibilityDate}
 				width={width}
 				favorite={item.f}
 				rid={item.rid}
 				userId={userId}
-				toggleFav={toggleFav}
-				toggleRead={toggleRead}
-				hideChannel={hideChannel}
 				testID={testID}
 				type={item.t}
 				isFocused={isFocused}
@@ -116,6 +96,7 @@ const RoomItemContainer = React.memo(
 				displayMode={displayMode}
 				status={item.t === 'l' ? item?.visitor?.status : null}
 				sourceType={item.t === 'l' ? item.source : null}
+				abacAttributes={item.abacAttributes}
 			/>
 		);
 	},

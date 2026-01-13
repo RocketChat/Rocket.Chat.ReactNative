@@ -9,20 +9,11 @@ export default StyleSheet.create({
 	list: {
 		width: '100%'
 	},
-	dropdownContainerHeader: {
+	serversListContainerHeader: {
 		height: 41,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		alignItems: 'center',
 		flexDirection: 'row'
-	},
-	dropdownContainer: {
-		width: '100%',
-		position: 'absolute',
-		top: 0,
-		borderBottomWidth: StyleSheet.hairlineWidth
-	},
-	backdrop: {
-		...StyleSheet.absoluteFillObject
 	},
 	groupTitleContainer: {
 		paddingHorizontal: 12,
@@ -46,13 +37,17 @@ export default StyleSheet.create({
 	},
 	serverHeaderAdd: {
 		fontSize: 16,
-		marginRight: 12,
-		paddingVertical: 10,
+		lineHeight: 24,
 		...sharedStyles.textRegular
 	},
 	buttonCreateWorkspace: {
-		height: 46,
 		justifyContent: 'center',
-		marginBottom: 0
+		marginBottom: 0,
+		paddingVertical: 14,
+		paddingHorizontal: 16,
+		borderRadius: 4
+	},
+	addServerButtonContainer: {
+		padding: 16
 	}
 });

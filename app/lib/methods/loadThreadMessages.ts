@@ -7,7 +7,7 @@ import log from './helpers/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
-import { TThreadMessageModel } from '../../definitions';
+import { type TThreadMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 
 async function load({ tmid }: { tmid: string }) {
@@ -18,8 +18,7 @@ async function load({ tmid }: { tmid: string }) {
 			return [];
 		}
 		return EJSON.fromJSONValue(result);
-	} catch (error) {
-		console.log(error);
+	} catch {
 		return [];
 	}
 }
@@ -39,7 +38,7 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 						(i1: TThreadMessageModel) => !allThreadMessagesRecords.find(i2 => i1._id === i2.id)
 					);
 					const filterThreadMessagesToUpdate = allThreadMessagesRecords.filter(i1 =>
-						data.find((i2: TThreadMessageModel) => i1.id === i2._id)
+						data.find((i2: TThreadMessageModel) => i1.id === i2._id && i1._updatedAt < i2?._updatedAt)
 					);
 
 					const threadMessagesToCreate = filterThreadMessagesToCreate.map((threadMessage: TThreadMessageModel) =>
@@ -62,7 +61,9 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 						const newThreadMessage = data.find((t: TThreadMessageModel) => t._id === threadMessage.id);
 						return threadMessage.prepareUpdate(
 							protectedFunction((tm: TThreadMessageModel) => {
+								const { attachments } = tm;
 								Object.assign(tm, newThreadMessage);
+								tm.attachments = attachments;
 								if (threadMessage.tmid) {
 									tm.rid = threadMessage.tmid;
 								}
@@ -72,7 +73,7 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 					});
 
 					await db.write(async () => {
-						await db.batch(...threadMessagesToCreate, ...threadMessagesToUpdate);
+						await db.batch([...threadMessagesToCreate, ...threadMessagesToUpdate]);
 					});
 				} catch (e) {
 					log(e);

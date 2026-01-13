@@ -1,30 +1,31 @@
-import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useReducer } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 
-import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { sendLoadingEvent } from '../../containers/Loading';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import * as HeaderButton from '../../containers/HeaderButton';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
-import { RadioButton } from '../../containers/RadioButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
-import StatusBar from '../../containers/StatusBar';
 import UserItem from '../../containers/UserItem';
-import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
+import Radio from '../../containers/Radio';
+import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '../../definitions';
 import I18n from '../../i18n';
-import { useAppSelector, usePermissions } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../lib/hooks/usePermissions';
 import { compareServerVersion, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
-import { Services } from '../../lib/services';
-import { TSupportedPermissions } from '../../reducers/permissions';
+import { getRoomMembers } from '../../lib/services/restApi';
+import { type TSupportedPermissions } from '../../reducers/permissions';
 import { getUserSelector } from '../../selectors/login';
-import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import ActionsSection from './components/ActionsSection';
 import {
@@ -37,9 +38,10 @@ import {
 	handleRemoveFromTeam,
 	handleRemoveUserFromRoom,
 	navToDirectMessage,
-	TRoomType
+	type TRoomType
 } from './helpers';
 import styles from './styles';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 const PAGE_SIZE = 25;
 
@@ -74,15 +76,20 @@ const RoomMembersView = (): React.ReactElement => {
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
 
-	const { isMasterDetail, serverVersion, useRealName, user } = useAppSelector(
+	const { isMasterDetail, serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
 			isMasterDetail: state.app.isMasterDetail,
 			useRealName: state.settings.UI_Use_Real_Name,
 			user: getUserSelector(state),
-			serverVersion: state.server.version
+			serverVersion: state.server.version,
+			loading: state.selectedUsers.loading
 		}),
 		shallowEqual
 	);
+
+	useEffect(() => {
+		sendLoadingEvent({ visible: loading });
+	}, [loading]);
 
 	const [state, updateState] = useReducer(
 		(state: IRoomMembersViewState, newState: Partial<IRoomMembersViewState>) => ({ ...state, ...newState }),
@@ -120,6 +127,15 @@ const RoomMembersView = (): React.ReactElement => {
 		fetchMembers(false);
 		return () => subscription?.unsubscribe();
 	}, []);
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			const { allUsers } = state;
+			fetchMembers(allUsers);
+		});
+
+		return unsubscribe;
+	}, [navigation]);
 
 	useEffect(() => {
 		const fetchRoles = () => {
@@ -174,13 +190,13 @@ const RoomMembersView = (): React.ReactElement => {
 									{
 										title: I18n.t('Online'),
 										onPress: () => toggleStatus(true),
-										right: () => <RadioButton check={allUsers} />,
+										right: () => <Radio check={allUsers} />,
 										testID: 'room-members-view-toggle-status-online'
 									},
 									{
 										title: I18n.t('All'),
 										onPress: () => toggleStatus(false),
-										right: () => <RadioButton check={!allUsers} />,
+										right: () => <Radio check={!allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
 								]
@@ -342,7 +358,7 @@ const RoomMembersView = (): React.ReactElement => {
 
 		updateState({ isLoading: true });
 		try {
-			const membersResult = await Services.getRoomMembers({
+			const membersResult = await getRoomMembers({
 				rid: room.rid,
 				roomType: t,
 				type: !status ? 'all' : 'online',
@@ -365,23 +381,20 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
+	const filter = sanitizeLikeString(state.filter.toLowerCase()) || '';
 	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
-			? state.members.filter(
-					m =>
-						m.username.toLowerCase().match(state.filter.toLowerCase()) || m.name?.toLowerCase().match(state.filter.toLowerCase())
-			  )
+			? state.members.filter(m => m.username.toLowerCase().match(filter) || m.name?.toLowerCase().match(filter))
 			: null;
 
 	return (
 		<SafeAreaView testID='room-members-view'>
-			<StatusBar />
 			<FlatList
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (
 					<View style={{ backgroundColor: colors.surfaceRoom }}>
 						<UserItem
-							name={item.name as string}
+							name={item.name || item.username}
 							username={item.username}
 							onPress={() => onPressUser(item)}
 							testID={`room-members-view-item-${item.username}`}
@@ -393,7 +406,12 @@ const RoomMembersView = (): React.ReactElement => {
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={
 					<>
-						<ActionsSection joined={params.joined as boolean} rid={state.room.rid} t={state.room.t} />
+						<ActionsSection
+							joined={params.joined as boolean}
+							rid={state.room.rid}
+							t={state.room.t}
+							abacAttributes={state.room.abacAttributes}
+						/>
 						<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
 					</>
 				}

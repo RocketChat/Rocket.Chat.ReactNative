@@ -1,19 +1,17 @@
-import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
-import { extractHostname, isSsl } from './helpers';
+import { isSsl } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
-import { ICertificate } from '../../definitions';
 import sdk from '../services/sdk';
-import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';
+import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants/keys';
 import UserPreferences from './userPreferences';
-import { Services } from '../services';
+import { removePushToken } from '../services/restApi';
 import { roomsSubscription } from './subscriptions/rooms';
-import { _activeUsersSubTimeout } from '.';
+import { _activeUsersSubTimeout } from './getUsersPresence';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
@@ -24,19 +22,6 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
-}
-
-async function removeSharedCredentials({ server }: { server: string }) {
-	// clear certificate for server - SSL Pinning
-	try {
-		const certificate = UserPreferences.getMap(extractHostname(server)) as ICertificate | null;
-		if (certificate?.path) {
-			UserPreferences.removeItem(extractHostname(server));
-			await FileSystem.deleteAsync(certificate.path);
-		}
-	} catch (e) {
-		log(e);
-	}
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
@@ -54,8 +39,7 @@ export async function removeServerData({ server }: { server: string }): Promise<
 		const serverRecord = await serverCollection.find(server);
 		batch.push(serverRecord.prepareDestroyPermanently());
 
-		await serversDB.write(() => serversDB.batch(...batch));
-		await removeSharedCredentials({ server });
+		await serversDB.write(() => serversDB.batch(batch));
 		removeServerKeys({ server, userId });
 	} catch (e) {
 		log(e);
@@ -114,7 +98,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 	}
 
 	try {
-		await Services.removePushToken();
+		await removePushToken();
 	} catch (e) {
 		log(e);
 	}

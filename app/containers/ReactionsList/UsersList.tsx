@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, View, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { useTheme } from '../../theme';
-import { IReaction, IApplicationState } from '../../definitions';
+import { type IApplicationState } from '../../definitions';
 import Avatar from '../Avatar';
 import styles from './styles';
 
-const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement => {
+const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: string[]; names: string[] }): React.ReactElement => {
 	const { colors } = useTheme();
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 
-	const { emoji, usernames, names } = tabLabel;
 	const users =
 		names?.length > 0
 			? usernames.map((username, index) => ({ username, name: names[index] }))
@@ -44,4 +43,4 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 	);
 };
 
-export default UsersList;
+export default memo(UsersList);

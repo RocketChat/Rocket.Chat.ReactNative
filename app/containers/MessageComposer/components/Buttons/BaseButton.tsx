@@ -1,9 +1,9 @@
 import { BorderlessButton } from 'react-native-gesture-handler';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, useWindowDimensions } from 'react-native';
 
 import I18n from '../../../../i18n';
-import { CustomIcon, TIconsName } from '../../../CustomIcon';
+import { CustomIcon, type TIconsName } from '../../../CustomIcon';
 
 export interface IBaseButton {
 	testID: string;
@@ -14,25 +14,34 @@ export interface IBaseButton {
 }
 
 export const hitSlop = {
-	top: 16,
-	right: 16,
-	bottom: 16,
-	left: 16
+	top: 10,
+	right: 10,
+	bottom: 10,
+	left: 10
 };
 
-export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => (
-	<BorderlessButton style={styles.button} onPress={() => onPress()} testID={testID} hitSlop={hitSlop}>
-		<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
-			<CustomIcon name={icon} size={24} color={color} />
-		</View>
-	</BorderlessButton>
-);
+export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
+	'use memo';
+
+	const { fontScale } = useWindowDimensions();
+	const size = 24 * fontScale;
+
+	return (
+		<BorderlessButton
+			style={[styles.button, { width: size, height: size }]}
+			onPress={() => onPress()}
+			testID={testID}
+			hitSlop={hitSlop}>
+			<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
+				<CustomIcon name={icon} size={24} color={color} />
+			</View>
+		</BorderlessButton>
+	);
+};
 
 const styles = StyleSheet.create({
 	button: {
 		alignItems: 'center',
-		justifyContent: 'center',
-		width: 24,
-		height: 24
+		justifyContent: 'center'
 	}
 });

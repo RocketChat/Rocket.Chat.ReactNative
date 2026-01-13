@@ -1,25 +1,23 @@
 import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { RadioButton } from 'react-native-ui-lib';
-import { RouteProp } from '@react-navigation/native';
+import { type RouteProp } from '@react-navigation/native';
 
-import { ChatsStackParamList } from '../stacks/types';
+import { type ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import * as HeaderButton from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import { themes } from '../lib/constants';
-import { TSupportedThemes, withTheme } from '../theme';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { themes } from '../lib/constants/colors';
+import { type TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
+import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
-import { IApplicationState } from '../definitions';
-import { TDataSelect } from '../definitions/IDataSelect';
+import { type IApplicationState } from '../definitions';
+import { type TDataSelect } from '../definitions/IDataSelect';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -37,7 +35,7 @@ interface ISelectListViewState {
 }
 
 interface ISelectListViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'SelectListView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'SelectListView'>;
 	route: RouteProp<ChatsStackParamList, 'SelectListView'>;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
@@ -62,10 +60,10 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		super(props);
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
-		this.infoText = props.route?.params?.infoText ?? '';
+		this.infoText = props.route?.params?.infoText || '';
 		this.nextAction = props.route?.params?.nextAction;
-		this.showAlert = props.route?.params?.showAlert ?? (() => {});
-		this.isSearch = props.route?.params?.isSearch ?? false;
+		this.showAlert = props.route?.params?.showAlert || (() => {});
+		this.isSearch = props.route?.params?.isSearch || false;
 		this.onSearch = props.route?.params?.onSearch;
 		this.isRadio = props.route?.params?.isRadio;
 		this.state = {
@@ -81,7 +79,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			headerTitle: I18n.t(this.title)
 		};
 
@@ -127,7 +125,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	toggleItem = (rid: string) => {
 		const { selected } = this.state;
 
-		animateNextTransition();
 		if (this.isRadio) {
 			if (!this.isChecked(rid)) {
 				this.setState({ selected: [rid] }, () => this.setHeader());
@@ -150,10 +147,9 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const checked = this.isChecked(item.rid) ? 'check' : '';
 
 		const showRadio = () => (
-			<RadioButton
+			<Radio
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				selected={selected.includes(item.rid)}
-				color={themes[theme].fontHint}
+				check={selected.includes(item.rid)}
 				size={ICON_SIZE}
 			/>
 		);
@@ -166,17 +162,28 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 				/>
 			) : null;
 
+		const handleAcessibilityLabel = (rid: string) => {
+			let label = '';
+			if (this.isRadio) {
+				label = this.isChecked(rid) ? I18n.t('Selected') : I18n.t('Unselected');
+			} else {
+				label = this.isChecked(rid) ? I18n.t('Checked') : I18n.t('Unchecked');
+			}
+			return label;
+		};
+
 		return (
 			<>
 				<List.Separator />
 				<List.Item
-					title={item.name}
+					title={item.name || ''}
 					translateTitle={false}
 					testID={`select-list-view-item-${item.name}`}
 					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
 					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].fontHint} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
+					additionalAccessibilityLabel={handleAcessibilityLabel(item.rid)}
 				/>
 			</>
 		);
@@ -187,7 +194,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
-				<StatusBar />
 				<FlatList
 					data={!isSearching ? data : dataFiltered}
 					extraData={this.state}

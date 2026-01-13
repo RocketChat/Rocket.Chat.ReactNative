@@ -1,15 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import moment from 'moment';
 
+import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
-import { IMessageFromServer } from '../../definitions';
+import { type IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -58,7 +58,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 	let messageDate = '';
 
 	if (item?.ts) {
-		messageTime = moment(item.ts).format('LT');
+		messageTime = dayjs(item.ts).format('LT');
 		messageDate = formatDateThreads(item.ts);
 	}
 
@@ -66,8 +66,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`discussions-view-${item.msg}`}
-			style={{ backgroundColor: colors.surfaceRoom }}
-		>
+			style={{ backgroundColor: colors.surfaceRoom }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>

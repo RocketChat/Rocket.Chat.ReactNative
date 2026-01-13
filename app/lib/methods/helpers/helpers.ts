@@ -44,6 +44,9 @@ export function getRoomTitle(room) {
 	const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } =
 		reduxStore.getState().settings;
 	const { username } = reduxStore.getState().login.user;
+	if ('federated' in room && room.federated === true) {
+		return room.fname;
+	}
 	if (isGroupChat(room) && !(room.name && room.name.length) && room.usernames) {
 		return room.usernames
 			.filter(u => u !== username)
@@ -83,9 +86,8 @@ export function isRead(item) {
 }
 
 export function hasRole(role): boolean {
-	const shareUser = reduxStore.getState().share.user;
 	const loginUser = reduxStore.getState().login.user;
-	const userRoles = shareUser?.roles || loginUser?.roles || [];
+	const userRoles = loginUser?.roles || [];
 	return userRoles.indexOf(role) > -1;
 }
 
@@ -106,10 +108,8 @@ export async function hasPermission(permissions, rid?: any): Promise<boolean[]> 
 	}
 
 	try {
-		const shareUser = reduxStore.getState().share.user;
 		const loginUser = reduxStore.getState().login.user;
-		// get user roles on the server from redux
-		const userRoles = shareUser?.roles || loginUser?.roles || [];
+		const userRoles = loginUser?.roles || [];
 		const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 		return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 	} catch (e) {

@@ -5,7 +5,7 @@ import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import log from './helpers/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
-import { ICustomEmojiModel, TCustomEmojiModel, ICustomEmojis } from '../../definitions';
+import { type ICustomEmojiModel, type TCustomEmojiModel, type ICustomEmojis } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
 
@@ -62,7 +62,7 @@ const updateEmojis = async ({ update = [], remove = [], allRecords }: IUpdateEmo
 
 	try {
 		await db.write(async () => {
-			await db.batch(...emojisToCreate, ...emojisToUpdate, ...emojisToDelete);
+			await db.batch([...emojisToCreate, ...emojisToUpdate, ...emojisToDelete]);
 		});
 		return true;
 	} catch (e) {

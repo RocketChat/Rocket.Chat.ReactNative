@@ -1,5 +1,5 @@
 import { clearActiveUsers, setActiveUsers } from '../actions/activeUsers';
-import { IActiveUsers, initialState } from './activeUsers';
+import { type IActiveUsers, initialState } from './activeUsers';
 import { mockedStore } from './mockedStore';
 
 describe('test reducer', () => {

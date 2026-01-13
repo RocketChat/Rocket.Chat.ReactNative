@@ -34,19 +34,21 @@ final class API {
   final let credentials: Credentials?
   final let decoder = JSONDecoder()
   
-  static var instances: [Server: API] = [:]
-  
   convenience init?(server: Server) {
     guard let server = URL(string: server.removeTrailingSlash()) else {
       return nil
     }
+
+    guard let credentials = Storage().getCredentials(server: server.absoluteString) else {
+      return nil
+    }
     
-    self.init(server: server)
+    self.init(server: server, credentials: credentials)
   }
   
-  init(server: URL) {
+  init(server: URL, credentials: Credentials) {
     self.server = server
-    self.credentials = Storage.shared.getCredentials(server: server.absoluteString)
+    self.credentials = credentials
   }
   
   func fetch<T: Request>(request: T, retry: Retry? = nil, completion: @escaping((APIResponse<T.ResponseType>) -> Void)) {

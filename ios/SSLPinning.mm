@@ -8,12 +8,26 @@
 
 #import <objc/runtime.h>
 #import "SSLPinning.h"
-#import <MMKV/MMKV.h>
+#import "Shared/RocketChat/MMKVBridge.h"
 #import <SDWebImage/SDWebImageDownloader.h>
 #import "SecureStorage.h"
 #import "SRWebSocket.h"
+#import "EXSessionTaskDispatcher.h"
 
 @implementation Challenge : NSObject
+
+// Helper method to get MMKVBridge instance
++(MMKVBridge *)getMMKVInstance {
+  SecureStorage *secureStorage = [[SecureStorage alloc] init];
+  NSString *hexKey = [self stringToHex:@"com.MMKV.default"];
+  NSString *key = [secureStorage getSecureKey:hexKey];
+  
+  NSData *cryptKey = (key && [key length] > 0) ? [key dataUsingEncoding:NSUTF8StringEncoding] : nil;
+  MMKVBridge *mmkvBridge = [[MMKVBridge alloc] initWithID:@"default" cryptKey:cryptKey rootPath:nil];
+  
+  return mmkvBridge;
+}
+
 +(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
 {
   NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
@@ -83,23 +97,17 @@
   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
   NSString *host = challenge.protectionSpace.host;
-
-  // Read the clientSSL info from MMKV
-  __block NSString *clientSSL;
-  SecureStorage *secureStorage = [[SecureStorage alloc] init];
-
-  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
-  NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
   NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 
-  if (key == NULL) {
+  // Read the clientSSL info from MMKV using MMKVBridge
+  MMKVBridge *mmkvBridge = [self getMMKVInstance];
+  
+  if (!mmkvBridge) {
     return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
   }
 
-  NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
-  MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
-  clientSSL = [mmkv getStringForKey:host];
-
+  NSString *clientSSL = [mmkvBridge stringForKey:host];
+  
   if (clientSSL) {
     NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
     id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -115,6 +123,18 @@
 @implementation RCTHTTPRequestHandler (Challenge)
 
 - (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credential))completionHandler
+{
+  [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
+}
+
+@end
+
+@implementation EXSessionTaskDispatcher (Challenge)
+
+- (void)URLSession:(NSURLSession *)session
+                task:(NSURLSessionTask *)task
+    didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+    completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
   [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
 }
@@ -160,20 +180,16 @@
 - (void)xxx_updateSecureStreamOptions {
     [self xxx_updateSecureStreamOptions];
   
-    // Read the clientSSL info from MMKV
+    // Read the clientSSL info from MMKV using MMKVBridge
     NSMutableDictionary<NSString *, id> *SSLOptions = [NSMutableDictionary new];
-    __block NSString *clientSSL;
-    SecureStorage *secureStorage = [[SecureStorage alloc] init];
-
-    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
-    NSString *key = [secureStorage getSecureKey:[Challenge stringToHex:@"com.MMKV.default"]];
-
-    if (key != NULL) {
-      NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
-      MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
+    
+    MMKVBridge *mmkvBridge = [Challenge getMMKVInstance];
+    
+    if (mmkvBridge) {
       NSURLRequest *_urlRequest = [self valueForKey:@"_urlRequest"];
-
-      clientSSL = [mmkv getStringForKey:_urlRequest.URL.host];
+      NSString *host = _urlRequest.URL.host;
+      NSString *clientSSL = [mmkvBridge stringForKey:host];
+      
       if (clientSSL) {
         NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
         id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];

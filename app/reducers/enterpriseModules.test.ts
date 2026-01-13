@@ -1,6 +1,6 @@
 import { clearEnterpriseModules, setEnterpriseModules } from '../actions/enterpriseModules';
 import { mockedStore } from './mockedStore';
-import { IEnterpriseModules, initialState } from './enterpriseModules';
+import { type IEnterpriseModules, initialState } from './enterpriseModules';
 
 describe('test enterpriseModules reducer', () => {
 	it('should return initial state', () => {

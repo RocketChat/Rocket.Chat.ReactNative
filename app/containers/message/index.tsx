@@ -1,15 +1,17 @@
 import React from 'react';
-import { Keyboard, ViewStyle } from 'react-native';
+import { Keyboard } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
 import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
-import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
-import { IRoomInfoParam } from '../../views/SearchMessagesView';
-import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
+import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
+import { type IRoomInfoParam } from '../../views/SearchMessagesView';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
+import { messagesStatus } from '../../lib/constants/messagesStatus';
+import MessageSeparator from '../MessageSeparator';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -21,7 +23,6 @@ interface IMessageContainerProps {
 	msg?: string;
 	rid: string;
 	timeFormat?: string;
-	style?: ViewStyle;
 	archived?: boolean;
 	broadcast?: boolean;
 	previousItem?: TAnyMessageModel;
@@ -60,6 +61,8 @@ interface IMessageContainerProps {
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
 	isBeingEdited?: boolean;
 	isPreview?: boolean;
+	dateSeparator?: Date | string | null;
+	showUnreadSeparator?: boolean;
 }
 
 interface IMessageContainerState {
@@ -96,9 +99,24 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 		const { isManualUnignored } = this.state;
-		const { threadBadgeColor, isIgnored, highlighted, previousItem, autoTranslateRoom, autoTranslateLanguage, isBeingEdited } =
-			this.props;
+		const {
+			threadBadgeColor,
+			isIgnored,
+			highlighted,
+			previousItem,
+			autoTranslateRoom,
+			autoTranslateLanguage,
+			isBeingEdited,
+			showUnreadSeparator,
+			dateSeparator
+		} = this.props;
 
+		if (nextProps.showUnreadSeparator !== showUnreadSeparator) {
+			return true;
+		}
+		if (nextProps.dateSeparator !== dateSeparator) {
+			return true;
+		}
 		if (nextProps.highlighted !== highlighted) {
 			return true;
 		}
@@ -338,7 +356,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		const {
 			item,
 			user,
-			style,
 			archived,
 			baseUrl,
 			useRealName,
@@ -360,7 +377,9 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			jumpToMessage,
 			highlighted,
 			isBeingEdited,
-			isPreview
+			isPreview,
+			showUnreadSeparator,
+			dateSeparator
 		} = this.props;
 		const {
 			id,
@@ -449,7 +468,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					avatar={avatar}
 					emoji={emoji}
 					timeFormat={timeFormat}
-					style={style}
 					archived={archived}
 					broadcast={broadcast}
 					useRealName={useRealName}
@@ -487,7 +505,9 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isBeingEdited={isBeingEdited}
 					isPreview={isPreview}
 					pinned={pinned}
+					autoTranslateLanguage={autoTranslateLanguage}
 				/>
+				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</MessageContext.Provider>
 		);
 	}

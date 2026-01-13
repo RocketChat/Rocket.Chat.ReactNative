@@ -3,12 +3,14 @@ import { View } from 'react-native';
 import { fireEvent, render } from '@testing-library/react-native';
 
 import Button from '.';
+import * as stories from './Button.stories';
+import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
 const onPressMock = jest.fn();
 
 const testProps = {
 	title: 'Press me!',
-	type: 'primary',
+	type: 'primary' as const,
 	onPress: onPressMock,
 	testID: 'testButton',
 	initialText: 'Initial text',
@@ -19,7 +21,7 @@ const TestButton = ({ loading = false, disabled = false }) => (
 	<View>
 		<Button
 			title={testProps.title}
-			type={testProps.title}
+			type={testProps.type}
 			onPress={testProps.onPress}
 			testID={testProps.testID}
 			accessibilityLabel={testProps.title}
@@ -69,3 +71,5 @@ describe('ButtonTests', () => {
 		expect(onPressMock).toHaveBeenCalled();
 	});
 });
+
+generateSnapshots(stories);

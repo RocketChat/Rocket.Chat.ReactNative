@@ -1,25 +1,25 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { HeaderBackButton } from '@react-navigation/elements';
-import { RouteProp } from '@react-navigation/core';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import { IMessageFromServer, TThreadModel } from '../../definitions';
-import { ChatsStackParamList } from '../../stacks/types';
+import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
+import { type IMessageFromServer, type TThreadModel } from '../../definitions';
+import { type ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
 import { isIOS, useDebounce } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';
 import Item from './Item';
-import { Services } from '../../lib/services';
-import { useAppSelector } from '../../lib/hooks';
+import { getDiscussions } from '../../lib/services/restApi';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;
 
@@ -29,13 +29,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IDiscussionsViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'DiscussionsView'>;
-	route: RouteProp<ChatsStackParamList, 'DiscussionsView'>;
-	item: TThreadModel;
-}
+const DiscussionsView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'DiscussionsView'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'DiscussionsView'>>();
 
-const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.ReactElement => {
 	const rid = route.params?.rid;
 	const t = route.params?.t;
 
@@ -59,7 +56,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 
 		setLoading(true);
 		try {
-			const result = await Services.getDiscussions({
+			const result = await getDiscussions({
 				roomId: rid,
 				offset: offset.current,
 				count: API_FETCH_COUNT,
@@ -88,7 +85,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		searchText.current = text;
 		offset.current = 0;
 		load();
-	}, 500);
+	}, textInputDebounceTime);
 
 	const onCancelSearchPress = () => {
 		setIsSearching(false);
@@ -102,14 +99,11 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	};
 
 	const setHeader = () => {
-		let options: Partial<StackNavigationOptions>;
+		let options: Partial<NativeStackNavigationOptions>;
 		if (isSearching) {
 			options = {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
-					<HeaderButton.Container left>
+					<HeaderButton.Container style={{ marginLeft: 1 }} left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
 					</HeaderButton.Container>
 				),
@@ -122,18 +116,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		}
 
 		options = {
-			headerTitleAlign: 'center',
+			headerLeft: undefined,
 			headerTitle: I18n.t('Discussions'),
-			headerTitleContainerStyle: {},
-			headerRightContainerStyle: { flexGrow: 1 },
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={colors.fontSecondaryInfo}
-					testID='header-back'
-				/>
-			),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item iconName='search' onPress={onSearchPress} />
@@ -158,11 +142,14 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 
 	const onDiscussionPress = (item: TThreadModel) => {
 		if (item.drid && item.t) {
-			navigation.push('RoomView', {
-				rid: item.drid,
-				prid: item.rid,
-				name: item.msg,
-				t
+			goRoom({
+				item: {
+					rid: item.drid,
+					prid: item.rid,
+					name: item.msg,
+					t
+				},
+				isMasterDetail
 			});
 		}
 	};
@@ -183,7 +170,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 
 	return (
 		<SafeAreaView testID='discussions-view'>
-			<StatusBar />
 			<FlatList
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}

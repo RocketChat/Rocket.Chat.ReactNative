@@ -1,38 +1,28 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
-platform :ios, '13.4'
+platform :ios, '15.1'
 install! 'cocoapods', :deterministic_uuids => false
 
 prepare_react_native_project!
 
-use_modular_headers!
-
-plugin 'cocoapods-patch'
-
 def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
+  pod 'react-native-mmkv', path: '../node_modules/react-native-mmkv', modular_headers: true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
   use_expo_modules!
   config = use_native_modules!
 
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
+
   use_react_native!(
     :path => config[:reactNativePath],
     :hermes_enabled => true,
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/..",
-    # Note that if you have use_frameworks! enabled, Flipper will not work if enabled
-    # :flipper_configuration => flipper_config
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
-  post_integrate do |installer|
-    begin
-      expo_patch_react_imports!(installer)
-    rescue => e
-      Pod::UI.warn e
-    end
-  end
 end
 
 abstract_target 'defaults' do
@@ -41,13 +31,12 @@ abstract_target 'defaults' do
 
   target 'RocketChatRN' # Experimental app
   target 'Rocket.Chat' # Official app
-  target 'ShareRocketChatRN'
   target 'NotificationService'
 end
 
 $static_framework = [ 
   'WatermelonDB',
-  'simdjson',
+  'simdjson'
 ]
 pre_install do |installer|
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
@@ -65,7 +54,8 @@ post_install do |installer|
   react_native_post_install(
     installer,
     # config[:reactNativePath],
-    # :mac_catalyst_enabled => false
+    # :mac_catalyst_enabled => false,
+    # :ccache_enabled => true
   )
 
   installer.pods_project.targets.each do |target|
@@ -74,12 +64,39 @@ post_install do |installer|
       config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ""
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
-      case target.name
-      when 'RCT-Folly'
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-      else
-        config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
+      config.build_settings['ENABLE_BITCODE'] = "NO"
+      
+      # Add SecureStorage headers to search paths for react-native-webview
+      if target.name == 'react-native-webview'
+        config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
+        config.build_settings['HEADER_SEARCH_PATHS'] << '$(SRCROOT)/..'
+      end
+      
+      # Add FORCE_POSIX for MMKV to expose C++ API properly
+      if target.name == 'react-native-mmkv'
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FORCE_POSIX=1'
       end
     end
+  end
+  
+  # Add FORCE_POSIX to main project targets that use MMKV C++ API
+  installer.aggregate_targets.each do |aggregate_target|
+    aggregate_target.user_project.targets.each do |target|
+      if ['NotificationService', 'RocketChatRN', 'Rocket.Chat'].include?(target.name)
+        target.build_configurations.each do |config|
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FORCE_POSIX=1' unless config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'].include?('FORCE_POSIX=1')
+        end
+      end
+    end
+  end
+
+  bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
+  def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
+    framework_path = File.join(Dir.pwd, framework_relative_path)
+    command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
+    puts "Stripping bitcode: #{command}"
+    system(command)
   end
 end

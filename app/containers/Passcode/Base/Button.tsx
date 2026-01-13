@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, StyleProp, ViewStyle } from 'react-native';
+import { Text, type StyleProp, type ViewStyle } from 'react-native';
 
 import styles from './styles';
 import Touch from '../../Touch';
-import { CustomIcon, TIconsName } from '../../CustomIcon';
+import { CustomIcon, type TIconsName } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 
 interface IPasscodeButton {
@@ -25,8 +25,7 @@ const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeBu
 			underlayColor={colors.buttonBackgroundSecondaryDefault}
 			rippleColor={colors.buttonBackgroundSecondaryPress}
 			enabled={!disabled}
-			onPress={press}
-		>
+			onPress={press}>
 			{icon ? (
 				<CustomIcon name={icon} size={36} />
 			) : (

@@ -1,0 +1,21 @@
+name: Run ESLint and Test
+
+on:
+  workflow_call:
+
+jobs:
+  run-eslint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Run ESLint
+        run: yarn lint
+
+      - name: Run Tests
+        run: yarn test --runInBand

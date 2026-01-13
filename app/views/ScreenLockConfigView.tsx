@@ -1,19 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StackNavigationOptions } from '@react-navigation/stack';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
 import I18n from '../i18n';
-import { TSupportedThemes, withTheme } from '../theme';
-import StatusBar from '../containers/StatusBar';
+import { type TSupportedThemes, withTheme } from '../theme';
 import * as List from '../containers/List';
 import database from '../lib/database';
-import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../lib/methods/helpers/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes } from '../lib/constants';
+import {
+	changePasscode,
+	checkHasPasscode,
+	supportedBiometryLabel,
+	handleLocalAuthentication
+} from '../lib/methods/helpers/localAuthentication';
+import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
+import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import userPreferences from '../lib/methods/userPreferences';
-import { IApplicationState, TServerModel } from '../definitions';
+import { type IApplicationState, type TServerModel } from '../definitions';
 import Switch from '../containers/Switch';
 
 const DEFAULT_BIOMETRY = false;
@@ -43,7 +47,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 
 	private observable?: Subscription;
 
-	static navigationOptions = (): StackNavigationOptions => ({
+	static navigationOptions = () => ({
 		title: I18n.t('Screen_lock')
 	});
 
@@ -126,6 +130,10 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	};
 
 	changePasscode = async ({ force }: { force: boolean }) => {
+		const { autoLock } = this.state;
+		if (autoLock) {
+			await handleLocalAuthentication(true);
+		}
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		await changePasscode({ force });
 	};
@@ -185,6 +193,8 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 					disabled={disabled}
 					translateTitle={false}
+					additionalAccessibilityLabel={this.isSelected(value)}
+					additionalAccessibilityLabelCheck
 				/>
 				<List.Separator />
 			</>
@@ -244,6 +254,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					title={I18n.t('Local_authentication_unlock_with_label', { label: biometryLabel })}
 					right={() => this.renderBiometrySwitch()}
 					translateTitle={false}
+					additionalAccessibilityLabel={this.state.biometry ? I18n.t('Enabled') : I18n.t('Disabled')}
 				/>
 				<List.Separator />
 			</List.Section>
@@ -254,11 +265,14 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const { autoLock } = this.state;
 		return (
 			<SafeAreaView>
-				<StatusBar />
 				<List.Container>
 					<List.Section>
 						<List.Separator />
-						<List.Item title='Local_authentication_unlock_option' right={() => this.renderAutoLockSwitch()} />
+						<List.Item
+							title='Local_authentication_unlock_option'
+							right={() => this.renderAutoLockSwitch()}
+							additionalAccessibilityLabel={autoLock}
+						/>
 						{autoLock ? (
 							<>
 								<List.Separator />

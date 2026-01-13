@@ -1,16 +1,16 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { ChatsStackParamList } from '../../../stacks/types';
+import { type ChatsStackParamList } from '../../../stacks/types';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import Button from '../../../containers/Button';
 import sharedStyles from '../../Styles';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption';
 import I18n from '../../../i18n';
-import { TNavigation } from '../../../stacks/stackType';
+import { type TNavigation } from '../../../stacks/stackType';
 
 const GAP = 32;
 
@@ -19,7 +19,7 @@ export const EncryptedRoom = ({
 	navigation
 }: {
 	roomName: string;
-	navigation: StackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
 }): ReactElement => {
 	const { colors } = useTheme();
 	const styles = useStyle();

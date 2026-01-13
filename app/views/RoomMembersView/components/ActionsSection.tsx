@@ -1,31 +1,32 @@
-import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setLoading } from '../../../actions/selectedUsers';
 import * as List from '../../../containers/List';
-import { TSubscriptionModel } from '../../../definitions';
+import { type TSubscriptionModel } from '../../../definitions';
 import i18n from '../../../i18n';
-import { usePermissions } from '../../../lib/hooks';
+import { usePermissions } from '../../../lib/hooks/usePermissions';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { Services } from '../../../lib/services';
-import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { ChatsStackParamList } from '../../../stacks/types';
+import { addUsersToRoom } from '../../../lib/services/restApi';
+import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { type ChatsStackParamList } from '../../../stacks/types';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 interface IActionsSection {
 	rid: TSubscriptionModel['rid'];
 	t: TSubscriptionModel['t'];
 	joined: boolean;
+	abacAttributes: TSubscriptionModel['abacAttributes'];
 }
 
-export default function ActionsSection({ rid, t, joined }: IActionsSection): React.ReactElement {
+export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): React.ReactElement {
 	const { navigate, pop } = useNavigation<TNavigation>();
 	const dispatch = useDispatch();
 	const [addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, createInviteLinksPermission] =
@@ -55,7 +56,7 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 	const addUser = async () => {
 		try {
 			dispatch(setLoading(true));
-			await Services.addUsersToRoom(rid);
+			await addUsersToRoom(rid);
 			pop();
 		} catch (e) {
 			log(e);
@@ -102,6 +103,8 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 						testID='room-actions-invite-user'
 						left={() => <List.Icon name='user-add' />}
 						showActionIndicator
+						disabled={!!abacAttributes}
+						disabledReason={abacAttributes ? i18n.t('ABAC_disabled_action_reason') : undefined}
 					/>
 					<List.Separator />
 				</>

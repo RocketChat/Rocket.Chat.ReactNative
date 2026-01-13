@@ -1,11 +1,11 @@
-import { NavigatorScreenParams } from '@react-navigation/core';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { type NavigatorScreenParams } from '@react-navigation/core';
+import { type NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
-import { TSubscriptionModel } from './ISubscription';
-import { TServerModel } from './IServer';
-import { IAttachment } from './IAttachment';
-import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
-import { OutsideParamList, InsideStackParamList } from '../stacks/types';
+import { type TSubscriptionModel } from './ISubscription';
+import { type TServerModel } from './IServer';
+import { type IAttachment } from './IAttachment';
+import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import { type OutsideParamList, type InsideStackParamList } from '../stacks/types';
 
 interface INavigationProps {
 	route?: any;
@@ -14,7 +14,7 @@ interface INavigationProps {
 }
 
 export type TNavigationOptions = {
-	navigationOptions?(props: INavigationProps): StackNavigationOptions;
+	navigationOptions?(props: INavigationProps): NativeStackNavigationOptions;
 };
 
 export type SetUsernameStackParamList = {
@@ -29,6 +29,7 @@ export type StackParamList = {
 	InsideStack: NavigatorScreenParams<InsideStackParamList>;
 	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
 	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
+	ShareExtensionStack: NavigatorScreenParams<ShareInsideStackParamList>;
 };
 
 export type ShareInsideStackParamList = {
@@ -43,14 +44,4 @@ export type ShareInsideStackParamList = {
 		thread?: any; // TODO: Change
 	};
 	SelectServerView: undefined;
-};
-
-export type ShareOutsideStackParamList = {
-	WithoutServersView: undefined;
-};
-
-export type ShareAppStackParamList = {
-	AuthLoading?: undefined;
-	OutsideStack?: NavigatorScreenParams<ShareOutsideStackParamList>;
-	InsideStack?: NavigatorScreenParams<ShareInsideStackParamList>;
 };

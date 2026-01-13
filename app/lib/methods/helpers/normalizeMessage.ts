@@ -1,5 +1,4 @@
-import moment from 'moment';
-
+import dayjs from '../../dayjs';
 import parseUrls from './parseUrls';
 import type { IAttachment, IMessage, IThreadResult } from '../../../definitions';
 
@@ -15,7 +14,7 @@ function normalizeAttachments(msg: TMsg) {
 		.map(att => {
 			att.fields = att.fields || [];
 			if (att.ts) {
-				att.ts = moment(att.ts).toDate();
+				att.ts = dayjs(att.ts).toDate();
 			}
 			att = normalizeAttachments(att as TMsg);
 			return att;
@@ -54,7 +53,7 @@ export default (msg: any): IMessage | IThreadResult | null => {
 		msg.autoTranslate = true;
 	}
 	msg.urls = msg.urls ? parseUrls(msg.urls) : [];
-	msg._updatedAt = new Date();
+	msg._updatedAt = msg._updatedAt || new Date();
 	// loadHistory returns msg.starred as object
 	// stream-room-msgs returns msg.starred as an array
 	msg.starred = msg.starred && (Array.isArray(msg.starred) ? msg.starred.length > 0 : !!msg.starred);
