@@ -1,0 +1,129 @@
+diff --git a/node_modules/expo-modules-core/android/.project b/node_modules/expo-modules-core/android/.project
+new file mode 100644
+index 0000000..dc11424
+--- /dev/null
++++ b/node_modules/expo-modules-core/android/.project
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<projectDescription>
++	<name>expo-modules-core</name>
++	<comment>Project expo-modules-core created by Buildship.</comment>
++	<projects>
++	</projects>
++	<buildSpec>
++		<buildCommand>
++			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++	</buildSpec>
++	<natures>
++		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
++	</natures>
++	<filteredResources>
++		<filter>
++			<id>1767968821913</id>
++			<name></name>
++			<type>30</type>
++			<matcher>
++				<id>org.eclipse.core.resources.regexFilterMatcher</id>
++				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
++			</matcher>
++		</filter>
++	</filteredResources>
++</projectDescription>
+diff --git a/node_modules/expo-modules-core/expo-module-gradle-plugin/.project b/node_modules/expo-modules-core/expo-module-gradle-plugin/.project
+new file mode 100644
+index 0000000..483638f
+--- /dev/null
++++ b/node_modules/expo-modules-core/expo-module-gradle-plugin/.project
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<projectDescription>
++	<name>expo-module-gradle-plugin</name>
++	<comment>Project expo-module-gradle-plugin created by Buildship.</comment>
++	<projects>
++	</projects>
++	<buildSpec>
++		<buildCommand>
++			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++	</buildSpec>
++	<natures>
++		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
++	</natures>
++	<filteredResources>
++		<filter>
++			<id>1767968821910</id>
++			<name></name>
++			<type>30</type>
++			<matcher>
++				<id>org.eclipse.core.resources.regexFilterMatcher</id>
++				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
++			</matcher>
++		</filter>
++	</filteredResources>
++</projectDescription>
+diff --git a/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift b/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
+index a126e11..b9a67af 100644
+--- a/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
++++ b/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
+@@ -1,6 +1,7 @@
+ // Copyright 2018-present 650 Industries. All rights reserved.
+ 
+ import CoreGraphics
++import os.log
+ 
+ // Here we extend some common iOS types to implement `Convertible` protocol and
+ // describe how they can be converted from primitive types received from JavaScript runtime.
+@@ -19,22 +20,47 @@ extension URL: Convertible {
+       throw Conversions.ConvertingException<URL>(value)
+     }
+ 
++    // Log the URI being converted for debugging crashes
++    let logger = OSLog(subsystem: "dev.expo.modules.core", category: "URLConversion")
++    os_log("🔍 [URL.convert] Attempting to convert URI: %{public}@ (length: %d)", log: logger, type: .default, value, value.count)
++    
+     // First we try to create a URL without extra encoding, as it came.
+     if let url = convertToUrl(string: value) {
++      os_log("✅ [URL.convert] Successfully converted via convertToUrl: %{public}@", log: logger, type: .default, value)
+       return url
+     }
+ 
+     // File path doesn't need to be percent-encoded.
+     if isFileUrlPath(value) {
+-      return URL(fileURLWithPath: value)
++      os_log("📁 [URL.convert] Detected file path, using fileURLWithPath: %{public}@ (length: %d, isEmpty: %{public}@)", log: logger, type: .default, value, value.count, value.isEmpty ? "YES" : "NO")
++      
++      // Validate path is not empty to prevent crashes
++      guard !value.isEmpty else {
++        os_log("❌ [URL.convert] CRASH PREVENTION: Empty file path detected! Throwing exception instead of crashing.", log: logger, type: .error)
++        throw UrlContainsInvalidCharactersException()
++      }
++      
++      // Try to create the file URL and catch any assertion failures
++      // Note: URL(fileURLWithPath:) can crash with assertion failures for invalid paths
++      // We log extensively before this call to identify problematic URIs
++      do {
++        let fileURL = URL(fileURLWithPath: value)
++        os_log("✅ [URL.convert] Successfully created file URL: %{public}@", log: logger, type: .default, fileURL.absoluteString)
++        return fileURL
++      } catch {
++        os_log("❌ [URL.convert] EXCEPTION creating file URL from path: %{public}@ - Error: %{public}@", log: logger, type: .error, value, error.localizedDescription)
++        throw UrlContainsInvalidCharactersException()
++      }
+     }
+ 
+     // If we get here, the string is not the file url and may require percent-encoding characters that are not URL-safe according to RFC 3986.
+     if let encodedValue = percentEncodeUrlString(value), let url = convertToUrl(string: encodedValue) {
++      os_log("✅ [URL.convert] Successfully converted after percent-encoding: %{public}@", log: logger, type: .default, value)
+       return url
+     }
+ 
+     // If it still fails to create the URL object, the string possibly contains characters that must be explicitly percent-encoded beforehand.
++    os_log("❌ [URL.convert] FAILED to convert URI: %{public}@ (length: %d, isEmpty: %{public}@)", log: logger, type: .error, value, value.count, value.isEmpty ? "YES" : "NO")
+     throw UrlContainsInvalidCharactersException()
+   }
+ }
