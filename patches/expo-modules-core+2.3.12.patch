@@ -1,91 +1,11 @@
-diff --git a/node_modules/expo-modules-core/android/.project b/node_modules/expo-modules-core/android/.project
-new file mode 100644
-index 0000000..dc11424
---- /dev/null
-+++ b/node_modules/expo-modules-core/android/.project
-@@ -0,0 +1,28 @@
-+<?xml version="1.0" encoding="UTF-8"?>
-+<projectDescription>
-+	<name>expo-modules-core</name>
-+	<comment>Project expo-modules-core created by Buildship.</comment>
-+	<projects>
-+	</projects>
-+	<buildSpec>
-+		<buildCommand>
-+			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
-+			<arguments>
-+			</arguments>
-+		</buildCommand>
-+	</buildSpec>
-+	<natures>
-+		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
-+	</natures>
-+	<filteredResources>
-+		<filter>
-+			<id>1767968821913</id>
-+			<name></name>
-+			<type>30</type>
-+			<matcher>
-+				<id>org.eclipse.core.resources.regexFilterMatcher</id>
-+				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
-+			</matcher>
-+		</filter>
-+	</filteredResources>
-+</projectDescription>
-diff --git a/node_modules/expo-modules-core/expo-module-gradle-plugin/.project b/node_modules/expo-modules-core/expo-module-gradle-plugin/.project
-new file mode 100644
-index 0000000..483638f
---- /dev/null
-+++ b/node_modules/expo-modules-core/expo-module-gradle-plugin/.project
-@@ -0,0 +1,28 @@
-+<?xml version="1.0" encoding="UTF-8"?>
-+<projectDescription>
-+	<name>expo-module-gradle-plugin</name>
-+	<comment>Project expo-module-gradle-plugin created by Buildship.</comment>
-+	<projects>
-+	</projects>
-+	<buildSpec>
-+		<buildCommand>
-+			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
-+			<arguments>
-+			</arguments>
-+		</buildCommand>
-+	</buildSpec>
-+	<natures>
-+		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
-+	</natures>
-+	<filteredResources>
-+		<filter>
-+			<id>1767968821910</id>
-+			<name></name>
-+			<type>30</type>
-+			<matcher>
-+				<id>org.eclipse.core.resources.regexFilterMatcher</id>
-+				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
-+			</matcher>
-+		</filter>
-+	</filteredResources>
-+</projectDescription>
 diff --git a/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift b/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
-index a126e11..b6d66e4 100644
+index a126e11..35d620c 100644
 --- a/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
 +++ b/node_modules/expo-modules-core/ios/Core/Arguments/Convertibles.swift
-@@ -1,6 +1,7 @@
- // Copyright 2018-present 650 Industries. All rights reserved.
- 
- import CoreGraphics
-+import os.log
- 
- // Here we extend some common iOS types to implement `Convertible` protocol and
- // describe how they can be converted from primitive types received from JavaScript runtime.
-@@ -19,22 +20,117 @@ extension URL: Convertible {
+@@ -19,14 +19,88 @@ extension URL: Convertible {
        throw Conversions.ConvertingException<URL>(value)
      }
  
-+    // Log the URI being converted for debugging crashes
-+    let logger = OSLog(subsystem: "dev.expo.modules.core", category: "URLConversion")
-+    os_log("🔍 [URL.convert] Attempting to convert URI: %{public}@ (length: %d)", log: logger, type: .default, value, value.count)
-+    
 +    // iOS 18.6+ CRITICAL: Check for HTTP/HTTPS URLs FIRST to prevent API misuse
 +    // iOS 18.6 will crash with "API MISUSE: URL(filePath:) called with an HTTP URL string"
 +    // if we try to use fileURLWithPath on an HTTP URL
@@ -93,26 +13,21 @@ index a126e11..b6d66e4 100644
 +    let isHttpUrl = lowercasedValue.hasPrefix("http://") || lowercasedValue.hasPrefix("https://")
 +    
 +    if isHttpUrl {
-+      os_log("🌐 [URL.convert] Detected HTTP/HTTPS URL, using URL(string:): %{public}@", log: logger, type: .default, value)
 +      // Try to parse as HTTP URL first
 +      if let url = URL(string: value) {
-+        os_log("✅ [URL.convert] Successfully converted HTTP URL: %{public}@", log: logger, type: .default, url.absoluteString)
 +        return url
 +      }
 +      // If URL(string:) fails, try with URLComponents for better RFC 3986 support
 +      if #available(iOS 16, *) {
 +        if let url = URLComponents(string: value)?.url {
-+          os_log("✅ [URL.convert] Successfully converted HTTP URL via URLComponents: %{public}@", log: logger, type: .default, url.absoluteString)
 +          return url
 +        }
 +      }
-+      os_log("❌ [URL.convert] Failed to parse HTTP URL: %{public}@", log: logger, type: .error, value)
 +      throw UrlContainsInvalidCharactersException()
 +    }
 +    
      // First we try to create a URL without extra encoding, as it came.
      if let url = convertToUrl(string: value) {
-+      os_log("✅ [URL.convert] Successfully converted via convertToUrl: %{public}@", log: logger, type: .default, value)
        return url
      }
  
@@ -122,18 +37,14 @@ index a126e11..b6d66e4 100644
 +    // Only check for file paths if it's NOT an HTTP URL (already checked above)
      if isFileUrlPath(value) {
 -      return URL(fileURLWithPath: value)
-+      os_log("📁 [URL.convert] Detected file path, using fileURLWithPath: %{public}@ (length: %d, isEmpty: %{public}@)", log: logger, type: .default, value, value.count, value.isEmpty ? "YES" : "NO")
-+      
 +      // iOS 18.6+ CRITICAL: Empty paths will crash with assertion failure in production
 +      guard !value.isEmpty else {
-+        os_log("❌ [URL.convert] CRASH PREVENTION: Empty file path detected! Throwing exception instead of crashing.", log: logger, type: .error)
 +        throw UrlContainsInvalidCharactersException()
 +      }
 +      
 +      // iOS 18.6+ requires stricter validation - check for invalid characters
 +      let trimmedPath = value.trimmingCharacters(in: .whitespacesAndNewlines)
 +      guard !trimmedPath.isEmpty else {
-+        os_log("❌ [URL.convert] CRASH PREVENTION: Path is empty after trimming: %{public}@", log: logger, type: .error, value)
 +        throw UrlContainsInvalidCharactersException()
 +      }
 +      
@@ -147,7 +58,6 @@ index a126e11..b6d66e4 100644
 +      
 +      // iOS 18.6+ will crash if we call fileURLWithPath on an HTTP URL
 +      guard !isHttpUrl else {
-+        os_log("❌ [URL.convert] CRASH PREVENTION: HTTP URL incorrectly identified as file path (iOS 18.6 strict): %{public}@", log: logger, type: .error, value)
 +        // Try to parse as HTTP URL instead
 +        if let url = URL(string: value) {
 +          return url
@@ -156,13 +66,11 @@ index a126e11..b6d66e4 100644
 +      }
 +      
 +      guard isAbsolutePath || isFileURL else {
-+        os_log("❌ [URL.convert] CRASH PREVENTION: Path is not absolute and not file:// URL (iOS 18.6 strict): %{public}@", log: logger, type: .error, value)
 +        throw UrlContainsInvalidCharactersException()
 +      }
 +      
 +      // Check for null characters and control characters that iOS 18.6 rejects
 +      if trimmedPath.contains("\0") || trimmedPath.rangeOfCharacter(from: CharacterSet.controlCharacters) != nil {
-+        os_log("❌ [URL.convert] CRASH PREVENTION: Path contains invalid control characters (iOS 18.6 strict): %{public}@", log: logger, type: .error, value)
 +        throw UrlContainsInvalidCharactersException()
 +      }
 +      
@@ -172,28 +80,15 @@ index a126e11..b6d66e4 100644
 +      if isFileURL {
 +        // Already a file:// URL, parse it safely
 +        guard let parsedURL = URL(string: trimmedPath) else {
-+          os_log("❌ [URL.convert] CRASH PREVENTION: Invalid file:// URL format: %{public}@", log: logger, type: .error, value)
 +          throw UrlContainsInvalidCharactersException()
 +        }
 +        fileURL = parsedURL
 +      } else {
 +        // Absolute path - iOS 18.6 will assert if malformed
-+        // We've validated above, but if it still crashes, the logs will show the exact path
 +        fileURL = URL(fileURLWithPath: trimmedPath)
 +      }
 +      
-+      os_log("✅ [URL.convert] Successfully created file URL: %{public}@", log: logger, type: .default, fileURL.absoluteString)
 +      return fileURL
      }
  
      // If we get here, the string is not the file url and may require percent-encoding characters that are not URL-safe according to RFC 3986.
-     if let encodedValue = percentEncodeUrlString(value), let url = convertToUrl(string: encodedValue) {
-+      os_log("✅ [URL.convert] Successfully converted after percent-encoding: %{public}@", log: logger, type: .default, value)
-       return url
-     }
- 
-     // If it still fails to create the URL object, the string possibly contains characters that must be explicitly percent-encoded beforehand.
-+    os_log("❌ [URL.convert] FAILED to convert URI: %{public}@ (length: %d, isEmpty: %{public}@)", log: logger, type: .error, value, value.count, value.isEmpty ? "YES" : "NO")
-     throw UrlContainsInvalidCharactersException()
-   }
- }
