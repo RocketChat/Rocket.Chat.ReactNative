@@ -37,25 +37,37 @@ const CallActionButton = ({
 		}
 	};
 
+	const getBackgroundColor = (pressed: boolean) => {
+		if (pressed) {
+			switch (variant) {
+				case 'active':
+					return colors.buttonBackgroundSecondaryDangerPress;
+				case 'danger':
+					return colors.buttonBackgroundDangerPress;
+				default:
+					return colors.buttonBackgroundSecondaryPress;
+			}
+		}
+		return variant === 'danger' ? colors.buttonBackgroundDangerDefault : colors.buttonBackgroundSecondaryDefault;
+	};
+
 	return (
-		<Pressable
-			onPress={onPress}
-			disabled={disabled}
-			style={[disabled && { opacity: 0.5 }]}
-			accessibilityLabel={label}
-			accessibilityRole='button'
-			testID={testID}>
-			<View
-				style={[
+		<View>
+			<Pressable
+				onPress={onPress}
+				disabled={disabled}
+				style={({ pressed }) => [
 					styles.actionButton,
-					{
-						backgroundColor: variant === 'danger' ? colors.buttonBackgroundDangerDefault : colors.buttonBackgroundSecondaryDefault
-					}
-				]}>
+					disabled && { opacity: 0.5 },
+					{ backgroundColor: getBackgroundColor(pressed) }
+				]}
+				accessibilityLabel={label}
+				accessibilityRole='button'
+				testID={testID}>
 				<CustomIcon name={icon} size={32} color={getIconColor()} />
-			</View>
+			</Pressable>
 			<Text style={[styles.actionButtonLabel, { color: colors.fontDefault }]}>{label}</Text>
-		</Pressable>
+		</View>
 	);
 };
 

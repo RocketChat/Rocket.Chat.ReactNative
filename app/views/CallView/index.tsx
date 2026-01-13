@@ -48,14 +48,17 @@ const CallView = (): React.ReactElement | null => {
 	const handleMessage = () => {
 		// TODO: Navigate to chat with caller
 		// Navigation.navigate('RoomView', { rid, t: 'd' });
+		alert('Message');
 	};
 
 	const handleMore = () => {
 		// TODO: Show action sheet with more options (DTMF, transfer, etc.)
+		alert('More');
 	};
 
-	const handleMinimize = () => {
-		goBack();
+	const handleCollapse = () => {
+		// goBack();
+		alert('Collapse call');
 	};
 
 	const handleEndCall = () => {
@@ -86,10 +89,10 @@ const CallView = (): React.ReactElement | null => {
 			<View style={[styles.contentContainer, { backgroundColor: colors.surfaceLight }]}>
 				{/* Header */}
 				<View style={[styles.header, { backgroundColor: colors.surfaceNeutral }]}>
-					<Pressable onPress={handleMinimize} style={styles.headerButton} accessibilityLabel={I18n.t('Minimize')}>
+					<Pressable onPress={handleCollapse} style={styles.headerButton} accessibilityLabel={I18n.t('Minimize')}>
 						<CustomIcon name='arrow-down' size={24} color={colors.fontDefault} />
 					</Pressable>
-					<Text style={styles.headerTitle} testID='call-view-header-title'>
+					<Text style={[styles.headerTitle, { color: colors.fontDefault }]} testID='call-view-header-title'>
 						{getHeaderTitle()}
 					</Text>
 					<Pressable onPress={handleEndCall} style={styles.headerButton} accessibilityLabel={I18n.t('End')}>
