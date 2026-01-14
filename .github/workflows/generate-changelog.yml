@@ -19,6 +19,11 @@ jobs:
         run: |
           LATEST_RELEASE_TAG=$(git tag --sort=-creatordate | head -n 1)
 
+          if [ -z "$LATEST_RELEASE_TAG" ]; then
+            echo "- Improvements and bug fixes" > changelog.txt
+            exit 0
+          fi
+
           git log "$LATEST_RELEASE_TAG"..HEAD --pretty=format:"- %s" --no-merges > changelog.txt
 
           if [ ! -s changelog.txt ]; then
