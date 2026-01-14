@@ -4,6 +4,7 @@ import { useTheme } from '../../../theme';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import I18n from '../../../i18n';
 import sharedStyles from '../../../views/Styles';
+import Timer from './Timer';
 
 const styles = StyleSheet.create({
 	headerTitle: {
@@ -22,14 +23,13 @@ const Title = () => {
 	const callerName = contact.displayName || contact.username || I18n.t('Unknown');
 	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
 	const isConnected = callState === 'active';
-	const callDuration = '00:00';
 
 	const getHeaderTitle = () => {
 		if (isConnecting) {
 			return I18n.t('Connecting');
 		}
 		if (isConnected && callStartTime) {
-			return `${callerName} – ${callDuration}`;
+			return `${callerName} – `;
 		}
 		return callerName;
 	};
@@ -37,6 +37,7 @@ const Title = () => {
 	return (
 		<Text style={[styles.headerTitle, { color: colors.fontDefault }]} testID='call-view-header-title'>
 			{getHeaderTitle()}
+			<Timer />
 		</Text>
 	);
 };
