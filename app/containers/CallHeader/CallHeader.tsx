@@ -37,6 +37,7 @@ const CallHeader = () => {
 	const callStartTime = useCallStore(state => state.callStartTime);
 	const contact = useCallStore(state => state.contact);
 	const endCall = useCallStore(state => state.endCall);
+	const focused = useCallStore(state => state.focused);
 	const toggleFocus = useCallStore(state => state.toggleFocus);
 	const callDuration = '00:00';
 
@@ -69,7 +70,7 @@ const CallHeader = () => {
 				{ backgroundColor: colors.surfaceNeutral, paddingTop: insets.top, borderBottomColor: colors.strokeLight }
 			]}>
 			<Pressable onPress={handleCollapse} style={styles.headerButton} hitSlop={8} accessibilityLabel={I18n.t('Minimize')}>
-				<CustomIcon name='arrow-down' size={24} color={colors.fontDefault} />
+				<CustomIcon name={focused ? 'arrow-collapse' : 'arrow-expand'} size={24} color={colors.fontDefault} />
 			</Pressable>
 			<Text style={[styles.headerTitle, { color: colors.fontDefault }]} testID='call-view-header-title'>
 				{getHeaderTitle()}
