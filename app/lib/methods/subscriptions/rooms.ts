@@ -70,7 +70,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					alert: s.alert,
 					unread: s.unread,
 					userMentions: s.userMentions,
-					roomUpdatedAt: s.lastMessage?.ts || s.roomUpdatedAt,
+					roomUpdatedAt: s.roomUpdatedAt,
 					ro: s.ro,
 					lastOpen: s.lastOpen,
 					description: s.description,

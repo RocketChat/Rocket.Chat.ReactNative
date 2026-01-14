@@ -24,7 +24,7 @@ export default async function findSubscriptionsRooms(subscriptions: IServerSubsc
 			alert: s.alert,
 			unread: s.unread,
 			userMentions: s.userMentions,
-			roomUpdatedAt: s.lastMessage?.ts || s.roomUpdatedAt,
+			roomUpdatedAt: s.roomUpdatedAt,
 			ro: s.ro,
 			lastOpen: s.lastOpen,
 			description: s.description,
