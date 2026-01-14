@@ -122,7 +122,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			});
 			if (directories.success) {
 				this.setState(prev => ({
-					data: [...prev.data, ...(directories.result as IServerRoom[])],
+					data: [...prev.data, ...(directories.result as unknown as IServerRoom[])],
 					loading: false,
 					total: directories.total
 				}));

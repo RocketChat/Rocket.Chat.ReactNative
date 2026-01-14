@@ -16,8 +16,7 @@ import { type TParams } from '../../definitions/ILivechatEditView';
 import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import { type ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
-import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
-import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
+import { type ResultFor } from '../../definitions/rest/helpers';
 import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
@@ -336,21 +335,15 @@ export const toggleReadStatus = (
 	isRead: boolean,
 	roomId: string,
 	includeThreads?: boolean
-): Promise<ResultFor<'POST', keyof SubscriptionsEndpoints>> => {
-	let endpoint: keyof SubscriptionsEndpoints;
-	let payload: OperationParams<'POST', keyof SubscriptionsEndpoints> = { roomId };
-
+): Promise<ResultFor<'POST', 'subscriptions.read' | 'subscriptions.unread'>> => {
 	if (isRead) {
-		endpoint = 'subscriptions.unread';
-	} else {
-		endpoint = 'subscriptions.read';
-		payload = { rid: roomId };
-		if (includeThreads) {
-			payload.readThreads = includeThreads;
-		}
+		return sdk.post('subscriptions.unread', { roomId });
 	}
-
-	return sdk.post(endpoint, payload);
+	const payload: { rid: string; readThreads?: boolean } = { rid: roomId };
+	if (includeThreads) {
+		payload.readThreads = includeThreads;
+	}
+	return sdk.post('subscriptions.read', payload);
 };
 
 export const getRoomCounters = (
@@ -1002,7 +995,7 @@ export const registerPushToken = () =>
 	new Promise<void>(async resolve => {
 		const token = getDeviceToken();
 		if (token) {
-			const type = isIOS ? 'apn' : 'gcm';
+			const type: 'apn' | 'gcm' = isIOS ? 'apn' : 'gcm';
 			const data = {
 				value: token,
 				type,

@@ -1,82 +1,32 @@
-import { type IRole } from '../../IRole';
-import { type RocketChatRecordDeleted } from '../../IRocketChatRecord';
-import { type IRoleUser, type IUser } from '../../IUser';
+import type { RolesEndpoints as RestTypingsRolesEndpoints } from '@rocket.chat/rest-typings';
 
-type RoleCreateProps = Pick<IRole, 'name'> & Partial<Pick<IRole, 'description' | 'scope' | 'mandatory2fa'>>;
+import { type IRole as ILocalIRole } from '../../IRole';
+import { type IRoleUser as ILocalIRoleUser } from '../../IUser';
 
-type RoleUpdateProps = { roleId: IRole['_id']; name: IRole['name'] } & Partial<RoleCreateProps>;
+type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
 
-type RoleDeleteProps = { roleId: IRole['_id'] };
-
-type RoleAddUserToRoleProps = {
-	username: string;
-	roleName: string;
-	roomId?: string;
+type AdaptRolesEndpoints<T> = {
+	[K in keyof T as RemoveV1Prefix<K & string>]: T[K];
 };
 
-type RoleRemoveUserFromRoleProps = {
-	username: string;
-	roleName: string;
-	roomId?: string;
-	scope?: string;
-};
+type RoleCreateProps = Pick<ILocalIRole, 'name'> & Partial<Pick<ILocalIRole, 'description' | 'scope' | 'mandatory2fa'>>;
 
-type RoleSyncProps = {
-	updatedSince?: string;
-};
+type RoleUpdateProps = { roleId: ILocalIRole['_id']; name: ILocalIRole['name'] } & Partial<RoleCreateProps>;
 
-export type RolesEndpoints = {
-	'roles.list': {
-		GET: () => {
-			roles: IRole[];
-		};
-	};
-	'roles.sync': {
-		GET: (params: RoleSyncProps) => {
-			roles: {
-				update: IRole[];
-				remove: RocketChatRecordDeleted<IRole>[];
-			};
-		};
-	};
+export type RolesEndpoints = AdaptRolesEndpoints<RestTypingsRolesEndpoints> & {
 	'roles.create': {
 		POST: (params: RoleCreateProps) => {
-			role: IRole;
+			role: ILocalIRole;
 		};
 	};
-
-	'roles.addUserToRole': {
-		POST: (params: RoleAddUserToRoleProps) => {
-			role: IRole;
-		};
-	};
-
-	'roles.getUsersInRole': {
-		GET: (params: { roomId: string; role: string; offset: number; count: number }) => {
-			users: IUser[];
-			total: number;
-		};
-	};
-
 	'roles.update': {
 		POST: (role: RoleUpdateProps) => {
-			role: IRole;
+			role: ILocalIRole;
 		};
 	};
-
-	'roles.delete': {
-		POST: (prop: RoleDeleteProps) => void;
-	};
-
-	'roles.removeUserFromRole': {
-		POST: (props: RoleRemoveUserFromRoleProps) => {
-			role: IRole;
-		};
-	};
-
 	'roles.getUsersInPublicRoles': {
 		GET: () => {
-			users: IRoleUser[];
+			users: ILocalIRoleUser[];
 			success: boolean;
 		};
 	};
