@@ -25,6 +25,9 @@ export const getAvatarURL = ({
 	roomAvatarExternalProviderUrl,
 	cdnPrefix
 }: IAvatar): string => {
+	if (!!avatar && avatar?.startsWith('data:')) {
+		return avatar;
+	}
 	let room;
 	if (type === SubscriptionType.DIRECT) {
 		room = text;
