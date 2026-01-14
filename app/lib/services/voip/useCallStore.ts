@@ -158,6 +158,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 
 		get().reset();
+		Navigation.back();
 	},
 
 	reset: () => {

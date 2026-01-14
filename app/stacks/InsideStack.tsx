@@ -340,7 +340,7 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
-			<InsideStack.Screen name='CallView' component={CallView} options={{ headerShown: false, animation: 'fade' }} />
+			<InsideStack.Screen name='CallView' component={CallView} options={{ headerShown: false }} />
 		</InsideStack.Navigator>
 	);
 };

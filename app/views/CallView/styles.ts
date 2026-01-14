@@ -4,26 +4,12 @@ import sharedStyles from '../Styles';
 
 export const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		backgroundColor: 'red'
 	},
 	contentContainer: {
 		flex: 1,
 		justifyContent: 'space-between'
-	},
-	header: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 16,
-		paddingVertical: 12
-	},
-	headerTitle: {
-		...sharedStyles.textSemibold,
-		fontSize: 16,
-		lineHeight: 24
-	},
-	headerButton: {
-		padding: 8
 	},
 	callerInfoContainer: {
 		flex: 1,

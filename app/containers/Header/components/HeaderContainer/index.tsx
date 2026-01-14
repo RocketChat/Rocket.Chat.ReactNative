@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useWindowDimensions, View, type ViewProps, StyleSheet } from 'react-native';
+import { useWindowDimensions, View, type ViewProps, StyleSheet, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../../../theme';
@@ -28,9 +28,9 @@ const HeaderContainer = memo(
 			<View
 				style={{
 					alignItems: 'center',
-					flexDirection: 'row',
+					// flexDirection: 'row',
 					paddingBottom,
-					paddingTop: statusBarPadding + paddingTop,
+					// paddingTop: statusBarPadding + paddingTop,
 					paddingRight: paddingRight + insets.right,
 					paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
 					gap: isMasterDetail ? 4 : 12,
@@ -38,7 +38,8 @@ const HeaderContainer = memo(
 					borderBottomWidth: StyleSheet.hairlineWidth,
 					borderBottomColor: colors.strokeLight
 				}}>
-				{children}
+				{/* <Text>HeaderContainer content</Text> */}
+				<View style={{ flexDirection: 'row' }}>{children}</View>
 			</View>
 		);
 	}
