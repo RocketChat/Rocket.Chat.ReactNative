@@ -5,6 +5,7 @@ import { useTheme } from '../../theme';
 import Collapse from './components/Collapse';
 import Title from './components/Title';
 import EndCall from './components/EndCall';
+import { useCallStore } from '../../lib/services/voip/useCallStore';
 
 const styles = StyleSheet.create({
 	header: {
@@ -21,14 +22,18 @@ const CallHeader = () => {
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 
-	// const call = useCallStore(state => state.call);
+	const defaultHeaderStyle = {
+		backgroundColor: colors.surfaceNeutral,
+		paddingTop: insets.top
+	};
+
+	const call = useCallStore(state => state.call);
+	if (!call) {
+		return <View style={defaultHeaderStyle} />;
+	}
 
 	return (
-		<View
-			style={[
-				styles.header,
-				{ backgroundColor: colors.surfaceNeutral, paddingTop: insets.top, borderBottomColor: colors.strokeLight }
-			]}>
+		<View style={[styles.header, { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight }]}>
 			<Collapse />
 			<Title />
 			<EndCall />
