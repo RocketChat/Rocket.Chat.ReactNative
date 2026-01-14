@@ -14,10 +14,12 @@
  * @param color Input color string
  * @param alpha Opacity value between `0` and `1` (default: `1`)
  */
-const withAlpha = (color: string, alpha: number = 1) => {
+const withAlpha = (color: string, transparency: number = 1) => {
 	if (!color) {
 		return color;
 	}
+
+	const alpha = 1 - transparency;
 
 	// case rgba
 	if (color.startsWith('rgba')) {
