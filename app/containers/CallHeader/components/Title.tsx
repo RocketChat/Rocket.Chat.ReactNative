@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
 });
 
 const Title = () => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const callState = useCallStore(state => state.callState);
 	const callStartTime = useCallStore(state => state.callStartTime);

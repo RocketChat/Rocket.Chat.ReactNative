@@ -4,6 +4,8 @@ import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import * as HeaderButton from '../../Header/components/HeaderButton';
 
 const Collapse = () => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const focused = useCallStore(state => state.focused);
 	const toggleFocus = useCallStore(state => state.toggleFocus);

@@ -4,6 +4,8 @@ import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import * as HeaderButton from '../../Header/components/HeaderButton';
 
 const EndCall = () => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const endCall = useCallStore(state => state.endCall);
 	return (

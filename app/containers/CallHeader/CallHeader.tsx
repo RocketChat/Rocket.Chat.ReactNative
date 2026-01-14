@@ -19,6 +19,8 @@ const styles = StyleSheet.create({
 });
 
 const CallHeader = () => {
+	'use memo';
+
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 

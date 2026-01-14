@@ -12,6 +12,8 @@ const formatDuration = (seconds: number): string => {
 };
 
 const Timer = () => {
+	'use memo';
+
 	const callStartTime = useCallStore(state => state.callStartTime);
 	const [duration, setDuration] = useState(callStartTime ? Math.floor((new Date().getTime() - callStartTime) / 1000) : 0);
 
