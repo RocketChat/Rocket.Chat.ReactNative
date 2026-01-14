@@ -12,9 +12,9 @@
  * - Invalid color strings
  *
  * @param color Input color string
- * @param alpha Opacity value between `0` and `1` (default: `1`)
+ * @param transparency Transparency value between `0` and `1` (default: `0`)
  */
-const withAlpha = (color: string, transparency: number = 1) => {
+const withAlpha = (color: string, transparency: number = 0) => {
 	if (!color) {
 		return color;
 	}
