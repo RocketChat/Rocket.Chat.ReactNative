@@ -7,6 +7,7 @@ import { simulateCall } from '../../lib/services/voip/simulateCall';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
+import Navigation from '../../lib/navigation/appNavigation';
 
 const styles = StyleSheet.create({
 	header: {
@@ -36,14 +37,11 @@ const CallHeader = () => {
 	const callStartTime = useCallStore(state => state.callStartTime);
 	const contact = useCallStore(state => state.contact);
 	const endCall = useCallStore(state => state.endCall);
+	const toggleFocus = useCallStore(state => state.toggleFocus);
 	const callDuration = '00:00';
 
-	// const handlePress = () => {
-	// 	simulateCall();
-	// };
-
 	const handleCollapse = () => {
-		simulateCall();
+		toggleFocus();
 	};
 
 	const handleEndCall = () => {

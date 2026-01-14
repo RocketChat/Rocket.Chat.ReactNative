@@ -22,6 +22,7 @@ interface CallStoreState {
 	isOnHold: boolean;
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
+	focused: boolean;
 
 	// Contact info
 	contact: CallContact;
@@ -33,6 +34,7 @@ interface CallStoreActions {
 	toggleMute: () => void;
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
+	toggleFocus: () => void;
 	endCall: () => void;
 	reset: () => void;
 }
@@ -47,7 +49,8 @@ const initialState: CallStoreState = {
 	isOnHold: false,
 	isSpeakerOn: false,
 	callStartTime: null,
-	contact: {}
+	contact: {},
+	focused: false
 };
 
 export const useCallStore = create<CallStore>((set, get) => ({
@@ -142,6 +145,16 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ isSpeakerOn: !isSpeakerOn });
 	},
 
+	toggleFocus: () => {
+		const isFocused = get().focused;
+		set({ focused: !isFocused });
+		if (isFocused) {
+			Navigation.back();
+		} else {
+			Navigation.navigate('CallView', { callUUID: get().callUUID });
+		}
+	},
+
 	endCall: () => {
 		const { call, callState, callUUID } = get();
 
@@ -158,7 +171,7 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 
 		get().reset();
-		Navigation.back();
+		Navigation.back(); // TODO: It could be collapsed, so going back woudln't make sense
 	},
 
 	reset: () => {

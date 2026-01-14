@@ -43,6 +43,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
+import { simulateCall } from '../lib/services/voip/simulateCall';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -271,6 +272,7 @@ const startVoipFork = function* startVoipFork() {
 		yield call(initCallKeep);
 		const userId = yield select(state => state.login.user.id);
 		mediaSessionInstance.init(userId);
+		simulateCall();
 	} catch (e) {
 		log(e);
 	}

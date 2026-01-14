@@ -102,5 +102,5 @@ export const simulateCall = async (options: SimulateCallOptions = {}): Promise<v
 	}
 
 	// Navigate to CallView
-	Navigation.navigate('CallView', { callUUID });
+	// Navigation.navigate('CallView', { callUUID });
 };
