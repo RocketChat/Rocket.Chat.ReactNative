@@ -4,7 +4,6 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import RNCallKeep from 'react-native-callkeep';
 import { PermissionsAndroid } from 'react-native';
-import BackgroundTimer from 'react-native-background-timer';
 
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';

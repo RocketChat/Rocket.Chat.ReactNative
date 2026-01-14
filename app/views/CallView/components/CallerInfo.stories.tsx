@@ -2,12 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import CallerInfo from './CallerInfo';
-import { CALL_BACKGROUND_COLOR } from '../styles';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: CALL_BACKGROUND_COLOR,
 		padding: 24,
 		flex: 1,
 		minHeight: 300
@@ -47,13 +45,13 @@ export default {
 
 export const Default = () => <CallerInfo />;
 
-export const WithOnlineStatus = () => <CallerInfo showOnlineStatus />;
+export const WithOnlineStatus = () => <CallerInfo />;
 
-export const WithMutedIndicator = () => <CallerInfo isMuted showOnlineStatus />;
+export const WithMutedIndicator = () => <CallerInfo isMuted />;
 
 export const NoExtension = () => {
 	setStoreState({ displayName: 'Alice Attali', username: 'alice.attali' });
-	return <CallerInfo showOnlineStatus />;
+	return <CallerInfo />;
 };
 
 export const UsernameOnly = () => {

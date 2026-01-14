@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { View } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 import I18n from '../../i18n';
-import { CustomIcon } from '../../containers/CustomIcon';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
 import CallActionButton from './components/CallActionButton';
 import CallStatusText from './components/CallStatusText';
-// import { useCallTimer } from './components/CallTimer';
 import { styles } from './styles';
 import { useTheme } from '../../theme';
 
 const CallView = (): React.ReactElement | null => {
+	'use memo';
+
 	const { colors } = useTheme();
 
 	// Get state from store
@@ -21,18 +21,12 @@ const CallView = (): React.ReactElement | null => {
 	const isMuted = useCallStore(state => state.isMuted);
 	const isOnHold = useCallStore(state => state.isOnHold);
 	const isSpeakerOn = useCallStore(state => state.isSpeakerOn);
-	const callStartTime = useCallStore(state => state.callStartTime);
-	const contact = useCallStore(state => state.contact);
 
 	// Get actions from store
 	const toggleMute = useCallStore(state => state.toggleMute);
 	const toggleHold = useCallStore(state => state.toggleHold);
 	const toggleSpeaker = useCallStore(state => state.toggleSpeaker);
 	const endCall = useCallStore(state => state.endCall);
-
-	// Get formatted call duration
-	// const callDuration = useCallTimer(callStartTime);
-	const callDuration = '00:00';
 
 	// Keep screen awake during call
 	useEffect(() => {
@@ -53,11 +47,6 @@ const CallView = (): React.ReactElement | null => {
 		alert('More');
 	};
 
-	const handleCollapse = () => {
-		// goBack();
-		alert('Collapse call');
-	};
-
 	const handleEndCall = () => {
 		endCall();
 	};
@@ -66,19 +55,8 @@ const CallView = (): React.ReactElement | null => {
 		return null;
 	}
 
-	const callerName = contact.displayName || contact.username || I18n.t('Unknown');
 	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
 	const isConnected = callState === 'active';
-
-	const getHeaderTitle = () => {
-		if (isConnecting) {
-			return I18n.t('Connecting');
-		}
-		if (isConnected && callStartTime) {
-			return `${callerName} – ${callDuration}`;
-		}
-		return callerName;
-	};
 
 	return (
 		<View style={[styles.contentContainer, { backgroundColor: colors.surfaceLight }]}>

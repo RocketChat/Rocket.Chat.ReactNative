@@ -1,11 +1,11 @@
 import React from 'react';
 
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
-import { useVideoConf } from '../../../lib/hooks/useVideoConf';
+// import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
 
 export const HeaderCallButton = ({
-	rid,
+	// rid,
 	disabled,
 	accessibilityLabel
 }: {

@@ -7,7 +7,6 @@ import type {
 	MediaCallWebRTCProcessor
 } from '@rocket.chat/media-signaling';
 import { mediaDevices } from 'react-native-webrtc';
-import BackgroundTimer from 'react-native-background-timer';
 
 import { MediaCallLogger } from './MediaCallLogger';
 
@@ -61,13 +60,7 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			},
 			mediaStreamFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
-			logger: new MediaCallLogger(),
-			timerProcessor: {
-				setInterval: (callback: () => void, interval: number) => BackgroundTimer.setInterval(callback, interval),
-				clearInterval: (interval: number) => BackgroundTimer.clearInterval(interval),
-				setTimeout: (callback: () => void, timeout: number) => BackgroundTimer.setTimeout(callback, timeout),
-				clearTimeout: (timeout: number) => BackgroundTimer.clearTimeout(timeout)
-			}
+			logger: new MediaCallLogger()
 		});
 
 		this.change();

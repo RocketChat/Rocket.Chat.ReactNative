@@ -2,11 +2,9 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import CallActionButton from './CallActionButton';
-import { CALL_BACKGROUND_COLOR } from '../styles';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: CALL_BACKGROUND_COLOR,
 		padding: 24,
 		alignItems: 'center'
 	},

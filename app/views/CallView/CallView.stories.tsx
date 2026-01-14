@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import CallView from '.';
 import { useCallStore } from '../../lib/services/voip/useCallStore';
-import { CALL_BACKGROUND_COLOR } from './styles';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
@@ -13,8 +12,7 @@ import {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: CALL_BACKGROUND_COLOR
+		flex: 1
 	}
 });
 
@@ -96,7 +94,7 @@ export default {
 };
 
 export const ConnectedCall = () => {
-	setStoreState({ callState: 'active', callStartTime: Date.now() - 61000 });
+	setStoreState({ callState: 'active', callStartTime: new Date().getTime() - 61000 });
 	return <CallView />;
 };
 

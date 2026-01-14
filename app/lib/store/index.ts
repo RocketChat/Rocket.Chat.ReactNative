@@ -5,7 +5,7 @@ import reducers from '../../reducers';
 import sagas from '../../sagas';
 import applyAppStateMiddleware from './appStateMiddleware';
 import applyInternetStateMiddleware from './internetStateMiddleware';
-import { logger } from './reduxLogger';
+// import { logger } from './reduxLogger';
 
 let sagaMiddleware;
 let enhancers;
