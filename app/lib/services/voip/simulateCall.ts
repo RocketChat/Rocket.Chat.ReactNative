@@ -1,7 +1,7 @@
 import type { CallState, IClientMediaCall } from '@rocket.chat/media-signaling';
 import { randomUuid } from '@rocket.chat/mobile-crypto';
 
-import Navigation from '../../navigation/appNavigation';
+// import Navigation from '../../navigation/appNavigation';
 import { useCallStore } from './useCallStore';
 
 interface SimulateCallOptions {

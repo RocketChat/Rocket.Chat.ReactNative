@@ -170,8 +170,8 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			RNCallKeep.endCall(callUUID);
 		}
 
+		// Navigation.back(); // TODO: It could be collapsed, so going back woudln't make sense
 		get().reset();
-		Navigation.back(); // TODO: It could be collapsed, so going back woudln't make sense
 	},
 
 	reset: () => {
