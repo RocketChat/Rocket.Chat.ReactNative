@@ -38,7 +38,7 @@ const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
 	const dispatch = useDispatch();
-	const lastVisitedRoomName = useAppSelector((state: IApplicationState) => state.rooms.lastVisitedName);
+	const recentRooms = useAppSelector((state: IApplicationState) => state.rooms.recentRooms);
 
 	useEffect(() => {
 		registerQuickActions();
@@ -58,8 +58,8 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 	}, [root]);
 
 	useEffect(() => {
-		updateQuickActions({ recentRoomName: lastVisitedRoomName });
-	}, [lastVisitedRoomName]);
+		updateQuickActions({ recentRooms });
+	}, [recentRooms]);
 
 	if (!root) {
 		return null;

@@ -2,7 +2,13 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { CURRENT_SERVER, LAST_VISITED_ROOM_ID_KEY, LAST_VISITED_ROOM_NAME_KEY, TOKEN_KEY } from '../lib/constants/keys';
+import {
+	CURRENT_SERVER,
+	LAST_VISITED_ROOM_ID_KEY,
+	LAST_VISITED_ROOM_NAME_KEY,
+	RECENT_VISITED_ROOMS_KEY,
+	TOKEN_KEY
+} from '../lib/constants/keys';
 import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
@@ -15,7 +21,7 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods/userPreferencesMethods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 import { getServerById } from '../lib/database/services/Server';
-import { roomsStoreLastVisited } from '../actions/rooms';
+import { roomsStoreLastVisited, roomsStoreRecentRooms } from '../actions/rooms';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
@@ -54,6 +60,11 @@ const restore = function* restore() {
 			yield put(selectServerRequest(server, serverRecord.version));
 			const lastVisitedRid = UserPreferences.getString(LAST_VISITED_ROOM_ID_KEY);
 			const lastVisitedRoomName = UserPreferences.getString(LAST_VISITED_ROOM_NAME_KEY);
+			const recentRooms = JSON.parse(UserPreferences.getString(RECENT_VISITED_ROOMS_KEY));
+
+			if (recentRooms) {
+				yield put(roomsStoreRecentRooms(recentRooms));
+			}
 
 			if (lastVisitedRid && lastVisitedRoomName) {
 				yield put(roomsStoreLastVisited(lastVisitedRid, lastVisitedRoomName));

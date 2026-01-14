@@ -60,11 +60,16 @@ function* waitForNavigationReady(): Generator {
 }
 
 function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
-	const quickAction = action.params?.action ?? action.payload?.action;
+	const quickActionFromParams = action.params?.action ?? action.payload?.action;
 
-	if (!quickAction) {
+	if (!quickActionFromParams) {
 		return;
 	}
+
+	const actionWithId = quickActionFromParams.split('/');
+
+	const quickAction = actionWithId[0];
+	const roomId = actionWithId[1];
 
 	switch (quickAction) {
 		case 'add-server': {
@@ -92,7 +97,7 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 		case 'recent': {
 			yield waitForAppReady();
 
-			const rid = (yield select((state: IApplicationState) => state.rooms.lastVisitedRid)) as string | undefined;
+			const rid = roomId;
 
 			if (!rid) {
 				showRoomNotFoundError();
