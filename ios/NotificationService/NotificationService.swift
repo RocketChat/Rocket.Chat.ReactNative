@@ -14,22 +14,21 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
-        guard let bestAttemptContent = bestAttemptContent,
-              let ejsonString = bestAttemptContent.userInfo["ejson"] as? String,
-              let ejson = ejsonString.data(using: .utf8),
-              let payload = try? JSONDecoder().decode(Payload.self, from: ejson) else {
-            contentHandler(request.content)
-            return
-        }
-        
-        rocketchat = RocketChat(server: payload.host.removeTrailingSlash())
-        
-        if payload.notificationType == .videoconf {
-            processVideoConf(payload: payload)
-        } else if payload.notificationType == .messageIdOnly {
-            fetchMessageContent(payload: payload)
+        if let bestAttemptContent = bestAttemptContent,
+           let ejsonString = bestAttemptContent.userInfo["ejson"] as? String,
+           let ejson = ejsonString.data(using: .utf8),
+           let payload = try? JSONDecoder().decode(Payload.self, from: ejson) {
+            rocketchat = RocketChat(server: payload.host.removeTrailingSlash())
+            
+            if payload.notificationType == .videoconf {
+                processVideoConf(payload: payload)
+            } else if payload.notificationType == .messageIdOnly {
+                fetchMessageContent(payload: payload)
+            } else {
+                processPayload(payload: payload)
+            }
         } else {
-            processPayload(payload: payload)
+            contentHandler(request.content)
         }
     }
     
@@ -49,7 +48,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         // 1. Setup Basic Content
-        let callerName = payload.caller?.name ?? "Unknown"
+        let callerName = payload.senderName ?? payload.caller?.name ?? "Unknown"
         bestAttemptContent.title = NSLocalizedString("Video Call", comment: "")
         bestAttemptContent.body = String(format: NSLocalizedString("Incoming call from %@", comment: ""), callerName)
         bestAttemptContent.categoryIdentifier = "VIDEOCONF"
@@ -77,14 +76,15 @@ class NotificationService: UNNotificationServiceExtension {
         guard let bestAttemptContent = bestAttemptContent else { return }
 
         // 1. Setup Basic Content (Title/Body)
-        let senderName = payload.sender?.name ?? payload.senderName ?? "Unknown"
+        let senderName = payload.senderName ?? payload.sender?.name ?? "Unknown"
         let senderUsername = payload.sender?.username ?? payload.senderName ?? ""
         
-        bestAttemptContent.title = senderName
+        if bestAttemptContent.title.isEmpty {
+            bestAttemptContent.title = senderName
+        }
         
         if let roomType = payload.type {
             if roomType == .group || roomType == .channel {
-                bestAttemptContent.title = payload.name ?? senderName
                 // Strip sender prefix if present
                 if let body = bestAttemptContent.body as? String {
                     let prefix = "\(senderUsername): "
@@ -98,8 +98,6 @@ class NotificationService: UNNotificationServiceExtension {
                         }
                     }
                 }
-            } else if roomType == .livechat {
-                bestAttemptContent.title = payload.sender?.name ?? senderName
             }
         }
         
@@ -122,7 +120,7 @@ class NotificationService: UNNotificationServiceExtension {
                 avatarData: avatarData,
                 conversationId: payload.rid ?? "",
                 isGroup: isGroup,
-                groupName: payload.name
+                groupName: bestAttemptContent.title
             )
             
             self.contentHandler?(self.finalContent ?? bestAttemptContent)
@@ -214,7 +212,8 @@ class NotificationService: UNNotificationServiceExtension {
             if let messageId = payload.messageId {
                 self.rocketchat?.getPushWithId(messageId) { notification in
                     if let notification = notification {
-                        // Set body first, processPayload will strip sender prefix for groups/channels
+                        // Set title and body first, processPayload will strip sender prefix for groups/channels
+                        self.bestAttemptContent?.title = notification.title
                         self.bestAttemptContent?.body = notification.text
                         
                         // Update ejson with full payload from server for correct navigation
