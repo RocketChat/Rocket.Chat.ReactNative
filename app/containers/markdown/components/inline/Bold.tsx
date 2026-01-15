@@ -40,7 +40,6 @@ const Bold = ({ value }: IBoldProps) => {
 								hashtag={block.value.value}
 								channels={channels}
 								navToRoomInfo={navToRoomInfo}
-								style={[{ fontWeight: 'bold' }]}
 							/>
 						);
 					case 'MENTION_USER':
@@ -49,7 +48,6 @@ const Bold = ({ value }: IBoldProps) => {
 								mention={block.value.value}
 								username={username}
 								navToRoomInfo={navToRoomInfo}
-								style={[{ fontWeight: 'bold' }]}
 								useRealName={useRealName}
 								mentions={mentions}
 							/>
