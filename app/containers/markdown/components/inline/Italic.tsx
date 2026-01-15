@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontStyle: 'italic'
 	}
-}); 
+});
 
 const Italic = ({ value }: IItalicProps) => (
 	<Text style={styles.text}>
