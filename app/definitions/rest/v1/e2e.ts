@@ -1,37 +1,12 @@
-import { type IUser } from '../../IUser';
+import type { E2eEndpoints as RestTypingsE2eEndpoints } from '@rocket.chat/rest-typings';
 
-export type E2eEndpoints = {
-	'e2e.setUserPublicAndPrivateKeys': {
-		POST: (params: { public_key: string; private_key: string; force?: boolean }) => void;
-	};
-	'e2e.getUsersOfRoomWithoutKey': {
-		GET: (params: { rid: string }) => {
-			users: Pick<IUser, '_id' | 'e2e'>[];
-		};
-	};
-	'e2e.updateGroupKey': {
-		POST: (params: { uid: string; rid: string; key: string }) => {};
-	};
-	'e2e.acceptSuggestedGroupKey': {
-		POST: (params: { rid: string }) => {};
-	};
-	'e2e.rejectSuggestedGroupKey': {
-		POST: (params: { rid: string }) => {};
-	};
-	'e2e.fetchUsersWaitingForGroupKey': {
-		GET: (params: { roomIds: string[] }) => {
-			usersWaitingForE2EKeys: any;
-		};
-	};
-	'e2e.provideUsersSuggestedGroupKeys': {
-		POST: (params: { usersSuggestedGroupKeys: any }) => void;
-	};
-	'e2e.setRoomKeyID': {
-		POST: (params: { rid: string; keyID: string }) => {};
-	};
-	'e2e.fetchMyKeys': {
-		GET: () => { public_key: string; private_key: string };
-	};
+type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
+
+type AdaptE2eEndpoints<T> = {
+	[K in keyof T as RemoveV1Prefix<K & string>]: T[K];
+};
+
+export type E2eEndpoints = AdaptE2eEndpoints<RestTypingsE2eEndpoints> & {
 	'e2e.resetRoomKey': {
 		POST: (params: { rid: string; e2eKey: string; e2eKeyId: string }) => void;
 	};

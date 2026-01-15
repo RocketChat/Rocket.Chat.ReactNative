@@ -1,6 +1,13 @@
-import type { PaginatedResult } from '@rocket.chat/rest-typings';
+import type { LoginServiceConfiguration } from '@rocket.chat/core-typings';
+import type { SettingsEndpoints as RestTypingsSettingsEndpoints } from '@rocket.chat/rest-typings';
 
-import { type ISetting, type ISettingColor } from '../../ISetting';
+import type { ISetting, ISettingColor } from '../../ISetting';
+
+type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
+
+type AdaptSettingsEndpoints<T> = {
+	[K in keyof T as K extends `/v1/settings/:_id` ? `settings/:_id` : RemoveV1Prefix<K & string>]: T[K];
+};
 
 type SettingsUpdateProps = SettingsUpdatePropDefault | SettingsUpdatePropsActions | SettingsUpdatePropsColor;
 
@@ -8,11 +15,27 @@ type SettingsUpdatePropsActions = {
 	execute: boolean;
 };
 
-export type OauthCustomConfiguration = {
+export const isSettingsUpdatePropsActions = (props: Partial<SettingsUpdateProps>): props is SettingsUpdatePropsActions =>
+	'execute' in props;
+
+type SettingsUpdatePropsColor = {
+	editor: ISettingColor['editor'];
+	value: ISetting['value'];
+};
+
+export const isSettingsUpdatePropsColor = (props: Partial<SettingsUpdateProps>): props is SettingsUpdatePropsColor =>
+	'editor' in props && 'value' in props;
+
+type SettingsUpdatePropDefault = {
+	value: ISetting['value'];
+};
+
+export const isSettingsUpdatePropDefault = (props: Partial<SettingsUpdateProps>): props is SettingsUpdatePropDefault =>
+	'value' in props;
+
+export type OauthCustomConfiguration = LoginServiceConfiguration & {
 	_id: string;
-	clientId?: string;
 	custom: unknown;
-	service?: string;
 	serverURL: unknown;
 	tokenPath: unknown;
 	identityPath: unknown;
@@ -35,10 +58,6 @@ export type OauthCustomConfiguration = {
 	mergeRoles: unknown;
 	accessTokenParam: unknown;
 	showButton: unknown;
-
-	appId: unknown;
-	consumerKey?: string;
-
 	clientConfig: unknown;
 	buttonLabelText: unknown;
 	buttonLabelColor: unknown;
@@ -47,58 +66,15 @@ export type OauthCustomConfiguration = {
 
 export const isOauthCustomConfiguration = (config: any): config is OauthCustomConfiguration => Boolean(config);
 
-export const isSettingsUpdatePropsActions = (props: Partial<SettingsUpdateProps>): props is SettingsUpdatePropsActions =>
-	'execute' in props;
-
-type SettingsUpdatePropsColor = {
-	editor: ISettingColor['editor'];
-	value: ISetting['value'];
-};
-
-export const isSettingsUpdatePropsColor = (props: Partial<SettingsUpdateProps>): props is SettingsUpdatePropsColor =>
-	'editor' in props && 'value' in props;
-
-type SettingsUpdatePropDefault = {
-	value: ISetting['value'];
-};
-
-export const isSettingsUpdatePropDefault = (props: Partial<SettingsUpdateProps>): props is SettingsUpdatePropDefault =>
-	'value' in props;
-
-export type SettingsEndpoints = {
-	'settings.public': {
-		GET: () => PaginatedResult & {
-			settings: Array<ISetting>;
-		};
-	};
-
+export type SettingsEndpoints = AdaptSettingsEndpoints<RestTypingsSettingsEndpoints> & {
 	'settings.oauth': {
 		GET: () => {
 			services: Partial<OauthCustomConfiguration>[];
 		};
 	};
 
-	'settings.addCustomOAuth': {
-		POST: (params: { name: string }) => void;
-	};
-
-	settings: {
-		GET: () => {
-			settings: ISetting[];
-		};
-	};
-
 	'settings/:_id': {
 		GET: () => Pick<ISetting, '_id' | 'value'>;
 		POST: (params: SettingsUpdateProps) => void;
-	};
-
-	'service.configurations': {
-		GET: () => {
-			configurations: Array<{
-				appId: string;
-				secret: string;
-			}>;
-		};
 	};
 };

@@ -10,6 +10,6 @@ type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
 
 type AdaptCustomUserStatusEndpoints<T> = {
 	[K in keyof T as RemoveV1Prefix<K & string>]: T[K];
-};
+		};
 
 export type CustomUserStatusEndpoints = AdaptCustomUserStatusEndpoints<RestTypingsCustomUserStatusEndpoints>;
