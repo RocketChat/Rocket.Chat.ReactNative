@@ -34,13 +34,7 @@ const Strike = ({ value }: IStrikeProps) => {
 					case 'ITALIC':
 						return <Italic value={block.value} />;
 					case 'MENTION_CHANNEL':
-						return (
-							<Hashtag
-								hashtag={block.value.value}
-								channels={channels}
-								navToRoomInfo={navToRoomInfo}
-							/>
-						);
+						return <Hashtag hashtag={block.value.value} channels={channels} navToRoomInfo={navToRoomInfo} />;
 					case 'MENTION_USER':
 						return (
 							<AtMention
