@@ -42,7 +42,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
-import { simulateCall } from '../lib/services/voip/simulateCall';
+// import { simulateCall } from '../lib/services/voip/simulateCall';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -256,11 +256,6 @@ function* initCallKeep() {
 
 		RNCallKeep.setup(options);
 		RNCallKeep.canMakeMultipleCalls(false);
-
-		const start = Date.now();
-		setInterval(() => {
-			console.log('Timer fired after', Date.now() - start, 'ms');
-		}, 1000);
 	} catch (e) {
 		log(e);
 	}
@@ -271,7 +266,7 @@ const startVoipFork = function* startVoipFork() {
 		yield call(initCallKeep);
 		const userId = yield select(state => state.login.user.id);
 		mediaSessionInstance.init(userId);
-		simulateCall();
+		// simulateCall();
 	} catch (e) {
 		log(e);
 	}
