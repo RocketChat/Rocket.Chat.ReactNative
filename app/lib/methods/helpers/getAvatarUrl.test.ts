@@ -159,7 +159,8 @@ describe('getAvatarURL function', () => {
 		const avatarETag = 'etag123';
 		const size = 30;
 
-		const expected = 'https://mobile.qa.rocket.chat/avatar/user123?format=png&size=30&rc_token=token123&rc_uid=user123&etag=etag123';
+		const expected =
+			'https://mobile.qa.rocket.chat/avatar/user123?format=png&size=30&rc_token=token123&rc_uid=user123&etag=etag123';
 		const result = getAvatarURL({ avatar, server, userId, token, blockUnauthenticatedAccess, avatarETag, size });
 		expect(result).toEqual(expected);
 	});
