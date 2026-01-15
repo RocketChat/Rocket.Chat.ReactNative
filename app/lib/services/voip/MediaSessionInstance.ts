@@ -164,10 +164,10 @@ class MediaSessionInstance {
 	}
 
 	private stop() {
-		if (this.mediaSignalListener) {
+		if (this.mediaSignalListener?.stop) {
 			this.mediaSignalListener.stop();
 		}
-		if (this.mediaSignalsListener) {
+		if (this.mediaSignalsListener?.stop) {
 			this.mediaSignalsListener.stop();
 		}
 		if (this.storeTimeoutUnsubscribe) {
