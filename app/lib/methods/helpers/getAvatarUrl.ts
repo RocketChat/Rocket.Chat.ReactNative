@@ -26,7 +26,6 @@ export const getAvatarURL = ({
 	cdnPrefix
 }: IAvatar): string => {
 	if (!!avatar && avatar?.startsWith('data:')) {
-		console.log('here!');
 		return avatar;
 	}
 	let room;
