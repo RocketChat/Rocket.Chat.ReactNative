@@ -358,7 +358,6 @@ export const getChannelInfo = (roomId: string) =>
 
 export const getUserPreferences = () =>
 	// RC 0.62.0
-	// Note: users.getPreferences returns preferences for the authenticated user only (no userId parameter)
 	sdk.get('users.getPreferences');
 
 export const getRoomInfo = (roomId: string) =>
@@ -1083,6 +1082,9 @@ export const e2eFetchMyKeys = async () => {
 
 export const logoutOtherLocations = () => {
 	const { id } = reduxStore.getState().login.user;
+	if (!id) {
+		return Promise.reject(new Error('User not logged in'));
+	}
 	return sdk.post('users.removeOtherTokens', { userId: id as string } as any);
 };
 

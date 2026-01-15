@@ -7,8 +7,6 @@ const getSingleMessage = (messageId: string): Promise<IMessage> =>
 			const result = await getSingleMessageService(messageId);
 			if (result.success && result.message) {
 				const { message } = result;
-				// Map _id to id to match IMessage interface structure
-				// The API returns messages with _id, but IMessage requires id field
 				return resolve({
 					...message,
 					id: message._id

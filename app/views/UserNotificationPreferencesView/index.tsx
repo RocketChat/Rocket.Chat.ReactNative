@@ -46,8 +46,6 @@ const UserNotificationPreferencesView = () => {
 				const result = await getUserPreferences();
 				if (result.success) {
 					setLoading(false);
-					// users.getPreferences returns Required<IUser>['settings']['preferences'] from rest-typings
-					// This is compatible with INotificationPreferences but may have additional properties
 					setPreferences(result.preferences as unknown as INotificationPreferences);
 				}
 			} catch (error) {

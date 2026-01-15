@@ -64,8 +64,6 @@ const DiscussionsView = () => {
 			});
 
 			if (result.success) {
-				// chat.getDiscussions returns { messages: IMessage[]; total: number }
-				// count is not in the response, so we calculate it from messages.length
 				const resultData = result as unknown as {
 					messages?: IMessageFromServer[];
 					total?: number;
