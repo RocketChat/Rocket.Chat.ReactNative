@@ -27,7 +27,7 @@ import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
-import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/methods/enterpriseModules';
+import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
@@ -42,6 +42,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
+import { hasPermission } from '../lib/methods/helpers/helpers';
 // import { simulateCall } from '../lib/services/voip/simulateCall';
 
 const getServer = state => state.server.server;
@@ -155,7 +156,7 @@ const subscribeSettingsFork = function* subscribeSettingsFork() {
 	}
 };
 
-const fetchPermissionsFork = function* fetchPermissionsFork() {
+const fetchPermissions = function* fetchPermissions() {
 	try {
 		yield getPermissions();
 	} catch (e) {
@@ -204,7 +205,7 @@ const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	}
 };
 
-const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
+const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	try {
 		yield getEnterpriseModules();
 
@@ -263,10 +264,16 @@ function* initCallKeep() {
 
 const startVoipFork = function* startVoipFork() {
 	try {
-		yield call(initCallKeep);
-		const userId = yield select(state => state.login.user.id);
-		mediaSessionInstance.init(userId);
-		// simulateCall();
+		const allowInternalVoiceCallRoles = yield select(state => state.permissions['allow-internal-voice-calls']);
+		const allowExternalVoiceCallRoles = yield select(state => state.permissions['allow-external-voice-calls']);
+
+		const hasPermissions = yield hasPermission([allowInternalVoiceCallRoles, allowExternalVoiceCallRoles]);
+		if (isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1])) {
+			yield call(initCallKeep);
+			const userId = yield select(state => state.login.user.id);
+			mediaSessionInstance.init(userId);
+			// simulateCall();
+		}
 	} catch (e) {
 		log(e);
 	}
@@ -274,24 +281,23 @@ const startVoipFork = function* startVoipFork() {
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
-		getUserPresence(user.id);
+		yield put(setUser(user));
+		setLanguage(user?.language);
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
-		yield fork(fetchPermissionsFork);
+		yield call(fetchPermissions);
+		yield call(fetchEnterpriseModules, { user });
+		yield fork(startVoipFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
-		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
-		yield delay(1000);
-		yield fork(startVoipFork);
-
-		setLanguage(user?.language);
+		yield getUserPresence(user.id);
 
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
@@ -327,7 +333,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
