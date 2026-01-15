@@ -64,7 +64,12 @@ export type OauthCustomConfiguration = LoginServiceConfiguration & {
 	buttonColor: unknown;
 };
 
-export const isOauthCustomConfiguration = (config: any): config is OauthCustomConfiguration => Boolean(config);
+export const isOauthCustomConfiguration = (config: any): config is OauthCustomConfiguration =>
+	config &&
+	typeof config === 'object' &&
+	typeof config._id === 'string' &&
+	typeof config.loginStyle === 'string' &&
+	(config.loginStyle === 'popup' || config.loginStyle === 'redirect');
 
 export type SettingsEndpoints = AdaptSettingsEndpoints<RestTypingsSettingsEndpoints> & {
 	'settings.oauth': {
@@ -73,6 +78,8 @@ export type SettingsEndpoints = AdaptSettingsEndpoints<RestTypingsSettingsEndpoi
 		};
 	};
 
+	// Override settings/:_id to use local types (ISetting, SettingsUpdateProps) instead of rest-typings types
+	// This ensures compatibility with the existing codebase while maintaining type safety
 	'settings/:_id': {
 		GET: () => Pick<ISetting, '_id' | 'value'>;
 		POST: (params: SettingsUpdateProps) => void;

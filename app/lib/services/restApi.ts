@@ -356,9 +356,10 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('channels.info', { roomId });
 
-export const getUserPreferences = (userId: string) =>
+export const getUserPreferences = () =>
 	// RC 0.62.0
-	sdk.get('users.getPreferences', { userId } as any);
+	// Note: users.getPreferences returns preferences for the authenticated user only (no userId parameter)
+	sdk.get('users.getPreferences');
 
 export const getRoomInfo = (roomId: string) =>
 	// RC 0.72.0

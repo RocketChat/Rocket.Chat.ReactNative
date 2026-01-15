@@ -64,13 +64,23 @@ const DiscussionsView = () => {
 			});
 
 			if (result.success) {
-				const resultData = result as any;
-				offset.current += resultData.count || 0;
-				total.current = resultData.total || 0;
+				// chat.getDiscussions returns { messages: IMessage[]; total: number }
+				// count is not in the response, so we calculate it from messages.length
+				const resultData = result as unknown as {
+					messages?: IMessageFromServer[];
+					total?: number;
+					count?: number;
+				};
+				const messages = resultData.messages ?? [];
+				const count = resultData.count ?? messages.length;
+				const totalValue = resultData.total ?? 0;
+
+				offset.current += count;
+				total.current = totalValue;
 				if (isSearching) {
-					setSearch(prevState => (offset.current ? [...prevState, ...(resultData.messages || [])] : (resultData.messages || [])));
+					setSearch(prevState => (offset.current ? [...prevState, ...messages] : messages));
 				} else {
-					setDiscussions(resultData.messages || []);
+					setDiscussions(messages);
 				}
 			}
 			setLoading(false);

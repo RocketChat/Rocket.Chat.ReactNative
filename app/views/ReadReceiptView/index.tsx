@@ -86,8 +86,11 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		try {
 			const result = await getReadReceipts(this.messageId);
 			if (result.success) {
+				// chat.getMessageReadReceipts returns ReadReceipt[] from rest-typings
+				// ReadReceipt has ts: Date, but IReadReceipts expects ts: string
+				// The dayjs library can handle both Date and string, so we can safely cast
 				this.setState({
-					receipts: result.receipts as any,
+					receipts: result.receipts as unknown as IReadReceipts[],
 					loading: false
 				});
 			}

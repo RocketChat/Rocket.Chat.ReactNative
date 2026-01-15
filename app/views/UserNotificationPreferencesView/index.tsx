@@ -43,10 +43,12 @@ const UserNotificationPreferencesView = () => {
 	useEffect(() => {
 		async function getPreferences() {
 			try {
-				const result = await getUserPreferences(userId);
+				const result = await getUserPreferences();
 				if (result.success) {
 					setLoading(false);
-					setPreferences(result.preferences as any);
+					// users.getPreferences returns Required<IUser>['settings']['preferences'] from rest-typings
+					// This is compatible with INotificationPreferences but may have additional properties
+					setPreferences(result.preferences as unknown as INotificationPreferences);
 				}
 			} catch (error) {
 				setLoading(false);
@@ -54,7 +56,7 @@ const UserNotificationPreferencesView = () => {
 			}
 		}
 		getPreferences();
-	}, [userId]);
+	}, []);
 
 	const onValueChangePicker = async (param: { [key: string]: string }) => {
 		const previousPreferences = preferences;
