@@ -39,7 +39,6 @@ const Strike = ({ value }: IStrikeProps) => {
 								hashtag={block.value.value}
 								channels={channels}
 								navToRoomInfo={navToRoomInfo}
-								style={[{ textDecorationLine: 'line-through' }]}
 							/>
 						);
 					case 'MENTION_USER':
@@ -48,7 +47,6 @@ const Strike = ({ value }: IStrikeProps) => {
 								mention={block.value.value}
 								username={username}
 								navToRoomInfo={navToRoomInfo}
-								style={[{ textDecorationLine: 'line-through' }]}
 								useRealName={useRealName}
 								mentions={mentions}
 							/>

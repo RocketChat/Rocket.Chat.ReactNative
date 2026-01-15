@@ -39,7 +39,6 @@ const Italic = ({ value }: IItalicProps) => {
 								hashtag={block.value.value}
 								channels={channels}
 								navToRoomInfo={navToRoomInfo}
-								style={[{ fontStyle: 'italic' }]}
 							/>
 						);
 					case 'MENTION_USER':
@@ -48,7 +47,6 @@ const Italic = ({ value }: IItalicProps) => {
 								mention={block.value.value}
 								username={username}
 								navToRoomInfo={navToRoomInfo}
-								style={[{ fontStyle: 'italic' }]}
 								useRealName={useRealName}
 								mentions={mentions}
 							/>
