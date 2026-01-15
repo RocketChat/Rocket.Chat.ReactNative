@@ -36,7 +36,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 
 	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
 	const connected = useAppSelector(state => state.meteor.connected);
-    const isLoggingIn = useAppSelector(state => state.login.isFetching);
+	const isLoggingIn = useAppSelector(state => state.login.isFetching);
 	const isFetching = useAppSelector(state => state.rooms.isFetching);
 	const serverName = useAppSelector(state => state.settings.Site_Name as string);
 	const server = useAppSelector(state => state.server.server);
