@@ -200,12 +200,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					const counters = await getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
 						if (this.mounted) {
-							this.setState({ membersCount: counters.members });
+							this.setState({ membersCount: counters.members ?? undefined });
 						} else {
 							// @ts-ignore
-							this.state.membersCount = counters.members;
+							this.state.membersCount = counters.members ?? undefined;
 						}
-						this.updateUsersCount(counters.members);
+						this.updateUsersCount(counters.members ?? 0);
 						this.prevUsersCount = changes.usersCount;
 					}
 				}
@@ -243,8 +243,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				try {
 					const counters = await getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
-						await this.updateUsersCount(counters.members);
-						this.setState({ joined: counters.joined, membersCount: counters.members });
+						await this.updateUsersCount(counters.members ?? 0);
+						this.setState({ joined: counters.joined, membersCount: counters.members ?? undefined });
 					}
 				} catch (e) {
 					log(e);
@@ -408,7 +408,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (departmentId) {
 				const result = await getDepartmentInfo(departmentId);
 				if (result.success) {
-					departmentInfo = result.department as ILivechatDepartment;
+					const resultData = result as any;
+					departmentInfo = resultData.department as ILivechatDepartment;
 				}
 			}
 
@@ -608,7 +609,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						rid: r._id,
 						name: r.name,
 						teamId: r.teamId,
-						alert: r.isLastOwner
+						alert: (r as any).isLastOwner
 					}));
 					navigation.navigate('SelectListView', {
 						title: 'Leave_Team',

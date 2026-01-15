@@ -64,12 +64,13 @@ const DiscussionsView = () => {
 			});
 
 			if (result.success) {
-				offset.current += result.count;
-				total.current = result.total;
+				const resultData = result as any;
+				offset.current += resultData.count || 0;
+				total.current = resultData.total || 0;
 				if (isSearching) {
-					setSearch(prevState => (offset.current ? [...prevState, ...result.messages] : result.messages));
+					setSearch(prevState => (offset.current ? [...prevState, ...(resultData.messages || [])] : (resultData.messages || [])));
 				} else {
-					setDiscussions(result.messages);
+					setDiscussions(resultData.messages || []);
 				}
 			}
 			setLoading(false);

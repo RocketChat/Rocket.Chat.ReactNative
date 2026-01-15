@@ -277,7 +277,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			if (departmentId) {
 				const result = await getDepartmentInfo(departmentId);
 				if (result.success) {
-					departmentInfo = result.department as ILivechatDepartment;
+					const resultData = result as any;
+					departmentInfo = resultData.department as ILivechatDepartment;
 				}
 			}
 

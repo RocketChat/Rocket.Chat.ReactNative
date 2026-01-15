@@ -1,21 +1,9 @@
-import type { IServerRoom } from '../../IRoom';
-import type { IUser } from '../../IUser';
+import type { DmEndpoints as RestTypingsDmEndpoints } from '@rocket.chat/rest-typings';
 
-export type DmEndpoints = {
-	'dm.create': {
-		POST: (
-			params: (
-				| {
-						username: Exclude<IUser['username'], undefined>;
-				  }
-				| {
-						usernames: string;
-				  }
-			) & {
-				excludeSelf?: boolean;
-			}
-		) => {
-			room: IServerRoom & { rid: IServerRoom['_id'] };
-		};
-	};
+type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
+
+type AdaptDmEndpoints<T> = {
+	[K in keyof T as RemoveV1Prefix<K & string>]: T[K];
 };
+
+export type DmEndpoints = AdaptDmEndpoints<RestTypingsDmEndpoints>;

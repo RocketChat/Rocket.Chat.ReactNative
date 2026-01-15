@@ -1,21 +1,9 @@
-import type { PaginatedRequest, PaginatedResult } from '@rocket.chat/rest-typings';
+import type { EmojiCustomEndpoints as RestTypingsEmojiCustomEndpoints } from '@rocket.chat/rest-typings';
 
-import type { ICustomEmojiDescriptor } from '../../ICustomEmojiDescriptor';
+type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
 
-export type EmojiCustomEndpoints = {
-	'emoji-custom.all': {
-		GET: (params: PaginatedRequest<{ query: string }, 'name'>) => {
-			emojis: ICustomEmojiDescriptor[];
-		} & PaginatedResult;
-	};
-	'emoji-custom.list': {
-		GET: (params: { updatedSince: string }) => {
-			emojis?: {
-				update: ICustomEmojiDescriptor[];
-			};
-		};
-	};
-	'emoji-custom.delete': {
-		POST: (params: { emojiId: ICustomEmojiDescriptor['_id'] }) => void;
-	};
+type AdaptEmojiCustomEndpoints<T> = {
+	[K in keyof T as RemoveV1Prefix<K & string>]: T[K];
 };
+
+export type EmojiCustomEndpoints = AdaptEmojiCustomEndpoints<RestTypingsEmojiCustomEndpoints>;

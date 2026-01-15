@@ -5,8 +5,8 @@ const getSingleMessage = (messageId: string): Promise<IMessage> =>
 	new Promise(async (resolve, reject) => {
 		try {
 			const result = await getSingleMessageService(messageId);
-			if (result.success) {
-				return resolve(result.message);
+			if (result.success && result.message) {
+				return resolve(result.message as IMessage);
 			}
 			return reject();
 		} catch (e) {

@@ -121,7 +121,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		try {
 			const result = await getAgentDepartments(visitor?._id);
 			if (result.success) {
-				const agentDepartments = result.departments.map(dept => dept.departmentId);
+				const agentDepartments = result.departments.map((dept: any) => dept.departmentId);
 				handleGetTagsList(agentDepartments);
 			}
 		} catch {
