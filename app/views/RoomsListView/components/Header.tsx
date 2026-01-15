@@ -36,6 +36,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 
 	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
 	const connected = useAppSelector(state => state.meteor.connected);
+    const isLoggingIn = useAppSelector(state => state.login.isFetching);
 	const isFetching = useAppSelector(state => state.rooms.isFetching);
 	const serverName = useAppSelector(state => state.settings.Site_Name as string);
 	const server = useAppSelector(state => state.server.server);
@@ -55,7 +56,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	let subtitle;
 	if (supportedVersionsStatus === 'expired') {
 		subtitle = 'Cannot connect';
-	} else if (connecting) {
+	} else if (connecting || isLoggingIn) {
 		subtitle = I18n.t('Connecting');
 	} else if (isFetching) {
 		subtitle = I18n.t('Updating');
