@@ -5023,7 +5023,7 @@
   dependencies:
     tldts "~5.7.112"
 
-"@rocket.chat/mobile-crypto@github:Rohit3523/rocket.chat-mobile-crypto#content-uri-fix":
+"@rocket.chat/mobile-crypto@Rohit3523/rocket.chat-mobile-crypto#content-uri-fix":
   version "0.2.0"
   resolved "https://codeload.github.com/Rohit3523/rocket.chat-mobile-crypto/tar.gz/3ed8cfc23a948f9943a55d0e32e76cadcf133427"
 
