@@ -5024,8 +5024,8 @@
     tldts "~5.7.112"
 
 "@rocket.chat/mobile-crypto@Rohit3523/rocket.chat-mobile-crypto#content-uri-fix":
-  version "0.2.0"
-  resolved "https://codeload.github.com/Rohit3523/rocket.chat-mobile-crypto/tar.gz/3ed8cfc23a948f9943a55d0e32e76cadcf133427"
+  version "0.2.1"
+  resolved "https://codeload.github.com/Rohit3523/rocket.chat-mobile-crypto/tar.gz/74f1adb8649e3a681be32c5e0c0a45e5efb89fee"
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
   version "1.3.3-mobile"
