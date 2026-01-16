@@ -65,7 +65,7 @@ runs:
         mkdir -p android/fastlane/metadata/android/en-US/changelogs
 
         if [ -f changelog.txt ]; then
-          node prepare-changelog.js
+          node .github/scripts/prepare-changelog.js
         else
           printf "Internal improvements and bug fixes" > "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
         fi
