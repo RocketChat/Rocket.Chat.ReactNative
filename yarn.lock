@@ -12893,6 +12893,11 @@ react-native-url-polyfill@2.0.0, react-native-url-polyfill@^2.0.0:
   dependencies:
     whatwg-url-without-unicode "8.0.0-3"
 
+react-native-voip-push-notification@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-voip-push-notification/-/react-native-voip-push-notification-3.3.3.tgz#60169cc4083fc619383ab081f330e42a995c0dfa"
+  integrity sha512-cyWuI9//T1IQIq4RPq0QQe0NuEwIpnE0L98H2sUH4MjFsNMD/yNE4EJzEZN4cIwfPMZaASa0gQw6B1a7VwnkMA==
+
 react-native-webrtc@^124.0.7:
   version "124.0.7"
   resolved "https://registry.yarnpkg.com/react-native-webrtc/-/react-native-webrtc-124.0.7.tgz#f50647a8eb3fae0ef29843eb1b5fe2c4ff75a56e"

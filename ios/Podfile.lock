@@ -2612,6 +2612,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNVoipPushNotification (3.3.3):
+    - React-Core
   - SDWebImage (5.21.0):
     - SDWebImage/Core (= 5.21.0)
   - SDWebImage/Core (5.21.0)
@@ -2762,6 +2764,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNVoipPushNotification (from `../node_modules/react-native-voip-push-notification`)
   - "simdjson (from `../node_modules/@nozbe/simdjson`)"
   - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -3043,6 +3046,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNVoipPushNotification:
+    :path: "../node_modules/react-native-voip-push-notification"
   simdjson:
     :path: "../node_modules/@nozbe/simdjson"
   WatermelonDB:
@@ -3193,6 +3198,7 @@ SPEC CHECKSUMS:
   RNReanimated: f52ccd5ceea2bae48d7421eec89b3f0c10d7b642
   RNScreens: b13e4c45f0406f33986a39c0d8da0324bff94435
   RNSVG: 680e961f640e381aab730a04b2371969686ed9f7
+  RNVoipPushNotification: 4998fe6724d421da616dca765da7dc421ff54c4e
   SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
