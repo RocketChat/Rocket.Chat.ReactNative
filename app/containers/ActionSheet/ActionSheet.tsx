@@ -1,9 +1,9 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
-import { Keyboard, LayoutChangeEvent, useWindowDimensions } from 'react-native';
+import { Keyboard, type LayoutChangeEvent, useWindowDimensions } from 'react-native';
 import { Easing, ReduceMotion, useDerivedValue, useSharedValue } from 'react-native-reanimated';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, type BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../theme';

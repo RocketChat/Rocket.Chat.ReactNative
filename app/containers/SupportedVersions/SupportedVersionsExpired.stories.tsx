@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { SupportedVersionsExpired } from './SupportedVersionsExpired';
-import { ThemeContext, TSupportedThemes } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { selectServerSuccess } from '../../actions/server';

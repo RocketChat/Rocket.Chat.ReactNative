@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ActionSheetProvider, useActionSheet } from '../Provider';
 import Button from '../../Button';
 import ActionSheetContentWithInputAndSubmit from './index';
-import { ThemeContext, TSupportedThemes } from '../../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../../theme';
 import { themes } from '../../../lib/constants/colors';
 import SafeAreaView from '../../SafeAreaView';
 

@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 import { Item } from './Item';
 import { CustomIcon } from '../CustomIcon';
-import { ThemeContext, TSupportedThemes } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import { longText } from '../../../.rnstorybook/utils';
 

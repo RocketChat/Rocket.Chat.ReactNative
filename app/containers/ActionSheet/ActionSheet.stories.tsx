@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { ActionSheetProvider, useActionSheet } from './Provider';
 import Button from '../Button';
 import { CustomIcon } from '../CustomIcon';
-import { ThemeContext, TSupportedThemes } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import SafeAreaView from '../SafeAreaView';
 import { longText } from '../../../.rnstorybook/utils';
