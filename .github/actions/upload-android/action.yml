@@ -65,14 +65,28 @@ runs:
         mkdir -p android/fastlane/metadata/android/en-US/changelogs
 
         if [ -f changelog.txt ]; then
-          char_count=$(wc -m < changelog.txt)
+          node << 'EOF'
+          const fs = require("fs");
 
-          if [ "$char_count" -gt 500 ]; then
-            cut -c1-497 changelog.txt > "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
-            printf "..." >> "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
-          else
-            cat changelog.txt > "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
-          fi
+          const buildVersion = process.env.BUILD_VERSION;
+          const input = fs.readFileSync("changelog.txt", "utf8");
+
+          const segmenter = new Intl.Segmenter("en", { granularity: "grapheme" });
+          const chars = Array.from(segmenter.segment(input), s => s.segment);
+
+          let output;
+          if (chars.length > 500) {
+            output = chars.slice(0, 497).join("") + "...";
+          } else {
+            output = input;
+          }
+
+          fs.writeFileSync(
+            `android/fastlane/metadata/android/en-US/changelogs/${buildVersion}.txt`,
+            output,
+            "utf8"
+          );
+          EOF
         else
           printf "Internal improvements and bug fixes" > "android/fastlane/metadata/android/en-US/changelogs/${BUILD_VERSION}.txt"
         fi
