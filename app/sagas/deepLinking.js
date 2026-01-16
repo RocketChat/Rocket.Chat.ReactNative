@@ -297,8 +297,76 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 	}
 };
 
+/**
+ * Handle VoIP call from push notification.
+ * Ensures the app is connected to the correct server before the call can be processed.
+ * The actual call handling is done by MediaSessionInstance via the pending call store.
+ */
+const handleVoipCall = function* handleVoipCall({ params }) {
+	let { host } = params;
+
+	console.log('[VoIP] handleVoipCall:', params);
+
+	if (!host) {
+		// No host specified, assume current server
+		console.log('[VoIP] No host specified, using current server');
+		return;
+	}
+
+	// Normalize host URL
+	if (!/^(http|https)/.test(host)) {
+		if (/^localhost(:\d+)?/.test(host)) {
+			host = `http://${host}`;
+		} else {
+			host = `https://${host}`;
+		}
+	} else {
+		host = host.replace('http://', 'https://');
+	}
+	if (host.slice(-1) === '/') {
+		host = host.slice(0, host.length - 1);
+	}
+
+	const [server, user] = yield all([
+		UserPreferences.getString(CURRENT_SERVER),
+		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
+	]);
+
+	const serverRecord = yield getServerById(host);
+
+	// If already connected to the correct server, nothing to do
+	// MediaSessionInstance will handle the call via pending store
+	if (server === host && user && serverRecord) {
+		const connected = yield select(state => state.server.connected);
+		if (!connected) {
+			console.log('[VoIP] Connecting to server:', host);
+			yield localAuthenticate(host);
+			yield put(selectServerRequest(host, serverRecord.version, true));
+			yield take(types.LOGIN.SUCCESS);
+			console.log('[VoIP] Connected to server:', host);
+		} else {
+			console.log('[VoIP] Already connected to server:', host);
+		}
+		return;
+	}
+
+	// Need to switch to a different server
+	if (user && serverRecord) {
+		console.log('[VoIP] Switching to server:', host);
+		yield localAuthenticate(host);
+		yield put(selectServerRequest(host, serverRecord.version, true, true));
+		yield take(types.LOGIN.SUCCESS);
+		console.log('[VoIP] Switched to server:', host);
+		return;
+	}
+
+	// Server not registered - can't handle this call
+	console.log('[VoIP] Server not registered, cannot handle call:', host);
+};
+
 const root = function* root() {
 	yield takeLatest(types.DEEP_LINKING.OPEN, handleOpen);
 	yield takeLatest(types.DEEP_LINKING.OPEN_VIDEO_CONF, handleClickCallPush);
+	yield takeLatest(types.DEEP_LINKING.VOIP_CALL, handleVoipCall);
 };
 export default root;

@@ -7,18 +7,17 @@ import {
 } from '@rocket.chat/media-signaling';
 import RNCallKeep, { type EventListener } from 'react-native-callkeep';
 import { registerGlobals } from 'react-native-webrtc';
-import { randomUuid } from '@rocket.chat/mobile-crypto';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
+import { getPendingCall, hasPendingAnsweredCall, clearPendingCall } from './pendingCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
 import { parseStringToIceServers } from './parseStringToIceServers';
+import { CallIdUUIDModule } from '../../native/CallIdUUID';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
-
-const localCallIdMap: Record<string, string> = {};
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -72,14 +71,34 @@ class MediaSessionInstance {
 				call.emitter.on('stateChange', oldState => {
 					console.log(`📊 ${oldState} → ${call.state}`);
 				});
-				const callUUID = (await randomUuid()).toLowerCase();
-				localCallIdMap[callUUID] = call.callId;
-				const displayName = call.contact.displayName || call.contact.username || 'Unknown';
-				RNCallKeep.displayIncomingCall(callUUID, displayName, displayName, 'generic', false);
+				// Use deterministic UUID v5 from callId - same as native side
+				const callUUID = CallIdUUIDModule.toUUID(call.callId);
+
+				// Check if this call was already answered from a VoIP push (cold start scenario)
+				const pendingCall = getPendingCall();
+				if (pendingCall && pendingCall.callId === call.callId && hasPendingAnsweredCall()) {
+					console.log('[VoIP] Processing pending answered call:', call.callId);
+					try {
+						await call.accept();
+						RNCallKeep.setCurrentCallActive(callUUID);
+						// Set call in Zustand store and navigate to CallView
+						useCallStore.getState().setCall(call, callUUID);
+						Navigation.navigate('CallView', { callUUID });
+					} catch (e) {
+						console.log('[VoIP] Error accepting pending call:', e);
+						RNCallKeep.endCall(callUUID);
+					} finally {
+						clearPendingCall();
+					}
+				} else {
+					// Normal flow: display incoming call UI
+					const displayName = call.contact.displayName || call.contact.username || 'Unknown';
+					RNCallKeep.displayIncomingCall(callUUID, displayName, displayName, 'generic', false);
+				}
 
 				call.emitter.on('ended', () => {
 					RNCallKeep.endCall(callUUID);
-					delete localCallIdMap[callUUID];
+					clearPendingCall();
 				});
 			}
 		});
@@ -87,9 +106,9 @@ class MediaSessionInstance {
 
 	private configureRNCallKeep = () => {
 		this.callKeepListeners.answerCall = RNCallKeep.addEventListener('answerCall', async ({ callUUID }) => {
-			const callId = localCallIdMap[callUUID];
 			const mainCall = this.instance?.getMainCall();
-			if (mainCall && mainCall.callId === callId) {
+			// Compare using deterministic UUID conversion
+			if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
 				await mainCall.accept();
 				RNCallKeep.setCurrentCallActive(callUUID);
 				// Set call in Zustand store and navigate to CallView
@@ -101,9 +120,9 @@ class MediaSessionInstance {
 		});
 
 		this.callKeepListeners.endCall = RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
-			const callId = localCallIdMap[callUUID];
 			const mainCall = this.instance?.getMainCall();
-			if (mainCall && mainCall.callId === callId) {
+			// Compare using deterministic UUID conversion
+			if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
 				if (mainCall.state === 'ringing') {
 					mainCall.reject();
 				} else {
@@ -112,15 +131,14 @@ class MediaSessionInstance {
 			}
 			// Reset Zustand store
 			useCallStore.getState().reset();
-			delete localCallIdMap[callUUID];
 		});
 
 		this.callKeepListeners.didPerformSetMutedCallAction = RNCallKeep.addEventListener(
 			'didPerformSetMutedCallAction',
 			({ muted, callUUID }) => {
-				const callId = localCallIdMap[callUUID];
 				const mainCall = this.instance?.getMainCall();
-				if (mainCall && mainCall.callId === callId) {
+				// Compare using deterministic UUID conversion
+				if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
 					mainCall.setMuted(muted);
 					// Sync with Zustand store
 					useCallStore.getState().updateFromCall();
@@ -129,9 +147,9 @@ class MediaSessionInstance {
 		);
 
 		this.callKeepListeners.didPerformDTMFAction = RNCallKeep.addEventListener('didPerformDTMFAction', ({ digits, callUUID }) => {
-			const callId = localCallIdMap[callUUID];
 			const mainCall = this.instance?.getMainCall();
-			if (mainCall && mainCall.callId === callId) {
+			// Compare using deterministic UUID conversion
+			if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
 				mainCall.sendDTMF(digits);
 			}
 		});
@@ -180,7 +198,6 @@ class MediaSessionInstance {
 			this.instance.endSession();
 		}
 		Object.values(this.callKeepListeners).forEach(listener => listener?.remove());
-		Object.keys(localCallIdMap).forEach(key => delete localCallIdMap[key]);
 	}
 }
 

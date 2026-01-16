@@ -111,25 +111,25 @@ extension AppDelegate: PKPushRegistryDelegate {
   }
 
   public func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
-    // let uuid = UUID().uuidString.lowercased()
-    let callerName = payload.dictionaryPayload["caller"] as? String
     let callId = payload.dictionaryPayload["callId"] as? String
-    let handle = payload.dictionaryPayload["caller"] as? String
+    let caller = payload.dictionaryPayload["caller"] as? String
 
-    let callIdUUID = UUID(uuidString: callId ?? "")?.uuidString.lowercased()
-    if callIdUUID == nil {
+    guard let callId = callId else {
       completion()
       return
     }
+    
+    // Convert callId to deterministic UUID v5 for CallKit
+    let callIdUUID = CallIdUUID.generateUUIDv5(from: callId)
 
     RNVoipPushNotificationManager.didReceiveIncomingPush(with: payload, forType: type.rawValue)
 
     RNCallKeep.reportNewIncomingCall(
       callIdUUID,
-      handle: handle,
+      handle: caller,
       handleType: "generic",
       hasVideo: true,
-      localizedCallerName: callerName,
+      localizedCallerName: caller,
       supportsHolding: true,
       supportsDTMF: true,
       supportsGrouping: true,
