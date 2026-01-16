@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TextStyle } from 'react-native';
+import { Text, type TextStyle } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
 import { useTheme } from '../../../theme';
-import { IText } from '../interfaces';
+import { type IText } from '../interfaces';
 import Chips from './Chips';
 import Input from './Input';
 import styles from './styles';

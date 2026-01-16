@@ -5,7 +5,7 @@ import database from '../../database';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import log from '../../methods/helpers/log';
 import I18n from '../../../i18n';
-import { TSubscriptionModel } from '../../../definitions';
+import { type TSubscriptionModel } from '../../../definitions';
 
 const optimisticUpdate = async (room: TSubscriptionModel, value: TSubscriptionModel['encrypted']) => {
 	try {

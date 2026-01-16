@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { NavigationProp, NavigationState } from '@react-navigation/native';
+import { type NavigationProp, type NavigationState } from '@react-navigation/native';
 
 import { logout } from '../actions/login';
 import I18n from '../i18n';

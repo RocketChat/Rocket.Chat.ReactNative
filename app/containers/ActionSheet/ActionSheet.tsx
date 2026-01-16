@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme';
 import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
-import { TActionSheetOptions } from './Provider';
+import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import styles from './styles';
 

@@ -1,15 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import moment from 'moment';
 
+import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
-import { IMessageFromServer } from '../../definitions';
+import { type IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -58,7 +58,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 	let messageDate = '';
 
 	if (item?.ts) {
-		messageTime = moment(item.ts).format('LT');
+		messageTime = dayjs(item.ts).format('LT');
 		messageDate = formatDateThreads(item.ts);
 	}
 

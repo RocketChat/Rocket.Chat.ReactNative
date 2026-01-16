@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { CustomIcon, TIconsName } from '../../../CustomIcon';
+import { CustomIcon, type TIconsName } from '../../../CustomIcon';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 
@@ -57,18 +57,13 @@ const Item = memo(
 
 		const { colors } = useTheme();
 		return (
-			<BorderlessButton
-				onPress={onPress}
-				testID={testID}
-				hitSlop={BUTTON_HIT_SLOP}
-				enabled={!disabled}
-				style={[
-					styles.container,
-					{
+			<BorderlessButton onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} enabled={!disabled} style={styles.container}>
+				<View
+					accessible
+					accessibilityLabel={accessibilityLabel}
+					style={{
 						opacity: disabled ? 0.5 : 1
-					}
-				]}>
-				<View accessible accessibilityLabel={accessibilityLabel}>
+					}}>
 					{iconName ? (
 						<CustomIcon name={iconName} size={24} color={color} {...props} />
 					) : (

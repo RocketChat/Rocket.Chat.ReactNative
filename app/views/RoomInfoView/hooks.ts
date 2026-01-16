@@ -1,4 +1,4 @@
-import { ISubscription } from '../../definitions';
+import { type ISubscription } from '../../definitions';
 import { hasE2EEWarning } from '../../lib/encryption/utils';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 

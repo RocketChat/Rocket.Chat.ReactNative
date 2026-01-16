@@ -1,6 +1,6 @@
-import { IRole } from '../../IRole';
-import { RocketChatRecordDeleted } from '../../IRocketChatRecord';
-import { IRoleUser, IUser } from '../../IUser';
+import { type IRole } from '../../IRole';
+import { type RocketChatRecordDeleted } from '../../IRocketChatRecord';
+import { type IRoleUser, type IUser } from '../../IUser';
 
 type RoleCreateProps = Pick<IRole, 'name'> & Partial<Pick<IRole, 'description' | 'scope' | 'mandatory2fa'>>;
 

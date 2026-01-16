@@ -1,10 +1,9 @@
-import moment from 'moment';
-
+import dayjs from '../dayjs';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
-import { IMessage, TMessageModel } from '../../definitions';
+import { type IMessage, type TMessageModel } from '../../definitions';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
-import { RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
+import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
@@ -12,22 +11,57 @@ import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 const COUNT = 50;
 
 async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }): Promise<IMessage[]> {
-	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest?: string };
-	if (latest) {
-		params = { ...params, latest: new Date(latest).toISOString() };
-	}
-
 	const apiType = roomTypeToApiType(t);
 	if (!apiType) {
 		return [];
 	}
 
-	// RC 0.48.0
-	const data = await sdk.get(`${apiType}.history`, params);
-	if (!data.success) {
-		return [];
+	const allMessages: IMessage[] = [];
+	let mainMessagesCount = 0;
+
+	async function fetchBatch(lastTs?: string): Promise<void> {
+		if (allMessages.length >= COUNT) {
+			return;
+		}
+
+		const params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
+
+		let data;
+		switch (apiType) {
+			case 'channels':
+				data = await sdk.get('channels.history', params);
+				break;
+			case 'groups':
+				data = await sdk.get('groups.history', params);
+				break;
+			case 'im':
+				data = await sdk.get('im.history', params);
+				break;
+			default:
+				return;
+		}
+
+		if (!data?.success || !data.messages?.length) {
+			return;
+		}
+
+		const batch = data.messages as IMessage[];
+		allMessages.push(...batch);
+
+		const mainMessagesInBatch = batch.filter(message => !message.tmid);
+		mainMessagesCount += mainMessagesInBatch.length;
+
+		const needsMoreMainMessages = mainMessagesCount < COUNT;
+
+		if (needsMoreMainMessages) {
+			const lastMessage = batch[batch.length - 1];
+			await fetchBatch(lastMessage.ts as string);
+		}
 	}
-	return data.messages as IMessage[];
+
+	const startTimestamp = latest ? new Date(latest).toISOString() : undefined;
+	await fetchBatch(startTimestamp);
+	return allMessages;
 }
 
 export function loadMessagesForRoom(args: {
@@ -46,7 +80,7 @@ export function loadMessagesForRoom(args: {
 					const loadMoreMessage = {
 						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,
-						ts: moment(lastMessage.ts).subtract(1, 'millisecond').toString(),
+						ts: dayjs(lastMessage.ts).subtract(1, 'millisecond').toString(),
 						t: MessageTypeLoad.MORE,
 						msg: lastMessage.msg
 					} as IMessage;

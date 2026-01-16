@@ -76,19 +76,19 @@ import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import LegalView from '../views/LegalView';
 import {
-	AdminPanelStackParamList,
-	ChatsStackParamList,
-	DrawerParamList,
-	E2EEnterYourPasswordStackParamList,
-	E2ESaveYourPasswordStackParamList,
-	InsideStackParamList,
-	NewMessageStackParamList,
-	ProfileStackParamList,
-	SettingsStackParamList,
-	AccessibilityStackParamList
+	type AdminPanelStackParamList,
+	type ChatsStackParamList,
+	type DrawerParamList,
+	type E2EEnterYourPasswordStackParamList,
+	type E2ESaveYourPasswordStackParamList,
+	type InsideStackParamList,
+	type NewMessageStackParamList,
+	type ProfileStackParamList,
+	type SettingsStackParamList,
+	type AccessibilityStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
-import { TNavigation } from './stackType';
+import { type TNavigation } from './stackType';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 
 // ChatsStackNavigator
@@ -273,7 +273,7 @@ const NewMessageStackNavigator = () => {
 	return (
 		<NewMessageStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<NewMessageStack.Screen name='NewMessageView' component={NewMessageView} />
-			<NewMessageStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
+			<NewMessageStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
 			<NewMessageStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			{/* @ts-ignore */}
 			<NewMessageStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />
@@ -307,6 +307,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 	return (
 		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<E2EEnterYourPasswordStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
+			<E2EEnterYourPasswordStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 		</E2EEnterYourPasswordStack.Navigator>
 	);
 };

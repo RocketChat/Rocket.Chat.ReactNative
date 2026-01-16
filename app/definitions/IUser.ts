@@ -1,8 +1,8 @@
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
-import { TUserStatus } from './TUserStatus';
-import { IRocketChatRecord } from './IRocketChatRecord';
-import { ILoggedUser } from './ILoggedUser';
+import { type TUserStatus } from './TUserStatus';
+import { type IRocketChatRecord } from './IRocketChatRecord';
+import { type ILoggedUser } from './ILoggedUser';
 
 export interface ILoginToken {
 	hashedToken: string;

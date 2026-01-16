@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../lib/methods/helpers/room';
-import { ISubscription, TThreadModel } from '../../definitions';
+import { type ISubscription, type TThreadModel } from '../../definitions';
 import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { getMessageById } from '../../lib/database/services/Message';
 

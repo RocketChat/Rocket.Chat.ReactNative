@@ -7,7 +7,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
-import { IAvatar } from './interfaces';
+import { type IAvatar } from './interfaces';
 import MarkdownContext from '../markdown/contexts/MarkdownContext';
 import I18n from '../../i18n';
 
@@ -34,7 +34,8 @@ const Avatar = React.memo(
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
 		cdnPrefix,
-		accessibilityLabel
+		accessibilityLabel,
+		accessible = true
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
@@ -96,7 +97,7 @@ const Avatar = React.memo(
 
 		if (onPress) {
 			image = (
-				<Touchable accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
+				<Touchable accessible={accessible} accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
 					{image}
 				</Touchable>
 			);
@@ -104,7 +105,7 @@ const Avatar = React.memo(
 
 		return (
 			<View
-				accessible
+				accessible={accessible}
 				accessibilityLabel={!onPress ? avatarAccessibilityLabel : undefined}
 				style={[avatarStyle, style]}
 				testID='avatar'>

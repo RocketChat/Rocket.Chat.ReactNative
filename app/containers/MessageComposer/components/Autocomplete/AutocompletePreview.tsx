@@ -2,7 +2,7 @@ import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 import { Image } from 'expo-image';
 
-import { IAutocompleteItemProps } from '../../interfaces';
+import { type IAutocompleteItemProps } from '../../interfaces';
 import { CustomIcon } from '../../../CustomIcon';
 import { AutocompleteItemLoading } from './AutocompleteItemLoading';
 import { useStyle } from './styles';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'expo-image';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { ICustomEmojiProps } from './interfaces';
+import { type ICustomEmojiProps } from './interfaces';
 
 const CustomEmoji = React.memo(
 	({ emoji, style }: ICustomEmojiProps) => {

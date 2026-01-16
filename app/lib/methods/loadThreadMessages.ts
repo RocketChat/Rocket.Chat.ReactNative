@@ -7,7 +7,7 @@ import log from './helpers/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
-import { TThreadMessageModel } from '../../definitions';
+import { type TThreadMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 
 async function load({ tmid }: { tmid: string }) {

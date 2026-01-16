@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInputProps, View } from 'react-native';
+import { StyleSheet, type TextInputProps, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';

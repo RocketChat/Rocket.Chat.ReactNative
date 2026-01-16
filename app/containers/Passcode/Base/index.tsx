@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import range from 'lodash/range';
-import { View } from 'react-native';
+import { type View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Haptics from 'expo-haptics';
 

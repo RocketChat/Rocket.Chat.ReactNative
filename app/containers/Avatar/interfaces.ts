@@ -1,7 +1,7 @@
-import React from 'react';
-import { ViewStyle } from 'react-native';
+import type React from 'react';
+import { type ViewStyle } from 'react-native';
 
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 
 export interface IAvatar {
 	server?: string;
@@ -26,4 +26,5 @@ export interface IAvatar {
 	roomAvatarExternalProviderUrl?: string;
 	cdnPrefix?: string;
 	accessibilityLabel?: string;
+	accessible?: boolean;
 }

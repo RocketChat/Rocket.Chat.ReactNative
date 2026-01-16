@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { LayoutChangeEvent, useWindowDimensions, View } from 'react-native';
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { type LayoutChangeEvent, useWindowDimensions, View } from 'react-native';
+import { type NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 import HeaderTitle from './components/HeaderTitle';
 import HeaderContainer from './components/HeaderContainer';

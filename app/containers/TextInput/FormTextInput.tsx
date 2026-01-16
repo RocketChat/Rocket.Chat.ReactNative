@@ -8,7 +8,7 @@ import i18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
 

@@ -8,7 +8,7 @@ import I18n from '../../../i18n';
 import Items from './Items';
 import styles from './styles';
 import { useTheme } from '../../../theme';
-import { IItemData } from '.';
+import { type IItemData } from '.';
 import { debounce } from '../../../lib/methods/helpers/debounce';
 import { useActionSheet } from '../../ActionSheet';
 
