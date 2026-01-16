@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - 'develop'
+      - 'android-changelog-fix'
 
 jobs:
   run-eslint-and-test:
