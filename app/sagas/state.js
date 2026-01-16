@@ -7,6 +7,7 @@ import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
 import { checkAndReopen } from '../lib/services/connect';
 import { setUserPresenceOnline, setUserPresenceAway } from '../lib/services/restApi';
+import { checkPendingNotification } from '../lib/notifications';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
@@ -28,6 +29,10 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	try {
 		yield localAuthenticate(server.server);
 		checkAndReopen();
+		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
+		checkPendingNotification().catch((e) => {
+			log('[state.js] Error checking pending notification:', e);
+		});
 		return yield setUserPresenceOnline();
 	} catch (e) {
 		log(e);
