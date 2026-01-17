@@ -1,0 +1,54 @@
+appId: chat.rocket.reactnative
+name: Quote Message
+tags:
+  - 'flow'
+env:
+  MESSAGE_TO_QUOTE: m1
+  QUOTED_MESSAGE: m2
+---
+# Send the message to be quoted
+- runFlow:
+    file: '../../../helpers/send-message.yaml'
+    env:
+      message: ${MESSAGE_TO_QUOTE}
+
+# Long press and quote the message
+- longPressOn:
+    text: .*${MESSAGE_TO_QUOTE}.*
+- extendedWaitUntil:
+    visible:
+      id: action-sheet
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-handle
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: Quote
+    timeout: 60000
+- tapOn:
+    text: Quote
+
+# Input the quoted message
+- extendedWaitUntil:
+    visible:
+      id: message-composer-input
+    timeout: 60000
+- tapOn:
+    id: message-composer-input
+- inputText: ${QUOTED_MESSAGE}
+- extendedWaitUntil:
+    visible:
+      id: message-composer-send
+    timeout: 60000
+- tapOn:
+    id: message-composer-send
+
+# Verify both messages are visible
+- extendedWaitUntil:
+    visible:
+      text: .*${QUOTED_MESSAGE}.*
+    timeout: 60000
+- assertVisible:
+    id: 'reply-${MESSAGE_AUTHOR}-${MESSAGE_TO_QUOTE}'

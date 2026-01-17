@@ -4,7 +4,7 @@ import WatchConnectivity
 @objc
 final class WatchConnection: NSObject {
 	private let database = Database(name: "default")
-	private let mmkv = MMKV.build()
+	private let mmkv = MMKVBridge.build()
 	private let session: WCSession
 	
 	@objc init(session: WCSession) {

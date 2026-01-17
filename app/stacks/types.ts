@@ -241,12 +241,13 @@ export type DrawerParamList = {
 
 export type NewMessageStackParamList = {
 	NewMessageView: undefined;
-	SelectedUsersViewCreateChannel: {
+	SelectedUsersView: {
 		maxUsers?: number;
 		showButton?: boolean;
 		title?: string;
 		buttonText?: string;
 		nextAction?: Function;
+		showSkipText?: boolean;
 	}; // TODO: Change
 	CreateChannelView?: {
 		isTeam?: boolean; // TODO: To check
@@ -271,6 +272,7 @@ export type E2ESaveYourPasswordStackParamList = {
 
 export type E2EEnterYourPasswordStackParamList = {
 	E2EEnterYourPasswordView: undefined;
+	E2EEncryptionSecurityView: undefined;
 };
 
 export type InsideStackParamList = {
