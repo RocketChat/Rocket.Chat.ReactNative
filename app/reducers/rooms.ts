@@ -62,7 +62,7 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 			const server = UserPreferences.getString(CURRENT_SERVER);
 			const newRoom = { rid: action.lastVisitedRoomId, name: action.lastVisitedRoomName, server };
 
-			const existingIndex = state.recentRooms.findIndex(room => room.rid === newRoom.rid);
+			const existingIndex = state.recentRooms.findIndex(room => room.rid === newRoom.rid && room.server === newRoom.server);
 			let updatedRecentRooms: IRecentRoomsStore[];
 
 			if (existingIndex !== -1) {
