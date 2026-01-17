@@ -1,5 +1,5 @@
-import React from 'react';
-import { SharedValue } from 'react-native-reanimated';
+import type React from 'react';
+import { type SharedValue } from 'react-native-reanimated';
 
 import { type TSupportedThemes } from '../../theme';
 import {
