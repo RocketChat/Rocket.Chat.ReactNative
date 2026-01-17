@@ -3,7 +3,7 @@ import * as Sharing from 'expo-sharing';
 export const shareMedia = async ({ url }: { url: string }): Promise<{ success: boolean; error?: string }> => {
 	try {
 		if (!url) {
-			return { success: false };
+			return { success: false, error: 'error-sharing-file' };
 		}
 
 		const isAvailable = await Sharing.isAvailableAsync();

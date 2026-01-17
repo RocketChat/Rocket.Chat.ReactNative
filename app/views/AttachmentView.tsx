@@ -229,9 +229,12 @@ const AttachmentView = (): React.ReactElement => {
 			setLoading(true);
 
 			if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
-				await shareMedia({ url });
-
-				EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+				const result = await shareMedia({ url });
+                if (result.success) {
+                    EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+                } else {
+                    EventEmitter.emit(LISTENER, { message: I18n.t('error-sharing-file') });
+                }
 			} else {
 				const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 				let filename = '';
@@ -241,10 +244,14 @@ const AttachmentView = (): React.ReactElement => {
 					filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
 				}
 				const file = await fileDownload(mediaAttachment, {}, filename);
-				await shareMedia({ url: file });
+				const result = await shareMedia({ url: file });
 				FileSystem.deleteAsync(file, { idempotent: true });
 
-				EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+				if (result.success) {
+					EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+				} else {
+					EventEmitter.emit(LISTENER, { message: I18n.t('error-sharing-file') });
+				}
 			}
 		} catch (e) {
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-sharing-file') });
