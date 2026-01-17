@@ -6,8 +6,8 @@ import { emitter } from '../lib/methods/helpers';
 import { roomsStoreLastVisited } from '../actions/rooms';
 import UserPreferences from '../lib/methods/userPreferences';
 import { LAST_VISITED_ROOM_ID_KEY, LAST_VISITED_ROOM_NAME_KEY, RECENT_VISITED_ROOMS_KEY } from '../lib/constants/keys';
-import { IApplicationState } from 'definitions';
-import { IRooms } from 'reducers/rooms';
+import { type IApplicationState } from '../definitions';
+import { type IRooms } from '../reducers/rooms';
 
 const getRecentRooms = (state: IApplicationState) => state.rooms.recentRooms;
 
