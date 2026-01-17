@@ -4,8 +4,8 @@ import { type Action } from 'redux';
 
 import { QUICK_ACTIONS, APP, UI, NAVIGATION } from '../actions/actionsTypes';
 import { appStart, appInit } from '../actions/app';
-import { serverInitAdd } from '../actions/server';
-import { type IApplicationState, RootEnum, type TSubscriptionModel } from '../definitions';
+import { selectServerRequest, serverInitAdd } from '../actions/server';
+import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../definitions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { CURRENT_SERVER } from '../lib/constants/keys';
 import Navigation from '../lib/navigation/appNavigation';
@@ -13,6 +13,7 @@ import { sendEmail } from '../views/SettingsView';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { getRoom } from '../lib/methods/getRoom';
 import I18n from '../i18n';
+import { getServerById } from '../lib/database/services/Server';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -59,6 +60,11 @@ function* waitForNavigationReady(): Generator {
 	yield take(NAVIGATION.NAVIGATION_READY);
 }
 
+function* switchServer(targetServer: string): Generator {
+	const server = (yield call(getServerById, targetServer)) as TServerModel;
+	yield put(selectServerRequest(server._raw.id, server.version, true, true));
+}
+
 function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 	const quickActionFromParams = action.params?.action ?? action.payload?.action;
 
@@ -69,7 +75,6 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 	const actionWithId = quickActionFromParams.split('/');
 
 	const quickAction = actionWithId[0];
-	const roomId = actionWithId[1];
 
 	switch (quickAction) {
 		case 'add-server': {
@@ -97,11 +102,18 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 		case 'recent': {
 			yield waitForAppReady();
 
-			const rid = roomId;
+			const targetServer = decodeURIComponent(actionWithId[1]);
+			const currentServer: string = yield select((state: IApplicationState) => state.server.server);
+
+			const rid = actionWithId[2];
 
 			if (!rid) {
 				showRoomNotFoundError();
 				break;
+			}
+
+			if (currentServer !== targetServer) {
+				yield call(switchServer, targetServer);
 			}
 
 			try {

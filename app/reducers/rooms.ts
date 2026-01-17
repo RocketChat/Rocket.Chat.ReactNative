@@ -1,10 +1,14 @@
 import { type IRoomsAction } from '../actions/rooms';
 import { ROOMS } from '../actions/actionsTypes';
+import UserPreferences from '../lib/methods/userPreferences';
+import { CURRENT_SERVER } from '../lib/constants/keys';
 
 export interface IRecentRoomsStore {
 	rid: string;
 	name: string;
+	server: string | null;
 }
+
 export interface IRooms {
 	isFetching: boolean;
 	refreshing: boolean;
@@ -55,7 +59,8 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 				refreshing: true
 			};
 		case ROOMS.STORE_LAST_VISITED:
-			const newRoom = { rid: action.lastVisitedRoomId, name: action.lastVisitedRoomName };
+			const server = UserPreferences.getString(CURRENT_SERVER);
+			const newRoom = { rid: action.lastVisitedRoomId, name: action.lastVisitedRoomName, server };
 
 			const existingIndex = state.recentRooms.findIndex(room => room.rid === newRoom.rid);
 			let updatedRecentRooms: IRecentRoomsStore[];
