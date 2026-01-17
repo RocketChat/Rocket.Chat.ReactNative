@@ -230,11 +230,11 @@ const AttachmentView = (): React.ReactElement => {
 
 			if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
 				const result = await shareMedia({ url });
-                if (result.success) {
-                    EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
-                } else {
-                    EventEmitter.emit(LISTENER, { message: I18n.t('error-sharing-file') });
-                }
+				if (result.success) {
+					EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+				} else {
+					EventEmitter.emit(LISTENER, { message: I18n.t('error-sharing-file') });
+				}
 			} else {
 				const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 				let filename = '';
