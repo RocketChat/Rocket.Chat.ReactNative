@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { ISubscription } from '../../definitions';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
+import { type ISubscription } from '../../definitions';
+import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { type ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
 import I18n from '../../i18n';
 import { getDepartmentInfo } from '../../lib/services/restApi';
 import { useTheme } from '../../theme';

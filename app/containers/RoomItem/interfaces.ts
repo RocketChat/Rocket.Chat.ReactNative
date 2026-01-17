@@ -1,8 +1,14 @@
 import React from 'react';
 import { SharedValue } from 'react-native-reanimated';
 
-import { TSupportedThemes } from '../../theme';
-import { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource, ISubscription } from '../../definitions';
+import { type TSupportedThemes } from '../../theme';
+import {
+	type TUserStatus,
+	type ILastMessage,
+	type SubscriptionType,
+	type IOmnichannelSource,
+	type ISubscription
+} from '../../definitions';
 
 export interface ILeftActionsProps {
 	transX: SharedValue<number>;
@@ -61,6 +67,7 @@ export interface ITypeIconProps {
 	size?: number;
 	style?: object;
 	sourceType: IOmnichannelSource;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 interface IRoomItemTouchables {
@@ -101,6 +108,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	testID: string;
 	status: TUserStatus;
 	isGroupChat: boolean;
+	isInvited?: boolean;
 	isRead: boolean;
 	teamMain: boolean;
 	date: string;
@@ -118,6 +126,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
 	accessibilityDate: string;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 export interface ILastMessageProps {
@@ -155,6 +164,7 @@ export interface IIconOrAvatar {
 	teamMain: boolean;
 	showLastMessage: boolean;
 	sourceType: IOmnichannelSource;
+	abacAttributes?: ISubscription['abacAttributes'];
 }
 
 export interface IRoomItem extends ISubscription {

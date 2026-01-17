@@ -4,8 +4,8 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../../../lib/constants/colors';
-import { IAttachment } from '../../../../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
+import { type IAttachment } from '../../../../../definitions/IAttachment';
+import { type TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../../CustomIcon';
 import { useTheme } from '../../../../../theme';
 import sharedStyles from '../../../../../views/Styles';
@@ -93,7 +93,7 @@ const AttText = React.memo(
 			return null;
 		}
 
-		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} style={[styles.fieldText]} />;
+		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} />;
 	},
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );

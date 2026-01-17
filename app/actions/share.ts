@@ -1,6 +1,6 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
-import { TShareParams } from '../reducers/share';
+import { type TShareParams } from '../reducers/share';
 import { SHARE } from './actionsTypes';
 
 interface IShareSetParams extends Action {

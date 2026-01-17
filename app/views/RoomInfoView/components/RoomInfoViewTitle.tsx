@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { ISubscription, SubscriptionType } from '../../../definitions';
+import { type ISubscription, SubscriptionType } from '../../../definitions';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
@@ -63,6 +63,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				key='room-info-type'
 				status={room?.visitor?.status}
 				sourceType={room?.source}
+				abacAttributes={room?.abacAttributes}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels }]} key='room-info-name'>
 				{getRoomTitle(room)}

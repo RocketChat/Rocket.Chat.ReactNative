@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { forwardRoom, ITransferData } from '../actions/room';
+import { forwardRoom, type ITransferData } from '../actions/room';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
-import { IServerRoom } from '../definitions';
+import { type IServerRoom } from '../definitions';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { usersAutoComplete, getRoomInfo, getDepartments } from '../lib/services/restApi';
-import { TNavigation } from '../stacks/stackType';
+import { type TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
-import { IOptionsField } from './NotificationPreferencesView/options';
+import { type IOptionsField } from './NotificationPreferencesView/options';
 
 const styles = StyleSheet.create({
 	container: {

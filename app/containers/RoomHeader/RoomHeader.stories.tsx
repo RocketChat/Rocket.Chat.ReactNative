@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions, View } from 'react-native';
 
 import { longText } from '../../../.rnstorybook/utils';
-import { ThemeContext, TSupportedThemes } from '../../theme';
+import { ThemeContext, type TSupportedThemes } from '../../theme';
 import { colors, themes } from '../../lib/constants/colors';
 import RoomHeaderComponent from './RoomHeader';
 
@@ -55,6 +55,21 @@ export const Icons = () => (
 		<HeaderExample title={() => <RoomHeader title='busy dm' type='d' status='busy' />} />
 		<HeaderExample title={() => <RoomHeader title='loading dm' type='d' status='loading' />} />
 		<HeaderExample title={() => <RoomHeader title='offline dm' type='d' />} />
+		<HeaderExample
+			title={() => (
+				<RoomHeader title='classified' type='p' abacAttributes={[{ key: 'Attribute', values: ['Value 1', 'Value 2'] }]} />
+			)}
+		/>
+		<HeaderExample
+			title={() => (
+				<RoomHeader
+					title='classified'
+					type='p'
+					abacAttributes={[{ key: 'Attribute', values: ['Value 1', 'Value 2'] }]}
+					teamMain
+				/>
+			)}
+		/>
 	</>
 );
 

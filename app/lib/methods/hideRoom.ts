@@ -1,8 +1,8 @@
-import { SubscriptionType } from '../../definitions';
+import { type SubscriptionType } from '../../definitions';
 import database from '../database';
 import log, { events, logEvent } from './helpers/log';
 import { hideRoom as hideRoomService } from '../services/restApi';
-import { RoomTypes } from './roomTypeToApiType';
+import { type RoomTypes } from './roomTypeToApiType';
 
 export const hideRoom = async (rid: string, type: SubscriptionType) => {
 	logEvent(events.RL_HIDE_CHANNEL);

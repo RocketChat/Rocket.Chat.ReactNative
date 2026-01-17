@@ -3,7 +3,7 @@ import { Alert, StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 
 import { useUserPreferences } from '../lib/methods/userPreferences';
-import { TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
+import { type TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';

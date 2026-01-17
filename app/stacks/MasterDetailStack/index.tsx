@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
@@ -68,13 +68,13 @@ import DiscussionsView from '../../views/DiscussionsView';
 import AccessibilityAndAppearanceView from '../../views/AccessibilityAndAppearanceView';
 import { ModalContainer } from './ModalContainer';
 import {
-	MasterDetailChatsStackParamList,
-	MasterDetailDrawerParamList,
-	MasterDetailInsideStackParamList,
-	ModalStackParamList
+	type MasterDetailChatsStackParamList,
+	type MasterDetailDrawerParamList,
+	type MasterDetailInsideStackParamList,
+	type ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
-import { TNavigation } from '../stackType';
+import { type TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 // ChatsStackNavigator
@@ -187,7 +187,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen name='AdminPanelView' component={AdminPanelView} />
 				<ModalStack.Screen name='NewMessageView' component={NewMessageView} />
-				<ModalStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
 				<ModalStack.Screen name='CreateChannelView' component={CreateChannelView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='CreateDiscussionView' component={CreateDiscussionView} />

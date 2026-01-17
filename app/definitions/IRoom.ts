@@ -1,10 +1,10 @@
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
-import { IMessage } from './IMessage';
-import { IRocketChatRecord } from './IRocketChatRecord';
-import { IServedBy } from './IServedBy';
-import { IVisitor, SubscriptionType } from './ISubscription';
-import { IUser, TNotifications } from './IUser';
+import { type IMessage } from './IMessage';
+import { type IRocketChatRecord } from './IRocketChatRecord';
+import { type IServedBy } from './IServedBy';
+import { type IVisitor, type SubscriptionType } from './ISubscription';
+import { type IUser, type TNotifications } from './IUser';
 
 interface IRequestTranscript {
 	email: string;
@@ -163,7 +163,12 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	username?: string;
 	nickname?: string;
-	federation?: any;
+	federation?: {
+		version: number;
+		mrid: string;
+		origin: string;
+		peer?: string;
+	};
 	roomsCount?: number;
 
 	u: Pick<IUser, '_id' | 'username' | 'name'>;
@@ -233,6 +238,7 @@ export interface IServerRoom extends IRocketChatRecord {
 
 	isLastOwner?: boolean;
 	federated?: boolean;
+	abacAttributes?: { key: string; values: string[] }[];
 }
 
 export interface IRoomNotifications {

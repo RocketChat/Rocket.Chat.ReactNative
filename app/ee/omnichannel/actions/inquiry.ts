@@ -1,6 +1,6 @@
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
-import { IOmnichannelRoom } from '../../../definitions';
+import { type IOmnichannelRoom } from '../../../definitions';
 import { INQUIRY } from '../../../actions/actionsTypes';
 
 interface IInquirySetEnabled extends Action {

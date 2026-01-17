@@ -1,16 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
-import { Route } from 'reanimated-tab-view';
+import { type Route } from 'reanimated-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
 import { categories } from '../../lib/constants/emojis';
-import { IEmoji } from '../../definitions';
+import { type IEmoji } from '../../definitions';
 import { addFrequentlyUsed } from '../../lib/methods/emojis';
-import { IEmojiPickerProps, EventTypes } from './interfaces';
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { type IEmojiPickerProps, EventTypes } from './interfaces';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TabView } from '../TabView';
 import { useTheme } from '../../theme';
 

@@ -1,7 +1,7 @@
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from './helpers/log';
-import { TSubscriptionModel } from '../../definitions';
+import { type TSubscriptionModel } from '../../definitions';
 
 export async function updateLastOpen(rid: string, lastOpen = new Date()): Promise<void> {
 	try {

@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
-import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
 import KeyboardView from '../../containers/KeyboardView';
@@ -13,7 +13,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import SelectPersonOrChannel from './SelectPersonOrChannel';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { NewMessageStackParamList } from '../../stacks/types';
+import { type NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
 import MessagePreview from '../../containers/message/Preview';
 import EventEmitter from '../../lib/methods/helpers/events';

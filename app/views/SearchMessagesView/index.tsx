@@ -1,6 +1,6 @@
 import React from 'react';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
+import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
@@ -15,31 +15,31 @@ import I18n from '../../i18n';
 import log from '../../lib/methods/helpers/log';
 import { themes } from '../../lib/constants/colors';
 import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
+import getRoomInfo, { type IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import styles from './styles';
-import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
+import { type InsideStackParamList, type ChatsStackParamList } from '../../stacks/types';
 import { compareServerVersion, debounce, isIOS } from '../../lib/methods/helpers';
 import {
-	IMessageFromServer,
-	IUser,
-	TMessageModel,
-	IUrl,
-	IAttachment,
-	ISubscription,
+	type IMessageFromServer,
+	type IUser,
+	type TMessageModel,
+	type IUrl,
+	type IAttachment,
+	type ISubscription,
 	SubscriptionType,
-	TSubscriptionModel,
-	TGetCustomEmoji,
-	ICustomEmoji
+	type TSubscriptionModel,
+	type TGetCustomEmoji,
+	type ICustomEmoji
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
-import { TNavigation } from '../../stacks/stackType';
+import { type TNavigation } from '../../stacks/stackType';
 import Navigation from '../../lib/navigation/appNavigation';
 
 const QUERY_SIZE = 50;

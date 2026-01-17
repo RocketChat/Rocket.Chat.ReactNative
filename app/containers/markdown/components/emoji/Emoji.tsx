@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Text, useWindowDimensions } from 'react-native';
-import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
+import { Text, View, useWindowDimensions } from 'react-native';
+import { type Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
 import Plain from '../Plain';
 import useShortnameToUnicode from '../../../../lib/hooks/useShortnameToUnicode';
@@ -68,7 +68,11 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 	};
 
 	if (emoji) {
-		return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
+		return (
+			<View style={[{ transform: [{ translateY: isBigEmoji || isAvatar ? 0 : 3 }] }]}>
+				<CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />
+			</View>
+		);
 	}
 
 	return (

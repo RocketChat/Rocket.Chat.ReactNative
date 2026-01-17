@@ -5,7 +5,7 @@ import Avatar from '../Avatar';
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
-import { IIconOrAvatar } from './interfaces';
+import { type IIconOrAvatar } from './interfaces';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const IconOrAvatar = ({
@@ -20,7 +20,8 @@ const IconOrAvatar = ({
 	teamMain,
 	showLastMessage,
 	displayMode,
-	sourceType
+	sourceType,
+	abacAttributes
 }: IIconOrAvatar): React.ReactElement | null => {
 	const { rowHeight } = useResponsiveLayout();
 
@@ -43,6 +44,7 @@ const IconOrAvatar = ({
 					size={24}
 					style={{ marginRight: 12 }}
 					sourceType={sourceType}
+					abacAttributes={abacAttributes}
 				/>
 			</View>
 		);

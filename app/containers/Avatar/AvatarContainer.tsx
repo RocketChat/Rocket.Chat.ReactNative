@@ -3,7 +3,7 @@ import { shallowEqual } from 'react-redux';
 
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
-import { IAvatar } from './interfaces';
+import { type IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
@@ -20,7 +20,8 @@ const AvatarContainer = ({
 	getCustomEmoji,
 	isStatic,
 	rid,
-	accessibilityLabel
+	accessibilityLabel,
+	accessible
 }: IAvatar): React.ReactElement => {
 	const server = useAppSelector(state => state.server.server);
 	const serverVersion = useAppSelector(state => state.server.version);
@@ -71,6 +72,7 @@ const AvatarContainer = ({
 			serverVersion={serverVersion}
 			cdnPrefix={cdnPrefix}
 			accessibilityLabel={accessibilityLabel}
+			accessible={accessible}
 		/>
 	);
 };

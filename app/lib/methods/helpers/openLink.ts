@@ -3,7 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import parse from 'url-parse';
 
 import { themes } from '../../constants/colors';
-import { TSupportedThemes } from '../../../theme';
+import { type TSupportedThemes } from '../../../theme';
 import UserPreferences from '../userPreferences';
 import ensureSecureProtocol from './ensureSecureProtocol';
 import log from './log';

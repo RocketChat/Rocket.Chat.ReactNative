@@ -1,6 +1,6 @@
 import { loadMessagesForRoom } from '../../../lib/methods/loadMessagesForRoom';
 import { loadMissedMessages } from '../../../lib/methods/loadMissedMessages';
-import { RoomTypes } from '../../../lib/methods/roomTypeToApiType';
+import { type RoomTypes } from '../../../lib/methods/roomTypeToApiType';
 
 interface IBaseParams {
 	rid: string;

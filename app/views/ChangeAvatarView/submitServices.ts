@@ -1,6 +1,6 @@
 import { resetAvatar, setAvatarFromService, saveRoomSettings } from '../../lib/services/restApi';
 import log from '../../lib/methods/helpers/log';
-import { IAvatar } from '../../definitions';
+import { type IAvatar } from '../../definitions';
 import { handleError } from './submitHelpers';
 
 export const changeRoomsAvatar = async (rid: string, roomAvatar: string | null) => {

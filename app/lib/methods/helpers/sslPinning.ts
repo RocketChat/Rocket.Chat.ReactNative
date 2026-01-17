@@ -5,7 +5,7 @@ import * as FileSystem from 'expo-file-system';
 import UserPreferences from '../userPreferences';
 import I18n from '../../../i18n';
 import { extractHostname } from './server';
-import { ICertificate } from '../../../definitions';
+import { type ICertificate } from '../../../definitions';
 import { CERTIFICATE_KEY } from '../../constants/keys';
 import NativeSSLPinningAndroid from '../../native/NativeSSLPinningAndroid';
 
@@ -26,7 +26,10 @@ const persistCertificate = (server: string, name: string, password?: string) => 
 		password
 	};
 	UserPreferences.setMap(name, certificate);
-	UserPreferences.setMap(extractHostname(server), certificate);
+	const hostname = extractHostname(server);
+	if (hostname) {
+		UserPreferences.setMap(hostname, certificate);
+	}
 	UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, name);
 	return certificate;
 };

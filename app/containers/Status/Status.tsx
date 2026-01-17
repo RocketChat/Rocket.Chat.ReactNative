@@ -1,10 +1,10 @@
 // @ts-nocheck
 import React from 'react';
-import { StyleProp, TextStyle, useWindowDimensions } from 'react-native';
+import { type StyleProp, type TextStyle, useWindowDimensions } from 'react-native';
 
 import { useTheme } from '../../theme';
-import { CustomIcon, IconSet, TIconsName } from '../CustomIcon';
-import { IStatusComponentProps } from './definition';
+import { CustomIcon, hasIcon, type TIconsName } from '../CustomIcon';
+import { type IStatusComponentProps } from './definition';
 import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
 
 const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {
@@ -14,7 +14,7 @@ const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: I
 	const { fontScale } = useWindowDimensions();
 
 	const name: TIconsName = `status-${status}`;
-	const isNameValid = IconSet.hasIcon(name);
+	const isNameValid = hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';
 	const calculatedStyle: StyleProp<TextStyle> = [
 		{

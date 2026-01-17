@@ -4,7 +4,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { addSettings, clearSettings } from '../../actions/settings';
 import { defaultSettings } from '../constants/defaultSettings';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
-import { IPreparedSettings, ISettingsIcon } from '../../definitions';
+import { type IPreparedSettings, type ISettingsIcon } from '../../definitions';
 import fetch from './helpers/fetch';
 import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';

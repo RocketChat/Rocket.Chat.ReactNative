@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from './CustomIcon';
 import { themes } from '../lib/constants/colors';
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
-import { TThreadModel } from '../definitions/IThread';
+import { type TThreadModel } from '../definitions/IThread';
 import i18n from '../i18n';
 
 const styles = StyleSheet.create({

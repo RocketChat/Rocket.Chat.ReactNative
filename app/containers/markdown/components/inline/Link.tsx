@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import { Link as LinkProps } from '@rocket.chat/message-parser';
+import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { Bold, Italic, Strike } from './index';
