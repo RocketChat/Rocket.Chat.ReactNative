@@ -392,7 +392,7 @@ export const ComposerInput = memo(
 
 		const handleTyping = (isTyping: boolean) => {
 			if (sharing || !rid) return;
-			dispatch(userTyping(rid, isTyping));
+			dispatch(userTyping(rid, isTyping, tmid ? { tmid } : {}));
 		};
 
 		const startShareView = () => ({
