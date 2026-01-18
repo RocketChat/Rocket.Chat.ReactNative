@@ -1,0 +1,38 @@
+name: Generate Release Changelog
+
+on:
+  workflow_call:
+
+jobs:
+  generate-changelog:
+    name: Generate changelog
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        shell: bash
+        run: |
+          LATEST_RELEASE_TAG=$(git tag --sort=-creatordate | head -n 1)
+
+          if [ -z "$LATEST_RELEASE_TAG" ]; then
+            echo "- Improvements and bug fixes" > changelog.txt
+            exit 0
+          fi
+
+          git log "$LATEST_RELEASE_TAG"..HEAD --pretty=format:"- %s" --no-merges > changelog.txt
+
+          if [ ! -s changelog.txt ]; then
+            echo "- Improvements and bug fixes" > changelog.txt
+          fi
+
+      - name: Upload changelog artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-changelog
+          path: changelog.txt
+          retention-days: 15
