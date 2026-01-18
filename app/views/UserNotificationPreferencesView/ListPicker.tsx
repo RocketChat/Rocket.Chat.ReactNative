@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
@@ -40,7 +41,7 @@ const ListPicker = ({
 	const insets = useSafeAreaInsets();
 
 	const getOptions = (): React.ReactElement => (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<BottomSheetView style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{OPTIONS[preference].map(i => (
 				<React.Fragment key={i.value}>
@@ -56,7 +57,7 @@ const ListPicker = ({
 					<List.Separator />
 				</React.Fragment>
 			))}
-		</View>
+		</BottomSheetView>
 	);
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;

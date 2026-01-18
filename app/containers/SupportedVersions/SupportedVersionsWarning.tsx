@@ -1,5 +1,6 @@
 import React, { type ReactElement, useLayoutEffect } from 'react';
 import { View, Text, Linking } from 'react-native';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
@@ -31,7 +32,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 	}
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
+		<BottomSheetView style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
 			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
@@ -57,6 +58,6 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 				backgroundColor={colors.surfaceTint}
 				onPress={() => Linking.openURL(message.link || LEARN_MORE_URL)}
 			/>
-		</View>
+		</BottomSheetView>
 	);
 };

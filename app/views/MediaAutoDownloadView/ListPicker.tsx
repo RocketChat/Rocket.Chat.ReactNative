@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useActionSheet } from '../../containers/ActionSheet';
 import * as List from '../../containers/List';
@@ -70,7 +71,7 @@ const ListPicker = ({
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
 	const getOptions = () => (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<BottomSheetView style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			{OPTIONS.map(i => (
 				<List.Radio
 					onPress={() => {
@@ -82,7 +83,7 @@ const ListPicker = ({
 					isSelected={option.value === i.value}
 				/>
 			))}
-		</View>
+		</BottomSheetView>
 	);
 
 	/* when picking an option the label should be Never but when showing among the other settings the label should be Off */

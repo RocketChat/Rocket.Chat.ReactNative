@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
@@ -20,7 +21,7 @@ const DepartmentFilter = ({ currentDepartment, onDepartmentSelected, departments
 	const insets = useSafeAreaInsets();
 
 	return (
-		<View
+		<BottomSheetView
 			style={{
 				backgroundColor: colors.surfaceRoom,
 				borderColor: colors.strokeLight,
@@ -35,7 +36,7 @@ const DepartmentFilter = ({ currentDepartment, onDepartmentSelected, departments
 				)}
 				ItemSeparatorComponent={List.Separator}
 			/>
-		</View>
+		</BottomSheetView>
 	);
 };
 

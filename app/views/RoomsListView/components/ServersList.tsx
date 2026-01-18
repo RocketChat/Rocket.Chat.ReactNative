@@ -3,6 +3,7 @@ import { FlatList, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
 import { type Subscription } from 'rxjs';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { appStart } from '../../../actions/app';
 import { selectServerRequest, serverInitAdd } from '../../../actions/server';
@@ -121,7 +122,7 @@ const ServersList = () => {
 	);
 
 	return (
-		<View
+		<BottomSheetView
 			style={{
 				backgroundColor: colors.surfaceLight,
 				borderColor: colors.strokeLight,
@@ -151,7 +152,7 @@ const ServersList = () => {
 					backgroundColor={colors.buttonBackgroundSecondaryDefault}
 				/>
 			</View>
-		</View>
+		</BottomSheetView>
 	);
 };
 

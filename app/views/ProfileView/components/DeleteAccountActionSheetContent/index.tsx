@@ -3,6 +3,7 @@ import { AccessibilityInfo, Keyboard, StyleSheet, Text, View } from 'react-nativ
 import { sha256 } from 'js-sha256';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -90,7 +91,7 @@ const DeleteAccountActionSheetContent = (): React.ReactElement => {
 	};
 
 	return (
-		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
+		<BottomSheetView style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<View accessible accessibilityLabel={i18n.t('Are_you_sure_you_want_to_delete_your_account')} style={styles.titleContainer}>
 				<CustomIcon name={'warning'} size={32} color={colors.buttonBackgroundDangerDefault} />
 				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>
@@ -122,7 +123,7 @@ const DeleteAccountActionSheetContent = (): React.ReactElement => {
 				confirmTitle={i18n.t('Delete_Account')}
 				testID={'profile-view-delete-account-sheet'}
 			/>
-		</View>
+		</BottomSheetView>
 	);
 };
 
