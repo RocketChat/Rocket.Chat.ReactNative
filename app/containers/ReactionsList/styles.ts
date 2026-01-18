@@ -6,7 +6,8 @@ export const MIN_TAB_WIDTH = 70;
 
 export default StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+        height: 400
 	},
 	allTabContainer: {
 		flex: 1
