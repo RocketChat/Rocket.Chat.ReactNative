@@ -22,7 +22,7 @@ export default StyleSheet.create({
 	reactionPickerContainer: {
 		flex: 1,
 		flexDirection: 'column',
-        height: 400
+		height: 400
 	},
 	bannerContainer: {
 		paddingVertical: 12,
