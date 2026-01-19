@@ -51,10 +51,10 @@ const clearInactiveTyping = function* clearInactiveTyping({ rid }) {
 	yield clearUserTyping({ rid, status: false });
 };
 
-const watchUserTyping = function* watchUserTyping({ rid, status }) {
+const watchUserTyping = function* watchUserTyping({ rid, status, args }) {
 	try {
 		if (status) {
-			yield emitTyping(rid, status);
+			yield emitTyping(rid, status, args);
 			if (inactiveTypingTask) {
 				yield cancel(inactiveTypingTask);
 			}

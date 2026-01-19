@@ -48,6 +48,8 @@ class VideoConfBroadcast : BroadcastReceiver() {
             "notificationType" to (extras.getString("notificationType") ?: "videoconf"),
             "rid" to (extras.getString("rid") ?: ""),
             "event" to event,
+            "host" to (extras.getString("host") ?: ""),
+            "callId" to (extras.getString("callId") ?: ""),
             "caller" to mapOf(
                 "_id" to (extras.getString("callerId") ?: ""),
                 "name" to (extras.getString("callerName") ?: "")
