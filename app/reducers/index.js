@@ -27,7 +27,6 @@ import troubleshootingNotification from './troubleshootingNotification';
 import supportedVersions from './supportedVersions';
 import inAppFeedback from './inAppFeedback';
 import quickActions from './quickActions';
-import ui from './ui';
 
 export default combineReducers({
 	settings,
@@ -37,7 +36,6 @@ export default combineReducers({
 	selectedUsers,
 	createChannel,
 	app,
-	ui,
 	room,
 	rooms,
 	quickActions,

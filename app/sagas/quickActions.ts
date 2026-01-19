@@ -2,12 +2,10 @@ import { select, takeEvery, put, take, type Effect, call, race, delay } from 're
 import { Alert } from 'react-native';
 import { type Action } from 'redux';
 
-import { QUICK_ACTIONS, APP, UI, NAVIGATION } from '../actions/actionsTypes';
-import { appStart, appInit } from '../actions/app';
-import { selectServerRequest, serverInitAdd } from '../actions/server';
-import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../definitions';
-import UserPreferences from '../lib/methods/userPreferences';
-import { CURRENT_SERVER } from '../lib/constants/keys';
+import { QUICK_ACTIONS, APP, NAVIGATION } from '../actions/actionsTypes';
+import { appInit } from '../actions/app';
+import { selectServerRequest } from '../actions/server';
+import { type IApplicationState, type TServerModel, type TSubscriptionModel } from '../definitions';
 import Navigation from '../lib/navigation/appNavigation';
 import { sendEmail } from '../views/SettingsView';
 import { goRoom } from '../lib/methods/helpers/goRoom';
@@ -77,23 +75,6 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 	const quickAction = actionWithId[0];
 
 	switch (quickAction) {
-		case 'add-server': {
-			const server = UserPreferences.getString(CURRENT_SERVER);
-
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-			yield put(serverInitAdd(server || ''));
-			break;
-		}
-		case 'search': {
-			yield waitForAppReady();
-			const currentRoute = Navigation.getCurrentRoute();
-
-			if (currentRoute?.name !== 'RoomsListView') {
-				Navigation.navigate('RoomsListView');
-			}
-			yield put({ type: UI.TRIGGER_SEARCH });
-			break;
-		}
 		case 'contact': {
 			yield call(sendEmail);
 			yield waitForAppReady(); // if user navigates back to app just init it

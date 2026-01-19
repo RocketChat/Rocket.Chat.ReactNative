@@ -62,7 +62,6 @@ export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPE
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN', 'OPEN_VIDEO_CONF']);
 export const QUICK_ACTIONS = createRequestTypes('QUICK_ACTIONS', ['QUICK_ACTION_HANDLE', 'QUICK_ACTION_HANDLED']);
 export const NAVIGATION = createRequestTypes('NAVIGATION', ['NAVIGATION_READY']);
-export const UI = createRequestTypes('UI', ['TRIGGER_SEARCH', 'CLEAR_TRIGGERED_SEARCH']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET', 'CLEAR']);
