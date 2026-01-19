@@ -10,10 +10,11 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 
+export type TType = 'In_app' | 'System_default' | 'Chrome' | 'Firefox' | 'Brave';
 export type TValue = 'inApp' | 'systemDefault:' | 'googlechrome:' | 'firefox:' | 'brave:';
 
 export interface IBrowsersValues {
-	title: string;
+	title: TType;
 	value: TValue;
 }
 
@@ -71,12 +72,13 @@ const DefaultBrowserView = () => {
 		}
 	}, []);
 
-	const changeDefaultBrowser = useCallback((newBrowser: TValue) => {
+	const changeDefaultBrowser = useCallback((value: TType) => {
+        const newBrowser = DEFAULT_BROWSERS.find((x)=> x.title === value)?.value || BROWSERS.find((x)=> x.title === value)?.value || 'systemDefault:';
+        
 		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
-			const browser = newBrowser || 'systemDefault:';
-			UserPreferences.setString(DEFAULT_BROWSER_KEY, browser);
-			setBrowser(browser);
+			UserPreferences.setString(DEFAULT_BROWSER_KEY, newBrowser);
+			setBrowser(newBrowser);
 		} catch {
 			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
@@ -89,10 +91,10 @@ const DefaultBrowserView = () => {
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				renderItem={({ item }) => (
 					<List.Radio
-						isSelected={(!browser && item.value === 'systemDefault:') || item.title === browser}
+						isSelected={(!browser && item.value === 'systemDefault:') || item.value === browser}
 						title={item.title}
 						value={item.value}
-						translateTitle={false}
+						translateTitle={true}
 						translateSubtitle={false}
 						onPress={changeDefaultBrowser}
 						testID={`default-browser-view-${item.value}`}
