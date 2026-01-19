@@ -23,6 +23,7 @@ import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
+import chat.rocket.reactnative.a11y.AccessibleInvertedScrollViewPackage;
 
 /**
  * Main Application class.
@@ -46,6 +47,7 @@ open class MainApplication : Application(), ReactApplication {
               add(WatermelonDBJSIPackage())
               add(VideoConfTurboPackage())
               add(SecureStoragePackage())
+              add(AccessibleInvertedScrollViewPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
