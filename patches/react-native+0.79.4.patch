@@ -1,0 +1,112 @@
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollView.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollView.java
+index 1234567..abcdefg 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollView.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollView.java
+@@ -126,6 +126,7 @@ public class ReactScrollView extends ScrollView
+   private int mScrollEventThrottle = 0;
+   private @Nullable MaintainVisibleScrollPositionHelper mMaintainVisibleContentPositionHelper =
+       null;
++  private boolean mIsInvertedVirtualizedList = false;
+ 
+   public ReactScrollView(Context context) {
+     this(context, null);
+@@ -156,6 +157,79 @@ public class ReactScrollView extends ScrollView
+     }
+   }
+ 
++  /**
++   * Set whether this ScrollView is used for an inverted virtualized list.
++   * When true, we override accessibility traversal order to fix the issue where
++   * inverted lists have reversed accessibility order.
++   */
++  public void setIsInvertedVirtualizedList(boolean isInverted) {
++    mIsInvertedVirtualizedList = isInverted;
++  }
++
++  /**
++   * Override addChildrenForAccessibility to fix traversal order for inverted lists.
++   * 
++   * When a FlatList is inverted (inverted={true}), React Native uses scaleY: -1 transform
++   * which visually inverts the list but also inverts the accessibility traversal order.
++   * 
++   * Due to scaleY: -1 transform:
++   * - Higher array indices appear at VISUAL TOP (newest messages)
++   * - Lower array indices appear at VISUAL BOTTOM (oldest messages)
++   * 
++   * This method returns VISIBLE children (plus a buffer zone) in VISUAL order (top to bottom):
++   * 1. First item = topmost visible (focus enters here from header) = highest index
++   * 2. Last item = bottommost visible (focus exits to composer from here) = lowest index
++   * 3. Buffer zone allows scroll-to-reveal when navigating beyond visible bounds
++   */
++  @Override
++  public void addChildrenForAccessibility(ArrayList<View> outChildren) {
++    if (!mIsInvertedVirtualizedList) {
++      super.addChildrenForAccessibility(outChildren);
++      return;
++    }
++
++    // Get the content view (the container that holds all list items)
++    View contentView = getContentView();
++    if (contentView == null || !(contentView instanceof ViewGroup)) {
++      super.addChildrenForAccessibility(outChildren);
++      return;
++    }
++    ViewGroup contentViewGroup = (ViewGroup) contentView;
++    int childCount = contentViewGroup.getChildCount();
++    if (childCount == 0) {
++      super.addChildrenForAccessibility(outChildren);
++      return;
++    }
++
++    // Calculate viewport bounds with buffer zone for scroll-to-reveal
++    int scrollY = getScrollY();
++    int viewportTop = scrollY;
++    int viewportBottom = scrollY + getHeight();
++    
++    // Buffer zone allows focus to move to items just outside viewport,
++    // triggering requestChildFocus() which scrolls them into view
++    int bufferZone = 200; // pixels
++    int extendedViewportTop = viewportTop - bufferZone;
++    int extendedViewportBottom = viewportBottom + bufferZone;
++
++    // For inverted lists with scaleY: -1, we must iterate in REVERSE order
++    // to match VISUAL top-to-bottom order:
++    // - childCount-1 = visually at TOP (newest message) -> added FIRST
++    // - 0 = visually at BOTTOM (oldest message) -> added LAST
++    // 
++    // This ensures:
++    // - First accessible child = top visible item (focus enters here from header)
++    // - Last accessible child = bottom visible item (focus exits to composer from here)
++    for (int i = childCount - 1; i >= 0; i--) {
++      View child = contentViewGroup.getChildAt(i);
++      if (child != null && child.getVisibility() == View.VISIBLE) {
++        // Check if child is within extended viewport (visible + buffer)
++        int childTop = child.getTop();
++        int childBottom = child.getBottom();
++        if (childBottom > extendedViewportTop && childTop < extendedViewportBottom) {
++          outChildren.add(child);
++        }
++      }
++    }
++
++    // If no visible children found, fall back to default behavior
++    if (outChildren.isEmpty()) {
++      super.addChildrenForAccessibility(outChildren);
++    }
++  }
++
+   @Nullable
+   private OverScroller getOverScrollerFromParent() {
+     OverScroller scroller;
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewManager.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewManager.java
+index 1234567..abcdefg 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewManager.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewManager.java
+@@ -403,5 +403,7 @@ public class ReactScrollViewManager extends ViewGroupManager<ReactScrollView>
+     } else {
+       view.setVerticalScrollbarPosition(View.SCROLLBAR_POSITION_DEFAULT);
+     }
++    // Set the inverted flag for accessibility fix
++    view.setIsInvertedVirtualizedList(applyFix);
+   }
+ }
