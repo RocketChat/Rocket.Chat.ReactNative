@@ -10,7 +10,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 
-export type TType = 'In_app' | 'System_default' | 'Chrome' | 'Firefox' | 'Brave';
+export type TType = 'In_app' | 'System_default' | 'Chrome' | 'Firefox' | 'Brave'; 
 export type TValue = 'inApp' | 'systemDefault:' | 'googlechrome:' | 'firefox:' | 'brave:';
 
 export interface IBrowsersValues {
