@@ -3,15 +3,19 @@ import { Alert } from 'react-native';
 import { type Action } from 'redux';
 
 import { QUICK_ACTIONS, APP, NAVIGATION } from '../actions/actionsTypes';
-import { appInit } from '../actions/app';
-import { selectServerRequest } from '../actions/server';
-import { type IApplicationState, type TServerModel, type TSubscriptionModel } from '../definitions';
+import { appInit, appStart } from '../actions/app';
+import { selectServerRequest, serverInitAdd } from '../actions/server';
+import { RootEnum, type IApplicationState, type TServerModel, type TSubscriptionModel } from '../definitions';
 import Navigation from '../lib/navigation/appNavigation';
 import { sendEmail } from '../views/SettingsView';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { getRoom } from '../lib/methods/getRoom';
 import I18n from '../i18n';
 import { getServerById } from '../lib/database/services/Server';
+import UserPreferences from '../lib/methods/userPreferences';
+import { TOKEN_KEY } from '../lib/constants/keys';
+import events from '../lib/methods/helpers/events';
+import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 
 interface IQuickActionOpen extends Action {
 	params?: {
@@ -59,8 +63,32 @@ function* waitForNavigationReady(): Generator {
 }
 
 function* switchServer(targetServer: string): Generator {
+	const currentServer: string = yield select((state: IApplicationState) => state.server.server);
+
+	if (currentServer === targetServer) {
+		return;
+	}
+
+	const userId = UserPreferences.getString(`${TOKEN_KEY}-${targetServer}`);
+	const isMasterDetail: boolean = yield select((state: IApplicationState) => state.app.isMasterDetail);
+
+	if (isMasterDetail) {
+		yield call(goRoom, { item: {}, isMasterDetail });
+	}
+
+	if (!userId) {
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		yield put(serverInitAdd(currentServer));
+
+		yield delay(300);
+		events.emit('NewServer', { server: targetServer });
+		return;
+	}
+
+	yield call(localAuthenticate, targetServer);
+
 	const server = (yield call(getServerById, targetServer)) as TServerModel;
-	yield put(selectServerRequest(server._raw.id, server.version, true, true));
+	yield put(selectServerRequest(targetServer, server.version, true, true));
 }
 
 function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
