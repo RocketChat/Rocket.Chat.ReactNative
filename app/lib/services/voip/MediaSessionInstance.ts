@@ -10,7 +10,6 @@ import { registerGlobals } from 'react-native-webrtc';
 
 import { mediaSessionStore } from './MediaSessionStore';
 import { useCallStore } from './useCallStore';
-import { getPendingCall, hasPendingAnsweredCall, clearPendingCall } from './pendingCallStore';
 import { store } from '../../store/auxStore';
 import sdk from '../sdk';
 import Navigation from '../../navigation/appNavigation';
@@ -66,7 +65,7 @@ class MediaSessionInstance {
 			this.instance.processSignal(signal);
 		});
 
-		this.instance?.on('newCall', async ({ call }: { call: IClientMediaCall }) => {
+		this.instance?.on('newCall', ({ call }: { call: IClientMediaCall }) => {
 			if (call && !call.hidden) {
 				call.emitter.on('stateChange', oldState => {
 					console.log(`📊 ${oldState} → ${call.state}`);
@@ -74,31 +73,11 @@ class MediaSessionInstance {
 				// Use deterministic UUID v5 from callId - same as native side
 				const callUUID = CallIdUUIDModule.toUUID(call.callId);
 
-				// Check if this call was already answered from a VoIP push (cold start scenario)
-				const pendingCall = getPendingCall();
-				if (pendingCall && pendingCall.callId === call.callId && hasPendingAnsweredCall()) {
-					console.log('[VoIP] Processing pending answered call:', call.callId);
-					try {
-						await call.accept();
-						RNCallKeep.setCurrentCallActive(callUUID);
-						// Set call in Zustand store and navigate to CallView
-						useCallStore.getState().setCall(call, callUUID);
-						Navigation.navigate('CallView', { callUUID });
-					} catch (e) {
-						console.log('[VoIP] Error accepting pending call:', e);
-						RNCallKeep.endCall(callUUID);
-					} finally {
-						clearPendingCall();
-					}
-				} else {
-					// Normal flow: display incoming call UI
-					const displayName = call.contact.displayName || call.contact.username || 'Unknown';
-					RNCallKeep.displayIncomingCall(callUUID, displayName, displayName, 'generic', false);
-				}
+				const displayName = call.contact.displayName || call.contact.username || 'Unknown';
+				RNCallKeep.displayIncomingCall(callUUID, displayName, displayName, 'generic', false);
 
 				call.emitter.on('ended', () => {
 					RNCallKeep.endCall(callUUID);
-					clearPendingCall();
 				});
 			}
 		});

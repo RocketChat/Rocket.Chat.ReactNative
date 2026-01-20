@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import RNCallKeep from 'react-native-callkeep';
 
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
@@ -39,6 +40,7 @@ import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 import StatusBar from './containers/StatusBar';
+import { getInitialEvents } from './lib/services/voip/getInitialEvents';
 
 enableScreens();
 initStore(store);
@@ -147,6 +149,8 @@ export default class Root extends React.Component<{}, IState> {
 		if (handledVideoConf) {
 			return;
 		}
+
+		await getInitialEvents();
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
