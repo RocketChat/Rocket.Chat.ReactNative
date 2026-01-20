@@ -5,12 +5,10 @@ import { isIOS } from '../../methods/helpers';
 import { CallIdUUIDModule } from '../../native/CallIdUUID';
 import store from '../../store';
 import { voipCallOpen } from '../../../actions/deepLinking';
+import { setVoipPushToken } from './pushTokenAux';
 
 // Store VoIP push data temporarily
 let voipPushData: { callId: string; caller: string; host?: string; callUUID: string } | null = null;
-let voipPushToken: string | null = null;
-
-export const getVoipPushToken = (): string | null => voipPushToken;
 
 export const getInitialEvents = async (): Promise<boolean> => {
 	if (!isIOS) {
@@ -20,7 +18,7 @@ export const getInitialEvents = async (): Promise<boolean> => {
 	try {
 		VoipPushNotification.addEventListener('register', (token: string) => {
 			console.log('[VoIP][getInitialEvents] Registered VoIP push token:', token);
-			voipPushToken = token;
+			setVoipPushToken(token);
 		});
 
 		VoipPushNotification.addEventListener('didLoadWithEvents', events => {
@@ -39,8 +37,8 @@ export const getInitialEvents = async (): Promise<boolean> => {
 					}
 				}
 				if (name === VoipPushNotification.RNVoipPushRemoteNotificationsRegisteredEvent) {
-					voipPushToken = data;
-					console.log('[VoIP][getInitialEvents] Registered VoIP push token:', voipPushToken);
+					setVoipPushToken(data);
+					console.log('[VoIP][getInitialEvents] Registered VoIP push token:', data);
 				}
 			}
 		});

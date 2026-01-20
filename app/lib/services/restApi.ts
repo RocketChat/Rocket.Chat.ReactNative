@@ -26,7 +26,7 @@ import { getDeviceToken } from '../notifications';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
-import { getVoipPushToken } from './voip/getInitialEvents';
+import { getVoipPushToken } from './voip/pushTokenAux';
 
 export const createChannel = ({
 	name,
