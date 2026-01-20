@@ -65,10 +65,6 @@ function* waitForNavigationReady(): Generator {
 function* switchServer(targetServer: string): Generator {
 	const currentServer: string = yield select((state: IApplicationState) => state.server.server);
 
-	if (currentServer === targetServer) {
-		return;
-	}
-
 	const userId = UserPreferences.getString(`${TOKEN_KEY}-${targetServer}`);
 	const isMasterDetail: boolean = yield select((state: IApplicationState) => state.app.isMasterDetail);
 
