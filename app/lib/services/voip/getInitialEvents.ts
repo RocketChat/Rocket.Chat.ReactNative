@@ -8,6 +8,9 @@ import { voipCallOpen } from '../../../actions/deepLinking';
 
 // Store VoIP push data temporarily
 let voipPushData: { callId: string; caller: string; host?: string; callUUID: string } | null = null;
+let voipPushToken: string | null = null;
+
+export const getVoipPushToken = (): string | null => voipPushToken;
 
 export const getInitialEvents = async (): Promise<boolean> => {
 	if (!isIOS) {
@@ -15,6 +18,11 @@ export const getInitialEvents = async (): Promise<boolean> => {
 	}
 
 	try {
+		VoipPushNotification.addEventListener('register', (token: string) => {
+			console.log('[VoIP][getInitialEvents] Registered VoIP push token:', token);
+			voipPushToken = token;
+		});
+
 		VoipPushNotification.addEventListener('didLoadWithEvents', events => {
 			if (!events || !Array.isArray(events)) return;
 
@@ -29,6 +37,10 @@ export const getInitialEvents = async (): Promise<boolean> => {
 						voipPushData = { callId, caller: caller || 'Unknown', host, callUUID };
 						console.log('[VoIP][getInitialEvents] Stored VoIP push data:', voipPushData);
 					}
+				}
+				if (name === VoipPushNotification.RNVoipPushRemoteNotificationsRegisteredEvent) {
+					voipPushToken = data;
+					console.log('[VoIP][getInitialEvents] Registered VoIP push token:', voipPushToken);
 				}
 			}
 		});
