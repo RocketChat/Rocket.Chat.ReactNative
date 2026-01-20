@@ -31,7 +31,7 @@ export async function updateQuickActions({ recentRooms }: { recentRooms: IRecent
 				})
 			} as QuickActions.Action;
 		})
-		.filter(item => item !== null)
+		.filter((item): item is QuickActions.Action => item !== null)
 		.reverse();
 
 	const quickActionItems = [

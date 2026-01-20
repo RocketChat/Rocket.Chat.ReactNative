@@ -63,10 +63,10 @@ function* waitForNavigationReady(): Generator {
 }
 
 function* switchServer(targetServer: string): Generator {
-	const currentServer: string = yield select((state: IApplicationState) => state.server.server);
+	const currentServer: string = (yield select((state: IApplicationState) => state.server.server)) as string;
 
 	const userId = UserPreferences.getString(`${TOKEN_KEY}-${targetServer}`);
-	const isMasterDetail: boolean = yield select((state: IApplicationState) => state.app.isMasterDetail);
+	const isMasterDetail: boolean = (yield select((state: IApplicationState) => state.app.isMasterDetail)) as boolean;
 
 	if (isMasterDetail) {
 		yield call(goRoom, { item: {}, isMasterDetail });
@@ -108,7 +108,7 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			yield waitForAppReady();
 
 			const targetServer = decodeURIComponent(actionWithId[1]);
-			const currentServer: string = yield select((state: IApplicationState) => state.server.server);
+			const currentServer: string = (yield select((state: IApplicationState) => state.server.server)) as string;
 
 			const rid = actionWithId[2];
 
@@ -124,8 +124,8 @@ function* handleQuickActionOpen(action: IQuickActionOpen): Generator {
 			try {
 				const room = (yield call(waitForRoomInDB, rid)) as TSubscriptionModel;
 				yield waitForNavigationReady();
-				const isMasterDetail = yield select((state: IApplicationState) => state.app.isMasterDetail);
-				yield call(goRoom, { item: { rid: room.rid }, isMasterDetail });
+				const isMasterDetail = (yield select((state: IApplicationState) => state.app.isMasterDetail)) as boolean;
+				yield call(() => goRoom({ item: { rid: room.rid }, isMasterDetail }));
 			} catch (e) {
 				console.log(e);
 				showRoomNotFoundError();
