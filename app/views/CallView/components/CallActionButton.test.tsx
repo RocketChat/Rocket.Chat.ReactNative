@@ -44,7 +44,13 @@ describe('CallActionButton', () => {
 
 	it('should render with active variant', () => {
 		const { getByTestId } = render(
-			<CallActionButton icon='microphone-disabled' label='Unmute' onPress={onPressMock} variant='active' testID='call-action-button' />
+			<CallActionButton
+				icon='microphone-disabled'
+				label='Unmute'
+				onPress={onPressMock}
+				variant='active'
+				testID='call-action-button'
+			/>
 		);
 		expect(getByTestId('call-action-button')).toBeTruthy();
 	});
