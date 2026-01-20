@@ -103,8 +103,9 @@ const MessageInner = React.memo((props: IMessageInner) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: IMessageTouchable & IMessage) => {
-	const handleMentionsOnAccessibilityLabel = (label: string) => {
+const Message = React.memo(
+	(props: IMessageTouchable & IMessage) => {
+		const handleMentionsOnAccessibilityLabel = (label: string) => {
 		const { mentions = [], channels = [] } = props;
 
 		mentions.forEach(item => {
@@ -154,6 +155,8 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 			: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 	};
 
+	const showRightIcons = !props.isHeader;
+
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
@@ -195,7 +198,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 					<View style={styles.messageContent}>
 						<MessageInner {...props} />
 					</View>
-					{!props.isHeader ? (
+					{showRightIcons ? (
 						<RightIcons
 							type={props.type}
 							msg={props.msg}
@@ -204,6 +207,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 							isReadReceiptEnabled={props.isReadReceiptEnabled}
 							unread={props.unread}
 							pinned={props.pinned}
+							starred={props.starred}
 							isTranslated={props.isTranslated}
 						/>
 					) : null}
@@ -211,7 +215,18 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 			</A11y.Index>
 		</View>
 	);
-});
+	},
+	(prevProps, nextProps) =>
+		prevProps.starred === nextProps.starred &&
+		prevProps.pinned === nextProps.pinned &&
+		prevProps.id === nextProps.id &&
+		prevProps.msg === nextProps.msg &&
+		prevProps.isEdited === nextProps.isEdited &&
+		prevProps.hasError === nextProps.hasError &&
+		prevProps.isTemp === nextProps.isTemp &&
+		prevProps.isTranslated === nextProps.isTranslated &&
+		prevProps.isHeader === nextProps.isHeader
+);
 Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {

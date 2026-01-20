@@ -6,6 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
+import { getOptimisticUpdate, isRecentOptimisticUpdate, clearOptimisticUpdate } from '../helpers/optimisticUpdates';
 import database from '../../database';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
@@ -45,7 +46,6 @@ export default class RoomSubscription {
 	}
 
 	subscribe = async () => {
-		console.log(`[RCRN] Subscribing to room ${this.rid}`);
 		if (this.promises) {
 			await this.unsubscribe();
 		}
@@ -63,7 +63,6 @@ export default class RoomSubscription {
 	};
 
 	unsubscribe = async () => {
-		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
 		updateLastOpen(this.rid);
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
@@ -281,7 +280,45 @@ export default class RoomSubscription {
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
-								Object.assign(m, message);
+								const optimisticUpdate = getOptimisticUpdate(message._id);
+								const isRecentOptimistic = isRecentOptimisticUpdate(message._id, 2000);
+
+								if (message.pinned !== undefined) {
+									if (isRecentOptimistic && optimisticUpdate?.pinned !== undefined) {
+										m.pinned = optimisticUpdate.pinned;
+									} else {
+										m.pinned = message.pinned;
+									}
+								}
+								if (message.starred !== undefined) {
+									if (isRecentOptimistic && optimisticUpdate?.starred !== undefined) {
+										m.starred = optimisticUpdate.starred;
+									} else {
+										m.starred = message.starred;
+									}
+								}
+
+								const { pinned: _pinned, starred: _starred, ...restMessage } = message;
+								Object.assign(m, restMessage);
+
+								if (message.pinned !== undefined) {
+									if (isRecentOptimistic && optimisticUpdate?.pinned !== undefined) {
+										m.pinned = optimisticUpdate.pinned;
+									} else {
+										m.pinned = message.pinned;
+									}
+								}
+								if (message.starred !== undefined) {
+									if (isRecentOptimistic && optimisticUpdate?.starred !== undefined) {
+										m.starred = optimisticUpdate.starred;
+									} else {
+										m.starred = message.starred;
+									}
+								}
+
+								if (isRecentOptimistic) {
+									clearOptimisticUpdate(message._id);
+								}
 							})
 						)
 					);
@@ -373,7 +410,8 @@ export default class RoomSubscription {
 
 	handleMessageReceived = async (ddpMessage: IDDPMessage) => {
 		try {
-			const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0])) as IMessage;
+			const rawMessage = ddpMessage.fields.args[0];
+			const message = buildMessage(EJSON.fromJSONValue(rawMessage)) as IMessage;
 			await this.updateMessage(message);
 			this.read();
 		} catch (e) {

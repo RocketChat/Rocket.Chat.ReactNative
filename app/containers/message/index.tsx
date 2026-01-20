@@ -410,8 +410,11 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			replies,
 			md,
 			comment,
-			pinned
+			pinned,
+			starred: rawStarred
 		} = item;
+
+		const starred = rawStarred === true;
 
 		let message = msg;
 		let isTranslated = false;
@@ -505,6 +508,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isBeingEdited={isBeingEdited}
 					isPreview={isPreview}
 					pinned={pinned}
+					starred={starred}
 					autoTranslateLanguage={autoTranslateLanguage}
 				/>
 				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />

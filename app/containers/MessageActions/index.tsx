@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import dayjs from '../../lib/dayjs';
 import database from '../../lib/database';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { getMessageById } from '../../lib/database/services/Message';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import { registerOptimisticUpdate } from '../../lib/methods/helpers/optimisticUpdates';
 import I18n from '../../i18n';
 import log, { logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
@@ -307,21 +310,96 @@ const MessageActions = React.memo(
 			};
 
 			const handleStar = async (messageId: string, starred: boolean) => {
+				const newStarred = !starred;
 				logEvent(starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
+
+				try {
+					const db = database.active;
+					registerOptimisticUpdate(messageId, { starred: newStarred });
+
+					let messageRecord = await getMessageById(messageId);
+					if (!messageRecord) {
+						await new Promise(resolve => setTimeout(resolve, 100));
+						messageRecord = await getMessageById(messageId);
+					}
+
+					if (messageRecord) {
+						await db.write(async () => {
+							await messageRecord.update(
+								protectedFunction((m: any) => {
+									m.starred = newStarred;
+								})
+							);
+						});
+					}
+				} catch (optimisticError) {
+					// Do nothing
+				}
+
 				try {
 					await toggleStarMessage(messageId, starred);
 					EventEmitter.emit(LISTENER, { message: starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 				} catch (e) {
+					try {
+						const db = database.active;
+						const messageRecord = await getMessageById(messageId);
+						if (messageRecord) {
+							await db.write(async () => {
+								await messageRecord.update(
+									protectedFunction((m: any) => {
+										m.starred = starred;
+									})
+								);
+							});
+						}
+					} catch (revertError) {
+						// Do nothing
+					}
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
 					log(e);
 				}
 			};
 
 			const handlePin = async (message: TAnyMessageModel) => {
+				const currentPinned = message.pinned as boolean;
+				const willPin = !currentPinned;
 				logEvent(events.ROOM_MSG_ACTION_PIN);
+
 				try {
-					await togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
+					const db = database.active;
+					const messageRecord = await getMessageById(message.id);
+					if (messageRecord) {
+						registerOptimisticUpdate(message.id, { pinned: willPin });
+						await db.write(async () => {
+							await messageRecord.update(
+								protectedFunction((m: any) => {
+									m.pinned = willPin;
+								})
+							);
+						});
+					}
+				} catch (optimisticError) {
+					// Do nothing
+				}
+
+				try {
+					await togglePinMessage(message.id, currentPinned); // TODO: reevaluate `message.pinned` type on IMessage
 				} catch (e) {
+					try {
+						const db = database.active;
+						const messageRecord = await getMessageById(message.id);
+						if (messageRecord) {
+							await db.write(async () => {
+								await messageRecord.update(
+									protectedFunction((m: any) => {
+										m.pinned = currentPinned;
+									})
+								);
+							});
+						}
+					} catch (revertError) {
+						// Do nothing
+					}
 					logEvent(events.ROOM_MSG_ACTION_PIN_F);
 					log(e);
 				}
