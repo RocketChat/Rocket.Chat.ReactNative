@@ -64,5 +64,5 @@ export function isOmnichannelModuleAvailable() {
 
 export function isVoipModuleAvailable() {
 	const { enterpriseModules } = reduxStore.getState();
-	return enterpriseModules.includes('teams-voip');
+	return true; // enterpriseModules.includes('teams-voip');
 }

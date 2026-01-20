@@ -5,7 +5,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import RNCallKeep from 'react-native-callkeep';
 
 import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
@@ -34,13 +33,13 @@ import {
 } from './lib/methods/helpers/theme';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
+import { getInitialEvents } from './lib/services/voip/getInitialEvents';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 import StatusBar from './containers/StatusBar';
-import { getInitialEvents } from './lib/services/voip/getInitialEvents';
 
 enableScreens();
 initStore(store);
@@ -150,7 +149,11 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		await getInitialEvents();
+		// TODO: change name
+		const handledVoipCall = await getInitialEvents();
+		if (handledVoipCall) {
+			return;
+		}
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
