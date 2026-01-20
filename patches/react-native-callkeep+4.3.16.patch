@@ -26,3 +26,16 @@ index 025480a..70a1305 100644
      @ReactMethod
      public void startCall(String uuid, String number, String callerName, boolean hasVideo) {
          this.startCall(uuid, number, callerName, hasVideo, null);
+diff --git a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
+index 786045f..a989d58 100644
+--- a/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
++++ b/node_modules/react-native-callkeep/ios/RNCallKeep/RNCallKeep.m
+@@ -171,6 +171,8 @@ - (void)sendEventWithNameWrapper:(NSString *)name body:(id)body {
+             body, @"data",
+             nil
+         ];
++        // https://github.com/react-native-webrtc/react-native-callkeep/issues/822#issuecomment-2866354202
++        if (_delayedEvents == nil) _delayedEvents = [NSMutableArray array];
+         [_delayedEvents addObject:dictionary];
+     }
+ }
