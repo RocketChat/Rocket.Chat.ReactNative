@@ -75,7 +75,7 @@ const RoomMembersView = (): React.ReactElement => {
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
 
-    const latestSearchRequest = useRef(0);
+	const latestSearchRequest = useRef(0);
 
 	const { isMasterDetail, serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
@@ -375,9 +375,7 @@ const RoomMembersView = (): React.ReactElement => {
 			if (filter) {
 				newMembers = membersResult || [];
 			} else {
-				const membersResultFiltered = membersResult?.filter((member: TUserModel) =>
-					!members.some(m => m._id === member._id)
-				);
+				const membersResultFiltered = membersResult?.filter((member: TUserModel) => !members.some(m => m._id === member._id));
 				newMembers = [...members, ...membersResultFiltered];
 			}
 
@@ -394,7 +392,7 @@ const RoomMembersView = (): React.ReactElement => {
 	};
 
 	const fetchMembersWithNewFilter = async (searchFilter: string) => {
-        const requestId = ++latestSearchRequest.current;
+		const requestId = ++latestSearchRequest.current;
 
 		const { room, allUsers } = state;
 		const { t } = room;
@@ -425,7 +423,7 @@ const RoomMembersView = (): React.ReactElement => {
 			});
 		} catch (e) {
 			log(e);
-            if (requestId === latestSearchRequest.current) {
+			if (requestId === latestSearchRequest.current) {
 				updateState({ isLoading: false });
 			}
 		}
