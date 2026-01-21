@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import dayjs from '../../lib/dayjs';
 import database from '../../lib/database';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { getMessageById } from '../../lib/database/services/Message';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import { registerOptimisticUpdate } from '../../lib/methods/helpers/optimisticUpdates';
 import I18n from '../../i18n';
 import log, { logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
@@ -306,12 +309,47 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleStar = async (messageId: string, starred: boolean) => {
-				logEvent(starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
+			const handleStar = async (message: TAnyMessageModel) => {
+				const currentStarred = Boolean(message.starred);
+				const willStar = !currentStarred;
+				logEvent(events.ROOM_MSG_ACTION_STAR);
+
 				try {
-					await toggleStarMessage(messageId, starred);
-					EventEmitter.emit(LISTENER, { message: starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
+					const db = database.active;
+					const messageRecord = await getMessageById(message.id);
+					if (messageRecord) {
+						await db.write(async () => {
+							await messageRecord.update(
+								protectedFunction((m: any) => {
+									m.starred = willStar;
+								})
+							);
+						});
+						registerOptimisticUpdate(message.id, { starred: willStar });
+					}
+				} catch (optimisticError) {
+					// Do nothing
+				}
+
+				try {
+					await toggleStarMessage(message.id, currentStarred);
+					EventEmitter.emit(LISTENER, { message: willStar ? I18n.t('Message_starred') : I18n.t('Message_unstarred') });
 				} catch (e) {
+					try {
+						const db = database.active;
+						const messageRecord = await getMessageById(message.id);
+						if (messageRecord) {
+							await db.write(async () => {
+								await messageRecord.update(
+									protectedFunction((m: any) => {
+										m.starred = currentStarred;
+									})
+								);
+							});
+						}
+					} catch (revertError) {
+						// Do nothing
+					}
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
 					log(e);
 				}
@@ -506,7 +544,7 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 						icon: message.starred ? 'star-filled' : 'star',
-						onPress: () => handleStar(message.id, message.starred || false)
+						onPress: () => handleStar(message)
 					});
 				}
 
