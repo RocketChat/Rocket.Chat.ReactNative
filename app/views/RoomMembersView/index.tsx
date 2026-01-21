@@ -41,7 +41,6 @@ import {
 	type TRoomType
 } from './helpers';
 import styles from './styles';
-import { sanitizeLikeString } from '../../lib/database/utils';
 
 const PAGE_SIZE = 25;
 
