@@ -60,9 +60,17 @@ const restore = function* restore() {
 			yield put(selectServerRequest(server, serverRecord.version));
 			const lastVisitedRid = UserPreferences.getString(LAST_VISITED_ROOM_ID_KEY);
 			const lastVisitedRoomName = UserPreferences.getString(LAST_VISITED_ROOM_NAME_KEY);
-			const recentRooms = JSON.parse(UserPreferences.getString(RECENT_VISITED_ROOMS_KEY));
+			const recentRoomsRaw = UserPreferences.getString(RECENT_VISITED_ROOMS_KEY);
+			let recentRooms = null;
+			if (recentRoomsRaw) {
+				try {
+					recentRooms = JSON.parse(recentRoomsRaw);
+				} catch (e) {
+					log(e);
+				}
+			}
 
-			if (recentRooms) {
+			if (Array.isArray(recentRooms)) {
 				yield put(roomsStoreRecentRooms(recentRooms));
 			}
 
