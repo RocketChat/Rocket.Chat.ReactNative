@@ -285,14 +285,6 @@ export default class RoomSubscription {
 								const optimisticUpdate = getOptimisticUpdate(message._id);
 								const isRecentOptimistic = isRecentOptimisticUpdate(message._id, 2000);
 
-								if (message.pinned !== undefined) {
-									if (isRecentOptimistic && optimisticUpdate?.pinned !== undefined) {
-										m.pinned = optimisticUpdate.pinned;
-									} else {
-										m.pinned = message.pinned;
-									}
-								}
-
 								const { pinned: _pinned, ...restMessage } = message;
 								Object.assign(m, restMessage);
 

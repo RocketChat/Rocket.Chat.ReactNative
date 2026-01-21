@@ -213,17 +213,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 			</A11y.Index>
 		</View>
 	);
-	},
-	(prevProps, nextProps) =>
-		prevProps.pinned === nextProps.pinned &&
-		prevProps.id === nextProps.id &&
-		prevProps.msg === nextProps.msg &&
-		prevProps.isEdited === nextProps.isEdited &&
-		prevProps.hasError === nextProps.hasError &&
-		prevProps.isTemp === nextProps.isTemp &&
-		prevProps.isTranslated === nextProps.isTranslated &&
-		prevProps.isHeader === nextProps.isHeader
-);
+});
 Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {

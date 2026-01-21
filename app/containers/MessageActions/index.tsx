@@ -321,7 +321,7 @@ const MessageActions = React.memo(
 			};
 
 			const handlePin = async (message: TAnyMessageModel) => {
-				const currentPinned = message.pinned as boolean;
+				const currentPinned = Boolean(message.pinned);
 				const willPin = !currentPinned;
 				logEvent(events.ROOM_MSG_ACTION_PIN);
 
@@ -329,7 +329,6 @@ const MessageActions = React.memo(
 					const db = database.active;
 					const messageRecord = await getMessageById(message.id);
 					if (messageRecord) {
-						registerOptimisticUpdate(message.id, { pinned: willPin });
 						await db.write(async () => {
 							await messageRecord.update(
 								protectedFunction((m: any) => {
@@ -337,6 +336,7 @@ const MessageActions = React.memo(
 								})
 							);
 						});
+						registerOptimisticUpdate(message.id, { pinned: willPin });
 					}
 				} catch (optimisticError) {
 					// Do nothing
