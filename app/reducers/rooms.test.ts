@@ -2,13 +2,6 @@ import { roomsFailure, roomsRefresh, roomsRequest, roomsStoreLastVisited, roomsS
 import { mockedStore } from './mockedStore';
 import { initialState } from './rooms';
 
-jest.mock('../lib/methods/userPreferences', () => ({
-	__esModule: true,
-	default: {
-		getString: jest.fn(() => 'server-1')
-	}
-}));
-
 describe('test selectedUsers reducer', () => {
 	it('should return initial state', () => {
 		const state = mockedStore.getState().rooms;
@@ -43,7 +36,7 @@ describe('test selectedUsers reducer', () => {
 	});
 
 	it('should handle storeLastVisited', () => {
-		mockedStore.dispatch(roomsStoreLastVisited('room-id-123', 'general'));
+		mockedStore.dispatch(roomsStoreLastVisited('room-id-123', 'general', 'server-1'));
 
 		const state = mockedStore.getState().rooms;
 

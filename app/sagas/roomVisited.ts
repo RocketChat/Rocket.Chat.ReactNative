@@ -12,9 +12,9 @@ import { type IRooms } from '../reducers/rooms';
 const getRecentRooms = (state: IApplicationState) => state.rooms.recentRooms;
 
 function createRoomVisitedChannel() {
-	return eventChannel<{ rid: string; name: string }>(emit => {
-		const handler = ({ rid, name }: { rid: string; name: string }) => {
-			emit({ rid, name });
+	return eventChannel<{ rid: string; name: string; server: string }>(emit => {
+		const handler = ({ rid, name, server }: { rid: string; name: string; server: string }) => {
+			emit({ rid, name, server });
 		};
 
 		emitter.on('roomVisited', handler);
@@ -26,8 +26,8 @@ function* watchRoomVisited(): SagaIterator {
 	const channel = yield call(createRoomVisitedChannel);
 
 	while (true) {
-		const { rid, name } = yield take(channel);
-		yield put(roomsStoreLastVisited(rid, name));
+		const { rid, name, server } = yield take(channel);
+		yield put(roomsStoreLastVisited(rid, name, server));
 
 		const recentRooms: IRooms['recentRooms'] = yield select(getRecentRooms);
 

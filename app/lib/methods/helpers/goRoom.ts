@@ -14,6 +14,8 @@ import { createDirectMessage } from '../../services/restApi';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 import { getRoom } from '../getRoom';
 import { emitter } from './emitter';
+import UserPreferences from '../userPreferences';
+import { CURRENT_SERVER } from '../../constants/keys';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -94,6 +96,7 @@ export const goRoom = async ({
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {
+	const server = UserPreferences.getString(CURRENT_SERVER);
 	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
@@ -110,7 +113,8 @@ export const goRoom = async ({
 					 */
 					emitter.emit('roomVisited', {
 						rid: result.room._id,
-						name: room.prid ? room.fname || '' : room.name
+						name: room.prid ? room.fname || '' : room.name,
+						server: server ?? ''
 					});
 				} catch {
 					// do nothing
@@ -144,7 +148,8 @@ export const goRoom = async ({
 			// storing last visited room
 			emitter.emit('roomVisited', {
 				rid: room.rid,
-				name: room.prid ? room.fname || '' : room.name
+				name: room.prid ? room.fname || '' : room.name,
+				server: server ?? ''
 			});
 		} catch {
 			// do nothing

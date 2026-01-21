@@ -2,8 +2,6 @@ import { type Action } from 'redux';
 
 import { ROOMS } from './actionsTypes';
 import { type IRecentRoomsStore } from '../reducers/rooms';
-import UserPreferences from '../lib/methods/userPreferences';
-import { CURRENT_SERVER } from '../lib/constants/keys';
 
 export interface IRoomsRequest extends Action {
 	params: any;
@@ -59,8 +57,8 @@ export function roomsRefresh(): Action {
 	};
 }
 
-export function roomsStoreLastVisited(rid: string, name: string): IRoomsLastVisited {
-	const server = UserPreferences.getString(CURRENT_SERVER) ?? '';
+export function roomsStoreLastVisited(rid: string, name: string, server: string = ''): IRoomsLastVisited {
+	// const server = UserPreferences.getString(CURRENT_SERVER) ?? '';
 	return {
 		type: ROOMS.STORE_LAST_VISITED,
 		lastVisitedRoomId: rid,

@@ -67,7 +67,7 @@ const restore = function* restore() {
 			}
 
 			if (lastVisitedRid && lastVisitedRoomName) {
-				yield put(roomsStoreLastVisited(lastVisitedRid, lastVisitedRoomName));
+				yield put(roomsStoreLastVisited(lastVisitedRid, lastVisitedRoomName, server));
 			}
 		}
 

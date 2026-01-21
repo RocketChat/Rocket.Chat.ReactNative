@@ -28,7 +28,8 @@ function removeLastVisitedRoomKeys() {
 	// clearing the state
 	emitter.emit('roomVisited', {
 		rid: '',
-		name: ''
+		name: '',
+		server: ''
 	});
 }
 

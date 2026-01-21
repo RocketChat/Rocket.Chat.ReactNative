@@ -20,6 +20,7 @@ export type TEmitterEvents = TDynamicMediaDownloadEvents & {
 	roomVisited: {
 		rid: string;
 		name: string;
+		server: string;
 	};
 };
 
