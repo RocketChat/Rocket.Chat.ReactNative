@@ -17,17 +17,80 @@ class NotificationIntentHandler {
 
         /**
          * Handles a notification Intent from MainActivity.
-         * Processes both video conf and regular notification intents.
+         * Processes VoIP, video conf, and regular notification intents.
          */
         @JvmStatic
         fun handleIntent(context: Context, intent: Intent) {
-            // Handle video conf action first
+            // Handle VoIP action first
+            if (handleVoipIntent(context, intent)) {
+                return
+            }
+
+            // Handle video conf action
             if (handleVideoConfIntent(context, intent)) {
                 return
             }
 
             // Handle regular notification tap
             handleNotificationIntent(context, intent)
+        }
+
+        /**
+         * Handles VoIP call notification Intent.
+         * @return true if this was a VoIP intent, false otherwise
+         */
+        @JvmStatic
+        private fun handleVoipIntent(context: Context, intent: Intent): Boolean {
+            if (!intent.getBooleanExtra("voipAction", false)) {
+                return false
+            }
+
+            val notificationId = intent.getIntExtra("notificationId", 0)
+            val event = intent.getStringExtra("event") ?: return true
+
+            val callId = intent.getStringExtra("callId") ?: ""
+            val callUUID = intent.getStringExtra("callUUID") ?: ""
+            val callerName = intent.getStringExtra("callerName") ?: ""
+            val host = intent.getStringExtra("host") ?: ""
+            val ejson = intent.getStringExtra("ejson") ?: "{}"
+
+            Log.d(TAG, "Handling VoIP intent - event: $event, callId: $callId, callUUID: $callUUID")
+
+            // Cancel the notification if it was shown as fallback
+            if (notificationId != 0) {
+                VoipNotification.cancelById(context, notificationId)
+            }
+
+            // Store action for JS to pick up
+            val data = mapOf(
+                "notificationType" to "voip",
+                "event" to event,
+                "callId" to callId,
+                "callUUID" to callUUID,
+                "callerName" to callerName,
+                "host" to host,
+                "ejson" to ejson
+            )
+
+            val gson = GsonBuilder().create()
+            val jsonData = gson.toJson(data)
+
+            // Store in VoIP-specific SharedPreferences for JS to retrieve
+            context.getSharedPreferences("VoipCallData", Context.MODE_PRIVATE)
+                .edit()
+                .putString("pendingAction", jsonData)
+                .putString("callId", callId)
+                .putString("callUUID", callUUID)
+                .putString("callerName", callerName)
+                .putString("host", host)
+                .putString("event", event)
+                .putLong("timestamp", System.currentTimeMillis())
+                .apply()
+
+            // Clear the voip flag to prevent re-processing
+            intent.removeExtra("voipAction")
+
+            return true
         }
 
         /**

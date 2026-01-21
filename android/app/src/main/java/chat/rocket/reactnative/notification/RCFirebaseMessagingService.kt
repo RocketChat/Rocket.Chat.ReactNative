@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
 
 /**
  * Custom Firebase Messaging Service for Rocket.Chat.
  *
- * Handles incoming FCM messages and routes them to CustomPushNotification
- * for advanced processing (E2E decryption, MessagingStyle, direct reply, etc.)
+ * Handles incoming FCM messages and routes them to the appropriate handler:
+ * - VoipNotification for VoIP calls (notificationType: "voip")
+ * - CustomPushNotification for regular messages and video conferences
  */
 class RCFirebaseMessagingService : FirebaseMessagingService() {
 
     companion object {
         private const val TAG = "RocketChat.FCM"
+        private val gson = Gson()
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -33,12 +36,44 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
             }
         }
 
-        // Process the notification
+        // Parse ejson to determine notification type
+        val ejsonStr = data["ejson"]
+        val ejson = parseEjson(ejsonStr)
+
+        // Route VoIP notifications to VoipNotification handler
+        if (ejson?.notificationType == "voip") {
+            Log.d(TAG, "Routing to VoipNotification handler")
+            try {
+                val voipNotification = VoipNotification(this)
+                voipNotification.showIncomingCall(bundle, ejson)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error processing VoIP notification", e)
+            }
+            return
+        }
+
+        // Process regular notifications via CustomPushNotification
         try {
             val notification = CustomPushNotification(this, bundle)
             notification.onReceived()
         } catch (e: Exception) {
             Log.e(TAG, "Error processing FCM message", e)
+        }
+    }
+
+    /**
+     * Safely parses ejson string to Ejson object.
+     */
+    private fun parseEjson(ejsonStr: String?): Ejson? {
+        if (ejsonStr.isNullOrEmpty() || ejsonStr == "{}") {
+            return null
+        }
+
+        return try {
+            gson.fromJson(ejsonStr, Ejson::class.java)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to parse ejson", e)
+            null
         }
     }
 

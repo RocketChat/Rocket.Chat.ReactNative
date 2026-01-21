@@ -185,6 +185,7 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 	registerForPushNotifications().then(token => {
 		if (token) {
 			deviceToken = token;
+			console.log('[push.ts] Registered for push notifications:', token);
 		}
 	});
 

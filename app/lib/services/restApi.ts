@@ -1010,12 +1010,14 @@ export const registerPushToken = () =>
 				appName: getBundleId
 			};
 			try {
-				// TODO: this is temp only for VoIP push token
-				await sdk.post('push.token', {
-					type: 'gcm',
-					value: getVoipPushToken() || '',
-					appName: getBundleId
-				});
+				if (isIOS) {
+					// TODO: this is temp only for VoIP push token
+					await sdk.post('push.token', {
+						type: 'gcm',
+						value: getVoipPushToken() || '',
+						appName: getBundleId
+					});
+				}
 
 				// RC 0.60.0
 				await sdk.post('push.token', data);
