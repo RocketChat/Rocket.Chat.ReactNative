@@ -1,5 +1,5 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 
@@ -75,6 +75,8 @@ const RoomMembersView = (): React.ReactElement => {
 
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
+
+    const latestSearchRequest = useRef(0);
 
 	const { isMasterDetail, serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
@@ -393,6 +395,8 @@ const RoomMembersView = (): React.ReactElement => {
 	};
 
 	const fetchMembersWithNewFilter = async (searchFilter: string) => {
+        const requestId = ++latestSearchRequest.current;
+
 		const { room, allUsers } = state;
 		const { t } = room;
 
@@ -410,6 +414,10 @@ const RoomMembersView = (): React.ReactElement => {
 
 			const end = membersResult?.length < PAGE_SIZE;
 
+			if (requestId !== latestSearchRequest.current) {
+				return;
+			}
+
 			updateState({
 				members: membersResult || [],
 				isLoading: false,
@@ -418,7 +426,9 @@ const RoomMembersView = (): React.ReactElement => {
 			});
 		} catch (e) {
 			log(e);
-			updateState({ isLoading: false });
+            if (requestId === latestSearchRequest.current) {
+				updateState({ isLoading: false });
+			}
 		}
 	};
 
