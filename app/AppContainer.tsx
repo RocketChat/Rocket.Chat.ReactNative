@@ -39,6 +39,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 	const { theme } = useContext(ThemeContext);
 	const dispatch = useDispatch();
 	const recentRooms = useAppSelector((state: IApplicationState) => state.rooms.recentRooms);
+	const currentServer = useAppSelector((state: IApplicationState) => state.server.server);
 
 	useEffect(() => {
 		registerQuickActions();
@@ -58,8 +59,13 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 	}, [root]);
 
 	useEffect(() => {
+		if (!currentServer) {
+			updateQuickActions({ recentRooms: [] });
+			return;
+		}
+
 		updateQuickActions({ recentRooms });
-	}, [recentRooms]);
+	}, [recentRooms, currentServer]); // currentserver for updating after logging out
 
 	if (!root) {
 		return null;

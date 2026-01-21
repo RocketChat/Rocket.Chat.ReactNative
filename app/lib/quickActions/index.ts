@@ -7,31 +7,51 @@ import { quickActionHandle } from '../../actions/quickActions';
 import { type IRecentRoomsStore } from '../../reducers/rooms';
 import { getServersList } from '../methods/getServerList';
 import I18n from '../../i18n';
+import { roomsStoreRecentRooms } from '../../actions/rooms';
 
 let registered = false;
 
 let quickActionSubscription: { remove(): void } | null = null;
 let appStateSubscription: { remove(): void } | null = null;
 
-export async function updateQuickActions({ recentRooms }: { recentRooms: IRecentRoomsStore[] } = { recentRooms: [] }) {
-	const serverList = (await getServersList()).map(server => server._raw.id);
-	const recentRoomQuickActions: QuickActions.Action[] = recentRooms
-		.map(room => {
-			if (!room.server) return null;
-			if (!serverList.includes(room.server)) return null;
+let updateInProgress = false;
+let pendingUpdate: IRecentRoomsStore[] | null = null;
 
-			return {
-				id: `recent/${encodeURIComponent(room.server)}/${room.rid}`,
-				title: room.name,
-				subtitle: room.server,
-				icon: Platform.select({
-					ios: 'symbol:clock.arrow.trianglehead.counterclockwise.rotate.90',
-					android: 'ic_quickaction_recent',
-					default: undefined
-				})
-			} as QuickActions.Action;
-		})
-		.filter((item): item is QuickActions.Action => item !== null)
+export async function updateQuickActions({ recentRooms }: { recentRooms: IRecentRoomsStore[] } = { recentRooms: [] }) {
+	if (updateInProgress) {
+		pendingUpdate = recentRooms;
+		return;
+	}
+	updateInProgress = true;
+
+	const serverList = (await getServersList()).map(server => server._raw.id);
+	const filteredRooms = recentRooms.filter(room => {
+		if (!room.server) return false;
+		if (!serverList.includes(room.server)) return false;
+
+		return true;
+	});
+
+	const isEqual =
+		recentRooms.length === filteredRooms.length &&
+		recentRooms.every((room, i) => room.rid === filteredRooms[i].rid && room.server === filteredRooms[i].server);
+
+	if (!isEqual) store.dispatch(roomsStoreRecentRooms(filteredRooms)); // storing the rooms again incase server any server has logout
+
+	const recentRoomQuickActions: QuickActions.Action[] = filteredRooms
+		.map(
+			room =>
+				({
+					id: `recent/${encodeURIComponent(room.server as string)}/${room.rid}`,
+					title: room.name,
+					subtitle: room.server,
+					icon: Platform.select({
+						ios: 'symbol:clock.arrow.trianglehead.counterclockwise.rotate.90',
+						android: 'ic_quickaction_recent',
+						default: undefined
+					})
+				} as QuickActions.Action)
+		)
 		.reverse();
 
 	const quickActionItems = [
@@ -48,6 +68,15 @@ export async function updateQuickActions({ recentRooms }: { recentRooms: IRecent
 	];
 
 	await QuickActions.setItems(quickActionItems);
+
+	updateInProgress = false;
+
+	// Process any pending update
+	if (pendingUpdate) {
+		const rooms = pendingUpdate;
+		pendingUpdate = null;
+		await updateQuickActions({ recentRooms: rooms });
+	}
 }
 
 export async function registerQuickActions() {

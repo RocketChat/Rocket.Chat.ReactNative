@@ -1,7 +1,5 @@
 import { type IRoomsAction } from '../actions/rooms';
 import { ROOMS } from '../actions/actionsTypes';
-import UserPreferences from '../lib/methods/userPreferences';
-import { CURRENT_SERVER } from '../lib/constants/keys';
 
 export interface IRecentRoomsStore {
 	rid: string;
@@ -59,23 +57,19 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 				refreshing: true
 			};
 		case ROOMS.STORE_LAST_VISITED:
-			const server = UserPreferences.getString(CURRENT_SERVER);
-			const newRoom = { rid: action.lastVisitedRoomId, name: action.lastVisitedRoomName, server };
-
-			const existingIndex = state.recentRooms.findIndex(room => room.rid === newRoom.rid && room.server === newRoom.server);
-			let updatedRecentRooms: IRecentRoomsStore[];
-
-			if (existingIndex !== -1) {
-				// Move existing room to end
-				updatedRecentRooms = [
-					...state.recentRooms.slice(0, existingIndex),
-					...state.recentRooms.slice(existingIndex + 1),
-					newRoom
-				];
-			} else {
-				// Add new room
-				updatedRecentRooms = [...state.recentRooms, newRoom];
+			if (!action.lastVisitedRoomId || !action.server) {
+				return state;
 			}
+
+			const newRoom: IRecentRoomsStore = {
+				rid: action.lastVisitedRoomId,
+				name: action.lastVisitedRoomName,
+				server: action.server
+			};
+
+			const filteredRooms = state.recentRooms.filter(room => !(room.rid === newRoom.rid && room.server === newRoom.server));
+
+			let updatedRecentRooms = [...filteredRooms, newRoom];
 
 			if (updatedRecentRooms.length > 3) {
 				updatedRecentRooms = updatedRecentRooms.slice(-3);
@@ -90,7 +84,7 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 		case ROOMS.STORE_RECENT_ROOMS:
 			return {
 				...state,
-				recentRooms: action.recentRooms
+				recentRooms: action.recentRooms || []
 			};
 
 		default:
