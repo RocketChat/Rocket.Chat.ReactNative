@@ -2,6 +2,13 @@ import { roomsFailure, roomsRefresh, roomsRequest, roomsStoreLastVisited, roomsS
 import { mockedStore } from './mockedStore';
 import { initialState } from './rooms';
 
+jest.mock('../lib/methods/userPreferences', () => ({
+	__esModule: true,
+	default: {
+		getString: jest.fn(() => 'server-1')
+	}
+}));
+
 describe('test selectedUsers reducer', () => {
 	it('should return initial state', () => {
 		const state = mockedStore.getState().rooms;

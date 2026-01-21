@@ -56,7 +56,7 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 				isFetching: true,
 				refreshing: true
 			};
-		case ROOMS.STORE_LAST_VISITED:
+		case ROOMS.STORE_LAST_VISITED: {
 			if (!action.lastVisitedRoomId || !action.server) {
 				return state;
 			}
@@ -81,6 +81,7 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 				lastVisitedName: action.lastVisitedRoomName,
 				recentRooms: updatedRecentRooms
 			};
+		}
 		case ROOMS.STORE_RECENT_ROOMS:
 			return {
 				...state,
