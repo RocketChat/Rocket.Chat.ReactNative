@@ -110,7 +110,7 @@ export const goRoom = async ({
 					 */
 					emitter.emit('roomVisited', {
 						rid: result.room._id,
-						name: room.name
+						name: room.prid ? room.fname || '' : room.name
 					});
 				} catch {
 					// do nothing
@@ -144,7 +144,7 @@ export const goRoom = async ({
 			// storing last visited room
 			emitter.emit('roomVisited', {
 				rid: room.rid,
-				name: room.name
+				name: room.prid ? room.fname || '' : room.name
 			});
 		} catch {
 			// do nothing
