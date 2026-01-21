@@ -17,7 +17,7 @@ import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '..
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
+import { compareServerVersion, debounce, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
@@ -367,10 +367,21 @@ const RoomMembersView = (): React.ReactElement => {
 				limit: PAGE_SIZE,
 				allUsers: !status
 			});
+
 			const end = membersResult?.length < PAGE_SIZE;
-			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !members.some(m => m._id === member._id));
+
+			let newMembers: TUserModel[];
+			if (filter) {
+				newMembers = membersResult || [];
+			} else {
+				const membersResultFiltered = membersResult?.filter((member: TUserModel) =>
+					!members.some(m => m._id === member._id)
+				);
+				newMembers = [...members, ...membersResultFiltered];
+			}
+
 			updateState({
-				members: [...members, ...membersResultFiltered],
+				members: newMembers,
 				isLoading: false,
 				end,
 				page: page + 1
@@ -381,11 +392,53 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
-	const filter = sanitizeLikeString(state.filter.toLowerCase()) || '';
-	const filteredMembers =
-		state.members && state.members.length > 0 && state.filter
-			? state.members.filter(m => m.username.toLowerCase().match(filter) || m.name?.toLowerCase().match(filter))
-			: null;
+	const fetchMembersWithNewFilter = async (searchFilter: string) => {
+		const { room, allUsers } = state;
+		const { t } = room;
+
+		updateState({ isLoading: true });
+		try {
+			const membersResult = await getRoomMembers({
+				rid: room.rid,
+				roomType: t,
+				type: !allUsers ? 'all' : 'online',
+				filter: searchFilter,
+				skip: 0,
+				limit: PAGE_SIZE,
+				allUsers: !allUsers
+			});
+
+			const end = membersResult?.length < PAGE_SIZE;
+
+			updateState({
+				members: membersResult || [],
+				isLoading: false,
+				end,
+				page: 1
+			});
+		} catch (e) {
+			log(e);
+			updateState({ isLoading: false });
+		}
+	};
+
+	const handleFilterChange = (text: string) => {
+		const trimmedFilter = text.trim();
+
+		updateState({
+			filter: trimmedFilter,
+			page: 0,
+			members: [],
+			end: false
+		});
+
+		if (trimmedFilter.length > 0) {
+			fetchMembersWithNewFilter(trimmedFilter);
+		}
+	};
+
+	const debounceFilterChange = debounce(handleFilterChange, 500);
+	const filteredMembers = state.members.length > 0 ? state.members : null;
 
 	return (
 		<SafeAreaView testID='room-members-view'>
@@ -412,7 +465,7 @@ const RoomMembersView = (): React.ReactElement => {
 							t={state.room.t}
 							abacAttributes={state.room.abacAttributes}
 						/>
-						<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
+						<SearchBox onChangeText={text => debounceFilterChange(text)} testID='room-members-view-search' />
 					</>
 				}
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}
