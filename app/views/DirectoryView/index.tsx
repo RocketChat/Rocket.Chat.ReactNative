@@ -131,9 +131,8 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				type,
 				workspace: globalUsers ? 'all' : 'local',
 				offset: data.length,
-
 				count: 50,
-				sort: { usersCount: -1 }
+				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
 			if (directories.success) {
 				this.setState(prev => ({
