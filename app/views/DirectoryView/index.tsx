@@ -26,6 +26,7 @@ import styles from './styles';
 import Options from './Options';
 import { getDirectory, createDirectMessage, getRoomByTypeAndName } from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -38,6 +39,7 @@ interface IDirectoryViewProps {
 	theme: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
+	viewOutsideRoomPermission?: string[];
 }
 
 interface IDirectoryViewState {
@@ -52,13 +54,17 @@ interface IDirectoryViewState {
 class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
 	constructor(props: IDirectoryViewProps) {
 		super(props);
+		const hasPermission = props.viewOutsideRoomPermission && props.user?.roles
+			? props.user.roles.some(role => props.viewOutsideRoomPermission!.includes(role))
+			: false;
+		const defaultType = props.directoryDefaultView === 'users' && !hasPermission ? 'channels' : props.directoryDefaultView;
 		this.state = {
 			data: [],
 			loading: false,
 			text: '',
 			total: -1,
 			globalUsers: true,
-			type: props.directoryDefaultView
+			type: defaultType
 		};
 		this.setHeader();
 	}
@@ -82,6 +88,14 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		}
 
 		navigation.setOptions(options);
+	};
+
+	hasViewOutsideRoomPermission = (): boolean => {
+		const { viewOutsideRoomPermission, user } = this.props;
+		if (!viewOutsideRoomPermission || !user?.roles) {
+			return false;
+		}
+		return user.roles.some(role => viewOutsideRoomPermission.includes(role));
 	};
 
 	onSearchChangeText = (text: string) => {
@@ -117,8 +131,9 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				type,
 				workspace: globalUsers ? 'all' : 'local',
 				offset: data.length,
+
 				count: 50,
-				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
+				sort: { usersCount: -1 }
 			});
 			if (directories.success) {
 				this.setState(prev => ({
@@ -150,6 +165,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	changeType = (type: string) => {
+		if (type === 'users' && !this.hasViewOutsideRoomPermission()) {
+			showErrorAlert(I18n.t('You_dont_have_permission_to_perform_this_action'), I18n.t('Oops'));
+			hideActionSheetRef();
+			return;
+		}
+
 		this.setState({ type, data: [] }, () => this.search());
 
 		if (type === 'users') {
@@ -180,6 +201,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					changeType={this.changeType}
 					toggleWorkspace={this.toggleWorkspace}
 					isFederationEnabled={isFederationEnabled}
+					hasViewOutsideRoomPermission={this.hasViewOutsideRoomPermission()}
 				/>
 			)
 		});
@@ -324,7 +346,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isFederationEnabled: state.settings.FEDERATION_Enabled as boolean,
 	directoryDefaultView: state.settings.Accounts_Directory_DefaultView as string,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	viewOutsideRoomPermission: (state.permissions as any)['view-outside-room'] as string[] | undefined
 });
 
 export default connect(mapStateToProps)(withTheme(DirectoryView));
