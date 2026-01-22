@@ -22,7 +22,7 @@ export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement =
 			onPress={() => onPress()}
 			hitSlop={hitSlop}>
 			<View accessible accessibilityLabel={i18n.t('Review_message')} accessibilityRole='button'>
-				<CustomIcon name={'arrow-right'} size={24} color={colors.buttonBackgroundPrimaryDefault} />
+				<CustomIcon name={'arrow-right'} size={24} color={colors.fontDefault} />
 			</View>
 		</BorderlessButton>
 	);
