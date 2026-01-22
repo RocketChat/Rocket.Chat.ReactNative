@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, Platform, StyleSheet, type TextInputProps, InteractionManager, Alert } from 'react-native';
+import { StyleSheet, type TextInputProps, InteractionManager, Alert } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
@@ -77,8 +77,6 @@ export const ComposerInput = memo(
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 		const allowList = FileUpload_MediaTypeWhiteList as string;
 		const maxFileSize = FileUpload_MaxFileSize as number;
-
-		const isAndroid = Platform.OS === 'android';
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -189,11 +187,7 @@ export const ComposerInput = memo(
 				saveMessageDraft('');
 			}
 
-			if (isAndroid) {
-				inputRef.current?.setText(text);
-			} else {
-				inputRef.current?.setNativeProps?.({ text }); // keep TextInput path
-			}
+			inputRef.current?.setText(text);
 
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
@@ -219,10 +213,6 @@ export const ComposerInput = memo(
 			setInput(text);
 		};
 
-		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
-			selectionRef.current = e.nativeEvent.selection;
-		};
-
 		const onChangeSelection = (e: OnChangeSelectionEvent) => {
 			const { start, end } = e;
 			const selection = { start, end };
@@ -239,16 +229,9 @@ export const ComposerInput = memo(
 				stopAutocomplete();
 			}
 		};
-		const onFocus: TextInputProps['onFocus'] = () => {
-			handleFocus();
-		};
 
 		const onTouchStart: TextInputProps['onTouchStart'] = () => {
 			setFocused(true);
-		};
-
-		const onBlur: TextInputProps['onBlur'] = () => {
-			handleBlur();
 		};
 
 		const onAutocompleteItemSelected: IAutocompleteItemProps['onPress'] = async item => {
@@ -403,8 +386,10 @@ export const ComposerInput = memo(
 		const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 
 		const handleOnImagePaste = async (e: onPasteImageEventData) => {
-			if (e.error) {
+			console.log(e);
+			if (e.error?.message) {
 				handleError(e.error.message);
+				console.log('error detected');
 				return;
 			}
 			if (!rid) return;
@@ -444,6 +429,8 @@ export const ComposerInput = memo(
 					startShareView
 				});
 			} else {
+				console.log('can upload error');
+
 				handleError(canUploadResult.error);
 			}
 		};
@@ -454,53 +441,30 @@ export const ComposerInput = memo(
 
 		return (
 			<>
-				{isAndroid ? (
-					<TypeRichTextInput
-						style={[styles.textInput]}
-						color={colors.fontDefault}
-						placeholder={placeholder}
-						placeholderTextColor={colors.fontAnnotation}
-						ref={component => {
-							inputRef.current = component;
-						}}
-						// blurOnSubmit={false} // not needed
-						onChangeText={onChangeText}
-						onTouchStart={onTouchStart}
-						onChangeSelection={onChangeSelection}
-						onFocus={handleFocus} // typerich onFocus / onBlur events doesn't pass any arguments to callbacks
-						onBlur={handleBlur}
-						// underlineColorAndroid='transparent' // by default behaiviour
-						defaultValue=''
-						multiline
-						{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
-						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-						// eslint-disable-next-line no-nested-ternary
-						testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-						onPasteImageData={handleOnImagePaste}
-					/>
-				) : (
-					<TextInput
-						style={[styles.textInput, { color: colors.fontDefault }]}
-						placeholder={placeholder}
-						placeholderTextColor={colors.fontAnnotation}
-						ref={component => {
-							inputRef.current = component;
-						}}
-						blurOnSubmit={false}
-						onChangeText={onChangeText}
-						onTouchStart={onTouchStart}
-						onSelectionChange={onSelectionChange}
-						onFocus={onFocus}
-						onBlur={onBlur}
-						underlineColorAndroid='transparent'
-						defaultValue=''
-						multiline
-						{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
-						keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-						// eslint-disable-next-line no-nested-ternary
-						testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
-					/>
-				)}
+				<TypeRichTextInput
+					style={[styles.textInput]}
+					color={colors.fontDefault}
+					placeholder={placeholder}
+					placeholderTextColor={colors.fontAnnotation}
+					ref={component => {
+						inputRef.current = component;
+					}}
+					// blurOnSubmit={false} // not needed
+					onChangeText={onChangeText}
+					onTouchStart={onTouchStart}
+					onChangeSelection={onChangeSelection}
+					onFocus={handleFocus} // typerich onFocus / onBlur events doesn't pass any arguments to callbacks
+					onBlur={handleBlur}
+					// underlineColorAndroid='transparent' // by default behaiviour
+					defaultValue=''
+					multiline
+					editable
+					{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
+					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
+					// eslint-disable-next-line no-nested-ternary
+					testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
+					onPasteImageData={handleOnImagePaste}
+				/>
 			</>
 		);
 	})
