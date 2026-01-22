@@ -27,6 +27,7 @@ import Options from './Options';
 import { getDirectory, createDirectMessage, getRoomByTypeAndName } from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
+import { store as reduxStore } from '../../lib/store/auxStore';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -39,7 +40,6 @@ interface IDirectoryViewProps {
 	theme: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
-	viewOutsideRoomPermission?: string[];
 }
 
 interface IDirectoryViewState {
@@ -54,9 +54,7 @@ interface IDirectoryViewState {
 class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
 	constructor(props: IDirectoryViewProps) {
 		super(props);
-		const hasPermission = props.viewOutsideRoomPermission && props.user?.roles
-			? props.user.roles.some(role => props.viewOutsideRoomPermission!.includes(role))
-			: false;
+		const hasPermission = this.hasViewOutsideRoomPermission();
 		const defaultType = props.directoryDefaultView === 'users' && !hasPermission ? 'channels' : props.directoryDefaultView;
 		this.state = {
 			data: [],
@@ -91,11 +89,17 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	hasViewOutsideRoomPermission = (): boolean => {
-		const { viewOutsideRoomPermission, user } = this.props;
-		if (!viewOutsideRoomPermission || !user?.roles) {
+		const { user } = this.props;
+		if (!user?.roles) {
 			return false;
 		}
-		return user.roles.some(role => viewOutsideRoomPermission.includes(role));
+		const state = reduxStore.getState();
+		const permission = (state.permissions as any)['view-outside-room'] as string[] | undefined;
+		if (!permission || !Array.isArray(permission)) {
+			return false;
+		}
+		const mergedRoles = [...new Set([...user.roles])];
+		return permission.some(role => mergedRoles.includes(role));
 	};
 
 	onSearchChangeText = (text: string) => {
@@ -345,8 +349,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isFederationEnabled: state.settings.FEDERATION_Enabled as boolean,
 	directoryDefaultView: state.settings.Accounts_Directory_DefaultView as string,
-	isMasterDetail: state.app.isMasterDetail,
-	viewOutsideRoomPermission: (state.permissions as any)['view-outside-room'] as string[] | undefined
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(DirectoryView));
