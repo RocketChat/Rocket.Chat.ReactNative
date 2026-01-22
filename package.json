@@ -25,7 +25,7 @@
 	},
 	"dependencies": {
 		"@bugsnag/react-native": "8.4.0",
-		"@gorhom/bottom-sheet": "^5.2.6",
+		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
 		"@expo/vector-icons": "^14.1.0",
 		"@hookform/resolvers": "^2.9.10",
 		"@nozbe/watermelondb": "^0.28.1-0",

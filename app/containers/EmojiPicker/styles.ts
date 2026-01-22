@@ -67,10 +67,7 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	emojiPickerContainer: {
-		flex: 1,
-		minHeight: 300
-	},
+	emojiPickerContainer: { flex: 1 },
 	input: {
 		height: 32,
 		borderWidth: 0,
