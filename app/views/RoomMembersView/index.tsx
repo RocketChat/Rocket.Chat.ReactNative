@@ -371,13 +371,8 @@ const RoomMembersView = (): React.ReactElement => {
 
 			const end = membersResult?.length < PAGE_SIZE;
 
-			let newMembers: TUserModel[];
-			if (filter) {
-				newMembers = membersResult || [];
-			} else {
-				const membersResultFiltered = membersResult?.filter((member: TUserModel) => !members.some(m => m._id === member._id));
-				newMembers = [...members, ...membersResultFiltered];
-			}
+			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !members.some(m => m._id === member._id));
+			const newMembers = [...members, ...(membersResultFiltered || [])];
 
 			updateState({
 				members: newMembers,
