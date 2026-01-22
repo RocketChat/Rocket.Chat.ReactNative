@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { A11y } from 'react-native-a11y-order';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import * as List from '../../../../containers/List';
 import { useTheme } from '../../../../theme';
@@ -40,7 +41,7 @@ export const ServersHistoryActionSheetContent = ({
 	const { bottom } = useSafeAreaInsets();
 
 	return (
-		<View style={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}>
+		<BottomSheetView style={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}>
 			<View style={[styles.header, { borderColor: colors.strokeLight }]}>
 				<Text style={[styles.headerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Workspaces')}</Text>
 			</View>
@@ -55,6 +56,6 @@ export const ServersHistoryActionSheetContent = ({
 					<List.Separator />
 				</React.Fragment>
 			))}
-		</View>
+		</BottomSheetView>
 	);
 };

@@ -13,6 +13,7 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
     style={
       {
         "flex": 1,
+        "height": 400,
       }
     }
     testID="reactionsList"
@@ -1088,6 +1089,7 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
     style={
       {
         "flex": 1,
+        "height": 400,
       }
     }
     testID="reactionsList"

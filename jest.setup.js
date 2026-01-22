@@ -154,7 +154,7 @@ jest.mock('expo-device', () => ({
 	isDevice: true
 }));
 
-jest.mock('@discord/bottom-sheet', () => {
+jest.mock('@gorhom/bottom-sheet', () => {
 	const react = require('react-native');
 	return {
 		__esModule: true,
