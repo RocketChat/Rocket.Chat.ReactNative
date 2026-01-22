@@ -7,6 +7,7 @@ import NativeVoipModule from '../../native/NativeVoipAndroid';
 import store from '../../store';
 import { voipCallOpen } from '../../../actions/deepLinking';
 import { setVoipPushToken } from './pushTokenAux';
+import { useCallStore } from './useCallStore';
 
 // Store VoIP push data temporarily (iOS only - Android uses native storage)
 let voipPushData: { callId: string; caller: string; host?: string; callUUID: string } | null = null;
@@ -141,7 +142,7 @@ const getInitialEventsAndroid = async (): Promise<boolean> => {
 		const pendingCall = JSON.parse(pendingCallJson) as {
 			notificationType: string;
 			callId: string;
-			callUUID: string;
+			callUUID: string; // TODO: does it come from the native side?
 			callerName: string;
 			host: string;
 			event: string;
@@ -166,6 +167,8 @@ const getInitialEventsAndroid = async (): Promise<boolean> => {
 			callUUID,
 			host: pendingCall.host
 		});
+
+		useCallStore.getState().setCallUUID(callUUID);
 
 		store.dispatch(
 			voipCallOpen({

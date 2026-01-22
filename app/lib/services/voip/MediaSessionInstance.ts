@@ -70,7 +70,13 @@ class MediaSessionInstance {
 				call.emitter.on('stateChange', oldState => {
 					console.log(`📊 ${oldState} → ${call.state}`);
 				});
-				// Use deterministic UUID v5 from callId - same as native side
+
+				const existingCallUUID = useCallStore.getState().callUUID;
+				if (existingCallUUID) {
+					this.answerCall(existingCallUUID);
+					return;
+				}
+
 				const callUUID = CallIdUUIDModule.toUUID(call.callId);
 
 				const displayName = call.contact.displayName || call.contact.username || 'Unknown';
@@ -83,19 +89,23 @@ class MediaSessionInstance {
 		});
 	}
 
+	private answerCall = async (callUUID: string) => {
+		const mainCall = this.instance?.getMainCall();
+		// Compare using deterministic UUID conversion
+		if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
+			await mainCall.accept();
+			RNCallKeep.setCurrentCallActive(callUUID);
+			// Set call in Zustand store and navigate to CallView
+			useCallStore.getState().setCall(mainCall, callUUID);
+			Navigation.navigate('CallView', { callUUID });
+		} else {
+			RNCallKeep.endCall(callUUID);
+		}
+	};
+
 	private configureRNCallKeep = () => {
-		this.callKeepListeners.answerCall = RNCallKeep.addEventListener('answerCall', async ({ callUUID }) => {
-			const mainCall = this.instance?.getMainCall();
-			// Compare using deterministic UUID conversion
-			if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
-				await mainCall.accept();
-				RNCallKeep.setCurrentCallActive(callUUID);
-				// Set call in Zustand store and navigate to CallView
-				useCallStore.getState().setCall(mainCall, callUUID);
-				Navigation.navigate('CallView', { callUUID });
-			} else {
-				RNCallKeep.endCall(callUUID);
-			}
+		this.callKeepListeners.answerCall = RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+			this.answerCall(callUUID);
 		});
 
 		this.callKeepListeners.endCall = RNCallKeep.addEventListener('endCall', ({ callUUID }) => {

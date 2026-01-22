@@ -55,6 +55,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
          */
         @JvmStatic
         fun storePendingVoipCall(context: Context, callId: String, callUUID: String, callerName: String, host: String, event: String) {
+            // TODO: use VoipPayload
             val data = mapOf(
                 "notificationType" to "voip",
                 "callId" to callId,

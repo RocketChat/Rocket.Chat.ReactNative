@@ -29,6 +29,7 @@ interface CallStoreState {
 }
 
 interface CallStoreActions {
+	setCallUUID: (callUUID: string) => void;
 	setCall: (call: IClientMediaCall, callUUID: string) => void;
 	updateFromCall: () => void;
 	toggleMute: () => void;
@@ -55,6 +56,10 @@ const initialState: CallStoreState = {
 
 export const useCallStore = create<CallStore>((set, get) => ({
 	...initialState,
+
+	setCallUUID: (callUUID: string) => {
+		set({ callUUID });
+	},
 
 	setCall: (call: IClientMediaCall, callUUID: string) => {
 		// Update state with call info
