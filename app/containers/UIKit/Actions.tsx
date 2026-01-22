@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 
 export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 	const [showMoreVisible, setShowMoreVisible] = useState(() => elements && elements.length > 5);
-	
+
 	const shouldShowMore = elements && elements.length > 5;
 	const maxVisible = 5;
 
@@ -38,9 +38,7 @@ export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 					</View>
 				);
 			})}
-			{shouldShowMore && showMoreVisible && (
-				<Button title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />
-			)}
+			{shouldShowMore && showMoreVisible && <Button title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
 		</>
 	);
 };
