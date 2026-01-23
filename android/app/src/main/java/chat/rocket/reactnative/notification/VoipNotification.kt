@@ -14,7 +14,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import chat.rocket.reactnative.MainActivity
-import io.wazo.callkeep.RNCallKeepModule
 
 /**
  * Handles VoIP call notifications using Android's Telecom framework via CallKeep.
@@ -35,23 +34,6 @@ class VoipNotification(private val context: Context) {
         const val ACTION_ACCEPT = "chat.rocket.reactnative.ACTION_VOIP_ACCEPT"
         const val ACTION_DECLINE = "chat.rocket.reactnative.ACTION_VOIP_DECLINE"
 
-        /**
-         * Cancels a VoIP call by ending it through CallKeep.
-         */
-        @JvmStatic
-        fun endCall(callUUID: String) {
-            try {
-                val instance = RNCallKeepModule.instance
-                if (instance != null) {
-                    instance.endCall(callUUID)
-                    Log.d(TAG, "VoIP call ended via CallKeep with UUID: $callUUID")
-                } else {
-                    Log.w(TAG, "Cannot end call: RNCallKeepModule instance not available")
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to end VoIP call", e)
-            }
-        }
 
         /**
          * Static method to retrieve stored call data from any context.
@@ -176,20 +158,6 @@ class VoipNotification(private val context: Context) {
 
         // Store call data for when the user answers
         storeCallData(callId, callUUID, callerName, ejson.host, bundle.getString("ejson", "{}"))
-
-        // Try to display incoming call through CallKeep's telecom integration
-        val callKeepInstance = RNCallKeepModule.instance
-        if (callKeepInstance != null) {
-            try {
-                callKeepInstance.displayIncomingCall(callUUID, callerName, callerName, false)
-                Log.d(TAG, "VoIP call displayed via CallKeep with UUID: $callUUID")
-                return
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to display incoming call via CallKeep", e)
-            }
-        } else {
-            Log.d(TAG, "RNCallKeepModule instance not available, using fallback notification")
-        }
 
         // Fallback to showing a high-priority notification
         showFallbackNotification(bundle, ejson, callUUID, callerName)
@@ -331,9 +299,6 @@ class VoipNotification(private val context: Context) {
      */
     fun cancelCall(callId: String) {
         val callUUID = CallIdUUID.generateUUIDv5(callId)
-
-        // End call via CallKeep if available
-        endCall(callUUID)
 
         // Cancel fallback notification if shown
         val notificationId = callUUID.replace("-", "").hashCode()
