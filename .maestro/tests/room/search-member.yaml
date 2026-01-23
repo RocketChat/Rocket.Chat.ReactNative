@@ -30,9 +30,39 @@ tags:
     visible:
       id: 'room-members-view-search'
     timeout: 60000
+
+# should search in all users
 - tapOn:
     id: room-members-view-search
 - inputText: rohit.bansal
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-rohit.bansal'
+    timeout: 60000
+
+# use online status and it should use the text filter
+- tapOn:
+    id: room-members-view-filter
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-toggle-status-online'
+    timeout: 60000
+- tapOn:
+    id: room-members-view-toggle-status-online
+- extendedWaitUntil:
+    visible:
+      text: 'No members found'
+    timeout: 60000
+
+# use all status again and it should use text filter
+- tapOn:
+    id: room-members-view-filter
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-toggle-status-all'
+    timeout: 60000
+- tapOn:
+    id: room-members-view-toggle-status-all
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-item-rohit.bansal'
