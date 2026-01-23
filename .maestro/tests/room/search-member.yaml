@@ -1,0 +1,39 @@
+appId: chat.rocket.reactnative
+name: Search Member
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+tags:
+  - test-13
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+
+- runFlow:
+    file: '../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: 'general'
+- tapOn:
+    id: room-header
+- extendedWaitUntil:
+    visible:
+      id: 'room-actions-view'
+    timeout: 60000
+- tapOn:
+    id: 'room-actions-members'
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-search'
+    timeout: 60000
+- tapOn:
+    id: room-members-view-search
+- inputText: rohit.bansal
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-rohit.bansal'
+    timeout: 60000
