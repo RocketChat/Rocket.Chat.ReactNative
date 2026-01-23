@@ -25,18 +25,6 @@ const DEFAULT_BROWSERS: IBrowsersValues[] = [
 	{
 		title: 'System_default',
 		value: 'systemDefault:'
-	},
-    {
-		title: 'Chrome',
-		value: 'googlechrome:'
-	},
-	{
-		title: 'Firefox',
-		value: 'firefox:'
-	},
-	{
-		title: 'Brave',
-		value: 'brave:'
 	}
 ];
 
