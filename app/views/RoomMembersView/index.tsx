@@ -451,12 +451,10 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
-	const filteredMembers = state.members.length > 0 ? state.members : null;
-
 	return (
 		<SafeAreaView testID='room-members-view'>
 			<FlatList
-				data={filteredMembers || state.members}
+				data={state.members}
 				renderItem={({ item }) => (
 					<View style={{ backgroundColor: colors.surfaceRoom }}>
 						<UserItem
