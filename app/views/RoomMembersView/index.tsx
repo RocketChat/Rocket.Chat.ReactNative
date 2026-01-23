@@ -190,7 +190,7 @@ const RoomMembersView = (): React.ReactElement => {
 
 	const toggleStatus = (status: boolean) => {
 		try {
-			updateState({ members: [], allUsers: status, end: false });
+			updateState({ members: [], allUsers: status, end: false, page: 0 });
 			fetchMembers(status);
 			setHeader(status);
 		} catch (e) {
