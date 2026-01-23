@@ -2162,7 +2162,7 @@ PODS:
     - React-logger (= 0.79.4)
     - React-perflogger (= 0.79.4)
     - React-utils (= 0.79.4)
-  - ReactNativeTypeRich (2.2.2):
+  - ReactNativeTypeRich (2.2.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3186,7 +3186,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: bf62814e0fde923f73fc64b7e82d76c63c284da9
   ReactCodegen: 2f22969ab54e1aace69c9b5d3085e0a3b405a9a6
   ReactCommon: 177fca841e97b2c0e288e86097b8be04c6e7ae36
-  ReactNativeTypeRich: 02d0ff53a6c1ed2b8bad7e98e8499927d0ed3ec1
+  ReactNativeTypeRich: 6a694ffe0297e6f7fa7bf82899e448459112fe81
   RNBootSplash: 1280eeb18d887de0a45bb4923d4fc56f25c8b99c
   RNCAsyncStorage: edb872909c88d8541c0bfade3f86cd7784a7c6b3
   RNCClipboard: 4fd4b093bd9d0be5ad62ea73884eda7745ad23d0

@@ -458,7 +458,6 @@ export const ComposerInput = memo(
 					// underlineColorAndroid='transparent' // by default behaiviour
 					defaultValue=''
 					multiline
-					editable
 					{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
 					keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 					// eslint-disable-next-line no-nested-ternary
