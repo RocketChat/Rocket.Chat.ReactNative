@@ -171,11 +171,16 @@ const RoomMembersView = (): React.ReactElement => {
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
 
+		if (!trimmedFilter) {
+			latestSearchRequest.current += 1;
+		}
+
 		updateState({
 			filter: trimmedFilter,
 			page: 0,
 			members: [],
-			end: false
+			end: false,
+			isLoading: false
 		});
 
 		if (trimmedFilter.length > 0) {
@@ -372,6 +377,7 @@ const RoomMembersView = (): React.ReactElement => {
 			return;
 		}
 
+		const requestId = ++latestSearchRequest.current;
 		updateState({ isLoading: true });
 		try {
 			const membersResult = await getRoomMembers({
@@ -383,6 +389,10 @@ const RoomMembersView = (): React.ReactElement => {
 				limit: PAGE_SIZE,
 				allUsers: !status
 			});
+
+			if (requestId !== latestSearchRequest.current) {
+				return;
+			}
 
 			const end = membersResult?.length < PAGE_SIZE;
 
@@ -397,7 +407,9 @@ const RoomMembersView = (): React.ReactElement => {
 			});
 		} catch (e) {
 			log(e);
-			updateState({ isLoading: false });
+			if (requestId === latestSearchRequest.current) {
+				updateState({ isLoading: false });
+			}
 		}
 	};
 
