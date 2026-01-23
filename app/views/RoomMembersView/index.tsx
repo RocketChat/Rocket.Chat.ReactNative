@@ -17,7 +17,7 @@ import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '..
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../lib/hooks/usePermissions';
-import { compareServerVersion, debounce, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, isGroupChat, useDebounce } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
@@ -167,6 +167,21 @@ const RoomMembersView = (): React.ReactElement => {
 		viewAllTeamChannelsPermission,
 		viewAllTeamsPermission
 	]);
+
+	const debounceFilterChange = useDebounce((text: string) => {
+		const trimmedFilter = text.trim();
+
+		updateState({
+			filter: trimmedFilter,
+			page: 0,
+			members: [],
+			end: false
+		});
+
+		if (trimmedFilter.length > 0) {
+			fetchMembersWithNewFilter(trimmedFilter);
+		}
+	}, 500);
 
 	const toggleStatus = (status: boolean) => {
 		try {
@@ -424,22 +439,6 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
-	const handleFilterChange = (text: string) => {
-		const trimmedFilter = text.trim();
-
-		updateState({
-			filter: trimmedFilter,
-			page: 0,
-			members: [],
-			end: false
-		});
-
-		if (trimmedFilter.length > 0) {
-			fetchMembersWithNewFilter(trimmedFilter);
-		}
-	};
-
-	const debounceFilterChange = debounce(handleFilterChange, 500);
 	const filteredMembers = state.members.length > 0 ? state.members : null;
 
 	return (
