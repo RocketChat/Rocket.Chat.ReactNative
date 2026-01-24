@@ -96,7 +96,7 @@ const RoomMembersView = (): React.ReactElement => {
 		(state: IRoomMembersViewState, newState: Partial<IRoomMembersViewState>) => ({ ...state, ...newState }),
 		{
 			isLoading: false,
-			allUsers: false,
+			allUsers: true,
 			filtering: '',
 			members: [],
 			room: params.room || ({} as TSubscriptionModel),
@@ -124,15 +124,13 @@ const RoomMembersView = (): React.ReactElement => {
 
 	useEffect(() => {
 		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
-		setHeader(false);
-		fetchMembers(false);
+		setHeader(true);
 		return () => subscription?.unsubscribe();
 	}, []);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			const { allUsers } = state;
-			fetchMembers(allUsers);
+			fetchMembers();
 		});
 
 		return unsubscribe;
@@ -168,6 +166,10 @@ const RoomMembersView = (): React.ReactElement => {
 		viewAllTeamsPermission
 	]);
 
+    useEffect(() => {
+        fetchMembers();
+    }, [state.filter, state.allUsers]);
+
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
 
@@ -182,16 +184,11 @@ const RoomMembersView = (): React.ReactElement => {
 			end: false,
 			isLoading: false
 		});
-
-		if (trimmedFilter.length > 0) {
-			fetchMembersWithNewFilter(trimmedFilter);
-		}
 	}, 500);
 
 	const toggleStatus = (status: boolean) => {
 		try {
 			updateState({ members: [], allUsers: status, end: false, page: 0 });
-			fetchMembers(status);
 			setHeader(status);
 		} catch (e) {
 			log(e);
@@ -210,14 +207,14 @@ const RoomMembersView = (): React.ReactElement => {
 								options: [
 									{
 										title: I18n.t('Online'),
-										onPress: () => toggleStatus(true),
-										right: () => <Radio check={allUsers} />,
+										onPress: () => toggleStatus(false),
+										right: () => <Radio check={!allUsers} />,
 										testID: 'room-members-view-toggle-status-online'
 									},
 									{
 										title: I18n.t('All'),
-										onPress: () => toggleStatus(false),
-										right: () => <Radio check={!allUsers} />,
+										onPress: () => toggleStatus(true),
+										right: () => <Radio check={allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
 								]
@@ -369,8 +366,8 @@ const RoomMembersView = (): React.ReactElement => {
 		});
 	};
 
-	const fetchMembers = async (status: boolean) => {
-		const { members, isLoading, end, room, filter, page } = state;
+	const fetchMembers = async () => {
+		const { members, isLoading, end, room, filter, page, allUsers } = state;
 		const { t } = room;
 
 		if (isLoading || end) {
@@ -383,11 +380,11 @@ const RoomMembersView = (): React.ReactElement => {
 			const membersResult = await getRoomMembers({
 				rid: room.rid,
 				roomType: t,
-				type: !status ? 'all' : 'online',
+				type: allUsers ? 'all' : 'online',
 				filter,
 				skip: PAGE_SIZE * page,
 				limit: PAGE_SIZE,
-				allUsers: !status
+				allUsers: allUsers
 			});
 
 			if (requestId !== latestSearchRequest.current) {
@@ -404,44 +401,6 @@ const RoomMembersView = (): React.ReactElement => {
 				isLoading: false,
 				end,
 				page: page + 1
-			});
-		} catch (e) {
-			log(e);
-			if (requestId === latestSearchRequest.current) {
-				updateState({ isLoading: false });
-			}
-		}
-	};
-
-	const fetchMembersWithNewFilter = async (searchFilter: string) => {
-		const requestId = ++latestSearchRequest.current;
-
-		const { room, allUsers } = state;
-		const { t } = room;
-
-		updateState({ isLoading: true });
-		try {
-			const membersResult = await getRoomMembers({
-				rid: room.rid,
-				roomType: t,
-				type: !allUsers ? 'all' : 'online',
-				filter: searchFilter,
-				skip: 0,
-				limit: PAGE_SIZE,
-				allUsers: !allUsers
-			});
-
-			const end = membersResult?.length < PAGE_SIZE;
-
-			if (requestId !== latestSearchRequest.current) {
-				return;
-			}
-
-			updateState({
-				members: membersResult || [],
-				isLoading: false,
-				end,
-				page: 1
 			});
 		} catch (e) {
 			log(e);
@@ -481,7 +440,7 @@ const RoomMembersView = (): React.ReactElement => {
 				}
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}
 				onEndReachedThreshold={0.1}
-				onEndReached={() => fetchMembers(state.allUsers)}
+				onEndReached={() => fetchMembers()}
 				ListEmptyComponent={() =>
 					state.end ? (
 						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>
