@@ -26,6 +26,8 @@ import styles from './styles';
 import Options from './Options';
 import { getDirectory, createDirectMessage, getRoomByTypeAndName } from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { showErrorAlert } from '../../lib/methods/helpers/info';
+import { store as reduxStore } from '../../lib/store/auxStore';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -52,13 +54,15 @@ interface IDirectoryViewState {
 class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
 	constructor(props: IDirectoryViewProps) {
 		super(props);
+		const hasPermission = this.hasViewOutsideRoomPermission();
+		const defaultType = props.directoryDefaultView === 'users' && !hasPermission ? 'channels' : props.directoryDefaultView;
 		this.state = {
 			data: [],
 			loading: false,
 			text: '',
 			total: -1,
 			globalUsers: true,
-			type: props.directoryDefaultView
+			type: defaultType
 		};
 		this.setHeader();
 	}
@@ -82,6 +86,20 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		}
 
 		navigation.setOptions(options);
+	};
+
+	hasViewOutsideRoomPermission = (): boolean => {
+		const { user } = this.props;
+		if (!user?.roles) {
+			return false;
+		}
+		const state = reduxStore.getState();
+		const permission = (state.permissions as any)['view-outside-room'] as string[] | undefined;
+		if (!permission || !Array.isArray(permission)) {
+			return false;
+		}
+		const mergedRoles = [...new Set([...user.roles])];
+		return permission.some(role => mergedRoles.includes(role));
 	};
 
 	onSearchChangeText = (text: string) => {
@@ -150,6 +168,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	changeType = (type: string) => {
+		if (type === 'users' && !this.hasViewOutsideRoomPermission()) {
+			showErrorAlert(I18n.t('You_dont_have_permission_to_perform_this_action'), I18n.t('Oops'));
+			hideActionSheetRef();
+			return;
+		}
+
 		this.setState({ type, data: [] }, () => this.search());
 
 		if (type === 'users') {
@@ -180,6 +204,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					changeType={this.changeType}
 					toggleWorkspace={this.toggleWorkspace}
 					isFederationEnabled={isFederationEnabled}
+					hasViewOutsideRoomPermission={this.hasViewOutsideRoomPermission()}
 				/>
 			)
 		});
