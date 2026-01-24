@@ -166,9 +166,9 @@ const RoomMembersView = (): React.ReactElement => {
 		viewAllTeamsPermission
 	]);
 
-    useEffect(() => {
-        fetchMembers();
-    }, [state.filter, state.allUsers]);
+	useEffect(() => {
+		fetchMembers();
+	}, [state.filter, state.allUsers]);
 
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
@@ -384,7 +384,7 @@ const RoomMembersView = (): React.ReactElement => {
 				filter,
 				skip: PAGE_SIZE * page,
 				limit: PAGE_SIZE,
-				allUsers: allUsers
+				allUsers
 			});
 
 			if (requestId !== latestSearchRequest.current) {
