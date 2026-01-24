@@ -470,6 +470,116 @@ export const ModalActions = () =>
 	]);
 ModalActions.storyName = 'Modal - Actions';
 
+export const ModalActionsWithShowMore = () =>
+	UiKitModal([
+		{
+			type: 'section',
+			text: {
+				type: 'mrkdwn',
+				text: '*Actions with Show More* 🚀\n\nThis modal demonstrates the "Show more" functionality. The actions block has 8 buttons, but only the first 5 are visible initially. Click "Show more" to reveal all buttons.'
+			}
+		},
+		{
+			type: 'divider'
+		},
+		{
+			type: 'actions',
+			blockId: 'actions-show-more',
+			elements: [
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Primary Action',
+						emoji: false
+					},
+					style: 'primary',
+					actionId: 'action_1',
+					value: 'action1'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Secondary',
+						emoji: false
+					},
+					actionId: 'action_2',
+					value: 'action2'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Danger Action',
+						emoji: false
+					},
+					style: 'danger',
+					actionId: 'action_3',
+					value: 'action3'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 4',
+						emoji: false
+					},
+					actionId: 'action_4',
+					value: 'action4'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 5',
+						emoji: false
+					},
+					actionId: 'action_5',
+					value: 'action5'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 6 - Hidden',
+						emoji: false
+					},
+					actionId: 'action_6',
+					value: 'action6'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 7 - Hidden',
+						emoji: false
+					},
+					actionId: 'action_7',
+					value: 'action7'
+				},
+				{
+					type: 'button',
+					text: {
+						type: 'plain_text',
+						text: 'Button 8 - Hidden',
+						emoji: false
+					},
+					actionId: 'action_8',
+					value: 'action8'
+				}
+			]
+		},
+		{
+			type: 'section',
+			text: {
+				type: 'mrkdwn',
+				text: 'This actions block has *8 buttons* but only shows *5* initially. Click "Show more" to see all buttons!'
+			}
+		}
+	]);
+ModalActionsWithShowMore.storyName = 'Modal - Actions with Show More';
+
 export const ModalContextsDividers = () =>
 	UiKitModal([
 		{
