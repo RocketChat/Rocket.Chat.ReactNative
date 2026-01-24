@@ -67,3 +67,16 @@ tags:
     visible:
       id: 'room-members-view-item-rohit.bansal'
     timeout: 60000
+- tapOn:
+    id: clear-text-input
+
+- evalScript: ${output.secondUser = output.utils.createUser()}
+
+# should search for new user in all list
+- tapOn:
+    id: room-members-view-search
+- inputText: ${output.secondUser.username}
+- extendedWaitUntil:
+    visible:
+      id: 'room-members-view-item-${output.secondUser.username}'
+    timeout: 60000
