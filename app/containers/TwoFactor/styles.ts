@@ -10,7 +10,9 @@ export default StyleSheet.create({
 	},
 	content: {
 		padding: 16,
-		width: '100%',
+		width: '100%', 
+		maxWidth: 480, // <-- New: Stops it from stretching too wide on large screens.
+		alignSelf: 'center',// <-- New: Forces it to stay in the middle of the ipad Screen.
 		borderRadius: 4
 	},
 	title: {
