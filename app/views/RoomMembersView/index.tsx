@@ -168,7 +168,7 @@ const RoomMembersView = (): React.ReactElement => {
 
 	useEffect(() => {
 		fetchMembers();
-	}, [state.filter, state.allUsers]);
+	}, [state.filter, state.allUsers, state.room]);
 
 	const debounceFilterChange = useDebounce((text: string) => {
 		const trimmedFilter = text.trim();
