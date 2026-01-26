@@ -80,3 +80,12 @@ tags:
     visible:
       id: 'room-members-view-item-${output.secondUser.username}'
     timeout: 60000
+
+# Verify "No members found" message appears correctly when search returns no results
+- tapOn:
+    id: room-members-view-search
+- inputText: nonexistentuser12345
+- extendedWaitUntil:
+    visible:
+      text: 'No members found'
+    timeout: 60000

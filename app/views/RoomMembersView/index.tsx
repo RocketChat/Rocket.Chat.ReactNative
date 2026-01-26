@@ -128,9 +128,27 @@ const RoomMembersView = (): React.ReactElement => {
 		return () => subscription?.unsubscribe();
 	}, []);
 
-	const fetchMembers = useCallback(async () => {
-		const { members, isLoading, end, room, filter, page, allUsers } = state;
-		const { t } = room;
+	const fetchRoles = () => {
+		if (isGroupChat(state.room)) {
+			return;
+		}
+		if (
+			muteUserPermission ||
+			setLeaderPermission ||
+			setOwnerPermission ||
+			setModeratorPermission ||
+			removeUserPermission ||
+			editTeamMemberPermission ||
+			viewAllTeamChannelsPermission ||
+			viewAllTeamsPermission
+		) {
+			fetchRoomMembersRoles(state.room.t as any, state.room.rid, updateState);
+		}
+	};
+
+    const fetchMembers = useCallback(async () => {
+        const { members, isLoading, end, room, filter, page, allUsers } = state;
+        const { t } = room;
 
 		if (isLoading || end) {
 			return;
@@ -181,7 +199,22 @@ const RoomMembersView = (): React.ReactElement => {
 		});
 
 		return unsubscribe;
-	}, [navigation, fetchMembers]);
+	}, [navigation]);
+
+    useEffect(() => {
+       
+        fetchRoles();
+    }, [
+        muteUserPermission,
+        setLeaderPermission,
+        setOwnerPermission,
+        setModeratorPermission,
+        removeUserPermission,
+        editTeamMemberPermission,
+        viewAllTeamChannelsPermission,
+        viewAllTeamsPermission,
+        state.room
+    ]);
 
 	useEffect(() => {
 		const fetchRoles = () => {
