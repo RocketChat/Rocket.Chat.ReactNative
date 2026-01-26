@@ -109,6 +109,12 @@ runs:
         yarn pod-install
       shell: bash
 
+    - uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'official' && inputs.trigger == 'develop' }}
+      with:
+        name: release-changelog
+        path: .
+
     - name: Fastlane Submit to TestFlight
       working-directory: ios
       run: |
