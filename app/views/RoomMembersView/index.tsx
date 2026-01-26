@@ -146,9 +146,9 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
-    const fetchMembers = useCallback(async () => {
-        const { members, isLoading, end, room, filter, page, allUsers } = state;
-        const { t } = room;
+	const fetchMembers = useCallback(async () => {
+		const { members, isLoading, end, room, filter, page, allUsers } = state;
+		const { t } = room;
 
 		if (isLoading || end) {
 			return;
@@ -201,20 +201,19 @@ const RoomMembersView = (): React.ReactElement => {
 		return unsubscribe;
 	}, [navigation]);
 
-    useEffect(() => {
-       
-        fetchRoles();
-    }, [
-        muteUserPermission,
-        setLeaderPermission,
-        setOwnerPermission,
-        setModeratorPermission,
-        removeUserPermission,
-        editTeamMemberPermission,
-        viewAllTeamChannelsPermission,
-        viewAllTeamsPermission,
-        state.room
-    ]);
+	useEffect(() => {
+		fetchRoles();
+	}, [
+		muteUserPermission,
+		setLeaderPermission,
+		setOwnerPermission,
+		setModeratorPermission,
+		removeUserPermission,
+		editTeamMemberPermission,
+		viewAllTeamChannelsPermission,
+		viewAllTeamsPermission,
+		state.room
+	]);
 
 	useEffect(() => {
 		const fetchRoles = () => {
