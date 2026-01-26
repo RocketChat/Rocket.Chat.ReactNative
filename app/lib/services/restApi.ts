@@ -693,7 +693,6 @@ export const getAvatarSuggestion = async (): Promise<{ [service: string]: IAvata
 	return sdk.methodCallWrapper('getAvatarSuggestion');
 };
 
-
 export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
 	sdk.post('users.resetAvatar', { userId });
