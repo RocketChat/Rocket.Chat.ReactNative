@@ -212,22 +212,11 @@ const RoomMembersView = (): React.ReactElement => {
 		editTeamMemberPermission,
 		viewAllTeamChannelsPermission,
 		viewAllTeamsPermission,
-		state.room
+		state.room?.rid,
+		state.room?.t
 	]);
 
-	useEffect(() => {
-		fetchRoles();
-	}, [
-		muteUserPermission,
-		setLeaderPermission,
-		setOwnerPermission,
-		setModeratorPermission,
-		removeUserPermission,
-		editTeamMemberPermission,
-		viewAllTeamChannelsPermission,
-		viewAllTeamsPermission,
-		state.room
-	]);
+	
 
 	useEffect(() => {
 		fetchMembers();
