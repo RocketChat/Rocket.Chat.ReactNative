@@ -191,7 +191,7 @@ const RoomMembersView = (): React.ReactElement => {
 				updateState({ isLoading: false });
 			}
 		}
-	}, [state.isLoading, state.end, state.room, state.filter, state.page, state.allUsers]);
+	}, [state.isLoading, state.end, state.room.t, state.filter, state.page, state.allUsers]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
