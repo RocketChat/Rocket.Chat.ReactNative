@@ -9,7 +9,7 @@ import { selectServerRequest } from '../../actions/server';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { type IPermissionsState } from '../../reducers/permissions';
-import { type IMessage } from '../../definitions';
+import { type IMessage, type RoomType } from '../../definitions';
 import { colors } from '../../lib/constants/colors';
 import { type IRoomContext, RoomContext } from '../../views/RoomView/context';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
@@ -78,7 +78,7 @@ const initialContext = {
 	tmid: undefined,
 	room: {
 		rid: 'rid',
-		t: 'd',
+		t: 'd' as RoomType,
 		tmid: undefined,
 		name: 'Rocket Chat',
 		fname: 'Rocket Chat',
