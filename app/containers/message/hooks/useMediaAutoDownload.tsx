@@ -25,7 +25,7 @@ const getFileType = (file: IAttachment): MediaTypes | null => {
 	}
 	if (file.audio_url) {
 		return 'audio';
-	}
+  }
 	return null;
 };
 
@@ -109,7 +109,9 @@ export const useMediaAutoDownload = ({
 
 	const tryAutoDownload = async () => {
 		const isCurrentUserAuthor = author?._id === user.id;
-		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
+		// Map 'other' file type to 'image' for preference purposes
+		const preferenceType = fileType === 'other' ? 'image' : fileType;
+		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${preferenceType}PreferenceDownload`);
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 			await download();
 		} else {
