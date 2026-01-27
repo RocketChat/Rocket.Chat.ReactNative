@@ -216,8 +216,6 @@ const RoomMembersView = (): React.ReactElement => {
 		state.room?.t
 	]);
 
-	
-
 	useEffect(() => {
 		fetchMembers();
 	}, [state.filter, state.allUsers]);
