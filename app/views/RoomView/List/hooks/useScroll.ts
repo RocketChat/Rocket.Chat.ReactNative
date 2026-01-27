@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { type ViewToken, type ViewabilityConfigCallbackPairs } from 'react-native';
+import { type ViewToken } from 'react-native';
 
-import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
-import { VIEWABILITY_CONFIG } from '../constants';
+import { type IListContainerRef, type TListRef, type TMessagesIdsRef } from '../definitions';
 
 export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
@@ -21,20 +20,8 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	);
 
 	const jumpToBottom = useCallback(() => {
-		listRef.current?.scrollToOffset({ offset: -100 });
+		listRef?.current?.scrollToEnd();
 	}, [listRef]);
-
-	const onViewableItemsChanged: IListProps['onViewableItemsChanged'] = ({ viewableItems: vi }) => {
-		viewableItems.current = vi;
-	};
-
-	const viewabilityConfigCallbackPairs = useRef<ViewabilityConfigCallbackPairs>([
-		{ onViewableItemsChanged, viewabilityConfig: VIEWABILITY_CONFIG }
-	]);
-
-	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
-		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
-	};
 
 	const setHighlightTimeout = () => {
 		if (highlightTimeout.current) {
@@ -59,7 +46,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 
 			// if found message, scroll to it
 			if (index !== -1) {
-				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+				listRef?.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 
 				// wait for scroll animation to finish
 				await new Promise(res => setTimeout(res, 300));
@@ -76,7 +63,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 				resolve();
 			} else {
 				// if message not on state yet, scroll to top, so it triggers onEndReached and try again
-				listRef.current?.scrollToEnd();
+				listRef?.current?.scrollToEnd();
 				await setTimeout(() => resolve(jumpToMessage(messageId)), 600);
 			}
 		});
@@ -98,8 +85,6 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		jumpToBottom,
 		jumpToMessage,
 		cancelJumpToMessage,
-		viewabilityConfigCallbackPairs,
-		handleScrollToIndexFailed,
 		highlightedMessageId
 	};
 };

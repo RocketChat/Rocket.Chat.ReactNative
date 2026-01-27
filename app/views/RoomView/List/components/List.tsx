@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import React, { useEffect, useMemo, useState } from 'react';
+import { type NativeScrollEvent, type NativeSyntheticEvent, StyleSheet, View, Keyboard } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 
-import { isIOS } from '../../../../lib/methods/helpers';
-import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
-import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
+import NavBottomFAB from './NavBottomFAB';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
 
@@ -21,37 +19,54 @@ const styles = StyleSheet.create({
 const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
-	const scrollHandler = useAnimatedScrollHandler({
-		onScroll: event => {
-			if (event.contentOffset.y > SCROLL_LIMIT) {
-				runOnJS(setVisible)(true);
-			} else {
-				runOnJS(setVisible)(false);
-			}
+
+	const maintainVisibleContentPositionConfig = useMemo(
+		() => ({
+			autoscrollToBottomThreshold: 0.1,
+			startRenderingFromBottom: true,
+			animateAutoScrollToBottom: false
+		}),
+		[]
+	);
+
+	const onScrollHandler = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+		const currentScroll = Math.round(e.nativeEvent?.contentSize?.height) - Math.round(e.nativeEvent?.contentOffset.y);
+		const layoutLimit = e.nativeEvent.layoutMeasurement.height + SCROLL_LIMIT;
+
+		if (layoutLimit < currentScroll) {
+			setVisible(true);
+		} else {
+			setVisible(false);
 		}
-	});
+	};
+
+	// Scroll to end when keyboard opens
+	useEffect(() => {
+		const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+			if (listRef?.current) {
+				listRef.current.scrollToEnd({ animated: true });
+			}
+		});
+
+		return () => {
+			keyboardDidShowListener.remove();
+		};
+	}, [listRef]);
 
 	return (
 		<View style={styles.list}>
-			{/* @ts-ignore */}
-			<Animated.FlatList
+			<FlashList
+				ref={listRef}
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
-				ref={listRef}
-				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted
-				removeClippedSubviews={isIOS}
-				initialNumToRender={7}
-				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
+				onScroll={onScrollHandler}
 				scrollEventThrottle={16}
-				onScroll={scrollHandler}
+				keyboardShouldPersistTaps='handled'
+				maintainVisibleContentPosition={maintainVisibleContentPositionConfig}
 				{...props}
-				{...scrollPersistTaps}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
 		</View>
