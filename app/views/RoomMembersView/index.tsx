@@ -191,7 +191,7 @@ const RoomMembersView = (): React.ReactElement => {
 				updateState({ isLoading: false });
 			}
 		}
-	}, [state.members, state.isLoading, state.end, state.room, state.filter, state.page, state.allUsers]);
+	}, [state.isLoading, state.end, state.room, state.filter, state.page, state.allUsers]);
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
@@ -216,23 +216,6 @@ const RoomMembersView = (): React.ReactElement => {
 	]);
 
 	useEffect(() => {
-		const fetchRoles = () => {
-			if (isGroupChat(state.room)) {
-				return;
-			}
-			if (
-				muteUserPermission ||
-				setLeaderPermission ||
-				setOwnerPermission ||
-				setModeratorPermission ||
-				removeUserPermission ||
-				editTeamMemberPermission ||
-				viewAllTeamChannelsPermission ||
-				viewAllTeamsPermission
-			) {
-				fetchRoomMembersRoles(state.room.t as any, state.room.rid, updateState);
-			}
-		};
 		fetchRoles();
 	}, [
 		muteUserPermission,
