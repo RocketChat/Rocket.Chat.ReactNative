@@ -42,12 +42,12 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 		setLoading(true);
 		sdk
 			.get(endpoint, params as any)
-			.then(e => {
+			.then((e: any) => {
 				setLoading(false);
-				if (e.success) {
-					setResult(e);
-				} else {
+				if (e && typeof e === 'object' && 'success' in e && !e.success) {
 					setError(e as ErrorResult);
+				} else {
+					setResult(e as Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>);
 				}
 			})
 			.catch((e: ErrorResult) => {

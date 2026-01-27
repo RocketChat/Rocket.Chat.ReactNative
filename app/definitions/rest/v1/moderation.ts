@@ -1,5 +1,9 @@
-export type ModerationEndpoints = {
-	'moderation.reportUser': {
-		POST: (params: { userId: string; description: string }) => void;
-	};
+import type { ModerationEndpoints as RestTypingsModerationEndpoints } from '@rocket.chat/rest-typings';
+
+type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
+
+type AdaptModerationEndpoints<T> = {
+	[K in keyof T as RemoveV1Prefix<K & string>]: T[K];
 };
+
+export type ModerationEndpoints = AdaptModerationEndpoints<RestTypingsModerationEndpoints>;

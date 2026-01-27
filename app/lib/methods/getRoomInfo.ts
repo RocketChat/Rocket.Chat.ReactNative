@@ -22,12 +22,12 @@ const getRoomInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
 	}
 
 	result = await getRoomInfoService(rid);
-	if (result?.success) {
+	if (result?.success && result.room) {
 		return {
 			rid,
 			name: result.room.name as string,
 			fname: result.room.fname,
-			t: result.room.t
+			t: result.room.t as RoomType
 		};
 	}
 

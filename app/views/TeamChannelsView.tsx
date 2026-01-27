@@ -340,7 +340,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			try {
 				let params = {};
 				const result = await getRoomInfo(item._id);
-				if (result.success) {
+				if (result.success && result.room) {
 					params = {
 						rid: item._id,
 						name: getRoomTitle(result.room),

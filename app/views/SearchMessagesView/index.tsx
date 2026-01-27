@@ -179,7 +179,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				return message;
 			});
 			this.offset += QUERY_SIZE;
-			return urlRenderMessages;
+			return (urlRenderMessages || []) as (IMessageFromServer | TMessageModel)[];
 		}
 		return [];
 	};

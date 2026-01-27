@@ -342,10 +342,11 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				text: searchText
 			});
 			if (result.success) {
-				this.updateThreads({ update: result.threads, lastThreadSync });
+				this.updateThreads({ update: result.threads as any, lastThreadSync });
+				const resultData = result as any;
 				this.setState({
 					loading: false,
-					end: result.count < API_FETCH_COUNT,
+					end: (resultData.count || result.threads.length) < API_FETCH_COUNT,
 					offset: offset + API_FETCH_COUNT
 				});
 			}
@@ -366,7 +367,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			});
 			if (result.success && result.threads) {
 				const { update, remove } = result.threads;
-				this.updateThreads({ update, remove, lastThreadSync: updatedSince });
+				this.updateThreads({ update: update as any, remove: remove as any, lastThreadSync: updatedSince });
 			}
 			this.setState({
 				loading: false

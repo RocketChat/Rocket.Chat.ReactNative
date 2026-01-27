@@ -124,7 +124,7 @@ export function getCustomEmojis() {
 				}
 				return resolve();
 			}
-			const params: { updatedSince: string } = { updatedSince: '' };
+			const params: { query: string; updatedSince?: string } = { query: '' };
 			if (updatedSince) {
 				params.updatedSince = updatedSince;
 			}
@@ -139,7 +139,7 @@ export function getCustomEmojis() {
 			const { emojis } = result;
 			// @ts-ignore
 			const { update, remove } = emojis;
-			const changedEmojis = await updateEmojis({ update, remove, allRecords });
+			const changedEmojis = await updateEmojis({ update: (update || []) as unknown as TCustomEmojiModel[], remove: (remove || []) as unknown as TCustomEmojiModel[], allRecords });
 
 			// `setCustomEmojis` is fired on selectServer
 			// We run it again only if emojis were changed

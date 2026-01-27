@@ -1,23 +1,15 @@
-import { type IPreviewItem } from '../../ISlashCommand';
+import type { Endpoints } from '@rocket.chat/rest-typings';
 
-export type CommandsEndpoints = {
-	'commands.preview': {
-		GET: (params: { command: string; params: string; roomId: string }) => {
-			preview?: {
-				i18nTitle: string;
-				items: IPreviewItem[];
-			};
-		};
-		POST: (params: {
-			command: string;
-			params: string;
-			roomId: string;
-			previewItem: IPreviewItem;
-			triggerId: string;
-			tmid?: string;
-		}) => {};
-	};
-	'commands.run': {
-		POST: (params: { command: string; roomId: string; params: string; triggerId?: string; tmid?: string }) => {};
-	};
+type ExtractCommandsEndpoints<T> = {
+	[K in keyof T as K extends `/v1/commands.${string}` ? K : never]: T[K];
 };
+
+type RestTypingsCommandsEndpoints = ExtractCommandsEndpoints<Endpoints>;
+
+type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
+
+type AdaptCommandsEndpoints<T> = {
+	[K in keyof T as RemoveV1Prefix<K & string>]: T[K];
+};
+
+export type CommandsEndpoints = AdaptCommandsEndpoints<RestTypingsCommandsEndpoints>;

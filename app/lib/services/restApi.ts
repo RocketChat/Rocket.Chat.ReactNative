@@ -16,8 +16,6 @@ import { type TParams } from '../../definitions/ILivechatEditView';
 import { type ILivechatTag } from '../../definitions/ILivechatTag';
 import { type ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
-import { type OperationParams, type ResultFor } from '../../definitions/rest/helpers';
-import { type SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
 import { type RoomTypes, roomTypeToApiType } from '../methods/roomTypeToApiType';
 import { unsubscribeRooms } from '../methods/subscribeRooms';
@@ -259,7 +257,7 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 		};
 	}
 
-	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
+	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params as any);
 };
 
 export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }) => {
@@ -275,7 +273,7 @@ export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p
 	if (type === 'p') {
 		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
 	}
-	return sdk.post('channels.join', { roomId, joinCode });
+	return sdk.post('channels.join', { roomId, joinCode: joinCode ?? undefined });
 };
 
 export const deleteMessage = (messageId: string, rid: string) =>
@@ -336,21 +334,15 @@ export const toggleReadStatus = (
 	isRead: boolean,
 	roomId: string,
 	includeThreads?: boolean
-): Promise<ResultFor<'POST', keyof SubscriptionsEndpoints>> => {
-	let endpoint: keyof SubscriptionsEndpoints;
-	let payload: OperationParams<'POST', keyof SubscriptionsEndpoints> = { roomId };
-
+): Promise<any> => {
 	if (isRead) {
-		endpoint = 'subscriptions.unread';
-	} else {
-		endpoint = 'subscriptions.read';
-		payload = { rid: roomId };
-		if (includeThreads) {
-			payload.readThreads = includeThreads;
-		}
+		return sdk.post('subscriptions.unread', { roomId });
 	}
-
-	return sdk.post(endpoint, payload);
+	const payload: { rid: string; readThreads?: boolean } = { rid: roomId };
+	if (includeThreads) {
+		payload.readThreads = includeThreads;
+	}
+	return sdk.post('subscriptions.read', payload);
 };
 
 export const getRoomCounters = (
@@ -364,9 +356,9 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('channels.info', { roomId });
 
-export const getUserPreferences = (userId: string) =>
+export const getUserPreferences = () =>
 	// RC 0.62.0
-	sdk.get('users.getPreferences', { userId });
+	sdk.get('users.getPreferences');
 
 export const getRoomInfo = (roomId: string) =>
 	// RC 0.72.0
@@ -434,7 +426,7 @@ export const returnLivechat = (rid: string, departmentId?: string): Promise<any>
 	const serverVersion = reduxStore.getState().server.version;
 
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.12.0')) {
-		return sdk.post('livechat/inquiries.returnAsInquiry', { roomId: rid, departmentId });
+		return sdk.post('livechat/inquiries.returnAsInquiry' as any, { roomId: rid, departmentId } as any);
 	}
 
 	// RC 0.72.0
@@ -479,7 +471,7 @@ export const getRoutingConfig = async (): Promise<{
 }> => {
 	const serverVersion = reduxStore.getState().server.version;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.11.0')) {
-		const result = await sdk.get('livechat/config/routing');
+		const result = await sdk.get('livechat/config/routing' as any);
 		if (result.success) {
 			return result.config;
 		}
@@ -495,7 +487,7 @@ export const getTagsList = (): Promise<ILivechatTag[]> =>
 
 export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
-	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
+	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true` as any);
 
 export const getCustomFields = () =>
 	// RC 2.2.0
@@ -606,7 +598,7 @@ export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: R
 
 export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }) =>
 	// RC 0.64.0
-	sdk.get('chat.ignoreUser', { rid, userId, ignore });
+	sdk.get('chat.ignoreUser', { rid, userId, ignore: ignore.toString() });
 
 export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
 	const type = t as SubscriptionType.CHANNEL | SubscriptionType.GROUP;
@@ -656,7 +648,7 @@ export const saveUserProfile = (
 	customFields?: { [key: string | number]: string }
 ) =>
 	// RC 0.62.2
-	sdk.post('users.updateOwnBasicInfo', { data, customFields });
+	sdk.post('users.updateOwnBasicInfo', { data: data as any, customFields: customFields as any });
 
 export const saveUserPreferences = (data: Partial<INotificationPreferences & IMessagePreferences>) =>
 	// RC 0.62.0
@@ -664,7 +656,7 @@ export const saveUserPreferences = (data: Partial<INotificationPreferences & IMe
 
 export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
-	sdk.post('rooms.saveNotification', { roomId, notifications });
+	sdk.post('rooms.saveNotification', { roomId, notifications: notifications as any });
 
 export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
@@ -707,7 +699,7 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	return sdk.get(`${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
-		sort: { uploadedAt: -1 }
+		sort: { uploadedAt: -1 } as any
 	});
 };
 
@@ -813,7 +805,7 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	}
 
 	// RC 1.0
-	return sdk.get('chat.getThreadsList', params);
+	return sdk.get('chat.getThreadsList', params as any);
 };
 
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
@@ -823,7 +815,7 @@ export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updated
 		updatedSince
 	});
 
-export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
+export const runSlashCommand = (command: string, roomId: string, params: string, triggerId: string, tmid?: string) =>
 	// RC 0.60.2
 	sdk.post('commands.run', {
 		command,
@@ -972,7 +964,7 @@ export function e2eResetOwnKey(): Promise<{ success?: boolean }> {
 
 export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {
 	// RC ?
-	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
+	return sdk.post('e2e.resetRoomKey' as any, { rid, e2eKey, e2eKeyId } as any);
 }
 
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' | 'content'>) => {
@@ -987,7 +979,7 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 			roomId: message.rid,
 			msgId: message.id,
 			content: result.content
-		});
+		} as any);
 	}
 
 	// RC 0.49.0
@@ -995,14 +987,14 @@ export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid' |
 		roomId: message.rid,
 		msgId: message.id,
 		text: message.msg || ''
-	});
+	} as any);
 };
 
 export const registerPushToken = () =>
 	new Promise<void>(async resolve => {
 		const token = getDeviceToken();
 		if (token) {
-			const type = isIOS ? 'apn' : 'gcm';
+			const type: 'apn' | 'gcm' = isIOS ? 'apn' : 'gcm';
 			const data = {
 				value: token,
 				type,
@@ -1090,7 +1082,10 @@ export const e2eFetchMyKeys = async () => {
 
 export const logoutOtherLocations = () => {
 	const { id } = reduxStore.getState().login.user;
-	return sdk.post('users.removeOtherTokens', { userId: id as string });
+	if (!id) {
+		return Promise.reject(new Error('User not logged in'));
+	}
+	return sdk.post('users.removeOtherTokens', { userId: id as string } as any);
 };
 
 export function getUserInfo(userId: string) {
@@ -1100,7 +1095,7 @@ export function getUserInfo(userId: string) {
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
 
-export const sendInvitationReply = (roomId: string, action: 'accept' | 'reject') => sdk.post('rooms.invite', { roomId, action });
+export const sendInvitationReply = (roomId: string, action: 'accept' | 'reject') => sdk.post('rooms.invite' as any, { roomId, action } as any);
 
 export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
 	sdk.post('video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });

@@ -187,7 +187,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					const { messages } = this.state;
 					const result = await getFiles(this.rid, this.t, messages.length);
 					if (result.success) {
-						return { ...result, messages: await Encryption.decryptFiles(result.files) };
+						return { ...result, messages: (await Encryption.decryptFiles(result.files as any)) as any };
 					}
 				},
 				noDataMsg: I18n.t('No_files'),

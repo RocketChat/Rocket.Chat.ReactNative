@@ -1,25 +1,9 @@
-import type { IInvite } from '../../IInvite';
-import type { IServerRoom } from '../../IRoom';
+import type { InvitesEndpoints as RestTypingsInvitesEndpoints } from '@rocket.chat/rest-typings';
 
-export type InvitesEndpoints = {
-	listInvites: {
-		GET: () => Array<IInvite>;
-	};
-	'removeInvite/:_id': {
-		DELETE: () => void;
-	};
-	'/v1/useInviteToken': {
-		POST: (params: { token: string }) => {
-			room: {
-				rid: IServerRoom['_id'];
-				prid: IServerRoom['prid'];
-				fname: IServerRoom['fname'];
-				name: IServerRoom['name'];
-				t: IServerRoom['t'];
-			};
-		};
-	};
-	'/v1/validateInviteToken': {
-		POST: (params: { token: string }) => { valid: boolean };
-	};
+type RemoveV1Prefix<T> = T extends `/v1/${infer Rest}` ? Rest : T;
+
+type AdaptInvitesEndpoints<T> = {
+	[K in keyof T as RemoveV1Prefix<K & string>]: T[K];
 };
+
+export type InvitesEndpoints = AdaptInvitesEndpoints<RestTypingsInvitesEndpoints>;

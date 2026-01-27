@@ -32,7 +32,8 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 		if (id) {
 			const result = await getDepartmentInfo(id);
 			if (result.success) {
-				setDepartment(result.department as ILivechatDepartment);
+				const resultData = result as any;
+				setDepartment(resultData.department as ILivechatDepartment);
 			}
 		}
 	};

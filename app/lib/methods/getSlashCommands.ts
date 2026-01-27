@@ -24,12 +24,14 @@ export function getSlashCommands() {
 					const slashCommandsCollection = db.get('slash_commands');
 					const allSlashCommandsRecords = await slashCommandsCollection.query().fetch();
 
+					const commandsTyped = commands as ISlashCommandResult[];
+
 					// filter slash commands
-					const filteredSlashCommandsToCreate = commands.filter(
+					const filteredSlashCommandsToCreate = commandsTyped.filter(
 						(i1: ISlashCommandResult) => !allSlashCommandsRecords.find(i2 => i1.command === i2.id)
 					);
 					const filteredSlashCommandsToUpdate = allSlashCommandsRecords.filter(i1 =>
-						commands.find((i2: ISlashCommandResult) => i1.id === i2.command)
+						commandsTyped.find((i2: ISlashCommandResult) => i1.id === i2.command)
 					);
 					const filteredSlashCommandsToDelete = allSlashCommandsRecords.filter(
 						i1 =>
@@ -49,7 +51,7 @@ export function getSlashCommands() {
 
 					// Update
 					const slashCommandsToUpdate = filteredSlashCommandsToUpdate.map(command => {
-						const newCommand = commands.find((s: ISlashCommandResult) => s.command === command.id);
+						const newCommand = commandsTyped.find((s: ISlashCommandResult) => s.command === command.id);
 						return command.prepareUpdate(
 							protectedFunction((s: TSlashCommandModel) => {
 								Object.assign(s, newCommand);
