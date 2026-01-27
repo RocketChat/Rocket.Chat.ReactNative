@@ -1,5 +1,6 @@
 import RNCallKeep from 'react-native-callkeep';
 import VoipPushNotification from 'react-native-voip-push-notification';
+import { DeviceEventEmitter, Platform } from 'react-native';
 
 import { isIOS } from '../../methods/helpers';
 import CallIdUUIDModule from '../../native/NativeCallIdUUID';
@@ -8,6 +9,7 @@ import store from '../../store';
 import { voipCallOpen } from '../../../actions/deepLinking';
 import { setVoipPushToken } from './pushTokenAux';
 import { useCallStore } from './useCallStore';
+import { mediaSessionInstance } from './MediaSessionInstance';
 
 // Store VoIP push data temporarily (iOS only - Android uses native storage)
 let voipPushData: { callId: string; caller: string; host?: string; callUUID: string } | null = null;
@@ -23,6 +25,46 @@ export const getInitialEvents = (): Promise<boolean> => {
 		return getInitialEventsIOS();
 	}
 	return getInitialEventsAndroid();
+};
+
+/**
+ * Sets up listeners for Android VoIP call events from native side.
+ * @returns Cleanup function to remove listeners
+ */
+export const setupVoipEventListeners = (): (() => void) | undefined => {
+	if (Platform.OS !== 'android') {
+		return undefined;
+	}
+
+	const subscriptions = [
+		DeviceEventEmitter.addListener('VoipCallAction', async (dataJson: string) => {
+			try {
+				const data = JSON.parse(dataJson);
+				console.log('[VoIP][Android] Call action event:', data);
+				await NativeVoipModule.clearPendingVoipCall();
+
+				if (data.event === 'accept') {
+					useCallStore.getState().setCallUUID(data.callUUID);
+					// TODO: how to make sure the call comes from the same workspace? dispatch is just a saga trigger
+					store.dispatch(
+						voipCallOpen({
+							callId: data.callId,
+							callUUID: data.callUUID,
+							host: data.host
+						})
+					);
+					await mediaSessionInstance.answerCall(data.callUUID);
+				}
+			} catch (error) {
+				console.error('[VoIP][Android] Error handling call action event:', error);
+			}
+		})
+	];
+
+	// Return cleanup function
+	return () => {
+		subscriptions.forEach(sub => sub.remove());
+	};
 };
 
 /**
@@ -137,12 +179,14 @@ const getInitialEventsAndroid = async (): Promise<boolean> => {
 			return false;
 		}
 
+		await NativeVoipModule.clearPendingVoipCall();
+
 		console.log('[VoIP][Android] Found pending VoIP call:', pendingCallJson);
 
 		const pendingCall = JSON.parse(pendingCallJson) as {
 			notificationType: string;
 			callId: string;
-			callUUID: string; // TODO: does it come from the native side?
+			callUUID: string;
 			callerName: string;
 			host: string;
 			event: string;
@@ -159,21 +203,12 @@ const getInitialEventsAndroid = async (): Promise<boolean> => {
 			return false;
 		}
 
-		// Generate UUID if not provided
-		const callUUID = pendingCall.callUUID || CallIdUUIDModule.toUUID(pendingCall.callId);
-
-		console.log('[VoIP][Android] Dispatching voipCallOpen:', {
-			callId: pendingCall.callId,
-			callUUID,
-			host: pendingCall.host
-		});
-
-		useCallStore.getState().setCallUUID(callUUID);
+		useCallStore.getState().setCallUUID(pendingCall.callUUID);
 
 		store.dispatch(
 			voipCallOpen({
 				callId: pendingCall.callId,
-				callUUID,
+				callUUID: pendingCall.callUUID,
 				host: pendingCall.host
 			})
 		);

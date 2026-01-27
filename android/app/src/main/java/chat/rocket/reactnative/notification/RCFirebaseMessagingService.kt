@@ -40,9 +40,9 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
         if (voipPayload != null && voipPayload.isVoipIncomingCall()) {
             Log.d(TAG, "Detected new VoIP payload format, routing to VoipNotification handler")
             try {
-                val ejson = voipPayload.toEjson()
                 val voipNotification = VoipNotification(this)
-                voipNotification.showIncomingCall(bundle, ejson)
+                // TODO: no need for bundle, just use voipPayload
+                voipNotification.showIncomingCall(bundle, voipPayload)
             } catch (e: Exception) {
                 Log.e(TAG, "Error processing VoIP notification", e)
             }

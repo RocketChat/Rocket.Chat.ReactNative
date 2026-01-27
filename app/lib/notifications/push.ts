@@ -130,7 +130,7 @@ const setupNotificationCategories = async (): Promise<void> => {
  * Request notification permissions and register for push notifications
  */
 const registerForPushNotifications = async (): Promise<string | null> => {
-	if (!Device.isDevice) {
+	if (!Device.isDevice && isIOS) {
 		console.log('Push notifications require a physical device');
 		return null;
 	}

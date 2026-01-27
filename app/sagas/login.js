@@ -2,8 +2,6 @@ import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-import RNCallKeep from 'react-native-callkeep';
-import { PermissionsAndroid } from 'react-native';
 
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
@@ -43,7 +41,6 @@ import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
 import { hasPermission } from '../lib/methods/helpers/helpers';
-// import { simulateCall } from '../lib/services/voip/simulateCall';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -63,7 +60,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
-		await serverRecord.update((r) => {
+		await serverRecord.update(r => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
@@ -110,7 +107,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update((s) => {
+						await serverHistoryRecord.update(s => {
 							s.username = result.username;
 							if (iconURL) {
 								s.iconURL = iconURL;
@@ -228,40 +225,6 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
-function* initCallKeep() {
-	try {
-		const options = {
-			ios: {
-				appName: 'Rocket.Chat',
-				includesCallsInRecents: false
-			},
-			android: {
-				alertTitle: 'Permissions required',
-				alertDescription: 'This application needs to access your phone accounts',
-				cancelButton: 'Cancel',
-				okButton: 'Ok',
-				imageName: 'phone_account_icon',
-				additionalPermissions: [
-					PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
-					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-					PermissionsAndroid.PERMISSIONS.CALL_PHONE
-				],
-				// Required to get audio in background when using Android 11
-				foregroundService: {
-					channelId: 'chat.rocket.reactnative',
-					channelName: 'Rocket.Chat',
-					notificationTitle: 'Voice call is running on background'
-				}
-			}
-		};
-
-		RNCallKeep.setup(options);
-		RNCallKeep.canMakeMultipleCalls(false);
-	} catch (e) {
-		log(e);
-	}
-}
-
 const startVoipFork = function* startVoipFork() {
 	try {
 		const allowInternalVoiceCallRoles = yield select(state => state.permissions['allow-internal-voice-calls']);
@@ -269,10 +232,8 @@ const startVoipFork = function* startVoipFork() {
 
 		const hasPermissions = yield hasPermission([allowInternalVoiceCallRoles, allowExternalVoiceCallRoles]);
 		if (isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1])) {
-			yield call(initCallKeep);
 			const userId = yield select(state => state.login.user.id);
 			mediaSessionInstance.init(userId);
-			// simulateCall();
 		}
 	} catch (e) {
 		log(e);
@@ -318,12 +279,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				await userRecord.update((record) => {
+				await userRecord.update(record => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
 				});
 			} catch (e) {
-				await usersCollection.create((record) => {
+				await usersCollection.create(record => {
 					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
 					Object.assign(record, u);
 				});
@@ -400,7 +361,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const record = await userCollections.find(userId);
-				await record.update((userRecord) => {
+				await record.update(userRecord => {
 					if ('avatarETag' in user) {
 						userRecord.avatarETag = user.avatarETag;
 					}

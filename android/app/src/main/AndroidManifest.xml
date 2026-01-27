@@ -15,12 +15,13 @@
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <!-- <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" /> -->
-    <!-- <uses-permission android:name="android.permission.CALL_PHONE" /> -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
     <uses-feature android:name="android.hardware.audio.output" />
     <uses-feature android:name="android.hardware.microphone" />
 
@@ -115,6 +116,22 @@
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="${BugsnagAPIKey}" />
+
+        <activity
+            android:name="chat.rocket.reactnative.voip.IncomingCallActivity"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:showOnLockScreen="true"
+            android:turnScreenOn="true"
+            android:showWhenLocked="true"
+            android:theme="@style/Theme.IncomingCall"
+            android:excludeFromRecents="true"
+            android:taskAffinity="chat.rocket.reactnative.voip" />
+
+        <service
+            android:name="chat.rocket.reactnative.voip.VoipForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="phoneCall" />
 
         <service android:name="io.wazo.callkeep.VoiceConnectionService"
             android:label="Wazo"

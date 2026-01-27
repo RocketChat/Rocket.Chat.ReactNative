@@ -72,15 +72,18 @@ class MediaSessionInstance {
 				});
 
 				const existingCallUUID = useCallStore.getState().callUUID;
+				console.log('[VoIP][Android] Existing call UUID:', existingCallUUID);
+				// // TODO: need to answer the call here?
 				if (existingCallUUID) {
 					this.answerCall(existingCallUUID);
 					return;
 				}
 
 				const callUUID = CallIdUUIDModule.toUUID(call.callId);
+				console.log('[VoIP][Android] New call UUID:', callUUID);
 
-				const displayName = call.contact.displayName || call.contact.username || 'Unknown';
-				RNCallKeep.displayIncomingCall(callUUID, displayName, displayName, 'generic', false);
+				// const displayName = call.contact.displayName || call.contact.username || 'Unknown';
+				// RNCallKeep.displayIncomingCall(callUUID, displayName, displayName, 'generic', false);
 
 				call.emitter.on('ended', () => {
 					RNCallKeep.endCall(callUUID);
@@ -89,13 +92,16 @@ class MediaSessionInstance {
 		});
 	}
 
-	private answerCall = async (callUUID: string) => {
+	public answerCall = async (callUUID: string) => {
+		console.log('[VoIP][Android] Answering call:', callUUID);
 		const mainCall = this.instance?.getMainCall();
+		console.log('[VoIP][Android] Main call:', mainCall);
 		// Compare using deterministic UUID conversion
 		if (mainCall && CallIdUUIDModule.toUUID(mainCall.callId) === callUUID) {
+			console.log('[VoIP][Android] Accepting call:', callUUID);
 			await mainCall.accept();
+			console.log('[VoIP][Android] Setting current call active:', callUUID);
 			RNCallKeep.setCurrentCallActive(callUUID);
-			// Set call in Zustand store and navigate to CallView
 			useCallStore.getState().setCall(mainCall, callUUID);
 			Navigation.navigate('CallView', { callUUID });
 		} else {

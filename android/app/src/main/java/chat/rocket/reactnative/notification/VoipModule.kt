@@ -19,6 +19,9 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         private const val TAG = "RocketChat.VoipModule"
         private const val PREFS_NAME = "VoipCallData"
         private const val EVENT_VOIP_CALL = "VoipCallAction"
+        private const val EVENT_CALL_ANSWERED = "VoipCallAnswered"
+        private const val EVENT_CALL_DECLINED = "VoipCallDeclined"
+        private const val EVENT_INCOMING_CALL = "VoipIncomingCall"
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
 
@@ -48,6 +51,106 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
                 Log.e(TAG, "Failed to emit VoIP call event", e)
             }
         }
+
+        /**
+         * Emits an incoming call event to JavaScript.
+         */
+        // @JvmStatic
+        // fun emitIncomingCall(callId: String, callUUID: String, callerName: String, host: String?) {
+        //     try {
+        //         val data = mapOf(
+        //             "callId" to callId,
+        //             "callUUID" to callUUID,
+        //             "callerName" to callerName,
+        //             "host" to (host ?: "")
+        //         )
+        //         val gson = GsonBuilder().create()
+        //         val jsonData = gson.toJson(data)
+
+        //         reactContextRef?.get()?.let { context ->
+        //             if (context.hasActiveReactInstance()) {
+        //                 context
+        //                     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+        //                     .emit(EVENT_INCOMING_CALL, jsonData)
+        //                 Log.d(TAG, "Emitted incoming call event to JS: $callUUID")
+        //             }
+        //         }
+        //     } catch (e: Exception) {
+        //         Log.e(TAG, "Failed to emit incoming call event", e)
+        //     }
+        // }
+
+        /**
+         * Emits a call answered event to JavaScript.
+         */
+        @JvmStatic
+        fun emitCallAnswered(callUUID: String) {
+            try {
+                reactContextRef?.get()?.let { context ->
+                    if (context.hasActiveReactInstance()) {
+                        context
+                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                            .emit(EVENT_CALL_ANSWERED, callUUID)
+                        Log.d(TAG, "Emitted call answered event to JS: $callUUID")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to emit call answered event", e)
+            }
+        }
+
+        /**
+         * Emits a call declined event to JavaScript.
+         */
+        @JvmStatic
+        fun emitCallDeclined(callUUID: String) {
+            try {
+                reactContextRef?.get()?.let { context ->
+                    if (context.hasActiveReactInstance()) {
+                        context
+                            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                            .emit(EVENT_CALL_DECLINED, callUUID)
+                        Log.d(TAG, "Emitted call declined event to JS: $callUUID")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to emit call declined event", e)
+            }
+        }
+
+        /**
+         * Clears pending VoIP call data from SharedPreferences.
+         * Internal method that can be called from any context.
+         */
+        @JvmStatic
+        internal fun clearPendingVoipCall(context: Context) {
+            try {
+                context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    .edit()
+                    .clear()
+                    .apply()
+                Log.d(TAG, "Cleared pending VoIP call data")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error clearing pending VoIP call", e)
+            }
+        }
+
+        /**
+         * Cancels an incoming call notification and activity.
+         */
+        // @JvmStatic
+        // fun cancelIncomingCall(callUUID: String) {
+        //     try {
+        //         val notificationId = callUUID.replace("-", "").hashCode()
+        //         reactContextRef?.get()?.let { context ->
+        //             VoipNotification.cancelById(context, notificationId)
+        //             clearPendingVoipCall(context)
+        //             Log.d(TAG, "Cancelled incoming call: $callUUID")
+        //         }
+        //     } catch (e: Exception) {
+        //         Log.e(TAG, "Failed to cancel incoming call", e)
+        //     }
+        // }
 
         /**
          * Stores VoIP call data for JS to retrieve.
@@ -98,6 +201,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
     @ReactMethod
     override fun getPendingVoipCall(promise: Promise) {
         try {
+            Log.d(TAG, "getPendingVoipCall")
             val prefs = reactApplicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             
             // Check if data is stale (older than 5 minutes)

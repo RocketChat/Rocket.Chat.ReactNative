@@ -47,45 +47,20 @@ class NotificationIntentHandler {
 
             val notificationId = intent.getIntExtra("notificationId", 0)
             val event = intent.getStringExtra("event") ?: return true
-
             val callId = intent.getStringExtra("callId") ?: ""
             val callUUID = intent.getStringExtra("callUUID") ?: ""
             val callerName = intent.getStringExtra("callerName") ?: ""
             val host = intent.getStringExtra("host") ?: ""
-            val ejson = intent.getStringExtra("ejson") ?: "{}"
 
             Log.d(TAG, "Handling VoIP intent - event: $event, callId: $callId, callUUID: $callUUID")
 
-            // Cancel the notification if it was shown as fallback
-            if (notificationId != 0) {
-                VoipNotification.cancelById(context, notificationId)
+            VoipNotification.cancelById(context, notificationId)
+            VoipModule.storePendingVoipCall(context, callId, callUUID, callerName, host, event)
+
+            // Emit event to JS if app is running
+            if (event == "accept") {
+                VoipModule.emitCallAnswered(callUUID)
             }
-
-            // Store action for JS to pick up
-            val data = mapOf(
-                "notificationType" to "voip",
-                "event" to event,
-                "callId" to callId,
-                "callUUID" to callUUID,
-                "callerName" to callerName,
-                "host" to host,
-                "ejson" to ejson
-            )
-
-            val gson = GsonBuilder().create()
-            val jsonData = gson.toJson(data)
-
-            // Store in VoIP-specific SharedPreferences for JS to retrieve
-            context.getSharedPreferences("VoipCallData", Context.MODE_PRIVATE)
-                .edit()
-                .putString("pendingAction", jsonData)
-                .putString("callId", callId)
-                .putString("callUUID", callUUID)
-                .putString("callerName", callerName)
-                .putString("host", host)
-                .putString("event", event)
-                .putLong("timestamp", System.currentTimeMillis())
-                .apply()
 
             // Clear the voip flag to prevent re-processing
             intent.removeExtra("voipAction")

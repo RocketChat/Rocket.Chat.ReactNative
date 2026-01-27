@@ -6,4 +6,4 @@ export interface Spec extends TurboModule {
 	clearPendingVoipCall(): void;
 }
 
-export default TurboModuleRegistry.get<Spec>('VoipModule');
+export default TurboModuleRegistry.getEnforcing<Spec>('VoipModule');
