@@ -145,9 +145,6 @@ class VoipNotification(private val context: Context) {
         // This triggers react-native-callkeep's ConnectionService
         registerCallWithTelecomManager(callUUID, callerName)
 
-        // Start foreground service for Android 14/15 reliability
-        VoipForegroundService.start(context, callUUID, callerName)
-
         // Show notification with full-screen intent
         showIncomingCallNotification(bundle, voipPayload, callUUID, callerName)
     }
@@ -343,7 +340,6 @@ class VoipNotification(private val context: Context) {
     fun cancelCall(callId: String) {
         val notificationId = callId.hashCode()
         cancelById(context, notificationId)
-        VoipForegroundService.stop(context)
         VoipModule.clearPendingVoipCall(context)
     }
 }
