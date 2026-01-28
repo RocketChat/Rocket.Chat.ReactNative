@@ -6,13 +6,10 @@ import com.facebook.react.views.scroll.ReactScrollView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * ScrollView subclass that fixes accessibility traversal order for inverted FlatLists.
- *
- * <p>When a FlatList is inverted (inverted={true}), React Native uses scaleY: -1 transform which
- * visually inverts the list but Android still reports children in array order. This view overrides
- * addChildrenForAccessibility to reverse the order so TalkBack matches the visual order.
- */
+// When a FlatList is inverted (inverted={true}), React Native uses scaleY: -1 transform which
+// visually inverts the list but Android still reports children in array order. This view overrides
+// addChildrenForAccessibility to reverse the order so TalkBack matches the visual order.
+
 public class InvertedScrollView extends ReactScrollView {
 
   private boolean mIsInvertedVirtualizedList = false;
@@ -21,10 +18,10 @@ public class InvertedScrollView extends ReactScrollView {
     super(context);
   }
 
-  /**
-   * Set whether this ScrollView is used for an inverted virtualized list. When true, we reverse the
-   * accessibility traversal order to match the visual order.
-   */
+  
+  // Set whether this ScrollView is used for an inverted virtualized list. When true, we reverse the
+  // accessibility traversal order to match the visual order.
+  
   public void setIsInvertedVirtualizedList(boolean isInverted) {
     mIsInvertedVirtualizedList = isInverted;
   }
