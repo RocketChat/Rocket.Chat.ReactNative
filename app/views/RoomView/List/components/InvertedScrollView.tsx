@@ -3,21 +3,21 @@ import {
 	Platform,
 	requireNativeComponent,
 	StyleSheet,
+	type StyleProp,
+	type ViewStyle,
 	type LayoutChangeEvent,
 	type ScrollViewProps,
 	type ViewProps
 } from 'react-native';
 
-/**
- * Android-only native ScrollView that fixes TalkBack traversal order for inverted FlatLists.
- * Used via FlatList's renderScrollComponent. VirtualizedList passes multiple children (cells)
- * via cloneElement; Android ScrollView accepts only one direct child, so we wrap them in
- * InvertedScrollContentView (native), which (1) satisfies the one-child constraint and
- * (2) reports its children in reversed order for accessibility so TalkBack matches visual order.
- *
- * Content container props and style match the default ScrollView (ScrollView.js) exactly.
- */
-const NativeInvertedScrollView = Platform.OS === 'android' ? requireNativeComponent<ScrollViewProps>('InvertedScrollView') : null;
+
+// Android-only native ScrollView that fixes TalkBack traversal order for inverted FlatLists.
+// Used via FlatList's renderScrollComponent. VirtualizedList passes multiple children (cells).
+
+const NativeInvertedScrollView =
+	Platform.OS === 'android'
+		? requireNativeComponent<ScrollViewProps>('InvertedScrollView')
+		: null;
 
 const NativeInvertedScrollContentView =
 	Platform.OS === 'android'
@@ -43,7 +43,10 @@ const InvertedScrollView = (props: ScrollViewProps) => {
 
 	const hasStickyHeaders = Array.isArray(stickyHeaderIndices) && stickyHeaderIndices.length > 0;
 
-	const contentContainerStyleArray = [props.horizontal ? { flexDirection: 'row' as const } : null, contentContainerStyle];
+	const contentContainerStyleArray = [
+		props.horizontal ? { flexDirection: 'row' } : null,
+		contentContainerStyle
+	];
 
 	const contentSizeChangeProps =
 		onContentSizeChange == null
@@ -62,11 +65,14 @@ const InvertedScrollView = (props: ScrollViewProps) => {
 	return (
 		<NativeInvertedScrollView {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)}>
 			<NativeInvertedScrollContentView
-				{...contentSizeChangeProps}
-				style={contentContainerStyleArray}
-				removeClippedSubviews={Platform.OS === 'android' && hasStickyHeaders ? false : removeClippedSubviews}
+			{...contentSizeChangeProps}
+				removeClippedSubviews={
+					Platform.OS === 'android' && hasStickyHeaders ? false : removeClippedSubviews
+				}
 				collapsable={false}
-				collapsableChildren={!preserveChildren}>
+				collapsableChildren={!preserveChildren}
+				style={contentContainerStyleArray as  StyleProp<ViewStyle>}
+			>
 				{children}
 			</NativeInvertedScrollContentView>
 		</NativeInvertedScrollView>
@@ -77,14 +83,14 @@ const styles = StyleSheet.create({
 	baseVertical: {
 		flexGrow: 1,
 		flexShrink: 1,
-		flexDirection: 'column' as const,
-		overflow: 'scroll' as const
+		flexDirection: 'column',
+		overflow: 'scroll'
 	},
 	baseHorizontal: {
 		flexGrow: 1,
 		flexShrink: 1,
-		flexDirection: 'row' as const,
-		overflow: 'scroll' as const
+		flexDirection: 'row',
+		overflow: 'scroll'
 	}
 });
 
