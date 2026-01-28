@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
+import InvertedScrollView from './InvertedScrollView';
 import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
@@ -43,6 +44,9 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				inverted
+				renderScrollComponent={
+					Platform.OS === 'android' ? (props) => <InvertedScrollView {...props} /> : undefined
+				}
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}
