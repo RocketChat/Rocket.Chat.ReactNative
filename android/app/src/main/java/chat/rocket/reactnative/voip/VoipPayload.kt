@@ -1,13 +1,10 @@
-package chat.rocket.reactnative.notification
+package chat.rocket.reactnative.voip
 
 import com.google.gson.annotations.SerializedName
 
 data class VoipPayload(
     @SerializedName("callId")
     val callId: String?,
-    
-    @SerializedName("calleeId")
-    val calleeId: String?,
     
     @SerializedName("caller")
     val caller: String?,

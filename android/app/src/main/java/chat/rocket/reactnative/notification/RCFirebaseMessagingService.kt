@@ -5,6 +5,8 @@ import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import chat.rocket.reactnative.voip.VoipNotification
+import chat.rocket.reactnative.voip.VoipPayload
 
 /**
  * Custom Firebase Messaging Service for Rocket.Chat.
@@ -73,7 +75,6 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
         return try {
             VoipPayload(
                 callId = data["callId"],
-                calleeId = data["calleeId"],
                 caller = data["caller"],
                 host = data["host"],
                 type = data["type"]

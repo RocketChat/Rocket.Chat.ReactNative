@@ -1,4 +1,4 @@
-package chat.rocket.reactnative.notification
+package chat.rocket.reactnative.voip
 
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext

@@ -1,4 +1,4 @@
-package chat.rocket.reactnative.notification
+package chat.rocket.reactnative.voip
 
 import android.content.Context
 import android.util.Log

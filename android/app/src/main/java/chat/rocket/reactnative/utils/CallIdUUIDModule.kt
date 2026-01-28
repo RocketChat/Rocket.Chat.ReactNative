@@ -1,4 +1,4 @@
-package chat.rocket.reactnative.notification
+package chat.rocket.reactnative.utils
 
 import com.facebook.react.bridge.ReactApplicationContext
 import java.security.MessageDigest

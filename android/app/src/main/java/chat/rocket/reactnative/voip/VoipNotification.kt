@@ -1,4 +1,4 @@
-package chat.rocket.reactnative.notification
+package chat.rocket.reactnative.voip
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -20,8 +20,7 @@ import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 import chat.rocket.reactnative.MainActivity
-import chat.rocket.reactnative.voip.IncomingCallActivity
-import chat.rocket.reactnative.voip.VoipForegroundService
+import chat.rocket.reactnative.utils.CallIdUUID
 
 /**
  * Handles VoIP call notifications using Android's Telecom framework via CallKeep.

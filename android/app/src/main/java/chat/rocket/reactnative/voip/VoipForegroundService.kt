@@ -12,7 +12,6 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import chat.rocket.reactnative.R
-import chat.rocket.reactnative.notification.VoipNotification
 
 /**
  * Foreground service for VoIP calls to ensure reliability on Android 14/15.

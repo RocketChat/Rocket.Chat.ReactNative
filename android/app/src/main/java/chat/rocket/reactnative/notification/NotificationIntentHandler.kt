@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.gson.GsonBuilder
+import chat.rocket.reactnative.voip.VoipNotification
+import chat.rocket.reactnative.voip.VoipModule
 
 /**
  * Handles notification Intent processing from MainActivity.

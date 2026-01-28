@@ -16,8 +16,6 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
-import chat.rocket.reactnative.notification.VoipNotification
-import chat.rocket.reactnative.notification.VoipModule
 
 /**
  * Full-screen Activity displayed when an incoming VoIP call arrives.
@@ -52,15 +50,17 @@ class IncomingCallActivity : Activity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
+        } else {
+            // Enable showing on lock screen (for older Android versions)
+            @Suppress("DEPRECATION")
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+            )
         }
-
-        // Enable showing on lock screen (for older Android versions)
-        window.addFlags(
-            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
-            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
-            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-        )
+        
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setContentView(R.layout.activity_incoming_call)
 
