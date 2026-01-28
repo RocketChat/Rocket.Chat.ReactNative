@@ -1,15 +1,21 @@
 import RNCallKeep from 'react-native-callkeep';
 import VoipPushNotification from 'react-native-voip-push-notification';
-import { DeviceEventEmitter, Platform } from 'react-native';
+import { DeviceEventEmitter } from 'react-native';
 
 import { isIOS } from '../../methods/helpers';
 import CallIdUUIDModule from '../../native/NativeCallIdUUID';
-import NativeVoipModule from '../../native/NativeVoipAndroid';
 import store from '../../store';
 import { voipCallOpen } from '../../../actions/deepLinking';
 import { setVoipPushToken } from './pushTokenAux';
 import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
+
+let NativeVoipModule: any;
+if (!isIOS) {
+	NativeVoipModule = require('../../native/NativeVoip.android');
+} else {
+	NativeVoipModule = null;
+}
 
 // Store VoIP push data temporarily (iOS only - Android uses native storage)
 let voipPushData: { callId: string; caller: string; host?: string; callUUID: string } | null = null;
@@ -31,9 +37,9 @@ export const getInitialEvents = (): Promise<boolean> => {
  * Sets up listeners for Android VoIP call events from native side.
  * @returns Cleanup function to remove listeners
  */
-export const setupVoipEventListeners = (): (() => void) | undefined => {
-	if (Platform.OS !== 'android') {
-		return undefined;
+export const setupVoipEventListeners = (): (() => void) => {
+	if (isIOS) {
+		return () => {};
 	}
 
 	const subscriptions = [

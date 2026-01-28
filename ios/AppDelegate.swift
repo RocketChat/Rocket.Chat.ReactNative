@@ -108,6 +108,7 @@ extension AppDelegate: PKPushRegistryDelegate {
     // The system calls this method when a previously provided push token is no longer valid for use.
     // No action is necessary on your part to reregister the push type.
     // Instead, use this method to notify your server not to send push notifications using the matching push token.
+    // TODO: call restapi to unregister the push token
   }
 
   public func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
