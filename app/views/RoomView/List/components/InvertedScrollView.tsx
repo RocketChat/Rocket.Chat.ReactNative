@@ -11,19 +11,14 @@ import {
 
 import { isAndroid } from '../../../../lib/methods/helpers';
 
-
 // Android-only native ScrollView that fixes TalkBack traversal order for inverted FlatLists.
 // Used via FlatList's renderScrollComponent. VirtualizedList passes multiple children (cells).
 
-const NativeInvertedScrollView =
-	isAndroid
-		? requireNativeComponent<ScrollViewProps>('InvertedScrollView')
-		: null;
+const NativeInvertedScrollView = isAndroid ? requireNativeComponent<ScrollViewProps>('InvertedScrollView') : null;
 
-const NativeInvertedScrollContentView =
-	isAndroid
-		? requireNativeComponent<ViewProps & { removeClippedSubviews?: boolean }>('InvertedScrollContentView')
-		: null;
+const NativeInvertedScrollContentView = isAndroid
+	? requireNativeComponent<ViewProps & { removeClippedSubviews?: boolean }>('InvertedScrollContentView')
+	: null;
 
 const InvertedScrollView = (props: ScrollViewProps) => {
 	if (NativeInvertedScrollView == null || NativeInvertedScrollContentView == null) {
@@ -44,10 +39,7 @@ const InvertedScrollView = (props: ScrollViewProps) => {
 
 	const hasStickyHeaders = Array.isArray(stickyHeaderIndices) && stickyHeaderIndices.length > 0;
 
-	const contentContainerStyleArray = [
-		props.horizontal ? { flexDirection: 'row' } : null,
-		contentContainerStyle
-	];
+	const contentContainerStyleArray = [props.horizontal ? { flexDirection: 'row' } : null, contentContainerStyle];
 
 	const contentSizeChangeProps =
 		onContentSizeChange == null
@@ -66,14 +58,11 @@ const InvertedScrollView = (props: ScrollViewProps) => {
 	return (
 		<NativeInvertedScrollView {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)}>
 			<NativeInvertedScrollContentView
-			{...contentSizeChangeProps}
-				removeClippedSubviews={
-					isAndroid && hasStickyHeaders ? false : removeClippedSubviews
-				}
+				{...contentSizeChangeProps}
+				removeClippedSubviews={isAndroid && hasStickyHeaders ? false : removeClippedSubviews}
 				collapsable={false}
 				collapsableChildren={!preserveChildren}
-				style={contentContainerStyleArray as  StyleProp<ViewStyle>}
-			>
+				style={contentContainerStyleArray as StyleProp<ViewStyle>}>
 				{children}
 			</NativeInvertedScrollContentView>
 		</NativeInvertedScrollView>
