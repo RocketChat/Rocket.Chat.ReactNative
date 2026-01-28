@@ -31,8 +31,8 @@ const CallerInfo = ({ isMuted = false }: ICallerInfo): React.ReactElement => {
 					</View>
 				</AvatarContainer>
 			</View>
-			<View style={styles.callerNameRow}>
-				<Text style={[styles.callerName, { color: colors.fontDefault }]} numberOfLines={1} testID='caller-info-name'>
+			<View style={styles.callerRow}>
+				<Text style={[styles.caller, { color: colors.fontDefault }]} numberOfLines={1} testID='caller-info-name'>
 					{name}
 				</Text>
 				{isMuted && (

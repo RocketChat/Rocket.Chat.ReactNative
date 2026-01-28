@@ -53,34 +53,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
         }
 
         /**
-         * Emits an incoming call event to JavaScript.
-         */
-        // @JvmStatic
-        // fun emitIncomingCall(callId: String, callUUID: String, callerName: String, host: String?) {
-        //     try {
-        //         val data = mapOf(
-        //             "callId" to callId,
-        //             "callUUID" to callUUID,
-        //             "callerName" to callerName,
-        //             "host" to (host ?: "")
-        //         )
-        //         val gson = GsonBuilder().create()
-        //         val jsonData = gson.toJson(data)
-
-        //         reactContextRef?.get()?.let { context ->
-        //             if (context.hasActiveReactInstance()) {
-        //                 context
-        //                     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-        //                     .emit(EVENT_INCOMING_CALL, jsonData)
-        //                 Log.d(TAG, "Emitted incoming call event to JS: $callUUID")
-        //             }
-        //         }
-        //     } catch (e: Exception) {
-        //         Log.e(TAG, "Failed to emit incoming call event", e)
-        //     }
-        // }
-
-        /**
          * Emits a call answered event to JavaScript.
          */
         @JvmStatic
@@ -157,13 +129,13 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
          * Also emits an event if the app is running.
          */
         @JvmStatic
-        fun storePendingVoipCall(context: Context, callId: String, callUUID: String, callerName: String, host: String, event: String) {
+        fun storePendingVoipCall(context: Context, callId: String, callUUID: String, caller: String, host: String, event: String) {
             // TODO: use VoipPayload
             val data = mapOf(
                 "notificationType" to "voip",
                 "callId" to callId,
                 "callUUID" to callUUID,
-                "callerName" to callerName,
+                "caller" to caller,
                 "host" to host,
                 "event" to event
             )
@@ -176,7 +148,7 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
                 .putString("pendingAction", jsonData)
                 .putString("callId", callId)
                 .putString("callUUID", callUUID)
-                .putString("callerName", callerName)
+                .putString("caller", caller)
                 .putString("host", host)
                 .putString("event", event)
                 .putLong("timestamp", System.currentTimeMillis())

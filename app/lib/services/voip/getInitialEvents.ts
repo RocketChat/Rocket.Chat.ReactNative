@@ -187,7 +187,6 @@ const getInitialEventsAndroid = async (): Promise<boolean> => {
 			notificationType: string;
 			callId: string;
 			callUUID: string;
-			callerName: string;
 			host: string;
 			event: string;
 		};

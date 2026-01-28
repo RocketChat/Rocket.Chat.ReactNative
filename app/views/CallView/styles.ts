@@ -21,14 +21,14 @@ export const styles = StyleSheet.create({
 		marginBottom: 16,
 		position: 'relative'
 	},
-	callerName: {
+	caller: {
 		...sharedStyles.textBold,
 		fontSize: 24,
 		lineHeight: 32,
 		textAlign: 'center',
 		marginBottom: 4
 	},
-	callerNameRow: {
+	callerRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center'

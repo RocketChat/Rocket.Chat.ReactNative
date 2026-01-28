@@ -51,13 +51,13 @@ class NotificationIntentHandler {
             val event = intent.getStringExtra("event") ?: return true
             val callId = intent.getStringExtra("callId") ?: ""
             val callUUID = intent.getStringExtra("callUUID") ?: ""
-            val callerName = intent.getStringExtra("callerName") ?: ""
+            val caller = intent.getStringExtra("caller") ?: ""
             val host = intent.getStringExtra("host") ?: ""
 
             Log.d(TAG, "Handling VoIP intent - event: $event, callId: $callId, callUUID: $callUUID")
 
             VoipNotification.cancelById(context, notificationId)
-            VoipModule.storePendingVoipCall(context, callId, callUUID, callerName, host, event)
+            VoipModule.storePendingVoipCall(context, callId, callUUID, caller, host, event)
 
             // Emit event to JS if app is running
             if (event == "accept") {
@@ -85,7 +85,7 @@ class NotificationIntentHandler {
 
             val rid = intent.getStringExtra("rid") ?: ""
             val callerId = intent.getStringExtra("callerId") ?: ""
-            val callerName = intent.getStringExtra("callerName") ?: ""
+            val caller = intent.getStringExtra("caller") ?: ""
             val host = intent.getStringExtra("host") ?: ""
             val callId = intent.getStringExtra("callId") ?: ""
 
@@ -103,7 +103,7 @@ class NotificationIntentHandler {
                 "callId" to callId,
                 "caller" to mapOf(
                     "_id" to callerId,
-                    "name" to callerName
+                    "name" to caller
                 )
             )
 

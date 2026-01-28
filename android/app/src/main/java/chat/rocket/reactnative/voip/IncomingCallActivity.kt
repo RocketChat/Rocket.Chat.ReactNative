@@ -27,14 +27,14 @@ class IncomingCallActivity : Activity() {
         private const val TAG = "RocketChat.IncomingCall"
         private const val EXTRA_CALL_ID = "callId"
         private const val EXTRA_CALL_UUID = "callUUID"
-        private const val EXTRA_CALLER_NAME = "callerName"
+        private const val EXTRA_CALLER = "caller"
         private const val EXTRA_HOST = "host"
     }
 
     private var ringtone: Ringtone? = null
     private var callUUID: String? = null
     private var callId: String? = null
-    private var callerName: String? = null
+    private var caller: String? = null
     private var host: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,10 +67,10 @@ class IncomingCallActivity : Activity() {
         // Get call data from intent
         callId = intent.getStringExtra(EXTRA_CALL_ID)
         callUUID = intent.getStringExtra(EXTRA_CALL_UUID)
-        callerName = intent.getStringExtra(EXTRA_CALLER_NAME) ?: "Unknown"
+        caller = intent.getStringExtra(EXTRA_CALLER)
         host = intent.getStringExtra(EXTRA_HOST)
 
-        Log.d(TAG, "IncomingCallActivity created - callUUID: $callUUID, caller: $callerName")
+        Log.d(TAG, "IncomingCallActivity created - callUUID: $callUUID, caller: $caller")
 
         // Update UI
         updateUI()
@@ -83,8 +83,8 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun updateUI() {
-        val callerNameView = findViewById<TextView>(R.id.caller_name)
-        callerNameView?.text = callerName ?: "Unknown"
+        val callerView = findViewById<TextView>(R.id.caller_name)
+        callerView?.text = caller
 
         // Try to load avatar if available
         // TODO: needs username to load avatar
@@ -138,8 +138,8 @@ class IncomingCallActivity : Activity() {
         }
 
         // Store pending call data before emitting event (fixes race condition)
-        // if (callUUID != null && callId != null && callerName != null && host != null) {
-        //     VoipModule.storePendingVoipCall(this, callId, callUUID, callerName, host, "accept")
+        // if (callUUID != null && callId != null && caller != null && host != null) {
+        //     VoipModule.storePendingVoipCall(this, callId, callUUID, caller, host, "accept")
         // }
 
         // Launch MainActivity with call data
@@ -149,7 +149,7 @@ class IncomingCallActivity : Activity() {
             putExtra("event", "accept")
             putExtra("callId", callId)
             putExtra("callUUID", callUUID)
-            putExtra("callerName", callerName)
+            putExtra("caller", caller)
             putExtra("host", host)
         }
         startActivity(launchIntent)

@@ -71,6 +71,7 @@ class VoipNotification(private val context: Context) {
             Log.d(TAG, "Decline action triggered for callUUID: $callUUID")
             // Clear stored call data
             VoipModule.clearPendingVoipCall(context)
+            // TODO: call restapi to decline the call
         }
     }
 
@@ -128,25 +129,24 @@ class VoipNotification(private val context: Context) {
      */
     fun showIncomingCall(bundle: Bundle, voipPayload: VoipPayload) {
         val callId = voipPayload.callId
-        if (callId.isNullOrEmpty()) {
+        val caller = voipPayload.caller
+        if (callId.isNullOrEmpty() || caller.isNullOrEmpty()) {
             Log.w(TAG, "Cannot show VoIP call: callId is missing")
             return
         }
 
-        // Get caller information - simplified since VoipPayload has caller as a string
-        val callerName = voipPayload.caller ?: "Unknown"
 
         // TODO: remove this when it comes from the server
         val callUUID = CallIdUUID.generateUUIDv5(callId)
 
-        Log.d(TAG, "Showing incoming VoIP call - callId: $callId, callUUID: $callUUID, caller: $callerName")
+        Log.d(TAG, "Showing incoming VoIP call - callId: $callId, callUUID: $callUUID, caller: $caller")
 
         // CRITICAL: Register call with TelecomManager FIRST (required for audio focus, Bluetooth, priority, FSI exemption)
         // This triggers react-native-callkeep's ConnectionService
-        registerCallWithTelecomManager(callUUID, callerName)
+        registerCallWithTelecomManager(callUUID, caller)
 
         // Show notification with full-screen intent
-        showIncomingCallNotification(bundle, voipPayload, callUUID, callerName)
+        showIncomingCallNotification(bundle, voipPayload, callUUID, caller)
     }
 
     /**
@@ -157,10 +157,10 @@ class VoipNotification(private val context: Context) {
      * 3. Higher process priority
      * 4. FSI exemption on Play Store
      */
-    private fun registerCallWithTelecomManager(callUUID: String, callerName: String) {
+    private fun registerCallWithTelecomManager(callUUID: String, caller: String) {
         try {
             // Validate inputs
-            if (callUUID.isNullOrEmpty()) {
+            if (callUUID.isNullOrEmpty() || caller.isNullOrEmpty()) {
                 Log.e(TAG, "Cannot register call with TelecomManager: callUUID is null or empty")
                 return
             }
@@ -187,19 +187,19 @@ class VoipNotification(private val context: Context) {
             // react-native-callkeep's VoiceConnectionService expects EXTRA_CALL_UUID constant
             // which is defined as "EXTRA_CALL_UUID" (not "callUUID")
             val extras = Bundle().apply {
-                val callerUri = Uri.fromParts(PhoneAccount.SCHEME_TEL, callerName, null)
+                val callerUri = Uri.fromParts(PhoneAccount.SCHEME_TEL, caller, null)
                 putParcelable(TelecomManager.EXTRA_INCOMING_CALL_ADDRESS, callerUri)
                 // react-native-callkeep Constants.EXTRA_CALL_UUID = "EXTRA_CALL_UUID"
                 putString("EXTRA_CALL_UUID", callUUID)
                 // Also include EXTRA_CALLER_NAME for compatibility
-                putString("EXTRA_CALLER_NAME", callerName)
+                putString("EXTRA_CALLER_NAME", caller)
                 // Legacy keys for backward compatibility
                 putString("callUUID", callUUID)
-                putString("name", callerName)
-                putString("handle", callerName)
+                putString("name", caller)
+                putString("handle", caller)
             }
 
-            Log.d(TAG, "Registering call with TelecomManager - callUUID: $callUUID, callerName: $callerName, extras keys: ${extras.keySet()}")
+            Log.d(TAG, "Registering call with TelecomManager - callUUID: $callUUID, caller: $caller, extras keys: ${extras.keySet()}")
 
             // Register the incoming call with the OS
             telecomManager.addNewIncomingCall(phoneAccountHandle, extras)
@@ -216,11 +216,11 @@ class VoipNotification(private val context: Context) {
      * and heads-up notification for unlocked devices.
      * Falls back to HUN only if full-screen intent permission is not granted (Android 14+).
      */
-    private fun showIncomingCallNotification(bundle: Bundle, voipPayload: VoipPayload, callUUID: String, callerName: String) {
+    private fun showIncomingCallNotification(bundle: Bundle, voipPayload: VoipPayload, callUUID: String, caller: String) {
         val callId = voipPayload.callId ?: ""
         val notificationId = callId.hashCode()
 
-        Log.d(TAG, "Showing incoming call notification for VoIP call from: $callerName")
+        Log.d(TAG, "Showing incoming call notification for VoIP call from: $caller")
 
         // Check if we can use full-screen intent (Android 14+)
         val canUseFullScreen = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -234,7 +234,7 @@ class VoipNotification(private val context: Context) {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             putExtra("callId", callId)
             putExtra("callUUID", callUUID)
-            putExtra("callerName", callerName)
+            putExtra("caller", caller)
             putExtra("host", voipPayload.host ?: "")
         }
         val fullScreenPendingIntent = createPendingIntent(notificationId, fullScreenIntent)
@@ -246,7 +246,7 @@ class VoipNotification(private val context: Context) {
             putExtra("event", "accept")
             putExtra("callId", callId)
             putExtra("callUUID", callUUID)
-            putExtra("callerName", callerName)
+            putExtra("caller", caller)
             putExtra("host", voipPayload.host ?: "")
             putExtra("notificationId", notificationId)
         }
@@ -285,7 +285,7 @@ class VoipNotification(private val context: Context) {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
             setSmallIcon(smallIconResId)
             setContentTitle("Incoming call")
-            setContentText("Call from $callerName")
+            setContentText("Call from $caller")
             priority = NotificationCompat.PRIORITY_MAX
             setCategory(NotificationCompat.CATEGORY_CALL)
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -330,16 +330,5 @@ class VoipNotification(private val context: Context) {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
         return PendingIntent.getActivity(context, requestCode, intent, flags)
-    }
-
-    /**
-     * Cancels a VoIP call by callId.
-     *
-     * @param callId The call ID
-     */
-    fun cancelCall(callId: String) {
-        val notificationId = callId.hashCode()
-        cancelById(context, notificationId)
-        VoipModule.clearPendingVoipCall(context)
     }
 }

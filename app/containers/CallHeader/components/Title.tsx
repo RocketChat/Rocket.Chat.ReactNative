@@ -22,7 +22,7 @@ const Title = () => {
 	const callStartTime = useCallStore(state => state.callStartTime);
 	const contact = useCallStore(state => state.contact);
 
-	const callerName = contact.displayName || contact.username || I18n.t('Unknown');
+	const caller = contact.displayName || contact.username;
 	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
 	const isConnected = callState === 'active';
 
@@ -31,9 +31,9 @@ const Title = () => {
 			return I18n.t('Connecting');
 		}
 		if (isConnected && callStartTime) {
-			return `${callerName} – `;
+			return `${caller} – `;
 		}
-		return callerName;
+		return caller;
 	};
 
 	return (
