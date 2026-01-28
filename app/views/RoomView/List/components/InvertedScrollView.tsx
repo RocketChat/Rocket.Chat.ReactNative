@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	Platform,
 	requireNativeComponent,
 	StyleSheet,
 	type StyleProp,
@@ -10,17 +9,19 @@ import {
 	type ViewProps
 } from 'react-native';
 
+import { isAndroid } from '../../../../lib/methods/helpers';
+
 
 // Android-only native ScrollView that fixes TalkBack traversal order for inverted FlatLists.
 // Used via FlatList's renderScrollComponent. VirtualizedList passes multiple children (cells).
 
 const NativeInvertedScrollView =
-	Platform.OS === 'android'
+	isAndroid
 		? requireNativeComponent<ScrollViewProps>('InvertedScrollView')
 		: null;
 
 const NativeInvertedScrollContentView =
-	Platform.OS === 'android'
+	isAndroid
 		? requireNativeComponent<ViewProps & { removeClippedSubviews?: boolean }>('InvertedScrollContentView')
 		: null;
 
@@ -39,7 +40,7 @@ const InvertedScrollView = (props: ScrollViewProps) => {
 		...rest
 	} = props;
 
-	const preserveChildren = maintainVisibleContentPosition != null || (Platform.OS === 'android' && props.snapToAlignment != null);
+	const preserveChildren = maintainVisibleContentPosition != null || (isAndroid && props.snapToAlignment != null);
 
 	const hasStickyHeaders = Array.isArray(stickyHeaderIndices) && stickyHeaderIndices.length > 0;
 
@@ -67,7 +68,7 @@ const InvertedScrollView = (props: ScrollViewProps) => {
 			<NativeInvertedScrollContentView
 			{...contentSizeChangeProps}
 				removeClippedSubviews={
-					Platform.OS === 'android' && hasStickyHeaders ? false : removeClippedSubviews
+					isAndroid && hasStickyHeaders ? false : removeClippedSubviews
 				}
 				collapsable={false}
 				collapsableChildren={!preserveChildren}
