@@ -20,7 +20,10 @@ const NativeInvertedScrollContentView = isAndroid
 	? requireNativeComponent<ViewProps & { removeClippedSubviews?: boolean }>('InvertedScrollContentView')
 	: null;
 
-const InvertedScrollView = (props: ScrollViewProps) => {
+const InvertedScrollView = React.forwardRef<
+	React.ComponentRef<NonNullable<typeof NativeInvertedScrollView>>,
+	ScrollViewProps
+>((props, ref) => {
 	if (NativeInvertedScrollView == null || NativeInvertedScrollContentView == null) {
 		return null;
 	}
@@ -56,7 +59,7 @@ const InvertedScrollView = (props: ScrollViewProps) => {
 	const { style, ...restWithoutStyle } = rest;
 
 	return (
-		<NativeInvertedScrollView {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)}>
+		<NativeInvertedScrollView ref={ref} {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)}>
 			<NativeInvertedScrollContentView
 				{...contentSizeChangeProps}
 				removeClippedSubviews={isAndroid && hasStickyHeaders ? false : removeClippedSubviews}
@@ -67,7 +70,9 @@ const InvertedScrollView = (props: ScrollViewProps) => {
 			</NativeInvertedScrollContentView>
 		</NativeInvertedScrollView>
 	);
-};
+});
+
+InvertedScrollView.displayName = 'InvertedScrollView';
 
 const styles = StyleSheet.create({
 	baseVertical: {
