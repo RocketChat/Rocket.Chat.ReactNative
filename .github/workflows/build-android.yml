@@ -47,7 +47,7 @@ jobs:
 
       - name: Build Android
         uses: ./.github/actions/build-android
-        timeout-minutes: 120
+        timeout-minutes: 40
         with:
           type: 'experimental'
           BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
