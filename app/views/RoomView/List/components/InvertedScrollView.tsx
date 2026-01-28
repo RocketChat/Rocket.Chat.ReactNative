@@ -20,57 +20,56 @@ const NativeInvertedScrollContentView = isAndroid
 	? requireNativeComponent<ViewProps & { removeClippedSubviews?: boolean }>('InvertedScrollContentView')
 	: null;
 
-const InvertedScrollView = React.forwardRef<
-	React.ComponentRef<NonNullable<typeof NativeInvertedScrollView>>,
-	ScrollViewProps
->((props, ref) => {
-	if (NativeInvertedScrollView == null || NativeInvertedScrollContentView == null) {
-		return null;
+const InvertedScrollView = React.forwardRef<React.ComponentRef<NonNullable<typeof NativeInvertedScrollView>>, ScrollViewProps>(
+	(props, ref) => {
+		if (NativeInvertedScrollView == null || NativeInvertedScrollContentView == null) {
+			return null;
+		}
+		const {
+			children,
+			contentContainerStyle,
+			onContentSizeChange,
+			removeClippedSubviews,
+			maintainVisibleContentPosition,
+			snapToAlignment,
+			stickyHeaderIndices,
+			...rest
+		} = props;
+
+		const preserveChildren = maintainVisibleContentPosition != null || (isAndroid && props.snapToAlignment != null);
+
+		const hasStickyHeaders = Array.isArray(stickyHeaderIndices) && stickyHeaderIndices.length > 0;
+
+		const contentContainerStyleArray = [props.horizontal ? { flexDirection: 'row' } : null, contentContainerStyle];
+
+		const contentSizeChangeProps =
+			onContentSizeChange == null
+				? undefined
+				: {
+						onLayout: (e: LayoutChangeEvent) => {
+							const { width, height } = e.nativeEvent.layout;
+							onContentSizeChange(width, height);
+						}
+				  };
+
+		const horizontal = !!props.horizontal;
+		const baseStyle = horizontal ? styles.baseHorizontal : styles.baseVertical;
+		const { style, ...restWithoutStyle } = rest;
+
+		return (
+			<NativeInvertedScrollView ref={ref} {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)}>
+				<NativeInvertedScrollContentView
+					{...contentSizeChangeProps}
+					removeClippedSubviews={isAndroid && hasStickyHeaders ? false : removeClippedSubviews}
+					collapsable={false}
+					collapsableChildren={!preserveChildren}
+					style={contentContainerStyleArray as StyleProp<ViewStyle>}>
+					{children}
+				</NativeInvertedScrollContentView>
+			</NativeInvertedScrollView>
+		);
 	}
-	const {
-		children,
-		contentContainerStyle,
-		onContentSizeChange,
-		removeClippedSubviews,
-		maintainVisibleContentPosition,
-		snapToAlignment,
-		stickyHeaderIndices,
-		...rest
-	} = props;
-
-	const preserveChildren = maintainVisibleContentPosition != null || (isAndroid && props.snapToAlignment != null);
-
-	const hasStickyHeaders = Array.isArray(stickyHeaderIndices) && stickyHeaderIndices.length > 0;
-
-	const contentContainerStyleArray = [props.horizontal ? { flexDirection: 'row' } : null, contentContainerStyle];
-
-	const contentSizeChangeProps =
-		onContentSizeChange == null
-			? undefined
-			: {
-					onLayout: (e: LayoutChangeEvent) => {
-						const { width, height } = e.nativeEvent.layout;
-						onContentSizeChange(width, height);
-					}
-			  };
-
-	const horizontal = !!props.horizontal;
-	const baseStyle = horizontal ? styles.baseHorizontal : styles.baseVertical;
-	const { style, ...restWithoutStyle } = rest;
-
-	return (
-		<NativeInvertedScrollView ref={ref} {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)}>
-			<NativeInvertedScrollContentView
-				{...contentSizeChangeProps}
-				removeClippedSubviews={isAndroid && hasStickyHeaders ? false : removeClippedSubviews}
-				collapsable={false}
-				collapsableChildren={!preserveChildren}
-				style={contentContainerStyleArray as StyleProp<ViewStyle>}>
-				{children}
-			</NativeInvertedScrollContentView>
-		</NativeInvertedScrollView>
-	);
-});
+);
 
 InvertedScrollView.displayName = 'InvertedScrollView';
 
