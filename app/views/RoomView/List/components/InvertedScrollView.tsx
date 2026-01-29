@@ -17,6 +17,22 @@ const COMMAND_SCROLL_TO = 1;
 const COMMAND_SCROLL_TO_END = 2;
 const COMMAND_FLASH_SCROLL_INDICATORS = 3;
 
+const styles = StyleSheet.create({
+	baseVertical: {
+		flexGrow: 1,
+		flexShrink: 1,
+		flexDirection: 'column',
+		overflow: 'scroll'
+	},
+	baseHorizontal: {
+		flexGrow: 1,
+		flexShrink: 1,
+		flexDirection: 'row',
+		overflow: 'scroll'
+	}
+});
+
+
 type ScrollViewPropsWithRef = ScrollViewProps & React.RefAttributes<NativeScrollInstance | null>;
 type NativeScrollInstance = React.ComponentRef<NonNullable<typeof NativeInvertedScrollView>>;
 interface IScrollableMethods {
@@ -145,20 +161,5 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((p
 });
 
 InvertedScrollView.displayName = 'InvertedScrollView';
-
-const styles = StyleSheet.create({
-	baseVertical: {
-		flexGrow: 1,
-		flexShrink: 1,
-		flexDirection: 'column',
-		overflow: 'scroll'
-	},
-	baseHorizontal: {
-		flexGrow: 1,
-		flexShrink: 1,
-		flexDirection: 'row',
-		overflow: 'scroll'
-	}
-});
 
 export default InvertedScrollView;
