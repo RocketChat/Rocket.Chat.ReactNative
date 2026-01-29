@@ -16,7 +16,7 @@ abstract class NativeVoipSpec(reactContext: ReactApplicationContext) :
     override fun getName(): String = NAME
 
     @ReactMethod
-    abstract fun getPendingVoipCall(promise: Promise)
+    abstract fun getPendingVoipCall(): String?
 
     @ReactMethod
     abstract fun clearPendingVoipCall()

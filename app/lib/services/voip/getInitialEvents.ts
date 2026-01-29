@@ -12,7 +12,7 @@ import { mediaSessionInstance } from './MediaSessionInstance';
 
 let NativeVoipModule: any;
 if (!isIOS) {
-	NativeVoipModule = require('../../native/NativeVoip.android');
+	NativeVoipModule = require('../../native/NativeVoip.android').default;
 } else {
 	NativeVoipModule = null;
 }
@@ -47,7 +47,7 @@ export const setupVoipEventListeners = (): (() => void) => {
 			try {
 				const data = JSON.parse(dataJson);
 				console.log('[VoIP][Android] Call action event:', data);
-				await NativeVoipModule.clearPendingVoipCall();
+				NativeVoipModule.clearPendingVoipCall();
 
 				if (data.event === 'accept') {
 					useCallStore.getState().setCallUUID(data.callUUID);
@@ -179,13 +179,13 @@ const getInitialEventsAndroid = async (): Promise<boolean> => {
 			return false;
 		}
 
-		const pendingCallJson = await NativeVoipModule.getPendingVoipCall();
+		const pendingCallJson = NativeVoipModule.getPendingVoipCall();
 		if (!pendingCallJson) {
 			console.log('[VoIP][Android] No pending VoIP call');
 			return false;
 		}
 
-		await NativeVoipModule.clearPendingVoipCall();
+		NativeVoipModule.clearPendingVoipCall();
 
 		console.log('[VoIP][Android] Found pending VoIP call:', pendingCallJson);
 

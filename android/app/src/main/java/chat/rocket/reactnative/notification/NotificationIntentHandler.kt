@@ -59,11 +59,6 @@ class NotificationIntentHandler {
             VoipNotification.cancelById(context, notificationId)
             VoipModule.storePendingVoipCall(context, callId, callUUID, caller, host, event)
 
-            // Emit event to JS if app is running
-            if (event == "accept") {
-                VoipModule.emitCallAnswered(callUUID)
-            }
-
             // Clear the voip flag to prevent re-processing
             intent.removeExtra("voipAction")
 

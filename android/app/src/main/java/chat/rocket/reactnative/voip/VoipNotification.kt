@@ -45,14 +45,6 @@ class VoipNotification(private val context: Context) {
         private const val CALLKEEP_CONNECTION_SERVICE_CLASS = "io.wazo.callkeep.VoiceConnectionService"
 
         /**
-         * Static method to clear stored call data from any context.
-         */
-        @JvmStatic
-        fun clearStoredCallData(context: Context) {
-            VoipModule.clearPendingVoipCall(context)
-        }
-
-        /**
          * Cancels a VoIP notification by ID.
          */
         @JvmStatic
@@ -69,8 +61,6 @@ class VoipNotification(private val context: Context) {
         @JvmStatic
         fun handleDeclineAction(context: Context, callUUID: String?) {
             Log.d(TAG, "Decline action triggered for callUUID: $callUUID")
-            // Clear stored call data
-            VoipModule.clearPendingVoipCall(context)
             // TODO: call restapi to decline the call
         }
     }
@@ -135,7 +125,6 @@ class VoipNotification(private val context: Context) {
             return
         }
 
-
         // TODO: remove this when it comes from the server
         val callUUID = CallIdUUID.generateUUIDv5(callId)
 
@@ -184,14 +173,10 @@ class VoipNotification(private val context: Context) {
             }
 
             // Create extras for the incoming call
-            // react-native-callkeep's VoiceConnectionService expects EXTRA_CALL_UUID constant
-            // which is defined as "EXTRA_CALL_UUID" (not "callUUID")
             val extras = Bundle().apply {
                 val callerUri = Uri.fromParts(PhoneAccount.SCHEME_TEL, caller, null)
                 putParcelable(TelecomManager.EXTRA_INCOMING_CALL_ADDRESS, callerUri)
-                // react-native-callkeep Constants.EXTRA_CALL_UUID = "EXTRA_CALL_UUID"
                 putString("EXTRA_CALL_UUID", callUUID)
-                // Also include EXTRA_CALLER_NAME for compatibility
                 putString("EXTRA_CALLER_NAME", caller)
                 // Legacy keys for backward compatibility
                 putString("callUUID", callUUID)

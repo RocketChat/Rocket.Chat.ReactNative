@@ -169,12 +169,6 @@ class IncomingCallActivity : Activity() {
 
         // Emit event to JS
         // TODO: call restapi to decline the call
-        callUUID?.let { uuid ->
-            VoipModule.emitCallDeclined(uuid)
-        }
-
-        // Clear stored call data
-        VoipModule.clearPendingVoipCall(this)
 
         finish()
     }
