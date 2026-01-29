@@ -25,17 +25,10 @@ class IncomingCallActivity : Activity() {
 
     companion object {
         private const val TAG = "RocketChat.IncomingCall"
-        private const val EXTRA_CALL_ID = "callId"
-        private const val EXTRA_CALL_UUID = "callUUID"
-        private const val EXTRA_CALLER = "caller"
-        private const val EXTRA_HOST = "host"
     }
 
     private var ringtone: Ringtone? = null
-    private var callUUID: String? = null
-    private var callId: String? = null
-    private var caller: String? = null
-    private var host: String? = null
+    private var voipPayload: VoipPayload? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,27 +57,24 @@ class IncomingCallActivity : Activity() {
 
         setContentView(R.layout.activity_incoming_call)
 
-        // Get call data from intent
-        callId = intent.getStringExtra(EXTRA_CALL_ID)
-        callUUID = intent.getStringExtra(EXTRA_CALL_UUID)
-        caller = intent.getStringExtra(EXTRA_CALLER)
-        host = intent.getStringExtra(EXTRA_HOST)
+        val voipPayload = VoipPayload.fromBundle(intent.extras)
+        if (voipPayload == null || !voipPayload.isVoipIncomingCall()) {
+            Log.e(TAG, "Invalid VoIP payload, finishing activity")
+            finish()
+            return
+        }
+        this.voipPayload = voipPayload
 
-        Log.d(TAG, "IncomingCallActivity created - callUUID: $callUUID, caller: $caller")
+        Log.d(TAG, "IncomingCallActivity created - callUUID: ${voipPayload.callUUID}, caller: ${voipPayload.caller}")
 
-        // Update UI
-        updateUI()
-
-        // Start ringtone
+        updateUI(voipPayload)
         startRingtone()
-
-        // Setup button listeners
-        setupButtons()
+        setupButtons(voipPayload)
     }
 
-    private fun updateUI() {
+    private fun updateUI(payload: VoipPayload) {
         val callerView = findViewById<TextView>(R.id.caller_name)
-        callerView?.text = caller
+        callerView?.text = payload.caller
 
         // Try to load avatar if available
         // TODO: needs username to load avatar
@@ -114,58 +104,38 @@ class IncomingCallActivity : Activity() {
         }
     }
 
-    private fun setupButtons() {
+    private fun setupButtons(payload: VoipPayload) {
         val acceptButton = findViewById<ImageButton>(R.id.btn_accept)
         val declineButton = findViewById<ImageButton>(R.id.btn_decline)
 
         acceptButton?.setOnClickListener {
-            handleAccept()
+            handleAccept(payload)
         }
 
         declineButton?.setOnClickListener {
-            handleDecline()
+            handleDecline(payload)
         }
     }
 
-    private fun handleAccept() {
-        Log.d(TAG, "Call accepted - callUUID: $callUUID")
+    private fun handleAccept(payload: VoipPayload) {
+        Log.d(TAG, "Call accepted - callUUID: ${payload.callUUID}")
         stopRingtone()
-
-        // Cancel notification
-        callUUID?.let { uuid ->
-            val notificationId = uuid.replace("-", "").hashCode()
-            VoipNotification.cancelById(this, notificationId)
-        }
-
-        // Store pending call data before emitting event (fixes race condition)
-        // if (callUUID != null && callId != null && caller != null && host != null) {
-        //     VoipModule.storePendingVoipCall(this, callId, callUUID, caller, host, "accept")
-        // }
 
         // Launch MainActivity with call data
         val launchIntent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            putExtra("voipAction", true)
-            putExtra("event", "accept")
-            putExtra("callId", callId)
-            putExtra("callUUID", callUUID)
-            putExtra("caller", caller)
-            putExtra("host", host)
+            putExtras(payload.toBundle())
         }
         startActivity(launchIntent)
 
         finish()
     }
 
-    private fun handleDecline() {
-        Log.d(TAG, "Call declined - callUUID: $callUUID")
+    private fun handleDecline(payload: VoipPayload) {
+        Log.d(TAG, "Call declined - callUUID: ${payload.callUUID}")
         stopRingtone()
 
-        // Cancel notification
-        callUUID?.let { uuid ->
-            val notificationId = uuid.replace("-", "").hashCode()
-            VoipNotification.cancelById(this, notificationId)
-        }
+        VoipNotification.cancelById(this, payload.notificationId)
 
         // Emit event to JS
         // TODO: call restapi to decline the call
@@ -179,7 +149,6 @@ class IncomingCallActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        // Treat back button as decline
-        handleDecline()
+        voipPayload?.let { handleDecline(it) } ?: finish()
     }
 }

@@ -7,6 +7,7 @@ import android.util.Log
 import com.google.gson.GsonBuilder
 import chat.rocket.reactnative.voip.VoipNotification
 import chat.rocket.reactnative.voip.VoipModule
+import chat.rocket.reactnative.voip.VoipPayload
 
 /**
  * Handles notification Intent processing from MainActivity.
@@ -46,18 +47,15 @@ class NotificationIntentHandler {
             if (!intent.getBooleanExtra("voipAction", false)) {
                 return false
             }
+            val voipPayload = VoipPayload.fromBundle(intent.extras)
+            if (voipPayload == null || !voipPayload.isVoipIncomingCall()) {
+                return false
+            }
 
-            val notificationId = intent.getIntExtra("notificationId", 0)
-            val event = intent.getStringExtra("event") ?: return true
-            val callId = intent.getStringExtra("callId") ?: ""
-            val callUUID = intent.getStringExtra("callUUID") ?: ""
-            val caller = intent.getStringExtra("caller") ?: ""
-            val host = intent.getStringExtra("host") ?: ""
+            Log.d(TAG, "Handling VoIP intent - voipPayload: $voipPayload")
 
-            Log.d(TAG, "Handling VoIP intent - event: $event, callId: $callId, callUUID: $callUUID")
-
-            VoipNotification.cancelById(context, notificationId)
-            VoipModule.storePendingVoipCall(context, callId, callUUID, caller, host, event)
+            VoipNotification.cancelById(context, voipPayload.notificationId)
+            VoipModule.storePendingVoipCall(voipPayload)
 
             // Clear the voip flag to prevent re-processing
             intent.removeExtra("voipAction")

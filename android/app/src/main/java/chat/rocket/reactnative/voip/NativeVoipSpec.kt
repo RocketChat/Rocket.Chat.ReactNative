@@ -1,10 +1,10 @@
 package chat.rocket.reactnative.voip
 
-import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.turbomodule.core.interfaces.TurboModule
+import com.facebook.react.bridge.WritableMap
 
 abstract class NativeVoipSpec(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext), TurboModule {
@@ -15,8 +15,8 @@ abstract class NativeVoipSpec(reactContext: ReactApplicationContext) :
 
     override fun getName(): String = NAME
 
-    @ReactMethod
-    abstract fun getPendingVoipCall(): String?
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    abstract fun getPendingVoipCall(): WritableMap?
 
     @ReactMethod
     abstract fun clearPendingVoipCall()

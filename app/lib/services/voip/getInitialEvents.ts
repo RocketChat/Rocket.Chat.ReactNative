@@ -9,15 +9,17 @@ import { voipCallOpen } from '../../../actions/deepLinking';
 import { setVoipPushToken } from './pushTokenAux';
 import { useCallStore } from './useCallStore';
 import { mediaSessionInstance } from './MediaSessionInstance';
+import type { VoipPayload } from '../../../definitions/Voip';
+import type { Spec as NativeVoipSpec } from '../../native/NativeVoip.android';
 
-let NativeVoipModule: any;
+let NativeVoipModule: NativeVoipSpec | null = null;
 if (!isIOS) {
 	NativeVoipModule = require('../../native/NativeVoip.android').default;
 } else {
 	NativeVoipModule = null;
 }
 
-// Store VoIP push data temporarily (iOS only - Android uses native storage)
+// Store VoIP push data temporarily (iOS only)
 let voipPushData: { callId: string; caller: string; host?: string; callUUID: string } | null = null;
 
 /**
@@ -30,7 +32,7 @@ export const getInitialEvents = (): Promise<boolean> => {
 	if (isIOS) {
 		return getInitialEventsIOS();
 	}
-	return getInitialEventsAndroid();
+	return Promise.resolve(getInitialEventsAndroid());
 };
 
 /**
@@ -43,24 +45,20 @@ export const setupVoipEventListeners = (): (() => void) => {
 	}
 
 	const subscriptions = [
-		DeviceEventEmitter.addListener('VoipCallAction', async (dataJson: string) => {
+		DeviceEventEmitter.addListener('VoipCallAccepted', async (data: VoipPayload) => {
 			try {
-				const data = JSON.parse(dataJson);
 				console.log('[VoIP][Android] Call action event:', data);
-				NativeVoipModule.clearPendingVoipCall();
-
-				if (data.event === 'accept') {
-					useCallStore.getState().setCallUUID(data.callUUID);
-					// TODO: how to make sure the call comes from the same workspace? dispatch is just a saga trigger
-					store.dispatch(
-						voipCallOpen({
-							callId: data.callId,
-							callUUID: data.callUUID,
-							host: data.host
-						})
-					);
-					await mediaSessionInstance.answerCall(data.callUUID);
-				}
+				NativeVoipModule?.clearPendingVoipCall();
+				useCallStore.getState().setCallUUID(data.callUUID);
+				// TODO: how to make sure the call comes from the same workspace? dispatch is just a saga trigger
+				store.dispatch(
+					voipCallOpen({
+						callId: data.callId,
+						callUUID: data.callUUID,
+						host: data.host
+					})
+				);
+				await mediaSessionInstance.answerCall(data.callUUID);
 			} catch (error) {
 				console.error('[VoIP][Android] Error handling call action event:', error);
 			}
@@ -171,37 +169,20 @@ const getInitialEventsIOS = async (): Promise<boolean> => {
 /**
  * Android-specific implementation using native module to retrieve VoIP call data
  */
-const getInitialEventsAndroid = async (): Promise<boolean> => {
+const getInitialEventsAndroid = (): boolean => {
 	try {
-		// Check for pending VoIP call from native module
 		if (!NativeVoipModule) {
 			console.log('[VoIP][Android] Native VoIP module not available');
 			return false;
 		}
 
-		const pendingCallJson = NativeVoipModule.getPendingVoipCall();
-		if (!pendingCallJson) {
+		const pendingCall = NativeVoipModule.getPendingVoipCall() as VoipPayload;
+		if (!pendingCall) {
 			console.log('[VoIP][Android] No pending VoIP call');
 			return false;
 		}
 
 		NativeVoipModule.clearPendingVoipCall();
-
-		console.log('[VoIP][Android] Found pending VoIP call:', pendingCallJson);
-
-		const pendingCall = JSON.parse(pendingCallJson) as {
-			notificationType: string;
-			callId: string;
-			callUUID: string;
-			host: string;
-			event: string;
-		};
-
-		// Only handle 'accept' events
-		if (pendingCall.event !== 'accept') {
-			console.log('[VoIP][Android] Pending call event is not accept:', pendingCall.event);
-			return false;
-		}
 
 		if (!pendingCall.callId || !pendingCall.host) {
 			console.log('[VoIP][Android] Missing required call data');

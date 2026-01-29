@@ -38,16 +38,10 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
             }
         }
 
-        val voipPayload = parseVoipPayload(data)
-        if (voipPayload != null && voipPayload.isVoipIncomingCall()) {
-            Log.d(TAG, "Detected new VoIP payload format, routing to VoipNotification handler")
-            try {
-                val voipNotification = VoipNotification(this)
-                // TODO: no need for bundle, just use voipPayload
-                voipNotification.showIncomingCall(bundle, voipPayload)
-            } catch (e: Exception) {
-                Log.e(TAG, "Error processing VoIP notification", e)
-            }
+        val voipPayload = VoipPayload.fromMap(data)
+        if (voipPayload != null) {
+            Log.d(TAG, "Detected VoIP incoming call payload, routing to VoipNotification handler")
+            VoipNotification(this).showIncomingCall(voipPayload)
             return
         }
 
@@ -57,31 +51,6 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
             notification.onReceived()
         } catch (e: Exception) {
             Log.e(TAG, "Error processing FCM message", e)
-        }
-    }
-
-    /**
-     * Parses the new VoIP payload format from FCM data map.
-     * Returns null if the payload doesn't match the new format.
-     */
-    private fun parseVoipPayload(data: Map<String, String>): VoipPayload? {
-        val type = data["type"]
-        val hasEjson = data.containsKey("ejson") && !data["ejson"].isNullOrEmpty()
-        
-        if (type != "incoming_call" || hasEjson) {
-            return null
-        }
-
-        return try {
-            VoipPayload(
-                callId = data["callId"],
-                caller = data["caller"],
-                host = data["host"],
-                type = data["type"]
-            )
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to parse VoIP payload", e)
-            null
         }
     }
 

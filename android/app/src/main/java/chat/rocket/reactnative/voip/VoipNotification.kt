@@ -20,7 +20,6 @@ import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 import chat.rocket.reactnative.MainActivity
-import chat.rocket.reactnative.utils.CallIdUUID
 
 /**
  * Handles VoIP call notifications using Android's Telecom framework via CallKeep.
@@ -59,8 +58,8 @@ class VoipNotification(private val context: Context) {
          * Logs the decline action and clears stored call data.
          */
         @JvmStatic
-        fun handleDeclineAction(context: Context, callUUID: String?) {
-            Log.d(TAG, "Decline action triggered for callUUID: $callUUID")
+        fun handleDeclineAction(context: Context, payload: VoipPayload) {
+            Log.d(TAG, "Decline action triggered for callUUID: ${payload.callUUID}")
             // TODO: call restapi to decline the call
         }
     }
@@ -70,8 +69,8 @@ class VoipNotification(private val context: Context) {
      */
     class DeclineReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val callUUID = intent.getStringExtra("callUUID")
-            VoipNotification.handleDeclineAction(context, callUUID)
+            val voipPayload = VoipPayload.fromBundle(intent.extras)
+            voipPayload?.let { VoipNotification.handleDeclineAction(context, it) }
         }
     }
 
@@ -117,16 +116,10 @@ class VoipNotification(private val context: Context) {
      * @param bundle The notification data bundle
      * @param voipPayload The VoIP payload containing call information
      */
-    fun showIncomingCall(bundle: Bundle, voipPayload: VoipPayload) {
+    fun showIncomingCall(voipPayload: VoipPayload) {
         val callId = voipPayload.callId
         val caller = voipPayload.caller
-        if (callId.isNullOrEmpty() || caller.isNullOrEmpty()) {
-            Log.w(TAG, "Cannot show VoIP call: callId is missing")
-            return
-        }
-
-        // TODO: remove this when it comes from the server
-        val callUUID = CallIdUUID.generateUUIDv5(callId)
+        val callUUID = voipPayload.callUUID
 
         Log.d(TAG, "Showing incoming VoIP call - callId: $callId, callUUID: $callUUID, caller: $caller")
 
@@ -135,7 +128,7 @@ class VoipNotification(private val context: Context) {
         registerCallWithTelecomManager(callUUID, caller)
 
         // Show notification with full-screen intent
-        showIncomingCallNotification(bundle, voipPayload, callUUID, caller)
+        showIncomingCallNotification(voipPayload)
     }
 
     /**
@@ -201,9 +194,9 @@ class VoipNotification(private val context: Context) {
      * and heads-up notification for unlocked devices.
      * Falls back to HUN only if full-screen intent permission is not granted (Android 14+).
      */
-    private fun showIncomingCallNotification(bundle: Bundle, voipPayload: VoipPayload, callUUID: String, caller: String) {
-        val callId = voipPayload.callId ?: ""
-        val notificationId = callId.hashCode()
+    private fun showIncomingCallNotification(voipPayload: VoipPayload) {
+        val caller = voipPayload.caller
+        val notificationId = voipPayload.notificationId
 
         Log.d(TAG, "Showing incoming call notification for VoIP call from: $caller")
 
@@ -217,31 +210,21 @@ class VoipNotification(private val context: Context) {
         // Create full-screen intent to IncomingCallActivity
         val fullScreenIntent = Intent(context, IncomingCallActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            putExtra("callId", callId)
-            putExtra("callUUID", callUUID)
-            putExtra("caller", caller)
-            putExtra("host", voipPayload.host ?: "")
+            putExtras(voipPayload.toBundle())
         }
         val fullScreenPendingIntent = createPendingIntent(notificationId, fullScreenIntent)
 
         // Create Accept action
         val acceptIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            putExtra("voipAction", true)
-            putExtra("event", "accept")
-            putExtra("callId", callId)
-            putExtra("callUUID", callUUID)
-            putExtra("caller", caller)
-            putExtra("host", voipPayload.host ?: "")
-            putExtra("notificationId", notificationId)
+            putExtras(voipPayload.toBundle())
         }
-       val acceptPendingIntent = createPendingIntent(notificationId + 1, acceptIntent)
+        val acceptPendingIntent = createPendingIntent(notificationId + 1, acceptIntent)
 
         // Create Decline action
         val declineIntent = Intent(context, DeclineReceiver::class.java).apply {
             action = ACTION_DECLINE
-            putExtra("callUUID", callUUID)
-            putExtra("host", voipPayload.host ?: "")
+            putExtras(voipPayload.toBundle())
         }
         val declinePendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getBroadcast(
