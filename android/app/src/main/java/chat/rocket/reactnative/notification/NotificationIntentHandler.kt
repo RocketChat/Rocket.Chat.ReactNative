@@ -102,7 +102,6 @@ class NotificationIntentHandler {
                         val notIdInt = notId.toIntOrNull()
                         if (notIdInt != null) {
                             CustomPushNotification.clearMessages(notIdInt)
-                            Log.d(TAG, "Cleared notification messages for ID: $notIdInt")
                         }
                     } catch (e: Exception) {
                         Log.e(TAG, "Error clearing notification messages for ID $notId: ${e.message}", e)
