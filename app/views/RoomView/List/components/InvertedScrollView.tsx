@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-
 type ScrollViewPropsWithRef = ScrollViewProps & React.RefAttributes<NativeScrollInstance | null>;
 type NativeScrollInstance = React.ComponentRef<NonNullable<typeof NativeInvertedScrollView>>;
 interface IScrollableMethods {
@@ -88,10 +87,9 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((p
 
 			node.getScrollRef = () => node;
 			const originalSetNativeProps = (node as any).setNativeProps;
-            if (typeof originalSetNativeProps !== 'function') {
-                node.setNativeProps = (_nativeProps: object) => {
-                };
-            }
+			if (typeof originalSetNativeProps !== 'function') {
+				node.setNativeProps = (_nativeProps: object) => {};
+			}
 		}
 	}, []);
 
