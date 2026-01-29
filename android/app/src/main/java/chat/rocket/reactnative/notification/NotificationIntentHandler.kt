@@ -93,7 +93,6 @@ class NotificationIntentHandler {
             }
 
             try {
-                // Clear the notification from the notification shade
                 val notId = extras.getString("notId")
                 
                 // Clear the notification messages from the static map to prevent stacking
