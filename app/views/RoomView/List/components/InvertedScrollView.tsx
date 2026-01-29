@@ -87,17 +87,13 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((p
 			};
 
 			node.getScrollRef = () => node;
-
-			if (typeof node.setNativeProps !== 'function') {
-				node.setNativeProps = (nativeProps: object) => {
-					// Check again if the underlying node has the method hidden
-					if (node && typeof (node as any).setNativeProps === 'function') {
-						(node as any).setNativeProps(nativeProps);
-					}
-				};
-			}
+			const originalSetNativeProps = (node as any).setNativeProps;
+            if (typeof originalSetNativeProps !== 'function') {
+                node.setNativeProps = (_nativeProps: object) => {
+                };
+            }
 		}
-	});
+	}, []);
 
 	// Callback Ref to handle merging internal and external refs
 	const setRef = (node: NativeScrollInstance | null) => {
