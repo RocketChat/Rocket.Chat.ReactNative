@@ -5,9 +5,8 @@ import { AppRegistry, LogBox } from 'react-native';
 import { name as appName } from './app.json';
 import { isAndroid } from './app/lib/methods/helpers';
 
-const StorybookModule = require('./.rnstorybook/index');
-
 if (process.env.USE_STORYBOOK) {
+	const StorybookModule = require('./.rnstorybook/index');
 	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default ?? StorybookModule);
 } else {
 	if (!__DEV__) {
