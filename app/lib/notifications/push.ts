@@ -7,6 +7,7 @@ import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
 import { registerPushToken } from '../services/restApi';
 import I18n from '../../i18n';
+import NativePushNotificationModule from '../native/NativePushNotificationAndroid';
 
 export let deviceToken = '';
 
@@ -221,6 +222,65 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 	});
 
 	// Get initial notification (app was opened by tapping a notification)
+	// First check native module for stored notification data (Android - when notification was created natively)
+	if (Platform.OS === 'android' && NativePushNotificationModule) {
+		return NativePushNotificationModule.getPendingNotification()
+			.then(pendingNotification => {
+				if (pendingNotification) {
+					try {
+						// Parse the stored notification data
+						const notificationData = JSON.parse(pendingNotification);
+
+						// Transform to INotification format
+						const transformed: INotification = {
+							payload: {
+								message: notificationData.message || '',
+								style: notificationData.style || '',
+								ejson: notificationData.ejson || '',
+								collapse_key: notificationData.collapse_key || '',
+								notId: notificationData.notId || '',
+								msgcnt: notificationData.msgcnt || '',
+								title: notificationData.title || '',
+								from: notificationData.from || '',
+								image: notificationData.image || '',
+								soundname: notificationData.soundname || '',
+								action: notificationData.action
+							},
+							identifier: notificationData.notId || ''
+						};
+
+						return transformed;
+					} catch (parseError) {
+						console.error('[push.ts] Error parsing notification data:', parseError);
+						return null;
+					}
+				}
+				return null;
+			})
+			.catch(e => {
+				console.error('[push.ts] Error getting pending notification from native module:', e);
+				return null;
+			})
+			.then(nativeNotification => {
+				if (nativeNotification) {
+					return nativeNotification;
+				}
+
+				// Fallback to expo-notifications (for iOS or if native module doesn't have data)
+				const lastResponse = Notifications.getLastNotificationResponse();
+				if (lastResponse) {
+					return transformNotificationResponse(lastResponse);
+				}
+
+				return null;
+			})
+			.catch(e => {
+				console.error('[push.ts] Error in promise chain:', e);
+				return null;
+			});
+	}
+
+	// Fallback to expo-notifications (for iOS or if native module doesn't have data)
 	const lastResponse = Notifications.getLastNotificationResponse();
 	if (lastResponse) {
 		return Promise.resolve(transformNotificationResponse(lastResponse));

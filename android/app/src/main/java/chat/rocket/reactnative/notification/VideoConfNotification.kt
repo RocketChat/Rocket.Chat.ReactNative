@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.RingtoneManager
+import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -90,11 +91,11 @@ class VideoConfNotification(private val context: Context) {
 
         if (ejson.caller != null) {
             callerId = ejson.caller._id ?: ""
-            callerName = ejson.caller.name ?: "Unknown"
+            callerName = ejson.senderName ?: ejson.caller.name ?: "Unknown"
         } else if (ejson.sender != null) {
             // Fallback to sender if caller is not present
             callerId = ejson.sender._id ?: ""
-            callerName = ejson.sender.name ?: ejson.senderName ?: "Unknown"
+            callerName = ejson.senderName ?: ejson.sender.name ?: "Unknown"
         } else {
             callerId = ""
             callerName = "Unknown"
@@ -155,6 +156,14 @@ class VideoConfNotification(private val context: Context) {
         val packageName = context.packageName
         val smallIconResId = context.resources.getIdentifier("ic_notification", "drawable", packageName)
 
+        // Fetch caller avatar
+        val avatarUri = ejson.getCallerAvatarUri()
+        val avatarBitmap = if (avatarUri != null) {
+            getAvatar(avatarUri)
+        } else {
+            null
+        }
+
         // Build notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
             setSmallIcon(smallIconResId)
@@ -169,6 +178,11 @@ class VideoConfNotification(private val context: Context) {
             setContentIntent(fullScreenPendingIntent)
             addAction(0, "Decline", declinePendingIntent)
             addAction(0, "Accept", acceptPendingIntent)
+            
+            // Set large icon (avatar) if available
+            if (avatarBitmap != null) {
+                setLargeIcon(avatarBitmap)
+            }
         }
 
         // Set sound for pre-O devices
@@ -192,6 +206,14 @@ class VideoConfNotification(private val context: Context) {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
         return PendingIntent.getActivity(context, requestCode, intent, flags)
+    }
+
+    /**
+     * Fetches avatar bitmap from URI using Glide.
+     * Returns null if fetch fails or times out, in which case notification will display without avatar.
+     */
+    private fun getAvatar(uri: String): Bitmap? {
+        return NotificationHelper.fetchAvatarBitmap(context, uri, null)
     }
 
     /**
