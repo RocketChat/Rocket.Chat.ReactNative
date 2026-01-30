@@ -15,9 +15,31 @@ abstract class NativeVoipSpec(reactContext: ReactApplicationContext) :
 
     override fun getName(): String = NAME
 
+    /**
+     * Registers for VoIP push token.
+     * iOS: Triggers PushKit registration.
+     * Android: No-op (uses FCM for push notifications).
+     */
+    @ReactMethod
+    abstract fun registerVoipToken()
+
     @ReactMethod(isBlockingSynchronousMethod = true)
     abstract fun getPendingVoipCall(): WritableMap?
 
     @ReactMethod
     abstract fun clearPendingVoipCall()
+
+    /**
+     * Required for NativeEventEmitter in TurboModules.
+     * Called when JS starts listening to events.
+     */
+    @ReactMethod
+    abstract fun addListener(eventName: String)
+
+    /**
+     * Required for NativeEventEmitter in TurboModules.
+     * Called when JS stops listening to events.
+     */
+    @ReactMethod
+    abstract fun removeListeners(count: Double)
 }

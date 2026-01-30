@@ -103,4 +103,34 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
     override fun clearPendingVoipCall() {
         clearPendingVoipCallInternal()
     }
+
+    /**
+     * Registers for VoIP push token.
+     * No-op on Android - uses FCM for push notifications.
+     */
+    @ReactMethod
+    override fun registerVoipToken() {
+        // No-op on Android - FCM handles push notifications
+        Log.d(TAG, "registerVoipToken called (no-op on Android)")
+    }
+
+    /**
+     * Required for NativeEventEmitter in TurboModules.
+     * Called when JS starts listening to events.
+     */
+    @ReactMethod
+    override fun addListener(eventName: String) {
+        // Keep track of listeners if needed
+        Log.d(TAG, "addListener: $eventName")
+    }
+
+    /**
+     * Required for NativeEventEmitter in TurboModules.
+     * Called when JS stops listening to events.
+     */
+    @ReactMethod
+    override fun removeListeners(count: Double) {
+        // Remove listeners if needed
+        Log.d(TAG, "removeListeners: $count")
+    }
 }

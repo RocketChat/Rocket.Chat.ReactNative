@@ -26,7 +26,7 @@ public class AppDelegate: ExpoAppDelegate {
     FirebaseApp.configure()
     Bugsnag.start()
     ReplyNotification.configure()
-    RNVoipPushNotificationManager.voipRegistration()
+    VoipService.voipRegistration()
     RNCallKeep.setup(["appName": "Rocket.Chat"])
       
     let delegate = ReactNativeDelegate()
@@ -101,7 +101,7 @@ extension AppDelegate: PKPushRegistryDelegate {
   // Handle updated push credentials
   public func pushRegistry(_ registry: PKPushRegistry, didUpdate credentials: PKPushCredentials, for type: PKPushType) {
     // Register VoIP push token (a property of PKPushCredentials) with server
-    RNVoipPushNotificationManager.didUpdate(credentials, forType: type.rawValue)
+    VoipService.didUpdatePushCredentials(credentials, forType: type.rawValue)
   }
 
   public func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
@@ -123,7 +123,8 @@ extension AppDelegate: PKPushRegistryDelegate {
     // Convert callId to deterministic UUID v5 for CallKit
     let callIdUUID = CallIdUUID.generateUUIDv5(from: callId)
 
-    RNVoipPushNotificationManager.didReceiveIncomingPush(with: payload, forType: type.rawValue)
+    // Store pending call data in our native module (replaces RNVoipPushNotificationManager)
+    VoipService.didReceiveIncomingPush(with: payload, forType: type.rawValue)
 
     RNCallKeep.reportNewIncomingCall(
       callIdUUID,

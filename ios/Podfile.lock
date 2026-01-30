@@ -2612,8 +2612,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNVoipPushNotification (3.3.3):
-    - React-Core
   - SDWebImage (5.21.0):
     - SDWebImage/Core (= 5.21.0)
   - SDWebImage/Core (5.21.0)
@@ -2764,7 +2762,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVoipPushNotification (from `../node_modules/react-native-voip-push-notification`)
   - "simdjson (from `../node_modules/@nozbe/simdjson`)"
   - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -3046,8 +3043,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVoipPushNotification:
-    :path: "../node_modules/react-native-voip-push-notification"
   simdjson:
     :path: "../node_modules/@nozbe/simdjson"
   WatermelonDB:
@@ -3177,7 +3172,7 @@ SPEC CHECKSUMS:
   React-timing: 2d07431f1c1203c5b0aaa6dc7b5f503704519218
   React-utils: 67cf7dcfc18aa4c56bec19e11886033bb057d9fa
   ReactAppDependencyProvider: bf62814e0fde923f73fc64b7e82d76c63c284da9
-  ReactCodegen: 2f22969ab54e1aace69c9b5d3085e0a3b405a9a6
+  ReactCodegen: 5c6b68a6cfdfce6b69a8b12d2eb93e1117d96113
   ReactCommon: 177fca841e97b2c0e288e86097b8be04c6e7ae36
   RNBootSplash: 1280eeb18d887de0a45bb4923d4fc56f25c8b99c
   RNCallKeep: 1930a01d8caf48f018be4f2db0c9f03405c2f977
@@ -3198,7 +3193,6 @@ SPEC CHECKSUMS:
   RNReanimated: f52ccd5ceea2bae48d7421eec89b3f0c10d7b642
   RNScreens: b13e4c45f0406f33986a39c0d8da0324bff94435
   RNSVG: 680e961f640e381aab730a04b2371969686ed9f7
-  RNVoipPushNotification: 4998fe6724d421da616dca765da7dc421ff54c4e
   SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
@@ -3210,6 +3204,6 @@ SPEC CHECKSUMS:
   Yoga: dfabf1234ccd5ac41d1b1d43179f024366ae9831
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 5d562fbb33c24fb71c5fe4ab560e854f7a165148
+PODFILE CHECKSUM: 199f6fbbe6fb415c822cca992e6152000ac55b3e
 
 COCOAPODS: 1.15.2
