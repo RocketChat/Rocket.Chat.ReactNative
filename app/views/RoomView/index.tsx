@@ -78,6 +78,7 @@ import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessag
 import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
 import { readMessages } from '../../lib/methods/readMessages';
 import { sendMessage } from '../../lib/methods/sendMessage';
+import userPreferences from '../../lib/methods/userPreferences';
 import { triggerBlockAction } from '../../lib/methods/triggerActions';
 import {
 	isGroupChat,
@@ -785,10 +786,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+		console.log('RoomView onEditRequest called for message:', message.id);
 		try {
 			this.resetAction();
+			console.log('Calling editMessage for message:', message.id);
 			await editMessage(message);
+			console.log('editMessage completed successfully');
 		} catch (e) {
+			console.error('Error in editMessage:', e);
 			log(e);
 		}
 	};
@@ -1046,6 +1051,51 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	replyBroadcast = (message: IMessage) => {
 		const { dispatch } = this.props;
 		dispatch(replyBroadcast(message));
+	};
+
+	onSwipeReply = (message: TAnyMessageModel) => {
+		this.onReplyInit(message.id);
+	};
+
+	onSwipeEdit = (message: TAnyMessageModel) => {
+		console.log('RoomView onSwipeEdit called for message:', message.id);
+		if (message.id) {
+			console.log('Calling onEditInit for message:', message.id);
+			this.onEditInit(message.id);
+		}
+	};
+
+	onSwipeQuote = (message: TAnyMessageModel) => {
+		if (message.id) {
+			this.onQuoteInit(message.id);
+		}
+	};
+
+	onSwipeThread = (message: TAnyMessageModel) => {
+		if (message.id) {
+			this.onThreadPress(message);
+		}
+	};
+
+	executeSwipeAction = (message: TAnyMessageModel, action: string) => {
+		switch (action) {
+			case 'reply':
+				this.onSwipeReply(message);
+				break;
+			case 'edit':
+				this.onSwipeEdit(message);
+				break;
+			case 'quote':
+				this.onSwipeQuote(message);
+				break;
+			case 'thread':
+				this.onSwipeThread(message);
+				break;
+			case 'none':
+			default:
+				// Do nothing
+				break;
+		}
 	};
 
 	handleConnected = () => {
@@ -1383,6 +1433,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			inAppFeedback
 		} = this.props;
 		const { action, selectedMessages } = this.state;
+		
+		// Get swipe action preference from UserPreferences
+		const swipeLeftAction = userPreferences.getString('swipeLeftAction') || 'none';
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
@@ -1470,6 +1523,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isBeingEdited={isBeingEdited}
 					dateSeparator={dateSeparator}
 					showUnreadSeparator={showUnreadSeparator}
+					onSwipeReply={(message) => this.executeSwipeAction(message, swipeLeftAction)}
+					onSwipeEdit={(message) => this.executeSwipeAction(message, swipeLeftAction)}
+					onSwipeQuote={(message) => this.executeSwipeAction(message, swipeLeftAction)}
+					onSwipeThread={(message) => this.executeSwipeAction(message, swipeLeftAction)}
+					leftSwipeAction={swipeLeftAction}
+					enableSwipeActions={swipeLeftAction !== 'none'}
 				/>
 			);
 		}

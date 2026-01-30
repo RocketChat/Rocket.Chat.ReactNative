@@ -207,6 +207,7 @@ export type SettingsStackParamList = {
 	SecurityPrivacyView: undefined;
 	E2EEncryptionSecurityView: undefined;
 	LanguageView: undefined;
+	SwipeActionsView: undefined;
 	DefaultBrowserView: undefined;
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;

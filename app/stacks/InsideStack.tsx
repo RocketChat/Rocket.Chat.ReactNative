@@ -41,6 +41,7 @@ import ChangePasswordView from '../views/ChangePasswordView';
 import DisplayPrefsView from '../views/DisplayPrefsView';
 // Settings Stack
 import SettingsView from '../views/SettingsView';
+import SwipeActionsView from '../views/SwipeActionsView';
 import SecurityPrivacyView from '../views/SecurityPrivacyView';
 import GetHelpView from '../views/GetHelpView';
 import PushTroubleshootView from '../views/PushTroubleshootView';
@@ -187,6 +188,7 @@ const SettingsStackNavigator = () => {
 	return (
 		<SettingsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<SettingsStack.Screen name='SettingsView' component={SettingsView} />
+			<SettingsStack.Screen name='SwipeActionsView' component={SwipeActionsView} />
 			<SettingsStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 			<SettingsStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<SettingsStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />

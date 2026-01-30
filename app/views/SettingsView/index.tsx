@@ -196,6 +196,14 @@ const SettingsView = (): React.ReactElement => {
 						left={() => <List.Icon name='locker' />}
 					/>
 					<List.Separator />
+					<List.Item
+						title='Message_Swipe_Actions'
+						showActionIndicator
+						onPress={() => navigateToScreen('SwipeActionsView')}
+						testID='settings-view-swipe-actions'
+						left={() => <List.Icon name='message' />}
+					/>
+					<List.Separator />
 				</List.Section>
 
 				<List.Section>

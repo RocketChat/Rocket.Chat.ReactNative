@@ -12,6 +12,7 @@ import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
+import SwipeableMessage from './Components/SwipeableMessage';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -63,6 +64,12 @@ interface IMessageContainerProps {
 	isPreview?: boolean;
 	dateSeparator?: Date | string | null;
 	showUnreadSeparator?: boolean;
+	onSwipeReply?: (item: TAnyMessageModel) => void;
+	onSwipeEdit?: (item: TAnyMessageModel) => void;
+	onSwipeQuote?: (item: TAnyMessageModel) => void;
+	onSwipeThread?: (item: TAnyMessageModel) => void;
+	leftSwipeAction?: string;
+	enableSwipeActions?: boolean;
 }
 
 interface IMessageContainerState {
@@ -77,6 +84,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		archived: false,
 		broadcast: false,
 		isIgnored: false,
+		enableSwipeActions: true,
 		theme: 'light' as TSupportedThemes
 	};
 
@@ -352,47 +360,84 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		openLink(link, theme);
 	};
 
+	onSwipeReply = (message: TAnyMessageModel) => {
+		const { onSwipeReply } = this.props;
+		if (onSwipeReply) {
+			onSwipeReply(message);
+		}
+	};
+
+	onSwipeEdit = (message: TAnyMessageModel) => {
+		const { onSwipeEdit } = this.props;
+		if (onSwipeEdit) {
+			onSwipeEdit(message);
+		}
+	};
+
+	onSwipeQuote = (message: TAnyMessageModel) => {
+		const { onSwipeQuote } = this.props;
+		if (onSwipeQuote) {
+			onSwipeQuote(message);
+		}
+	};
+
+	onSwipeThread = (message: TAnyMessageModel) => {
+		const { onThreadPress } = this.props;
+		if (onThreadPress) {
+			onThreadPress(message);
+		}
+	};
+
+	canEditMessage = (): boolean => {
+		const { item, user } = this.props;
+		return !!(item?.u?.username === user?.username && !item?.t && !this.isInfo && !this.hasError && !this.isEncrypted);
+	};
+
 	render() {
 		const {
 			item,
 			user,
+			rid,
 			archived,
-			baseUrl,
-			useRealName,
 			broadcast,
-			fetchThreadName,
-			showAttachment,
+			theme,
 			timeFormat,
+			useRealName,
 			isReadReceiptEnabled,
 			autoTranslateRoom,
 			autoTranslateLanguage,
-			navToRoomInfo = () => {},
+			baseUrl,
 			getCustomEmoji,
-			isThreadRoom,
+			navToRoomInfo,
 			handleEnterCall,
 			blockAction,
-			rid,
-			threadBadgeColor,
-			toggleFollowThread,
-			jumpToMessage,
+			showAttachment,
 			highlighted,
 			isBeingEdited,
 			isPreview,
 			showUnreadSeparator,
-			dateSeparator
+			dateSeparator,
+			enableSwipeActions,
+			onSwipeReply,
+			onSwipeEdit,
+			onSwipeQuote,
+			onSwipeThread,
+			leftSwipeAction
 		} = this.props;
+
 		const {
 			id,
 			msg,
-			ts,
+			md,
 			attachments,
+			blocks,
 			urls,
 			reactions,
 			t,
+			alias,
 			avatar,
 			emoji,
 			u,
-			alias,
 			editedBy,
 			role,
 			drid,
@@ -405,16 +450,15 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			mentions,
 			channels,
 			unread,
-			blocks,
 			autoTranslate: autoTranslateMessage,
 			replies,
-			md,
 			comment,
-			pinned
+			pinned,
+			ts
 		} = item;
 
-		let message = msg;
 		let isTranslated = false;
+		let message = msg;
 		const otherUserMessage = u?.username !== user?.username;
 		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
 		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
@@ -425,6 +469,64 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		}
 
 		const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && autoTranslateMessage !== false && otherUserMessage;
+
+		const messageContent = (
+			<Message
+				id={id}
+				msg={message}
+				md={md}
+				rid={rid}
+				author={u}
+				ts={ts}
+				type={t}
+				attachments={attachments}
+				blocks={blocks}
+				urls={urls}
+				reactions={reactions}
+				alias={alias}
+				avatar={avatar}
+				emoji={emoji}
+				timeFormat={timeFormat}
+				archived={archived}
+				broadcast={broadcast}
+				useRealName={useRealName}
+				isReadReceiptEnabled={isReadReceiptEnabled}
+				unread={unread}
+				role={role}
+				drid={drid}
+				dcount={dcount}
+				dlm={dlm}
+				tmid={tmid}
+				tcount={tcount}
+				tlm={tlm}
+				tmsg={tmsg}
+				fetchThreadName={fetchThreadName}
+				mentions={mentions}
+				channels={channels}
+				isIgnored={this.isIgnored}
+				isEdited={(editedBy && !!editedBy.username) ?? false}
+				isHeader={this.isHeader}
+				isThreadReply={this.isThreadReply}
+				isThreadSequential={this.isThreadSequential}
+				isThreadRoom={!!isThreadRoom}
+				isInfo={this.isInfo}
+				isTemp={this.isTemp}
+				isEncrypted={this.isEncrypted}
+				hasError={this.hasError}
+				showAttachment={showAttachment}
+				getCustomEmoji={getCustomEmoji}
+				navToRoomInfo={navToRoomInfo}
+				handleEnterCall={handleEnterCall}
+				blockAction={blockAction}
+				highlighted={highlighted}
+				comment={comment}
+				isTranslated={isTranslated}
+				isBeingEdited={isBeingEdited}
+				isPreview={isPreview}
+				pinned={pinned}
+				autoTranslateLanguage={autoTranslateLanguage}
+			/>
+		);
 
 		return (
 			<MessageContext.Provider
@@ -451,62 +553,21 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
 					isEncrypted: this.isEncrypted
 				}}>
-				{/* @ts-ignore*/}
-				<Message
-					id={id}
-					msg={message}
-					md={md}
-					rid={rid}
-					author={u}
-					ts={ts}
-					type={t}
-					attachments={attachments}
-					blocks={blocks}
-					urls={urls}
-					reactions={reactions}
-					alias={alias}
-					avatar={avatar}
-					emoji={emoji}
-					timeFormat={timeFormat}
-					archived={archived}
-					broadcast={broadcast}
-					useRealName={useRealName}
-					isReadReceiptEnabled={isReadReceiptEnabled}
-					unread={unread}
-					role={role}
-					drid={drid}
-					dcount={dcount}
-					dlm={dlm}
-					tmid={tmid}
-					tcount={tcount}
-					tlm={tlm}
-					tmsg={tmsg}
-					fetchThreadName={fetchThreadName}
-					mentions={mentions}
-					channels={channels}
-					isIgnored={this.isIgnored}
-					isEdited={(editedBy && !!editedBy.username) ?? false}
-					isHeader={this.isHeader}
-					isThreadReply={this.isThreadReply}
-					isThreadSequential={this.isThreadSequential}
-					isThreadRoom={!!isThreadRoom}
-					isInfo={this.isInfo}
-					isTemp={this.isTemp}
-					isEncrypted={this.isEncrypted}
-					hasError={this.hasError}
-					showAttachment={showAttachment}
-					getCustomEmoji={getCustomEmoji}
-					navToRoomInfo={navToRoomInfo}
-					handleEnterCall={handleEnterCall}
-					blockAction={blockAction}
-					highlighted={highlighted}
-					comment={comment}
-					isTranslated={isTranslated}
-					isBeingEdited={isBeingEdited}
-					isPreview={isPreview}
-					pinned={pinned}
-					autoTranslateLanguage={autoTranslateLanguage}
-				/>
+				{enableSwipeActions && !this.isInfo && !this.hasError && !this.isEncrypted && !archived ? (
+					<SwipeableMessage
+						message={item}
+						onReply={this.onSwipeReply}
+						onEdit={this.onSwipeEdit}
+						onQuote={this.onSwipeQuote}
+						onThread={this.onSwipeThread}
+						canEdit={this.canEditMessage()}
+						leftAction={leftSwipeAction || 'none'}
+					>
+						{messageContent}
+					</SwipeableMessage>
+				) : (
+					messageContent
+				)}
 				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 			</MessageContext.Provider>
 		);
