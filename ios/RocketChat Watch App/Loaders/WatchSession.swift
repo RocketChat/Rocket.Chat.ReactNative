@@ -7,7 +7,10 @@ protocol WatchSessionProtocol {
 /// Default WatchSession protocol implementation.
 final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
 	private let session: WCSession
-	
+    
+    @Storage(.quickReplies, defaultValue: [])
+    private var quickReplies: [String]?
+
 	init(session: WCSession) {
 		self.session = session
 		super.init()
@@ -46,6 +49,21 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
 		
 	}
+    
+    // quick replies
+    func session(
+      _ session: WCSession,
+      didReceiveApplicationContext applicationContext: [String : Any]
+    ) {
+        print(applicationContext)
+
+        if let replies = applicationContext["quickReplies"] as? [String] {
+          quickReplies = replies
+          print("QUICK REPLIES STORED:", replies)
+        } else {
+          print("quickReplies key missing")
+        }
+    }
 }
 
 /// Retry decorator for WatchSession protocol.

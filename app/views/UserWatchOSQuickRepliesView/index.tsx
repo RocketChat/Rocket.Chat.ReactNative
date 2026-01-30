@@ -10,6 +10,8 @@ import { FormTextInput } from '../../containers/TextInput';
 import Chip from '../../containers/Chip';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import { WATCHOS_QUICKREPLIES } from '../../lib/constants/keys';
+import { syncWatchOSQuickReplies } from '../../lib/methods/WatchOSQuickReplies/syncReplies';
+import { checkWatch } from '../../lib/methods/WatchOSQuickReplies/getWatchStatus';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -24,6 +26,16 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 			title: I18n.t('Preferences')
 		});
 	}, [navigation]);
+
+	useEffect(() => {
+		const load = async () => {
+			const status = await checkWatch();
+			console.log(status);
+			const result = await syncWatchOSQuickReplies(quickreplies ?? []);
+			console.log(result);
+		};
+		load();
+	}, [quickreplies]);
 
 	const removeQuickReply = (reply: string) => {
 		const newReplies = quickreplies?.filter(quickreply => quickreply !== reply);

@@ -2,6 +2,7 @@ import Foundation
 
 enum StorageKey: String {
 	case currentServer = "current_server"
+    case quickReplies = "quick_replies"
 }
 
 @propertyWrapper
