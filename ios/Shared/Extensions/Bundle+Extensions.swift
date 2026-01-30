@@ -12,4 +12,13 @@ extension Bundle {
     
     return string
   }
+  
+  /// Returns User-Agent string for API requests: "RC Mobile; ios {version}; v{appVersion} ({build})"
+  static var userAgent: String {
+    let osVersion = ProcessInfo.processInfo.operatingSystemVersion
+    let systemVersion = "\(osVersion.majorVersion).\(osVersion.minorVersion)"
+    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
+    let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "unknown"
+    return "RC Mobile; ios \(systemVersion); v\(appVersion) (\(buildNumber))"
+  }
 }
