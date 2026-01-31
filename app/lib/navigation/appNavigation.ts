@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { CommonActions, type NavigationContainerRef, StackActions } from '@react-navigation/native';
+import {
+	CommonActions,
+	type NavigationAction,
+	type NavigationContainerRef,
+	type NavigationState,
+	type ParamListBase,
+	StackActions
+} from '@react-navigation/native';
 
 import { type StackParamList } from '../../definitions/navigationTypes';
 
@@ -7,14 +14,28 @@ const navigationRef = React.createRef<NavigationContainerRef<StackParamList>>();
 const routeNameRef: React.MutableRefObject<NavigationContainerRef<StackParamList> | null> = React.createRef();
 
 // Note: name can be a top-level route (keyof StackParamList) or nested route (string)
-// This allows navigation to both top-level and nested routes
-function navigate(name: keyof StackParamList | string, params?: any) {
-	navigationRef.current?.navigate(name as any, params);
+// This allows navigation to both top-level and nested routes. Params are typed when name is a keyof StackParamList.
+function navigate<K extends keyof StackParamList | string>(
+	name: K,
+	params?: K extends keyof StackParamList ? StackParamList[K] : object
+): void {
+	const nav = navigationRef.current;
+	if (nav) {
+		(nav.navigate as (n: keyof StackParamList, p?: StackParamList[keyof StackParamList]) => void)(
+			name as keyof StackParamList,
+			params as StackParamList[keyof StackParamList]
+		);
+	}
 }
 
 // Note: name can be a top-level route (keyof StackParamList) or nested route (string)
-function push(name: keyof StackParamList | string, params?: any) {
-	navigationRef.current?.dispatch(StackActions.push(name as any, params));
+function push<K extends keyof StackParamList | string>(
+	name: K,
+	params?: K extends keyof StackParamList ? StackParamList[K] : object
+): void {
+	navigationRef.current?.dispatch(
+		StackActions.push(name as keyof StackParamList, params as StackParamList[keyof StackParamList])
+	);
 }
 
 function back() {
@@ -22,14 +43,19 @@ function back() {
 }
 
 // Note: name can be a top-level route (keyof StackParamList) or nested route (string)
-function replace(name: keyof StackParamList | string, params?: any) {
-	navigationRef.current?.dispatch(StackActions.replace(name as any, params));
+function replace<K extends keyof StackParamList | string>(
+	name: K,
+	params?: K extends keyof StackParamList ? StackParamList[K] : object
+): void {
+	navigationRef.current?.dispatch(
+		StackActions.replace(name as keyof StackParamList, params as StackParamList[keyof StackParamList])
+	);
 }
 
 // Pops to the first occurrence of the given route name, usually RoomView
 // Note: name can be a nested route name (e.g., 'RoomView', 'DrawerNavigator') not just top-level routes
 function popTo(name: keyof StackParamList | string) {
-	navigationRef.current?.dispatch(StackActions.popTo(name as any));
+	navigationRef.current?.dispatch(StackActions.popTo(name as keyof StackParamList));
 }
 
 // Removes RoomView from the stack and leaves only RoomsListView open
@@ -55,14 +81,18 @@ function popToRoom(isMasterDetail: boolean) {
 	}
 }
 
-function dispatch(params: any) {
-	navigationRef.current?.dispatch(params);
+type DispatchAction =
+	| NavigationAction
+	| ((state: Readonly<NavigationState<ParamListBase>>) => NavigationAction);
+
+function dispatch(action: DispatchAction) {
+	navigationRef.current?.dispatch(action as Parameters<NavigationContainerRef<StackParamList>['dispatch']>[0]);
 }
 
 // Note: screen can be a nested route name (e.g., 'RoomView') not just top-level routes
 function resetTo(screen: keyof StackParamList | string = 'RoomView') {
-	navigationRef.current?.dispatch((state: any) => {
-		const index = state.routes.findIndex((r: any) => r.name === screen);
+	navigationRef.current?.dispatch((state: Readonly<NavigationState<ParamListBase>>) => {
+		const index = state.routes.findIndex((r: { name: string }) => r.name === screen);
 		const routes = state.routes.slice(0, index + 1);
 
 		return CommonActions.reset({
@@ -78,7 +108,7 @@ function getCurrentRoute() {
 }
 
 // Note: params can be for any route, including nested routes
-function setParams(params: any) {
+function setParams(params: object) {
 	navigationRef.current?.setParams(params);
 }
 
