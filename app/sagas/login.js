@@ -32,7 +32,7 @@ import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsers
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { connect, loginWithPassword, login } from '../lib/services/connect';
-import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
+import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
@@ -223,6 +223,17 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
+	try {
+		const isBackground = yield select(state => state.app.background);
+		if (isBackground) {
+			yield setUserPresenceAway();
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
@@ -239,6 +250,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield fork(checkBackgroundAndSetAway);
 
 		setLanguage(user?.language);
 
