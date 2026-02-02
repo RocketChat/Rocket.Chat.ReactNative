@@ -2278,7 +2278,10 @@ export const CollapsibleAttachmentWithText = () => (
 export const CollapsibleAttachmentWithTextLargeFont = () => (
 	<>
 		<MessageLargeFont msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
-		<MessageLargeFont msg='This is the main message body.' attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]} />
+		<MessageLargeFont
+			msg='This is the main message body.'
+			attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]}
+		/>
 	</>
 );
 
