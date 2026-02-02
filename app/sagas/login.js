@@ -225,10 +225,16 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 
 const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
 	try {
-		const isBackground = yield select(state => state.app.background);
-		if (isBackground) {
-			yield setUserPresenceAway();
+		const { background, root } = yield select(state => state.app);
+		if (root !== RootEnum.ROOT_INSIDE || !background) {
+			return;
 		}
+		const isAuthenticated = yield select(state => state.login.isAuthenticated);
+		const isConnected = yield select(state => state.meteor.connected);
+		if (!isAuthenticated || !isConnected) {
+			return;
+		}
+		yield setUserPresenceAway();
 	} catch (e) {
 		log(e);
 	}
