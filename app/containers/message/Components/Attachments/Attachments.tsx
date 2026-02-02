@@ -20,6 +20,7 @@ const removeQuote = (file?: IAttachment) =>
 	file?.collapsed ||
 	(file?.actions?.length || 0) > 0 ||
 	(file?.attachments?.length || 0) > 0;
+
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
 		'use memo';
@@ -81,6 +82,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						timeFormat={timeFormat}
 						getCustomEmoji={getCustomEmoji}
 						showAttachment={showAttachment}
+						msg={msg}
 					/>
 				);
 			}
