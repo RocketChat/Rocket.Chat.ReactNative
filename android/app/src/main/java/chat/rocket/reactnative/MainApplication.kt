@@ -19,8 +19,8 @@ import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
 import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
-import chat.rocket.reactnative.notification.CustomPushNotification;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
+import chat.rocket.reactnative.notification.PushNotificationTurboPackage
 
 /**
  * Main Application class.
@@ -43,6 +43,7 @@ open class MainApplication : Application(), ReactApplication {
               add(SSLPinningTurboPackage())
               add(WatermelonDBJSIPackage())
               add(VideoConfTurboPackage())
+              add(PushNotificationTurboPackage())
               add(SecureStoragePackage())
             }
 
@@ -68,13 +69,6 @@ open class MainApplication : Application(), ReactApplication {
 
     // Load the native entry point for the New Architecture
     loadReactNative(this)
-    
-    // Register listener to set React context when initialized
-    reactHost.addReactInstanceEventListener(object : ReactInstanceEventListener {
-      override fun onReactContextInitialized(context: ReactContext) {
-        CustomPushNotification.setReactContext(context as ReactApplicationContext)
-      }
-    })
     
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
