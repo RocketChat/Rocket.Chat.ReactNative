@@ -1,1 +1,8 @@
-{}
+{
+  "__count__empty_rooms_will_be_removed_automatically": "{{count}} tomme rum vil blive slettet.",
+  "1_person_reacted": "1 person reagerede",
+  "error-invalid-file-type": "Ugyldig filtype",
+  "error-invalid-password": "Ugyldig adgangskode",
+  "error-not-allowed": "Ikke tilladt",
+  "error-too-many-requests": "Fejl, for mange forespørgsler. Sæt venligst farten ned. Du skal vente {{seconds}} sekunder, før du prøver igen."
+}
