@@ -5,3 +5,5 @@ e2e/docker
 android
 ios
 .eslintrc.js
+/packages/react-native-katex/dist
+/packages/react-native-katex/scripts

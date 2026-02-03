@@ -2,10 +2,10 @@
   "name": "@rocket.chat/react-native-katex",
   "version": "1.3.0",
   "description": "WebView bundled KaTeX",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "clear": "rm -rf build 'src/katex-script.*' 'src/katex-style.*'",
+    "clear": "rm -rf dist 'src/katex-script.*' 'src/katex-style.*'",
     "compile": "node scripts/prebuild.js",
     "build": "yarn clear && yarn compile && tsc"
   },
