@@ -1,11 +1,11 @@
 {
-  "name": "react-native-katex",
+  "name": "@rocket.chat/react-native-katex",
   "version": "1.3.0",
   "description": "WebView bundled KaTeX",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "clear": "rm -rf build src/katex-script.* src/katex-style.*",
+    "clear": "rm -rf build 'src/katex-script.*' 'src/katex-style.*'",
     "compile": "node scripts/prebuild.js",
     "build": "yarn clear && yarn compile && tsc"
   },
@@ -26,9 +26,9 @@
     "react-native-webview": ">=13"
   },
   "devDependencies": {
-    "@types/react": "^18.3.12",
+    "@types/react": "^19.0.0",
     "katex": "^0.16.21",
-    "react": "^18.3.1",
+    "react": "^19.0.0",
     "typescript": "^5.6.3"
   }
 }

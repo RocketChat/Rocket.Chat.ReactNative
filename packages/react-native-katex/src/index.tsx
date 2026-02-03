@@ -1,6 +1,6 @@
 import React from 'react';
 import { WebView } from 'react-native-webview';
-import { WebViewSharedProps } from 'react-native-webview/lib/WebViewTypes';
+import type { WebViewSharedProps } from 'react-native-webview/lib/WebViewTypes';
 
 import katexStyle from './katex-style';
 import katexScript from './katex-script';
@@ -51,8 +51,8 @@ const defaultStyle = {
   root: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 };
 
 const defaultInlineStyle = `
@@ -112,8 +112,8 @@ export default function Katex({
           maxExpand,
           strict,
           trust,
-          globalGroup,
-        }),
+          globalGroup
+        })
       }}
     />
   );
