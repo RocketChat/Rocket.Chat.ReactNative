@@ -217,5 +217,9 @@
 		"android": {
 			"javaPackageName": "chat.rocket.reactnative.networking"
 		}
+	},
+	"volta": {
+		"node": "24.13.1",
+		"yarn": "1.22.22"
 	}
 }
