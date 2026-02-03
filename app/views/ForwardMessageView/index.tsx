@@ -60,20 +60,21 @@ const ForwardMessageView = () => {
 			),
 			headerLeft: () => <HeaderButton.CloseModal />
 		});
-	}, [rooms.length, navigation, sending]);
+	}, [rooms, navigation, sending, colors]);
 
 	const handlePostMessage = async () => {
 		setSending(true);
-		const permalink = await getPermalinkMessage(message);
-		const msg = `[ ](${permalink})\n`;
 		try {
+			const permalink = await getPermalinkMessage(message);
+			const msg = `[ ](${permalink})\n`;
 			await Promise.all(rooms.map(roomId => postMessage(roomId, msg)));
 			EventEmitter.emit(LISTENER, { message: I18n.t('Message_has_been_shared') });
 			navigation.dispatch(StackActions.pop());
 		} catch (e: any) {
 			Alert.alert(I18n.t('Oops'), e.message);
+		} finally {
+			setSending(false);
 		}
-		setSending(false);
 	};
 
 	const selectRooms = ({ value }: { value: string[] }) => {
