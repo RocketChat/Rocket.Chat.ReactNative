@@ -1,5 +1,4 @@
 /.idea
-/build
 /node_modules
 /src/katex-*
 *.log*
