@@ -20,12 +20,10 @@
     "url": "https://github.com/3axap4eHko/react-native-katex/issues"
   },
   "homepage": "https://github.com/3axap4eHko/react-native-katex#readme",
-  "dependencies": {
-    "react-native-webview": "^13.15.0"
-  },
   "peerDependencies": {
     "react": ">=16",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-webview": ">=13"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
