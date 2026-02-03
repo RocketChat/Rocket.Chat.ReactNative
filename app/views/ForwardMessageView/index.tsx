@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { type RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getPermalinkMessage } from '../../lib/methods/getPermalinks';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -42,31 +43,38 @@ const ForwardMessageView = () => {
 			title: I18n.t('Forward_message'),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item
-						title={I18n.t('Send')}
-						color={isSendButtonEnabled ? colors.fontHint : colors.fontSecondaryInfo}
-						disabled={!isSendButtonEnabled}
-						onPress={handlePostMessage}
-						testID='forward-message-view-send'
-					/>
+					{sending ? (
+						<View style={{ padding: 6 }}>
+							<ActivityIndicator />
+						</View>
+					) : (
+						<HeaderButton.Item
+							title={I18n.t('Send')}
+							color={isSendButtonEnabled ? colors.fontHint : colors.fontSecondaryInfo}
+							disabled={!isSendButtonEnabled}
+							onPress={handlePostMessage}
+							testID='forward-message-view-send'
+						/>
+					)}
 				</HeaderButton.Container>
 			),
 			headerLeft: () => <HeaderButton.CloseModal />
 		});
-	}, [rooms.length, navigation, sending]);
+	}, [rooms, navigation, sending, colors]);
 
 	const handlePostMessage = async () => {
 		setSending(true);
-		const permalink = await getPermalinkMessage(message);
-		const msg = `[ ](${permalink})\n`;
 		try {
+			const permalink = await getPermalinkMessage(message);
+			const msg = `[ ](${permalink})\n`;
 			await Promise.all(rooms.map(roomId => postMessage(roomId, msg)));
 			EventEmitter.emit(LISTENER, { message: I18n.t('Message_has_been_shared') });
 			navigation.dispatch(StackActions.pop());
 		} catch (e: any) {
 			Alert.alert(I18n.t('Oops'), e.message);
+		} finally {
+			setSending(false);
 		}
-		setSending(false);
 	};
 
 	const selectRooms = ({ value }: { value: string[] }) => {
@@ -76,7 +84,7 @@ const ForwardMessageView = () => {
 	return (
 		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<SafeAreaView testID='forward-message-view' style={styles.container}>
-				<ScrollView {...scrollPersistTaps}>
+				<ScrollView {...scrollPersistTaps} pointerEvents={sending ? 'none' : 'auto'}>
 					<SelectPersonOrChannel
 						server={server}
 						userId={user.id}
@@ -84,6 +92,7 @@ const ForwardMessageView = () => {
 						onRoomSelect={selectRooms}
 						blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 						serverVersion={serverVersion}
+						disabled={sending}
 					/>
 					<View pointerEvents='none' style={[styles.messageContainer, { backgroundColor: colors.surfaceRoom }]}>
 						<MessagePreview message={message} />
