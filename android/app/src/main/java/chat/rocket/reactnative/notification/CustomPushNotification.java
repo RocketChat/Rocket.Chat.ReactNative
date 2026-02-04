@@ -18,9 +18,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -29,9 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import chat.rocket.reactnative.BuildConfig;
 import chat.rocket.reactnative.MainActivity;
@@ -74,7 +68,7 @@ public class CustomPushNotification {
     public static void clearMessages(int notId) {
         notificationMessages.remove(Integer.toString(notId));
     }
-
+    
     public void onReceived() {
         String notId = mBundle.getString("notId");
         
@@ -90,6 +84,8 @@ public class CustomPushNotification {
             return;
         }
         
+        // Process notification immediately - no need to wait for React Native
+        // MMKV is initialized at app startup, so all notification types can work without React
         try {
             handleNotification();
         } catch (Exception e) {
@@ -99,7 +95,7 @@ public class CustomPushNotification {
     
     private void handleNotification() {
         Ejson receivedEjson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
-
+        
         if (receivedEjson != null && receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
             Log.d(TAG, "Detected message-id-only notification, will fetch full content from server");
             loadNotificationAndProcess(receivedEjson);
@@ -136,27 +132,26 @@ public class CustomPushNotification {
     }
     
     private void processNotification() {
-        final Bundle bundle = mBundle;
-        Ejson loadedEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
-        String notId = bundle.getString("notId", "1");
+        Ejson loadedEjson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
+        String notId = mBundle.getString("notId", "1");
 
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[processNotification] notId=" + notId);
-            Log.d(TAG, "[processNotification] bundle.notificationLoaded=" + bundle.getBoolean("notificationLoaded", false));
-            Log.d(TAG, "[processNotification] bundle.title=" + (bundle.getString("title") != null ? "[present]" : "[null]"));
-            Log.d(TAG, "[processNotification] bundle.message length=" + (bundle.getString("message") != null ? bundle.getString("message").length() : 0));
+            Log.d(TAG, "[processNotification] bundle.notificationLoaded=" + mBundle.getBoolean("notificationLoaded", false));
+            Log.d(TAG, "[processNotification] bundle.title=" + (mBundle.getString("title") != null ? "[present]" : "[null]"));
+            Log.d(TAG, "[processNotification] bundle.message length=" + (mBundle.getString("message") != null ? mBundle.getString("message").length() : 0));
             Log.d(TAG, "[processNotification] loadedEjson.notificationType=" + (loadedEjson != null ? loadedEjson.notificationType : "null"));
             Log.d(TAG, "[processNotification] loadedEjson.sender=" + (loadedEjson != null && loadedEjson.sender != null ? loadedEjson.sender.username : "null"));
         }
 
         // Handle E2E encrypted notifications
         if (isE2ENotification(loadedEjson)) {
-            handleE2ENotification(bundle, loadedEjson, notId);
-            return;
+            handleE2ENotification(mBundle, loadedEjson, notId);
+            return; // handleE2ENotification will decrypt and show the notification
         }
 
-        // Handle regular notifications
-        showNotification(bundle, loadedEjson, notId);
+        // Handle regular (non-E2E) notifications
+        showNotification(mBundle, loadedEjson, notId);
     }
 
     /**
@@ -167,19 +162,12 @@ public class CustomPushNotification {
     }
 
     /**
-     * Handles E2E encrypted notifications
+     * Handles E2E encrypted notifications by decrypting immediately using regular Android Context.
+     * No longer waits for React Native initialization.
      */
     private void handleE2ENotification(Bundle bundle, Ejson ejson, String notId) {
-        if (Encryption.shared == null) {
-            Log.e(TAG, "Encryption singleton is null, cannot decrypt E2E notification");
-            bundle.putString("message", "Encrypted message");
-            synchronized(this) {
-                mBundle = bundle;
-            }
-            showNotification(bundle, ejson, notId);
-            return;
-        }
-        
+        // Decrypt immediately using regular Android Context (mContext)
+        // This works without React Native initialization
         String decrypted = Encryption.shared.decryptMessage(ejson, mContext);
         
         if (decrypted != null) {
@@ -191,6 +179,7 @@ public class CustomPushNotification {
         } else {
             Log.w(TAG, "E2E decryption failed for notification, showing fallback notification");
             // Show fallback notification so user knows a message arrived
+            // Use a placeholder message since we can't decrypt
             bundle.putString("message", "Encrypted message");
             synchronized(this) {
                 mBundle = bundle;
@@ -213,16 +202,19 @@ public class CustomPushNotification {
         boolean hasSender = ejson != null && ejson.sender != null;
         String title = bundle.getString("title");
 
+        String displaySenderName = (ejson != null && ejson.senderName != null && !ejson.senderName.isEmpty())
+                ? ejson.senderName
+                : (hasSender ? ejson.sender.username : title);
+
         bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", hasSender ? ejson.sender.username : title);
+        bundle.putString("username", displaySenderName);
         bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         
         String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
-        if (ENABLE_VERBOSE_LOGS) {
-            Log.d(TAG, "[showNotification] avatarUri=" + (avatarUri != null ? "[present]" : "[null]"));
-        }
         bundle.putString("avatarUri", avatarUri);
 
+        // Ensure mBundle is updated with all modifications before building notification
+        // This ensures buildNotification() sees the complete bundle with all fields (including ejson)
         synchronized(this) {
             mBundle = bundle;
         }
@@ -295,24 +287,27 @@ public class CustomPushNotification {
     }
 
     private Notification.Builder buildNotification(int notificationId) {
-        final Bundle bundle = mBundle;
         String notId = Integer.toString(notificationId);
-        String title = bundle.getString("title");
-        String message = bundle.getString("message");
-        Boolean notificationLoaded = bundle.getBoolean("notificationLoaded", false);
-        Ejson ejson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        String title = mBundle.getString("title");
+        String message = mBundle.getString("message");
+        Boolean notificationLoaded = mBundle.getBoolean("notificationLoaded", false);
+        Ejson ejson = safeFromJson(mBundle.getString("ejson", "{}"), Ejson.class);
+
+        // Determine the correct title based on notification type
+        String notificationTitle = title;
 
         if (ENABLE_VERBOSE_LOGS) {
             Log.d(TAG, "[buildNotification] notId=" + notId);
             Log.d(TAG, "[buildNotification] notificationLoaded=" + notificationLoaded);
             Log.d(TAG, "[buildNotification] title=" + (title != null ? "[present]" : "[null]"));
+            Log.d(TAG, "[buildNotification] notificationTitle=" + (notificationTitle != null ? "[present]" : "[null]"));
             Log.d(TAG, "[buildNotification] message length=" + (message != null ? message.length() : 0));
         }
 
         // Create pending intent to open the app
         Intent intent = new Intent(mContext, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtras(bundle);
+        intent.putExtras(mBundle);
         
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -329,7 +324,7 @@ public class CustomPushNotification {
         }
 
         notification
-                .setContentTitle(title)
+                .setContentTitle(notificationTitle)
                 .setContentText(message)
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_HIGH)
@@ -337,14 +332,14 @@ public class CustomPushNotification {
                 .setAutoCancel(true);
 
         notificationColor(notification);
-        notificationIcons(notification, bundle);
+        notificationIcons(notification, mBundle);
         notificationDismiss(notification, notificationId);
 
         // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
         if (ejson == null || ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
             Log.i(TAG, "[buildNotification] ✅ Rendering FULL notification style");
-            notificationStyle(notification, notificationId, bundle);
-            notificationReply(notification, notificationId, bundle);
+            notificationStyle(notification, notificationId, mBundle);
+            notificationReply(notification, notificationId, mBundle);
         } else {
             Log.w(TAG, "[buildNotification] ⚠️ Rendering FALLBACK notification");
             // Cancel previous fallback notifications from same server
@@ -378,37 +373,7 @@ public class CustomPushNotification {
     }
 
     private Bitmap getAvatar(String uri) {
-        if (uri == null || uri.isEmpty()) {
-            if (ENABLE_VERBOSE_LOGS) {
-                Log.w(TAG, "getAvatar called with null/empty URI");
-            }
-            return largeIcon();
-        }
-        
-        if (ENABLE_VERBOSE_LOGS) {
-            String sanitizedUri = uri;
-            int queryStart = uri.indexOf("?");
-            if (queryStart != -1) {
-                sanitizedUri = uri.substring(0, queryStart) + "?[auth_params]";
-            }
-            Log.d(TAG, "Fetching avatar from: " + sanitizedUri);
-        }
-        
-        try {
-            // Use a 3-second timeout to avoid blocking the FCM service for too long
-            // FCM has a 10-second limit, so we need to fail fast and use fallback icon
-            Bitmap avatar = Glide.with(mContext)
-                    .asBitmap()
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                    .load(uri)
-                    .submit(100, 100)
-                    .get(3, TimeUnit.SECONDS);
-            
-            return avatar != null ? avatar : largeIcon();
-        } catch (final ExecutionException | InterruptedException | TimeoutException e) {
-            Log.e(TAG, "Failed to fetch avatar: " + e.getMessage(), e);
-            return largeIcon();
-        }
+        return NotificationHelper.fetchAvatarBitmap(mContext, uri, largeIcon());
     }
 
     private Bitmap largeIcon() {
@@ -429,7 +394,10 @@ public class CustomPushNotification {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             String avatarUri = ejson != null ? ejson.getAvatarUri() : null;
             if (avatarUri != null) {
-                notification.setLargeIcon(getAvatar(avatarUri));
+                Bitmap avatar = getAvatar(avatarUri);
+                if (avatar != null) {
+                    notification.setLargeIcon(avatar);
+                }
             }
         }
     }
@@ -440,8 +408,11 @@ public class CustomPushNotification {
         }
         if (ejson != null && ejson.type != null && !ejson.type.equals("d")) {
             int pos = message.indexOf(":");
-            int start = pos == -1 ? 0 : pos + 2;
-            return message.substring(start);
+            if (pos == -1) {
+                return message;
+            }
+            int start = pos + 2;
+            return start <= message.length() ? message.substring(start) : "";
         }
         return message;
     }
@@ -482,7 +453,10 @@ public class CustomPushNotification {
             }
 
             String title = bundle.getString("title");
-            messageStyle.setConversationTitle(title);
+            // Determine the correct conversation title based on notification type
+            Ejson bundleEjson = safeFromJson(bundle.getString("ejson", "{}"), Ejson.class);
+            String conversationTitle = title;
+            messageStyle.setConversationTitle(conversationTitle);
 
             if (bundles != null) {
                 for (Bundle data : bundles) {
@@ -493,15 +467,17 @@ public class CustomPushNotification {
                     Ejson ejson = safeFromJson(data.getString("ejson", "{}"), Ejson.class);
                     String m = extractMessage(message, ejson);
 
+                    String displaySenderName = (ejson != null && ejson.senderName != null && !ejson.senderName.isEmpty())
+                            ? ejson.senderName
+                            : (ejson != null && ejson.sender != null ? ejson.sender.username : title);
+
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                        String senderName = ejson != null ? ejson.senderName : "Unknown";
-                        messageStyle.addMessage(m, timestamp, senderName);
+                        messageStyle.addMessage(m, timestamp, displaySenderName);
                     } else {
                         Bitmap avatar = getAvatar(avatarUri);
-                        String senderName = ejson != null ? ejson.senderName : "Unknown";
                         Person.Builder senderBuilder = new Person.Builder()
                                 .setKey(senderId)
-                                .setName(senderName);
+                                .setName(displaySenderName);
 
                         if (avatar != null) {
                             senderBuilder.setIcon(Icon.createWithBitmap(avatar));
