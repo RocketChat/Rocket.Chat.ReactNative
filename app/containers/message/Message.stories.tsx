@@ -2191,20 +2191,6 @@ const collapsedAttachments = {
 		}
 	]
 };
-
-const collapsibleAttachmentWithText = {
-	collapsed: true,
-	title: 'Collapsed attachment block',
-	text: 'This attachment text should NOT appear as plain text above the message or duplicate before the block.',
-	description: 'Attachment description that might also leak as duplicate plain text.',
-	color: '#2c3e50',
-	fields: [
-		{ title: 'Field 1', value: 'Value 1', short: true },
-		{ title: 'Field 2', value: 'Value 2', short: true },
-		{ title: 'Long field', value: 'This field value could also contribute to duplicate text when expanded.', short: false }
-	]
-};
-
 export const CollapsedAttachments = () => (
 	<>
 		<Message msg='Message' attachments={[collapsedAttachments]} />
@@ -2218,23 +2204,6 @@ export const CollapsedAttachmentsLargeFont = () => (
 		<MessageLargeFont msg='Message' attachments={[collapsedAttachments]} />
 		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
 		<MessageLargeFont msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
-	</>
-);
-
-export const CollapsibleAttachmentWithText = () => (
-	<>
-		<Message msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
-		<Message msg='This is the main message body.' attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]} />
-	</>
-);
-
-export const CollapsibleAttachmentWithTextLargeFont = () => (
-	<>
-		<MessageLargeFont msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
-		<MessageLargeFont
-			msg='This is the main message body.'
-			attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]}
-		/>
 	</>
 );
 
