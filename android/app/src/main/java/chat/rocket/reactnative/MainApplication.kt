@@ -20,7 +20,7 @@ import chat.rocket.reactnative.storage.MMKVKeyManager;
 import chat.rocket.reactnative.storage.SecureStoragePackage;
 import chat.rocket.reactnative.notification.VideoConfTurboPackage
 import chat.rocket.reactnative.notification.PushNotificationTurboPackage
-import chat.rocket.reactnative.voip.VoipTurboPackage
+import chat.rocket.reactnative.VoipTurboPackage
 import chat.rocket.reactnative.utils.CallIdUUIDTurboPackage
 
 /**

@@ -1,13 +1,12 @@
 package chat.rocket.reactnative.voip
 
-import android.content.Context
 import android.util.Log
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import java.lang.ref.WeakReference
+import chat.rocket.reactnative.NativeVoipSpec
 
 /**
  * Native module to expose VoIP call data to JavaScript.
@@ -81,7 +80,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
      * Gets any pending VoIP call data.
      * Returns null if no pending call.
      */
-    @ReactMethod
     override fun getPendingVoipCall(): WritableMap? {
         val data = pendingVoipCallData ?: return null
 
@@ -99,7 +97,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
     /**
      * Clears any pending VoIP call data.
      */
-    @ReactMethod
     override fun clearPendingVoipCall() {
         clearPendingVoipCallInternal()
     }
@@ -108,7 +105,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
      * Registers for VoIP push token.
      * No-op on Android - uses FCM for push notifications.
      */
-    @ReactMethod
     override fun registerVoipToken() {
         // No-op on Android - FCM handles push notifications
         Log.d(TAG, "registerVoipToken called (no-op on Android)")
@@ -118,7 +114,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
      * Required for NativeEventEmitter in TurboModules.
      * Called when JS starts listening to events.
      */
-    @ReactMethod
     override fun addListener(eventName: String) {
         // Keep track of listeners if needed
         Log.d(TAG, "addListener: $eventName")
@@ -128,7 +123,6 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
      * Required for NativeEventEmitter in TurboModules.
      * Called when JS stops listening to events.
      */
-    @ReactMethod
     override fun removeListeners(count: Double) {
         // Remove listeners if needed
         Log.d(TAG, "removeListeners: $count")
