@@ -7,6 +7,7 @@ import Encrypted from './Encrypted';
 import MessageError from './MessageError';
 import Pinned from './Pinned';
 import ReadReceipt from './ReadReceipt';
+import Starred from './Starred';
 import Translated from './Translated';
 
 const styles = StyleSheet.create({
@@ -24,6 +25,7 @@ interface IRightIcons {
 	hasError: boolean;
 	isTranslated: boolean;
 	pinned?: boolean;
+	starred?: boolean;
 }
 
 const RightIcons = ({
@@ -34,13 +36,15 @@ const RightIcons = ({
 	isReadReceiptEnabled,
 	unread,
 	isTranslated,
-	pinned
+	pinned,
+	starred
 }: IRightIcons): React.ReactElement => {
 	'use memo';
 
 	return (
 		<View style={styles.actionIcons}>
 			<Pinned pinned={pinned} testID={`${msg}-pinned`} />
+			<Starred starred={starred} testID={`${msg}-starred`} />
 			<Encrypted type={type} />
 			<Edited testID={`${msg}-edited`} isEdited={isEdited} />
 			<MessageError hasError={hasError} />
