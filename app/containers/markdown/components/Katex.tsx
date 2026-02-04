@@ -3,7 +3,7 @@ import React from 'react';
 import { type StyleProp, type ViewStyle } from 'react-native';
 import Katex from 'react-native-katex';
 // eslint-disable-next-line import/no-unresolved
-import MathView from 'react-native-math-view';
+import MathView, { MathText } from 'react-native-math-view';
 
 import { isAndroid } from '../../../lib/methods/helpers/deviceInfo';
 import { useTheme } from '../../../theme';
@@ -44,4 +44,9 @@ export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
 			)}
 		/>
 	);
+};
+
+export const InlineKaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
+	const { colors } = useTheme();
+	return <MathText color value={`$$${value}$$`} direction='ltr' style={{ color: colors.fontDefault }} />;
 };
