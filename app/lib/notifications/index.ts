@@ -74,6 +74,8 @@ export const onNotification = (push: INotification): void => {
 		} catch (e) {
 			console.warn('[notifications/index.ts] Failed to parse ejson:', e);
 		}
+	} else {
+		console.warn('[notifications/index.ts] No ejson in payload, dispatching appInit');
 	}
 	store.dispatch(appInit());
 };
