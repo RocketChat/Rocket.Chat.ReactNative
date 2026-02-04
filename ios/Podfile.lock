@@ -2327,7 +2327,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNImageCropPicker (0.51.0):
+  - RNImageCropPicker (0.50.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2351,10 +2351,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNImageCropPicker/QBImagePickerController (= 0.51.0)
+    - RNImageCropPicker/QBImagePickerController (= 0.50.1)
     - TOCropViewController (~> 2.7.4)
     - Yoga
-  - RNImageCropPicker/QBImagePickerController (0.51.0):
+  - RNImageCropPicker/QBImagePickerController (0.50.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3172,7 +3172,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: 8a49978bb953d3fc052813093fecd4b447bbabf8
   RNFileViewer: f9424017fa643c115c1444e11292e84fb16ddd68
   RNGestureHandler: 8ff2b1434b0ff8bab28c8242a656fb842990bbc8
-  RNImageCropPicker: c78ee80ea778f90cb850f4d26696fd9c1a7bcfbb
+  RNImageCropPicker: b219389d3a300679b396e81d501e8c8169ffa3c0
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
   RNReanimated: f52ccd5ceea2bae48d7421eec89b3f0c10d7b642
   RNScreens: b13e4c45f0406f33986a39c0d8da0324bff94435
