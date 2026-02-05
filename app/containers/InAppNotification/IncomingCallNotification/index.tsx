@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
@@ -16,6 +15,8 @@ import { CallHeader } from '../../CallHeader';
 import { useStyle } from './style';
 import useUserData from '../../../lib/hooks/useUserData';
 import Ringer, { ERingerSounds } from '../../Ringer';
+import PressableOpacity from '../../PressableOpacity';
+import { useTheme } from '../../../theme';
 
 export interface INotifierComponent {
 	notification: {
@@ -42,7 +43,7 @@ const IncomingCallHeader = React.memo(
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const styles = useStyle();
 		const insets = useSafeAreaInsets();
-
+		const { colors } = useTheme();
 		useEffect(() => {
 			const focusOnIncomingCall = setTimeout(() => {
 				const node = findNodeHandle(componentRef.current);
@@ -84,40 +85,52 @@ const IncomingCallHeader = React.memo(
 						</A11y.Index>
 						<View style={styles.row}>
 							<A11y.Index index={3} style={{ flex: 1 }}>
-								<Touchable
+								<PressableOpacity
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
 										hideNotification();
 									}}
 									accessibilityLabel={i18n.t('A11y_incoming_call_dismiss')}
-									style={styles.closeButton}>
+									style={styles.closeButton}
+									disableOpacityOnAndroid
+									android_ripple={{
+										color: colors.buttonBackgroundSecondaryPress
+									}}>
 									<CustomIcon name='close' size={20} />
-								</Touchable>
+								</PressableOpacity>
 							</A11y.Index>
 							<A11y.Index index={4} style={{ flex: 1 }}>
-								<Touchable
+								<PressableOpacity
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
 										hideNotification();
 										dispatch(cancelCall({ callId }));
 									}}
-									style={styles.cancelButton}>
+									style={styles.cancelButton}
+									disableOpacityOnAndroid
+									android_ripple={{
+										color: colors.buttonBackgroundDangerPress
+									}}>
 									<Text style={styles.buttonText}>{i18n.t('decline')}</Text>
-								</Touchable>
+								</PressableOpacity>
 							</A11y.Index>
 							<A11y.Index index={5} style={{ flex: 1 }}>
-								<Touchable
+								<PressableOpacity
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
 										hideNotification();
 										dispatch(acceptCall({ callId }));
 									}}
-									style={styles.acceptButton}>
+									style={styles.acceptButton}
+									disableOpacityOnAndroid
+									android_ripple={{
+										color: colors.buttonBackgroundSuccessPress
+									}}>
 									<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
-								</Touchable>
+								</PressableOpacity>
 							</A11y.Index>
 						</View>
 						{audio ? <Ringer ringer={ERingerSounds.RINGTONE} /> : null}

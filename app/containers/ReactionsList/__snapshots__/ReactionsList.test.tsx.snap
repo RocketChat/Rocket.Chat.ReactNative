@@ -28,521 +28,623 @@ exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-all"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-all"
           >
-            <Text
+            <View
               style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#FF0000",
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
+                }
               }
             >
-              All
-            </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#FF0000",
+                    },
+                  ]
+                }
+              >
+                All
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:marioparty:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:marioparty:"
           >
-            <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={24}
-              nativeViewRef={"[React.ref]"}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
-                  },
-                ]
-              }
+            <View
               style={
                 {
-                  "height": 24,
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
-              }
-              transition={null}
-              width={24}
-            />
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
               }
             >
-              2
-            </Text>
+              <ViewManagerAdapter_ExpoImage
+                containerViewRef={"[React.ref]"}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={24}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
+                  [
+                    {
+                      "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "height": 24,
+                    "width": 24,
+                  }
+                }
+                transition={null}
+                width={24}
+              />
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                2
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:react_rocket:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:react_rocket:"
           >
-            <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={24}
-              nativeViewRef={"[React.ref]"}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
-                  },
-                ]
-              }
+            <View
               style={
                 {
-                  "height": 24,
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
-              }
-              transition={null}
-              width={24}
-            />
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
               }
             >
-              2
-            </Text>
+              <ViewManagerAdapter_ExpoImage
+                containerViewRef={"[React.ref]"}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={24}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
+                  [
+                    {
+                      "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "height": 24,
+                    "width": 24,
+                  }
+                }
+                transition={null}
+                width={24}
+              />
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                2
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:nyan_rocket:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:nyan_rocket:"
           >
-            <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={24}
-              nativeViewRef={"[React.ref]"}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
-                  },
-                ]
-              }
+            <View
               style={
                 {
-                  "height": 24,
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
-              }
-              transition={null}
-              width={24}
-            />
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
               }
             >
-              1
-            </Text>
+              <ViewManagerAdapter_ExpoImage
+                containerViewRef={"[React.ref]"}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={24}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
+                  [
+                    {
+                      "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "height": 24,
+                    "width": 24,
+                  }
+                }
+                transition={null}
+                width={24}
+              />
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:grinning:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:grinning:"
           >
-            <Text
+            <View
               style={
                 {
-                  "color": "#fff",
-                  "fontSize": 20,
-                  "height": 24,
-                  "textAlign": "center",
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
               }
             >
-              😀
-            </Text>
-            <Text
-              style={
-                [
+              <Text
+                style={
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
-              }
-            >
-              1
-            </Text>
+                    "color": "#fff",
+                    "fontSize": 20,
+                    "height": 24,
+                    "textAlign": "center",
+                    "width": 24,
+                  }
+                }
+              >
+                😀
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:tada:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:tada:"
           >
-            <Text
+            <View
               style={
                 {
-                  "color": "#fff",
-                  "fontSize": 20,
-                  "height": 24,
-                  "textAlign": "center",
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
               }
             >
-              🎉
-            </Text>
-            <Text
-              style={
-                [
+              <Text
+                style={
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
-              }
-            >
-              1
-            </Text>
+                    "color": "#fff",
+                    "fontSize": 20,
+                    "height": 24,
+                    "textAlign": "center",
+                    "width": 24,
+                  }
+                }
+              >
+                🎉
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -1103,521 +1205,623 @@ exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
         }
       >
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-all"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-all"
           >
-            <Text
+            <View
               style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#FF0000",
-                  },
-                ]
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
+                }
               }
             >
-              All
-            </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600",
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#FF0000",
+                    },
+                  ]
+                }
+              >
+                All
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:marioparty:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:marioparty:"
           >
-            <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={24}
-              nativeViewRef={"[React.ref]"}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
-                  },
-                ]
-              }
+            <View
               style={
                 {
-                  "height": 24,
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
-              }
-              transition={null}
-              width={24}
-            />
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
               }
             >
-              2
-            </Text>
+              <ViewManagerAdapter_ExpoImage
+                containerViewRef={"[React.ref]"}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={24}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
+                  [
+                    {
+                      "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "height": 24,
+                    "width": 24,
+                  }
+                }
+                transition={null}
+                width={24}
+              />
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                2
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:react_rocket:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:react_rocket:"
           >
-            <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={24}
-              nativeViewRef={"[React.ref]"}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
-                  },
-                ]
-              }
+            <View
               style={
                 {
-                  "height": 24,
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
-              }
-              transition={null}
-              width={24}
-            />
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
               }
             >
-              2
-            </Text>
+              <ViewManagerAdapter_ExpoImage
+                containerViewRef={"[React.ref]"}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={24}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
+                  [
+                    {
+                      "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "height": 24,
+                    "width": 24,
+                  }
+                }
+                transition={null}
+                width={24}
+              />
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                2
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:nyan_rocket:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:nyan_rocket:"
           >
-            <ViewManagerAdapter_ExpoImage
-              containerViewRef={"[React.ref]"}
-              contentFit="contain"
-              contentPosition={
-                {
-                  "left": "50%",
-                  "top": "50%",
-                }
-              }
-              height={24}
-              nativeViewRef={"[React.ref]"}
-              onError={[Function]}
-              onLoad={[Function]}
-              onLoadStart={[Function]}
-              onProgress={[Function]}
-              placeholder={[]}
-              source={
-                [
-                  {
-                    "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
-                  },
-                ]
-              }
+            <View
               style={
                 {
-                  "height": 24,
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
-              }
-              transition={null}
-              width={24}
-            />
-            <Text
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
               }
             >
-              1
-            </Text>
+              <ViewManagerAdapter_ExpoImage
+                containerViewRef={"[React.ref]"}
+                contentFit="contain"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={24}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                source={
+                  [
+                    {
+                      "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "height": 24,
+                    "width": 24,
+                  }
+                }
+                transition={null}
+                width={24}
+              />
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:grinning:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:grinning:"
           >
-            <Text
+            <View
               style={
                 {
-                  "color": "#fff",
-                  "fontSize": 20,
-                  "height": 24,
-                  "textAlign": "center",
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
               }
             >
-              😀
-            </Text>
-            <Text
-              style={
-                [
+              <Text
+                style={
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
-              }
-            >
-              1
-            </Text>
+                    "color": "#fff",
+                    "fontSize": 20,
+                    "height": 24,
+                    "textAlign": "center",
+                    "width": 24,
+                  }
+                }
+              >
+                😀
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
           </View>
         </View>
         <View
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
           collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
-            {
-              "opacity": 1,
-            }
+            [
+              undefined,
+              {},
+              {},
+            ]
           }
-          testID="tab-:tada:"
         >
           <View
-            style={
+            accessibilityState={
               {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "height": 44,
-                "justifyContent": "center",
-                "paddingBottom": 4,
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
               }
             }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                undefined,
+                undefined,
+                {
+                  "opacity": 1,
+                },
+              ]
+            }
+            testID="tab-:tada:"
           >
-            <Text
+            <View
               style={
                 {
-                  "color": "#fff",
-                  "fontSize": 20,
-                  "height": 24,
-                  "textAlign": "center",
-                  "width": 24,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 44,
+                  "justifyContent": "center",
+                  "paddingBottom": 4,
                 }
               }
             >
-              🎉
-            </Text>
-            <Text
-              style={
-                [
+              <Text
+                style={
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "marginLeft": 4,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#666666",
-                  },
-                ]
-              }
-            >
-              1
-            </Text>
+                    "color": "#fff",
+                    "fontSize": 20,
+                    "height": 24,
+                    "textAlign": "center",
+                    "width": 24,
+                  }
+                }
+              >
+                🎉
+              </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "Inter",
+                      "fontWeight": "600",
+                      "marginLeft": 4,
+                      "textAlign": "left",
+                    },
+                    {
+                      "color": "#666666",
+                    },
+                  ]
+                }
+              >
+                1
+              </Text>
+            </View>
           </View>
         </View>
       </View>

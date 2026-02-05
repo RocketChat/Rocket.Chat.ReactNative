@@ -11,8 +11,8 @@ import { useTheme } from '../../../../../theme';
 import sharedStyles from '../../../../../views/Styles';
 import Markdown from '../../../../markdown';
 import MessageContext from '../../../Context';
-import Touchable from '../../../Touchable';
 import { BUTTON_HIT_SLOP } from '../../../utils';
+import PressableOpacity from '../../../../PressableOpacity';
 
 const styles = StyleSheet.create({
 	button: {
@@ -156,7 +156,7 @@ const CollapsibleQuote = React.memo(
 
 		return (
 			<>
-				<Touchable
+				<PressableOpacity
 					testID={`collapsibleQuoteTouchable-${attachment.title}`}
 					onPress={onPress}
 					style={[
@@ -171,8 +171,11 @@ const CollapsibleQuote = React.memo(
 							borderLeftWidth: 2
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-					hitSlop={BUTTON_HIT_SLOP}>
+					hitSlop={BUTTON_HIT_SLOP}
+					android_ripple={{
+						color: themes[theme].surfaceNeutral
+					}}
+					disableOpacityOnAndroid>
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>
 							<View style={styles.authorContainer}>
@@ -185,7 +188,7 @@ const CollapsibleQuote = React.memo(
 							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
 						</View>
 					</View>
-				</Touchable>
+				</PressableOpacity>
 			</>
 		);
 	},

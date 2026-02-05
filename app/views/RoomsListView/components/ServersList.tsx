@@ -143,12 +143,10 @@ const ServersList = () => {
 			<View style={styles.addServerButtonContainer}>
 				<Button
 					title={I18n.t('Add_Server')}
-					type='primary'
+					type='secondary'
 					onPress={addServer}
 					testID='rooms-list-header-server-add'
 					style={styles.buttonCreateWorkspace}
-					color={colors.buttonFontSecondary}
-					backgroundColor={colors.buttonBackgroundSecondaryDefault}
 				/>
 			</View>
 		</View>

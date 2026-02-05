@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../../i18n';
@@ -12,6 +11,7 @@ import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 import { type IUsersTyping } from '../../reducers/usersTyping';
+import PressableOpacity from '../PressableOpacity';
 
 const HIT_SLOP = {
 	top: 5,
@@ -201,7 +201,12 @@ const Header = React.memo(
 				accessible
 				accessibilityLabel={accessibilityLabel}
 				accessibilityRole='header'>
-				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+				<PressableOpacity
+					testID='room-header'
+					onPress={handleOnPress}
+					disabled={disabled}
+					hitSlop={HIT_SLOP}
+					disableAndroidRipple>
 					<View style={styles.titleContainer}>
 						{tmid ? null : (
 							<RoomTypeIcon
@@ -217,7 +222,7 @@ const Header = React.memo(
 						<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
 					</View>
 					<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
-				</TouchableOpacity>
+				</PressableOpacity>
 			</View>
 		);
 	}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
 import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
@@ -10,6 +9,7 @@ import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
 import { type IMessageFromServer } from '../../definitions';
+import PressableOpacity from '../../containers/PressableOpacity';
 
 const styles = StyleSheet.create({
 	container: {
@@ -63,10 +63,12 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 	}
 
 	return (
-		<Touchable
+		<PressableOpacity
 			onPress={() => onPress(item)}
 			testID={`discussions-view-${item.msg}`}
-			style={{ backgroundColor: colors.surfaceRoom }}>
+			style={{ backgroundColor: colors.surfaceRoom }}
+			disableOpacityOnAndroid
+			android_ripple={{ color: colors.surfaceNeutral }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
@@ -82,7 +84,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 					{messageDate ? <DiscussionDetails item={item} date={messageDate} /> : null}
 				</View>
 			</View>
-		</Touchable>
+		</PressableOpacity>
 	);
 };
 

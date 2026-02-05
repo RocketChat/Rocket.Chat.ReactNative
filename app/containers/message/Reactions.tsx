@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
 
-import Touchable from './Touchable';
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import Emoji from './Emoji';
@@ -10,6 +9,7 @@ import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
 import { type TGetCustomEmoji } from '../../definitions/IEmoji';
+import PressableOpacity from '../PressableOpacity';
 
 interface IReaction {
 	_id: string;
@@ -35,17 +35,20 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
 	return (
-		<Touchable
+		<PressableOpacity
 			onPress={reactionInit}
 			key='message-add-reaction'
 			testID='message-add-reaction'
 			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
-			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			hitSlop={BUTTON_HIT_SLOP}>
+			hitSlop={BUTTON_HIT_SLOP}
+			android_ripple={{
+				color: themes[theme].surfaceNeutral
+			}}
+			disableOpacityOnAndroid>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
 				<CustomIcon name='reaction-add' size={20} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
-		</Touchable>
+		</PressableOpacity>
 	);
 });
 
@@ -57,14 +60,18 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
 	return (
-		<Touchable
+		<PressableOpacity
 			onPress={() => onReactionPress(reaction.emoji)}
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}
-			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			hitSlop={BUTTON_HIT_SLOP}>
+			hitSlop={BUTTON_HIT_SLOP}
+			android_ripple={{
+				color: themes[theme].surfaceNeutral
+			}}
+			disableOpacityOnAndroid
+			disableOpeningMessageModal>
 			<View
 				style={[
 					styles.reactionContainer,
@@ -78,7 +85,7 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 				/>
 				<Text style={[styles.reactionCount, { color: themes[theme].badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
 			</View>
-		</Touchable>
+		</PressableOpacity>
 	);
 });
 

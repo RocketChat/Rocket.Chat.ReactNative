@@ -1,13 +1,12 @@
 import React from 'react';
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
-import Touchable, { type PlatformTouchableProps } from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
+import PressableOpacity, { type IPressableOpacityProps } from '../PressableOpacity';
 
-// @ts-ignore
-interface IButtonProps extends PlatformTouchableProps {
+interface IButtonProps extends IPressableOpacityProps {
 	title: string;
 	onPress: () => void;
 	type?: 'primary' | 'secondary';
@@ -61,6 +60,7 @@ const Button: React.FC<IButtonProps> = ({
 	style,
 	styleText,
 	small,
+	android_ripple,
 	...otherProps
 }) => {
 	const { colors } = useTheme();
@@ -68,9 +68,15 @@ const Button: React.FC<IButtonProps> = ({
 	const isDisabled = disabled || loading;
 
 	const defaultBackgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault;
+	const defaultBackgroundRippleColor = isPrimary ? colors.buttonBackgroundPrimaryPress : colors.buttonBackgroundSecondaryPress;
+
 	const disabledBackgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDisabled : colors.buttonBackgroundSecondaryDisabled;
 
 	const resolvedBackgroundColor = backgroundColor || defaultBackgroundColor;
+	const resolvedBackgroundRippleColor = android_ripple?.color || defaultBackgroundRippleColor;
+
+	const resolvedAndroidRipple = { ...android_ripple, color: resolvedBackgroundRippleColor };
+
 	const resolvedTextColor = color || (isPrimary ? colors.fontWhite : colors.fontDefault);
 
 	const containerStyle = [
@@ -88,16 +94,18 @@ const Button: React.FC<IButtonProps> = ({
 	];
 
 	return (
-		<Touchable
+		<PressableOpacity
 			onPress={onPress}
 			disabled={isDisabled}
 			// @ts-ignore
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
+			android_ripple={resolvedAndroidRipple}
+			disableOpacityOnAndroid
 			{...otherProps}>
 			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
-		</Touchable>
+		</PressableOpacity>
 	);
 };
 

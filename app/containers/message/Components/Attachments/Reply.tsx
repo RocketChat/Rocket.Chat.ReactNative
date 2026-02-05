@@ -14,9 +14,9 @@ import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown, { MarkdownPreview } from '../../../markdown';
 import { Attachments } from './components';
 import MessageContext from '../../Context';
-import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
 import dayjs from '../../../../lib/dayjs';
+import PressableOpacity from '../../../PressableOpacity';
 
 const styles = StyleSheet.create({
 	button: {
@@ -238,7 +238,7 @@ const Reply = React.memo(
 
 		return (
 			<View style={{ gap: 4 }}>
-				<Touchable
+				<PressableOpacity
 					testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 					onPress={onPress}
 					style={[
@@ -247,9 +247,10 @@ const Reply = React.memo(
 							borderColor: strokeLight
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-					disabled={!!(loading || attachment.message_link)}>
-					<View style={styles.attachmentContainer}>
+					disabled={!!(loading || attachment.message_link)}
+					android_ripple={{ color: themes[theme].surfaceNeutral }}
+					disableOpacityOnAndroid>
+					<View style={[styles.attachmentContainer]}>
 						<View style={styles.titleAndDescriptionContainer}>
 							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} />
@@ -273,7 +274,7 @@ const Reply = React.memo(
 						</View>
 						<UrlImage image={attachment.thumb_url} />
 					</View>
-				</Touchable>
+				</PressableOpacity>
 				{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
 			</View>
 		);

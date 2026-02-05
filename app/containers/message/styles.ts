@@ -89,7 +89,8 @@ export default StyleSheet.create({
 		width: '100%',
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		flex: 1
 	},
 	discussionText: {
 		fontSize: 16,

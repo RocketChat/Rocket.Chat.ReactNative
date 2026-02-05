@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, type Pressable, StyleSheet, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
-import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../CustomIcon';
 import ActivityIndicator from '../ActivityIndicator';
@@ -10,6 +9,7 @@ import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
 import { type IOption, type IOptions, type IOverflow } from './interfaces';
+import PressableOpacity from '../PressableOpacity';
 
 const keyExtractor = (item: any) => item.value;
 
@@ -27,12 +27,16 @@ const styles = StyleSheet.create({
 });
 
 const Option = ({ option: { text, value }, onOptionPress, parser, theme }: IOption) => (
-	<Touchable
+	<PressableOpacity
 		onPress={() => onOptionPress({ value })}
-		background={Touchable.Ripple(themes[theme].surfaceNeutral)}
+		android_ripple={{
+			color: themes[theme].surfaceNeutral
+		}}
+		disableOpacityOnAndroid
+		disableOpeningMessageModal
 		style={styles.option}>
 		<Text>{parser.text(text)}</Text>
-	</Touchable>
+	</PressableOpacity>
 );
 
 const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
@@ -44,7 +48,7 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable: { [key: string]: Touchable | null } = {};
+const touchable: { [key: string]: React.ComponentRef<typeof Pressable> | null } = {};
 
 export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	const { theme } = useTheme();
@@ -59,20 +63,23 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 
 	return (
 		<>
-			<Touchable
+			<PressableOpacity
 				ref={ref => {
 					touchable[blockId] = ref;
 				}}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
+				android_ripple={{
+					color: themes[theme].surfaceNeutral
+				}}
+				disableOpacityOnAndroid
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}
-				style={styles.menu}>
+				style={[styles.menu]}>
 				{!loading ? (
 					<CustomIcon size={18} name='kebab' color={themes[theme].fontDefault} />
 				) : (
 					<ActivityIndicator style={styles.loading} />
 				)}
-			</Touchable>
+			</PressableOpacity>
 			<Popover
 				isVisible={show}
 				// fromView exists in Popover Component

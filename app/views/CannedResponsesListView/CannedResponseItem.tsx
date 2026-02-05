@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
 import { type TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
 import styles from './styles';
+import PressableOpacity from '../../containers/PressableOpacity';
 
 interface ICannedResponseItem {
 	theme: TSupportedThemes;
@@ -27,7 +27,13 @@ const CannedResponseItem = ({
 	text,
 	tags = []
 }: ICannedResponseItem): JSX.Element => (
-	<Touchable onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].surfaceLight }]}>
+	<PressableOpacity
+		onPress={onPressDetail}
+		style={[styles.wrapCannedItem, { backgroundColor: themes[theme].surfaceLight }]}
+		android_ripple={{
+			color: themes[theme].surfaceNeutral
+		}}
+		disableOpacityOnAndroid>
 		<>
 			<View style={styles.cannedRow}>
 				<View style={styles.cannedWrapShortcutScope}>
@@ -36,10 +42,21 @@ const CannedResponseItem = ({
 				</View>
 
 				<Button
-					title={I18n.t('Use')}
 					fontSize={12}
 					color={themes[theme].fontTitlesLabels}
-					style={[styles.cannedUseButton, { backgroundColor: themes[theme].surfaceTint }]}
+					title={I18n.t('Use')}
+					style={[
+						styles.cannedUseButton,
+						{
+							backgroundColor: themes[theme].surfaceTint,
+							paddingVertical: 0, // default padding makes text overflow here
+							paddingHorizontal: 0,
+							justifyContent: 'center',
+							alignItems: 'center'
+						}
+					]}
+					small
+					type='secondary'
 					onPress={onPressUse}
 				/>
 			</View>
@@ -57,7 +74,7 @@ const CannedResponseItem = ({
 					: null}
 			</View>
 		</>
-	</Touchable>
+	</PressableOpacity>
 );
 
 export default CannedResponseItem;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -13,6 +12,7 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { type IApplicationState, type ISubscription, type SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import PressableOpacity from '../PressableOpacity';
 
 export interface INotifierComponent {
 	notification: {
@@ -109,11 +109,13 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 					height: rowHeight
 				}
 			]}>
-			<Touchable
+			<PressableOpacity
 				style={styles.content}
 				onPress={onPress}
 				hitSlop={BUTTON_HIT_SLOP}
-				background={Touchable.SelectableBackgroundBorderless()}
+				android_ripple={{
+					borderless: true // equivalent to background={Touchable.SelectableBackgroundBorderless()}
+				}}
 				testID={`in-app-notification-${text}`}>
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
@@ -126,10 +128,15 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 						</Text>
 					</View>
 				</>
-			</Touchable>
-			<Touchable onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP} background={Touchable.SelectableBackgroundBorderless()}>
+			</PressableOpacity>
+			<PressableOpacity
+				onPress={hideNotification}
+				hitSlop={BUTTON_HIT_SLOP}
+				android_ripple={{
+					borderless: true
+				}}>
 				<CustomIcon name='close' size={20} style={styles.close} />
-			</Touchable>
+			</PressableOpacity>
 		</View>
 	);
 });

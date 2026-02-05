@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
 
 import { useAppSelector } from '../lib/hooks/useAppSelector';
@@ -12,6 +11,7 @@ import AvatarContainer from './Avatar';
 import StatusContainer from './Status';
 import DotsLoader from './DotsLoader';
 import I18n from '../i18n';
+import PressableOpacity from './PressableOpacity';
 
 type TCallHeader = {
 	mic: boolean;
@@ -32,11 +32,21 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 
 	const handleColors = (enabled: boolean) => {
 		if (calling) {
-			if (enabled) return { button: colors.buttonBackgroundSecondaryDisabled, icon: colors.strokeExtraDark };
-			return { button: 'transparent', icon: colors.strokeLight };
+			if (enabled)
+				return {
+					button: colors.buttonBackgroundSecondaryDisabled,
+					buttonRipple: 'transparent',
+					icon: colors.strokeExtraDark
+				};
+			return { button: 'transparent', buttonRipple: 'transparent', icon: colors.strokeLight };
 		}
-		if (enabled) return { button: colors.buttonBackgroundPrimaryDefault, icon: colors.surfaceLight };
-		return { button: 'transparent', icon: colors.strokeExtraDark };
+		if (enabled)
+			return {
+				button: colors.buttonBackgroundPrimaryDefault,
+				buttonRipple: colors.buttonBackgroundPrimaryPress,
+				icon: colors.surfaceLight
+			};
+		return { button: 'transparent', buttonRipple: 'transparent', icon: colors.strokeExtraDark };
 	};
 
 	return (
@@ -49,24 +59,32 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 					</View>
 					<View style={style.actionSheetHeaderButtons}>
 						<A11y.Index index={1}>
-							<Touchable
+							<PressableOpacity
 								accessibilityLabel={cam ? I18n.t('Turn_camera_off') : I18n.t('Turn_camera_on')}
 								onPress={() => setCam(!cam)}
 								style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
 								hitSlop={BUTTON_HIT_SLOP}
-								disabled={calling}>
+								disabled={calling}
+								disableOpacityOnAndroid
+								android_ripple={{
+									color: handleColors(cam).buttonRipple
+								}}>
 								<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
-							</Touchable>
+							</PressableOpacity>
 						</A11y.Index>
 						<A11y.Index index={2}>
-							<Touchable
+							<PressableOpacity
 								accessibilityLabel={mic ? I18n.t('Turn_mic_off') : I18n.t('Turn_mic_on')}
 								onPress={() => setMic(!mic)}
 								style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
 								hitSlop={BUTTON_HIT_SLOP}
-								disabled={calling}>
+								disabled={calling}
+								disableOpacityOnAndroid
+								android_ripple={{
+									color: handleColors(mic).buttonRipple
+								}}>
 								<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={24} color={handleColors(mic).icon} />
-							</Touchable>
+							</PressableOpacity>
 						</A11y.Index>
 					</View>
 				</View>

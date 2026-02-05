@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { Image } from 'expo-image';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -11,6 +10,7 @@ import { type IItemData } from '.';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
 import I18n from '../../../i18n';
+import PressableOpacity from '../../PressableOpacity';
 
 interface IItem {
 	item: IItemData;
@@ -34,13 +34,18 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 	const iconColor = selected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
 
 	return (
-		<Touchable
+		<PressableOpacity
 			accessible
 			accessibilityLabel={`${textParser([item.text])}. ${selected ? I18n.t('Selected') : ''}`}
 			accessibilityRole='checkbox'
 			testID={`multi-select-item-${itemName}`}
 			key={itemName}
-			onPress={() => onSelect(item)}>
+			onPress={() => onSelect(item)}
+			android_ripple={{
+				color: colors.surfaceSelected
+			}}
+			disableOpacityOnAndroid
+			disableOpeningMessageModal>
 			<View style={styles.item}>
 				<View style={styles.flexZ}>
 					{item.imageUrl ? <Image style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
@@ -54,7 +59,7 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 					<CustomIcon color={iconColor} size={22} name={iconName} />
 				</View>
 			</View>
-		</Touchable>
+		</PressableOpacity>
 	);
 };
 

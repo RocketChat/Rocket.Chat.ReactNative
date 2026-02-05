@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import PressableOpacity from '../PressableOpacity';
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
@@ -116,12 +117,16 @@ const User = React.memo(
 
 			return (
 				<View style={styles.container}>
-					<TouchableOpacity testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
+					<PressableOpacity
+						testID={`username-header-${username}`}
+						style={styles.titleContainer}
+						disableAndroidRipple
+						onPress={onUserPress}>
 						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
 						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
-					</TouchableOpacity>
+					</PressableOpacity>
 					<RightIcons
 						type={type}
 						isEdited={isEdited}

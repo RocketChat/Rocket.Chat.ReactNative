@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import SearchHeader from '../../../containers/SearchHeader';
@@ -9,6 +8,7 @@ import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 import ServersList from './ServersList';
+import PressableOpacity from '../../../containers/PressableOpacity';
 
 const styles = StyleSheet.create({
 	container: {
@@ -67,7 +67,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	}
 	return (
 		<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
-			<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
+			<PressableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button' disableAndroidRipple>
 				<View style={styles.button}>
 					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{serverName}
@@ -81,7 +81,7 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 						{subtitle}
 					</Text>
 				) : null}
-			</TouchableOpacity>
+			</PressableOpacity>
 		</View>
 	);
 };
