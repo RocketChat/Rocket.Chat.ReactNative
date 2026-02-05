@@ -4,6 +4,7 @@ import ReactAppDependencyProvider
 import Firebase
 import Bugsnag
 import WatchConnectivity
+import Foundation
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -42,6 +43,15 @@ public class AppDelegate: ExpoAppDelegate {
       launchOptions: launchOptions)
 #endif
 
+      if let shortcutItem =
+          launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
+          
+          RCSetPendingQuickActionType(shortcutItem.type)
+
+        // Return false so iOS does NOT call performActionFor again
+        return false
+      }
+
     let result = super.application(application, didFinishLaunchingWithOptions: launchOptions)
 
     // Initialize boot splash
@@ -76,6 +86,15 @@ public class AppDelegate: ExpoAppDelegate {
     let result = RCTLinkingManager.application(application, continue: userActivity, restorationHandler: restorationHandler)
     return super.application(application, continue: userActivity, restorationHandler: restorationHandler) || result
   }
+    
+    public override func application(
+      _ application: UIApplication,
+      performActionFor shortcutItem: UIApplicationShortcutItem,
+      completionHandler: @escaping (Bool) -> Void
+    ) {
+        RCSetPendingQuickActionType(shortcutItem.type)
+      completionHandler(true)
+    }
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {

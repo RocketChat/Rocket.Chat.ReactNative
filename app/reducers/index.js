@@ -26,6 +26,7 @@ import usersRoles from './usersRoles';
 import troubleshootingNotification from './troubleshootingNotification';
 import supportedVersions from './supportedVersions';
 import inAppFeedback from './inAppFeedback';
+import quickActions from './quickActions';
 
 export default combineReducers({
 	settings,
@@ -37,6 +38,7 @@ export default combineReducers({
 	app,
 	room,
 	rooms,
+	quickActions,
 	sortPreferences,
 	share,
 	customEmojis,

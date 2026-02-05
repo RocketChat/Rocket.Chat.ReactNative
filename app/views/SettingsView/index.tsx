@@ -33,6 +33,22 @@ import SidebarView from '../SidebarView';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
+export const sendEmail = async () => {
+	logEvent(events.SE_CONTACT_US);
+	const subject = encodeURI('Rocket.Chat Mobile App Support');
+	const email = encodeURI('support@rocket.chat');
+	const description = encodeURI(`
+			version: ${getReadableVersion}
+			device: ${getDeviceModel}
+		`);
+	try {
+		await Linking.openURL(`mailto:${email}?subject=${subject}&body=${description}`);
+	} catch (e) {
+		logEvent(events.SE_CONTACT_US_F);
+		showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
+	}
+};
+
 const SettingsView = (): React.ReactElement => {
 	'use memo';
 
@@ -84,22 +100,6 @@ const SettingsView = (): React.ReactElement => {
 		const screenName = screen.replace('View', '').toUpperCase();
 		logEvent(events[`SE_GO_${screenName}` as TLogScreenName]);
 		navigation.navigate(screen);
-	};
-
-	const sendEmail = async () => {
-		logEvent(events.SE_CONTACT_US);
-		const subject = encodeURI('Rocket.Chat Mobile App Support');
-		const email = encodeURI('support@rocket.chat');
-		const description = encodeURI(`
-			version: ${getReadableVersion}
-			device: ${getDeviceModel}
-		`);
-		try {
-			await Linking.openURL(`mailto:${email}?subject=${subject}&body=${description}`);
-		} catch (e) {
-			logEvent(events.SE_CONTACT_US_F);
-			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
-		}
 	};
 
 	const shareApp = () => {

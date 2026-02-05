@@ -1,4 +1,4 @@
-import { roomsFailure, roomsRefresh, roomsRequest, roomsSuccess } from '../actions/rooms';
+import { roomsFailure, roomsRefresh, roomsRequest, roomsStoreLastVisited, roomsSuccess } from '../actions/rooms';
 import { mockedStore } from './mockedStore';
 import { initialState } from './rooms';
 
@@ -33,5 +33,14 @@ describe('test selectedUsers reducer', () => {
 		mockedStore.dispatch(roomsFailure('error'));
 		const state = mockedStore.getState().rooms;
 		expect(state.errorMessage).toEqual('error');
+	});
+
+	it('should handle storeLastVisited', () => {
+		mockedStore.dispatch(roomsStoreLastVisited('room-id-123', 'general', 'server-1'));
+
+		const state = mockedStore.getState().rooms;
+
+		expect(state.lastVisitedRid).toEqual('room-id-123');
+		expect(state.lastVisitedName).toEqual('general');
 	});
 });

@@ -12,6 +12,10 @@ import {
 import { getRoomTitle, getUidDirectMessage } from './helpers';
 import { createDirectMessage } from '../../services/restApi';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
+import { getRoom } from '../getRoom';
+import { emitter } from './emitter';
+import UserPreferences from '../userPreferences';
+import { CURRENT_SERVER } from '../../constants/keys';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -92,12 +96,30 @@ export const goRoom = async ({
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {
+	const server = UserPreferences.getString(CURRENT_SERVER);
 	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
 			const result = await createDirectMessage(username as string);
 			if (result.success && result?.room?._id) {
+				try {
+					// storing last visited room
+					const room = await getRoom(result?.room?.rid || '');
+
+					/**
+					 * store.dispatch causing dependency cycle error here
+					 * using emitter based flow to prevent it
+					 */
+					emitter.emit('roomVisited', {
+						rid: result.room._id,
+						name: room.prid ? room.fname || '' : room.name,
+						server: server ?? ''
+					});
+				} catch {
+					// do nothing
+				}
+
 				return navigate({
 					item: {
 						rid: result.room._id,
@@ -120,6 +142,19 @@ export const goRoom = async ({
 	 */
 	let _item = item;
 	if (item.rid) {
+		try {
+			const room = await getRoom(item.rid);
+
+			// storing last visited room
+			emitter.emit('roomVisited', {
+				rid: room.rid,
+				name: room.prid ? room.fname || '' : room.name,
+				server: server ?? ''
+			});
+		} catch {
+			// do nothing
+		}
+
 		const sub = await getSubscriptionByRoomId(item.rid);
 		if (sub) {
 			_item = sub;

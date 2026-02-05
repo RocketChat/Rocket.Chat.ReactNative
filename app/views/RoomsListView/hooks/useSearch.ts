@@ -59,7 +59,6 @@ export const useSearch = () => {
 	'use memo';
 
 	const [state, dispatch] = useReducer(searchReducer, initialState);
-
 	const announceSearchResultsForAccessibility = (count: number) => {
 		if (count < 1) {
 			AccessibilityInfo.announceForAccessibility(i18n.t('No_results_found'));

@@ -2,7 +2,7 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import type Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../notifications';
-import { isSsl } from './helpers';
+import { emitter, isSsl } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
@@ -22,6 +22,15 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+}
+
+function removeLastVisitedRoomKeys() {
+	// clearing the state
+	emitter.emit('roomVisited', {
+		rid: '',
+		name: '',
+		server: ''
+	});
 }
 
 export async function removeServerData({ server }: { server: string }): Promise<void> {
@@ -117,4 +126,5 @@ export async function logout({ server }: { server: string }): Promise<void> {
 	await removeServerData({ server });
 	await removeCurrentServer();
 	await removeServerDatabase({ server });
+	removeLastVisitedRoomKeys();
 }
