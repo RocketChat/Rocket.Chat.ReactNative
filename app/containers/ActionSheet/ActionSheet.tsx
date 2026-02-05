@@ -172,7 +172,7 @@ const ActionSheet = React.memo(
 						accessibilityLabel={undefined}
 						accessibilityHint={undefined}
 						overrideReduceMotion={ReduceMotion.Never}
-						index={0}
+						index={data.options?.length ? 0 : 1}
 						{...androidTablet}>
 						<BottomSheetContent
 							options={data?.options}
