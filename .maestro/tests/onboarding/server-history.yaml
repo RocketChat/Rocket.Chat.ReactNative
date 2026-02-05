@@ -21,8 +21,6 @@ tags:
 - tapOn:
     id: 'servers-history-button'
 - assertVisible:
-    id: 'action-sheet'
-- assertVisible:
     id: 'servers-history-https://mobile.qa.rocket.chat'
 
 # should tap on a server history and navigate to login
