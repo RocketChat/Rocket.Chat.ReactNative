@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
@@ -52,7 +53,7 @@ const DirectoryOptions = ({
 	};
 
 	return (
-		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
+		<BottomSheetView style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			<List.Separator />
 			{renderItem('channels')}
 			<List.Separator />
@@ -74,7 +75,7 @@ const DirectoryOptions = ({
 					</View>
 				</>
 			) : null}
-		</View>
+		</BottomSheetView>
 	);
 };
 

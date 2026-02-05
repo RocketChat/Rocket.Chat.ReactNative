@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -60,7 +61,7 @@ const ConfirmDeleteAccountContent = ({
 	};
 
 	return (
-		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
+		<BottomSheetView style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<View accessible accessibilityLabel={i18n.t('Are_you_sure_question_mark')} style={styles.titleContainer}>
 				<CustomIcon name={'warning'} size={32} color={colors.buttonBackgroundDangerDefault} />
 				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>{i18n.t('Are_you_sure_question_mark')}</Text>
@@ -79,7 +80,7 @@ const ConfirmDeleteAccountContent = ({
 				confirmTitle={i18n.t('Delete_Account_confirm')}
 				testID={'room-info-edit-view-name'}
 			/>
-		</View>
+		</BottomSheetView>
 	);
 };
 

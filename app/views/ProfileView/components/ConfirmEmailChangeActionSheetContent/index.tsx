@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
+import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import I18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';
@@ -89,7 +90,7 @@ const ConfirmEmailChangeActionSheetContent = ({
 	};
 
 	return (
-		<View style={sharedStyles.containerScrollView} testID='profile-view-enter-password-sheet'>
+		<BottomSheetView style={sharedStyles.containerScrollView} testID='profile-view-enter-password-sheet'>
 			<View accessible accessibilityLabel={I18n.t('Please_enter_your_password')} style={styles.titleContainer}>
 				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>{I18n.t('Please_enter_your_password')}</Text>
 			</View>
@@ -115,7 +116,7 @@ const ConfirmEmailChangeActionSheetContent = ({
 				cancelTitle={I18n.t('Cancel')}
 				confirmTitle={I18n.t('Save')}
 			/>
-		</View>
+		</BottomSheetView>
 	);
 };
 
