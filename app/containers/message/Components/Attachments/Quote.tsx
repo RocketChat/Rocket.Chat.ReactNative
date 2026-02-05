@@ -13,7 +13,7 @@ const isQuoteAttachment = (file?: IAttachment): boolean => {
 
 	if (file.collapsed) return false;
 
-	if (!file.color && !file.text && (file.image_url || file.audio_url || file.video_url )) {
+	if (!file.color && !file.text && (file.image_url || file.audio_url || file.video_url)) {
 		return false;
 	}
 
