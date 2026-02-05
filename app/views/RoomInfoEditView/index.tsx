@@ -171,7 +171,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			params.readOnly = readOnly;
 		}
 		// React When Read Only
-		if ((room.reactWhenReadOnly ?? false) !== reactWhenReadOnly) {
+		if ((room.reactWhenReadOnly || false) !== reactWhenReadOnly) {
 			params.reactWhenReadOnly = reactWhenReadOnly;
 		}
 
