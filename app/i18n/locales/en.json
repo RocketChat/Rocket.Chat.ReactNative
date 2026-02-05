@@ -499,6 +499,7 @@
   "Mark_as_unread_Info": "Display room as unread when there are unread messages",
   "Mark_read": "Mark read",
   "Mark_unread": "Mark unread",
+  "Mark_as_read": "Mark as read",
   "Markdown_tools": "Markdown tools",
   "Max_number_of_users_allowed_is_number": "Max number of users allowed is {{maxUsers}}",
   "Max_number_of_uses": "Max number of uses",
