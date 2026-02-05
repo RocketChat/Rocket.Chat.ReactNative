@@ -149,6 +149,19 @@ class UserPreferences {
 		this.mmkv.set(key, value);
 	}
 
+	getArray<T = unknown>(key: string): T[] | null {
+		try {
+			const jsonString = this.mmkv.getString(key);
+			return jsonString ? (JSON.parse(jsonString) as T[]) : null;
+		} catch {
+			return null;
+		}
+	}
+
+	setArray<T>(key: string, value: T[]): void {
+		this.mmkv.set(key, JSON.stringify(value));
+	}
+
 	getAllKeys(): string[] {
 		return this.mmkv.getAllKeys();
 	}

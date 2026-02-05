@@ -36,6 +36,7 @@ import CannedResponseDetail from '../views/CannedResponseDetail';
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
 import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
+import UserWatchOSQuickRepliesView from '../views/UserWatchOSQuickRepliesView';
 import ChangePasswordView from '../views/ChangePasswordView';
 // Display Preferences View
 import DisplayPrefsView from '../views/DisplayPrefsView';
@@ -171,6 +172,7 @@ const ProfileStackNavigator = () => {
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
+			<ProfileStack.Screen name='UserWatchOSQuickRepliesView' component={UserWatchOSQuickRepliesView} />
 			<ProfileStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<ProfileStack.Screen name='PickerView' component={PickerView} />
 		</ProfileStack.Navigator>
