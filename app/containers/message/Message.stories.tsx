@@ -1245,6 +1245,53 @@ export const MessageWithReplyLargeFont = () => (
 	</>
 );
 
+export const MessageWithNestedReplyAndFile = () => (
+	<>
+		<Message
+			msg='Forwarded message with file inside'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					message_link: 'https://open.rocket.chat/group/msg-id',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							type: 'file',
+							title: 'document.pdf',
+							title_link: '/file-upload/abc/document.pdf'
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			msg='Forwarded message with nested image'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'Nested image from forwarded message',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					]
+				}
+			]}
+		/>
+	</>
+);
+
 export const MessageWithReplyAndFileLargeFont = () => (
 	<>
 		<MessageLargeFont
