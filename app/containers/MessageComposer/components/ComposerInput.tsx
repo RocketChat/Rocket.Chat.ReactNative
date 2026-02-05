@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
+import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -47,6 +47,7 @@ const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
+		const [inputValue, setInputValue] = useState('');
 		const { colors, theme } = useTheme();
 		const { rid, tmid, sharing, action, selectedMessages, setQuotesAndText, room } = useRoomContext();
 		const focused = useFocused();
@@ -168,14 +169,17 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
-			const message = text.trim();
+			// const message = forceUpdateDraftMessage ? text : text.trim();
+			const message = text;
 			textRef.current = message;
+
+			setInputValue(message);
 
 			if (forceUpdateDraftMessage) {
 				saveMessageDraft('');
 			}
 
-			inputRef.current?.setNativeProps?.({ text });
+			inputRef.current?.setNativeProps?.({ text: message });
 
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
@@ -195,10 +199,40 @@ export const ComposerInput = memo(
 			}, 300);
 		};
 
+		const handleAutoBullet = useCallback((text: string, prevText: string): string => {
+			if (text.endsWith('\n')) {
+				const lines = text.split('\n');
+
+				// check for deletion
+				if (text.length < prevText.length) {
+					return text;
+				}
+				const prevLine = lines[lines.length - 2];
+				console.log('prevline', prevLine);
+
+				const regex = /^((?:\d+\.|-\s)).*/;
+
+				if (prevLine && regex.test(prevLine)) {
+					if (prevLine.startsWith('- ')) {
+						const newText = `${text}- `;
+						console.log('new text', newText);
+						return newText;
+					}
+					const prevNumber = parseInt(prevLine.split('.')[0], 10);
+					const nextNumber = prevNumber + 1;
+					const newText = `${text}${nextNumber}. `;
+					console.log('new text', newText);
+					return newText;
+				}
+			}
+			return text;
+		}, []);
+
 		const onChangeText: TextInputProps['onChangeText'] = text => {
-			textRef.current = text;
-			debouncedOnChangeText(text);
-			setInput(text);
+			const newText = handleAutoBullet(text, textRef.current);
+			textRef.current = newText;
+			debouncedOnChangeText(newText);
+			setInput(newText);
 		};
 
 		const onSelectionChange: TextInputProps['onSelectionChange'] = e => {
@@ -366,6 +400,7 @@ export const ComposerInput = memo(
 
 		return (
 			<TextInput
+				value={inputValue}
 				style={[styles.textInput, { color: colors.fontDefault }]}
 				placeholder={placeholder}
 				placeholderTextColor={colors.fontAnnotation}
