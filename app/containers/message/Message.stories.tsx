@@ -2316,6 +2316,25 @@ export const Katex = () => (
 );
 export const KatexLargeFont = () => <MessageLargeFont {...katex} />;
 
+const katexArray = {
+	msg: '\\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}',
+	md: [
+		{
+			type: 'KATEX',
+			value:
+				' \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} '
+		}
+	]
+};
+
+export const KatexArray = () => (
+	<>
+		<Message {...katexArray} />
+	</>
+);
+
+export const KatexArrayLargeFont = () => <MessageLargeFont {...katexArray} />;
+
 const inlineKatex = {
 	msg: '\\(xˆ2 + yˆ2 - zˆ2\\)',
 	md: [
