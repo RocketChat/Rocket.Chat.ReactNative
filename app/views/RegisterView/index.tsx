@@ -28,6 +28,7 @@ import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import CustomFields from '../../containers/CustomFields';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import styles from './styles';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
@@ -48,6 +49,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const { Accounts_CustomFields, Site_Url, Accounts_EmailVerification, Accounts_ManuallyApproveNewUsers, showLoginButton } =
 		useAppSelector(state => ({
 			...state.settings,
@@ -177,7 +179,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 			<FormContainerInner accessibilityLabel={I18n.t('Sign_Up')}>
 				<LoginServices separator />
 				<View accessible accessibilityLabel={I18n.t('Sign_Up')}>
-					<Text accessible accessibilityLabel={I18n.t('Sign_Up')} style={[styles.title, { color: colors.fontTitlesLabels }]}>
+					<Text accessible accessibilityLabel={I18n.t('Sign_Up')} style={[styles.title, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(24), lineHeight: scaleFontSize(36) }]}>
 						{I18n.t('Sign_Up')}
 					</Text>
 				</View>
@@ -294,7 +296,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 
 				{showLoginButton ? (
 					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(22) }]}>
 							{I18n.t('Already_have_an_account')}
 						</Text>
 						<Button title={I18n.t('Login')} type='secondary' onPress={login} style={styles.loginButton} />

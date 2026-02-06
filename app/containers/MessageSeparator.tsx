@@ -6,6 +6,7 @@ import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants/colors';
 import { useTheme } from '../theme';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,7 +19,6 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	text: {
-		fontSize: 14,
 		...sharedStyles.textMedium
 	},
 	marginRight: {
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 
 const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: boolean }): React.ReactElement | null => {
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	if (!ts && !unread) {
 		return null;
@@ -42,9 +43,9 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
-				<Text style={[styles.text, unreadText]}>{I18n.t('unread_messages')}</Text>
+				<Text style={[styles.text, unreadText, { fontSize: scaleFontSize(14) }]}>{I18n.t('unread_messages')}</Text>
 				<View style={[styles.line, unreadLine, styles.marginHorizontal]} />
-				<Text style={[styles.text, unreadText]}>{date}</Text>
+				<Text style={[styles.text, unreadText, { fontSize: scaleFontSize(14) }]}>{date}</Text>
 			</View>
 		);
 	}
@@ -52,14 +53,14 @@ const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: 
 		return (
 			<View style={styles.container}>
 				<View style={[styles.line, { backgroundColor: themes[theme].strokeLight }]} />
-				<Text style={[styles.text, { color: themes[theme].fontSecondaryInfo }, styles.marginHorizontal]}>{date}</Text>
+				<Text style={[styles.text, { color: themes[theme].fontSecondaryInfo, fontSize: scaleFontSize(14) }, styles.marginHorizontal]}>{date}</Text>
 				<View style={[styles.line, { backgroundColor: themes[theme].strokeLight }]} />
 			</View>
 		);
 	}
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, unreadText, styles.marginRight]}>{I18n.t('unread_messages')}</Text>
+			<Text style={[styles.text, unreadText, styles.marginRight, { fontSize: scaleFontSize(14) }]}>{I18n.t('unread_messages')}</Text>
 			<View style={[styles.line, unreadLine]} />
 		</View>
 	);

@@ -9,6 +9,7 @@ import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import Button from './Button';
 import { CustomIcon } from './CustomIcon';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IChangePasswordRequired {
 	navigation: Omit<NavigationProp<any>, 'getState'> & {
@@ -18,6 +19,7 @@ interface IChangePasswordRequired {
 
 export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const dispatch = useDispatch();
 
 	const handleChangePassword = () => {
@@ -29,8 +31,8 @@ export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) 
 			<View style={styles.iconContainer}>
 				<CustomIcon name='info' size={36} color={colors.statusFontWarning} />
 			</View>
-			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('You_need_to_change_your_password')}</Text>
-			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('To_continue_using_RocketChat')}</Text>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(20), lineHeight: scaleFontSize(30) }]}>{I18n.t('You_need_to_change_your_password')}</Text>
+			<Text style={[styles.description, { color: colors.fontDefault, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(24) }]}>{I18n.t('To_continue_using_RocketChat')}</Text>
 			<Button
 				testID='change-password-required-button'
 				title={I18n.t('Change_password')}
@@ -59,14 +61,10 @@ const styles = StyleSheet.create({
 		padding: 24
 	},
 	title: {
-		fontSize: 20,
-		lineHeight: 30,
 		marginBottom: 24,
 		...sharedStyles.textBold
 	},
 	description: {
-		fontSize: 16,
-		lineHeight: 24,
 		marginBottom: 24,
 		...sharedStyles.textRegular
 	}

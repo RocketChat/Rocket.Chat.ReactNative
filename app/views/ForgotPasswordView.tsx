@@ -16,6 +16,7 @@ import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const schema = yup.object().shape({
 	email: yup.string().email().required()
@@ -37,6 +38,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
 	const { params } = useRoute<RouteProp<OutsideParamList, 'ForgotPasswordView'>>();
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -67,10 +69,10 @@ const ForgotPasswordView = (): React.ReactElement => {
 	return (
 		<FormContainer testID='forgot-password-view'>
 			<FormContainerInner>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels, fontSize: 24 }]}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(20), lineHeight: scaleFontSize(28) }]}>
 					{I18n.t('Reset_password')}
 				</Text>
-				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22, fontSize: 16 }]}>
+				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: scaleFontSize(20), fontSize: scaleFontSize(16) }]}>
 					{I18n.t('Email')}
 				</Text>
 				<ControlledFormTextInput

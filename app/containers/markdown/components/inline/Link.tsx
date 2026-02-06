@@ -12,6 +12,7 @@ import EventEmitter from '../../../../lib/methods/helpers/events';
 import { themes } from '../../../../lib/constants/colors';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import styles from '../../styles';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface ILinkProps {
 	value: LinkProps['value'];
@@ -19,6 +20,7 @@ interface ILinkProps {
 
 const Link = ({ value }: ILinkProps) => {
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const { onLinkPress } = useContext(MarkdownContext);
 	const { src, label } = value;
 	const handlePress = () => {
@@ -37,7 +39,7 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].fontInfo }]}>
+		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].fontInfo, fontSize: scaleFontSize(16) }]}>
 			{(block => {
 				const blockArray = Array.isArray(block) ? block : [block];
 				return blockArray.map(blockInArray => {

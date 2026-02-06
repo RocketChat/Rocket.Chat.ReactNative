@@ -19,6 +19,7 @@ import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import styles from './styles';
 import { handleLoginErrors } from './handleLoginErrors';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface ISubmit {
 	user: string;
@@ -32,6 +33,7 @@ const schema = yup.object().shape({
 
 const UserForm = () => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const dispatch = useDispatch();
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
 	const workspaceDomain = useWorkspaceDomain();
@@ -102,7 +104,7 @@ const UserForm = () => {
 
 	return (
 		<>
-			<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Login')}</Text>
+			<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(22) }]}>{I18n.t('Login')}</Text>
 			<View style={styles.credentialsContainer}>
 				<ControlledFormTextInput
 					name='user'
@@ -140,7 +142,7 @@ const UserForm = () => {
 			<View style={styles.bottomContainer}>
 				{Accounts_PasswordReset && (
 					<View style={styles.bottomContainerGroup}>
-						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Forgot_password')}</Text>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]}>{I18n.t('Forgot_password')}</Text>
 						<Button
 							title={I18n.t('Reset_password')}
 							type='secondary'
@@ -151,13 +153,13 @@ const UserForm = () => {
 				)}
 				{showRegistrationButton ? (
 					<View style={styles.bottomContainerGroup}>
-						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]}>
 							{I18n.t('You_dont_have_account')}
 						</Text>
 						<Button title={I18n.t('Create_account')} onPress={register} type='secondary' testID='login-view-register' />
 					</View>
 				) : (
-					<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
+					<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(16) }]}>
 						{Accounts_RegistrationForm_LinkReplacementText}
 					</Text>
 				)}

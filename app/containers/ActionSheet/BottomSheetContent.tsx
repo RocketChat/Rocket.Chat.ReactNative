@@ -10,6 +10,7 @@ import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IBottomSheetContentProps {
 	hasCancel?: boolean;
@@ -25,6 +26,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 	const { fontScale } = useWindowDimensions();
+	const { scaleFontSize } = useResponsiveLayout();
 	const height = 48 * fontScale;
 
 	const renderFooter = () =>
@@ -33,7 +35,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				onPress={hide}
 				style={[styles.button, { backgroundColor: colors.surfaceHover, height }]}
 				accessibilityLabel={I18n.t('Cancel')}>
-				<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>
+				<Text style={[styles.text, { color: colors.fontDefault, fontSize: scaleFontSize(16) }]}>{I18n.t('Cancel')}</Text>
 			</Touch>
 		) : null;
 

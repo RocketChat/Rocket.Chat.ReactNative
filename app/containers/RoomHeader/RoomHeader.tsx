@@ -85,7 +85,8 @@ interface IRoomHeader {
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
-	const fontSize = getSubTitleSize(scale);
+	const { scaleFontSize } = useResponsiveLayout();
+	const fontSize = scaleFontSize(getSubTitleSize(scale));
 	// typing
 	if (usersTyping.length) {
 		let usersText;
@@ -117,9 +118,9 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
-	const { isLargeFontScale } = useResponsiveLayout();
+	const { isLargeFontScale, scaleFontSize } = useResponsiveLayout();
 
-	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
+	const titleStyle = { fontSize: scaleFontSize(TITLE_SIZE * scale), color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
 			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
@@ -174,6 +175,7 @@ const Header = React.memo(
 			}
 		}
 
+		const { scaleFontSize } = useResponsiveLayout();
 		let renderFunc;
 		if (tmid) {
 			renderFunc = () => (
@@ -186,7 +188,7 @@ const Header = React.memo(
 						teamMain={teamMain}
 						abacAttributes={abacAttributes}
 					/>
-					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(getSubTitleSize(scale)) }]} numberOfLines={1}>
 						{parentTitle}
 					</Text>
 				</View>

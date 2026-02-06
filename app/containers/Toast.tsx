@@ -8,6 +8,7 @@ import EventEmitter from '../lib/methods/helpers/events';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { ALERT_DISPLAY_TYPE_PREFERENCES_KEY } from '../lib/constants/keys';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	toast: {
@@ -15,7 +16,6 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	text: {
-		fontSize: 14,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	}
@@ -28,6 +28,7 @@ let toast: EasyToast | null | undefined;
 
 const Toast = (): React.ReactElement => {
 	const { colors, theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const [alertDisplayType] = useUserPreferences<TAlertDisplayType>(ALERT_DISPLAY_TYPE_PREFERENCES_KEY, 'TOAST');
 
 	useEffect(() => {
@@ -56,7 +57,7 @@ const Toast = (): React.ReactElement => {
 			ref={getToastRef}
 			position='center'
 			style={[styles.toast, { backgroundColor: colors.surfaceDark }]}
-			textStyle={[styles.text, { color: theme === 'light' ? colors.fontWhite : colors.fontPureBlack }]}
+			textStyle={[styles.text, { color: theme === 'light' ? colors.fontWhite : colors.fontPureBlack, fontSize: scaleFontSize(14) }]}
 			opacity={0.9}
 		/>
 	);

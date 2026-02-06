@@ -14,6 +14,7 @@ import Animated, {
 import styles from './styles';
 import { useTheme } from '../../theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -44,6 +45,7 @@ const formatTime = (ms: number) => {
 
 const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	const maxWidth = useSharedValue(1);
 	const translateX = useSharedValue(0);
@@ -111,7 +113,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 				<AnimatedTextInput
 					defaultValue={DEFAULT_TIME_LABEL}
 					editable={false}
-					style={[styles.duration, { color: colors.fontDefault }]}
+					style={[styles.duration, { color: colors.fontDefault, fontSize: scaleFontSize(14) }]}
 					animatedProps={timeLabelAnimatedProps}
 				/>
 				<View style={styles.seek} onLayout={onLayout}>

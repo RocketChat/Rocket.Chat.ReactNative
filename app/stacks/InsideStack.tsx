@@ -37,6 +37,7 @@ import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
 import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 import ChangePasswordView from '../views/ChangePasswordView';
+import FontSizePickerView from '../views/FontSizePickerView';
 // Display Preferences View
 import DisplayPrefsView from '../views/DisplayPrefsView';
 // Settings Stack
@@ -173,6 +174,7 @@ const ProfileStackNavigator = () => {
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			<ProfileStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<ProfileStack.Screen name='PickerView' component={PickerView} />
+			<ProfileStack.Screen name='FontSizePickerView' component={FontSizePickerView} />
 		</ProfileStack.Navigator>
 	);
 };

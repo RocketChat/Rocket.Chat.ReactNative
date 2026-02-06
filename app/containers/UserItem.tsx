@@ -7,6 +7,7 @@ import sharedStyles from '../views/Styles';
 import { isIOS } from '../lib/methods/helpers';
 import { useTheme } from '../theme';
 import i18n from '../i18n';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	button: {
@@ -26,7 +27,6 @@ const styles = StyleSheet.create({
 		marginRight: 15
 	},
 	name: {
-		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	icon: {
@@ -49,6 +49,7 @@ interface IUserItem {
 
 const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, iconColor, isChecked }: IUserItem) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	let label = `${name}`;
 	if (icon) {
 		label = `${name} ${isChecked ? i18n.t('Selected') : i18n.t('Unselected')}`;
@@ -69,7 +70,7 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, i
 			<View style={[styles.container, styles.button, style]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
-					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.fontDefault, fontSize: scaleFontSize(16) }]} numberOfLines={1}>
 						{name}
 					</Text>
 				</View>

@@ -5,6 +5,7 @@ import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import Avatar from '../Avatar';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	pressable: {
@@ -27,7 +28,6 @@ const styles = StyleSheet.create({
 		maxWidth: 110
 	},
 	name: {
-		fontSize: 16,
 		...sharedStyles.textMedium
 	}
 });
@@ -43,6 +43,7 @@ export interface IChip {
 
 const Chip = ({ avatar, text, onPress, testID, style, fullWidth }: IChip) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	return (
 		<Pressable
@@ -63,7 +64,7 @@ const Chip = ({ avatar, text, onPress, testID, style, fullWidth }: IChip) => {
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				<View style={[styles.textContainer, fullWidth && { maxWidth: undefined }]}>
-					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.fontDefault, fontSize: scaleFontSize(16) }]} numberOfLines={1}>
 						{text}
 					</Text>
 				</View>

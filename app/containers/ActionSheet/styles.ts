@@ -20,13 +20,9 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	title: {
-		fontSize: 16,
-		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
 	subtitle: {
-		fontSize: 14,
-		lineHeight: 20,
 		...sharedStyles.textRegular
 	},
 	handle: {
@@ -55,7 +51,6 @@ export default StyleSheet.create({
 		marginBottom: 12
 	},
 	text: {
-		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
