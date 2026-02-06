@@ -77,6 +77,7 @@ const mentions = [
 	{ _id: 'all', username: 'all', type: 'user' },
 	{ _id: 'team', name: 'team', type: 'team' }
 ];
+const channels = [{ _id: '123', name: 'test-channel' }];
 
 export const Mentions = () => (
 	<ScrollView style={styles.container}>
@@ -85,9 +86,38 @@ export const Mentions = () => (
 	</ScrollView>
 );
 
+export const MentionsWithFormatting = () => (
+	<ScrollView style={styles.container}>
+		<Markdown
+			msg='Normal: @rocket.cat @name1 @all @here #test-channel'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Bold: *@rocket.cat* *@name1* *@all* *@here* *#test-channel*'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Strikethrough: ~@rocket.cat~ ~@name1~ ~@all~ ~@here~ ~#test-channel~'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+		<Markdown
+			msg='Italic + Bold + Strikethrough: _~*@rocket.cat*~_ _~*@name1*~_ _~*@all*~_ _~*@here*~_ _~*#test-channel*~_'
+			mentions={mentions}
+			channels={channels}
+			username='rocket.cat'
+		/>
+	</ScrollView>
+);
+
 export const Hashtag = () => (
 	<View style={styles.container}>
-		<Markdown msg='#test-channel #unknown' channels={[{ _id: '123', name: 'test-channel' }]} />
+		<Markdown msg='#test-channel #unknown' channels={channels} />
 	</View>
 );
 
