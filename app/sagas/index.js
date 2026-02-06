@@ -15,6 +15,7 @@ import createDiscussion from './createDiscussion';
 import encryption from './encryption';
 import videoConf from './videoConf';
 import troubleshootingNotification from './troubleshootingNotification';
+import messageSync from './messageSync';
 
 const root = function* root() {
 	yield all([
@@ -32,7 +33,8 @@ const root = function* root() {
 		inquiry(),
 		encryption(),
 		videoConf(),
-		troubleshootingNotification()
+		troubleshootingNotification(),
+		messageSync()
 	]);
 };
 

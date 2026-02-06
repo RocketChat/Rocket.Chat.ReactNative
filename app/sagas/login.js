@@ -39,6 +39,7 @@ import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
+import { reconcileTempMessages } from '../lib/methods/messageSync';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -223,6 +224,14 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const reconcileTempMessagesSaga = function* reconcileTempMessagesSaga() {
+	try {
+		yield call(reconcileTempMessages);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
@@ -239,6 +248,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield fork(reconcileTempMessagesSaga);
 
 		setLanguage(user?.language);
 
