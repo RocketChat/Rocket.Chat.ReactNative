@@ -12721,12 +12721,12 @@ react-native-is-edge-to-edge@^1.2.1:
   version "1.3.0"
   resolved "git+https://github.com/RocketChat/react-native-katex.git#37e579804fe238732d8a4b06dec073610ab062b1"
 
-react-native-keyboard-controller@^1.17.1:
-  version "1.17.1"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-controller/-/react-native-keyboard-controller-1.17.1.tgz#46efe148c1bdd0ee22094dcb2660f70f81e6544e"
-  integrity sha512-YM3GYvtkuWimCKkZFURn5hIb1WiKOQqi2DijdwZSF5QSSzGqfqwzEEC3bm1xCN8HGHAEIXAaWIBUsc3Xp5L+Ng==
+react-native-keyboard-controller@^1.20.6:
+  version "1.20.6"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-controller/-/react-native-keyboard-controller-1.20.6.tgz#139a66f36734a69648822bf2e7ec3c90e7b3dc8e"
+  integrity sha512-RS6FjIjTFtAMQGdcXp3m6jUs1XgDa8qkpO5c4ix1S5HS0z3L2E1LUOY5rD73YUADOO3MfQN1z3JkHdBtzKucbg==
   dependencies:
-    react-native-is-edge-to-edge "^1.1.6"
+    react-native-is-edge-to-edge "^1.2.1"
 
 react-native-linear-gradient@2.6.2:
   version "2.6.2"
