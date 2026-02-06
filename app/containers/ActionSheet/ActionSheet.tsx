@@ -14,6 +14,7 @@ import BottomSheetContent from './BottomSheetContent';
 import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
+const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.35;
 const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 const HANDLE_HEIGHT = 28;
 const CANCEL_HEIGHT = 64;
@@ -126,9 +127,13 @@ const ActionSheet = React.memo(
 			}
 		} else if (contentHeight > 0) {
 			const fraction = Math.min(contentHeight / windowHeight, ACTION_SHEET_MAX_HEIGHT_FRACTION);
-			detents = [Math.max(0.25, fraction)];
+			const contentDetent = Math.max(0.25, fraction);
+			detents =
+				contentDetent > ACTION_SHEET_MIN_HEIGHT_FRACTION
+					? [ACTION_SHEET_MIN_HEIGHT_FRACTION, contentDetent]
+					: [contentDetent];
 		} else {
-			detents = ['auto'];
+			detents = [ACTION_SHEET_MIN_HEIGHT_FRACTION, 'auto'];
 		}
 
 		return (
