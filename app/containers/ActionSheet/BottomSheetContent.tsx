@@ -1,10 +1,10 @@
-import { Text, useWindowDimensions, type ViewProps } from 'react-native';
+import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
 import React from 'react';
-import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
+import { isAndroid } from '../../lib/methods/helpers';
 import { type IActionSheetItem, Item } from './Item';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
@@ -41,7 +41,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 
 	if (options) {
 		return (
-			<BottomSheetFlatList
+			<FlatList
 				testID='action-sheet'
 				data={options}
 				refreshing={false}
@@ -56,13 +56,14 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={renderFooter}
 				onLayout={onLayout}
+				nestedScrollEnabled={isAndroid}
 			/>
 		);
 	}
 	return (
-		<BottomSheetView testID='action-sheet' style={styles.contentContainer} onLayout={onLayout}>
+		<View testID='action-sheet' style={styles.contentContainer} onLayout={onLayout}>
 			{children}
-		</BottomSheetView>
+		</View>
 	);
 });
 
