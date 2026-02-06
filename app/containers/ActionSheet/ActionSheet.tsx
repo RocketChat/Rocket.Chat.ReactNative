@@ -60,7 +60,6 @@ const ActionSheet = React.memo(
 		const show = (options: TActionSheetOptions) => {
 			setData(options);
 			setVisible(true);
-			sheetRef.current?.present(0);
 		};
 
 		useBackHandler(() => {
@@ -69,6 +68,12 @@ const ActionSheet = React.memo(
 			}
 			return isVisible;
 		});
+
+		useEffect(() => {
+			if (isVisible) {
+				sheetRef.current?.present(0);
+			}
+		}, [isVisible]);
 
 		useEffect(() => {
 			if (isVisible) {
