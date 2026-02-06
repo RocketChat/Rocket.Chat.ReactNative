@@ -123,7 +123,6 @@ export const FormTextInput = ({
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
-	const Input = TextInput;
 
 	const inputError = getInputError(error);
 	const accessibilityLabelText = useMemo(() => {
@@ -150,7 +149,7 @@ export const FormTextInput = ({
 					) : null}
 
 					<View accessible={false} style={styles.wrap}>
-						<Input
+						<TextInput
 							accessible
 							accessibilityLabel={accessibilityLabelText}
 							style={[

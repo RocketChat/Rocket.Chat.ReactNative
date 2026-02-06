@@ -88,7 +88,7 @@ const ActionSheet = React.memo(
 			hideActionSheet: hide
 		}));
 
-		const renderHeader = () => (
+		const renderHandle = () => (
 			<>
 				<Handle />
 				{isValidElement(data?.customHeader) ? data.customHeader : null}
@@ -145,7 +145,7 @@ const ActionSheet = React.memo(
 					cornerRadius={16}
 					dimmed
 					grabber={false}
-					header={renderHeader()}
+					header={renderHandle()}
 					scrollable={!!data?.options}
 					style={[styles.container, bottomSheetStyle]}
 					onDidDismiss={onDidDismiss}>
