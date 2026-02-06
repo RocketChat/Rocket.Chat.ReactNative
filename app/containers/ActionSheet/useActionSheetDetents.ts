@@ -11,13 +11,7 @@ interface UseActionSheetDetentsParams {
 	bottom: number;
 }
 
-export function useActionSheetDetents({
-	data,
-	windowHeight,
-	contentHeight,
-	itemHeight,
-	bottom
-}: UseActionSheetDetentsParams) {
+export function useActionSheetDetents({ data, windowHeight, contentHeight, itemHeight, bottom }: UseActionSheetDetentsParams) {
 	return useMemo(
 		() =>
 			getDetents({

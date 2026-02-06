@@ -94,8 +94,6 @@ const ActionSheet = React.memo(
 
 		const bottomSheetStyle = isTablet ? styles.bottomSheet : { marginRight: right, marginLeft: left };
 
-
-
 		return (
 			<>
 				{children}

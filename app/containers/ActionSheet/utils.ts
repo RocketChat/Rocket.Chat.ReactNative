@@ -15,7 +15,8 @@ interface IGetDetentsParams {
 	bottom: number;
 }
 
-export const normalizeSnapsToDetents = (snaps: (string | number)[]): number[] => snaps
+export const normalizeSnapsToDetents = (snaps: (string | number)[]): number[] =>
+	snaps
 		.slice(0, 3)
 		.map(snap => {
 			if (typeof snap === 'number') {
@@ -26,15 +27,9 @@ export const normalizeSnapsToDetents = (snaps: (string | number)[]): number[] =>
 			if (match) return Math.min(1, Math.max(0.1, Number(match[1]) / 100));
 			return 0.5;
 		})
-		.sort((a, b) => a - b)
+		.sort((a, b) => a - b);
 
-export const getDetents = ({
-	data,
-	windowHeight,
-	contentHeight,
-	itemHeight,
-	bottom
-}: IGetDetentsParams): SheetDetent[] => {
+export const getDetents = ({ data, windowHeight, contentHeight, itemHeight, bottom }: IGetDetentsParams): SheetDetent[] => {
 	const hasOptions = (data?.options?.length || 0) > 0;
 	const maxSnap = hasOptions
 		? Math.min(
@@ -60,9 +55,7 @@ export const getDetents = ({
 	if (contentHeight > 0) {
 		const fraction = Math.min(contentHeight / windowHeight, ACTION_SHEET_MAX_HEIGHT_FRACTION);
 		const contentDetent = Math.max(0.25, fraction);
-		return contentDetent > ACTION_SHEET_MIN_HEIGHT_FRACTION
-			? [ACTION_SHEET_MIN_HEIGHT_FRACTION, contentDetent]
-			: [contentDetent];
+		return contentDetent > ACTION_SHEET_MIN_HEIGHT_FRACTION ? [ACTION_SHEET_MIN_HEIGHT_FRACTION, contentDetent] : [contentDetent];
 	}
 	return [ACTION_SHEET_MIN_HEIGHT_FRACTION, 'auto'];
-}
+};
