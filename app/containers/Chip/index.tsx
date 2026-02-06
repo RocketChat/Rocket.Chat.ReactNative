@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 		marginVertical: 8
 	},
 	textContainer: {
+		flexShrink: 1,
 		marginRight: 8,
 		maxWidth: 110
 	},
