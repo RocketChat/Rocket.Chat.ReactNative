@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#000000"
+    android:padding="32dp">
+
+    <!-- Caller Avatar -->
+    <ImageView
+        android:id="@+id/caller_avatar"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="24dp"
+        android:src="@mipmap/ic_launcher"
+        android:contentDescription="Caller avatar"
+        android:scaleType="centerCrop"
+        android:background="@android:drawable/dialog_holo_light_frame" />
+
+    <!-- Caller Name -->
+    <TextView
+        android:id="@+id/caller_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Unknown"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <!-- Incoming Call Label -->
+    <TextView
+        android:id="@+id/incoming_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:text="Incoming call"
+        android:textColor="#CCCCCC"
+        android:textSize="16sp" />
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="32dp">
+
+        <!-- Decline Button -->
+        <ImageButton
+            android:id="@+id/btn_decline"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="32dp"
+            android:background="@android:drawable/ic_menu_close_clear_cancel"
+            android:backgroundTint="#F44336"
+            android:contentDescription="Decline call"
+            android:scaleType="centerInside" />
+
+        <!-- Accept Button -->
+        <ImageButton
+            android:id="@+id/btn_accept"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@android:drawable/ic_menu_call"
+            android:backgroundTint="#4CAF50"
+            android:contentDescription="Accept call"
+            android:scaleType="centerInside" />
+
+    </LinearLayout>
+
+</LinearLayout>

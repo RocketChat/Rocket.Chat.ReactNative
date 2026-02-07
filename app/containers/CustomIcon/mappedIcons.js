@@ -157,6 +157,7 @@ export const mappedIcons = {
 	'pause': 59803,
 	'pause-filled': 59802,
 	'pause-shape-filled': 59843,
+	'pause-shape-unfilled': 59879,
 	'percentage': 59777,
 	'phone': 59806,
 	'phone-disabled': 59804,
