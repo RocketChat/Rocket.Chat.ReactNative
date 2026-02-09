@@ -1,5 +1,5 @@
 name: Format Code with Prettier
-
+ 
 on:
   push:
     branches:
