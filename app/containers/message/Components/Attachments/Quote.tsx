@@ -11,6 +11,13 @@ import { getMessageFromAttachment } from '../../utils';
 const isQuoteAttachment = (file?: IAttachment): boolean => {
 	if (!file) return false;
 
+	if (file.collapsed) return false;
+
+	// Attachments with nested attachments (e.g. message link + quoted image) are rendered only by Attachments as Reply
+	if (file.attachments?.length) {
+		return false;
+	}
+
 	if (!file.color && !file.text && (file.image_url || file.audio_url || file.video_url || file.collapsed)) {
 		return false;
 	}
