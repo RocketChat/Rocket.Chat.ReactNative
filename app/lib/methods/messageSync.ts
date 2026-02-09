@@ -7,7 +7,7 @@ import { changeMessageStatus, resendMessage } from './sendMessage';
 import { getSingleMessage as getSingleMessageService } from '../services/restApi';
 import type { TMessageModel } from '../../definitions';
 
-const TEMP_RECONCILIATION_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
+const TEMP_RECONCILIATION_THRESHOLD_MS = 5 * 60 * 1000;
 
 const hasMessageNotFoundHint = (value?: string): boolean =>
 	/message[\s_-]*not[\s_-]*found|error-message-not-found/i.test(value ?? '');
@@ -42,10 +42,12 @@ const shouldResendAfterLookupFailure = (error: unknown): boolean => {
 	);
 };
 
-/**
- * Reconciles stuck TEMP messages (e.g. after app crash/kill) on app restart.
- * For each TEMP message older than the threshold: if it exists on server, mark SENT; otherwise resend.
- */
+const processSequentially = <T>(items: T[], processItem: (item: T) => Promise<void>) =>
+	items.reduce<Promise<void>>(async (previous, item) => {
+		await previous;
+		await processItem(item);
+	}, Promise.resolve());
+
 export async function reconcileTempMessages(): Promise<void> {
 	const db = database.active;
 	if (!db) {
@@ -59,10 +61,7 @@ export async function reconcileTempMessages(): Promise<void> {
 		const tempMessages = await msgCollection
 			.query(Q.where('status', messagesStatus.TEMP), Q.where('ts', Q.lt(threshold)))
 			.fetch();
-
-		// Process one-by-one so one failure does not stop the rest
-		/* eslint-disable no-await-in-loop */
-		for (const record of tempMessages as TMessageModel[]) {
+		await processSequentially(tempMessages as TMessageModel[], async record => {
 			try {
 				const result = await getSingleMessageService(record.id);
 				if (result?.success && result.message) {
@@ -72,7 +71,7 @@ export async function reconcileTempMessages(): Promise<void> {
 						record.tmid ?? undefined,
 						result.message
 					);
-					continue;
+					return;
 				}
 
 				if (shouldResendAfterLookupFailure(result)) {
@@ -81,7 +80,7 @@ export async function reconcileTempMessages(): Promise<void> {
 					} catch (e) {
 						log(e);
 					}
-					continue;
+					return;
 				}
 
 				log(result);
@@ -92,21 +91,17 @@ export async function reconcileTempMessages(): Promise<void> {
 					} catch (resendError) {
 						log(resendError);
 					}
-					continue;
+					return;
 				}
 
 				log(e);
 			}
-		}
-		/* eslint-enable no-await-in-loop */
+		});
 	} catch (e) {
 		log(e);
 	}
 }
 
-/**
- * Retries all ERROR messages (e.g. after network reconnection).
- */
 export async function retryErrorMessages(): Promise<void> {
 	const db = database.active;
 	if (!db) {
@@ -117,17 +112,13 @@ export async function retryErrorMessages(): Promise<void> {
 
 	try {
 		const errorMessages = await msgCollection.query(Q.where('status', messagesStatus.ERROR)).fetch();
-
-		// Process one-by-one so one failure does not stop the rest
-		/* eslint-disable no-await-in-loop */
-		for (const record of errorMessages as TMessageModel[]) {
+		await processSequentially(errorMessages as TMessageModel[], async record => {
 			try {
 				await resendMessage(record, record.tmid ?? undefined);
 			} catch (e) {
 				log(e);
 			}
-		}
-		/* eslint-enable no-await-in-loop */
+		});
 	} catch (e) {
 		log(e);
 	}
