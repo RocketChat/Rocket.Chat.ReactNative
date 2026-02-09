@@ -1,10 +1,11 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Keyboard, type LayoutChangeEvent } from 'react-native';
+import { Keyboard, Pressable, type LayoutChangeEvent } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import I18n from '../../i18n';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useTheme } from '../../theme';
 import { isTablet } from '../../lib/methods/helpers';
@@ -79,9 +80,12 @@ const ActionSheet = React.memo(
 			hideActionSheet: hide
 		}));
 
+		// We should not use Touch component because it breaks the action sheet height.
 		const renderHandle = () => (
 			<>
-				<Handle />
+				<Pressable onPress={hide} accessible accessibilityRole='button' accessibilityLabel={I18n.t('Hide_action_sheet')}>
+					<Handle />
+				</Pressable>
 				{isValidElement(data?.customHeader) ? data.customHeader : null}
 			</>
 		);
