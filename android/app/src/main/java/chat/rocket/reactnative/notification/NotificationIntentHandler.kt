@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.gson.GsonBuilder
+import chat.rocket.reactnative.voip.VoipNotification
+import chat.rocket.reactnative.voip.VoipModule
+import chat.rocket.reactnative.voip.VoipPayload
 
 /**
  * Handles notification Intent processing from MainActivity.
@@ -17,17 +20,47 @@ class NotificationIntentHandler {
 
         /**
          * Handles a notification Intent from MainActivity.
-         * Processes both video conf and regular notification intents.
+         * Processes VoIP, video conf, and regular notification intents.
          */
         @JvmStatic
         fun handleIntent(context: Context, intent: Intent) {
-            // Handle video conf action first
+            // Handle VoIP action first
+            if (handleVoipIntent(context, intent)) {
+                return
+            }
+
+            // Handle video conf action
             if (handleVideoConfIntent(context, intent)) {
                 return
             }
 
             // Handle regular notification tap
             handleNotificationIntent(context, intent)
+        }
+
+        /**
+         * Handles VoIP call notification Intent.
+         * @return true if this was a VoIP intent, false otherwise
+         */
+        @JvmStatic
+        private fun handleVoipIntent(context: Context, intent: Intent): Boolean {
+            if (!intent.getBooleanExtra("voipAction", false)) {
+                return false
+            }
+            val voipPayload = VoipPayload.fromBundle(intent.extras)
+            if (voipPayload == null || !voipPayload.isVoipIncomingCall()) {
+                return false
+            }
+
+            Log.d(TAG, "Handling VoIP intent - voipPayload: $voipPayload")
+
+            VoipNotification.cancelById(context, voipPayload.notificationId)
+            VoipModule.storePendingVoipCall(voipPayload)
+
+            // Clear the voip flag to prevent re-processing
+            intent.removeExtra("voipAction")
+
+            return true
         }
 
         /**
@@ -45,7 +78,7 @@ class NotificationIntentHandler {
 
             val rid = intent.getStringExtra("rid") ?: ""
             val callerId = intent.getStringExtra("callerId") ?: ""
-            val callerName = intent.getStringExtra("callerName") ?: ""
+            val caller = intent.getStringExtra("caller") ?: ""
             val host = intent.getStringExtra("host") ?: ""
             val callId = intent.getStringExtra("callId") ?: ""
 
@@ -63,7 +96,7 @@ class NotificationIntentHandler {
                 "callId" to callId,
                 "caller" to mapOf(
                     "_id" to callerId,
-                    "name" to callerName
+                    "name" to caller
                 )
             )
 

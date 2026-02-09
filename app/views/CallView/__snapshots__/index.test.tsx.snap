@@ -1,0 +1,4850 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "justifyContent": "space-between",
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 24,
+        }
+      }
+      testID="caller-info"
+    >
+      <View
+        style={
+          {
+            "marginBottom": 16,
+            "position": "relative",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="bob.burnquist's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              },
+              undefined,
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={16}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={120}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": undefined,
+                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              }
+            }
+            transition={null}
+            width={120}
+          />
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 10,
+                  "bottom": -2,
+                  "position": "absolute",
+                  "right": -2,
+                },
+                {
+                  "backgroundColor": "#F2F3F5",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "lineHeight": 32,
+                "marginBottom": 4,
+                "textAlign": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="caller-info-name"
+        >
+          Bob Burnquist
+        </Text>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "400",
+              "lineHeight": 26,
+              "marginBottom": 8,
+              "textAlign": "center",
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+        testID="caller-info-extension"
+      >
+        2244
+      </Text>
+    </View>
+    <Text
+      style={
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 18,
+          "fontWeight": "400",
+          "lineHeight": 26,
+          "textAlign": "center",
+        }
+      }
+    >
+       
+    </Text>
+    <View
+      style={
+        {
+          "padding": 24,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Speaker"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-speaker"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Speaker
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Hold"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-hold"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Hold
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Mute"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-mute"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Mute
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Message"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-message"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Message
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="End"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#EC0D2A",
+                },
+              ]
+            }
+            testID="call-view-end"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#FFFFFF",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            End
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="More"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-more"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            More
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "justifyContent": "space-between",
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 24,
+        }
+      }
+      testID="caller-info"
+    >
+      <View
+        style={
+          {
+            "marginBottom": 16,
+            "position": "relative",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="bob.burnquist's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              },
+              undefined,
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={16}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={120}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": undefined,
+                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              }
+            }
+            transition={null}
+            width={120}
+          />
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 10,
+                  "bottom": -2,
+                  "position": "absolute",
+                  "right": -2,
+                },
+                {
+                  "backgroundColor": "#F2F3F5",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "lineHeight": 32,
+                "marginBottom": 4,
+                "textAlign": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="caller-info-name"
+        >
+          Bob Burnquist
+        </Text>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "400",
+              "lineHeight": 26,
+              "marginBottom": 8,
+              "textAlign": "center",
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+        testID="caller-info-extension"
+      >
+        2244
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "padding": 24,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Speaker"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-speaker"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Speaker
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Hold"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": true,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                {
+                  "opacity": 0.5,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-hold"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Hold
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Mute"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": true,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                {
+                  "opacity": 0.5,
+                },
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-mute"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Mute
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Message"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-message"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Message
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Cancel"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#EC0D2A",
+                },
+              ]
+            }
+            testID="call-view-end"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#FFFFFF",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Cancel
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="More"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-more"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            More
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "justifyContent": "space-between",
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 24,
+        }
+      }
+      testID="caller-info"
+    >
+      <View
+        style={
+          {
+            "marginBottom": 16,
+            "position": "relative",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="bob.burnquist's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              },
+              undefined,
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={16}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={120}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": undefined,
+                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              }
+            }
+            transition={null}
+            width={120}
+          />
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 10,
+                  "bottom": -2,
+                  "position": "absolute",
+                  "right": -2,
+                },
+                {
+                  "backgroundColor": "#F2F3F5",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "lineHeight": 32,
+                "marginBottom": 4,
+                "textAlign": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="caller-info-name"
+        >
+          Bob Burnquist
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#D40C26",
+                "fontSize": NaN,
+              },
+              [
+                {
+                  "lineHeight": NaN,
+                },
+                {
+                  "marginLeft": 8,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+          testID="caller-info-muted"
+        >
+          
+        </Text>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "400",
+              "lineHeight": 26,
+              "marginBottom": 8,
+              "textAlign": "center",
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+        testID="caller-info-extension"
+      >
+        2244
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 18,
+            "fontWeight": "400",
+            "lineHeight": 26,
+            "textAlign": "center",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      On hold
+      , 
+      <Text
+        style={
+          {
+            "color": "#8E6300",
+          }
+        }
+      >
+        Muted
+      </Text>
+    </Text>
+    <View
+      style={
+        {
+          "padding": 24,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Speaker"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-speaker"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Speaker
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Unhold"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-hold"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#BB0B21",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Unhold
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Unmute"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-mute"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#BB0B21",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Unmute
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Message"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-message"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Message
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="End"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#EC0D2A",
+                },
+              ]
+            }
+            testID="call-view-end"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#FFFFFF",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            End
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="More"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-more"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            More
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "justifyContent": "space-between",
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 24,
+        }
+      }
+      testID="caller-info"
+    >
+      <View
+        style={
+          {
+            "marginBottom": 16,
+            "position": "relative",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="bob.burnquist's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              },
+              undefined,
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={16}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={120}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": undefined,
+                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              }
+            }
+            transition={null}
+            width={120}
+          />
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 10,
+                  "bottom": -2,
+                  "position": "absolute",
+                  "right": -2,
+                },
+                {
+                  "backgroundColor": "#F2F3F5",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "lineHeight": 32,
+                "marginBottom": 4,
+                "textAlign": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="caller-info-name"
+        >
+          Bob Burnquist
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#D40C26",
+                "fontSize": NaN,
+              },
+              [
+                {
+                  "lineHeight": NaN,
+                },
+                {
+                  "marginLeft": 8,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+          testID="caller-info-muted"
+        >
+          
+        </Text>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "400",
+              "lineHeight": 26,
+              "marginBottom": 8,
+              "textAlign": "center",
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+        testID="caller-info-extension"
+      >
+        2244
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 18,
+            "fontWeight": "400",
+            "lineHeight": 26,
+            "textAlign": "center",
+          },
+          {
+            "color": "#8E6300",
+          },
+        ]
+      }
+    >
+      Muted
+    </Text>
+    <View
+      style={
+        {
+          "padding": 24,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Speaker"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-speaker"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Speaker
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Hold"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-hold"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Hold
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Unmute"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-mute"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#BB0B21",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Unmute
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Message"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-message"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Message
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="End"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#EC0D2A",
+                },
+              ]
+            }
+            testID="call-view-end"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#FFFFFF",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            End
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="More"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-more"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            More
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "justifyContent": "space-between",
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 24,
+        }
+      }
+      testID="caller-info"
+    >
+      <View
+        style={
+          {
+            "marginBottom": 16,
+            "position": "relative",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="bob.burnquist's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              },
+              undefined,
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={16}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={120}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": undefined,
+                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              }
+            }
+            transition={null}
+            width={120}
+          />
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 10,
+                  "bottom": -2,
+                  "position": "absolute",
+                  "right": -2,
+                },
+                {
+                  "backgroundColor": "#F2F3F5",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "lineHeight": 32,
+                "marginBottom": 4,
+                "textAlign": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="caller-info-name"
+        >
+          Bob Burnquist
+        </Text>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "400",
+              "lineHeight": 26,
+              "marginBottom": 8,
+              "textAlign": "center",
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+        testID="caller-info-extension"
+      >
+        2244
+      </Text>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 18,
+            "fontWeight": "400",
+            "lineHeight": 26,
+            "textAlign": "center",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      On hold
+    </Text>
+    <View
+      style={
+        {
+          "padding": 24,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Speaker"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-speaker"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Speaker
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Unhold"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-hold"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#BB0B21",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Unhold
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Mute"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-mute"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Mute
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Message"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-message"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Message
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="End"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#EC0D2A",
+                },
+              ]
+            }
+            testID="call-view-end"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#FFFFFF",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            End
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="More"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-more"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            More
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "flex": 1,
+          "justifyContent": "space-between",
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+          "paddingHorizontal": 24,
+        }
+      }
+      testID="caller-info"
+    >
+      <View
+        style={
+          {
+            "marginBottom": 16,
+            "position": "relative",
+          }
+        }
+      >
+        <View
+          accessibilityLabel="bob.burnquist's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              },
+              undefined,
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={16}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={120}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": undefined,
+                  "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 16,
+                "height": 120,
+                "width": 120,
+              }
+            }
+            transition={null}
+            width={120}
+          />
+          <View
+            style={
+              [
+                {
+                  "borderRadius": 10,
+                  "bottom": -2,
+                  "position": "absolute",
+                  "right": -2,
+                },
+                {
+                  "backgroundColor": "#F2F3F5",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 24,
+                "fontWeight": "700",
+                "lineHeight": 32,
+                "marginBottom": 4,
+                "textAlign": "center",
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+          testID="caller-info-name"
+        >
+          Bob Burnquist
+        </Text>
+      </View>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "400",
+              "lineHeight": 26,
+              "marginBottom": 8,
+              "textAlign": "center",
+            },
+            {
+              "color": "#6C727A",
+            },
+          ]
+        }
+        testID="caller-info-extension"
+      >
+        2244
+      </Text>
+    </View>
+    <Text
+      style={
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 18,
+          "fontWeight": "400",
+          "lineHeight": 26,
+          "textAlign": "center",
+        }
+      }
+    >
+       
+    </Text>
+    <View
+      style={
+        {
+          "padding": 24,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Speaker"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-speaker"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#BB0B21",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Speaker
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Hold"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-hold"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Hold
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="Mute"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-mute"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Mute
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginBottom": 24,
+          }
+        }
+      >
+        <View>
+          <View
+            accessibilityLabel="Message"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-message"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Message
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="End"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#EC0D2A",
+                },
+              ]
+            }
+            testID="call-view-end"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#FFFFFF",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            End
+          </Text>
+        </View>
+        <View>
+          <View
+            accessibilityLabel="More"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "borderRadius": 8,
+                  "height": 64,
+                  "justifyContent": "center",
+                  "marginBottom": 8,
+                  "width": 64,
+                },
+                false,
+                {
+                  "backgroundColor": "#E4E7EA",
+                },
+              ]
+            }
+            testID="call-view-more"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#1F2329",
+                    "fontSize": NaN,
+                  },
+                  [
+                    {
+                      "lineHeight": NaN,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <Text
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "lineHeight": 20,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            More
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

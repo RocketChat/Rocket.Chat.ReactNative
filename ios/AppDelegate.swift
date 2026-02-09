@@ -4,6 +4,7 @@ import ReactAppDependencyProvider
 import Firebase
 import Bugsnag
 import WatchConnectivity
+import PushKit
 
 @UIApplicationMain
 public class AppDelegate: ExpoAppDelegate {
@@ -25,6 +26,8 @@ public class AppDelegate: ExpoAppDelegate {
     FirebaseApp.configure()
     Bugsnag.start()
     ReplyNotification.configure()
+    VoipService.voipRegistration()
+    RNCallKeep.setup(["appName": "Rocket.Chat"])
       
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
@@ -89,5 +92,55 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 #else
     Bundle.main.url(forResource: "main", withExtension: "jsbundle")
 #endif
+  }
+}
+
+// MARK: - PKPushRegistryDelegate
+
+extension AppDelegate: PKPushRegistryDelegate {
+  // Handle updated push credentials
+  public func pushRegistry(_ registry: PKPushRegistry, didUpdate credentials: PKPushCredentials, for type: PKPushType) {
+    // Register VoIP push token (a property of PKPushCredentials) with server
+    VoipService.didUpdatePushCredentials(credentials, forType: type.rawValue)
+  }
+
+  public func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
+    // The system calls this method when a previously provided push token is no longer valid for use.
+    // No action is necessary on your part to reregister the push type.
+    // Instead, use this method to notify your server not to send push notifications using the matching push token.
+    // TODO: call restapi to unregister the push token
+  }
+
+  public func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
+    let callId = payload.dictionaryPayload["callId"] as? String
+    let caller = payload.dictionaryPayload["caller"] as? String
+
+    guard let callId = callId else {
+      completion()
+      return
+    }
+    
+    // Convert callId to deterministic UUID v5 for CallKit
+    let callIdUUID = CallIdUUID.generateUUIDv5(from: callId)
+
+    // Store pending call data in our native module (replaces RNVoipPushNotificationManager)
+    VoipService.didReceiveIncomingPush(with: payload, forType: type.rawValue)
+
+    RNCallKeep.reportNewIncomingCall(
+      callIdUUID,
+      handle: caller,
+      handleType: "generic",
+      hasVideo: true,
+      localizedCallerName: caller,
+      supportsHolding: true,
+      supportsDTMF: true,
+      supportsGrouping: true,
+      supportsUngrouping: true,
+      fromPushKit: true,
+      payload: payload.dictionaryPayload,
+      withCompletionHandler: nil
+    )
+
+    completion()
   }
 }

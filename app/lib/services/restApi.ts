@@ -26,6 +26,7 @@ import { getDeviceToken } from '../notifications';
 import { store as reduxStore } from '../store/auxStore';
 import sdk from './sdk';
 import fetch from '../methods/helpers/fetch';
+import { getVoipPushToken } from './voip/pushTokenAux';
 
 export const createChannel = ({
 	name,
@@ -1021,6 +1022,18 @@ export const registerPushToken = () =>
 				appName: getBundleId
 			};
 			try {
+				if (isIOS) {
+					const voipToken = getVoipPushToken();
+					if (voipToken) {
+						// TODO: this is temp only for VoIP push token
+						await sdk.post('push.token', {
+							type: 'gcm',
+							value: voipToken,
+							appName: getBundleId
+						});
+					}
+				}
+
 				// RC 0.60.0
 				await sdk.post('push.token', data);
 			} catch (error) {

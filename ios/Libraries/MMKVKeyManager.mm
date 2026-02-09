@@ -9,7 +9,7 @@
 
 #import "MMKVKeyManager.h"
 #import "SecureStorage.h"
-#import "Shared/RocketChat/MMKVBridge.h"
+#import "../Shared/RocketChat/MMKVBridge.h"
 
 static NSString *toHex(NSString *str) {
     if (!str) return @"";

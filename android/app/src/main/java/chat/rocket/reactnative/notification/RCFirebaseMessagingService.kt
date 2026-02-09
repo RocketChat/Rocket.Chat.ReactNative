@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
+import chat.rocket.reactnative.voip.VoipNotification
+import chat.rocket.reactnative.voip.VoipPayload
 
 /**
  * Custom Firebase Messaging Service for Rocket.Chat.
  *
- * Handles incoming FCM messages and routes them to CustomPushNotification
- * for advanced processing (E2E decryption, MessagingStyle, direct reply, etc.)
+ * Handles incoming FCM messages and routes them to the appropriate handler:
+ * - VoipNotification for VoIP calls (notificationType: "voip")
+ * - CustomPushNotification for regular messages and video conferences
  */
 class RCFirebaseMessagingService : FirebaseMessagingService() {
 
     companion object {
         private const val TAG = "RocketChat.FCM"
+        private val gson = Gson()
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -33,12 +38,35 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
             }
         }
 
-        // Process the notification
+        val voipPayload = VoipPayload.fromMap(data)
+        if (voipPayload != null) {
+            Log.d(TAG, "Detected VoIP incoming call payload, routing to VoipNotification handler")
+            VoipNotification(this).showIncomingCall(voipPayload)
+            return
+        }
+
+        // Process regular notifications via CustomPushNotification
         try {
             val notification = CustomPushNotification(this, bundle)
             notification.onReceived()
         } catch (e: Exception) {
             Log.e(TAG, "Error processing FCM message", e)
+        }
+    }
+
+    /**
+     * Safely parses ejson string to Ejson object.
+     */
+    private fun parseEjson(ejsonStr: String?): Ejson? {
+        if (ejsonStr.isNullOrEmpty() || ejsonStr == "{}") {
+            return null
+        }
+
+        return try {
+            gson.fromJson(ejsonStr, Ejson::class.java)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to parse ejson", e)
+            null
         }
     }
 

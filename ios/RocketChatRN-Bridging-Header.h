@@ -2,6 +2,7 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
+#import <RNCallKeep/RNCallKeep.h>
 #import "SecureStorage.h"
 #import "MMKVKeyManager.h"
 #import "Shared/RocketChat/MMKVBridge.h"

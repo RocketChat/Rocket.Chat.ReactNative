@@ -2,6 +2,7 @@ import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+
 import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
@@ -24,21 +25,22 @@ import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
-import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/methods/enterpriseModules';
+import { getEnterpriseModules, isOmnichannelModuleAvailable, isVoipModuleAvailable } from '../lib/methods/enterpriseModules';
 import { getPermissions } from '../lib/methods/getPermissions';
 import { getRoles } from '../lib/methods/getRoles';
 import { getSlashCommands } from '../lib/methods/getSlashCommands';
 import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
-import { connect, loginWithPassword, login } from '../lib/services/connect';
+import { loginWithPassword, login } from '../lib/services/connect';
 import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
-import { isIOS } from '../lib/methods/helpers';
+import { mediaSessionInstance } from '../lib/services/voip/MediaSessionInstance';
+import { hasPermission } from '../lib/methods/helpers/helpers';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -58,7 +60,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
-		await serverRecord.update((r) => {
+		await serverRecord.update(r => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
@@ -105,7 +107,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update((s) => {
+						await serverHistoryRecord.update(s => {
 							s.username = result.username;
 							if (iconURL) {
 								s.iconURL = iconURL;
@@ -151,7 +153,7 @@ const subscribeSettingsFork = function* subscribeSettingsFork() {
 	}
 };
 
-const fetchPermissionsFork = function* fetchPermissionsFork() {
+const fetchPermissions = function* fetchPermissions() {
 	try {
 		yield getPermissions();
 	} catch (e) {
@@ -200,7 +202,7 @@ const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	}
 };
 
-const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
+const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	try {
 		yield getEnterpriseModules();
 
@@ -223,24 +225,40 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const startVoipFork = function* startVoipFork() {
+	try {
+		const allowInternalVoiceCallRoles = yield select(state => state.permissions['allow-internal-voice-calls']);
+		const allowExternalVoiceCallRoles = yield select(state => state.permissions['allow-external-voice-calls']);
+
+		const hasPermissions = yield hasPermission([allowInternalVoiceCallRoles, allowExternalVoiceCallRoles]);
+		if (isVoipModuleAvailable() && (hasPermissions[0] || hasPermissions[1])) {
+			const userId = yield select(state => state.login.user.id);
+			mediaSessionInstance.init(userId);
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
-		getUserPresence(user.id);
+		yield put(setUser(user));
+		setLanguage(user?.language);
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(encryptionInit());
-		yield fork(fetchPermissionsFork);
+		yield call(fetchPermissions);
+		yield call(fetchEnterpriseModules, { user });
+		yield fork(startVoipFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
 		yield fork(fetchSlashCommandsFork);
 		yield fork(registerPushTokenFork);
 		yield fork(fetchUsersPresenceFork);
-		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
-
-		setLanguage(user?.language);
+		yield getUserPresence(user.id);
 
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
@@ -261,12 +279,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				await userRecord.update((record) => {
+				await userRecord.update(record => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
 				});
 			} catch (e) {
-				await usersCollection.create((record) => {
+				await usersCollection.create(record => {
 					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
 					Object.assign(record, u);
 				});
@@ -276,7 +294,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
@@ -344,7 +361,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const record = await userCollections.find(userId);
-				await record.update((userRecord) => {
+				await record.update(userRecord => {
 					if ('avatarETag' in user) {
 						userRecord.avatarETag = user.avatarETag;
 					}
