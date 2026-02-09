@@ -64,14 +64,9 @@ const ActionSheet = React.memo(
 
 		useEffect(() => {
 			if (isVisible) {
-				sheetRef.current?.present(0);
-			}
-		}, [isVisible]);
-
-		useEffect(() => {
-			if (isVisible) {
 				Keyboard.dismiss();
 				Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+				sheetRef.current?.present(0);
 			}
 		}, [isVisible]);
 
