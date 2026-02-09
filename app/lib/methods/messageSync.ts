@@ -4,10 +4,43 @@ import database from '../database';
 import log from './helpers/log';
 import { messagesStatus } from '../constants/messagesStatus';
 import { changeMessageStatus, resendMessage } from './sendMessage';
-import getSingleMessage from './getSingleMessage';
+import { getSingleMessage as getSingleMessageService } from '../services/restApi';
 import type { TMessageModel } from '../../definitions';
 
 const TEMP_RECONCILIATION_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
+
+const hasMessageNotFoundHint = (value?: string): boolean =>
+	/message[\s_-]*not[\s_-]*found|error-message-not-found/i.test(value ?? '');
+
+const shouldResendAfterLookupFailure = (error: unknown): boolean => {
+	if (!error) {
+		return false;
+	}
+
+	if (typeof error === 'string') {
+		return hasMessageNotFoundHint(error);
+	}
+
+	if (error instanceof Error) {
+		return hasMessageNotFoundHint(error.message);
+	}
+
+	const err = error as {
+		message?: string;
+		error?: string;
+		reason?: string;
+		data?: { message?: string; error?: string; errorType?: string };
+	};
+
+	return (
+		hasMessageNotFoundHint(err.message) ||
+		hasMessageNotFoundHint(err.error) ||
+		hasMessageNotFoundHint(err.reason) ||
+		hasMessageNotFoundHint(err.data?.message) ||
+		hasMessageNotFoundHint(err.data?.error) ||
+		hasMessageNotFoundHint(err.data?.errorType)
+	);
+};
 
 /**
  * Reconciles stuck TEMP messages (e.g. after app crash/kill) on app restart.
@@ -31,21 +64,38 @@ export async function reconcileTempMessages(): Promise<void> {
 		/* eslint-disable no-await-in-loop */
 		for (const record of tempMessages as TMessageModel[]) {
 			try {
-				const serverMessage = await getSingleMessage(record.id);
-				if (serverMessage) {
+				const result = await getSingleMessageService(record.id);
+				if (result?.success && result.message) {
 					await changeMessageStatus(
 						record.id,
 						messagesStatus.SENT,
 						record.tmid ?? undefined,
-						serverMessage
+						result.message
 					);
+					continue;
 				}
-			} catch {
-				try {
-					await resendMessage(record, record.tmid ?? undefined);
-				} catch (e) {
-					log(e);
+
+				if (shouldResendAfterLookupFailure(result)) {
+					try {
+						await resendMessage(record, record.tmid ?? undefined);
+					} catch (e) {
+						log(e);
+					}
+					continue;
 				}
+
+				log(result);
+			} catch (e) {
+				if (shouldResendAfterLookupFailure(e)) {
+					try {
+						await resendMessage(record, record.tmid ?? undefined);
+					} catch (resendError) {
+						log(resendError);
+					}
+					continue;
+				}
+
+				log(e);
 			}
 		}
 		/* eslint-enable no-await-in-loop */
