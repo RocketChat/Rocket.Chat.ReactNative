@@ -31,11 +31,13 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 				},
 				maxHeight: 100,
 				maxWidth: 100
-			}).then(image => {
-				setImageDimensions({ width: image.width, height: image.height });
-			}).catch(e => {
-				log(e);
-			});
+			})
+				.then(image => {
+					setImageDimensions({ width: image.width, height: image.height });
+				})
+				.catch(e => {
+					log(e);
+				});
 		}
 	}, [uri, status]);
 
