@@ -2,13 +2,13 @@ import Foundation
 import PushKit
 
 /**
- * VoipModuleSwift - Swift implementation for VoIP push notifications and pending call data.
+ * VoipModuleSwift - Swift implementation for VoIP push notifications and initial events data.
  * This class provides static methods called by VoipModule.mm (the TurboModule bridge).
  *
  * This module:
  * - Manages PushKit VoIP registration
  * - Tracks VoIP push tokens
- * - Stores pending VoIP call data for retrieval by JavaScript
+ * - Stores initial events data for retrieval by JavaScript
  */
 @objc(VoipService)
 public final class VoipService: NSObject {
@@ -19,8 +19,8 @@ public final class VoipService: NSObject {
     
     // MARK: - Static Properties
     
-    private static var pendingVoipCallData: VoipPayload?
-    private static var pendingVoipCallTimestamp: TimeInterval = 0
+    private static var initialEventsData: VoipPayload?
+    private static var initialEventsTimestamp: TimeInterval = 0
     private static var isVoipRegistered = false
     private static var lastVoipToken: String = ""
     private static var voipRegistry: PKPushRegistry?
@@ -78,7 +78,7 @@ public final class VoipService: NSObject {
         )
     }
     
-    /// Called from AppDelegate when a VoIP push is received
+    /// Called from AppDelegate when a VoIP push initial events are received
     @objc
     public static func didReceiveIncomingPush(with payload: PKPushPayload, forType type: String) {
         #if DEBUG
@@ -92,59 +92,52 @@ public final class VoipService: NSObject {
             return
         }
         
-        storePendingVoipCall(voipPayload)
+        storeInitialEvents(voipPayload)
     }
     
-    /// Stores VoIP call data for JS to retrieve.
+    /// Stores initial events for JS to retrieve.
     @objc
-    public static func storePendingVoipCall(_ payload: VoipPayload) {
-        pendingVoipCallData = payload
-        pendingVoipCallTimestamp = Date().timeIntervalSince1970
+    public static func storeInitialEvents(_ payload: VoipPayload) {
+        initialEventsData = payload
+        initialEventsTimestamp = Date().timeIntervalSince1970
         
         #if DEBUG
-        print("[\(TAG)] Stored pending VoIP call: \(payload.callId)")
+        print("[\(TAG)] Stored initial events: \(payload.callId)")
         #endif
-        
-        // Emit event via notification (the ObjC++ bridge observes this)
-        NotificationCenter.default.post(
-            name: NSNotification.Name("VoipCallAccepted"),
-            object: nil,
-            userInfo: payload.toDictionary()
-        )
     }
     
-    /// Gets any pending VoIP call data. Returns nil if no pending call.
+    /// Gets any initial events. Returns nil if no initial events.
     @objc
-    public static func getPendingVoipCall() -> [String: Any]? {
-        guard let data = pendingVoipCallData else {
+    public static func getInitialEvents() -> [String: Any]? {
+        guard let data = initialEventsData else {
             return nil
         }
         
         // Check if data is older than 5 minutes
         let now = Date().timeIntervalSince1970
-        if now - pendingVoipCallTimestamp > 5 * 60 {
-            clearPendingVoipCallInternal()
+        if now - initialEventsTimestamp > 5 * 60 {
+            clearInitialEventsInternal()
             return nil
         }
         
         let result = data.toDictionary()
-        clearPendingVoipCallInternal()
+        clearInitialEventsInternal()
         
         return result
     }
     
-    /// Clears any pending VoIP call data
+    /// Clears any initial events
     @objc
-    public static func clearPendingVoipCall() {
-        clearPendingVoipCallInternal()
+    public static func clearInitialEvents() {
+        clearInitialEventsInternal()
     }
     
-    /// Clears pending VoIP call data (internal)
-    private static func clearPendingVoipCallInternal() {
-        pendingVoipCallData = nil
-        pendingVoipCallTimestamp = 0
+    /// Clears initial events (internal)
+    private static func clearInitialEventsInternal() {
+        initialEventsData = nil
+        initialEventsTimestamp = 0
         #if DEBUG
-        print("[\(TAG)] Cleared pending VoIP call data")
+        print("[\(TAG)] Cleared initial events")
         #endif
     }
     
@@ -157,7 +150,7 @@ public final class VoipService: NSObject {
 
 // MARK: - VoipPayload
 
-/// Data structure for VoIP call payload
+/// Data structure for initial events payload
 @objc(VoipPayload)
 public class VoipPayload: NSObject {
     @objc public let callId: String

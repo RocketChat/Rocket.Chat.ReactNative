@@ -55,7 +55,7 @@ class NotificationIntentHandler {
             Log.d(TAG, "Handling VoIP intent - voipPayload: $voipPayload")
 
             VoipNotification.cancelById(context, voipPayload.notificationId)
-            VoipModule.storePendingVoipCall(voipPayload)
+            VoipModule.storeInitialEvents(voipPayload)
 
             // Clear the voip flag to prevent re-processing
             intent.removeExtra("voipAction")

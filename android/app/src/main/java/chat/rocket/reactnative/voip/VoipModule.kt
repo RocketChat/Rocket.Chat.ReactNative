@@ -16,11 +16,11 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
 
     companion object {
         private const val TAG = "RocketChat.VoipModule"
-        private const val EVENT_VOIP_CALL = "VoipCallAccepted"
+        private const val EVENT_INITIAL_EVENTS = "VoipPushInitialEvents"
 
         private var reactContextRef: WeakReference<ReactApplicationContext>? = null
-        private var pendingVoipCallData: VoipPayload? = null
-        private var pendingVoipCallTimestamp: Long = 0
+        private var initialEventsData: VoipPayload? = null
+        private var initialEventsTimestamp: Long = 0
 
         /**
          * Sets the React context reference for event emission.
@@ -34,13 +34,13 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
          * Emits a VoIP call event to JavaScript when the app is running.
          */
         @JvmStatic
-        fun emitVoipCallEvent(voipPayload: VoipPayload) {
+        fun emitInitialEventsEvent(voipPayload: VoipPayload) {
             try {
                 reactContextRef?.get()?.let { context ->
                     if (context.hasActiveReactInstance()) {
                         context
                             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                            .emit(EVENT_VOIP_CALL, voipPayload.toWritableMap())
+                            .emit(EVENT_INITIAL_EVENTS, voipPayload.toWritableMap())
                     }
                 }
             } catch (e: Exception) {
@@ -53,20 +53,20 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
          * Also emits an event if the app is running.
          */
         @JvmStatic
-        fun storePendingVoipCall(voipPayload: VoipPayload) {
-            pendingVoipCallData = voipPayload
-            pendingVoipCallTimestamp = System.currentTimeMillis()
-            emitVoipCallEvent(voipPayload)
+        fun storeInitialEvents(voipPayload: VoipPayload) {
+            initialEventsData = voipPayload
+            initialEventsTimestamp = System.currentTimeMillis()
+            emitInitialEventsEvent(voipPayload)
         }
 
         @JvmStatic
-        fun clearPendingVoipCallInternal() {
+        fun clearInitialEventsInternal() {
             try {
-                pendingVoipCallData = null
-                pendingVoipCallTimestamp = 0
-                Log.d(TAG, "Cleared pending VoIP call data")
+                initialEventsData = null
+                initialEventsTimestamp = 0
+                Log.d(TAG, "Cleared initial events")
             } catch (e: Exception) {
-                Log.e(TAG, "Error clearing pending VoIP call", e)
+                Log.e(TAG, "Error clearing initial events", e)
             }
         }
     }
@@ -77,28 +77,28 @@ class VoipModule(reactContext: ReactApplicationContext) : NativeVoipSpec(reactCo
     }
 
     /**
-     * Gets any pending VoIP call data.
-     * Returns null if no pending call.
+     * Gets any initial events.
+     * Returns null if no initial events.
      */
-    override fun getPendingVoipCall(): WritableMap? {
-        val data = pendingVoipCallData ?: return null
+    override fun getInitialEvents(): WritableMap? {
+        val data = initialEventsData ?: return null
 
-        if (System.currentTimeMillis() - pendingVoipCallTimestamp > 5 * 60 * 1000) {
-            clearPendingVoipCallInternal()
+        if (System.currentTimeMillis() - initialEventsTimestamp > 5 * 60 * 1000) {
+            clearInitialEventsInternal()
             return null
         }
 
         val result = data.toWritableMap()
-        clearPendingVoipCallInternal()
+        clearInitialEventsInternal()
         
         return result
     }
 
     /**
-     * Clears any pending VoIP call data.
+     * Clears any initial events.
      */
-    override fun clearPendingVoipCall() {
-        clearPendingVoipCallInternal()
+    override fun clearInitialEvents() {
+        clearInitialEventsInternal()
     }
 
     /**

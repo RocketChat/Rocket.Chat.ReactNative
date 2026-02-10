@@ -10,26 +10,28 @@ export interface Spec extends TurboModule {
 	registerVoipToken(): void;
 
 	/**
-	 * Gets any pending VoIP call data.
-	 * Returns null if no pending call or if data is older than 5 minutes.
-	 * Clears the pending data after retrieval.
+	 * Gets any initial events.
+	 * Returns null if no initial events.
+	 * Clears the initial events after retrieval.
 	 */
-	getPendingVoipCall(): Object | null;
+	getInitialEvents(): Object | null;
 
 	/**
-	 * Clears any pending VoIP call data.
+	 * Clears any initial events.
 	 */
-	clearPendingVoipCall(): void;
+	clearInitialEvents(): void;
 
 	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS starts listening to events.
+	 * @platform android
 	 */
 	addListener(eventName: string): void;
 
 	/**
 	 * Required for NativeEventEmitter in TurboModules.
 	 * Called when JS stops listening to events.
+	 * @platform android
 	 */
 	removeListeners(count: number): void;
 }

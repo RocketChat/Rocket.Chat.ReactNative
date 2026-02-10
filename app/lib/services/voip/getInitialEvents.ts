@@ -10,21 +10,9 @@ import { mediaSessionInstance } from './MediaSessionInstance';
 import type { VoipPayload } from '../../../definitions/Voip';
 import NativeVoipModule from '../../native/NativeVoip';
 
-/**
- * Handles initial VoIP events on app startup.
- *
- * Both platforms now use native module to retrieve pending VoIP call data.
- * iOS: VoipModule stores pending call data from PushKit callbacks
- * Android: VoipModule stores pending call data from Intent/SharedPreferences
- */
-export const getInitialEvents = (): Promise<boolean> => {
-	if (isIOS) {
-		return getInitialEventsIOS();
-	}
-	return Promise.resolve(getInitialEventsAndroid());
-};
-
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
+const platform = isIOS ? 'iOS' : 'Android';
+const TAG = `[getInitialEvents][${platform}]`;
 
 /**
  * Sets up listeners for VoIP call events from native side.
@@ -32,51 +20,56 @@ const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEm
  */
 export const setupVoipEventListeners = (): (() => void) => {
 	const subscriptions: { remove: () => void }[] = [];
-	const platform = isIOS ? 'iOS' : 'Android';
 
-	// Listen for VoIP push token registration
+	// iOS listens for VoIP push token registration and CallKeep events
 	if (isIOS) {
 		subscriptions.push(
 			Emitter.addListener('VoipPushTokenRegistered', (token: string) => {
-				console.log(`[VoIP][${platform}] Registered VoIP push token:`, token);
+				console.log(`${TAG} Registered VoIP push token:`, token);
 				setVoipPushToken(token);
 			})
 		);
 
 		subscriptions.push(
 			RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
-				console.log(`[VoIP][${platform}] Answer call event listener:`, callUUID);
+				console.log(`${TAG} Answer call event listener:`, callUUID);
 				mediaSessionInstance.answerCall(callUUID);
+				NativeVoipModule.clearInitialEvents();
+				RNCallKeep.clearInitialEvents();
 			})
 		);
 		subscriptions.push(
 			RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
-				console.log(`[VoIP][${platform}] End call event listener:`, callUUID);
+				console.log(`${TAG} End call event listener:`, callUUID);
 				mediaSessionInstance.endCall(callUUID);
 			})
 		);
+	} else {
+		// Android listens for VoIP call events from VoipModule
+		subscriptions.push(
+			Emitter.addListener('VoipPushInitialEvents', async (data: VoipPayload) => {
+				try {
+					if (data.type !== 'incoming_call') {
+						console.log(`${TAG} Not an incoming call`);
+						return;
+					}
+					console.log(`${TAG} Initial events event:`, data);
+					NativeVoipModule.clearInitialEvents();
+					useCallStore.getState().setCallUUID(data.callUUID);
+					store.dispatch(
+						voipCallOpen({
+							callId: data.callId,
+							callUUID: data.callUUID,
+							host: data.host
+						})
+					);
+					await mediaSessionInstance.answerCall(data.callUUID);
+				} catch (error) {
+					console.error(`${TAG} Error handling initial events event:`, error);
+				}
+			})
+		);
 	}
-
-	// Listen for VoIP call events (when app is already running)
-	subscriptions.push(
-		Emitter.addListener('VoipCallAccepted', async (data: VoipPayload) => {
-			try {
-				console.log(`[VoIP][${platform}] Call action event:`, data);
-				NativeVoipModule.clearPendingVoipCall();
-				useCallStore.getState().setCallUUID(data.callUUID);
-				store.dispatch(
-					voipCallOpen({
-						callId: data.callId,
-						callUUID: data.callUUID,
-						host: data.host
-					})
-				);
-				await mediaSessionInstance.answerCall(data.callUUID);
-			} catch (error) {
-				console.error(`[VoIP][${platform}] Error handling call action event:`, error);
-			}
-		})
-	);
 
 	// Return cleanup function
 	return () => {
@@ -85,102 +78,66 @@ export const setupVoipEventListeners = (): (() => void) => {
 };
 
 /**
- * iOS-specific implementation using native VoipModule and CallKeep.
- * The native module stores pending VoIP call data from PushKit callbacks.
- * CallKeep is still used for the CallKit UI integration.
+ * Handles initial VoIP events from native module.
+ * @returns true if the call was answered, false otherwise
  */
-const getInitialEventsIOS = async (): Promise<boolean> => {
+export const getInitialEvents = async (): Promise<boolean> => {
 	try {
-		// Get pending VoIP call from native module (stored by AppDelegate when VoIP push received)
-		const pendingCall = NativeVoipModule.getPendingVoipCall() as VoipPayload | null;
-
-		if (!pendingCall) {
-			console.log('[VoIP][iOS] No pending VoIP call from native module');
+		// Get initial events from native module
+		const initialEvents = NativeVoipModule.getInitialEvents() as VoipPayload | null;
+		if (!initialEvents) {
+			console.log(`${TAG} No initial events from native module`);
+			RNCallKeep.clearInitialEvents();
 			return false;
 		}
+		console.log(`${TAG} Found initial events:`, initialEvents);
 
-		console.log('[VoIP][iOS] Found pending VoIP call:', pendingCall);
-
-		if (!pendingCall.callId || !pendingCall.host) {
-			console.log('[VoIP][iOS] Missing required call data');
-			NativeVoipModule.clearPendingVoipCall();
+		if (!initialEvents.callId || !initialEvents.host || initialEvents.type !== 'incoming_call') {
+			console.log(`${TAG} Missing required call data`);
 			RNCallKeep.clearInitialEvents();
 			return false;
 		}
 
-		const initialEvents = await RNCallKeep.getInitialEvents();
-		console.log('[VoIP][iOS] CallKeep initial events:', JSON.stringify(initialEvents, null, 2));
-
 		let wasAnswered = false;
-		for (const event of initialEvents) {
-			const { name, data } = event;
-			if (name === 'RNCallKeepPerformAnswerCallAction') {
-				const { callUUID } = data;
-				if (pendingCall.callUUID.toLowerCase() === callUUID.toLowerCase()) {
-					wasAnswered = true;
-					console.log('[VoIP][iOS] Call was already answered via CallKit');
-					break;
+
+		if (isIOS) {
+			const callKeepInitialEvents = await RNCallKeep.getInitialEvents();
+			RNCallKeep.clearInitialEvents();
+			console.log(`${TAG} CallKeep initial events:`, JSON.stringify(callKeepInitialEvents, null, 2));
+
+			// iOS loops through the events and checks if the call was already answered
+			for (const event of callKeepInitialEvents) {
+				const { name, data } = event;
+				if (name === 'RNCallKeepPerformAnswerCallAction') {
+					const { callUUID } = data;
+					if (initialEvents.callUUID.toLowerCase() === callUUID.toLowerCase()) {
+						wasAnswered = true;
+						console.log(`${TAG} Call was already answered via CallKit`);
+						break;
+					}
 				}
 			}
+		} else {
+			// Android only sends answered event, so we can assume the call was answered
+			wasAnswered = true;
 		}
 
 		if (wasAnswered) {
-			useCallStore.getState().setCallUUID(pendingCall.callUUID);
+			useCallStore.getState().setCallUUID(initialEvents.callUUID);
 
 			store.dispatch(
 				voipCallOpen({
-					callId: pendingCall.callId,
-					callUUID: pendingCall.callUUID,
-					host: pendingCall.host
+					callId: initialEvents.callId,
+					callUUID: initialEvents.callUUID,
+					host: initialEvents.host
 				})
 			);
-			console.log('[VoIP][iOS] Dispatched voipCallOpen action');
+			console.log(`${TAG} Dispatched voipCallOpen action`);
 		}
 
-		// Clear the data
-		NativeVoipModule.clearPendingVoipCall();
-		if (initialEvents.length > 0) {
-			RNCallKeep.clearInitialEvents();
-		}
-
-		return wasAnswered;
+		return Promise.resolve(wasAnswered);
 	} catch (error) {
-		console.error('[VoIP][iOS] Error:', error);
-		return false;
-	}
-};
-
-/**
- * Android-specific implementation using native module to retrieve VoIP call data
- */
-const getInitialEventsAndroid = (): boolean => {
-	try {
-		const pendingCall = NativeVoipModule.getPendingVoipCall() as VoipPayload;
-		if (!pendingCall) {
-			console.log('[VoIP][Android] No pending VoIP call');
-			return false;
-		}
-
-		NativeVoipModule.clearPendingVoipCall();
-
-		if (!pendingCall.callId || !pendingCall.host) {
-			console.log('[VoIP][Android] Missing required call data');
-			return false;
-		}
-
-		useCallStore.getState().setCallUUID(pendingCall.callUUID);
-
-		store.dispatch(
-			voipCallOpen({
-				callId: pendingCall.callId,
-				callUUID: pendingCall.callUUID,
-				host: pendingCall.host
-			})
-		);
-
-		return true;
-	} catch (error) {
-		console.error('[VoIP][Android] Error:', error);
+		console.error(`${TAG} Error:`, error);
 		return false;
 	}
 };

@@ -122,7 +122,7 @@ export default class Root extends React.Component<{}, IState> {
 
 		// Set up video conf action listener for background accept/decline
 		this.videoConfActionCleanup = setupVideoConfActionListener();
-		// Set up VoIP event listeners for Android native call UI
+		// Set up VoIP event listeners for incoming calls
 		this.voipEventCleanup = setupVoipEventListeners();
 	}
 

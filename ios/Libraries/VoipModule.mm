@@ -9,8 +9,8 @@
 
 @interface VoipService : NSObject
 + (void)voipRegistration;
-+ (NSDictionary * _Nullable)getPendingVoipCall;
-+ (void)clearPendingVoipCall;
++ (NSDictionary * _Nullable)getInitialEvents;
++ (void)clearInitialEvents;
 @end
 
 @implementation VoipModule {
@@ -33,16 +33,11 @@ RCT_EXPORT_MODULE()
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"VoipCallAccepted", @"VoipPushTokenRegistered"];
+    return @[@"VoipPushTokenRegistered"];
 }
 
 - (void)startObserving {
     _hasListeners = YES;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleVoipCallAccepted:)
-                                                 name:@"VoipCallAccepted"
-                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleVoipTokenRegistered:)
@@ -63,11 +58,6 @@ RCT_EXPORT_MODULE()
 - (void)stopObserving {
     _hasListeners = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-// Handler for Call Accepted
-- (void)handleVoipCallAccepted:(NSNotification *)notification {
-    [self sendEventWrapper:@"VoipCallAccepted" body:notification.userInfo];
 }
 
 // Handler for Token Registration
@@ -91,12 +81,12 @@ RCT_EXPORT_MODULE()
     });
 }
 
-- (NSDictionary * _Nullable)getPendingVoipCall {
-    return [VoipService getPendingVoipCall];
+- (NSDictionary * _Nullable)getInitialEvents {
+    return [VoipService getInitialEvents];
 }
 
-- (void)clearPendingVoipCall {
-    [VoipService clearPendingVoipCall];
+- (void)clearInitialEvents {
+    [VoipService clearInitialEvents];
 }
 
 - (void)addListener:(NSString *)eventName {
