@@ -291,7 +291,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 				currentPassword: null,
 				saving: false
 			});
-		}, [user, reset])
+		}, [user?.name, user?.username, user?.emails, user?.bio, user?.nickname, reset])
 	);
 
 	return (
