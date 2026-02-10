@@ -112,6 +112,9 @@ class MediaSessionInstance {
 				mainCall.hangup();
 			}
 		}
+		RNCallKeep.endCall(callUUID);
+		RNCallKeep.setCurrentCallActive('');
+		RNCallKeep.setAvailable(true);
 		// Reset Zustand store
 		useCallStore.getState().reset();
 	};
