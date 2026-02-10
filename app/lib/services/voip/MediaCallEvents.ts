@@ -12,13 +12,13 @@ import NativeVoipModule from '../../native/NativeVoip';
 
 const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
 const platform = isIOS ? 'iOS' : 'Android';
-const TAG = `[getInitialEvents][${platform}]`;
+const TAG = `[MediaCallEvents][${platform}]`;
 
 /**
- * Sets up listeners for VoIP call events from native side.
+ * Sets up listeners for media call events.
  * @returns Cleanup function to remove listeners
  */
-export const setupVoipEventListeners = (): (() => void) => {
+export const setupMediaCallEvents = (): (() => void) => {
 	const subscriptions: { remove: () => void }[] = [];
 
 	// iOS listens for VoIP push token registration and CallKeep events
@@ -45,7 +45,7 @@ export const setupVoipEventListeners = (): (() => void) => {
 			})
 		);
 	} else {
-		// Android listens for VoIP call events from VoipModule
+		// Android listens for media call events from VoipModule
 		subscriptions.push(
 			Emitter.addListener('VoipPushInitialEvents', async (data: VoipPayload) => {
 				try {
@@ -78,10 +78,10 @@ export const setupVoipEventListeners = (): (() => void) => {
 };
 
 /**
- * Handles initial VoIP events from native module.
+ * Handles initial media call events.
  * @returns true if the call was answered, false otherwise
  */
-export const getInitialEvents = async (): Promise<boolean> => {
+export const getInitialMediaCallEvents = async (): Promise<boolean> => {
 	try {
 		// Get initial events from native module
 		const initialEvents = NativeVoipModule.getInitialEvents() as VoipPayload | null;

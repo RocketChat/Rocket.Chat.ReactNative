@@ -33,7 +33,7 @@ import {
 } from './lib/methods/helpers/theme';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
-import { getInitialEvents, setupVoipEventListeners } from './lib/services/voip/getInitialEvents';
+import { getInitialMediaCallEvents, setupMediaCallEvents } from './lib/services/voip/MediaCallEvents';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
 import { type TSupportedThemes, ThemeContext } from './theme';
@@ -87,7 +87,7 @@ export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
 	private dimensionsListener?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
-	private voipEventCleanup?: () => void;
+	private mediaCallEventCleanup?: () => void;
 
 	constructor(props: any) {
 		super(props);
@@ -122,15 +122,15 @@ export default class Root extends React.Component<{}, IState> {
 
 		// Set up video conf action listener for background accept/decline
 		this.videoConfActionCleanup = setupVideoConfActionListener();
-		// Set up VoIP event listeners for incoming calls
-		this.voipEventCleanup = setupVoipEventListeners();
+		// Set up media call event listeners for incoming calls
+		this.mediaCallEventCleanup = setupMediaCallEvents();
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
 		this.dimensionsListener?.remove?.();
 		this.videoConfActionCleanup?.();
-		this.voipEventCleanup?.();
+		this.mediaCallEventCleanup?.();
 
 		unsubscribeTheme();
 	}
@@ -154,7 +154,7 @@ export default class Root extends React.Component<{}, IState> {
 		}
 
 		// TODO: change name
-		const handledVoipCall = await getInitialEvents();
+		const handledVoipCall = await getInitialMediaCallEvents();
 		if (handledVoipCall) {
 			return;
 		}
