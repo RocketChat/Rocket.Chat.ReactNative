@@ -61,7 +61,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 		);
 	}
 	return (
-		<View testID='action-sheet' style={styles.contentContainer} onLayout={onLayout}>
+		<View testID='action-sheet' style={[styles.contentContainer]} onLayout={onLayout}>
 			{children}
 		</View>
 	);
