@@ -24,6 +24,8 @@ export const getInitialEvents = (): Promise<boolean> => {
 	return Promise.resolve(getInitialEventsAndroid());
 };
 
+const Emitter = isIOS ? new NativeEventEmitter(NativeVoipModule) : DeviceEventEmitter;
+
 /**
  * Sets up listeners for VoIP call events from native side.
  * @returns Cleanup function to remove listeners
@@ -32,59 +34,36 @@ export const setupVoipEventListeners = (): (() => void) => {
 	const subscriptions: { remove: () => void }[] = [];
 	const platform = isIOS ? 'iOS' : 'Android';
 
+	// Listen for VoIP push token registration
 	if (isIOS) {
-		// iOS: Use NativeEventEmitter with direct TurboModule import
-		const voipModuleEmitter = new NativeEventEmitter(NativeVoipModule);
-
-		// Listen for VoIP push token registration
 		subscriptions.push(
-			voipModuleEmitter.addListener('VoipPushTokenRegistered', (token: string) => {
+			Emitter.addListener('VoipPushTokenRegistered', (token: string) => {
 				console.log(`[VoIP][${platform}] Registered VoIP push token:`, token);
 				setVoipPushToken(token);
 			})
 		);
-
-		// Listen for VoIP call events (when app is already running)
-		subscriptions.push(
-			voipModuleEmitter.addListener('VoipCallAccepted', async (data: VoipPayload) => {
-				try {
-					console.log(`[VoIP][${platform}] Call action event:`, data);
-					NativeVoipModule.clearPendingVoipCall();
-					useCallStore.getState().setCallUUID(data.callUUID);
-					store.dispatch(
-						voipCallOpen({
-							callId: data.callId,
-							callUUID: data.callUUID,
-							host: data.host
-						})
-					);
-				} catch (error) {
-					console.error(`[VoIP][${platform}] Error handling call action event:`, error);
-				}
-			})
-		);
-	} else {
-		// Android: Use DeviceEventEmitter
-		subscriptions.push(
-			DeviceEventEmitter.addListener('VoipCallAccepted', async (data: VoipPayload) => {
-				try {
-					console.log(`[VoIP][${platform}] Call action event:`, data);
-					NativeVoipModule.clearPendingVoipCall();
-					useCallStore.getState().setCallUUID(data.callUUID);
-					store.dispatch(
-						voipCallOpen({
-							callId: data.callId,
-							callUUID: data.callUUID,
-							host: data.host
-						})
-					);
-					await mediaSessionInstance.answerCall(data.callUUID);
-				} catch (error) {
-					console.error(`[VoIP][${platform}] Error handling call action event:`, error);
-				}
-			})
-		);
 	}
+
+	// Listen for VoIP call events (when app is already running)
+	subscriptions.push(
+		Emitter.addListener('VoipCallAccepted', async (data: VoipPayload) => {
+			try {
+				console.log(`[VoIP][${platform}] Call action event:`, data);
+				NativeVoipModule.clearPendingVoipCall();
+				useCallStore.getState().setCallUUID(data.callUUID);
+				store.dispatch(
+					voipCallOpen({
+						callId: data.callId,
+						callUUID: data.callUUID,
+						host: data.host
+					})
+				);
+				// await mediaSessionInstance.answerCall(data.callUUID);
+			} catch (error) {
+				console.error(`[VoIP][${platform}] Error handling call action event:`, error);
+			}
+		})
+	);
 
 	// Return cleanup function
 	return () => {
@@ -104,14 +83,6 @@ const getInitialEventsIOS = async (): Promise<boolean> => {
 
 		if (!pendingCall) {
 			console.log('[VoIP][iOS] No pending VoIP call from native module');
-
-			// Still check CallKeep initial events for any answer actions
-			const initialEvents = await RNCallKeep.getInitialEvents();
-			if (initialEvents.length > 0) {
-				console.log('[VoIP][iOS] Found CallKeep initial events but no pending call data');
-				RNCallKeep.clearInitialEvents();
-			}
-
 			return false;
 		}
 
@@ -120,10 +91,10 @@ const getInitialEventsIOS = async (): Promise<boolean> => {
 		if (!pendingCall.callId || !pendingCall.host) {
 			console.log('[VoIP][iOS] Missing required call data');
 			NativeVoipModule.clearPendingVoipCall();
+			RNCallKeep.clearInitialEvents();
 			return false;
 		}
 
-		// Check if user already answered the call via CallKit
 		const initialEvents = await RNCallKeep.getInitialEvents();
 		console.log('[VoIP][iOS] CallKeep initial events:', JSON.stringify(initialEvents, null, 2));
 
