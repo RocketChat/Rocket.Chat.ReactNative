@@ -8,7 +8,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import I18n from '../../i18n';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { useTheme } from '../../theme';
-import { isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
@@ -91,7 +90,7 @@ const ActionSheet = React.memo(
 			data?.onClose?.();
 		};
 
-		const bottomSheetStyle = isTablet ? styles.bottomSheet : { marginRight: right, marginLeft: left };
+		const bottomSheetStyle = { marginRight: right, marginLeft: left };
 
 		return (
 			<>
