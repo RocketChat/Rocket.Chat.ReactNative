@@ -29,13 +29,15 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 				onError: e => {
 					log(e);
 				},
-				maxHeight: 1000,
-				maxWidth: 1000
-			}).then(image => {
-				setImageDimensions({ width: image.width, height: image.height });
-			}).catch(e => {
-				log(e);
-			});
+				maxHeight: 100,
+				maxWidth: 100
+			})
+				.then(image => {
+					setImageDimensions({ width: image.width, height: image.height });
+				})
+				.catch(e => {
+					log(e);
+				});
 		}
 	}, [uri, status]);
 
