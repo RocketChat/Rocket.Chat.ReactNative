@@ -4374,7 +4374,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="t (unix): "
+          accessibilityLabel="Unix timestamp formats"
           style={
             [
               {
@@ -4388,7 +4388,62 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-          t (unix): 
+          Unix timestamp formats
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="t - Short time: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          t - Short time: 
         </Text>
         <Text
           onPress={[Function]}
@@ -4448,7 +4503,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="t (iso): "
+          accessibilityLabel="T - Long time: "
           style={
             [
               {
@@ -4462,81 +4517,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-          t (iso): 
-        </Text>
-        <Text
-          onPress={[Function]}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "backgroundColor": "#D7DBE0",
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           12:16 PM 
-        </Text>
-      </Text>
-    </Text>
-  </View>
-  <View
-    style={
-      {
-        "gap": 2,
-      }
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
-      }
-    >
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="T (unix): "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          T (unix): 
+          T - Long time: 
         </Text>
         <Text
           onPress={[Function]}
@@ -4596,7 +4577,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="T (iso): "
+          accessibilityLabel="d - Short date: "
           style={
             [
               {
@@ -4610,81 +4591,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-          T (iso): 
-        </Text>
-        <Text
-          onPress={[Function]}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "backgroundColor": "#D7DBE0",
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           12:16:24 PM 
-        </Text>
-      </Text>
-    </Text>
-  </View>
-  <View
-    style={
-      {
-        "gap": 2,
-      }
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
-      }
-    >
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="d (unix): "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          d (unix): 
+          d - Short date: 
         </Text>
         <Text
           onPress={[Function]}
@@ -4744,7 +4651,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="d (iso): "
+          accessibilityLabel="D - Long date: "
           style={
             [
               {
@@ -4758,81 +4665,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-          d (iso): 
-        </Text>
-        <Text
-          onPress={[Function]}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "backgroundColor": "#D7DBE0",
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           01/23/2026 
-        </Text>
-      </Text>
-    </Text>
-  </View>
-  <View
-    style={
-      {
-        "gap": 2,
-      }
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
-      }
-    >
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="D (unix): "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          D (unix): 
+          D - Long date: 
         </Text>
         <Text
           onPress={[Function]}
@@ -4892,7 +4725,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="D (iso): "
+          accessibilityLabel="f - Short date/time: "
           style={
             [
               {
@@ -4906,81 +4739,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-          D (iso): 
-        </Text>
-        <Text
-          onPress={[Function]}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "backgroundColor": "#D7DBE0",
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           Friday, Jan 23, 2026 
-        </Text>
-      </Text>
-    </Text>
-  </View>
-  <View
-    style={
-      {
-        "gap": 2,
-      }
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
-      }
-    >
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="f (unix): "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          f (unix): 
+          f - Short date/time: 
         </Text>
         <Text
           onPress={[Function]}
@@ -5040,7 +4799,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="f (iso): "
+          accessibilityLabel="F - Long date/time: "
           style={
             [
               {
@@ -5054,81 +4813,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-          f (iso): 
-        </Text>
-        <Text
-          onPress={[Function]}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "backgroundColor": "#D7DBE0",
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           Friday, Jan 23, 2026 12:16 PM 
-        </Text>
-      </Text>
-    </Text>
-  </View>
-  <View
-    style={
-      {
-        "gap": 2,
-      }
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
-      }
-    >
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="F (unix): "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          F (unix): 
+          F - Long date/time: 
         </Text>
         <Text
           onPress={[Function]}
@@ -5188,7 +4873,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="F (iso): "
+          accessibilityLabel="R - Relative time: "
           style={
             [
               {
@@ -5202,81 +4887,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-          F (iso): 
-        </Text>
-        <Text
-          onPress={[Function]}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "left",
-              },
-              {
-                "backgroundColor": "#D7DBE0",
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-           Friday, Jan 23, 2026 12:16:24 PM 
-        </Text>
-      </Text>
-    </Text>
-  </View>
-  <View
-    style={
-      {
-        "gap": 2,
-      }
-    }
-  >
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "lineHeight": 22,
-            "textAlign": "left",
-          },
-          {
-            "color": "#2F343D",
-          },
-        ]
-      }
-    >
-      <Text
-        style={
-          {
-            "backgroundColor": "transparent",
-            "flexShrink": 1,
-            "fontFamily": "Inter",
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
-        }
-      >
-        <Text
-          accessibilityLabel="R (unix): "
-          style={
-            [
-              {
-                "flexShrink": 1,
-                "fontSize": 16,
-                "lineHeight": 22,
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          R (unix): 
+          R - Relative time: 
         </Text>
         <Text
           onPress={[Function]}
@@ -5336,7 +4947,7 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityLabel="R (iso): "
+          accessibilityLabel="ISO timestamp formats"
           style={
             [
               {
@@ -5350,7 +4961,62 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-          R (iso): 
+          ISO timestamp formats
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="t - Short time: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          t - Short time: 
         </Text>
         <Text
           onPress={[Function]}
@@ -5369,7 +5035,451 @@ exports[`Story Snapshots: Timestamp should match snapshot 1`] = `
             ]
           }
         >
-           18 days ago 
+           12:00 AM 
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="T - Long time: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          T - Long time: 
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           12:00:00 AM 
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="d - Short date: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          d - Short date: 
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           01/01/2025 
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="D - Long date: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          D - Long date: 
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           Wednesday, Jan 01, 2025 
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="f - Short date/time: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          f - Short date/time: 
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           Wednesday, Jan 01, 2025 12:00 AM 
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="F - Long date/time: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          F - Long date/time: 
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           Wednesday, Jan 01, 2025 12:00:00 AM 
+        </Text>
+      </Text>
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "gap": 2,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "textAlign": "left",
+          },
+          {
+            "color": "#2F343D",
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
+          }
+        }
+      >
+        <Text
+          accessibilityLabel="R - Relative time: "
+          style={
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+          R - Relative time: 
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "left",
+              },
+              {
+                "backgroundColor": "#D7DBE0",
+                "color": "#2F343D",
+              },
+            ]
+          }
+        >
+           a year ago 
         </Text>
       </Text>
     </Text>
