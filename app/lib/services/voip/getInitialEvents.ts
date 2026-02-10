@@ -42,6 +42,19 @@ export const setupVoipEventListeners = (): (() => void) => {
 				setVoipPushToken(token);
 			})
 		);
+
+		subscriptions.push(
+			RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+				console.log(`[VoIP][${platform}] Answer call event listener:`, callUUID);
+				mediaSessionInstance.answerCall(callUUID);
+			})
+		);
+		subscriptions.push(
+			RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
+				console.log(`[VoIP][${platform}] End call event listener:`, callUUID);
+				mediaSessionInstance.endCall(callUUID);
+			})
+		);
 	}
 
 	// Listen for VoIP call events (when app is already running)
@@ -58,7 +71,7 @@ export const setupVoipEventListeners = (): (() => void) => {
 						host: data.host
 					})
 				);
-				// await mediaSessionInstance.answerCall(data.callUUID);
+				await mediaSessionInstance.answerCall(data.callUUID);
 			} catch (error) {
 				console.error(`[VoIP][${platform}] Error handling call action event:`, error);
 			}
