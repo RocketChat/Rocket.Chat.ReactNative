@@ -11,20 +11,20 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-header'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'room-actions-info'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'room-actions-info'
 - extendedWaitUntil:
     visible:
       id: 'room-info-view'
-    timeout: 
+    timeout:

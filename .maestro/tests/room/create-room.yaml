@@ -18,7 +18,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-create-channel'
 
@@ -26,94 +26,94 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
-    timeout: 
+    timeout:
 
 # should have search input
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-search'
-    timeout: 
+    timeout:
 
 # should back to rooms list
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-close'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'new-message-view-close'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
-    timeout: 
+    timeout:
 
 # should search user and navigate
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-search'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'new-message-view-search'
 - inputText: 'rocket.cat'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-item-rocket.cat'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'new-message-view-item-rocket.cat'
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-rocket.cat'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 
 # should navigate to select users
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-create-channel'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'new-message-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'select-users-view'
-    timeout: 
+    timeout:
 
 # should search users
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-search'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'select-users-view-search'
 - inputText: 'rocket.cat'
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-item-rocket.cat'
-    timeout: 
+    timeout:
 
 # should select/unselect user
 - tapOn:
@@ -121,13 +121,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'selected-user-rocket.cat'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'selected-user-rocket.cat'
 - extendedWaitUntil:
     notVisible:
       id: 'selected-user-rocket.cat'
-    timeout: 
+    timeout:
 - assertVisible:
     id: 'select-users-view-item-rocket.cat'
 - tapOn:
@@ -135,37 +135,37 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'selected-user-rocket.cat'
-    timeout: 
+    timeout:
 
 # should navigate to create channel view
 - extendedWaitUntil:
     visible:
       id: 'selected-users-view-submit'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'selected-users-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-view'
-    timeout: 
+    timeout:
 
 # should render all fields
 - extendedWaitUntil:
     visible:
       id: 'create-channel-name'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-type'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-readonly'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-broadcast'
-    timeout: 
+    timeout:
 
 # should get invalid room
 - tapOn:
@@ -175,13 +175,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-submit'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'create-channel-submit'
 - extendedWaitUntil:
     visible:
       text: '.*A channel with name general exists.*'
-    timeout: 
+    timeout:
 - tapOn: 'OK'
 
 # should create public room
@@ -196,65 +196,65 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-submit'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'create-channel-submit'
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: ${'room-view-title-' + output.publicRoomName}
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: ${'rooms-list-view-item-' + output.publicRoomName}
-    timeout: 
+    timeout:
 
 # should create private room
 - evalScript: ${output.privateRoomName = 'private' + output.random()}
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-create-channel'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'new-message-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'select-users-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'select-users-view-item-rocket.cat'
 - extendedWaitUntil:
     visible:
       id: 'selected-user-rocket.cat'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'selected-users-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${output.privateRoomName}
@@ -262,63 +262,63 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-submit'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'create-channel-submit'
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: ${'room-view-title-' + output.privateRoomName}
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: ${'rooms-list-view-item-' + output.privateRoomName}
-    timeout: 
+    timeout:
 
 # should create empty room
 - evalScript: ${output.emptyRoomName = 'empty' + output.random()}
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-create-channel'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'new-message-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'select-users-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'selected-users-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-name'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${output.emptyRoomName}
@@ -326,26 +326,26 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-submit'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'create-channel-submit'
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: ${'room-view-title-' + output.emptyRoomName}
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: ${'rooms-list-view-item-' + output.emptyRoomName}
-    timeout: 
+    timeout:
 
 # should create a room with non-latin alphabet and do a case insensitive search for it
 - runFlow:
@@ -358,37 +358,37 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view'
-          timeout: 
+          timeout:
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view-create-channel'
-          timeout: 
+          timeout:
       - tapOn:
           id: 'rooms-list-view-create-channel'
       - extendedWaitUntil:
           visible:
             id: 'new-message-view'
-          timeout: 
+          timeout:
       - extendedWaitUntil:
           visible:
             id: 'new-message-view-create-channel'
-          timeout: 
+          timeout:
       - tapOn:
           id: 'new-message-view-create-channel'
       - extendedWaitUntil:
           visible:
             id: 'select-users-view'
-          timeout: 
+          timeout:
       - tapOn:
           id: 'selected-users-view-submit'
       - extendedWaitUntil:
           visible:
             id: 'create-channel-view'
-          timeout: 
+          timeout:
       - extendedWaitUntil:
           visible:
             id: 'create-channel-name'
-          timeout: 
+          timeout:
       - tapOn:
           id: 'create-channel-name'
       - inputText: ${output.nonLatinRoomName}
@@ -396,36 +396,36 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'create-channel-submit'
-          timeout: 
+          timeout:
       - tapOn:
           id: 'create-channel-submit'
       - extendedWaitUntil:
           visible:
             id: 'room-view'
-          timeout: 
+          timeout:
       - extendedWaitUntil:
           visible:
             id: ${'room-view-title-' + output.nonLatinRoomName}
-          timeout: 
+          timeout:
       - runFlow: '../../helpers/go-back.yaml'
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view'
-          timeout: 
+          timeout:
       - extendedWaitUntil:
           visible:
             id: ${'rooms-list-view-item-' + output.nonLatinRoomName}
-          timeout: 
+          timeout:
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view-search'
-          timeout: 
+          timeout:
       - tapOn:
           id: 'rooms-list-view-search'
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view-search-input'
-          timeout: 
+          timeout:
       - tapOn:
           id: 'rooms-list-view-search-input'
       - inputText: ${output.nonLatinRoomNameLower}
@@ -433,14 +433,14 @@ tags:
       - extendedWaitUntil:
           visible:
             id: ${'rooms-list-view-item-' + output.nonLatinRoomName}
-          timeout: 
+          timeout:
       - tapOn:
           id: ${'rooms-list-view-item-' + output.nonLatinRoomName}
       - extendedWaitUntil:
           visible:
             id: 'room-view'
-          timeout: 
+          timeout:
       - extendedWaitUntil:
           visible:
             id: ${'room-view-title-' + output.nonLatinRoomName}
-          timeout: 
+          timeout:

@@ -7,26 +7,26 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-profile'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'sidebar-profile'
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'preferences-view-open'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'preferences-view-open'
 - extendedWaitUntil:
     visible:
       id: 'preferences-view'
-    timeout: 
+    timeout:

@@ -17,23 +17,23 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-profile'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'sidebar-profile'
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
-    timeout: 
+    timeout:
 
 # should have profile view
 - assertVisible:
@@ -63,7 +63,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
-    timeout: 
+    timeout:
 
 # submit button should be disabled because of no changes
 - assertVisible:
@@ -74,7 +74,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: 'profile-view-change-my-password-button'
-    timeout: 
+    timeout:
 
 # swipe back to top
 - swipe:
@@ -101,7 +101,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
-    timeout: 
+    timeout:
     centerElement: true
 - tapOn:
     id: 'profile-view-submit'
@@ -126,7 +126,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: 'profile-view-submit'
-    timeout: 
+    timeout:
     centerElement: true
 - tapOn:
     id: 'profile-view-submit'
@@ -135,7 +135,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: 'profile-view-email'
-    timeout: 
+    timeout:
 - runFlow:
     when:
       platform: ios
@@ -151,15 +151,15 @@ tags:
     element:
       id: 'profile-view-submit'
     centerElement: true
-    timeout: 
+    timeout:
 - tapOn:
     id: 'profile-view-submit'
 - waitForAnimationToEnd:
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'profile-view-enter-password-sheet-input'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'profile-view-enter-password-sheet-input'
 - inputText: ${output.user.password}
@@ -168,19 +168,19 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'profile-view-enter-password-sheet-input'
-    timeout: 
+    timeout:
 
 # should change password
 - scrollUntilVisible:
     element:
       id: 'profile-view-change-my-password-button'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'profile-view-change-my-password-button'
 - extendedWaitUntil:
     visible:
       id: 'change-password-view-current-password'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'change-password-view-current-password'
 - inputText: ${output.user.password}
@@ -197,7 +197,7 @@ tags:
 - scrollUntilVisible:
     element:
       id: 'change-password-view-set-new-password-button'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'change-password-view-set-new-password-button'
     retryTapIfNoChange: true
@@ -211,4 +211,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
-    timeout: 
+    timeout:

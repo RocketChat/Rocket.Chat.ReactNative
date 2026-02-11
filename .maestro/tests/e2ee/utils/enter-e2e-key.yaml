@@ -6,16 +6,16 @@ tags:
 ---
 - extendedWaitUntil:
     visible: '.*is encrypted.*'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible: '.*Enter your end-to-end encryption password to access.*'
-    timeout: 
+    timeout:
 - tapOn:
     text: 'Enter E2EE password'
 - extendedWaitUntil:
     visible:
       id: 'e2e-enter-your-password-view-password'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'e2e-enter-your-password-view-password'
 - inputText: ${output.data.e2eePassword}
@@ -24,4 +24,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-messages'
-    timeout: 
+    timeout:

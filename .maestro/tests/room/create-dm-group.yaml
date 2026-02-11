@@ -21,7 +21,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-create-channel'
 
@@ -29,19 +29,19 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
-    timeout: 
+    timeout:
 
 # should have search input
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-search'
-    timeout: 
+    timeout:
 
 # should navigate to create DM
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-create-direct-message'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'new-message-view-create-direct-message'
 
@@ -49,14 +49,14 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-search'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'select-users-view-search'
 - inputText: 'rocket.cat'
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-item-rocket.cat'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'select-users-view-item-rocket.cat'
 - tapOn:
@@ -66,13 +66,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-item-${output.otherUser.username}'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'select-users-view-item-${output.otherUser.username}'
 - extendedWaitUntil:
     visible:
       id: 'selected-users-view-submit'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'selected-users-view-submit'
 
@@ -80,4 +80,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-rocket.cat, ${output.otherUser.username}'
-    timeout: 
+    timeout:

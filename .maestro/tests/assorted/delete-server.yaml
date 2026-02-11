@@ -25,23 +25,23 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-server-add'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-header-server-add'
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'new-server-view-input'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'new-server-view-input'
 - inputText: ${output.data.alternateServer}
@@ -49,17 +49,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'workspace-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'workspace-view-register'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'workspace-view-register'
 - extendedWaitUntil:
     visible:
       id: 'register-view-name'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/create-account.yaml'
 - runFlow:
     file: './utils/check-server.yaml'
@@ -70,13 +70,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.server}'
-    timeout: 
+    timeout:
 
 # swipe left to reveal delete button
 - swipe:
@@ -92,7 +92,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*Delete.*'
-    timeout: 
+    timeout:
 - runFlow:
     when:
       platform: iOS
@@ -112,14 +112,14 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     notVisible:
       id: 'server-item-${output.data.server}'
-    timeout: 
+    timeout:

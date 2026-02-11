@@ -15,9 +15,9 @@ tags:
 - extendedWaitUntil:
     visible:
       text: .*Are you sure.*
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       text: .*Make sure you've saved it carefully somewhere else.*
-    timeout: 
+    timeout:
 - tapOn: Yes, change it

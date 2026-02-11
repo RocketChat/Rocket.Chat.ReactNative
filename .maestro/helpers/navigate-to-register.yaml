@@ -8,15 +8,15 @@ tags:
 - inputText: ${server || output.data.server}
 - extendedWaitUntil:
     visible: 'Connect'
-    timeout: 
+    timeout:
 - assertVisible: 'Connect'
 - tapOn: Connect
 - extendedWaitUntil:
     visible: 'Create an account'
-    timeout: 
+    timeout:
 - assertVisible: 'Create an account'
 - tapOn: Create an account
 - extendedWaitUntil:
     visible:
       id: 'register-view'
-    timeout: 
+    timeout:

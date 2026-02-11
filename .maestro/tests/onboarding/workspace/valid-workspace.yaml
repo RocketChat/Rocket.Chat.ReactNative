@@ -14,7 +14,7 @@ tags:
 - tapOn: 'Connect'
 - extendedWaitUntil:
     visible: 'Login'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible: 'Create an account'
-    timeout: 
+    timeout:

@@ -7,21 +7,21 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       text: '.*Connected to ${server}.*'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-close-drawer'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'sidebar-close-drawer'
 
@@ -32,4 +32,4 @@ tags:
       - extendedWaitUntil:
           notVisible:
             id: 'sidebar-close-drawer'
-          timeout: 
+          timeout:

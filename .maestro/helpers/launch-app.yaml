@@ -12,7 +12,7 @@ tags:
           permissions:
             all: allow
       - waitForAnimationToEnd:
-          timeout: 
+          timeout:
       - runFlow:
           when:
             visible: '.*Pixel Launcher.*'

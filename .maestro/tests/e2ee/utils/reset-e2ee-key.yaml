@@ -12,20 +12,20 @@ tags:
 - extendedWaitUntil:
     visible:
       id: e2e-encryption-security-view-reset-key
-    timeout: 
+    timeout:
 - tapOn:
     id: e2e-encryption-security-view-reset-key
 - extendedWaitUntil:
     visible:
       text: .*Are you sure.*
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       text: .*You're going to be logged out.*
-    timeout: 
+    timeout:
 - tapOn:
     text: Yes, reset it
 - extendedWaitUntil:
     visible:
       id: new-server-view
-    timeout: 
+    timeout:

@@ -14,4 +14,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${ROOM}'
-    timeout: 
+    timeout:

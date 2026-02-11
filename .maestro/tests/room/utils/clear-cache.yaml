@@ -7,39 +7,39 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'header-back'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - waitForAnimationToEnd:
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'sidebar-settings'
 - waitForAnimationToEnd:
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'settings-view-clear-cache'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'settings-view-clear-cache'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: '.*This will clear all your offline data.*'
-    timeout: 
+    timeout:
 - tapOn:
     text: 'Clear'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:

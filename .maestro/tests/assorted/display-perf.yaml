@@ -19,28 +19,28 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
     label: 'Should have rooms list screen'
 
 # should have room item
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-general'
-    timeout: 
+    timeout:
     label: 'Should have room item'
 
 # should have create channel button
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
-    timeout: 
+    timeout:
     label: 'Should have create channel button'
 
 # should have sidebar button
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 
+    timeout:
     label: 'Should have sidebar button'
 
 # should go to Display Preferences
@@ -52,53 +52,53 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-expanded'
-    timeout: 
+    timeout:
     label: 'Should have view expanded'
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-condensed'
-    timeout: 
+    timeout:
     label: 'Should have view condensed'
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-avatars'
-    timeout: 
+    timeout:
     label: 'Should have view avatars'
 
 # should have Sort By button
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-activity'
-    timeout: 
+    timeout:
     label: 'Should have sort by activity'
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-name'
-    timeout: 
+    timeout:
     label: 'Should have sort by name'
 
 # should have Group by button
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-unread'
-    timeout: 
+    timeout:
     label: 'Should have group by unread'
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-favorites'
-    timeout: 
+    timeout:
     label: 'Should have group by favorites'
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-types'
-    timeout: 
+    timeout:
     label: 'Should have group by types'
 
 # should appear the last message in RoomList when is Expanded
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-expanded'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'display-pref-view-expanded'
 - runFlow:
@@ -108,7 +108,7 @@ tags:
     visible:
       id: 'room-item-last-message-container'
       index: 0
-    timeout: 
+    timeout:
     label: 'Should appear the last message in RoomList when is Expanded'
 
 # should not appear the last message in RoomList when is Condensed
@@ -118,7 +118,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-condensed'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'display-pref-view-condensed'
     label: 'Should tap on view condensed'
@@ -128,7 +128,7 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'room-item-last-message-container'
-    timeout: 
+    timeout:
     label: 'Should not appear the last message in RoomList when is Condensed'
 
 # should have avatar as default in room list
@@ -136,7 +136,7 @@ tags:
     visible:
       id: 'avatar'
       index: 0
-    timeout: 
+    timeout:
     label: 'Should have avatar as default in room list'
 
 # should hide the avatar
@@ -146,7 +146,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'display-pref-view-avatar-switch'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'display-pref-view-avatar-switch'
     label: 'Should tap on avatar switch'
@@ -156,5 +156,5 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'avatar'
-    timeout: 
+    timeout:
     label: 'Should hide the avatar'

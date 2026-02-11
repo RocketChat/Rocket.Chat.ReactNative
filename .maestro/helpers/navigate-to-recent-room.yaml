@@ -7,20 +7,20 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-search'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-search-input'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${ROOM}'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-item-${ROOM}'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${ROOM}'
-    timeout: 
+    timeout:

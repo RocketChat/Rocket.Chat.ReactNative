@@ -19,25 +19,25 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'sidebar-settings'
 - extendedWaitUntil:
     visible:
       id: 'settings-view'
-    timeout: 
+    timeout:
 - waitForAnimationToEnd:
-    timeout: 
+    timeout:
 
 # should have settings view
 - assertVisible:
@@ -91,7 +91,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'settings-view-get-help-documentation'
-    timeout: 
+    timeout:
 - assertVisible:
     id: 'settings-view-get-help-accessibility-statement'
 - assertVisible:
@@ -103,30 +103,30 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'settings-view'
-    timeout: 
+    timeout:
 - waitForAnimationToEnd:
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'settings-view-clear-cache'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'settings-view-clear-cache'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: '.*This will clear all your offline data.*'
-    timeout: 
+    timeout:
 - tapOn:
     text: 'Clear'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.room.name}'
-    timeout: 
+    timeout:
 
 # should navigate to legalview
 - assertVisible:
@@ -136,17 +136,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'sidebar-settings'
 - extendedWaitUntil:
     visible:
       id: 'settings-view'
-    timeout: 
+    timeout:
 - assertVisible:
     id: 'settings-view-legal'
 - tapOn:
@@ -154,7 +154,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'legal-view'
-    timeout: 
+    timeout:
 
 # should have terms of service button
 - assertVisible:

@@ -18,24 +18,24 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-search'
-    timeout: 
+    timeout:
 - tapOn:
     id: rooms-list-view-search
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-search-input'
-    timeout: 
+    timeout:
 - pressKey: Back
 - pressKey: Back
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     notVisible:
       id: 'rooms-list-view-search-input'
-    timeout: 
+    timeout:

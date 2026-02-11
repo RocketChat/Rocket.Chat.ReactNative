@@ -20,13 +20,13 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*message 50.*'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'thread-count-55'
-    timeout: 
+    timeout:
 - scrollUntilVisible:
     element:
       id: 'message-content-message 1'
     direction: UP
-    timeout: 
+    timeout:

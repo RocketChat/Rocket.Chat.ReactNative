@@ -28,17 +28,17 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Block'
-    timeout: 
+    timeout:
 - tapOn: 'Block'
 - extendedWaitUntil:
     visible:
       text: 'Unblock'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
@@ -47,7 +47,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'This room is blocked'
-    timeout: 
+    timeout:
 
 # should unblock user
 - runFlow:
@@ -55,17 +55,17 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Unblock'
-    timeout: 
+    timeout:
 - tapOn: 'Unblock'
 - extendedWaitUntil:
     visible:
       text: 'Block'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
@@ -74,7 +74,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-composer'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 
 # should ignore user from message
@@ -87,19 +87,19 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'username-header-${output.otherUser.username}'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Ignore'
-    timeout: 
+    timeout:
 - tapOn: 'Ignore'
 - extendedWaitUntil:
     visible:
       text: 'Unignore'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 
 # should tap to display message
@@ -111,14 +111,14 @@ tags:
     visible:
       text: .*Message ignored. Tap to display it.*
       index: 0
-    timeout: 
+    timeout:
 - tapOn:
     text: .*Message ignored. Tap to display it.*
     index: 0
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'
-    timeout: 
+    timeout:
 - runFlow:
     when:
       platform: android
@@ -126,7 +126,7 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'message-content-message-01'
-          timeout: 
+          timeout:
 - runFlow:
     when:
       platform: iOS
@@ -134,23 +134,23 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'message-content-message-02'
-          timeout: 
+          timeout:
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'username-header-${output.otherUser.username}'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Unignore'
-    timeout: 
+    timeout:
 - tapOn: 'Unignore'
 - extendedWaitUntil:
     visible:
       text: 'Ignore'
-    timeout: 
+    timeout:
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
@@ -160,7 +160,7 @@ tags:
     visible:
       id: 'message-content-message-02'
       index: 0
-    timeout: 
+    timeout:
 
 # should go to user info view from a DM
 - runFlow: '../../helpers/go-back.yaml'
@@ -174,23 +174,23 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Report'
-    timeout: 
+    timeout:
 - tapOn: 'Report'
 - extendedWaitUntil:
     visible:
       id: 'report-user-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'report-user-view-input'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'report-user-view-input'
 - inputText: 'e2e test'
 - extendedWaitUntil:
     visible:
       id: 'report-user-view-submit'
-    timeout: 
+    timeout:
 - hideKeyboard
 - tapOn:
     id: 'report-user-view-submit'
@@ -198,7 +198,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.otherUser.username}'
-    timeout: 
+    timeout:
 
 # should go to user info view from a channel
 - runFlow: '../../helpers/go-back.yaml'
@@ -209,12 +209,12 @@ tags:
 - extendedWaitUntil:
     visible:
       text: ${output.otherUser.username}
-    timeout: 
+    timeout:
 - tapOn: ${output.otherUser.username}
 - extendedWaitUntil:
     visible:
       id: 'room-info-view'
-    timeout: 
+    timeout:
 
 # should report a user from a channel
 - extendedWaitUntil:
@@ -224,11 +224,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'report-user-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'report-user-view-input'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'report-user-view-input'
 - inputText: 'e2e test'
@@ -236,11 +236,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'report-user-view-submit'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'report-user-view-submit'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 
+    timeout:

@@ -6,13 +6,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: room-members-view-item-${username}
-    timeout: 
+    timeout:
 - tapOn:
     id: room-members-view-item-${username}
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout:
 - assertVisible:
     id: action-sheet-handle
 - tapOn:
@@ -20,4 +20,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout:

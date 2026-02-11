@@ -41,30 +41,30 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-content-Hello room'
-    timeout: 
+    timeout:
 - longPressOn:
     id: 'message-content-Hello room'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       text: 'Forward'
-    timeout: 
+    timeout:
 - tapOn: 'Forward'
 
 # should forward the message
 - extendedWaitUntil:
     visible:
       id: 'forward-message-view'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'select-person-or-channel'
 - extendedWaitUntil:
     visible:
       id: 'multi-select-search'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'multi-select-search'
 - inputText: ${output.otherUser.username}
@@ -72,7 +72,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: multi-select-item-${output.otherUser.username.toLowerCase()}
-    timeout: 
+    timeout:
 - tapOn:
     id: multi-select-item-${output.otherUser.username.toLowerCase()}
 - swipe:
@@ -82,17 +82,17 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'multi-select-search'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       id: 'forward-message-view-send'
-    timeout: 
+    timeout:
 - tapOn:
     id: 'forward-message-view-send'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 
+    timeout:
 
 # should go to otherUser DM and verify if exist both messages
 - runFlow: '../../helpers/go-back.yaml'
@@ -103,8 +103,8 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-content-Hello user'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     visible:
       text: 'Hello room'
-    timeout: 
+    timeout:

@@ -153,14 +153,14 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*Yes.*'
-    timeout: 
+    timeout:
 - tapOn:
     text: '.*Yes.*'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout:
 - extendedWaitUntil:
     notVisible:
       id: 'rooms-list-view-item-${output.data.channels.detoxpublic.name}'
-    timeout: 
+    timeout:
