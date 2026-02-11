@@ -18,6 +18,7 @@ import android.view.ViewOutlineProvider
 import com.bumptech.glide.Glide
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
+import chat.rocket.reactnative.notification.Ejson
 import android.graphics.Typeface
 
 /**
@@ -107,18 +108,13 @@ class IncomingCallActivity : Activity() {
         loadAvatar(payload)
     }
 
-    /**
-     * Loads avatar from ${host}/avatar/username.
-     */
     private fun loadAvatar(payload: VoipPayload) {
         if (payload.host.isBlank() || payload.username.isBlank()) return
 
         val imageView = findViewById<ImageView>(R.id.avatar)
-        val baseUrl = payload.host.trim().removeSuffix("/")
-        val url = if (baseUrl.startsWith("http")) baseUrl else "https://$baseUrl"
-        val username = payload.username.trim()
         val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
-        val avatarUrl = "$url/avatar/$username?format=png&size=$sizePx"
+        val avatarUrl = Ejson.forCallerAvatar(payload.host, payload.username)?.getCallerAvatarUri(sizePx)
+            ?: return
         val cornerRadiusPx = (8 * resources.displayMetrics.density).toFloat()
 
         Glide.with(this)
@@ -153,8 +149,11 @@ class IncomingCallActivity : Activity() {
     private fun applyAvatarRoundCorners(imageView: ImageView, cornerRadiusPx: Float) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
         imageView.post {
-            imageView.outlineProvider = ViewOutlineProvider { outline ->
-                outline.setRoundRect(0, 0, imageView.width, imageView.height, cornerRadiusPx)
+            val radius = cornerRadiusPx
+            imageView.outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: android.graphics.Outline) {
+                    outline.setRoundRect(0, 0, view.width, view.height, radius)
+                }
             }
             imageView.clipToOutline = true
         }
