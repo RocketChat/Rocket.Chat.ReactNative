@@ -31,10 +31,9 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 				},
 				maxHeight: 1000,
 				maxWidth: 1000
-			})
-				.then(image => {
-					setImageDimensions({ width: image.width, height: image.height });
-				})
+			}).then(image => {
+				setImageDimensions({ width: image.width, height: image.height });
+			});
 		}
 	}, [uri, status]);
 
