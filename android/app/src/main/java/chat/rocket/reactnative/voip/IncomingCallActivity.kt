@@ -103,8 +103,8 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun updateUI(payload: VoipPayload) {
-        findViewById<TextView>(R.id.caller_name)?.text = payload.caller.ifEmpty { "" }
-        findViewById<TextView>(R.id.host_name)?.text = payload.hostName.ifEmpty { "" }
+        findViewById<TextView>(R.id.caller_name)?.text = payload.caller.ifEmpty { getString(R.string.incoming_call_unknown_caller) }
+        findViewById<TextView>(R.id.host_name)?.text = payload.hostName.ifEmpty { getString(R.string.incoming_call_unknown_host) }
 
         loadAvatar(payload)
     }
