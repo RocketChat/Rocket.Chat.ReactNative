@@ -6,6 +6,7 @@ export const ACTION_SHEET_MIN_HEIGHT_FRACTION = 0.35;
 export const ACTION_SHEET_MAX_HEIGHT_FRACTION = 0.75;
 export const HANDLE_HEIGHT = 28;
 export const CANCEL_HEIGHT = 64;
+export const CONTENT_PADDING = 22;
 
 interface IGetDetentsParams {
 	data: TActionSheetOptions;
@@ -53,9 +54,10 @@ export const getDetents = ({ data, windowHeight, contentHeight, itemHeight, bott
 		return [fraction];
 	}
 	if (contentHeight > 0) {
-		const fraction = Math.min(contentHeight / windowHeight, ACTION_SHEET_MAX_HEIGHT_FRACTION);
+		const heightWithPadding = contentHeight + CONTENT_PADDING;
+		const fraction = Math.min(heightWithPadding / windowHeight, ACTION_SHEET_MAX_HEIGHT_FRACTION);
 		const contentDetent = Math.max(0.25, fraction);
-		return contentDetent > ACTION_SHEET_MIN_HEIGHT_FRACTION ? [ACTION_SHEET_MIN_HEIGHT_FRACTION, contentDetent] : [contentDetent];
+		return [contentDetent];
 	}
 	return [ACTION_SHEET_MIN_HEIGHT_FRACTION, 'auto'];
 };

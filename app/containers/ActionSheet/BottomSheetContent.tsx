@@ -1,6 +1,7 @@
 import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -61,9 +62,11 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 		);
 	}
 	return (
-		<View testID='action-sheet' style={[styles.contentContainer]} onLayout={onLayout}>
-			{children}
-		</View>
+		<GestureHandlerRootView style={styles.contentContainer}>
+			<View testID='action-sheet' onLayout={onLayout}>
+				{children}
+			</View>
+		</GestureHandlerRootView>
 	);
 });
 

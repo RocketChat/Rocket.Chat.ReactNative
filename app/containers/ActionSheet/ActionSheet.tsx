@@ -37,13 +37,9 @@ const ActionSheet = React.memo(
 			bottom
 		});
 
-		const handleContentLayout = useCallback(
-			({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-				const height = Math.min(layout.height, windowHeight * ACTION_SHEET_MAX_HEIGHT_FRACTION);
-				setContentHeight(height);
-			},
-			[windowHeight]
-		);
+		const handleContentLayout = useCallback(({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+			setContentHeight(layout.height);
+		}, []);
 
 		const hide = () => {
 			sheetRef.current?.dismiss();
