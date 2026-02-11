@@ -9,13 +9,18 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.ImageButton
+import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.util.Log
-import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
+import android.graphics.Typeface
 
 /**
  * Full-screen Activity displayed when an incoming VoIP call arrives.
@@ -56,6 +61,7 @@ class IncomingCallActivity : Activity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setContentView(R.layout.activity_incoming_call)
+        applyInterFont()
 
         val voipPayload = VoipPayload.fromBundle(intent.extras)
         if (voipPayload == null || !voipPayload.isVoipIncomingCall()) {
@@ -72,15 +78,80 @@ class IncomingCallActivity : Activity() {
         setupButtons(voipPayload)
     }
 
-    private fun updateUI(payload: VoipPayload) {
-        val callerView = findViewById<TextView>(R.id.caller_name)
-        callerView?.text = payload.caller
+    private fun applyInterFont() {
+        val interRegular = try {
+            Typeface.createFromAsset(assets, "fonts/Inter-Regular.otf")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load Inter-Regular font", e)
+            return
+        }
+        val interBold = try {
+            Typeface.createFromAsset(assets, "fonts/Inter-Bold.otf")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load Inter-Bold font", e)
+            interRegular
+        }
+        listOf(
+            R.id.header_text,
+            R.id.caller_avatar_initial,
+            R.id.host_name,
+            R.id.incoming_call_reject_label,
+            R.id.incoming_call_accept_label
+        ).forEach { id ->
+            findViewById<TextView>(id)?.setTypeface(interRegular)
+        }
+        findViewById<TextView>(R.id.caller_name)?.setTypeface(interBold)
+    }
 
-        // Try to load avatar if available
-        // TODO: needs username to load avatar
-        val avatarView = findViewById<ImageView>(R.id.caller_avatar)
-        // Avatar loading would require additional data - can be enhanced later
-        // For now, just show a placeholder or default icon
+    private fun updateUI(payload: VoipPayload) {
+        findViewById<TextView>(R.id.caller_name)?.text = payload.caller.ifEmpty { "" }
+        findViewById<TextView>(R.id.host_name)?.text = payload.hostName.ifEmpty { "" }
+
+        // Avatar: initial as fallback, load from host/avatar/username when available
+        val initialView = findViewById<TextView>(R.id.caller_avatar_initial)
+        val avatarImageView = findViewById<ImageView>(R.id.caller_avatar_image)
+        val initial = payload.caller.firstOrNull()?.uppercaseChar()?.toString() ?: "?"
+        initialView?.text = initial
+
+        // loadAvatar(payload, avatarImageView, initialView)
+    }
+
+    /**
+     * Loads avatar from ${host}/avatar/username.
+     * Falls back to initial letter if load fails or URL is invalid.
+     * A proper avatar URL function can replace this later.
+     */
+    private fun loadAvatar(payload: VoipPayload, imageView: ImageView?, initialView: TextView?) {
+        if (imageView == null || initialView == null) return
+        if (payload.host.isBlank() || payload.caller.isBlank()) return
+
+        val baseUrl = payload.host.trim().removeSuffix("/")
+        val url = if (baseUrl.startsWith("http")) baseUrl else "https://$baseUrl"
+        val username = payload.caller.trim().let { if (it.startsWith("@")) it else "@$it" }
+        val avatarUrl = "$url/avatar/$username?format=png&size=240"
+
+        val cornerRadiusPx = (8 * resources.displayMetrics.density).toInt()
+        val requestOptions = RequestOptions()
+            .transform(CenterCrop(), RoundedCorners(cornerRadiusPx))
+
+        Glide.with(this)
+            .load(avatarUrl)
+            .apply(requestOptions)
+            .into(object : com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>(360, 360) {
+                override fun onResourceReady(
+                    resource: android.graphics.drawable.Drawable,
+                    transition: com.bumptech.glide.request.transition.Transition<in android.graphics.drawable.Drawable>?
+                ) {
+                    initialView.visibility = View.GONE
+                    imageView.visibility = View.VISIBLE
+                    imageView.setImageDrawable(resource)
+                }
+
+                override fun onLoadCleared(placeholder: android.graphics.drawable.Drawable?) {
+                    initialView.visibility = View.VISIBLE
+                    imageView.visibility = View.GONE
+                }
+            })
     }
 
     private fun startRingtone() {
@@ -105,14 +176,11 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun setupButtons(payload: VoipPayload) {
-        val acceptButton = findViewById<ImageButton>(R.id.btn_accept)
-        val declineButton = findViewById<ImageButton>(R.id.btn_decline)
-
-        acceptButton?.setOnClickListener {
+        findViewById<LinearLayout>(R.id.btn_accept)?.setOnClickListener {
             handleAccept(payload)
         }
 
-        declineButton?.setOnClickListener {
+        findViewById<LinearLayout>(R.id.btn_decline)?.setOnClickListener {
             handleDecline(payload)
         }
     }

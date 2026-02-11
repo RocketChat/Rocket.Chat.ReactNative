@@ -18,7 +18,10 @@ data class VoipPayload(
     val host: String,
     
     @SerializedName("type")
-    val type: String
+    val type: String,
+    
+    @SerializedName("hostName")
+    val hostName: String = ""
 ) {
     val notificationId: Int = callId.hashCode()
     val callUUID: String = CallIdUUID.generateUUIDv5(callId)
@@ -33,6 +36,7 @@ data class VoipPayload(
             putString("caller", caller)
             putString("host", host)
             putString("type", type)
+            putString("hostName", hostName)
             putString("callUUID", callUUID)
             putInt("notificationId", notificationId)
             // Useful flag for MainActivity to know it's handling a VoIP action
@@ -46,6 +50,7 @@ data class VoipPayload(
             putString("caller", caller)
             putString("host", host)
             putString("type", type)
+            putString("hostName", hostName)
             putString("callUUID", callUUID)
             putInt("notificationId", notificationId)
         }
@@ -58,9 +63,10 @@ data class VoipPayload(
             val callId = data["callId"] ?: return null
             val caller = data["caller"] ?: return null
             val host = data["host"] ?: return null
+            val hostName = data["hostName"] ?: ""
             if (type != "incoming_call") return null
 
-            return VoipPayload(callId, caller, host, type)
+            return VoipPayload(callId, caller, host, type, hostName)
         }
 
         fun fromBundle(bundle: Bundle?): VoipPayload? {
@@ -69,8 +75,9 @@ data class VoipPayload(
             val caller = bundle.getString("caller") ?: ""
             val host = bundle.getString("host") ?: ""
             val type = bundle.getString("type") ?: ""
+            val hostName = bundle.getString("hostName") ?: ""
 
-            return VoipPayload(callId, caller, host, type)
+            return VoipPayload(callId, caller, host, type, hostName)
         }
     }
 }

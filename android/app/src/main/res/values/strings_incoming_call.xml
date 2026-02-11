@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="incoming_call_status">Incoming call…</string>
+    <string name="incoming_call_reject">Reject</string>
+    <string name="incoming_call_accept">Accept</string>
+</resources>
