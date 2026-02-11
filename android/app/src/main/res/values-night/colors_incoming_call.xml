@@ -2,10 +2,10 @@
 <resources>
     <!-- Dark theme - mapped from app/lib/constants/colors.ts -->
     <color name="incoming_call_background">#1F2329</color>
-    <color name="incoming_call_status_text">#9EA2A8</color>
-    <color name="incoming_call_status_icon">#9EA2A8</color>
+    <color name="incoming_call_header_text">#9EA2A8</color>
+    <color name="incoming_call_header_icon">#9EA2A8</color>
     <color name="incoming_call_name">#F2F3F5</color>
-    <color name="incoming_call_org">#9EA2A8</color>
+    <color name="incoming_call_host_name">#9EA2A8</color>
     <color name="incoming_call_avatar_bg">#5F1477</color>
     <color name="incoming_call_avatar_text">#FFFFFF</color>
     <color name="incoming_call_reject_bg">#BB3E4E</color>

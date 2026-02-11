@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import chat.rocket.reactnative.utils.CallIdUUID
-import android.util.Log
 
 data class VoipPayload(
     @SerializedName("callId")
@@ -15,7 +14,7 @@ data class VoipPayload(
     val caller: String,
 
     @SerializedName("username")
-    val username: String = "",
+    val username: String,
     
     @SerializedName("host")
     val host: String,
@@ -24,7 +23,7 @@ data class VoipPayload(
     val type: String,
     
     @SerializedName("hostName")
-    val hostName: String = ""
+    val hostName: String,
 ) {
     val notificationId: Int = callId.hashCode()
     val callUUID: String = CallIdUUID.generateUUIDv5(callId)
@@ -63,14 +62,12 @@ data class VoipPayload(
 
     companion object {
         fun fromMap(data: Map<String, String>): VoipPayload? {
-            Log.d("RocketChat.VoipPayload", "Parsing VoIP payload from map: $data")
             val type = data["type"] ?: return null
             val callId = data["callId"] ?: return null
             val caller = data["caller"] ?: return null
-
             val username = data["username"] ?: return null
             val host = data["host"] ?: return null
-            val hostName = data["hostName"] ?: ""
+            val hostName = data["hostName"] ?: return null
             if (type != "incoming_call") return null
 
             return VoipPayload(callId, caller, username, host, type, hostName)
@@ -79,11 +76,11 @@ data class VoipPayload(
         fun fromBundle(bundle: Bundle?): VoipPayload? {
             if (bundle == null) return null
             val callId = bundle.getString("callId") ?: return null
-            val caller = bundle.getString("caller") ?: ""
-            val username = bundle.getString("username") ?: ""
-            val host = bundle.getString("host") ?: ""
-            val type = bundle.getString("type") ?: ""
-            val hostName = bundle.getString("hostName") ?: ""
+            val caller = bundle.getString("caller") ?: return null
+            val username = bundle.getString("username") ?: return null
+            val host = bundle.getString("host") ?: return null
+            val type = bundle.getString("type") ?: return null
+            val hostName = bundle.getString("hostName") ?: return null
 
             return VoipPayload(callId, caller, username, host, type, hostName)
         }

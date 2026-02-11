@@ -3,4 +3,5 @@
     <string name="incoming_call_status">Incoming call…</string>
     <string name="incoming_call_reject">Reject</string>
     <string name="incoming_call_accept">Accept</string>
+    <string name="incoming_call_avatar_description">Caller avatar</string>
 </resources>
