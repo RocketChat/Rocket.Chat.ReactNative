@@ -6,13 +6,13 @@ tags:
 ---
 - extendedWaitUntil:
     visible: 'Add Workspace'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Workspace URL. Required.'
 - inputText: ${output.data.server}
 - tapOn: 'Connect'
 - waitForAnimationToEnd:
-    timeout: 
+    timeout: 15000
 - assertVisible:
     id: 'workspace-view'
 - assertVisible: 'Login'
@@ -20,4 +20,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'login-view'
-    timeout: 
+    timeout: 15000

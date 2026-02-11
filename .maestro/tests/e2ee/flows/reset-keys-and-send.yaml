@@ -34,31 +34,31 @@ env:
 - extendedWaitUntil:
     visible:
       text: '.*Check back in a few moments.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*The encryption keys for the room need to be updated, another room member needs to be online for this to happen.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-encryption'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'room-view-header-encryption'
 - extendedWaitUntil:
     visible:
       id: 'e2ee-toggle-room-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'e2ee-toggle-room-reset-key'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'e2ee-toggle-room-reset-key'
 - extendedWaitUntil:
     visible:
       text: '.*Reset encryption key.*'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Reset'
     index: 0
@@ -72,7 +72,7 @@ env:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${ROOM}'
-    timeout: 
+    timeout: 15000
 - runFlow:
     file: '../../../helpers/send-message.yaml'
     env:

@@ -33,22 +33,22 @@ tags:
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 
+    timeout: 15000
 - inputText: ':joy'
 - extendedWaitUntil:
     visible:
       id: autocomplete-item-joy
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: autocomplete-item-joy
 - extendedWaitUntil:
     visible:
       text: ':joy: '
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     notVisible:
       id: autocomplete-item-joy
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: message-composer-input
 - eraseText
@@ -57,22 +57,22 @@ tags:
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 
+    timeout: 15000
 - inputText: ${'@'+output.user.username}
 - extendedWaitUntil:
     visible:
       id: autocomplete-item-${output.user.username}
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: autocomplete-item-${output.user.username}
 - extendedWaitUntil:
     visible:
       text: '@${output.user.username} '
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     notVisible:
       id: autocomplete-item-joy
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: message-composer-input
 - eraseText
@@ -81,22 +81,22 @@ tags:
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 
+    timeout: 15000
 - inputText: '#translation-test'
 - extendedWaitUntil:
     visible:
       id: 'autocomplete-item-translation-test'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'autocomplete-item-translation-test'
 - extendedWaitUntil:
     visible:
       text: '#translation-test '
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     notVisible:
       id: 'autocomplete-item-translation-test'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: message-composer-input
 - eraseText
@@ -105,59 +105,59 @@ tags:
 - extendedWaitUntil:
     visible:
       text: .*${output.randomMessage}.*
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-${output.randomMessage}'
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: add-reaction
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: add-reaction
 - extendedWaitUntil:
     visible:
       id: emoji-picker-tab-emoji
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: emoji-picker-tab-emoji
 - extendedWaitUntil:
     visible:
       id: emoji-grinning
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: emoji-grinning
 - extendedWaitUntil:
     visible:
       id: 'message-reaction-:grinning:'
-    timeout: 
+    timeout: 15000
 
 # should search emojis in the reaction picker and react
 - extendedWaitUntil:
     visible:
       text: .*${output.randomMessage}.*
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-${output.randomMessage}'
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: add-reaction
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: add-reaction
 - extendedWaitUntil:
     visible:
       id: emoji-searchbar-input
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: emoji-searchbar-input
 - inputText: 'laughing'
@@ -165,48 +165,48 @@ tags:
 - extendedWaitUntil:
     visible:
       id: emoji-laughing
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: emoji-laughing
 - extendedWaitUntil:
     visible:
       id: 'message-reaction-:laughing:'
-    timeout: 
+    timeout: 15000
 
 # should remove reaction
 - extendedWaitUntil:
     visible:
       id: 'message-reaction-:grinning:'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-reaction-:grinning:'
 - extendedWaitUntil:
     notVisible:
       id: 'message-reaction-:grinning:'
-    timeout: 
+    timeout: 15000
 
 # should react to message with frequently used emoji
 - extendedWaitUntil:
     visible:
       text: .*${output.randomMessage}.*
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-${output.randomMessage}'
 - waitForAnimationToEnd
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: message-actions-emoji-grinning
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: message-actions-emoji-grinning
 - extendedWaitUntil:
     visible:
       id: 'message-reaction-:grinning:'
-    timeout: 
+    timeout: 15000
 
 # should show reaction picker on add reaction button pressed and have frequently used emoji
 - assertVisible:
@@ -216,43 +216,43 @@ tags:
 - extendedWaitUntil:
     visible:
       id: reaction-picker
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: emoji-grinning
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: emoji-picker-tab-emoji
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: emoji-picker-tab-emoji
 - extendedWaitUntil:
     visible:
       id: emoji-wink
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: emoji-wink
 - extendedWaitUntil:
     visible:
       id: 'message-reaction-:wink:'
-    timeout: 
+    timeout: 15000
 
 # should open/close reactions list
 - extendedWaitUntil:
     visible:
       id: 'message-reaction-:laughing:'
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-reaction-:laughing:'
 - extendedWaitUntil:
     visible:
       id: 'reactionsList'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'action-sheet-handle'
-    timeout: 
+    timeout: 15000
 - swipe:
     from:
       id: action-sheet-handle
@@ -260,24 +260,24 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'reactionsList'
-    timeout: 
+    timeout: 15000
 
 # should open the profile view tapping on his username
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.user.username}'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'username-header-${output.user.username}'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: room-info-view-username
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: .*${'@'+output.user.username}.*
-    timeout: 
+    timeout: 15000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
@@ -291,18 +291,18 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'username-header-${output.otherUser.username}'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'username-header-${output.otherUser.username}'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: room-info-view-username
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: .*${'@'+output.otherUser.username}.*
-    timeout: 
+    timeout: 15000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
@@ -317,34 +317,34 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*edit.*'
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-edit'
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: action-sheet-handle
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Edit'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Edit'
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 
+    timeout: 15000
 - inputText: 'ed'
 - tapOn:
     id: message-composer-send
 - extendedWaitUntil:
     visible:
       text: '.*edited.*'
-    timeout: 
+    timeout: 15000
 
 # should quote message
 - runFlow:
@@ -355,47 +355,47 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*quote.*'
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-quote'
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Quote'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Quote'
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 
+    timeout: 15000
 - inputText: ${output.quotedMessage}
 - tapOn:
     id: message-composer-send
 - extendedWaitUntil:
     visible:
       text: .*${output.quotedMessage}.*
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: .*${output.quotedMessage}.*
 - extendedWaitUntil:
     visible:
       id: reply-${output.user.name}-quote
-    timeout: 
+    timeout: 15000
 
 # should back to rooms list view and see the last message correctly and navigate again to room
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: rooms-list-view
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'markdown-preview-You: quoted'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'markdown-preview-You: quoted'
 
@@ -407,13 +407,13 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*message to delete.*'
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-message to delete'
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout: 15000
 - swipe:
     from:
       id: action-sheet-handle
@@ -426,13 +426,13 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*You will not be able to recover this message.*'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Delete'
 - extendedWaitUntil:
     notVisible:
       text: '.*message to delete.*'
-    timeout: 
+    timeout: 15000
 - runFlow: '../../helpers/go-back.yaml'
 
 # should reply in DM to another user
@@ -445,7 +445,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
@@ -453,37 +453,37 @@ tags:
 - extendedWaitUntil:
     visible:
       text: .*${output.originalMessage}.*
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'room-view-join-button'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'room-view-join-button'
 - extendedWaitUntil:
     notVisible:
       id: 'room-view-join-button'
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-${output.originalMessage}'
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Reply in direct message'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Reply in direct message'
 - extendedWaitUntil:
     visible:
       id: room-view-title-${output.replyUser.username}
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: message-composer-input
 - inputText: ${output.replyMessage}
@@ -493,7 +493,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: .*${output.replyMessage}.*
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: .*${output.replyMessage}.*
 - runFlow: '../../helpers/go-back.yaml'
@@ -506,7 +506,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: message-composer-input
 - inputText: 'draft'
@@ -519,17 +519,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*draft.*'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-send'
 - extendedWaitUntil:
     visible:
       text: '.*draft.*'
-    timeout: 
+    timeout: 15000
 - runFlow: '../../helpers/go-back.yaml'
 
 # should save message and quote draft correctly
@@ -543,7 +543,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 - runFlow:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
@@ -551,17 +551,17 @@ tags:
 - extendedWaitUntil:
     visible:
       text: ${output.originalMessage}
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'room-view-join-button'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'room-view-join-button'
 - extendedWaitUntil:
     notVisible:
       id: 'room-view-join-button'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: message-composer-input
 - inputText: ${output.draftMessage}
@@ -574,23 +574,23 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: .*${output.draftMessage}.*
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-${output.originalMessage}'
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Quote'
 - extendedWaitUntil:
     visible:
       id: 'markdown-preview-${output.originalMessage}'
-    timeout: 
+    timeout: 15000
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
@@ -599,7 +599,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'markdown-preview-${output.originalMessage}'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-input'
 - eraseText
@@ -612,7 +612,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'markdown-preview-${output.originalMessage}'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-input'
 - eraseText
@@ -625,14 +625,14 @@ tags:
 - extendedWaitUntil:
     visible:
       text: ${output.quoteMessage}
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'message-composer-send'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-send'
 - extendedWaitUntil:
     visible:
       id: reply-${output.newUser.name}-${output.originalMessage}
-    timeout: 
+    timeout: 15000

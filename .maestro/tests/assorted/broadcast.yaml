@@ -22,36 +22,36 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-create-channel'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'new-message-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'select-users-view'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'select-users-view-search'
 - inputText: ${output.otherUser.username}
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-item-${output.otherUser.username}'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'select-users-view-item-${output.otherUser.username}'
 - extendedWaitUntil:
     visible:
       id: 'selected-user-${output.otherUser.username}'
-    timeout: 
+    timeout: 15000
 - assertVisible:
     id: 'selected-users-view-submit'
 - tapOn:
@@ -59,7 +59,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-view'
-    timeout: 
+    timeout: 15000
 - assertVisible:
     id: 'create-channel-name'
 - tapOn:
@@ -73,7 +73,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-submit'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'create-channel-submit'
 - extendedWaitUntil:
@@ -84,17 +84,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'room-actions-info'
 - extendedWaitUntil:
     visible:
       id: 'room-info-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'room-info-view-broadcast'
-    timeout: 
+    timeout: 15000
 - runFlow: ../../helpers/go-back.yaml
 - runFlow: ../../helpers/go-back.yaml
 - runFlow:
@@ -120,7 +120,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room}'
-    timeout: 
+    timeout: 15000
 
 # should not have message composer
 - assertNotVisible:
@@ -142,7 +142,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.user.username}'
-    timeout: 
+    timeout: 15000
 
 # should reply broadcasted message
 - assertVisible:
@@ -155,14 +155,14 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*broadcastreply.*'
-    timeout: 
+    timeout: 15000
 - longPressOn:
     text: '.*broadcastreply.*'
     index: 0
 - extendedWaitUntil:
     visible:
       text: 'Jump to message'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Jump to message'
 - extendedWaitUntil:

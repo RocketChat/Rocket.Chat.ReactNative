@@ -26,19 +26,19 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 
+    timeout: 15000
 
 # should have actions button
 - extendedWaitUntil:
     visible:
       id: 'room-header'
-    timeout: 
+    timeout: 15000
 
 # should have threads button
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-threads'
-    timeout: 
+    timeout: 15000
 
 # should create thread
 - runFlow:
@@ -54,21 +54,21 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Reply in thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Reply in thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: replied
@@ -77,42 +77,42 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-content-replied'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'header-back'
 # should navigate to thread from button
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'message-thread-button-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-thread-button-thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 
 # should toggle follow thread
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-unfollow'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'room-view-header-unfollow'
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-follow'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'room-view-header-follow'
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-unfollow'
-    timeout: 
+    timeout: 15000
 
 # should send message in thread only
 - runFlow:
@@ -139,13 +139,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-thread-button-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-thread-button-thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'sendToChannel'
@@ -178,7 +178,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'navthreadname'
@@ -191,21 +191,21 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'message-thread-replied-on-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-thread-replied-on-thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'header-back'
 
@@ -213,41 +213,41 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-threads'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'room-view-header-threads'
 - extendedWaitUntil:
     visible:
       id: 'thread-messages-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'thread-messages-view-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'thread-messages-view-thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'header-back'
 - extendedWaitUntil:
     visible:
       id: 'room-view-messages'
-    timeout: 
+    timeout: 15000
 
 # should draft thread message
 - extendedWaitUntil:
     visible:
       id: 'message-thread-button-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-thread-button-thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'draftthread'
@@ -257,17 +257,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-thread-button-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-thread-button-thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*draftthread.*'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-input-thread'
 - eraseText
@@ -277,21 +277,21 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-thread-button-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-thread-button-thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     notVisible:
       text: '.*draftthread.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*Add thread reply.*'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'header-back'
 
@@ -303,27 +303,27 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-content-thread-message-count'
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-thread-message-count'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Reply in thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Reply in thread'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread-message-count'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input-thread'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'message-composer-input-thread'
 - inputText: 'replied'
@@ -332,13 +332,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-content-replied'
-    timeout: 
+    timeout: 15000
 - longPressOn:
     id: 'message-content-replied'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 
+    timeout: 15000
 - swipe:
     from:
       id: 'action-sheet-handle'
@@ -346,21 +346,21 @@ tags:
 - scrollUntilVisible:
     element:
       text: 'Delete'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Delete'
 - extendedWaitUntil:
     visible:
       text: '.*You will not be able to recover this message.*'
-    timeout: 
+    timeout: 15000
 - tapOn: 'DELETE'
 - tapOn:
     id: 'header-back'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'thread-count-0'
-    timeout: 
+    timeout: 15000

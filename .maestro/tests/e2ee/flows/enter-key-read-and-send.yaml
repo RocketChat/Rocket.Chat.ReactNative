@@ -23,21 +23,21 @@ env:
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_1}.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_2}.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_3}.*'
-    timeout: 
+    timeout: 15000
 
 # Send a new message
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input'
-    timeout: 
+    timeout: 15000
 - runFlow:
     file: '../../../helpers/send-message.yaml'
     env:

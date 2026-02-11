@@ -7,10 +7,10 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-thread 1'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: '.*message-content-${message}.*'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: '.*message-content-${message}.*'

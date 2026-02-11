@@ -21,17 +21,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-server-add'
-    timeout: 
+    timeout: 15000
 
 # should login to server, add new server, close the app, open the app and show previous logged server
 - tapOn:
@@ -39,7 +39,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'new-server-view-input'
 - inputText: ${output.data.alternateServer}
@@ -47,30 +47,30 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'workspace-view'
-    timeout: 
+    timeout: 15000
 - launchApp
 - waitForAnimationToEnd:
     timeout: 500
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 
 # should add server and create new user
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.alternateServer}'
-    timeout: 
+    timeout: 15000
 - waitForAnimationToEnd:
     timeout: 5000
 - tapOn:
@@ -78,29 +78,29 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'workspace-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'workspace-view-register'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'workspace-view-register'
 - extendedWaitUntil:
     visible:
       id: 'register-view-name'
-    timeout: 
+    timeout: 15000
 - runFlow: '../../helpers/create-account.yaml'
 - extendedWaitUntil:
     notVisible:
       id: 'rooms-list-view-item-${output.room.name}'
-    timeout: 
+    timeout: 15000
 
 # should reopen the app and show alternate server
 - launchApp
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 - runFlow:
     file: './utils/check-server.yaml'
     env:
@@ -110,7 +110,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 
+    timeout: 15000
 - waitForAnimationToEnd:
     timeout: 5000
 - tapOn:
@@ -118,11 +118,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.server}'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'server-item-${output.data.server}'
 - waitForAnimationToEnd:
@@ -130,11 +130,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.room.name}'
-    timeout: 
+    timeout: 15000
 - runFlow:
     file: './utils/check-server.yaml'
     env:
@@ -147,7 +147,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 - runFlow:
     file: './utils/check-server.yaml'
     env:
@@ -157,13 +157,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.alternateServer}'
-    timeout: 
+    timeout: 15000
 
 # swipe left to reveal delete button
 - swipe:
@@ -179,7 +179,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*Delete.*'
-    timeout: 
+    timeout: 15000
 - runFlow:
     when:
       platform: iOS
@@ -201,13 +201,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     notVisible:
       id: 'server-item-${output.data.alternateServer}'
-    timeout: 
+    timeout: 15000
 
 # verify main server still exists
 - assertVisible:

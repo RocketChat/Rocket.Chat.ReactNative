@@ -21,25 +21,25 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'preferences-view-notifications'
-    timeout: 
+    timeout: 15000
 
 # should have also send to channel select
 - extendedWaitUntil:
     visible:
       id: 'preferences-view-enable-message-parser'
-    timeout: 
+    timeout: 15000
 
 # should have also send to channel select
 - extendedWaitUntil:
     visible:
       id: 'preferences-view-enable-message-parser'
-    timeout: 
+    timeout: 15000
 
 # should have convert ascii to emoji switch
 - extendedWaitUntil:
     visible:
       id: 'preferences-view-convert-ascii-to-emoji'
-    timeout: 
+    timeout: 15000
 
 # ASCII should not be converted to emoji (Android only)
 - runFlow:
@@ -52,17 +52,17 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'profile-view'
-          timeout: 
+          timeout: 15000
       - tapOn:
           id: 'profile-view-open-sidebar'
       - extendedWaitUntil:
           visible:
             id: 'sidebar-view'
-          timeout: 
+          timeout: 15000
       - extendedWaitUntil:
           visible:
             id: 'sidebar-chats'
-          timeout: 
+          timeout: 15000
       - tapOn:
           id: 'sidebar-chats'
       - runFlow:
@@ -72,22 +72,22 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view-item-maestro-ascii-emoji-test'
-          timeout: 
+          timeout: 15000
       - extendedWaitUntil:
           visible:
             text: 'e2e_admin: :('
-          timeout: 
+          timeout: 15000
       - tapOn:
           id: 'rooms-list-view-item-maestro-ascii-emoji-test'
       - extendedWaitUntil:
           visible:
             text: ':('
-          timeout: 
+          timeout: 15000
 
       - extendedWaitUntil:
           notVisible:
             text: '😞'
-          timeout: 
+          timeout: 15000
 
 # ASCII should be converted to emoji (Android Only)
 - runFlow:
@@ -102,7 +102,7 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'preferences-view-convert-ascii-to-emoji'
-          timeout: 
+          timeout: 15000
       - tapOn:
           id: 'preferences-view-convert-ascii-to-emoji'
       - tapOn:
@@ -110,17 +110,17 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'profile-view'
-          timeout: 
+          timeout: 15000
       - tapOn:
           id: 'profile-view-open-sidebar'
       - extendedWaitUntil:
           visible:
             id: 'sidebar-view'
-          timeout: 
+          timeout: 15000
       - extendedWaitUntil:
           visible:
             id: 'sidebar-chats'
-          timeout: 
+          timeout: 15000
       - tapOn:
           id: 'sidebar-chats'
       - runFlow:
@@ -130,14 +130,14 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'rooms-list-view-item-maestro-ascii-emoji-test'
-          timeout: 
+          timeout: 15000
       - extendedWaitUntil:
           visible:
             text: 'e2e_admin: 😞'
-          timeout: 
+          timeout: 15000
       - tapOn:
           id: 'rooms-list-view-item-maestro-ascii-emoji-test'
       - extendedWaitUntil:
           visible:
             text: '😞'
-          timeout: 
+          timeout: 15000

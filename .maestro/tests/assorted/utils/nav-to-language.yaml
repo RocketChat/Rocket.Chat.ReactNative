@@ -7,36 +7,36 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'sidebar-settings'
 - extendedWaitUntil:
     visible:
       id: 'settings-view'
-    timeout: 
+    timeout: 15000
 - waitForAnimationToEnd:
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'settings-view-language'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'settings-view-language'
 - extendedWaitUntil:
     visible:
       id: 'language-view'
-    timeout: 
+    timeout: 15000

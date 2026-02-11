@@ -24,25 +24,25 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Chats'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Profile'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Settings'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'sidebar-close-drawer'
 
@@ -53,24 +53,24 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Chats'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Profiel'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Instellingen'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'sidebar-close-drawer'

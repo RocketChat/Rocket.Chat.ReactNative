@@ -7,18 +7,18 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'custom-header-back'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'custom-header-back'
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-drawer'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'accessibility-view-drawer'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'sidebar-chats'

@@ -19,7 +19,7 @@ env:
 - extendedWaitUntil:
     visible:
       text: '.*${ORIGINAL_MESSAGE}.*'
-    timeout: 
+    timeout: 15000
 
 # Edit the message
 - longPressOn:
@@ -27,11 +27,11 @@ env:
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Edit'
-    timeout: 
+    timeout: 15000
 - tapOn:
     text: 'Edit'
 - eraseText
@@ -43,24 +43,24 @@ env:
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_1}.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_2}.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_3}.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_4}.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_5}.*'
-    timeout: 
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '.*${EDITED_MESSAGE}.*'
-    timeout: 
+    timeout: 15000

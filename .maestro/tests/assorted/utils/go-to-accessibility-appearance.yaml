@@ -7,12 +7,12 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-accessibility'
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: 'sidebar-accessibility'

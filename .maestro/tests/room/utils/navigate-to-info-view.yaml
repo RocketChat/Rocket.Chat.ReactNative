@@ -7,13 +7,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: room-header
-    timeout: 
+    timeout: 15000
 - tapOn:
     id: room-header
 - extendedWaitUntil:
     visible:
       id: room-actions-view
-    timeout: 
+    timeout: 15000
 - assertVisible:
     id: room-actions-info
 - tapOn:
@@ -21,4 +21,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: room-info-view
-    timeout: 
+    timeout: 15000
