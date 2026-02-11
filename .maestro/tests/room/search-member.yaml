@@ -23,13 +23,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'room-actions-members'
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-search'
-    timeout: 60000
+    timeout: 15000
 
 # should search in all users
 - tapOn:
@@ -38,7 +38,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-item-rohit.bansal'
-    timeout: 60000
+    timeout: 15000
 
 # use online status and it should use the text filter
 - tapOn:
@@ -46,13 +46,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-toggle-status-online'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: room-members-view-toggle-status-online
 - extendedWaitUntil:
     visible:
       text: 'No members found'
-    timeout: 60000
+    timeout: 15000
 
 # use all status again and it should use text filter
 - tapOn:
@@ -60,13 +60,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-toggle-status-all'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: room-members-view-toggle-status-all
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-item-rohit.bansal'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: clear-text-input
 
@@ -79,7 +79,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-members-view-item-${output.secondUser.username}'
-    timeout: 60000
+    timeout: 15000
 
 # Verify "No members found" message appears correctly when search returns no results
 - tapOn:
@@ -88,4 +88,4 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'No members found'
-    timeout: 60000
+    timeout: 15000

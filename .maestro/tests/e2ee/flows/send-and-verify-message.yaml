@@ -8,7 +8,7 @@ env:
 - extendedWaitUntil:
     visible:
       id: 'message-composer-input'
-    timeout: 60000
+    timeout: 15000
 - runFlow:
     file: '../../../helpers/send-message.yaml'
     env:

@@ -19,25 +19,25 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'sidebar-settings'
 - extendedWaitUntil:
     visible:
       id: 'settings-view'
-    timeout: 60000
+    timeout: 15000
 - waitForAnimationToEnd:
-    timeout: 60000
+    timeout: 15000
 
 # should have settings view
 - assertVisible:
@@ -91,7 +91,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'settings-view-get-help-documentation'
-    timeout: 60000
+    timeout: 15000
 - assertVisible:
     id: 'settings-view-get-help-accessibility-statement'
 - assertVisible:
@@ -103,30 +103,30 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'settings-view'
-    timeout: 60000
+    timeout: 15000
 - waitForAnimationToEnd:
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'settings-view-clear-cache'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'settings-view-clear-cache'
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: '.*This will clear all your offline data.*'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     text: 'Clear'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 
 # should navigate to legalview
 - assertVisible:
@@ -136,17 +136,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'sidebar-settings'
 - extendedWaitUntil:
     visible:
       id: 'settings-view'
-    timeout: 60000
+    timeout: 15000
 - assertVisible:
     id: 'settings-view-legal'
 - tapOn:
@@ -154,7 +154,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'legal-view'
-    timeout: 60000
+    timeout: 15000
 
 # should have terms of service button
 - assertVisible:

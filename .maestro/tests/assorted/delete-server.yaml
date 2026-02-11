@@ -25,23 +25,23 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-server-add'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-server-add'
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'new-server-view-input'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'new-server-view-input'
 - inputText: ${output.data.alternateServer}
@@ -49,17 +49,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'workspace-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'workspace-view-register'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'workspace-view-register'
 - extendedWaitUntil:
     visible:
       id: 'register-view-name'
-    timeout: 60000
+    timeout: 15000
 - runFlow: '../../helpers/create-account.yaml'
 - runFlow:
     file: './utils/check-server.yaml'
@@ -70,13 +70,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.server}'
-    timeout: 60000
+    timeout: 15000
 
 # swipe left to reveal delete button
 - swipe:
@@ -92,7 +92,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*Delete.*'
-    timeout: 60000
+    timeout: 15000
 - runFlow:
     when:
       platform: iOS
@@ -112,14 +112,14 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     notVisible:
       id: 'server-item-${output.data.server}'
-    timeout: 60000
+    timeout: 15000

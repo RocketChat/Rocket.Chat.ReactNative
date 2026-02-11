@@ -15,4 +15,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-encrypted-room'
-    timeout: 60000
+    timeout: 15000

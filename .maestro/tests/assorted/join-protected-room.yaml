@@ -24,13 +24,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-join-button'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'room-view-join-button'
 - extendedWaitUntil:
     visible:
       id: 'join-code'
-    timeout: 60000
+    timeout: 15000
 
 # should cancel join room
 - assertVisible:
@@ -40,7 +40,7 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'join-code'
-    timeout: 60000
+    timeout: 15000
 - assertNotVisible:
     id: 'message-composer'
 - assertVisible:
@@ -54,7 +54,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'join-code'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'join-code-input'
 - inputText:
@@ -66,15 +66,15 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'join-code'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'message-composer'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     notVisible:
       id: 'room-view-join'
-    timeout: 60000
+    timeout: 15000
 - runFlow:
     file: '../../helpers/send-message.yaml'
     env:

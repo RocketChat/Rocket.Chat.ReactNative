@@ -25,7 +25,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-directory'
-    timeout: 60000
+    timeout: 15000
 - waitForAnimationToEnd:
     timeout: 10000
 - tapOn:
@@ -33,48 +33,48 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'directory-view'
-    timeout: 60000
+    timeout: 15000
 
 # should search public channel and navigate
 - extendedWaitUntil:
     visible:
       id: 'directory-view-search'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'directory-view-search'
 - inputText: join-from-directory
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-join-from-directory'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'directory-view-item-join-from-directory'
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-join-from-directory'
-    timeout: 60000
+    timeout: 15000
 
 # should navigate to thread messages view and load messages
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-threads'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'room-view-header-threads'
 - extendedWaitUntil:
     visible:
       id: 'thread-messages-view-${output.thread}'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'custom-header-back'
 - extendedWaitUntil:
     visible:
       id: 'room-view-header-threads'
-    timeout: 60000
+    timeout: 15000
 
 # should search user and navigate
 - tapOn:
@@ -82,23 +82,23 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-directory'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-directory'
 - extendedWaitUntil:
     visible:
       id: 'directory-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'directory-view-filter'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'directory-view-filter'
 - extendedWaitUntil:
     visible:
       text: 'Users unselected'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     text: 'Users unselected'
 - tapOn:
@@ -112,17 +112,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-${output.otherUser.username}'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'directory-view-item-${output.otherUser.username}'
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.otherUser.username}'
-    timeout: 60000
+    timeout: 15000
 
 # should search team and navigate
 - tapOn:
@@ -130,23 +130,23 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-directory'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-directory'
 - extendedWaitUntil:
     visible:
       id: 'directory-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'directory-view-filter'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'directory-view-filter'
 - extendedWaitUntil:
     visible:
       text: 'Teams unselected'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     text: 'Teams unselected'
 - tapOn:
@@ -155,14 +155,14 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'directory-view-item-${output.team}'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'directory-view-item-${output.team}'
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.team}'
-    timeout: 60000
+    timeout: 15000

@@ -22,62 +22,62 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-list'
-    timeout: 60000
+    timeout: 15000
 
 # should have menu button
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-drawer'
-    timeout: 60000
+    timeout: 15000
 
 # should have theme button
 - extendedWaitUntil:
     visible:
       id: 'accessibility-theme-button'
-    timeout: 60000
+    timeout: 15000
 
 # should have display button
 - extendedWaitUntil:
     visible:
       id: 'accessibility-display-button'
-    timeout: 60000
+    timeout: 15000
 
 # should have rooms with hashtag symbol switch
 - extendedWaitUntil:
     visible:
       id: 'accessibility-rooms-with-hashtag-symbol-switch'
-    timeout: 60000
+    timeout: 15000
 
 # should have mentions with at symbol switch
 - extendedWaitUntil:
     visible:
       id: 'accessibility-mentions-with-at-symbol-switch'
-    timeout: 60000
+    timeout: 15000
 
 # should have autoplay gifs switch
 - extendedWaitUntil:
     visible:
       id: 'accessibility-autoplay-gifs-switch'
-    timeout: 60000
+    timeout: 15000
 
 # should enable mentions with @ symbol
 - extendedWaitUntil:
     visible:
       id: 'accessibility-mentions-with-at-symbol-switch'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'accessibility-mentions-with-at-symbol-switch'
 
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-drawer'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'accessibility-view-drawer'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'sidebar-chats'
 - runFlow:
@@ -88,11 +88,11 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '@all - all mention'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: '@rocket.cat - user mention'
-    timeout: 60000
+    timeout: 15000
 
 # should disable mentions with @ symbol
 - tapOn:
@@ -103,20 +103,20 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'accessibility-mentions-with-at-symbol-switch'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'accessibility-mentions-with-at-symbol-switch'
 
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-drawer'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'accessibility-view-drawer'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'sidebar-chats'
 - runFlow:
@@ -127,11 +127,11 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'all - all mention'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'rocket.cat - user mention'
-    timeout: 60000
+    timeout: 15000
 
 # should enable rooms with # symbol
 - tapOn:
@@ -142,20 +142,20 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'accessibility-rooms-with-hashtag-symbol-switch'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'accessibility-rooms-with-hashtag-symbol-switch'
 
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-drawer'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'accessibility-view-drawer'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'sidebar-chats'
 - runFlow:
@@ -166,7 +166,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '#general - channel mention'
-    timeout: 60000
+    timeout: 15000
 
 # should disable mentions with # symbol
 - tapOn:
@@ -177,20 +177,20 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'accessibility-rooms-with-hashtag-symbol-switch'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'accessibility-rooms-with-hashtag-symbol-switch'
 
 - extendedWaitUntil:
     visible:
       id: 'accessibility-view-drawer'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'accessibility-view-drawer'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-chats'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'sidebar-chats'
 - runFlow:
@@ -200,4 +200,4 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'general - channel mention'
-    timeout: 60000
+    timeout: 15000

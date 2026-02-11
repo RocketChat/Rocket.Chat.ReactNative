@@ -60,4 +60,4 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: rooms-list-view-item-${output.teamname}
-    timeout: 60000
+    timeout: 15000

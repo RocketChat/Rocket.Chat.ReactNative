@@ -26,7 +26,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'workspace-view'
-    timeout: 60000
+    timeout: 15000
 
 # should authenticate and navigate
 - runFlow:
@@ -40,12 +40,12 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 15000
 - runFlow:
     file: './utils/check-server.yaml'
     env:
@@ -53,7 +53,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 
 # should create a new account on another server
 - runFlow:
@@ -73,12 +73,12 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 15000
 - runFlow:
     file: './utils/check-server.yaml'
     env:
@@ -86,7 +86,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 
 # should navigate to the room using path
 - stopApp: chat.rocket.reactnative
@@ -97,7 +97,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 
 # should navigate to the thread using path
 - stopApp: chat.rocket.reactnative
@@ -108,7 +108,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.threadMessage}'
-    timeout: 60000
+    timeout: 15000
 
 # should navigate to the room using rid
 - stopApp: chat.rocket.reactnative
@@ -119,12 +119,12 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 - runFlow: '../../helpers/go-back.yaml'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 15000
 
 # should resume from background and navigate to the room
 - pressKey: home
@@ -135,7 +135,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 
 # should simulate a tap on a push notification and navigate to the room
 # we are skipping this because we can't send push on iOS simulator and for android we have similar test
@@ -145,17 +145,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.alternateServer}'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'server-item-${output.data.alternateServer}'
 - runFlow:
@@ -170,7 +170,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 
 # should add a not existing server and fallback to the previous one
 - stopApp: chat.rocket.reactnative
@@ -181,7 +181,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 15000
 
 # should share text
 - evalScript: ${output.message = output.random()}
@@ -193,22 +193,22 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'share-list-view'
-    timeout: 60000
+    timeout: 15000
 
 - extendedWaitUntil:
     visible:
       id: 'share-extension-item-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'share-extension-item-${output.room.name}'
 - extendedWaitUntil:
     visible:
       id: 'share-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Send'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     text: 'Send'
 - runFlow:
@@ -218,7 +218,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*${output.message}.*'
-    timeout: 60000
+    timeout: 15000
 
 # should change server and share text
 - evalScript: ${output.message = output.random()}
@@ -226,17 +226,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-header-servers-list-button'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-header-servers-list-button'
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.alternateServer}'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'server-item-${output.data.alternateServer}'
 - runFlow:
@@ -251,42 +251,42 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'share-list-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.alternateServer}'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'server-item-${output.data.alternateServer}'
 - extendedWaitUntil:
     visible:
       id: 'select-server-view'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'server-item-${output.data.server}'
 - extendedWaitUntil:
     visible:
       id: 'share-list-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'server-item-${output.data.server}'
-    timeout: 60000
+    timeout: 15000
 
 - extendedWaitUntil:
     visible:
       id: 'share-extension-item-${output.room.name}'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'share-extension-item-${output.room.name}'
 - extendedWaitUntil:
     visible:
       id: 'share-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       text: 'Send'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     text: 'Send'
 - runFlow:
@@ -296,7 +296,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*${output.message}.*'
-    timeout: 60000
+    timeout: 15000
 
 # should open share without being logged in and go to onboarding
 - runFlow:
@@ -309,4 +309,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 60000
+    timeout: 15000

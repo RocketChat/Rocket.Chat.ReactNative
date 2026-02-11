@@ -17,23 +17,23 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'sidebar-custom-status-online'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'sidebar-custom-status-online'
 - extendedWaitUntil:
     visible:
       id: 'status-view'
-    timeout: 60000
+    timeout: 15000
 
 # should have status input
 - assertVisible:
@@ -67,11 +67,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'sidebar-custom-status-busy'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'sidebar-custom-status-busy'
 
@@ -79,7 +79,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'status-view-input'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'status-view-input'
 - inputText: 'status-text-new'
@@ -90,4 +90,4 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'status-text-new'
-    timeout: 60000
+    timeout: 15000

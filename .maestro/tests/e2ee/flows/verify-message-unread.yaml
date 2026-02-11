@@ -16,4 +16,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'read-receipt-unread'
-    timeout: 60000
+    timeout: 15000

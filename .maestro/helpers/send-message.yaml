@@ -23,10 +23,10 @@ tags:
 - extendedWaitUntil:
     visible:
       id: message-composer-send
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: message-composer-send
 - extendedWaitUntil:
     visible:
       text: '.*${message}.*'
-    timeout: 60000
+    timeout: 15000

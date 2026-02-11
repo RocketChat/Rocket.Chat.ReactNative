@@ -7,7 +7,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: rooms-list-view
-    timeout: 60000
+    timeout: 15000
 - runFlow:
     when:
       visible: 'Save your encryption password'
@@ -22,17 +22,17 @@ tags:
     visible:
       id: rooms-list-view-sidebar
       enabled: true
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: rooms-list-view-sidebar
 - extendedWaitUntil:
     visible:
       id: sidebar-view
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: sidebar-settings
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: sidebar-settings
 - waitForAnimationToEnd:
@@ -49,4 +49,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: e2e-encryption-security-view
-    timeout: 60000
+    timeout: 15000

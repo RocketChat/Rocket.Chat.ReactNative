@@ -39,7 +39,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: 'servers-history-button'
 - assertVisible:
@@ -57,8 +57,8 @@ tags:
 - extendedWaitUntil:
     notVisible:
       id: 'servers-history-button'
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: 'new-server-view'
-    timeout: 60000
+    timeout: 15000

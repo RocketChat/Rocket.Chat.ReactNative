@@ -6,23 +6,23 @@ tags:
 - extendedWaitUntil:
     visible:
       id: rooms-list-view-create-channel
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: rooms-list-view-create-channel
 - extendedWaitUntil:
     visible:
       id: new-message-view
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: new-message-view-create-channel
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: new-message-view-create-channel
 - extendedWaitUntil:
     visible:
       id: select-users-view
-    timeout: 60000
+    timeout: 15000
 - assertVisible:
     id: selected-users-view-submit
 - tapOn:
@@ -30,7 +30,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: create-channel-view
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: create-channel-name
 - inputText: ${channelName}
@@ -46,24 +46,24 @@ tags:
 - scrollUntilVisible:
     element:
       id: create-channel-submit
-    timeout: 60000
+    timeout: 15000
 - tapOn:
     id: create-channel-submit
 
 - extendedWaitUntil:
     visible:
       id: room-view
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: room-view-title-${channelName}
-    timeout: 60000
+    timeout: 15000
 - runFlow: ../../../helpers/go-back.yaml
 - extendedWaitUntil:
     visible:
       id: rooms-list-view
-    timeout: 60000
+    timeout: 15000
 - extendedWaitUntil:
     visible:
       id: rooms-list-view-item-${channelName}
-    timeout: 60000
+    timeout: 15000
