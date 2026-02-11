@@ -10,12 +10,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import android.view.View
-import android.view.ViewOutlineProvider
-import android.graphics.Outline
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.util.Log
+import android.view.ViewOutlineProvider
 import com.bumptech.glide.Glide
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
@@ -120,7 +119,7 @@ class IncomingCallActivity : Activity() {
         val username = payload.username.trim()
         val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
         val avatarUrl = "$url/avatar/$username?format=png&size=$sizePx"
-        val cornerRadiusPx = 8 * resources.displayMetrics.density
+        val cornerRadiusPx = (8 * resources.displayMetrics.density).toFloat()
 
         Glide.with(this)
             .load(avatarUrl)
@@ -131,15 +130,7 @@ class IncomingCallActivity : Activity() {
                 ) {
                     imageView.visibility = View.VISIBLE
                     imageView.setImageDrawable(resource)
-                    // View-level clipping works for both PNG and SVG (bitmap transforms don't apply to SVG)
-                    imageView.post {
-                        imageView.outlineProvider = object : ViewOutlineProvider() {
-                            override fun getOutline(view: View, outline: Outline) {
-                                outline.setRoundRect(0, 0, view.width, view.height, cornerRadiusPx)
-                            }
-                        }
-                        imageView.clipToOutline = true
-                    }
+                    applyAvatarRoundCorners(imageView, cornerRadiusPx)
                 }
 
                 override fun onLoadFailed(errorDrawable: android.graphics.drawable.Drawable?) {
@@ -152,6 +143,21 @@ class IncomingCallActivity : Activity() {
                     imageView.visibility = View.GONE
                 }
             })
+    }
+
+    /**
+     * Applies rounded corners via view-level clipping.
+     * Works for both PNG (BitmapDrawable) and SVG (vector/PictureDrawable) since
+     * Glide's RoundedCorners bitmap transform only applies to bitmaps.
+     */
+    private fun applyAvatarRoundCorners(imageView: ImageView, cornerRadiusPx: Float) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
+        imageView.post {
+            imageView.outlineProvider = ViewOutlineProvider { outline ->
+                outline.setRoundRect(0, 0, imageView.width, imageView.height, cornerRadiusPx)
+            }
+            imageView.clipToOutline = true
+        }
     }
 
     private fun startRingtone() {
