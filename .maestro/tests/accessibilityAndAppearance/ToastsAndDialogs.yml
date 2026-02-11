@@ -30,7 +30,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Status saved successfully!'
-    timeout: 60000
+    timeout: 
 
 # Show alerts as Dialogs
 - tapOn: 'Accessibility & appearance'
@@ -45,6 +45,6 @@ tags:
 - extendedWaitUntil:
     visible:
       text: 'Status saved successfully!'
-    timeout: 60000
+    timeout: 
 - assertVisible: 'OK'
 - tapOn: 'OK'

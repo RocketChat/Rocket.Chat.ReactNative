@@ -7,7 +7,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-create-channel'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'rooms-list-view-create-channel'
 - extendedWaitUntil:
@@ -16,20 +16,20 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-create-channel'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'new-message-view-create-channel'
 - extendedWaitUntil:
     visible:
       id: 'select-users-view'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'select-users-view-search'
 - inputText: ${USER_TO_ADD}
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-item-${USER_TO_ADD}'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'select-users-view-item-${USER_TO_ADD}'
 - extendedWaitUntil:
@@ -40,7 +40,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-name'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${ROOM}
@@ -48,7 +48,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-channel-encrypted'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'create-channel-encrypted'
 - tapOn:
@@ -56,4 +56,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${ROOM}'
-    timeout: 60000
+    timeout: 

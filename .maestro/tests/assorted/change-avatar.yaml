@@ -19,39 +19,39 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-view'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'sidebar-profile'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'sidebar-profile'
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
-    timeout: 60000
+    timeout: 
 
 # should click on the reset avatar button
 - extendedWaitUntil:
     visible:
       id: 'avatar-edit-button'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'avatar-edit-button'
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-avatar'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'reset-avatar-suggestion'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'reset-avatar-suggestion'
 
@@ -61,11 +61,11 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*Discard changes?.*'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: '.*Cancel.*'
-    timeout: 60000
+    timeout: 
 - tapOn:
     text: '.*Cancel.*'
 - tapOn:
@@ -73,11 +73,11 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*Discard changes?.*'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: 'Discard'
-    timeout: 60000
+    timeout: 
 - tapOn:
     text: 'Discard'
 
@@ -86,31 +86,31 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'avatar-edit-button'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'avatar-edit-button'
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
       enabled: false
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: 'Upload image'
-    timeout: 60000
+    timeout: 
 - tapOn:
     text: 'Upload image'
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
       enabled: true
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'change-avatar-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
-    timeout: 60000
+    timeout: 
 - evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
 - assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}
 
@@ -119,31 +119,31 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'avatar-edit-button'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'avatar-edit-button'
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
       enabled: false
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: 'Take a photo'
-    timeout: 60000
+    timeout: 
 - tapOn:
     text: 'Take a photo'
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
       enabled: true
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'change-avatar-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
-    timeout: 60000
+    timeout: 
 - evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
 - assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}
 
@@ -152,25 +152,25 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'avatar-edit-button'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'avatar-edit-button'
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
       enabled: false
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-avatar-url'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'change-avatar-view-avatar-url'
 - inputText: 'https://play-lh.googleusercontent.com/AMPmTxPV498lwVj3HsEJkvoUF6RurRcwYz2xbTCP7XndQdaWBmll4eSCcnwtbehUUw=w480-h960-rw'
 - extendedWaitUntil:
     visible:
       text: 'Fetch image from URL'
-    timeout: 60000
+    timeout: 
 - tapOn:
     text: 'Fetch image from URL'
 - hideKeyboard
@@ -178,12 +178,12 @@ tags:
     visible:
       id: 'change-avatar-view-submit'
       enabled: true
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'change-avatar-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'profile-view'
-    timeout: 60000
+    timeout: 
 - evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
 - assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}

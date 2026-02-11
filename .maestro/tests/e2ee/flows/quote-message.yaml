@@ -18,15 +18,15 @@ env:
 - extendedWaitUntil:
     visible:
       id: action-sheet
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: action-sheet-handle
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: Quote
-    timeout: 60000
+    timeout: 
 - tapOn:
     text: Quote
 
@@ -34,14 +34,14 @@ env:
 - extendedWaitUntil:
     visible:
       id: message-composer-input
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: message-composer-input
 - inputText: ${QUOTED_MESSAGE}
 - extendedWaitUntil:
     visible:
       id: message-composer-send
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: message-composer-send
 
@@ -49,6 +49,6 @@ env:
 - extendedWaitUntil:
     visible:
       text: .*${QUOTED_MESSAGE}.*
-    timeout: 60000
+    timeout: 
 - assertVisible:
     id: 'reply-${MESSAGE_AUTHOR}-${MESSAGE_TO_QUOTE}'

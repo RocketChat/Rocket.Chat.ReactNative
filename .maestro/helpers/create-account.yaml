@@ -34,4 +34,4 @@ tags:
 - extendedWaitUntil:
     visible:
       id: rooms-list-view
-    timeout: 60000
+    timeout: 

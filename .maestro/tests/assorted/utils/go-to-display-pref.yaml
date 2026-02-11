@@ -7,20 +7,20 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-sidebar'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'rooms-list-view-sidebar'
 - extendedWaitUntil:
     visible:
       id: 'sidebar-accessibility'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'sidebar-accessibility'
 - waitForAnimationToEnd:
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'accessibility-display-button'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'accessibility-display-button'

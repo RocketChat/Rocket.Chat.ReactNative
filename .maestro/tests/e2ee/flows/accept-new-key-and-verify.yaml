@@ -31,24 +31,24 @@ env:
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_1}.*'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_2}.*'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_3}.*'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_4}.*'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: '.*${MESSAGE_5}.*'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: '.*${NEW_MESSAGE}.*'
-    timeout: 60000
+    timeout: 

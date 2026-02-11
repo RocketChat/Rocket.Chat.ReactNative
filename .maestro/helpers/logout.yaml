@@ -32,7 +32,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'sidebar-settings'
-    timeout: 60000
+    timeout: 
 
 - tapOn:
     id: 'sidebar-settings'
@@ -46,7 +46,7 @@ tags:
 - extendedWaitUntil:
     visible:
       text: '.*You will be logged out of this application.*'
-    timeout: 60000
+    timeout: 
 
 - assertVisible:
     text: Logout
@@ -59,7 +59,7 @@ tags:
       - extendedWaitUntil:
           visible:
             id: 'android:id/button1'
-          timeout: 60000
+          timeout: 
       - tapOn:
           text: Logout
           index: 0

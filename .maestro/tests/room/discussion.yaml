@@ -24,7 +24,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 
 - assertVisible:
     id: 'rooms-list-view-create-channel'
 - tapOn:
@@ -32,52 +32,52 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'new-message-view'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'new-message-view-create-discussion'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'new-message-view-create-discussion'
 - extendedWaitUntil:
     visible:
       id: 'select-users-view'
-    timeout: 60000
+    timeout: 
 # Select users in SelectedUsersView
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-search'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'select-users-view-search'
 - inputText: ${output.selectUser}
 - extendedWaitUntil:
     visible:
       id: 'select-users-view-item-${output.selectUser}'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'select-users-view-item-${output.selectUser}'
 - extendedWaitUntil:
     visible:
       id: 'selected-user-${output.selectUser}'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'selected-users-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'create-discussion-view'
-    timeout: 60000
+    timeout: 
 # Select channel and enter discussion name
 - tapOn:
     id: 'create-discussion-select-channel'
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'multi-select-item-${output.room.name}'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'multi-select-item-${output.room.name}'
 - tapOn:
@@ -88,16 +88,16 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.discussionFromNewMessage}'
-    timeout: 60000
+    timeout: 
 - tapOn: 'Back'
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${output.discussionFromNewMessage}'
-    timeout: 60000
+    timeout: 
 
 # should create discussion from MessageComposer Actions
 - runFlow:
@@ -107,13 +107,13 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-composer-actions'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: message-composer-actions
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 60000
+    timeout: 
 - assertVisible:
     text: Create discussion
 - tapOn:
@@ -121,11 +121,11 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'create-discussion-view'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: .*${output.room.name}.*
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: multi-select-discussion-name
 - inputText: ${output.discussionFromMessageComposer}
@@ -134,17 +134,17 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.discussionFromMessageComposer}'
-    timeout: 60000
+    timeout: 
 
 # Create Discussion from action sheet
 - extendedWaitUntil:
     visible:
       id: 'message-composer'
-    timeout: 60000
+    timeout: 
 - runFlow:
     file: '../../helpers/send-message.yaml'
     env:
@@ -152,34 +152,34 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'message-content-message'
-    timeout: 60000
+    timeout: 
 - longPressOn:
     id: message-content-message
 - extendedWaitUntil:
     visible:
       id: 'action-sheet'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       text: 'Start a discussion'
-    timeout: 60000
+    timeout: 
 - tapOn:
     text: Start a discussion
 - extendedWaitUntil:
     visible:
       id: 'create-discussion-view'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: create-discussion-submit
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-view'
-    timeout: 60000
+    timeout: 
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-message'
-    timeout: 60000
+    timeout: 
 
 # Check RoomActionsView render
 - assertVisible:
@@ -190,7 +190,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
-    timeout: 60000
+    timeout: 
 
 # should have room actions screen
 - assertVisible:
@@ -245,7 +245,7 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-info-view'
-    timeout: 60000
+    timeout: 
 
 # should have edit button
 - assertVisible:
@@ -257,19 +257,19 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-actions-view'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: custom-header-back
 - extendedWaitUntil:
     visible:
       id: 'room-view-messages'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: header-back
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view'
-    timeout: 60000
+    timeout: 
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
     env:
@@ -279,28 +279,28 @@ tags:
 - extendedWaitUntil:
     visible:
       id: 'room-header'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'room-header'
 - extendedWaitUntil:
     visible:
       id: 'room-actions-discussions'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'room-actions-discussions'
 - extendedWaitUntil:
     visible:
       id: 'discussions-view'
-    timeout: 60000
+    timeout: 
 
 # should navigate to discussion
 - extendedWaitUntil:
     visible:
       id: 'discussions-view-${output.discussionFromNewMessage}'
-    timeout: 60000
+    timeout: 
 - tapOn:
     id: 'discussions-view-${output.discussionFromNewMessage}'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.discussionFromNewMessage}'
-    timeout: 60000
+    timeout: 
