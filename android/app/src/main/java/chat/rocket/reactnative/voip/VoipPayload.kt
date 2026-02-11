@@ -13,6 +13,9 @@ data class VoipPayload(
     
     @SerializedName("caller")
     val caller: String,
+
+    @SerializedName("username")
+    val username: String = "",
     
     @SerializedName("host")
     val host: String,
@@ -34,6 +37,7 @@ data class VoipPayload(
         return Bundle().apply {
             putString("callId", callId)
             putString("caller", caller)
+            putString("username", username)
             putString("host", host)
             putString("type", type)
             putString("hostName", hostName)
@@ -48,6 +52,7 @@ data class VoipPayload(
         return Arguments.createMap().apply {
             putString("callId", callId)
             putString("caller", caller)
+            putString("username", username)
             putString("host", host)
             putString("type", type)
             putString("hostName", hostName)
@@ -62,22 +67,25 @@ data class VoipPayload(
             val type = data["type"] ?: return null
             val callId = data["callId"] ?: return null
             val caller = data["caller"] ?: return null
+
+            val username = data["username"] ?: return null
             val host = data["host"] ?: return null
             val hostName = data["hostName"] ?: ""
             if (type != "incoming_call") return null
 
-            return VoipPayload(callId, caller, host, type, hostName)
+            return VoipPayload(callId, caller, username, host, type, hostName)
         }
 
         fun fromBundle(bundle: Bundle?): VoipPayload? {
             if (bundle == null) return null
             val callId = bundle.getString("callId") ?: return null
             val caller = bundle.getString("caller") ?: ""
+            val username = bundle.getString("username") ?: ""
             val host = bundle.getString("host") ?: ""
             val type = bundle.getString("type") ?: ""
             val hostName = bundle.getString("hostName") ?: ""
 
-            return VoipPayload(callId, caller, host, type, hostName)
+            return VoipPayload(callId, caller, username, host, type, hostName)
         }
     }
 }

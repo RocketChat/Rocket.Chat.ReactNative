@@ -49,20 +49,8 @@
             android:layout_marginTop="-60dp"
             android:layout_marginBottom="24dp">
 
-            <TextView
-                android:id="@+id/caller_avatar_initial"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_avatar_incoming_call"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:letterSpacing="0"
-                android:textColor="@color/incoming_call_avatar_text"
-                android:textSize="48sp"
-                android:textStyle="bold" />
-
             <ImageView
-                android:id="@+id/caller_avatar_image"
+                android:id="@+id/avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="Caller avatar"

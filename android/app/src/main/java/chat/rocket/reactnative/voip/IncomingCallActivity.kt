@@ -10,14 +10,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import android.view.View
+import android.view.ViewOutlineProvider
+import android.graphics.Outline
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.util.Log
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
 import android.graphics.Typeface
@@ -93,7 +92,6 @@ class IncomingCallActivity : Activity() {
         }
         listOf(
             R.id.header_text,
-            R.id.caller_avatar_initial,
             R.id.host_name,
             R.id.incoming_call_reject_label,
             R.id.incoming_call_accept_label
@@ -107,48 +105,50 @@ class IncomingCallActivity : Activity() {
         findViewById<TextView>(R.id.caller_name)?.text = payload.caller.ifEmpty { "" }
         findViewById<TextView>(R.id.host_name)?.text = payload.hostName.ifEmpty { "" }
 
-        // Avatar: initial as fallback, load from host/avatar/username when available
-        val initialView = findViewById<TextView>(R.id.caller_avatar_initial)
-        val avatarImageView = findViewById<ImageView>(R.id.caller_avatar_image)
-        val initial = payload.caller.firstOrNull()?.uppercaseChar()?.toString() ?: "?"
-        initialView?.text = initial
-
-        // loadAvatar(payload, avatarImageView, initialView)
+        loadAvatar(payload)
     }
 
     /**
      * Loads avatar from ${host}/avatar/username.
-     * Falls back to initial letter if load fails or URL is invalid.
-     * A proper avatar URL function can replace this later.
      */
-    private fun loadAvatar(payload: VoipPayload, imageView: ImageView?, initialView: TextView?) {
-        if (imageView == null || initialView == null) return
-        if (payload.host.isBlank() || payload.caller.isBlank()) return
+    private fun loadAvatar(payload: VoipPayload) {
+        if (payload.host.isBlank() || payload.username.isBlank()) return
 
+        val imageView = findViewById<ImageView>(R.id.avatar)
         val baseUrl = payload.host.trim().removeSuffix("/")
         val url = if (baseUrl.startsWith("http")) baseUrl else "https://$baseUrl"
-        val username = payload.caller.trim().let { if (it.startsWith("@")) it else "@$it" }
-        val avatarUrl = "$url/avatar/$username?format=png&size=240"
-
-        val cornerRadiusPx = (8 * resources.displayMetrics.density).toInt()
-        val requestOptions = RequestOptions()
-            .transform(CenterCrop(), RoundedCorners(cornerRadiusPx))
+        val username = payload.username.trim()
+        val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
+        val avatarUrl = "$url/avatar/$username?format=png&size=$sizePx"
+        val cornerRadiusPx = 8 * resources.displayMetrics.density
 
         Glide.with(this)
             .load(avatarUrl)
-            .apply(requestOptions)
-            .into(object : com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>(360, 360) {
+            .into(object : com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>(sizePx, sizePx) {
                 override fun onResourceReady(
                     resource: android.graphics.drawable.Drawable,
                     transition: com.bumptech.glide.request.transition.Transition<in android.graphics.drawable.Drawable>?
                 ) {
-                    initialView.visibility = View.GONE
                     imageView.visibility = View.VISIBLE
                     imageView.setImageDrawable(resource)
+                    // View-level clipping works for both PNG and SVG (bitmap transforms don't apply to SVG)
+                    imageView.post {
+                        imageView.outlineProvider = object : ViewOutlineProvider() {
+                            override fun getOutline(view: View, outline: Outline) {
+                                outline.setRoundRect(0, 0, view.width, view.height, cornerRadiusPx)
+                            }
+                        }
+                        imageView.clipToOutline = true
+                    }
+                }
+
+                override fun onLoadFailed(errorDrawable: android.graphics.drawable.Drawable?) {
+                    // Hide the image view if the load fails (URL error, timeout, etc.)
+                    imageView.visibility = View.GONE
                 }
 
                 override fun onLoadCleared(placeholder: android.graphics.drawable.Drawable?) {
-                    initialView.visibility = View.VISIBLE
+                    // Clean up when the view is destroyed or recycled
                     imageView.visibility = View.GONE
                 }
             })
