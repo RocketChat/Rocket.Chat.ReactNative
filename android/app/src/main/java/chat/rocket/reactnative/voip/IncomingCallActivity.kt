@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.FrameLayout
 import android.util.Log
 import android.view.ViewOutlineProvider
 import com.bumptech.glide.Glide
@@ -111,6 +112,7 @@ class IncomingCallActivity : Activity() {
     private fun loadAvatar(payload: VoipPayload) {
         if (payload.host.isBlank() || payload.username.isBlank()) return
 
+        val container = findViewById<FrameLayout>(R.id.avatar_container)
         val imageView = findViewById<ImageView>(R.id.avatar)
         val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
         val avatarUrl = Ejson.forCallerAvatar(payload.host, payload.username)?.getCallerAvatarUri(sizePx)
@@ -124,19 +126,17 @@ class IncomingCallActivity : Activity() {
                     resource: android.graphics.drawable.Drawable,
                     transition: com.bumptech.glide.request.transition.Transition<in android.graphics.drawable.Drawable>?
                 ) {
-                    imageView.visibility = View.VISIBLE
+                    container.visibility = View.VISIBLE
                     imageView.setImageDrawable(resource)
                     applyAvatarRoundCorners(imageView, cornerRadiusPx)
                 }
 
                 override fun onLoadFailed(errorDrawable: android.graphics.drawable.Drawable?) {
-                    // Hide the image view if the load fails (URL error, timeout, etc.)
-                    imageView.visibility = View.GONE
+                    container.visibility = View.GONE
                 }
 
                 override fun onLoadCleared(placeholder: android.graphics.drawable.Drawable?) {
-                    // Clean up when the view is destroyed or recycled
-                    imageView.visibility = View.GONE
+                    container.visibility = View.GONE
                 }
             })
     }

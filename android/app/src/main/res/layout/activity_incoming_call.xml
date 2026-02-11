@@ -33,19 +33,19 @@
 
     </LinearLayout>
 
-    <!-- Center: Avatar, caller name, organization -->
+    <!-- Center: Avatar, caller name, host name -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="56dp"
         android:orientation="vertical">
 
-        <!-- Avatar: ImageView loads from URL, TextView shows initial as fallback -->
         <FrameLayout
+            android:id="@+id/avatar_container"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="-60dp"
             android:layout_marginBottom="24dp">
 
             <ImageView
@@ -53,8 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/incoming_call_avatar_description"
-                android:scaleType="centerCrop"
-                android:visibility="gone" />
+                android:scaleType="centerCrop" />
 
         </FrameLayout>
 
@@ -69,7 +68,7 @@
             android:textStyle="bold"
             tools:text="Unknown caller" />
 
-        <!-- Organization (host_name) -->
+        <!-- Host name -->
         <TextView
             android:id="@+id/host_name"
             android:layout_width="wrap_content"
