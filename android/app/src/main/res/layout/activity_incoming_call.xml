@@ -101,6 +101,7 @@
             android:padding="16dp">
 
             <FrameLayout
+                android:id="@+id/btn_reject_bg"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:background="@drawable/bg_btn_reject"
@@ -146,6 +147,7 @@
             android:padding="16dp">
 
             <FrameLayout
+                android:id="@+id/btn_accept_bg"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:background="@drawable/bg_btn_accept"

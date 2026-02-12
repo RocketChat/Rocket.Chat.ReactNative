@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Build
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.FrameLayout
@@ -61,6 +63,8 @@ class IncomingCallActivity : Activity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setContentView(R.layout.activity_incoming_call)
+        applyNavigationBar()
+        applyButtonBackgrounds()
         applyInterFont()
 
         val voipPayload = VoipPayload.fromBundle(intent.extras)
@@ -76,6 +80,44 @@ class IncomingCallActivity : Activity() {
         updateUI(voipPayload)
         startRingtone()
         setupButtons(voipPayload)
+    }
+
+    private fun applyNavigationBar() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        val bgColor = ContextCompat.getColor(this, R.color.incoming_call_background)
+        window.navigationBarColor = bgColor
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val isDarkTheme = (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !isDarkTheme) {
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
+    }
+
+    /**
+     * Applies button background colors programmatically. Required on some devices (e.g. Samsung
+     * lock screen) where XML @color references may not resolve correctly in full-screen intent context.
+     */
+    private fun applyButtonBackgrounds() {
+        val cornerRadiusPx = 8 * resources.displayMetrics.density
+        findViewById<FrameLayout>(R.id.btn_reject_bg)?.apply {
+            background = GradientDrawable().apply {
+                setColor(ContextCompat.getColor(this@IncomingCallActivity, R.color.incoming_call_reject_bg))
+                cornerRadius = cornerRadiusPx
+            }
+        }
+        findViewById<FrameLayout>(R.id.btn_accept_bg)?.apply {
+            background = GradientDrawable().apply {
+                setColor(ContextCompat.getColor(this@IncomingCallActivity, R.color.incoming_call_accept_bg))
+                cornerRadius = cornerRadiusPx
+            }
+        }
     }
 
     private fun applyInterFont() {
