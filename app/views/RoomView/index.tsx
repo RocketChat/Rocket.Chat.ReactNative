@@ -72,7 +72,6 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../lib/constants/messageTypeLoad';
 import { themes } from '../../lib/constants/colors';
 import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants/notifications';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { callJitsi } from '../../lib/methods/callJitsi';
 import { loadSurroundingMessages } from '../../lib/methods/loadSurroundingMessages';
 import { loadThreadMessages } from '../../lib/methods/loadThreadMessages';
@@ -572,20 +571,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	goRoomActionsView = (screen?: keyof ModalStackParamList) => {
+	goRoomActionsView = () => {
 		logEvent(events.ROOM_GO_RA);
 		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
-				screen: screen ?? 'RoomActionsView',
+				screen: 'RoomActionsView',
 				params: {
 					rid: this.rid as string,
 					t: this.t as SubscriptionType,
 					room: room as ISubscription,
 					member,
-					showCloseModal: !!screen,
-					// @ts-ignore
 					joined,
 					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
 				}
