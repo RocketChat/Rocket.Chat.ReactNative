@@ -116,7 +116,6 @@
 		"react-native-safe-area-context": "^5.4.0",
 		"react-native-screens": "^4.13.1",
 		"react-native-skeleton-placeholder": "5.2.4",
-		"react-native-slowlog": "1.0.2",
 		"react-native-svg": "^15.12.1",
 		"react-native-url-polyfill": "2.0.0",
 		"react-native-webview": "^13.15.0",

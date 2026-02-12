@@ -12826,11 +12826,6 @@ react-native-skeleton-placeholder@5.2.4:
   resolved "https://registry.yarnpkg.com/react-native-skeleton-placeholder/-/react-native-skeleton-placeholder-5.2.4.tgz#a654fa083ff274a39c763e086f8a850c556d4c95"
   integrity sha512-OZntVq1hU1UX33FltxK2ezT2v9vHIhV8YnEbnMWUCvxT0N9OsgD1qxiHm6qb9YRJVgq2o5z3S7dNPsPnDF/jNg==
 
-react-native-slowlog@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-slowlog/-/react-native-slowlog-1.0.2.tgz#5520979e3ef9d5273495d431ff3be34f02e35c89"
-  integrity sha512-pUiKi045MS4K+eCiqk/OB8w0V0M1nxa1pWidydHyKB6VordefOl6yO68kqiw+AWn90GgsjGdovThVlOC0dXH1A==
-
 react-native-svg@^15.12.1:
   version "15.12.1"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-15.12.1.tgz#7ba756dd6a235f86a2c312a1e7911f9b0d18ad3a"
