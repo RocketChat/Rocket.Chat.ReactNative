@@ -1,10 +1,11 @@
-import { Text, useWindowDimensions, type ViewProps } from 'react-native';
+import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
 import React from 'react';
-import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
+import { isAndroid } from '../../lib/methods/helpers';
 import { type IActionSheetItem, Item } from './Item';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
@@ -41,14 +42,14 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 
 	if (options) {
 		return (
-			<BottomSheetFlatList
+			<FlatList
 				testID='action-sheet'
 				data={options}
 				refreshing={false}
 				keyExtractor={(item: TActionSheetOptionsItem) => item.title}
 				bounces={false}
 				renderItem={renderItem}
-				style={{ backgroundColor: colors.strokeExtraDark }}
+				style={{ backgroundColor: colors.surfaceLight }}
 				keyboardDismissMode='interactive'
 				indicatorStyle='black'
 				contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
@@ -56,13 +57,16 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={renderFooter}
 				onLayout={onLayout}
+				nestedScrollEnabled={isAndroid}
 			/>
 		);
 	}
 	return (
-		<BottomSheetView testID='action-sheet' style={styles.contentContainer} onLayout={onLayout}>
-			{children}
-		</BottomSheetView>
+		<GestureHandlerRootView style={styles.contentContainer}>
+			<View testID='action-sheet' onLayout={onLayout}>
+				{children}
+			</View>
+		</GestureHandlerRootView>
 	);
 });
 
