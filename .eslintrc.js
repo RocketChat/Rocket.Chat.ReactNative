@@ -224,8 +224,8 @@ module.exports = /** @type {import('eslint').Linter.Config} */ {
 				'@typescript-eslint/no-unused-vars': [
 					'error',
 					{
-						argsIgnorePattern: '^_',
-						ignoreRestSiblings: true
+						args: 'all',
+						argsIgnorePattern: '^_'
 					}
 				],
 				'@typescript-eslint/consistent-type-imports': [
