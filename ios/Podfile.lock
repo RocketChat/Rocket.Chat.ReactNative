@@ -232,7 +232,7 @@ PODS:
   - libwebp/sharpyuv (1.5.0)
   - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
-  - MobileCrypto (0.2.0):
+  - MobileCrypto (0.2.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2327,7 +2327,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNImageCropPicker (0.50.1):
+  - RNImageCropPicker (0.51.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2351,10 +2351,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNImageCropPicker/QBImagePickerController (= 0.50.1)
+    - RNImageCropPicker/QBImagePickerController (= 0.51.0)
     - TOCropViewController (~> 2.7.4)
     - Yoga
-  - RNImageCropPicker/QBImagePickerController (0.50.1):
+  - RNImageCropPicker/QBImagePickerController (0.51.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3082,7 +3082,7 @@ SPEC CHECKSUMS:
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
-  MobileCrypto: 60a1e43e26a9d6851ae2aa7294b8041c9e9220b7
+  MobileCrypto: a424494b2f45bec9dbe60e3f6d16a40aedefe7b7
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
@@ -3157,7 +3157,7 @@ SPEC CHECKSUMS:
   React-timing: 2d07431f1c1203c5b0aaa6dc7b5f503704519218
   React-utils: 67cf7dcfc18aa4c56bec19e11886033bb057d9fa
   ReactAppDependencyProvider: bf62814e0fde923f73fc64b7e82d76c63c284da9
-  ReactCodegen: 8885059f55a205c667f52d6e35877137631116f2
+  ReactCodegen: 2f22969ab54e1aace69c9b5d3085e0a3b405a9a6
   ReactCommon: 177fca841e97b2c0e288e86097b8be04c6e7ae36
   RNBootSplash: 1280eeb18d887de0a45bb4923d4fc56f25c8b99c
   RNCAsyncStorage: edb872909c88d8541c0bfade3f86cd7784a7c6b3
@@ -3172,7 +3172,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: 8a49978bb953d3fc052813093fecd4b447bbabf8
   RNFileViewer: f9424017fa643c115c1444e11292e84fb16ddd68
   RNGestureHandler: 8ff2b1434b0ff8bab28c8242a656fb842990bbc8
-  RNImageCropPicker: b219389d3a300679b396e81d501e8c8169ffa3c0
+  RNImageCropPicker: c78ee80ea778f90cb850f4d26696fd9c1a7bcfbb
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
   RNReanimated: f52ccd5ceea2bae48d7421eec89b3f0c10d7b642
   RNScreens: b13e4c45f0406f33986a39c0d8da0324bff94435
