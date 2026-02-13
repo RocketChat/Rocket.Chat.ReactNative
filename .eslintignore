@@ -4,4 +4,3 @@ coverage
 e2e/docker
 android
 ios
-.eslintrc.js
