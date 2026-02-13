@@ -1,7 +1,7 @@
 const fs = require('fs');
 const customIcons = require('../app/containers/CustomIcon/selection.json');
 
-const sortObject = o => Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+const sortObject = o => Object.keys(o).sort().reduce((r, k) => { r[k] = o[k]; return r; }, {});
 
 let icons = {};
 
