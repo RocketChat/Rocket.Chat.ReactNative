@@ -22,6 +22,9 @@ module.exports = {
 			// 		}
 			// 	]
 			// }
+		},
+		react: {
+			version: 'detect'
 		}
 	},
 	parser: '@babel/eslint-parser',
