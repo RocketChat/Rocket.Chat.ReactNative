@@ -25,7 +25,13 @@ module.exports = {
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier', 'plugin:react-hooks/recommended'],
+	extends: [
+		'plugin:jest/recommended',
+		'@rocket.chat/eslint-config',
+		'plugin:prettier/recommended',
+		'prettier',
+		'plugin:react-hooks/recommended'
+	],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
@@ -155,8 +161,6 @@ module.exports = {
 		'valid-typeof': 2,
 		'linebreak-style': 0,
 		'prefer-template': 2,
-		quotes: [1, 'single'],
-		semi: [2, 'always'],
 		'prefer-const': 2,
 		'object-shorthand': 2,
 		'consistent-return': 0,
@@ -166,7 +170,6 @@ module.exports = {
 		'require-await': 2,
 		'func-names': 0,
 		'react/static-property-placement': [0],
-		'arrow-parens': ['warn', 'as-needed', { requireForBlockBody: true }],
 		'react/jsx-curly-newline': [0],
 		'react/state-in-constructor': [0],
 		'no-async-promise-executor': [0],
@@ -186,6 +189,7 @@ module.exports = {
 				'plugin:@typescript-eslint/recommended',
 				'plugin:@typescript-eslint/eslint-recommended',
 				'@rocket.chat/eslint-config',
+				'plugin:prettier/recommended',
 				'prettier'
 			],
 			parser: '@typescript-eslint/parser',
