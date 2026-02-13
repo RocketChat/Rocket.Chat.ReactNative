@@ -98,7 +98,8 @@ class UserPreferences {
 
 	getString(key: string): string | null {
 		try {
-			return this.mmkv.getString(key) || null;
+			const val = this.mmkv.getString(key);
+			return val !== undefined ? val : null;
 		} catch {
 			return null;
 		}
@@ -110,7 +111,8 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
-			return this.mmkv.getBoolean(key) || null;
+			const val = this.mmkv.getBoolean(key);
+			return val !== undefined ? val : null;
 		} catch {
 			return null;
 		}
@@ -139,7 +141,8 @@ class UserPreferences {
 
 	getNumber(key: string): number | null {
 		try {
-			return this.mmkv.getNumber(key) || null;
+			const val = this.mmkv.getNumber(key);
+			return val !== undefined ? val : null;
 		} catch {
 			return null;
 		}
