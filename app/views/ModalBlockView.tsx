@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
+import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
@@ -263,16 +263,15 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 			<KeyboardView>
 				<ScrollView style={styles.content}>
 					<React.Fragment key={modalKey}>
-						{modalBlockWithContext({
-							action: this.action,
-							state: this.changeState,
-							...data
-						})({
-							blocks,
-							errors,
-							language,
-							values
-						})}
+						<ModalBlockWithContext
+							action={this.action}
+							state={this.changeState}
+							{...data}
+							blocks={blocks}
+							errors={errors}
+							language={language}
+							values={values}
+						/>
 					</React.Fragment>
 				</ScrollView>
 				<LoadingIndicator loading={loading} />
