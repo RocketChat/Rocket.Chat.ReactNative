@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = /** @type {import('eslint').Linter.Config} */ {
 	settings: {
 		'import/resolver': {
 			node: {
@@ -196,15 +196,6 @@ module.exports = {
 				'prettier'
 			],
 			parser: '@typescript-eslint/parser',
-			parserOptions: {
-				sourceType: 'module',
-				ecmaVersion: 2018,
-				warnOnUnsupportedTypeScriptVersion: false,
-				ecmaFeatures: {
-					experimentalObjectRestSpread: true,
-					legacyDecorators: true
-				}
-			},
 			plugins: ['react', '@typescript-eslint'],
 			rules: {
 				'@typescript-eslint/no-var-requires': 'off',
