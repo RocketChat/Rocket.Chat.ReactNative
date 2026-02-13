@@ -12,9 +12,16 @@ const config = {
 		unstable_allowRequireContext: true
 	},
 	resolver: {
-		// When running E2E tests, prioritize .mock.ts files for app code
-		// Note: react-native-mmkv's internal mock file is disabled via patch-package
-		sourceExts: process.env.RUNNING_E2E_TESTS === 'true' ? ['mock.ts', ...sourceExts] : sourceExts
+		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts,
+		// Force flash-list to use source files so our patch is applied
+		resolveRequest: (context, moduleName, platform) => {
+			// Redirect flash-list dist imports to src
+			if (moduleName.startsWith('@shopify/flash-list')) {
+				const newModuleName = moduleName.replace('@shopify/flash-list', '@shopify/flash-list/src');
+				return context.resolveRequest(context, newModuleName, platform);
+			}
+			return context.resolveRequest(context, moduleName, platform);
+		}
 	}
 };
 
