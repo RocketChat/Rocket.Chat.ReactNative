@@ -35,7 +35,11 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 	const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
 
 	return (
-		<View style={[styles.actionsContainer, styles.actionsLeftContainer]} pointerEvents='box-none'>
+		<View
+			style={[styles.actionsContainer, styles.actionsLeftContainer]}
+			pointerEvents='box-none'
+			accessibilityElementsHidden
+			importantForAccessibility='no'>
 			<Animated.View
 				style={[
 					styles.actionLeftButtonContainer,
@@ -45,7 +49,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
 					<RectButton
-						accessible
+						accessible={false}
 						accessibilityLabel={I18n.t(isRead ? 'Mark_unread' : 'Mark_read')}
 						style={styles.actionButton}
 						onPress={onToggleReadPress}>
@@ -120,7 +124,11 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 	const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
 
 	return (
-		<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
+		<View
+			style={[styles.actionsLeftContainer, viewHeight]}
+			pointerEvents='box-none'
+			accessibilityElementsHidden
+			importantForAccessibility='no'>
 			<Animated.View
 				style={[
 					styles.actionRightButtonContainer,
@@ -133,7 +141,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					animatedFavStyles
 				]}>
 				<RectButton
-					accessible
+					accessible={false}
 					accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
 					style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]}
 					onPress={toggleFav}>
@@ -156,7 +164,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					animatedHideStyles
 				]}>
 				<RectButton
-					accessible
+					accessible={false}
 					accessibilityLabel={I18n.t('Hide')}
 					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
 					onPress={onHidePress}>
