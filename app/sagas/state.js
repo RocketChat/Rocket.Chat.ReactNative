@@ -28,7 +28,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 		yield localAuthenticate(server);
 		checkAndReopen();
 		// Check for pending notification when app comes to foreground (Android - notification tap while in background)
-		checkPendingNotification().catch((e) => {
+		checkPendingNotification().catch(e => {
 			log('[state.js] Error checking pending notification:', e);
 		});
 		return yield setUserPresenceOnline();
