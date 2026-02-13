@@ -796,7 +796,9 @@ export const ModalInputWithAddField = () => {
 			}
 		]);
 	};
-	const modalKey = `${blocks.length}-${blocks.map((b: any) => b.element?.actionId || b.type).join('-')}`;
+	const modalKey = `${blocks.length}-${blocks
+		.map((b: any, index: number) => `${b.element?.actionId || b.type}-${index}`)
+		.join('-')}`;
 
 	return (
 		<View>

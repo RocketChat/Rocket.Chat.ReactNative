@@ -258,7 +258,9 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		const { blocks } = view;
 		// Key must change when block structure changes so the tree remounts and hook count matches.
 		// Kept stable when only form values change (typing) so the input keeps focus.
-		const modalKey = `${data.viewId}-${blocks.length}-${blocks.map((b: any) => b.blockId || b.type).join('-')}`;
+		const modalKey = `${data.viewId}-${blocks.length}-${blocks
+			.map((b: any, index: number) => `${b.blockId || b.type}-${index}`)
+			.join('-')}`;
 		return (
 			<KeyboardView>
 				<ScrollView style={styles.content}>
