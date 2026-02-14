@@ -5,23 +5,11 @@ module.exports = {
 				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js', '.native.js', '.ios.tsx', '.android.tsx']
 			},
 			typescript: {
-				alwaysTryTypes: true,
 				project: './tsconfig.json'
 			}
 		},
 		'import/parsers': {
 			'@typescript-eslint/parser': ['.ts', '.tsx']
-			// plugins: ['@typescript-eslint'],
-			// rules: {
-			// 	'@typescript-eslint/consistent-type-imports': [
-			// 		'error',
-			// 		{
-			// 			prefer: 'type-imports', // enforce `import type`
-			// 			disallowTypeAnnotations: true // disallow `import { type Foo }`
-			// 			// fixStyle: 'inline-type-imports' // keeps type imports inline rather than grouped
-			// 		}
-			// 	]
-			// }
 		},
 		react: {
 			version: 'detect'
@@ -37,13 +25,9 @@ module.exports = {
 	],
 	parserOptions: {
 		sourceType: 'module',
-		ecmaVersion: 2017,
-		ecmaFeatures: {
-			experimentalObjectRestSpread: true,
-			legacyDecorators: true
-		}
+		ecmaVersion: 2024
 	},
-	plugins: ['jsx-a11y', 'import', 'react-native', '@babel'],
+	plugins: ['import', 'react-native', '@babel'],
 	env: {
 		es6: true
 	},
@@ -98,7 +82,6 @@ module.exports = {
 				'prettier'
 			],
 			parser: '@typescript-eslint/parser',
-			plugins: ['@typescript-eslint'],
 			rules: {
 				'@typescript-eslint/ban-ts-comment': 'off',
 				'@typescript-eslint/ban-types': 'off',
