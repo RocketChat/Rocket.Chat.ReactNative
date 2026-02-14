@@ -42,7 +42,7 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactEleme
 	}
 
 	return (
-		<View style={[styles.container]}>
+		<View style={styles.container}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'discussions'} size={24} color={colors.fontSecondaryInfo} />

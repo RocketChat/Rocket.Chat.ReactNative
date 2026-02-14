@@ -46,18 +46,10 @@ module.exports = {
 	plugins: ['jsx-a11y', 'import', 'react-native', '@babel'],
 	env: {
 		es6: true,
-		node: true
+		node: true,
+		'react-native/react-native': true
 	},
 	rules: {
-		'react/display-name': 'off',
-		'react/jsx-fragments': ['error', 'syntax'],
-		'react/jsx-key': 'off',
-		'react/no-direct-mutation-state': 'off',
-		'react/prop-types': 'off',
-		'react/react-in-jsx-scope': 'off',
-		'react-hooks/set-state-in-effect': 'warn',
-		'react-hooks/immutability': 'warn',
-		'react-hooks/refs': 'warn',
 		'import/extensions': [
 			'error',
 			'ignorePackages',
@@ -77,10 +69,24 @@ module.exports = {
 				'newlines-between': 'ignore'
 			}
 		],
+		'react/display-name': 'off',
+		'react/jsx-fragments': ['error', 'syntax'],
+		'react/jsx-key': 'off',
+		'react/no-direct-mutation-state': 'off',
+		'react/prop-types': 'off',
+		'react/react-in-jsx-scope': 'off',
+		'react-hooks/set-state-in-effect': 'warn',
+		'react-hooks/immutability': 'warn',
+		'react-hooks/refs': 'warn',
+		'react-native/no-color-literals': 'off',
+		'react-native/no-inline-styles': 'off',
+		'react-native/no-raw-text': 'off',
+		'react-native/no-single-element-style-arrays': 'error',
+		'react-native/no-unused-styles': 'error',
+		'react-native/split-platform-components': 'off',
 		'no-unused-vars': 'off',
 		'no-void': 'error',
 		'new-cap': 'error',
-		'react-native/no-unused-styles': 'error',
 		'require-await': 'error'
 	},
 	globals: {
