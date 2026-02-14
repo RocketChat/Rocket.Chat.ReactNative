@@ -45,9 +45,7 @@ module.exports = {
 	},
 	plugins: ['jsx-a11y', 'import', 'react-native', '@babel'],
 	env: {
-		es6: true,
-		node: true,
-		'react-native/react-native': true
+		es6: true
 	},
 	rules: {
 		'import/extensions': [
@@ -88,9 +86,6 @@ module.exports = {
 		'no-void': 'error',
 		'new-cap': 'error',
 		'require-await': 'error'
-	},
-	globals: {
-		__DEV__: 'readonly'
 	},
 	overrides: [
 		{
@@ -152,6 +147,12 @@ module.exports = {
 		{
 			files: ['jest.setup.js', '__mocks__/**/*.js', '**/*.test.{js,ts,tsx}'],
 			extends: ['plugin:jest/recommended']
+		},
+		{
+			files: ['index.js', 'app/**/*.{js,ts,tsx}'],
+			env: {
+				'react-native/react-native': true
+			}
 		}
 	]
 };
