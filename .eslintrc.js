@@ -28,22 +28,33 @@ module.exports = {
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['@rocket.chat/eslint-config', 'plugin:react-hooks/recommended', 'plugin:prettier/recommended', 'prettier'],
+	extends: [
+		'@rocket.chat/eslint-config',
+		'plugin:react/recommended',
+		'plugin:react-hooks/recommended',
+		'plugin:prettier/recommended',
+		'prettier'
+	],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
 		ecmaFeatures: {
 			experimentalObjectRestSpread: true,
-			jsx: true,
 			legacyDecorators: true
 		}
 	},
-	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel'],
+	plugins: ['jsx-a11y', 'import', 'react-native', '@babel'],
 	env: {
 		es6: true,
 		node: true
 	},
 	rules: {
+		'react/display-name': 'off',
+		'react/jsx-fragments': ['error', 'syntax'],
+		'react/jsx-key': 'off',
+		'react/no-direct-mutation-state': 'off',
+		'react/prop-types': 'off',
+		'react/react-in-jsx-scope': 'off',
 		'react-hooks/set-state-in-effect': 'warn',
 		'react-hooks/immutability': 'warn',
 		'react-hooks/refs': 'warn',
@@ -67,7 +78,6 @@ module.exports = {
 			}
 		],
 		'no-unused-vars': 'off',
-		'react/jsx-uses-vars': 'error',
 		'no-void': 'error',
 		'new-cap': 'error',
 		'react-native/no-unused-styles': 'error',
@@ -87,7 +97,7 @@ module.exports = {
 				'prettier'
 			],
 			parser: '@typescript-eslint/parser',
-			plugins: ['react', '@typescript-eslint'],
+			plugins: ['@typescript-eslint'],
 			rules: {
 				'@typescript-eslint/ban-ts-comment': 'off',
 				'@typescript-eslint/ban-types': 'off',
@@ -119,10 +129,6 @@ module.exports = {
 				'no-unused-vars': 'off',
 				'no-useless-constructor': 'off',
 				'no-use-before-define': 'off',
-				'react/jsx-uses-react': 'error',
-				'react/jsx-uses-vars': 'error',
-				'react/jsx-no-undef': 'error',
-				'react/jsx-fragments': ['error', 'syntax'],
 				'new-cap': 'off',
 				'lines-between-class-members': 'off'
 			},
