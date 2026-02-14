@@ -11,7 +11,7 @@ const INTERVAL = 300;
 const ANIMATION_DURATION = 400;
 const ANIMATION_SCALE = 1.4;
 
-function Dot({ active }: { active: boolean }): JSX.Element {
+function Dot({ active }: { active: boolean }) {
 	const scale = useSharedValue(1);
 
 	useEffect(() => {
@@ -37,7 +37,7 @@ function Dot({ active }: { active: boolean }): JSX.Element {
 	return <Animated.View style={[style, animatedStyle]} />;
 }
 
-function DotsLoader(): JSX.Element {
+function DotsLoader() {
 	const [active, setActive] = useState(1);
 
 	useEffect(() => {

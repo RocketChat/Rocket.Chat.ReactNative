@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, type ReactElement } from 'react';
 import { Alert, Linking, View } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
 
@@ -52,7 +52,7 @@ const CustomStatus = () => {
 		status = 'disabled';
 	}
 
-	let right: (() => JSX.Element | null) | undefined = () => <CustomIcon name='edit' size={20} color={colors.fontTitlesLabels} />;
+	let right: (() => ReactElement | null) | undefined = () => <CustomIcon name='edit' size={20} color={colors.fontTitlesLabels} />;
 	if (notificationPresenceCap) {
 		right = () => <View style={[styles.customStatusDisabled, { backgroundColor: colors.userPresenceDisabled }]} />;
 	} else if (presenceBroadcastDisabled) {

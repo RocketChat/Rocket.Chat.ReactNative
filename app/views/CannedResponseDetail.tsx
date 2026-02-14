@@ -81,7 +81,7 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 		</View>
 	) : null;
 
-const CannedResponseDetail = (): JSX.Element => {
+const CannedResponseDetail = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 	const route = useRoute<RouteProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 

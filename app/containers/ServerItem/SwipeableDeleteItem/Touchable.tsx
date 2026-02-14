@@ -1,4 +1,4 @@
-import React, { useRef, memo } from 'react';
+import React, { useRef, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
 import {
 	Gesture,
@@ -14,7 +14,7 @@ import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
 
 export interface ISwipeableDeleteTouchableProps {
-	children: JSX.Element;
+	children: ReactElement;
 	testID: string;
 	width: number;
 	rowHeight: number;
