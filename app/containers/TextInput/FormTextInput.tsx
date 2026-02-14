@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { type ReactElement, useMemo, useState } from 'react';
 import {
 	type StyleProp,
 	StyleSheet,
@@ -86,7 +86,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	inputRef?: React.Ref<RNTextInput>;
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
-	left?: JSX.Element;
+	left?: ReactElement;
 	bottomSheet?: boolean;
 	onClearInput?: () => void;
 }

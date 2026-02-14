@@ -49,7 +49,7 @@ interface ICannedResponsesListViewProps {
 	route: RouteProp<ChatsStackParamList, 'CannedResponsesListView'>;
 }
 
-const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps): JSX.Element => {
+const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps) => {
 	const [room, setRoom] = useState<ISubscription | null>(null);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
