@@ -1,4 +1,3 @@
-import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -13,6 +12,7 @@ import Markdown from '../../../../markdown';
 import MessageContext from '../../../Context';
 import Touchable from '../../../Touchable';
 import { BUTTON_HIT_SLOP } from '../../../utils';
+import withAlpha from '../../../../../lib/helpers/withAlpha';
 
 const styles = StyleSheet.create({
 	button: {
@@ -144,7 +144,7 @@ const CollapsibleQuote = React.memo(
 
 		try {
 			if (attachment.color) {
-				backgroundColor = transparentize(attachment.color, 0.8);
+				backgroundColor = withAlpha(attachment.color, 0.8); // works for rgba, rgb, hex (#rgb, #rrggbb)
 				strokeExtraLight = attachment.color;
 				strokeLight = attachment.color;
 				strokeMedium = attachment.color;
