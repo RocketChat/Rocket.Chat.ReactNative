@@ -1,5 +1,6 @@
 import type React from 'react';
 import type Animated from 'react-native-reanimated';
+import { type ReactElement } from 'react';
 
 import { type TSupportedThemes } from '../../theme';
 import {
@@ -139,7 +140,7 @@ export interface ILastMessageProps {
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
-	children: JSX.Element;
+	children: ReactElement;
 	type: SubscriptionType;
 	testID: string;
 	width: number;
