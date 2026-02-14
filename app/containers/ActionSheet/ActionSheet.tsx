@@ -168,13 +168,9 @@ const ActionSheet = React.memo(
 						// We need this to allow horizontal swipe gesture inside the bottom sheet like in reaction picker
 						enableContentPanningGesture={data?.enableContentPanningGesture ?? true}
 						{...androidTablet}>
-						<BottomSheetContent
-							options={data?.options}
-							hide={hide}
-							children={data?.children}
-							hasCancel={data?.hasCancel}
-							onLayout={handleContentLayout}
-						/>
+						<BottomSheetContent options={data?.options} hide={hide} hasCancel={data?.hasCancel} onLayout={handleContentLayout}>
+							{data?.children}
+						</BottomSheetContent>
 					</BottomSheet>
 				)}
 			</>
