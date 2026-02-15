@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
+import { AppState, Dimensions, type EmitterSubscription, Linking, type AppStateStatus } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -61,6 +61,25 @@ interface IState {
 
 const parseDeepLinking = (url: string) => {
 	if (url) {
+		// Handle OAuth redirect from external browser (rocketchat://auth?...)
+		// The Rocket.Chat server redirects to 'rocketchat://auth' after OAuth login
+		// when using the external browser flow (required for WebAuthn/passkeys)
+		if (url.startsWith('rocketchat://auth')) {
+			const authUrl = url.replace(/rocketchat:\/\//, '');
+			const authMatch = authUrl.match(/^auth\?(.+)/);
+			if (authMatch) {
+				const query = authMatch[1];
+				const parsedQuery = parseQuery(query);
+				if (parsedQuery?.credentialToken) {
+					return {
+						...parsedQuery,
+						type: 'oauth'
+					};
+				}
+			}
+		}
+
+		// Handle standard deep links (rocketchat:// and https://go.rocket.chat/)
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
 		const regex = /^(room|auth|invite|shareextension)\?/;
 		const match = url.match(regex);
@@ -83,9 +102,10 @@ const parseDeepLinking = (url: string) => {
 };
 
 export default class Root extends React.Component<{}, IState> {
-	private listenerTimeout!: any;
 	private dimensionsListener?: EmitterSubscription;
 	private videoConfActionCleanup?: () => void;
+	private appStateSubscription?: ReturnType<typeof AppState.addEventListener>;
+	private lastAppState: AppStateStatus = AppState.currentState;
 
 	constructor(props: any) {
 		super(props);
@@ -108,14 +128,19 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	componentDidMount() {
-		this.listenerTimeout = setTimeout(() => {
-			Linking.addEventListener('url', ({ url }) => {
-				const parsedDeepLinkingURL = parseDeepLinking(url);
-				if (parsedDeepLinkingURL) {
-					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-				}
-			});
-		}, 5000);
+		// Set up deep link listener immediately (no delay) so OAuth redirects
+		// from external browser are handled promptly
+		Linking.addEventListener('url', ({ url }) => {
+			const parsedDeepLinkingURL = parseDeepLinking(url);
+			if (parsedDeepLinkingURL) {
+				store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+			}
+		});
+
+		// Handle app returning to foreground - check for pending OAuth deep links
+		// This is needed on iOS where Safari redirects may arrive while app is backgrounded
+		this.appStateSubscription = AppState.addEventListener('change', this.handleAppStateChange);
+
 		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 
 		// Set up video conf action listener for background accept/decline
@@ -123,12 +148,30 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	componentWillUnmount() {
-		clearTimeout(this.listenerTimeout);
 		this.dimensionsListener?.remove?.();
+		this.appStateSubscription?.remove?.();
 		this.videoConfActionCleanup?.();
 
 		unsubscribeTheme();
 	}
+
+	handleAppStateChange = async (nextAppState: AppStateStatus) => {
+		// When app comes to foreground from background, check for pending deep links
+		if (this.lastAppState.match(/inactive|background/) && nextAppState === 'active') {
+			try {
+				const url = await Linking.getInitialURL();
+				if (url && url.startsWith('rocketchat://auth')) {
+					const parsedDeepLinkingURL = parseDeepLinking(url);
+					if (parsedDeepLinkingURL) {
+						store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+					}
+				}
+			} catch (e) {
+				// Ignore errors checking for pending deep links
+			}
+		}
+		this.lastAppState = nextAppState;
+	};
 
 	init = async () => {
 		store.dispatch(appInitLocalSettings());
