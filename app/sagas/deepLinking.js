@@ -96,9 +96,68 @@ const fallbackNavigation = function* fallbackNavigation() {
 };
 
 const handleOAuth = function* handleOAuth({ params }) {
-	const { credentialToken, credentialSecret } = params;
+	const { credentialToken, credentialSecret, host } = params;
 	try {
-		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		// When OAuth completes via external browser redirect, the SDK connection
+		// may not be ready yet. We need to ensure the server is connected before
+		// attempting to complete the login.
+		let server = host;
+		if (server && server.endsWith('/')) {
+			server = server.slice(0, -1);
+		}
+		if (!server) {
+			server = UserPreferences.getString(CURRENT_SERVER);
+		}
+
+		if (!server) {
+			yield put(appInit());
+			return;
+		}
+
+		// Check if SDK is connected to this server and the WebSocket is ready
+		const sdkHost = sdk.current?.client?.host;
+		const meteorConnected = yield select(state => state.meteor.connected);
+
+		if (!meteorConnected || !sdkHost || sdkHost !== server) {
+			const serverRecord = yield getServerById(server);
+			if (!serverRecord) {
+				// Server not in database yet, need to add it first
+				const result = yield getServerInfo(server);
+				if (!result.success) {
+					yield put(appInit());
+					return;
+				}
+				yield put(serverInitAdd(server));
+				yield put(selectServerRequest(server, result.version));
+			} else {
+				yield put(selectServerRequest(server, serverRecord.version));
+			}
+			// Wait for the WebSocket connection to be fully ready
+			yield take(types.METEOR.SUCCESS);
+		}
+
+		// Retry logic for OAuth login - the external browser flow can have timing
+		// issues where the SDK is not fully ready even after METEOR.SUCCESS
+		const maxRetries = 3;
+		let lastError;
+		for (let attempt = 1; attempt <= maxRetries; attempt++) {
+			try {
+				const delayMs = attempt === 1 ? 500 : 1000 * attempt;
+				yield delay(delayMs);
+				yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+				return;
+			} catch (e) {
+				lastError = e;
+				const isNetworkError = e?.message === 'Network request failed' || e?.message?.includes('network');
+				if (attempt < maxRetries && isNetworkError) {
+					continue;
+				}
+				throw e;
+			}
+		}
+		if (lastError) {
+			throw lastError;
+		}
 	} catch (e) {
 		log(e);
 	}
