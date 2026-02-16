@@ -10093,9 +10093,9 @@ react-native-gesture-handler@~2.28.0:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
 
-react-native-image-crop-picker@RocketChat/react-native-image-crop-picker#5346870b0be10d300dc53924309dc6adc9946d50:
-  version "0.50.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/5346870b0be10d300dc53924309dc6adc9946d50"
+react-native-image-crop-picker@RocketChat/react-native-image-crop-picker#f028aac24373d05166747ef6d9e59bb037fe3224:
+  version "0.51.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f028aac24373d05166747ef6d9e59bb037fe3224"
 
 react-native-is-edge-to-edge@^1.2.1:
   version "1.2.1"

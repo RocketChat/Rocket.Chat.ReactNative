@@ -3061,8 +3061,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNImageCropPicker (0.50.1):
-    - boost
+  - RNImageCropPicker (0.51.0):
     - DoubleConversion
     - fast_float
     - fmt
@@ -3088,12 +3087,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNImageCropPicker/QBImagePickerController (= 0.50.1)
-    - SocketRocket
+    - RNImageCropPicker/QBImagePickerController (= 0.51.0)
     - TOCropViewController (~> 2.7.4)
     - Yoga
-  - RNImageCropPicker/QBImagePickerController (0.50.1):
-    - boost
+  - RNImageCropPicker/QBImagePickerController (0.51.0):
     - DoubleConversion
     - fast_float
     - fmt
@@ -3903,7 +3900,7 @@ SPEC CHECKSUMS:
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
-  MobileCrypto: 52446379d933000575c8bdaa2ad35a93181036b7
+  MobileCrypto: a424494b2f45bec9dbe60e3f6d16a40aedefe7b7
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
@@ -3993,8 +3990,8 @@ SPEC CHECKSUMS:
   RNFBApp: a448037d2df74af9d374a0b765be12ff1e844dc0
   RNFBCrashlytics: c3bb5533f9957eddc88f3ea383583309a4ce9f89
   RNFileViewer: f9424017fa643c115c1444e11292e84fb16ddd68
-  RNGestureHandler: b8d2e75c2e88fc2a1f6be3b3beeeed80b88fa37d
-  RNImageCropPicker: fc56e4ad18e36f6b14df7358cd33ce27d12a9137
+  RNGestureHandler: 8ff2b1434b0ff8bab28c8242a656fb842990bbc8
+  RNImageCropPicker: c78ee80ea778f90cb850f4d26696fd9c1a7bcfbb
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
   RNReanimated: 84b0ffbe148232bda35e2527d0b938a97a51c5e7
   RNScreens: 2e9c41cd099b1ca50136af8d57c3594214d0086a
