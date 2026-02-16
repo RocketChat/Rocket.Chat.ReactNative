@@ -107,7 +107,8 @@ public class SSLPinningTurboModule extends NativeSSLPinningSpec implements KeyCh
         RNCWebViewManager.setCertificateAlias(name);
 
         // Expo File System network layer
-        FileSystemModule.setOkHttpClient(client);
+        // ---------- Fix this -----------
+        //FileSystemModule.setOkHttpClient(client);
         // Expo Image network layer
         ExpoImageClient.setOkHttpClient(client);
         ExpoImageClient.applyToGlide(this.reactContext);
