@@ -256,7 +256,7 @@ tags:
 - swipe:
     from:
       id: action-sheet-handle
-    direction: down
+    direction: DOWN
 - extendedWaitUntil:
     notVisible:
       id: 'reactionsList'
@@ -269,6 +269,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'username-header-${output.user.username}'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: room-info-view-username
@@ -289,10 +290,11 @@ tags:
 
 - extendedWaitUntil:
     visible:
-      text: .*${output.otherUser.username}.*
+      id: 'username-header-${output.otherUser.username}'
     timeout: 60000
 - tapOn:
-    text: .*${output.otherUser.username}.*
+    id: 'username-header-${output.otherUser.username}'
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: room-info-view-username

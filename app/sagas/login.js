@@ -2,9 +2,7 @@ import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-import * as Keychain from 'react-native-keychain';
-
-import moment from 'moment';
+import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
@@ -34,10 +32,9 @@ import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsers
 import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
 import { subscribeSettings } from '../lib/methods/getSettings';
 import { connect, loginWithPassword, login } from '../lib/services/connect';
-import { saveUserProfile, registerPushToken, getUsersRoles } from '../lib/services/restApi';
+import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
-import { appGroupSuiteName } from '../lib/methods/appGroup';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
@@ -55,7 +52,7 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 	const serverRecord = yield getServerById(server);
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	if (!serverRecord || moment(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
+	if (!serverRecord || dayjs(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
 		return;
 	}
 
@@ -92,15 +89,27 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			// Saves username on server history
 			const serversDB = database.servers;
 			const serversHistoryCollection = serversDB.get('servers_history');
+			const serversCollection = serversDB.get('servers');
 			yield serversDB.write(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (serversHistory?.length) {
 						const serverHistoryRecord = serversHistory[0];
+						// Get server iconURL from servers table
+						let iconURL = null;
+						try {
+							const serverRecord = await serversCollection.find(server);
+							iconURL = serverRecord.iconURL;
+						} catch (e) {
+							// Server record might not exist yet
+						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
 						await serverHistoryRecord.update((s) => {
 							s.username = result.username;
+							if (iconURL) {
+								s.iconURL = iconURL;
+							}
 						});
 					}
 				} catch (e) {
@@ -214,6 +223,23 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
+	try {
+		const { background, root } = yield select(state => state.app);
+		if (root !== RootEnum.ROOT_INSIDE || !background) {
+			return;
+		}
+		const isAuthenticated = yield select(state => state.login.isAuthenticated);
+		const isConnected = yield select(state => state.meteor.connected);
+		if (!isAuthenticated || !isConnected) {
+			return;
+		}
+		yield setUserPresenceAway();
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
@@ -230,6 +256,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield fork(checkBackgroundAndSetAway);
 
 		setLanguage(user?.language);
 
@@ -267,12 +294,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		if (isIOS) {
-			yield Keychain.setInternetCredentials(server, user.id, user.token, {
-				accessGroup: appGroupSuiteName,
-				securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
-			});
-		}
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);

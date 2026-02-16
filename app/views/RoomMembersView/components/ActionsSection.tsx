@@ -23,9 +23,10 @@ interface IActionsSection {
 	rid: TSubscriptionModel['rid'];
 	t: TSubscriptionModel['t'];
 	joined: boolean;
+	abacAttributes: TSubscriptionModel['abacAttributes'];
 }
 
-export default function ActionsSection({ rid, t, joined }: IActionsSection): React.ReactElement {
+export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): React.ReactElement {
 	const { navigate, pop } = useNavigation<TNavigation>();
 	const dispatch = useDispatch();
 	const [addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, createInviteLinksPermission] =
@@ -102,6 +103,8 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 						testID='room-actions-invite-user'
 						left={() => <List.Icon name='user-add' />}
 						showActionIndicator
+						disabled={!!abacAttributes}
+						disabledReason={abacAttributes ? i18n.t('ABAC_disabled_action_reason') : undefined}
 					/>
 					<List.Separator />
 				</>

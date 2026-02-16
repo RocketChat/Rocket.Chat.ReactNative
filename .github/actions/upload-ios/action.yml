@@ -91,7 +91,7 @@ runs:
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.2'
+        xcode-version: '26.2.0'
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -108,6 +108,12 @@ runs:
       run: |
         yarn pod-install
       shell: bash
+
+    - uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'official' && inputs.trigger == 'develop' }}
+      with:
+        name: release-changelog
+        path: .
 
     - name: Fastlane Submit to TestFlight
       working-directory: ios

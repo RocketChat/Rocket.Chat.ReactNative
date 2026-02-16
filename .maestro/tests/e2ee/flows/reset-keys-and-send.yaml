@@ -1,0 +1,79 @@
+appId: chat.rocket.reactnative
+name: Reset Keys and Send Message
+tags:
+  - 'flow'
+env:
+  MESSAGE: m4
+---
+- runFlow:
+    file: '../../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+
+# Reset user E2EE key
+- runFlow: '../utils/navigate-to-e2ee-security.yaml'
+- runFlow: '../utils/reset-e2ee-key.yaml'
+
+# Login again and recreate keys
+- runFlow:
+    file: '../../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${USERNAME}
+      PASSWORD: ${PASSWORD}
+- runFlow:
+    file: '../utils/navigate-to-e2ee-security.yaml'
+- runFlow: '../utils/change-e2ee-key.yaml'
+
+# Reset room E2EE key
+- launchApp
+- runFlow:
+    file: '../../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- extendedWaitUntil:
+    visible:
+      text: '.*Check back in a few moments.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*The encryption keys for the room need to be updated, another room member needs to be online for this to happen.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-header-encryption'
+    timeout: 60000
+- tapOn:
+    id: 'room-view-header-encryption'
+- extendedWaitUntil:
+    visible:
+      id: 'e2ee-toggle-room-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'e2ee-toggle-room-reset-key'
+    timeout: 60000
+- tapOn:
+    id: 'e2ee-toggle-room-reset-key'
+- extendedWaitUntil:
+    visible:
+      text: '.*Reset encryption key.*'
+    timeout: 60000
+- tapOn:
+    text: 'Reset'
+    index: 0
+- runFlow: '../../../helpers/go-back.yaml'
+
+# Navigate to room and send message
+- runFlow:
+    file: '../../../helpers/navigate-to-room.yaml'
+    env:
+      ROOM: ${ROOM}
+- extendedWaitUntil:
+    visible:
+      id: 'room-view-title-${ROOM}'
+    timeout: 60000
+- runFlow:
+    file: '../../../helpers/send-message.yaml'
+    env:
+      message: ${MESSAGE}

@@ -1245,6 +1245,53 @@ export const MessageWithReplyLargeFont = () => (
 	</>
 );
 
+export const MessageWithNestedReplyAndFile = () => (
+	<>
+		<Message
+			msg='Forwarded message with file inside'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					message_link: 'https://open.rocket.chat/group/msg-id',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							type: 'file',
+							title: 'document.pdf',
+							title_link: '/file-upload/abc/document.pdf'
+						}
+					]
+				}
+			]}
+		/>
+		<Message
+			msg='Forwarded message with nested image'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: '',
+					attachments: [
+						{
+							author_name: 'user',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'Nested image from forwarded message',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					]
+				}
+			]}
+		/>
+	</>
+);
+
 export const MessageWithReplyAndFileLargeFont = () => (
 	<>
 		<MessageLargeFont
@@ -1919,6 +1966,8 @@ export const SystemMessages = () => (
 		<Message type='user-converted-to-channel' isInfo msg='channel-name' />
 		<Message type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<Message type='user-removed-room-from-team' isInfo msg='channel-name' />
+		<Message type='abac-removed-user-from-room' isInfo />
+		<Message type='unsupported' isInfo />
 	</>
 );
 
@@ -1960,6 +2009,8 @@ export const SystemMessagesLargeFont = () => (
 		<MessageLargeFont type='user-converted-to-channel' isInfo msg='channel-name' />
 		<MessageLargeFont type='user-deleted-room-from-team' isInfo msg='channel-name' />
 		<MessageLargeFont type='user-removed-room-from-team' isInfo msg='channel-name' />
+		<MessageLargeFont type='abac-removed-user-from-room' isInfo />
+		<MessageLargeFont type='unsupported' isInfo />
 	</>
 );
 
@@ -2187,6 +2238,20 @@ const collapsedAttachments = {
 		}
 	]
 };
+
+const collapsibleAttachmentWithText = {
+	collapsed: true,
+	title: 'Collapsed attachment block',
+	text: 'This attachment text should NOT appear as plain text above the message or duplicate before the block.',
+	description: 'Attachment description that might also leak as duplicate plain text.',
+	color: '#2c3e50',
+	fields: [
+		{ title: 'Field 1', value: 'Value 1', short: true },
+		{ title: 'Field 2', value: 'Value 2', short: true },
+		{ title: 'Long field', value: 'This field value could also contribute to duplicate text when expanded.', short: false }
+	]
+};
+
 export const CollapsedAttachments = () => (
 	<>
 		<Message msg='Message' attachments={[collapsedAttachments]} />
@@ -2200,6 +2265,23 @@ export const CollapsedAttachmentsLargeFont = () => (
 		<MessageLargeFont msg='Message' attachments={[collapsedAttachments]} />
 		{/* technically not CollapsibleQuote, but it's similar enough to write a story for */}
 		<MessageLargeFont msg='Message' attachments={[{ ...collapsedAttachments, collapsed: false }]} />
+	</>
+);
+
+export const CollapsibleAttachmentWithText = () => (
+	<>
+		<Message msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
+		<Message msg='This is the main message body.' attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]} />
+	</>
+);
+
+export const CollapsibleAttachmentWithTextLargeFont = () => (
+	<>
+		<MessageLargeFont msg='This is the main message body.' attachments={[collapsibleAttachmentWithText]} />
+		<MessageLargeFont
+			msg='This is the main message body.'
+			attachments={[{ ...collapsibleAttachmentWithText, collapsed: false }]}
+		/>
 	</>
 );
 
@@ -2233,6 +2315,25 @@ export const Katex = () => (
 	</>
 );
 export const KatexLargeFont = () => <MessageLargeFont {...katex} />;
+
+const katexArray = {
+	msg: '\\begin{array}{|c|c|c|c|c|c|} \\hline \\text{...} & \\text{...} \\\\ \\hline \\end{array}',
+	md: [
+		{
+			type: 'KATEX',
+			value:
+				' \\begin{array}{|c|c|c|c|c|c|} \\hline \\text{testing} & \\text{testingII} & \\text{testing III} & \\text{testing IV} & \\text{testV} & \\text{testVI} \\\\ \\hline \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} & \\text{TEST} \\\\ \\hline\\text{TEST} & \\text{✅} & \\text{test} & \\text{test} & \\text{test} & \\text{✅} \\\\ \\hline \\end{array} '
+		}
+	]
+};
+
+export const KatexArray = () => (
+	<>
+		<Message {...katexArray} />
+	</>
+);
+
+export const KatexArrayLargeFont = () => <MessageLargeFont {...katexArray} />;
 
 const inlineKatex = {
 	msg: '\\(xˆ2 + yˆ2 - zˆ2\\)',

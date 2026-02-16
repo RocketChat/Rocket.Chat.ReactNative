@@ -11,4 +11,6 @@ export default class ServersHistory extends Model {
 	@field('username') username;
 
 	@readonly @date('updated_at') updatedAt;
+
+	@field('icon_url') iconURL;
 }
