@@ -12,7 +12,7 @@ function createRequestTypes(base = {}, types = defaultTypes): Record<string, str
 export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_SERVICES', 'SET_PREFERENCE', 'SET_LOCAL_AUTHENTICATED']);
 export const SHARE = createRequestTypes('SHARE', ['SET_PARAMS']);
 export const USER = createRequestTypes('USER', ['SET', 'CLEAR']);
-export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'REFRESH']);
+export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'REFRESH', 'STORE_LAST_VISITED', 'STORE_RECENT_ROOMS']);
 export const ROOM = createRequestTypes('ROOM', [
 	'SUBSCRIBE',
 	'UNSUBSCRIBE',
@@ -60,6 +60,8 @@ export const LOGOUT = 'LOGOUT'; // logout is always success
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN', 'OPEN_VIDEO_CONF']);
+export const QUICK_ACTIONS = createRequestTypes('QUICK_ACTIONS', ['QUICK_ACTION_HANDLE', 'QUICK_ACTION_HANDLED']);
+export const NAVIGATION = createRequestTypes('NAVIGATION', ['NAVIGATION_READY']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const ACTIVE_USERS = createRequestTypes('ACTIVE_USERS', ['SET', 'CLEAR']);

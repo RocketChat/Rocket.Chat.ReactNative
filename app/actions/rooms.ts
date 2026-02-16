@@ -1,6 +1,7 @@
 import { type Action } from 'redux';
 
 import { ROOMS } from './actionsTypes';
+import { type IRecentRoomsStore } from '../reducers/rooms';
 
 export interface IRoomsRequest extends Action {
 	params: any;
@@ -14,7 +15,17 @@ export interface IRoomsFailure extends Action {
 	err: Record<string, any> | string;
 }
 
-export type IRoomsAction = IRoomsRequest & ISetSearch & IRoomsFailure;
+export interface IRoomsLastVisited extends Action {
+	lastVisitedRoomId: string;
+	lastVisitedRoomName: string;
+	server: string;
+}
+
+export interface IRecentRooms extends Action {
+	recentRooms: IRecentRoomsStore[];
+}
+
+export type IRoomsAction = IRoomsRequest & ISetSearch & IRoomsFailure & IRoomsLastVisited & IRecentRooms;
 
 export function roomsRequest(
 	params: {
@@ -43,5 +54,22 @@ export function roomsFailure(err: string): IRoomsFailure {
 export function roomsRefresh(): Action {
 	return {
 		type: ROOMS.REFRESH
+	};
+}
+
+export function roomsStoreLastVisited(rid: string, name: string, server: string = ''): IRoomsLastVisited {
+	// const server = UserPreferences.getString(CURRENT_SERVER) ?? '';
+	return {
+		type: ROOMS.STORE_LAST_VISITED,
+		lastVisitedRoomId: rid,
+		lastVisitedRoomName: name,
+		server
+	};
+}
+
+export function roomsStoreRecentRooms(recentRooms: IRecentRoomsStore[]): IRecentRooms {
+	return {
+		type: ROOMS.STORE_RECENT_ROOMS,
+		recentRooms
 	};
 }

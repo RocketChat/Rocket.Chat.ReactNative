@@ -9,6 +9,7 @@ prepare_react_native_project!
 def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
   pod 'react-native-mmkv', path: '../node_modules/react-native-mmkv', modular_headers: true
+  pod 'ExpoQuickActions', path: '../node_modules/expo-quick-actions/ios' 
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
   use_expo_modules!

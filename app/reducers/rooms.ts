@@ -1,18 +1,30 @@
 import { type IRoomsAction } from '../actions/rooms';
 import { ROOMS } from '../actions/actionsTypes';
 
+export interface IRecentRoomsStore {
+	rid: string;
+	name: string;
+	server: string | null;
+}
+
 export interface IRooms {
 	isFetching: boolean;
 	refreshing: boolean;
 	failure: boolean;
 	errorMessage: Record<string, any> | string;
+	lastVisitedRid: string;
+	lastVisitedName: string;
+	recentRooms: IRecentRoomsStore[];
 }
 
 export const initialState: IRooms = {
 	isFetching: false,
 	refreshing: false,
 	failure: false,
-	errorMessage: {}
+	errorMessage: {},
+	lastVisitedRid: '',
+	lastVisitedName: '',
+	recentRooms: []
 };
 
 export default function rooms(state = initialState, action: IRoomsAction): IRooms {
@@ -44,6 +56,38 @@ export default function rooms(state = initialState, action: IRoomsAction): IRoom
 				isFetching: true,
 				refreshing: true
 			};
+		case ROOMS.STORE_LAST_VISITED: {
+			if (!action.lastVisitedRoomId || !action.server) {
+				return state;
+			}
+
+			const newRoom: IRecentRoomsStore = {
+				rid: action.lastVisitedRoomId,
+				name: action.lastVisitedRoomName,
+				server: action.server
+			};
+
+			const filteredRooms = state.recentRooms.filter(room => !(room.rid === newRoom.rid && room.server === newRoom.server));
+
+			let updatedRecentRooms = [...filteredRooms, newRoom];
+
+			if (updatedRecentRooms.length > 3) {
+				updatedRecentRooms = updatedRecentRooms.slice(-3);
+			}
+
+			return {
+				...state,
+				lastVisitedRid: action.lastVisitedRoomId,
+				lastVisitedName: action.lastVisitedRoomName,
+				recentRooms: updatedRecentRooms
+			};
+		}
+		case ROOMS.STORE_RECENT_ROOMS:
+			return {
+				...state,
+				recentRooms: action.recentRooms || []
+			};
+
 		default:
 			return state;
 	}

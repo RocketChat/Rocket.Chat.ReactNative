@@ -1,12 +1,13 @@
 import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
+import { registerQuickActions, unregisterQuickActions, updateQuickActions } from './lib/quickActions';
 import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
-import { RootEnum } from './definitions';
+import { type IApplicationState, RootEnum } from './definitions';
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
 // SetUsername Stack
@@ -19,6 +20,8 @@ import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
+import { useAppSelector } from './lib/hooks/useAppSelector';
+import { NAVIGATION } from './actions/actionsTypes';
 
 const createStackNavigator = createNativeStackNavigator;
 
@@ -34,6 +37,18 @@ const SetUsernameStack = () => (
 const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
+	const dispatch = useDispatch();
+	const recentRooms = useAppSelector((state: IApplicationState) => state.rooms.recentRooms);
+	const currentServer = useAppSelector((state: IApplicationState) => state.server.server);
+
+	useEffect(() => {
+		registerQuickActions();
+
+		return () => {
+			unregisterQuickActions();
+		};
+	}, []);
+
 	useEffect(() => {
 		if (root) {
 			const state = Navigation.navigationRef.current?.getRootState();
@@ -42,6 +57,15 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 			setCurrentScreen(currentRouteName);
 		}
 	}, [root]);
+
+	useEffect(() => {
+		if (!currentServer) {
+			updateQuickActions({ recentRooms: [] });
+			return;
+		}
+
+		updateQuickActions({ recentRooms });
+	}, [recentRooms, currentServer]); // currentserver for updating after logging out
 
 	if (!root) {
 		return null;
@@ -55,6 +79,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 			ref={Navigation.navigationRef}
 			onReady={() => {
 				emitter.emit('navigationReady');
+				dispatch({ type: NAVIGATION.NAVIGATION_READY });
 			}}
 			onStateChange={state => {
 				const previousRouteName = Navigation.routeNameRef.current;
