@@ -42,23 +42,25 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 
 	if (options) {
 		return (
-			<FlatList
-				testID='action-sheet'
-				data={options}
-				refreshing={false}
-				keyExtractor={item => item.title}
-				bounces={false}
-				renderItem={renderItem}
-				style={{ backgroundColor: colors.surfaceLight }}
-				keyboardDismissMode='interactive'
-				indicatorStyle='black'
-				contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
-				ItemSeparatorComponent={List.Separator}
-				ListHeaderComponent={List.Separator}
-				ListFooterComponent={renderFooter}
-				onLayout={onLayout}
-				nestedScrollEnabled={isAndroid}
-			/>
+			<GestureHandlerRootView style={styles.contentContainer}>
+				<FlatList
+					testID='action-sheet'
+					data={options}
+					refreshing={false}
+					keyExtractor={item => item.title}
+					bounces={false}
+					renderItem={renderItem}
+					style={{ backgroundColor: colors.surfaceLight }}
+					keyboardDismissMode='interactive'
+					indicatorStyle='black'
+					contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
+					ItemSeparatorComponent={List.Separator}
+					ListHeaderComponent={List.Separator}
+					ListFooterComponent={renderFooter}
+					onLayout={onLayout}
+					nestedScrollEnabled={isAndroid}
+				/>
+			</GestureHandlerRootView>
 		);
 	}
 	return (
