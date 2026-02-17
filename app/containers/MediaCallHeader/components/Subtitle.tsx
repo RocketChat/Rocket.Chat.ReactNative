@@ -29,10 +29,11 @@ const Subtitle = () => {
 	if (!isConnected) {
 		subtitle = I18n.t('Connecting');
 	} else {
-		subtitle = extension ? `${extension} - ` : '';
+		subtitle = extension ? `${extension}` : '';
 		const remoteState = [];
-		remoteState.push(remoteHeld ? I18n.t('On_hold') : '');
-		remoteState.push(remoteMute ? I18n.t('Muted') : '');
+		remoteState.push(remoteHeld ? I18n.t('On_hold') : null);
+		remoteState.push(remoteMute ? I18n.t('Muted') : null);
+		subtitle += remoteState.filter(Boolean).length > 0 && extension ? ' - ' : '';
 		subtitle += remoteState.filter(Boolean).join(', ');
 	}
 
