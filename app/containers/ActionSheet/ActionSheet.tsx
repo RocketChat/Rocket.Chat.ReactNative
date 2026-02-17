@@ -78,9 +78,7 @@ const ActionSheet = React.memo(
 					<Handle />
 				</Pressable>
 				{isValidElement(data?.customHeader) ? (
-					<GestureHandlerRootView style={{ flexGrow: 1 }}>
-						{data.customHeader}
-					</GestureHandlerRootView>
+					<GestureHandlerRootView style={{ flexGrow: 1 }}>{data.customHeader}</GestureHandlerRootView>
 				) : null}
 			</>
 		);
