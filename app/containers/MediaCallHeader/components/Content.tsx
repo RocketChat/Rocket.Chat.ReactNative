@@ -11,13 +11,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'space-between',
+		justifyContent: 'space-evenly',
 		alignItems: 'flex-start'
 	}
 });
 
 export const Content = () => (
-	<Pressable onPress={() => alert('nav to call room')} style={styles.button}>
+	<Pressable testID='media-call-header-content' onPress={() => alert('nav to call room')} style={styles.button}>
 		<View style={styles.container}>
 			<Title />
 			<Subtitle />

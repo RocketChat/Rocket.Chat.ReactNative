@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		padding: 12,
+		paddingHorizontal: 12,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	}
 });
@@ -27,15 +27,16 @@ const MediaCallHeader = () => {
 
 	const defaultHeaderStyle = {
 		backgroundColor: colors.surfaceNeutral,
-		paddingTop: insets.top
+		paddingTop: insets.top + 12,
+		paddingBottom: 12
 	};
 
 	if (!call) {
-		return <View style={defaultHeaderStyle} />;
+		return <View style={defaultHeaderStyle} testID='media-call-header-empty' />;
 	}
 
 	return (
-		<View style={[styles.header, { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight }]}>
+		<View style={[styles.header, { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight }]} testID='media-call-header'>
 			<Collapse />
 			<Content />
 			<EndCall />

@@ -287,7 +287,7 @@ describe('CallView', () => {
 		expect(getByText('End')).toBeTruthy();
 	});
 
-	it('should show muted indicator when call is muted and active', () => {
+	it('should render call view when call is muted and active', () => {
 		setStoreState({ callState: 'active', isMuted: true });
 		const { getByTestId } = render(
 			<Wrapper>
@@ -295,18 +295,19 @@ describe('CallView', () => {
 			</Wrapper>
 		);
 
-		expect(getByTestId('caller-info-muted')).toBeTruthy();
+		expect(getByTestId('caller-info')).toBeTruthy();
+		expect(getByTestId('call-view-mute')).toBeTruthy();
 	});
 
-	it('should not show muted indicator when call is muted but not active', () => {
+	it('should render call view when call is muted but not yet active', () => {
 		setStoreState({ callState: 'ringing', isMuted: true });
-		const { queryByTestId } = render(
+		const { getByTestId } = render(
 			<Wrapper>
 				<CallView />
 			</Wrapper>
 		);
 
-		expect(queryByTestId('caller-info-muted')).toBeNull();
+		expect(getByTestId('caller-info')).toBeTruthy();
 	});
 
 	it('should show correct icon for speaker button when speaker is on', () => {

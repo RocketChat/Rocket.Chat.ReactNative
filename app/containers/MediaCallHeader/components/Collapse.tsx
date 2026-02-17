@@ -13,6 +13,7 @@ const Collapse = () => {
 	return (
 		<HeaderButton.Container left>
 			<HeaderButton.Item
+				testID='media-call-header-collapse'
 				accessibilityLabel={I18n.t('Minimize')}
 				onPress={toggleFocus}
 				iconName={focused ? 'arrow-collapse' : 'arrow-expand'}

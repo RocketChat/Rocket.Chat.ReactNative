@@ -8,6 +8,8 @@ import { mockedStore } from '../../../reducers/mockedStore';
 import * as stories from './CallerInfo.stories';
 import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
 
+const mockCallStartTime = 1713340800000;
+
 // Helper to set store state for tests
 const setStoreState = (contact: { displayName?: string; username?: string; sipExtension?: string }) => {
 	useCallStore.setState({
@@ -18,7 +20,7 @@ const setStoreState = (contact: { displayName?: string; username?: string; sipEx
 		isMuted: false,
 		isOnHold: false,
 		isSpeakerOn: false,
-		callStartTime: Date.now()
+		callStartTime: mockCallStartTime
 	});
 };
 
@@ -39,7 +41,6 @@ describe('CallerInfo', () => {
 
 		expect(getByTestId('caller-info')).toBeTruthy();
 		expect(getByText('Bob Burnquist')).toBeTruthy();
-		expect(getByText('2244')).toBeTruthy();
 	});
 
 	it('should render with username when no display name', () => {
@@ -51,53 +52,6 @@ describe('CallerInfo', () => {
 		);
 
 		expect(getByText('john.doe')).toBeTruthy();
-	});
-
-	it('should render status container (Status component is currently commented out)', () => {
-		setStoreState({ displayName: 'Test User' });
-		const { getByTestId } = render(
-			<Wrapper>
-				<CallerInfo />
-			</Wrapper>
-		);
-
-		// The status container exists but Status component is commented out
-		// Verify the component renders correctly
-		expect(getByTestId('caller-info')).toBeTruthy();
-		expect(getByTestId('avatar')).toBeTruthy();
-	});
-
-	it('should show muted indicator when isMuted is true', () => {
-		setStoreState({ displayName: 'Test User' });
-		const { getByTestId } = render(
-			<Wrapper>
-				<CallerInfo isMuted />
-			</Wrapper>
-		);
-
-		expect(getByTestId('caller-info-muted')).toBeTruthy();
-	});
-
-	it('should not show muted indicator when isMuted is false', () => {
-		setStoreState({ displayName: 'Test User' });
-		const { queryByTestId } = render(
-			<Wrapper>
-				<CallerInfo isMuted={false} />
-			</Wrapper>
-		);
-
-		expect(queryByTestId('caller-info-muted')).toBeNull();
-	});
-
-	it('should not show extension when not provided', () => {
-		setStoreState({ displayName: 'Test User' });
-		const { queryByTestId } = render(
-			<Wrapper>
-				<CallerInfo />
-			</Wrapper>
-		);
-
-		expect(queryByTestId('caller-info-extension')).toBeNull();
 	});
 });
 

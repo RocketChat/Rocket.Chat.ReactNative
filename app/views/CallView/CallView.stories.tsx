@@ -16,6 +16,8 @@ const styles = StyleSheet.create({
 	}
 });
 
+const mockCallStartTime = 1713340800000;
+
 // Helper to set store state for stories
 const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getState>> = {}) => {
 	const mockCall = {
@@ -44,7 +46,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 		isMuted: false,
 		isOnHold: false,
 		isSpeakerOn: false,
-		callStartTime: Date.now(),
+		callStartTime: mockCallStartTime,
 		contact: {
 			displayName: 'Bob Burnquist',
 			username: 'bob.burnquist',
@@ -83,7 +85,7 @@ export default {
 };
 
 export const ConnectedCall = () => {
-	setStoreState({ callState: 'active', callStartTime: new Date().getTime() - 61000 });
+	setStoreState({ callState: 'active', callStartTime: mockCallStartTime - 61000 });
 	return <CallView />;
 };
 
