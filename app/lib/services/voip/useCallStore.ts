@@ -1,15 +1,8 @@
 import { create } from 'zustand';
-import { useShallow } from 'zustand/react/shallow';
-import type { CallState, IClientMediaCall } from '@rocket.chat/media-signaling';
+import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
 
 import Navigation from '../../navigation/appNavigation';
-
-interface CallContact {
-	displayName?: string;
-	username?: string;
-	sipExtension?: string;
-}
 
 interface CallStoreState {
 	// Call reference
@@ -20,6 +13,8 @@ interface CallStoreState {
 	callState: CallState;
 	isMuted: boolean;
 	isOnHold: boolean;
+	remoteMute: boolean;
+	remoteHeld: boolean;
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
@@ -31,7 +26,6 @@ interface CallStoreState {
 interface CallStoreActions {
 	setCallUUID: (callUUID: string | null) => void;
 	setCall: (call: IClientMediaCall, callUUID: string) => void;
-	updateFromCall: () => void;
 	toggleMute: () => void;
 	toggleHold: () => void;
 	toggleSpeaker: () => void;
@@ -48,10 +42,12 @@ const initialState: CallStoreState = {
 	callState: 'none',
 	isMuted: false,
 	isOnHold: false,
+	remoteMute: false,
+	remoteHeld: false,
 	isSpeakerOn: false,
 	callStartTime: null,
 	contact: {},
-	focused: false
+	focused: true
 };
 
 export const useCallStore = create<CallStore>((set, get) => ({
@@ -69,8 +65,11 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			callState: call.state,
 			isMuted: call.muted,
 			isOnHold: call.held,
+			remoteMute: call.remoteMute,
+			remoteHeld: call.remoteHeld,
 			// isSpeakerOn: call.
 			contact: {
+				id: call.contact.id,
 				displayName: call.contact.displayName,
 				username: call.contact.username,
 				sipExtension: call.contact.sipExtension
@@ -98,7 +97,9 @@ export const useCallStore = create<CallStore>((set, get) => ({
 
 			set({
 				isMuted: currentCall.muted,
-				isOnHold: currentCall.held
+				isOnHold: currentCall.held,
+				remoteMute: currentCall.remoteMute,
+				remoteHeld: currentCall.remoteHeld
 			});
 		};
 
@@ -110,22 +111,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		call.emitter.on('stateChange', handleStateChange);
 		call.emitter.on('trackStateChange', handleTrackStateChange);
 		call.emitter.on('ended', handleEnded);
-	},
-
-	updateFromCall: () => {
-		const { call } = get();
-		if (!call) return;
-
-		set({
-			callState: call.state,
-			isMuted: call.muted,
-			isOnHold: call.held,
-			contact: {
-				displayName: call.contact.displayName,
-				username: call.contact.username,
-				sipExtension: call.contact.sipExtension
-			}
-		});
 	},
 
 	toggleMute: () => {

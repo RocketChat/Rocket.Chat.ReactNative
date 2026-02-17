@@ -9,6 +9,7 @@ const Collapse = () => {
 	const { colors } = useTheme();
 	const focused = useCallStore(state => state.focused);
 	const toggleFocus = useCallStore(state => state.toggleFocus);
+
 	return (
 		<HeaderButton.Container left>
 			<HeaderButton.Item

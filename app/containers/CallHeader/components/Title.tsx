@@ -1,13 +1,18 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
 import { useCallStore } from '../../../lib/services/voip/useCallStore';
-import I18n from '../../../i18n';
 import sharedStyles from '../../../views/Styles';
 import Timer from './Timer';
+import Status from '../../Status';
 
 const styles = StyleSheet.create({
-	headerTitle: {
+	headerTitleContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4
+	},
+	headerTitleText: {
 		...sharedStyles.textSemibold,
 		fontSize: 16,
 		lineHeight: 24
@@ -23,24 +28,16 @@ const Title = () => {
 	const contact = useCallStore(state => state.contact);
 
 	const caller = contact.displayName || contact.username;
-	const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
 	const isConnected = callState === 'active';
 
-	const getHeaderTitle = () => {
-		if (isConnecting) {
-			return I18n.t('Connecting');
-		}
-		if (isConnected && callStartTime) {
-			return `${caller} – `;
-		}
-		return caller;
-	};
-
 	return (
-		<Text style={[styles.headerTitle, { color: colors.fontDefault }]} testID='call-view-header-title'>
-			{getHeaderTitle()}
-			<Timer />
-		</Text>
+		<View style={styles.headerTitleContainer} testID='call-view-header-title'>
+			<Status id={contact.id || ''} size={12} />
+			<Text style={[styles.headerTitleText, { color: colors.fontDefault }]} numberOfLines={1}>
+				{caller}
+				{isConnected && callStartTime ? <Timer /> : null}
+			</Text>
+		</View>
 	);
 };
 
