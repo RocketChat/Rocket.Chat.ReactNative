@@ -18,7 +18,7 @@ interface IUserPreferencesViewProps {
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const [quickreplies, setQuickreplies] = useUserPreferences<string[]>(WATCHOS_QUICKREPLIES, []);
+	const [quickReplies, setQuickReplies] = useUserPreferences<string[]>(WATCHOS_QUICKREPLIES, []);
 	const [input, setInput] = useState<string>('');
 
 	useEffect(() => {
