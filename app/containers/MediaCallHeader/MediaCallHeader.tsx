@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const CallHeader = () => {
+const MediaCallHeader = () => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -44,4 +44,4 @@ const CallHeader = () => {
 	);
 };
 
-export default CallHeader;
+export default MediaCallHeader;

@@ -19,7 +19,7 @@ import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
-import CallHeader from './containers/CallHeader/CallHeader';
+import MediaCallHeader from './containers/MediaCallHeader/MediaCallHeader';
 
 const createStackNavigator = createNativeStackNavigator;
 
@@ -53,7 +53,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 
 	return (
 		<>
-			<CallHeader />
+			<MediaCallHeader />
 			<NavigationContainer
 				theme={navTheme}
 				ref={Navigation.navigationRef}
