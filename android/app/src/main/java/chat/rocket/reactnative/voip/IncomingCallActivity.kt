@@ -4,18 +4,25 @@ import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.ImageButton
+import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
-import android.util.Log
 import androidx.core.content.ContextCompat
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.FrameLayout
+import android.util.Log
+import android.view.ViewOutlineProvider
+import com.bumptech.glide.Glide
 import chat.rocket.reactnative.MainActivity
 import chat.rocket.reactnative.R
+import chat.rocket.reactnative.notification.Ejson
+import android.graphics.Typeface
 
 /**
  * Full-screen Activity displayed when an incoming VoIP call arrives.
@@ -56,6 +63,9 @@ class IncomingCallActivity : Activity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setContentView(R.layout.activity_incoming_call)
+        applyNavigationBar()
+        applyButtonBackgrounds()
+        applyInterFont()
 
         val voipPayload = VoipPayload.fromBundle(intent.extras)
         if (voipPayload == null || !voipPayload.isVoipIncomingCall()) {
@@ -72,15 +82,123 @@ class IncomingCallActivity : Activity() {
         setupButtons(voipPayload)
     }
 
-    private fun updateUI(payload: VoipPayload) {
-        val callerView = findViewById<TextView>(R.id.caller_name)
-        callerView?.text = payload.caller
+    private fun applyNavigationBar() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        val bgColor = ContextCompat.getColor(this, R.color.incoming_call_background)
+        window.navigationBarColor = bgColor
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val isDarkTheme = (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !isDarkTheme) {
+                @Suppress("DEPRECATION")
+                window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
+    }
 
-        // Try to load avatar if available
-        // TODO: needs username to load avatar
-        val avatarView = findViewById<ImageView>(R.id.caller_avatar)
-        // Avatar loading would require additional data - can be enhanced later
-        // For now, just show a placeholder or default icon
+    /**
+     * Applies button background colors programmatically. Required on some devices (e.g. Samsung
+     * lock screen) where XML @color references may not resolve correctly in full-screen intent context.
+     */
+    private fun applyButtonBackgrounds() {
+        val cornerRadiusPx = 8 * resources.displayMetrics.density
+        findViewById<FrameLayout>(R.id.btn_reject_bg)?.apply {
+            background = GradientDrawable().apply {
+                setColor(ContextCompat.getColor(this@IncomingCallActivity, R.color.incoming_call_reject_bg))
+                cornerRadius = cornerRadiusPx
+            }
+        }
+        findViewById<FrameLayout>(R.id.btn_accept_bg)?.apply {
+            background = GradientDrawable().apply {
+                setColor(ContextCompat.getColor(this@IncomingCallActivity, R.color.incoming_call_accept_bg))
+                cornerRadius = cornerRadiusPx
+            }
+        }
+    }
+
+    private fun applyInterFont() {
+        val interRegular = try {
+            Typeface.createFromAsset(assets, "fonts/Inter-Regular.otf")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load Inter-Regular font", e)
+            return
+        }
+        val interBold = try {
+            Typeface.createFromAsset(assets, "fonts/Inter-Bold.otf")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load Inter-Bold font", e)
+            interRegular
+        }
+        listOf(
+            R.id.header_text,
+            R.id.host_name,
+            R.id.incoming_call_reject_label,
+            R.id.incoming_call_accept_label
+        ).forEach { id ->
+            findViewById<TextView>(id)?.setTypeface(interRegular)
+        }
+        findViewById<TextView>(R.id.caller_name)?.setTypeface(interBold)
+    }
+
+    private fun updateUI(payload: VoipPayload) {
+        findViewById<TextView>(R.id.caller_name)?.text = payload.caller.ifEmpty { getString(R.string.incoming_call_unknown_caller) }
+        findViewById<TextView>(R.id.host_name)?.text = payload.hostName.ifEmpty { getString(R.string.incoming_call_unknown_host) }
+
+        loadAvatar(payload)
+    }
+
+    private fun loadAvatar(payload: VoipPayload) {
+        if (payload.host.isBlank() || payload.username.isBlank()) return
+
+        val container = findViewById<FrameLayout>(R.id.avatar_container)
+        val imageView = findViewById<ImageView>(R.id.avatar)
+        val sizePx = (120 * resources.displayMetrics.density).toInt().coerceIn(120, 480)
+        val avatarUrl = Ejson.forCallerAvatar(payload.host, payload.username)?.getCallerAvatarUri(sizePx)
+            ?: return
+        val cornerRadiusPx = (8 * resources.displayMetrics.density).toFloat()
+
+        Glide.with(this)
+            .load(avatarUrl)
+            .into(object : com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>(sizePx, sizePx) {
+                override fun onResourceReady(
+                    resource: android.graphics.drawable.Drawable,
+                    transition: com.bumptech.glide.request.transition.Transition<in android.graphics.drawable.Drawable>?
+                ) {
+                    container.visibility = View.VISIBLE
+                    imageView.setImageDrawable(resource)
+                    applyAvatarRoundCorners(imageView, cornerRadiusPx)
+                }
+
+                override fun onLoadFailed(errorDrawable: android.graphics.drawable.Drawable?) {
+                    container.visibility = View.GONE
+                }
+
+                override fun onLoadCleared(placeholder: android.graphics.drawable.Drawable?) {
+                    container.visibility = View.GONE
+                }
+            })
+    }
+
+    /**
+     * Applies rounded corners via view-level clipping.
+     * Works for both PNG (BitmapDrawable) and SVG (vector/PictureDrawable) since
+     * Glide's RoundedCorners bitmap transform only applies to bitmaps.
+     */
+    private fun applyAvatarRoundCorners(imageView: ImageView, cornerRadiusPx: Float) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return
+        imageView.post {
+            val radius = cornerRadiusPx
+            imageView.outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: android.graphics.Outline) {
+                    outline.setRoundRect(0, 0, view.width, view.height, radius)
+                }
+            }
+            imageView.clipToOutline = true
+        }
     }
 
     private fun startRingtone() {
@@ -105,14 +223,11 @@ class IncomingCallActivity : Activity() {
     }
 
     private fun setupButtons(payload: VoipPayload) {
-        val acceptButton = findViewById<ImageButton>(R.id.btn_accept)
-        val declineButton = findViewById<ImageButton>(R.id.btn_decline)
-
-        acceptButton?.setOnClickListener {
+        findViewById<LinearLayout>(R.id.btn_accept)?.setOnClickListener {
             handleAccept(payload)
         }
 
-        declineButton?.setOnClickListener {
+        findViewById<LinearLayout>(R.id.btn_decline)?.setOnClickListener {
             handleDecline(payload)
         }
     }

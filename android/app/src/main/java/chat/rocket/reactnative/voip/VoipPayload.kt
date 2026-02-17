@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import chat.rocket.reactnative.utils.CallIdUUID
-import android.util.Log
 
 data class VoipPayload(
     @SerializedName("callId")
@@ -13,12 +12,18 @@ data class VoipPayload(
     
     @SerializedName("caller")
     val caller: String,
+
+    @SerializedName("username")
+    val username: String,
     
     @SerializedName("host")
     val host: String,
     
     @SerializedName("type")
-    val type: String
+    val type: String,
+    
+    @SerializedName("hostName")
+    val hostName: String,
 ) {
     val notificationId: Int = callId.hashCode()
     val callUUID: String = CallIdUUID.generateUUIDv5(callId)
@@ -31,8 +36,10 @@ data class VoipPayload(
         return Bundle().apply {
             putString("callId", callId)
             putString("caller", caller)
+            putString("username", username)
             putString("host", host)
             putString("type", type)
+            putString("hostName", hostName)
             putString("callUUID", callUUID)
             putInt("notificationId", notificationId)
             // Useful flag for MainActivity to know it's handling a VoIP action
@@ -44,8 +51,10 @@ data class VoipPayload(
         return Arguments.createMap().apply {
             putString("callId", callId)
             putString("caller", caller)
+            putString("username", username)
             putString("host", host)
             putString("type", type)
+            putString("hostName", hostName)
             putString("callUUID", callUUID)
             putInt("notificationId", notificationId)
         }
@@ -53,24 +62,27 @@ data class VoipPayload(
 
     companion object {
         fun fromMap(data: Map<String, String>): VoipPayload? {
-            Log.d("RocketChat.VoipPayload", "Parsing VoIP payload from map: $data")
             val type = data["type"] ?: return null
             val callId = data["callId"] ?: return null
             val caller = data["caller"] ?: return null
+            val username = data["username"] ?: return null
             val host = data["host"] ?: return null
+            val hostName = data["hostName"] ?: return null
             if (type != "incoming_call") return null
 
-            return VoipPayload(callId, caller, host, type)
+            return VoipPayload(callId, caller, username, host, type, hostName)
         }
 
         fun fromBundle(bundle: Bundle?): VoipPayload? {
             if (bundle == null) return null
             val callId = bundle.getString("callId") ?: return null
-            val caller = bundle.getString("caller") ?: ""
-            val host = bundle.getString("host") ?: ""
-            val type = bundle.getString("type") ?: ""
+            val caller = bundle.getString("caller") ?: return null
+            val username = bundle.getString("username") ?: return null
+            val host = bundle.getString("host") ?: return null
+            val type = bundle.getString("type") ?: return null
+            val hostName = bundle.getString("hostName") ?: return null
 
-            return VoipPayload(callId, caller, host, type)
+            return VoipPayload(callId, caller, username, host, type, hostName)
         }
     }
 }

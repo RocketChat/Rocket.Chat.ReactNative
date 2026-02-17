@@ -8,6 +8,9 @@ import com.google.gson.GsonBuilder
 import chat.rocket.reactnative.voip.VoipNotification
 import chat.rocket.reactnative.voip.VoipModule
 import chat.rocket.reactnative.voip.VoipPayload
+import android.os.Build
+import android.app.KeyguardManager
+import android.app.Activity
 
 /**
  * Handles notification Intent processing from MainActivity.
@@ -56,6 +59,15 @@ class NotificationIntentHandler {
 
             VoipNotification.cancelById(context, voipPayload.notificationId)
             VoipModule.storeInitialEvents(voipPayload)
+
+            if (context is Activity) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                    context.setShowWhenLocked(true)
+                    context.setTurnScreenOn(true)
+                    val keyguardManager = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                    keyguardManager.requestDismissKeyguard(context, null)
+                }
+            }
 
             // Clear the voip flag to prevent re-processing
             intent.removeExtra("voipAction")

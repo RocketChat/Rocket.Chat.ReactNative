@@ -57,7 +57,7 @@ public class Ejson {
      * Helper method to build avatar URI from avatar path.
      * Validates server URL and credentials, then constructs the full URI.
      */
-    private String buildAvatarUri(String avatarPath, String errorContext) {
+    private String buildAvatarUri(String avatarPath, String errorContext, int sizePx) {
         String server = serverURL();
         if (server == null || server.isEmpty()) {
             Log.w(TAG, "Cannot generate " + errorContext + " avatar URI: serverURL is null");
@@ -67,7 +67,7 @@ public class Ejson {
         String userToken = token();
         String uid = userId();
         
-        String finalUri = server + avatarPath + "?format=png&size=100";
+        String finalUri = server + avatarPath + "?format=png&size=" + sizePx;
         if (!userToken.isEmpty() && !uid.isEmpty()) {
             finalUri += "&rc_token=" + userToken + "&rc_uid=" + uid;
         }
@@ -102,15 +102,37 @@ public class Ejson {
             }
         }
         
-        return buildAvatarUri(avatarPath, "");
+        return buildAvatarUri(avatarPath, "", 100);
     }
 
     /**
-     * Generates avatar URI for video conference caller.
+     * Factory for building caller avatar URIs from host + username (e.g. VoIP payload).
+     * Caller is package-private, so this is the only way to get avatar URI from outside the package.
+     */
+    public static Ejson forCallerAvatar(String host, String username) {
+        if (host == null || host.isEmpty() || username == null || username.isEmpty()) {
+            return null;
+        }
+        Ejson ejson = new Ejson();
+        ejson.host = host;
+        ejson.caller = new Caller();
+        ejson.caller.username = username;
+        return ejson;
+    }
+
+    /**
+     * Generates avatar URI for video conference caller (default size 100).
      * Returns null if caller username is not available (username is required for avatar endpoint).
      */
     public String getCallerAvatarUri() {
-        // Check if caller exists and has username (required - /avatar/{userId} endpoint doesn't exist)
+        return getCallerAvatarUri(100);
+    }
+
+    /**
+     * Generates avatar URI for video conference caller with custom size.
+     * Returns null if caller username is not available.
+     */
+    public String getCallerAvatarUri(int sizePx) {
         if (caller == null || caller.username == null || caller.username.isEmpty()) {
             Log.w(TAG, "Cannot generate caller avatar URI: caller or username is null");
             return null;
@@ -118,7 +140,7 @@ public class Ejson {
         
         try {
             String avatarPath = "/avatar/" + URLEncoder.encode(caller.username, "UTF-8");
-            return buildAvatarUri(avatarPath, "caller");
+            return buildAvatarUri(avatarPath, "caller", sizePx);
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Failed to encode caller username", e);
             return null;
