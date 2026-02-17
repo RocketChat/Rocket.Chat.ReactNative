@@ -16,17 +16,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-// Mock navigation
-// jest.mock('@react-navigation/native', () => ({
-// 	...jest.requireActual('@react-navigation/native'),
-// 	useNavigation: () => ({
-// 		goBack: () => {}
-// 	}),
-// 	useRoute: () => ({
-// 		params: { callUUID: 'test-uuid' }
-// 	})
-// }));
-
 // Helper to set store state for stories
 const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getState>> = {}) => {
 	const mockCall = {

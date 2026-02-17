@@ -184,21 +184,28 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	}
 }));
 
-// Selector hooks for better performance
-export const useCallState = () => useCallStore(state => state.callState);
+// const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
+// const isConnected = callState === 'active';
+export const useCallState = () => {
+	const callState = useCallStore(state => state.callState);
+	return callState === 'none' || callState === 'ringing' || callState === 'accepted';
+};
+
+// // Selector hooks for better performance
+// export const useCallState = () => useCallStore(state => state.callState);
 export const useCallContact = () => useCallStore(state => state.contact);
-export const useCallControls = () =>
-	useCallStore(
-		useShallow(state => ({
-			isMuted: state.isMuted,
-			isOnHold: state.isOnHold,
-			isSpeakerOn: state.isSpeakerOn
-		}))
-	);
-export const useCallActions = () =>
-	useCallStore(state => ({
-		toggleMute: state.toggleMute,
-		toggleHold: state.toggleHold,
-		toggleSpeaker: state.toggleSpeaker,
-		endCall: state.endCall
-	}));
+// export const useCallControls = () =>
+// 	useCallStore(
+// 		useShallow(state => ({
+// 			isMuted: state.isMuted,
+// 			isOnHold: state.isOnHold,
+// 			isSpeakerOn: state.isSpeakerOn
+// 		}))
+// 	);
+// export const useCallActions = () =>
+// 	useCallStore(state => ({
+// 		toggleMute: state.toggleMute,
+// 		toggleHold: state.toggleHold,
+// 		toggleSpeaker: state.toggleSpeaker,
+// 		endCall: state.endCall
+// 	}));
