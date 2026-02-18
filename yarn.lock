@@ -12734,6 +12734,11 @@ react-native-image-crop-picker@RocketChat/react-native-image-crop-picker#5346870
   version "0.50.1"
   resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/5346870b0be10d300dc53924309dc6adc9946d50"
 
+react-native-incall-manager@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-incall-manager/-/react-native-incall-manager-4.2.1.tgz#6a261693d8906f6e69c79356e5048e95d0e3e239"
+  integrity sha512-HTdtzQ/AswUbuNhcL0gmyZLAXo8VqBO7SIh+BwbeeM1YMXXlR+Q2MvKxhD4yanjJPeyqMfuRhryCQCJhPlsdAw==
+
 react-native-is-edge-to-edge@1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.1.6.tgz#69ec13f70d76e9245e275eed4140d0873a78f902"
