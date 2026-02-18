@@ -1,5 +1,5 @@
-import { MMKV, Mode, useMMKVString } from 'react-native-mmkv';
-import type { Configuration } from 'react-native-mmkv';
+import { createMMKV, useMMKVString } from 'react-native-mmkv';
+import type { Mode, Configuration } from 'react-native-mmkv';
 import { NativeModules } from 'react-native';
 
 import { isAndroid } from './helpers';
@@ -58,7 +58,7 @@ const getAppGroupPath = (): string => {
 	}
 };
 
-const MMKV_INSTANCE = new MMKV(buildConfiguration());
+const MMKV_INSTANCE = createMMKV(buildConfiguration());
 
 export const useUserPreferences = <T>(key: string, defaultValue?: T): [T | undefined, (value: T | undefined) => void] => {
 	const [storedValue, setStoredValue] = useMMKVString(key, MMKV_INSTANCE);
@@ -134,7 +134,7 @@ class UserPreferences {
 	}
 
 	removeItem(key: string): void {
-		this.mmkv.delete(key);
+		this.mmkv.remove(key);
 	}
 
 	getNumber(key: string): number | null {
