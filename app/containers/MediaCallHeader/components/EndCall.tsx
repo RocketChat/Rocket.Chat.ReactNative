@@ -10,7 +10,13 @@ const EndCall = () => {
 	const endCall = useCallStore(state => state.endCall);
 	return (
 		<HeaderButton.Container>
-			<HeaderButton.Item accessibilityLabel={I18n.t('End')} onPress={endCall} iconName='phone-end' color={colors.fontDanger} />
+			<HeaderButton.Item
+				testID='media-call-header-end'
+				accessibilityLabel={I18n.t('End')}
+				onPress={endCall}
+				iconName='phone-end'
+				color={colors.fontDanger}
+			/>
 		</HeaderButton.Container>
 	);
 };

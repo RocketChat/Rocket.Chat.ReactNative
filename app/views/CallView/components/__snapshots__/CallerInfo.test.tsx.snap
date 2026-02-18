@@ -35,7 +35,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         style={
           [
             {
-              "borderRadius": 16,
+              "borderRadius": 2,
               "height": 120,
               "width": 120,
             },
@@ -45,7 +45,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
-          borderRadius={16}
+          borderRadius={2}
           containerViewRef={"[React.ref]"}
           contentFit="cover"
           contentPosition={
@@ -72,28 +72,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           }
           style={
             {
-              "borderRadius": 16,
+              "borderRadius": 2,
               "height": 120,
               "width": 120,
             }
           }
           transition={null}
           width={120}
-        />
-        <View
-          style={
-            [
-              {
-                "borderRadius": 10,
-                "bottom": -2,
-                "position": "absolute",
-                "right": -2,
-              },
-              {
-                "backgroundColor": "#F2F3F5",
-              },
-            ]
-          }
         />
       </View>
     </View>
@@ -127,160 +112,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
         testID="caller-info-name"
       >
         Bob Burnquist
-      </Text>
-    </View>
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 18,
-            "fontWeight": "400",
-            "lineHeight": 26,
-            "marginBottom": 8,
-            "textAlign": "center",
-          },
-          {
-            "color": "#6C727A",
-          },
-        ]
-      }
-      testID="caller-info-extension"
-    >
-      2244
-    </Text>
-  </View>
-</View>
-`;
-
-exports[`Story Snapshots: NoExtension should match snapshot 1`] = `
-<View
-  style={
-    {
-      "flex": 1,
-      "minHeight": 300,
-      "padding": 24,
-    }
-  }
->
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-        "paddingHorizontal": 24,
-      }
-    }
-    testID="caller-info"
-  >
-    <View
-      style={
-        {
-          "marginBottom": 16,
-          "position": "relative",
-        }
-      }
-    >
-      <View
-        accessibilityLabel="alice.attali's avatar"
-        accessible={true}
-        style={
-          [
-            {
-              "borderRadius": 16,
-              "height": 120,
-              "width": 120,
-            },
-            undefined,
-          ]
-        }
-        testID="avatar"
-      >
-        <ViewManagerAdapter_ExpoImage
-          borderRadius={16}
-          containerViewRef={"[React.ref]"}
-          contentFit="cover"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
-          }
-          height={120}
-          nativeViewRef={"[React.ref]"}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          priority="high"
-          source={
-            [
-              {
-                "headers": undefined,
-                "uri": "https://open.rocket.chat/avatar/alice.attali?format=png&size=240",
-              },
-            ]
-          }
-          style={
-            {
-              "borderRadius": 16,
-              "height": 120,
-              "width": 120,
-            }
-          }
-          transition={null}
-          width={120}
-        />
-        <View
-          style={
-            [
-              {
-                "borderRadius": 10,
-                "bottom": -2,
-                "position": "absolute",
-                "right": -2,
-              },
-              {
-                "backgroundColor": "#F2F3F5",
-              },
-            ]
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 24,
-              "fontWeight": "700",
-              "lineHeight": 32,
-              "marginBottom": 4,
-              "textAlign": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="caller-info-name"
-      >
-        Alice Attali
       </Text>
     </View>
   </View>
@@ -322,7 +153,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
         style={
           [
             {
-              "borderRadius": 16,
+              "borderRadius": 2,
               "height": 120,
               "width": 120,
             },
@@ -332,7 +163,7 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
         testID="avatar"
       >
         <ViewManagerAdapter_ExpoImage
-          borderRadius={16}
+          borderRadius={2}
           containerViewRef={"[React.ref]"}
           contentFit="cover"
           contentPosition={
@@ -359,28 +190,13 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
           }
           style={
             {
-              "borderRadius": 16,
+              "borderRadius": 2,
               "height": 120,
               "width": 120,
             }
           }
           transition={null}
           width={120}
-        />
-        <View
-          style={
-            [
-              {
-                "borderRadius": 10,
-                "bottom": -2,
-                "position": "absolute",
-                "right": -2,
-              },
-              {
-                "backgroundColor": "#F2F3F5",
-              },
-            ]
-          }
         />
       </View>
     </View>
@@ -416,343 +232,6 @@ exports[`Story Snapshots: UsernameOnly should match snapshot 1`] = `
         john.doe
       </Text>
     </View>
-  </View>
-</View>
-`;
-
-exports[`Story Snapshots: WithMutedIndicator should match snapshot 1`] = `
-<View
-  style={
-    {
-      "flex": 1,
-      "minHeight": 300,
-      "padding": 24,
-    }
-  }
->
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-        "paddingHorizontal": 24,
-      }
-    }
-    testID="caller-info"
-  >
-    <View
-      style={
-        {
-          "marginBottom": 16,
-          "position": "relative",
-        }
-      }
-    >
-      <View
-        accessibilityLabel="bob.burnquist's avatar"
-        accessible={true}
-        style={
-          [
-            {
-              "borderRadius": 16,
-              "height": 120,
-              "width": 120,
-            },
-            undefined,
-          ]
-        }
-        testID="avatar"
-      >
-        <ViewManagerAdapter_ExpoImage
-          borderRadius={16}
-          containerViewRef={"[React.ref]"}
-          contentFit="cover"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
-          }
-          height={120}
-          nativeViewRef={"[React.ref]"}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          priority="high"
-          source={
-            [
-              {
-                "headers": undefined,
-                "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
-              },
-            ]
-          }
-          style={
-            {
-              "borderRadius": 16,
-              "height": 120,
-              "width": 120,
-            }
-          }
-          transition={null}
-          width={120}
-        />
-        <View
-          style={
-            [
-              {
-                "borderRadius": 10,
-                "bottom": -2,
-                "position": "absolute",
-                "right": -2,
-              },
-              {
-                "backgroundColor": "#F2F3F5",
-              },
-            ]
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 24,
-              "fontWeight": "700",
-              "lineHeight": 32,
-              "marginBottom": 4,
-              "textAlign": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="caller-info-name"
-      >
-        Bob Burnquist
-      </Text>
-      <Text
-        allowFontScaling={false}
-        selectable={false}
-        style={
-          [
-            {
-              "color": "#D40C26",
-              "fontSize": 20,
-            },
-            [
-              {
-                "lineHeight": 20,
-              },
-              {
-                "marginLeft": 8,
-              },
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
-          ]
-        }
-        testID="caller-info-muted"
-      >
-        
-      </Text>
-    </View>
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 18,
-            "fontWeight": "400",
-            "lineHeight": 26,
-            "marginBottom": 8,
-            "textAlign": "center",
-          },
-          {
-            "color": "#6C727A",
-          },
-        ]
-      }
-      testID="caller-info-extension"
-    >
-      2244
-    </Text>
-  </View>
-</View>
-`;
-
-exports[`Story Snapshots: WithOnlineStatus should match snapshot 1`] = `
-<View
-  style={
-    {
-      "flex": 1,
-      "minHeight": 300,
-      "padding": 24,
-    }
-  }
->
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-        "paddingHorizontal": 24,
-      }
-    }
-    testID="caller-info"
-  >
-    <View
-      style={
-        {
-          "marginBottom": 16,
-          "position": "relative",
-        }
-      }
-    >
-      <View
-        accessibilityLabel="bob.burnquist's avatar"
-        accessible={true}
-        style={
-          [
-            {
-              "borderRadius": 16,
-              "height": 120,
-              "width": 120,
-            },
-            undefined,
-          ]
-        }
-        testID="avatar"
-      >
-        <ViewManagerAdapter_ExpoImage
-          borderRadius={16}
-          containerViewRef={"[React.ref]"}
-          contentFit="cover"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
-          }
-          height={120}
-          nativeViewRef={"[React.ref]"}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          priority="high"
-          source={
-            [
-              {
-                "headers": undefined,
-                "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
-              },
-            ]
-          }
-          style={
-            {
-              "borderRadius": 16,
-              "height": 120,
-              "width": 120,
-            }
-          }
-          transition={null}
-          width={120}
-        />
-        <View
-          style={
-            [
-              {
-                "borderRadius": 10,
-                "bottom": -2,
-                "position": "absolute",
-                "right": -2,
-              },
-              {
-                "backgroundColor": "#F2F3F5",
-              },
-            ]
-          }
-        />
-      </View>
-    </View>
-    <View
-      style={
-        {
-          "alignItems": "center",
-          "flexDirection": "row",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 24,
-              "fontWeight": "700",
-              "lineHeight": 32,
-              "marginBottom": 4,
-              "textAlign": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="caller-info-name"
-      >
-        Bob Burnquist
-      </Text>
-    </View>
-    <Text
-      style={
-        [
-          {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 18,
-            "fontWeight": "400",
-            "lineHeight": 26,
-            "marginBottom": 8,
-            "textAlign": "center",
-          },
-          {
-            "color": "#6C727A",
-          },
-        ]
-      }
-      testID="caller-info-extension"
-    >
-      2244
-    </Text>
   </View>
 </View>
 `;

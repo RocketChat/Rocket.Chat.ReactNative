@@ -23,8 +23,7 @@ const setStoreState = (contact: { displayName?: string; username?: string; sipEx
 		callState: 'active',
 		isMuted: false,
 		isOnHold: false,
-		isSpeakerOn: false,
-		callStartTime: Date.now()
+		isSpeakerOn: false
 	});
 };
 
@@ -44,15 +43,6 @@ export default {
 };
 
 export const Default = () => <CallerInfo />;
-
-export const WithOnlineStatus = () => <CallerInfo />;
-
-export const WithMutedIndicator = () => <CallerInfo isMuted />;
-
-export const NoExtension = () => {
-	setStoreState({ displayName: 'Alice Attali', username: 'alice.attali' });
-	return <CallerInfo />;
-};
 
 export const UsernameOnly = () => {
 	setStoreState({ username: 'john.doe' });

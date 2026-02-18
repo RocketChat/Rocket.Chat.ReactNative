@@ -46,7 +46,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               },
@@ -56,7 +56,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={16}
+            borderRadius={2}
             containerViewRef={"[React.ref]"}
             contentFit="cover"
             contentPosition={
@@ -83,28 +83,13 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               }
             }
             transition={null}
             width={120}
-          />
-          <View
-            style={
-              [
-                {
-                  "borderRadius": 10,
-                  "bottom": -2,
-                  "position": "absolute",
-                  "right": -2,
-                },
-                {
-                  "backgroundColor": "#F2F3F5",
-                },
-              ]
-            }
           />
         </View>
       </View>
@@ -140,47 +125,18 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
           Bob Burnquist
         </Text>
       </View>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 18,
-              "fontWeight": "400",
-              "lineHeight": 26,
-              "marginBottom": 8,
-              "textAlign": "center",
-            },
-            {
-              "color": "#6C727A",
-            },
-          ]
-        }
-        testID="caller-info-extension"
-      >
-        2244
-      </Text>
     </View>
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 18,
-          "fontWeight": "400",
-          "lineHeight": 26,
-          "textAlign": "center",
-        }
-      }
-    >
-       
-    </Text>
     <View
       style={
-        {
-          "padding": 24,
-        }
+        [
+          {
+            "borderTopWidth": 0.5,
+            "padding": 24,
+          },
+          {
+            "borderTopColor": "#EBECEF",
+          },
+        ]
       }
     >
       <View
@@ -842,7 +798,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               },
@@ -852,7 +808,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={16}
+            borderRadius={2}
             containerViewRef={"[React.ref]"}
             contentFit="cover"
             contentPosition={
@@ -879,28 +835,13 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               }
             }
             transition={null}
             width={120}
-          />
-          <View
-            style={
-              [
-                {
-                  "borderRadius": 10,
-                  "bottom": -2,
-                  "position": "absolute",
-                  "right": -2,
-                },
-                {
-                  "backgroundColor": "#F2F3F5",
-                },
-              ]
-            }
           />
         </View>
       </View>
@@ -936,33 +877,18 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           Bob Burnquist
         </Text>
       </View>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 18,
-              "fontWeight": "400",
-              "lineHeight": 26,
-              "marginBottom": 8,
-              "textAlign": "center",
-            },
-            {
-              "color": "#6C727A",
-            },
-          ]
-        }
-        testID="caller-info-extension"
-      >
-        2244
-      </Text>
     </View>
     <View
       style={
-        {
-          "padding": 24,
-        }
+        [
+          {
+            "borderTopWidth": 0.5,
+            "padding": 24,
+          },
+          {
+            "borderTopColor": "#EBECEF",
+          },
+        ]
       }
     >
       <View
@@ -1628,7 +1554,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               },
@@ -1638,7 +1564,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={16}
+            borderRadius={2}
             containerViewRef={"[React.ref]"}
             contentFit="cover"
             contentPosition={
@@ -1665,28 +1591,13 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               }
             }
             transition={null}
             width={120}
-          />
-          <View
-            style={
-              [
-                {
-                  "borderRadius": 10,
-                  "bottom": -2,
-                  "position": "absolute",
-                  "right": -2,
-                },
-                {
-                  "backgroundColor": "#F2F3F5",
-                },
-              ]
-            }
           />
         </View>
       </View>
@@ -1721,92 +1632,19 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
         >
           Bob Burnquist
         </Text>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#D40C26",
-                "fontSize": NaN,
-              },
-              [
-                {
-                  "lineHeight": NaN,
-                },
-                {
-                  "marginLeft": 8,
-                },
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-          testID="caller-info-muted"
-        >
-          
-        </Text>
       </View>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 18,
-              "fontWeight": "400",
-              "lineHeight": 26,
-              "marginBottom": 8,
-              "textAlign": "center",
-            },
-            {
-              "color": "#6C727A",
-            },
-          ]
-        }
-        testID="caller-info-extension"
-      >
-        2244
-      </Text>
     </View>
-    <Text
+    <View
       style={
         [
           {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 18,
-            "fontWeight": "400",
-            "lineHeight": 26,
-            "textAlign": "center",
+            "borderTopWidth": 0.5,
+            "padding": 24,
           },
           {
-            "color": "#2F343D",
+            "borderTopColor": "#EBECEF",
           },
         ]
-      }
-    >
-      On hold
-      , 
-      <Text
-        style={
-          {
-            "color": "#8E6300",
-          }
-        }
-      >
-        Muted
-      </Text>
-    </Text>
-    <View
-      style={
-        {
-          "padding": 24,
-        }
       }
     >
       <View
@@ -2468,7 +2306,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               },
@@ -2478,7 +2316,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={16}
+            borderRadius={2}
             containerViewRef={"[React.ref]"}
             contentFit="cover"
             contentPosition={
@@ -2505,28 +2343,13 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               }
             }
             transition={null}
             width={120}
-          />
-          <View
-            style={
-              [
-                {
-                  "borderRadius": 10,
-                  "bottom": -2,
-                  "position": "absolute",
-                  "right": -2,
-                },
-                {
-                  "backgroundColor": "#F2F3F5",
-                },
-              ]
-            }
           />
         </View>
       </View>
@@ -2561,82 +2384,19 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
         >
           Bob Burnquist
         </Text>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#D40C26",
-                "fontSize": NaN,
-              },
-              [
-                {
-                  "lineHeight": NaN,
-                },
-                {
-                  "marginLeft": 8,
-                },
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-          testID="caller-info-muted"
-        >
-          
-        </Text>
       </View>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 18,
-              "fontWeight": "400",
-              "lineHeight": 26,
-              "marginBottom": 8,
-              "textAlign": "center",
-            },
-            {
-              "color": "#6C727A",
-            },
-          ]
-        }
-        testID="caller-info-extension"
-      >
-        2244
-      </Text>
     </View>
-    <Text
+    <View
       style={
         [
           {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 18,
-            "fontWeight": "400",
-            "lineHeight": 26,
-            "textAlign": "center",
+            "borderTopWidth": 0.5,
+            "padding": 24,
           },
           {
-            "color": "#8E6300",
+            "borderTopColor": "#EBECEF",
           },
         ]
-      }
-    >
-      Muted
-    </Text>
-    <View
-      style={
-        {
-          "padding": 24,
-        }
       }
     >
       <View
@@ -3298,7 +3058,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               },
@@ -3308,7 +3068,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={16}
+            borderRadius={2}
             containerViewRef={"[React.ref]"}
             contentFit="cover"
             contentPosition={
@@ -3335,28 +3095,13 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               }
             }
             transition={null}
             width={120}
-          />
-          <View
-            style={
-              [
-                {
-                  "borderRadius": 10,
-                  "bottom": -2,
-                  "position": "absolute",
-                  "right": -2,
-                },
-                {
-                  "backgroundColor": "#F2F3F5",
-                },
-              ]
-            }
           />
         </View>
       </View>
@@ -3392,52 +3137,18 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
           Bob Burnquist
         </Text>
       </View>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 18,
-              "fontWeight": "400",
-              "lineHeight": 26,
-              "marginBottom": 8,
-              "textAlign": "center",
-            },
-            {
-              "color": "#6C727A",
-            },
-          ]
-        }
-        testID="caller-info-extension"
-      >
-        2244
-      </Text>
     </View>
-    <Text
+    <View
       style={
         [
           {
-            "backgroundColor": "transparent",
-            "fontFamily": "Inter",
-            "fontSize": 18,
-            "fontWeight": "400",
-            "lineHeight": 26,
-            "textAlign": "center",
+            "borderTopWidth": 0.5,
+            "padding": 24,
           },
           {
-            "color": "#2F343D",
+            "borderTopColor": "#EBECEF",
           },
         ]
-      }
-    >
-      On hold
-    </Text>
-    <View
-      style={
-        {
-          "padding": 24,
-        }
       }
     >
       <View
@@ -4099,7 +3810,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           style={
             [
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               },
@@ -4109,7 +3820,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           testID="avatar"
         >
           <ViewManagerAdapter_ExpoImage
-            borderRadius={16}
+            borderRadius={2}
             containerViewRef={"[React.ref]"}
             contentFit="cover"
             contentPosition={
@@ -4136,28 +3847,13 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             }
             style={
               {
-                "borderRadius": 16,
+                "borderRadius": 2,
                 "height": 120,
                 "width": 120,
               }
             }
             transition={null}
             width={120}
-          />
-          <View
-            style={
-              [
-                {
-                  "borderRadius": 10,
-                  "bottom": -2,
-                  "position": "absolute",
-                  "right": -2,
-                },
-                {
-                  "backgroundColor": "#F2F3F5",
-                },
-              ]
-            }
           />
         </View>
       </View>
@@ -4193,47 +3889,18 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
           Bob Burnquist
         </Text>
       </View>
-      <Text
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 18,
-              "fontWeight": "400",
-              "lineHeight": 26,
-              "marginBottom": 8,
-              "textAlign": "center",
-            },
-            {
-              "color": "#6C727A",
-            },
-          ]
-        }
-        testID="caller-info-extension"
-      >
-        2244
-      </Text>
     </View>
-    <Text
-      style={
-        {
-          "backgroundColor": "transparent",
-          "fontFamily": "Inter",
-          "fontSize": 18,
-          "fontWeight": "400",
-          "lineHeight": 26,
-          "textAlign": "center",
-        }
-      }
-    >
-       
-    </Text>
     <View
       style={
-        {
-          "padding": 24,
-        }
+        [
+          {
+            "borderTopWidth": 0.5,
+            "padding": 24,
+          },
+          {
+            "borderTopColor": "#EBECEF",
+          },
+        ]
       }
     >
       <View

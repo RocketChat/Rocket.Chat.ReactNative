@@ -9,9 +9,11 @@ const Collapse = () => {
 	const { colors } = useTheme();
 	const focused = useCallStore(state => state.focused);
 	const toggleFocus = useCallStore(state => state.toggleFocus);
+
 	return (
 		<HeaderButton.Container left>
 			<HeaderButton.Item
+				testID='media-call-header-collapse'
 				accessibilityLabel={I18n.t('Minimize')}
 				onPress={toggleFocus}
 				iconName={focused ? 'arrow-collapse' : 'arrow-expand'}

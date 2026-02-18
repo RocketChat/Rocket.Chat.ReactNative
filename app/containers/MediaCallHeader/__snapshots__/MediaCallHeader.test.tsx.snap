@@ -1,0 +1,2094 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderBottomWidth": 0.5,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "paddingBottom": 12,
+          "paddingTop": 12,
+        },
+      ]
+    }
+    testID="media-call-header"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginLeft": -5,
+            "marginRight": 0,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={13}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-collapse"
+      >
+        <View
+          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "flex": 1,
+          "paddingHorizontal": 4,
+        }
+      }
+      testID="media-call-header-content"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+          testID="call-view-header-title"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+                [
+                  {
+                    "lineHeight": 12,
+                  },
+                  [
+                    {
+                      "height": 12,
+                      "textAlignVertical": "center",
+                      "width": 12,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Bob Burnquist
+            <Text>
+               - 
+              16117:18:53
+            </Text>
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+          testID="call-view-header-subtitle"
+        >
+          2244
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginRight": -5,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={14}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-end"
+      >
+        <View
+          accessibilityLabel="End"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderBottomWidth": 0.5,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "paddingBottom": 12,
+          "paddingTop": 12,
+        },
+      ]
+    }
+    testID="media-call-header"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginLeft": -5,
+            "marginRight": 0,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={15}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-collapse"
+      >
+        <View
+          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "flex": 1,
+          "paddingHorizontal": 4,
+        }
+      }
+      testID="media-call-header-content"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+          testID="call-view-header-title"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+                [
+                  {
+                    "lineHeight": 12,
+                  },
+                  [
+                    {
+                      "height": 12,
+                      "textAlignVertical": "center",
+                      "width": 12,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Bob Burnquist
+            <Text>
+               - 
+              16117:18:53
+            </Text>
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+          testID="call-view-header-subtitle"
+        >
+          2244
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginRight": -5,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={16}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-end"
+      >
+        <View
+          accessibilityLabel="End"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderBottomWidth": 0.5,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "paddingBottom": 12,
+          "paddingTop": 12,
+        },
+      ]
+    }
+    testID="media-call-header"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginLeft": -5,
+            "marginRight": 0,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={17}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-collapse"
+      >
+        <View
+          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "flex": 1,
+          "paddingHorizontal": 4,
+        }
+      }
+      testID="media-call-header-content"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+          testID="call-view-header-title"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+                [
+                  {
+                    "lineHeight": 12,
+                  },
+                  [
+                    {
+                      "height": 12,
+                      "textAlignVertical": "center",
+                      "width": 12,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Bob Burnquist
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+          testID="call-view-header-subtitle"
+        >
+          Connecting...
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginRight": -5,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={18}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-end"
+      >
+        <View
+          accessibilityLabel="End"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Focused should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderBottomWidth": 0.5,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "paddingBottom": 12,
+          "paddingTop": 12,
+        },
+      ]
+    }
+    testID="media-call-header"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginLeft": -5,
+            "marginRight": 0,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={19}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-collapse"
+      >
+        <View
+          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "flex": 1,
+          "paddingHorizontal": 4,
+        }
+      }
+      testID="media-call-header-content"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+          testID="call-view-header-title"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+                [
+                  {
+                    "lineHeight": 12,
+                  },
+                  [
+                    {
+                      "height": 12,
+                      "textAlignVertical": "center",
+                      "width": 12,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Bob Burnquist
+            <Text>
+               - 
+              16117:18:53
+            </Text>
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+          testID="call-view-header-subtitle"
+        >
+          2244
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginRight": -5,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={20}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-end"
+      >
+        <View
+          accessibilityLabel="End"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: NoCall should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "paddingBottom": 12,
+        "paddingTop": 12,
+      }
+    }
+    testID="media-call-header-empty"
+  />
+</View>
+`;
+
+exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderBottomWidth": 0.5,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "paddingBottom": 12,
+          "paddingTop": 12,
+        },
+      ]
+    }
+    testID="media-call-header"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginLeft": -5,
+            "marginRight": 0,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={21}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-collapse"
+      >
+        <View
+          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "flex": 1,
+          "paddingHorizontal": 4,
+        }
+      }
+      testID="media-call-header-content"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+          testID="call-view-header-title"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+                [
+                  {
+                    "lineHeight": 12,
+                  },
+                  [
+                    {
+                      "height": 12,
+                      "textAlignVertical": "center",
+                      "width": 12,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Bob Burnquist
+            <Text>
+               - 
+              16117:18:53
+            </Text>
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+          testID="call-view-header-subtitle"
+        >
+          2244 - On hold
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginRight": -5,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={22}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-end"
+      >
+        <View
+          accessibilityLabel="End"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "borderBottomWidth": 0.5,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingHorizontal": 12,
+        },
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomColor": "#CBCED1",
+          "paddingBottom": 12,
+          "paddingTop": 12,
+        },
+      ]
+    }
+    testID="media-call-header"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginLeft": -5,
+            "marginRight": 0,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={23}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-collapse"
+      >
+        <View
+          accessibilityLabel="[missing "en.Minimize" translation]"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "flex": 1,
+          "paddingHorizontal": 4,
+        }
+      }
+      testID="media-call-header-content"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 4,
+            }
+          }
+          testID="call-view-header-title"
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 12,
+                },
+                [
+                  {
+                    "lineHeight": 12,
+                  },
+                  [
+                    {
+                      "height": 12,
+                      "textAlignVertical": "center",
+                      "width": 12,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "lineHeight": 24,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+            Bob Burnquist
+            <Text>
+               - 
+              16117:18:53
+            </Text>
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "lineHeight": 16,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+          testID="call-view-header-subtitle"
+        >
+          2244 - Muted
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          {
+            "marginRight": -5,
+          },
+          {},
+        ]
+      }
+    >
+      <RNGestureHandlerButton
+        activeOpacity={0.3}
+        borderless={true}
+        collapsable={false}
+        delayLongPress={600}
+        enabled={true}
+        handlerTag={24}
+        handlerType="NativeViewGestureHandler"
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        innerRef={null}
+        onActiveStateChange={[Function]}
+        onGestureHandlerEvent={[Function]}
+        onGestureHandlerStateChange={[Function]}
+        onPress={[MockFunction]}
+        style={
+          [
+            {
+              "opacity": 1,
+              "padding": 6,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
+        }
+        testID="media-call-header-end"
+      >
+        <View
+          accessibilityLabel="End"
+          accessible={true}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#D40C26",
+                  "fontSize": 24,
+                },
+                [
+                  {
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </RNGestureHandlerButton>
+    </View>
+  </View>
+</View>
+`;

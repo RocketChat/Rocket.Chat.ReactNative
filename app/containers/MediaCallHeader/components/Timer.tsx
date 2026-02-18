@@ -29,7 +29,7 @@ const Timer = () => {
 		return () => clearInterval(interval);
 	}, [callStartTime]);
 
-	return <Text>{formatDuration(duration)}</Text>;
+	return <Text> - {formatDuration(duration)}</Text>;
 };
 
 export default Timer;

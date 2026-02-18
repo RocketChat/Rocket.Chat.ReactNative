@@ -50,7 +50,8 @@ export const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	buttonsContainer: {
-		padding: 24
+		padding: 24,
+		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	buttonsRow: {
 		flexDirection: 'row',
