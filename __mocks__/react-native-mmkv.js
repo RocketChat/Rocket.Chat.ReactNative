@@ -200,7 +200,7 @@ export function useMMKVListener(valueChangedListener, instance) {
 		});
 		return () => listener.remove();
 	}, [mmkv]);
-} 
+}
 
 /**
  * Get a list of all keys that exist in the given MMKV instance
