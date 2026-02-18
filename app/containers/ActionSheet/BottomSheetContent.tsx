@@ -1,6 +1,5 @@
-import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
+import { FlatList, Text, useWindowDimensions, type ViewProps } from 'react-native';
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
@@ -24,9 +23,9 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 	'use memo';
 
 	const { colors } = useTheme();
-	const { bottom } = useSafeAreaInsets();
-	const { fontScale } = useWindowDimensions();
+	const { fontScale, height: windowHeight } = useWindowDimensions();
 	const height = 48 * fontScale;
+	const paddingBottom = windowHeight * 0.05;
 
 	const renderFooter = () =>
 		hasCancel ? (
@@ -53,7 +52,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 					style={{ backgroundColor: colors.surfaceLight }}
 					keyboardDismissMode='interactive'
 					indicatorStyle='black'
-					contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
+					contentContainerStyle={{ paddingBottom, backgroundColor: colors.surfaceLight }}
 					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={List.Separator}
 					ListFooterComponent={renderFooter}
@@ -64,10 +63,8 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 		);
 	}
 	return (
-		<GestureHandlerRootView style={styles.contentContainer}>
-			<View testID='action-sheet' onLayout={onLayout}>
-				{children}
-			</View>
+		<GestureHandlerRootView testID='action-sheet' onLayout={onLayout} style={styles.contentContainer}>
+			{children}
 		</GestureHandlerRootView>
 	);
 });
