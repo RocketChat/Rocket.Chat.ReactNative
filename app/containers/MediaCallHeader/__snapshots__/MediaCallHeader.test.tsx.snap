@@ -16,12 +16,12 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
           "borderBottomWidth": 0.5,
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 12,
           "paddingHorizontal": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingBottom": 12,
           "paddingTop": 12,
         },
       ]
@@ -158,8 +158,8 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
         style={
           {
             "alignItems": "flex-start",
-            "flex": 1,
             "flexDirection": "column",
+            "flexGrow": 1,
             "justifyContent": "space-evenly",
           }
         }
@@ -228,7 +228,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16117:18:53
+              16140:16:32
             </Text>
           </Text>
         </View>
@@ -362,12 +362,12 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
           "borderBottomWidth": 0.5,
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 12,
           "paddingHorizontal": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingBottom": 12,
           "paddingTop": 12,
         },
       ]
@@ -504,8 +504,8 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
         style={
           {
             "alignItems": "flex-start",
-            "flex": 1,
             "flexDirection": "column",
+            "flexGrow": 1,
             "justifyContent": "space-evenly",
           }
         }
@@ -574,7 +574,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16117:18:53
+              16140:16:32
             </Text>
           </Text>
         </View>
@@ -708,12 +708,12 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
           "borderBottomWidth": 0.5,
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 12,
           "paddingHorizontal": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingBottom": 12,
           "paddingTop": 12,
         },
       ]
@@ -850,8 +850,8 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         style={
           {
             "alignItems": "flex-start",
-            "flex": 1,
             "flexDirection": "column",
+            "flexGrow": 1,
             "justifyContent": "space-evenly",
           }
         }
@@ -1050,12 +1050,12 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
           "borderBottomWidth": 0.5,
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 12,
           "paddingHorizontal": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingBottom": 12,
           "paddingTop": 12,
         },
       ]
@@ -1192,8 +1192,8 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
         style={
           {
             "alignItems": "flex-start",
-            "flex": 1,
             "flexDirection": "column",
+            "flexGrow": 1,
             "justifyContent": "space-evenly",
           }
         }
@@ -1262,7 +1262,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16117:18:53
+              16140:16:32
             </Text>
           </Text>
         </View>
@@ -1392,8 +1392,7 @@ exports[`Story Snapshots: NoCall should match snapshot 1`] = `
     style={
       {
         "backgroundColor": "#E4E7EA",
-        "paddingBottom": 12,
-        "paddingTop": 12,
+        "paddingTop": 0,
       }
     }
     testID="media-call-header-empty"
@@ -1417,12 +1416,12 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
           "borderBottomWidth": 0.5,
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 12,
           "paddingHorizontal": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingBottom": 12,
           "paddingTop": 12,
         },
       ]
@@ -1559,8 +1558,8 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
         style={
           {
             "alignItems": "flex-start",
-            "flex": 1,
             "flexDirection": "column",
+            "flexGrow": 1,
             "justifyContent": "space-evenly",
           }
         }
@@ -1629,7 +1628,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16117:18:53
+              16140:16:32
             </Text>
           </Text>
         </View>
@@ -1763,12 +1762,12 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
           "borderBottomWidth": 0.5,
           "flexDirection": "row",
           "justifyContent": "space-between",
+          "paddingBottom": 12,
           "paddingHorizontal": 12,
         },
         {
           "backgroundColor": "#E4E7EA",
           "borderBottomColor": "#CBCED1",
-          "paddingBottom": 12,
           "paddingTop": 12,
         },
       ]
@@ -1905,8 +1904,8 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
         style={
           {
             "alignItems": "flex-start",
-            "flex": 1,
             "flexDirection": "column",
+            "flexGrow": 1,
             "justifyContent": "space-evenly",
           }
         }
@@ -1975,7 +1974,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16117:18:53
+              16140:16:32
             </Text>
           </Text>
         </View>

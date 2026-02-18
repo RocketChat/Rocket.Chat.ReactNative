@@ -6,7 +6,7 @@ import I18n from '../../../i18n';
 import sharedStyles from '../../../views/Styles';
 
 const styles = StyleSheet.create({
-	headerTitle: {
+	headerSubtitle: {
 		...sharedStyles.textRegular,
 		fontSize: 12,
 		lineHeight: 16
@@ -42,7 +42,10 @@ const Subtitle = () => {
 	}
 
 	return (
-		<Text style={[styles.headerTitle, { color: colors.fontSecondaryInfo }]} testID='call-view-header-subtitle' numberOfLines={1}>
+		<Text
+			style={[styles.headerSubtitle, { color: colors.fontSecondaryInfo }]}
+			testID='call-view-header-subtitle'
+			numberOfLines={1}>
 			{subtitle}
 		</Text>
 	);

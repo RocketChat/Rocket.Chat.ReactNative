@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 4
 	},
 	container: {
-		flex: 1,
+		flexGrow: 1,
 		flexDirection: 'column',
 		justifyContent: 'space-evenly',
 		alignItems: 'flex-start'

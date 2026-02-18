@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: 12,
+		paddingBottom: 12,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	}
 });
@@ -27,8 +28,7 @@ const MediaCallHeader = () => {
 
 	const defaultHeaderStyle = {
 		backgroundColor: colors.surfaceNeutral,
-		paddingTop: insets.top + 12,
-		paddingBottom: 12
+		paddingTop: insets.top
 	};
 
 	if (!call) {
@@ -36,7 +36,9 @@ const MediaCallHeader = () => {
 	}
 
 	return (
-		<View style={[styles.header, { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight }]} testID='media-call-header'>
+		<View
+			style={[styles.header, { ...defaultHeaderStyle, borderBottomColor: colors.strokeLight, paddingTop: insets.top + 12 }]}
+			testID='media-call-header'>
 			<Collapse />
 			<Content />
 			<EndCall />
