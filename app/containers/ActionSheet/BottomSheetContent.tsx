@@ -1,10 +1,10 @@
-import { Text, useWindowDimensions, type ViewProps } from 'react-native';
+import { FlatList, Text, useWindowDimensions, type ViewProps } from 'react-native';
 import React from 'react';
-import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
+import { isAndroid } from '../../lib/methods/helpers';
 import { type IActionSheetItem, Item } from './Item';
 import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
@@ -23,9 +23,9 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 	'use memo';
 
 	const { colors } = useTheme();
-	const { bottom } = useSafeAreaInsets();
-	const { fontScale } = useWindowDimensions();
+	const { fontScale, height: windowHeight } = useWindowDimensions();
 	const height = 48 * fontScale;
+	const paddingBottom = windowHeight * 0.05;
 
 	const renderFooter = () =>
 		hasCancel ? (
@@ -41,28 +41,31 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 
 	if (options) {
 		return (
-			<BottomSheetFlatList
-				testID='action-sheet'
-				data={options}
-				refreshing={false}
-				keyExtractor={(item: TActionSheetOptionsItem) => item.title}
-				bounces={false}
-				renderItem={renderItem}
-				style={{ backgroundColor: colors.strokeExtraDark }}
-				keyboardDismissMode='interactive'
-				indicatorStyle='black'
-				contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
-				ItemSeparatorComponent={List.Separator}
-				ListHeaderComponent={List.Separator}
-				ListFooterComponent={renderFooter}
-				onLayout={onLayout}
-			/>
+			<GestureHandlerRootView style={styles.contentContainer}>
+				<FlatList
+					testID='action-sheet'
+					data={options}
+					refreshing={false}
+					keyExtractor={item => item.title}
+					bounces={false}
+					renderItem={renderItem}
+					style={{ backgroundColor: colors.surfaceLight }}
+					keyboardDismissMode='interactive'
+					indicatorStyle='black'
+					contentContainerStyle={{ paddingBottom, backgroundColor: colors.surfaceLight }}
+					ItemSeparatorComponent={List.Separator}
+					ListHeaderComponent={List.Separator}
+					ListFooterComponent={renderFooter}
+					onLayout={onLayout}
+					nestedScrollEnabled={isAndroid}
+				/>
+			</GestureHandlerRootView>
 		);
 	}
 	return (
-		<BottomSheetView testID='action-sheet' style={styles.contentContainer} onLayout={onLayout}>
+		<GestureHandlerRootView testID='action-sheet' onLayout={onLayout} style={styles.contentContainer}>
 			{children}
-		</BottomSheetView>
+		</GestureHandlerRootView>
 	);
 });
 

@@ -9,7 +9,8 @@ export default StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
 	actionSheetContainer: {
-		flex: 1
+		height: '100%',
+		width: '100%'
 	},
 	content: {
 		padding: 16
