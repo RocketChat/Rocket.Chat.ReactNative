@@ -167,10 +167,7 @@ function isConfigurationEqual(left, right) {
 	}
 
 	return (
-		left.encryptionKey === right.encryptionKey &&
-		left.id === right.id &&
-		left.path === right.path &&
-		left.mode === right.mode
+		left.encryptionKey === right.encryptionKey && left.id === right.id && left.path === right.path && left.mode === right.mode
 	);
 }
 
@@ -183,9 +180,7 @@ export function useMMKV(configuration) {
 			return getDefaultMMKVInstance();
 		}
 		return createMMKV(configuration);
-	}, [
-		configuration
-	]);
+	}, [configuration]);
 }
 
 /**
@@ -214,16 +209,13 @@ export function useMMKVKeys(instance) {
 	const mmkv = instance ?? getDefaultMMKVInstance();
 	const [allKeys, setKeys] = useState(() => mmkv.getAllKeys());
 
-	useMMKVListener(
-		(key) => {
-			const currentlyHasKey = allKeys.includes(key);
-			const hasKey = mmkv.contains(key);
-			if (hasKey !== currentlyHasKey) {
-				setKeys(() => mmkv.getAllKeys());
-			}
-		},
-		mmkv
-	);
+	useMMKVListener((key) => {
+		const currentlyHasKey = allKeys.includes(key);
+		const hasKey = mmkv.contains(key);
+		if (hasKey !== currentlyHasKey) {
+			setKeys(() => mmkv.getAllKeys());
+		}
+	}, mmkv);
 
 	return allKeys;
 }
@@ -258,9 +250,7 @@ function createMMKVHook(getter) {
 							mmkv.set(key, newValue);
 							break;
 						} else {
-							throw new Error(
-								`MMKV: Type object (${newValue}) is not supported!`
-							);
+							throw new Error(`MMKV: Type object (${newValue}) is not supported!`);
 						}
 					default:
 						throw new Error(`MMKV: Type ${typeof newValue} is not supported!`);
@@ -285,23 +275,17 @@ function createMMKVHook(getter) {
 /**
  * Use the string value of the given key from the given MMKV storage instance
  */
-export const useMMKVString = createMMKVHook((instance, key) =>
-	instance.getString(key)
-);
+export const useMMKVString = createMMKVHook((instance, key) => instance.getString(key));
 
 /**
  * Use the number value of the given key from the given MMKV storage instance
  */
-export const useMMKVNumber = createMMKVHook((instance, key) =>
-	instance.getNumber(key)
-);
+export const useMMKVNumber = createMMKVHook((instance, key) => instance.getNumber(key));
 
 /**
  * Use the boolean value of the given key from the given MMKV storage instance
  */
-export const useMMKVBoolean = createMMKVHook((instance, key) =>
-	instance.getBoolean(key)
-);
+export const useMMKVBoolean = createMMKVHook((instance, key) => instance.getBoolean(key));
 
 /**
  * Use the object value (JSON stringified) of the given key from the given MMKV storage instance
@@ -314,6 +298,4 @@ export const useMMKVObject = createMMKVHook((instance, key) => {
 /**
  * Use the buffer value of the given key from the given MMKV storage instance
  */
-export const useMMKVBuffer = createMMKVHook((instance, key) =>
-	instance.getBuffer(key)
-);
+export const useMMKVBuffer = createMMKVHook((instance, key) => instance.getBuffer(key));
