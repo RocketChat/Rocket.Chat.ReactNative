@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { CallState, CallContact, IClientMediaCall } from '@rocket.chat/media-signaling';
 import RNCallKeep from 'react-native-callkeep';
+import InCallManager from 'react-native-incall-manager';
 
 import Navigation from '../../navigation/appNavigation';
 
@@ -77,6 +78,12 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			callStartTime: call.state === 'active' ? Date.now() : null
 		});
 
+		try {
+			InCallManager.start({ media: 'audio' });
+		} catch (error) {
+			console.error('[VoIP] InCallManager.start failed:', error);
+		}
+
 		// Subscribe to call events
 		const handleStateChange = () => {
 			const currentCall = get().call;
@@ -129,10 +136,18 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		set({ isOnHold: !isOnHold });
 	},
 
-	toggleSpeaker: () => {
-		const { isSpeakerOn } = get();
-		// TODO: Implement actual speaker toggle via RNCallKeep or WebRTC audio routing
-		set({ isSpeakerOn: !isSpeakerOn });
+	toggleSpeaker: async () => {
+		const { callUUID, isSpeakerOn } = get();
+		if (!callUUID) return;
+
+		const newSpeakerOn = !isSpeakerOn;
+
+		try {
+			await InCallManager.setForceSpeakerphoneOn(newSpeakerOn);
+			set({ isSpeakerOn: newSpeakerOn });
+		} catch (error) {
+			console.error('[VoIP] Failed to toggle speaker:', error);
+		}
 	},
 
 	toggleFocus: () => {
@@ -165,6 +180,11 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	reset: () => {
+		try {
+			InCallManager.stop();
+		} catch (error) {
+			console.error('[VoIP] InCallManager.stop failed:', error);
+		}
 		set(initialState);
 	}
 }));
