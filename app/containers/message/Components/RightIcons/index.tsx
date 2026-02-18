@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { MessageType } from '../../../../definitions';
+import { type MessageType } from '../../../../definitions';
 import Edited from './Edited';
 import Encrypted from './Encrypted';
 import MessageError from './MessageError';

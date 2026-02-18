@@ -11,6 +11,17 @@ module.exports = {
 		},
 		'import/parsers': {
 			'@typescript-eslint/parser': ['.ts', '.tsx']
+			// plugins: ['@typescript-eslint'],
+			// rules: {
+			// 	'@typescript-eslint/consistent-type-imports': [
+			// 		'error',
+			// 		{
+			// 			prefer: 'type-imports', // enforce `import type`
+			// 			disallowTypeAnnotations: true // disallow `import { type Foo }`
+			// 			// fixStyle: 'inline-type-imports' // keeps type imports inline rather than grouped
+			// 		}
+			// 	]
+			// }
 		}
 	},
 	parser: '@babel/eslint-parser',
@@ -217,6 +228,14 @@ module.exports = {
 					{
 						argsIgnorePattern: '^_',
 						ignoreRestSiblings: true
+					}
+				],
+				'@typescript-eslint/consistent-type-imports': [
+					'error',
+					{
+						prefer: 'type-imports',
+						disallowTypeAnnotations: true,
+						fixStyle: 'inline-type-imports'
 					}
 				],
 				'new-cap': 'off',

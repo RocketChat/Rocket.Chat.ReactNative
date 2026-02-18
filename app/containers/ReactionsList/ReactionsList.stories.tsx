@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { TGetCustomEmoji, ICustomEmoji } from '../../definitions';
+import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions';
 import ReactionsList from '.';
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { updateSettings } from '../../actions/settings';

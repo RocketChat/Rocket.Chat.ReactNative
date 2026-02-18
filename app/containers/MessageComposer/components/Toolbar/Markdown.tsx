@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 
 import { BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
-import { TMarkdownStyle } from '../../interfaces';
+import { type TMarkdownStyle } from '../../interfaces';
 import { emitter } from '../../../../lib/methods/helpers/emitter';
 
 export const Markdown = (): ReactElement => {

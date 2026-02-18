@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
+import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
 import styles from '../styles';

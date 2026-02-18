@@ -5,7 +5,7 @@ import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanim
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
 import NavBottomFAB from './NavBottomFAB';
-import { IListProps } from '../definitions';
+import { type IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
 import { useRoomContext } from '../../context';
 

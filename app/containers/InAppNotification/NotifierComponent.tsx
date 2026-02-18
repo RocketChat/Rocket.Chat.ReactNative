@@ -10,7 +10,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
+import { type IApplicationState, type ISubscription, type SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
@@ -20,7 +20,7 @@ export interface INotifierComponent {
 		payload: {
 			sender: { username: string };
 			type: SubscriptionType;
-			message?: { message: string; t?: string };
+			message?: { message?: string; msg?: string; t?: string };
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
 		avatar: string;

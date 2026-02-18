@@ -1,4 +1,4 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -11,7 +11,7 @@ import I18n from '../../i18n';
 import Navigation from '../../lib/navigation/appNavigation';
 import { useTheme } from '../../theme';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { NewMessageStackParamList } from '../../stacks/types';
+import { type NewMessageStackParamList } from '../../stacks/types';
 import { compareServerVersion } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../lib/hooks/usePermissions';
@@ -43,19 +43,19 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	const createChannel = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
+		navigation.navigate('SelectedUsersView', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}, [navigation]);
 
 	const createTeam = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_TEAM);
-		navigation.navigate('SelectedUsersViewCreateChannel', {
+		navigation.navigate('SelectedUsersView', {
 			nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true })
 		});
 	}, [navigation]);
 
 	const createGroupChat = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
-		navigation.navigate('SelectedUsersViewCreateChannel', {
+		navigation.navigate('SelectedUsersView', {
 			nextAction: () => dispatch(createChannelRequest({ group: true })),
 			buttonText: I18n.t('Create'),
 			maxUsers
@@ -64,8 +64,12 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	const createDiscussion = useCallback(() => {
 		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
-		Navigation.navigate('CreateDiscussionView');
-	}, []);
+		navigation.navigate('SelectedUsersView', {
+			nextAction: () => Navigation.navigate('CreateDiscussionView'),
+			title: I18n.t('Create_Discussion'),
+			buttonText: I18n.t('Next')
+		});
+	}, [navigation]);
 
 	return (
 		<>

@@ -1,4 +1,4 @@
-import { ILastMessage } from '../../definitions';
+import { type ILastMessage } from '../../definitions';
 import { compareServerVersion } from './helpers';
 import updateMessages from './updateMessages';
 import sdk from '../services/sdk';

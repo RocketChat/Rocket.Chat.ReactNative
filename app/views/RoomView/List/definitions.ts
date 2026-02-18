@@ -1,8 +1,8 @@
-import { RefObject } from 'react';
-import { FlatListProps } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { type RefObject } from 'react';
+import { type FlatListProps } from 'react-native';
+import { type FlatList } from 'react-native-gesture-handler';
 
-import { TAnyMessageModel } from '../../../definitions';
+import { type TAnyMessageModel } from '../../../definitions';
 
 export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 

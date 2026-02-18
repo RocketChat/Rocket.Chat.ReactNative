@@ -1,6 +1,6 @@
-import { IServerRoom } from '../../IRoom';
-import { IServerTeamUpdateRoom, ITeam, TEAM_TYPE } from '../../ITeam';
-import { PaginatedResult } from '../helpers/PaginatedResult';
+import { type IServerRoom } from '../../IRoom';
+import { type IServerTeamUpdateRoom, type ITeam, type TEAM_TYPE } from '../../ITeam';
+import { type PaginatedResult } from '../helpers/PaginatedResult';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {

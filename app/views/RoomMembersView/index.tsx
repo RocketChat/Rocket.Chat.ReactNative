@@ -1,31 +1,31 @@
-import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React, { useEffect, useReducer } from 'react';
+import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 
-import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { sendLoadingEvent } from '../../containers/Loading';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import UserItem from '../../containers/UserItem';
 import Radio from '../../containers/Radio';
-import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
+import { type IGetRoomRoles, type TSubscriptionModel, type TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { usePermissions } from '../../lib/hooks/usePermissions';
-import { compareServerVersion, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, isGroupChat, useDebounce } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { getRoomMembers } from '../../lib/services/restApi';
-import { TSupportedPermissions } from '../../reducers/permissions';
+import { type TSupportedPermissions } from '../../reducers/permissions';
 import { getUserSelector } from '../../selectors/login';
-import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useTheme } from '../../theme';
 import ActionsSection from './components/ActionsSection';
 import {
@@ -38,10 +38,9 @@ import {
 	handleRemoveFromTeam,
 	handleRemoveUserFromRoom,
 	navToDirectMessage,
-	TRoomType
+	type TRoomType
 } from './helpers';
 import styles from './styles';
-import { sanitizeLikeString } from '../../lib/database/utils';
 
 const PAGE_SIZE = 25;
 
@@ -76,6 +75,8 @@ const RoomMembersView = (): React.ReactElement => {
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
 
+	const latestSearchRequest = useRef(0);
+
 	const { isMasterDetail, serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
 			isMasterDetail: state.app.isMasterDetail,
@@ -95,7 +96,7 @@ const RoomMembersView = (): React.ReactElement => {
 		(state: IRoomMembersViewState, newState: Partial<IRoomMembersViewState>) => ({ ...state, ...newState }),
 		{
 			isLoading: false,
-			allUsers: false,
+			allUsers: true,
 			filtering: '',
 			members: [],
 			room: params.room || ({} as TSubscriptionModel),
@@ -123,38 +124,84 @@ const RoomMembersView = (): React.ReactElement => {
 
 	useEffect(() => {
 		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
-		setHeader(false);
-		fetchMembers(false);
+		setHeader(true);
 		return () => subscription?.unsubscribe();
 	}, []);
 
+	const fetchRoles = () => {
+		if (isGroupChat(state.room)) {
+			return;
+		}
+		if (
+			muteUserPermission ||
+			setLeaderPermission ||
+			setOwnerPermission ||
+			setModeratorPermission ||
+			removeUserPermission ||
+			editTeamMemberPermission ||
+			viewAllTeamChannelsPermission ||
+			viewAllTeamsPermission
+		) {
+			fetchRoomMembersRoles(state.room.t as any, state.room.rid, updateState);
+		}
+	};
+
+	const fetchMembers = useCallback(async () => {
+		const { members, isLoading, end, room, filter, page, allUsers } = state;
+		const { t } = room;
+
+		if (isLoading || end) {
+			return;
+		}
+
+		const requestId = ++latestSearchRequest.current;
+		updateState({ isLoading: true });
+
+		try {
+			const membersResult = await getRoomMembers({
+				rid: room.rid,
+				roomType: t,
+				type: allUsers ? 'all' : 'online',
+				filter,
+				skip: PAGE_SIZE * page,
+				limit: PAGE_SIZE,
+				allUsers
+			});
+
+			if (requestId !== latestSearchRequest.current) {
+				return;
+			}
+
+			const existingIds = new Set(members.map(m => m._id));
+			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !existingIds.has(member._id));
+
+			// Safety check: if page is 0, we replace the list entirely
+			const newMembers = page === 0 ? membersResultFiltered : [...members, ...(membersResultFiltered || [])];
+			const isEnd = membersResult?.length < PAGE_SIZE;
+
+			updateState({
+				members: newMembers,
+				isLoading: false,
+				end: isEnd,
+				page: page + 1
+			});
+		} catch (e) {
+			log(e);
+			if (requestId === latestSearchRequest.current) {
+				updateState({ isLoading: false });
+			}
+		}
+	}, [state.isLoading, state.end, state.room.t, state.filter, state.page, state.allUsers]);
+
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			const { allUsers } = state;
-			fetchMembers(allUsers);
+			fetchMembers();
 		});
 
 		return unsubscribe;
 	}, [navigation]);
 
 	useEffect(() => {
-		const fetchRoles = () => {
-			if (isGroupChat(state.room)) {
-				return;
-			}
-			if (
-				muteUserPermission ||
-				setLeaderPermission ||
-				setOwnerPermission ||
-				setModeratorPermission ||
-				removeUserPermission ||
-				editTeamMemberPermission ||
-				viewAllTeamChannelsPermission ||
-				viewAllTeamsPermission
-			) {
-				fetchRoomMembersRoles(state.room.t as any, state.room.rid, updateState);
-			}
-		};
 		fetchRoles();
 	}, [
 		muteUserPermission,
@@ -164,13 +211,35 @@ const RoomMembersView = (): React.ReactElement => {
 		removeUserPermission,
 		editTeamMemberPermission,
 		viewAllTeamChannelsPermission,
-		viewAllTeamsPermission
+		viewAllTeamsPermission,
+		state.room?.rid,
+		state.room?.t
 	]);
+
+	useEffect(() => {
+		fetchMembers();
+	}, [state.filter, state.allUsers]);
+
+	const debounceFilterChange = useDebounce((text: string) => {
+		const trimmedFilter = text.trim();
+
+		if (!trimmedFilter) {
+			latestSearchRequest.current += 1;
+		}
+
+		updateState({
+			filter: trimmedFilter,
+			page: 0,
+			members: [],
+			end: false,
+			isLoading: false
+		});
+	}, 500);
 
 	const toggleStatus = (status: boolean) => {
 		try {
-			updateState({ members: [], allUsers: status, end: false });
-			fetchMembers(status);
+			// We only update 'allUsers'. 'filter' remains in state, so the next fetch uses both.
+			updateState({ members: [], allUsers: status, end: false, page: 0 });
 			setHeader(status);
 		} catch (e) {
 			log(e);
@@ -189,14 +258,14 @@ const RoomMembersView = (): React.ReactElement => {
 								options: [
 									{
 										title: I18n.t('Online'),
-										onPress: () => toggleStatus(true),
-										right: () => <Radio check={allUsers} />,
+										onPress: () => toggleStatus(false),
+										right: () => <Radio check={!allUsers} />,
 										testID: 'room-members-view-toggle-status-online'
 									},
 									{
 										title: I18n.t('All'),
-										onPress: () => toggleStatus(false),
-										right: () => <Radio check={!allUsers} />,
+										onPress: () => toggleStatus(true),
+										right: () => <Radio check={allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
 								]
@@ -348,49 +417,10 @@ const RoomMembersView = (): React.ReactElement => {
 		});
 	};
 
-	const fetchMembers = async (status: boolean) => {
-		const { members, isLoading, end, room, filter, page } = state;
-		const { t } = room;
-
-		if (isLoading || end) {
-			return;
-		}
-
-		updateState({ isLoading: true });
-		try {
-			const membersResult = await getRoomMembers({
-				rid: room.rid,
-				roomType: t,
-				type: !status ? 'all' : 'online',
-				filter,
-				skip: PAGE_SIZE * page,
-				limit: PAGE_SIZE,
-				allUsers: !status
-			});
-			const end = membersResult?.length < PAGE_SIZE;
-			const membersResultFiltered = membersResult?.filter((member: TUserModel) => !members.some(m => m._id === member._id));
-			updateState({
-				members: [...members, ...membersResultFiltered],
-				isLoading: false,
-				end,
-				page: page + 1
-			});
-		} catch (e) {
-			log(e);
-			updateState({ isLoading: false });
-		}
-	};
-
-	const filter = sanitizeLikeString(state.filter.toLowerCase()) || '';
-	const filteredMembers =
-		state.members && state.members.length > 0 && state.filter
-			? state.members.filter(m => m.username.toLowerCase().match(filter) || m.name?.toLowerCase().match(filter))
-			: null;
-
 	return (
 		<SafeAreaView testID='room-members-view'>
 			<FlatList
-				data={filteredMembers || state.members}
+				data={state.members}
 				renderItem={({ item }) => (
 					<View style={{ backgroundColor: colors.surfaceRoom }}>
 						<UserItem
@@ -406,13 +436,18 @@ const RoomMembersView = (): React.ReactElement => {
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={
 					<>
-						<ActionsSection joined={params.joined as boolean} rid={state.room.rid} t={state.room.t} />
-						<SearchBox onChangeText={text => updateState({ filter: text.trim() })} testID='room-members-view-search' />
+						<ActionsSection
+							joined={params.joined as boolean}
+							rid={state.room.rid}
+							t={state.room.t}
+							abacAttributes={state.room.abacAttributes}
+						/>
+						<SearchBox onChangeText={text => debounceFilterChange(text)} testID='room-members-view-search' />
 					</>
 				}
 				ListFooterComponent={() => (state.isLoading ? <ActivityIndicator /> : null)}
 				onEndReachedThreshold={0.1}
-				onEndReached={() => fetchMembers(state.allUsers)}
+				onEndReached={() => fetchMembers()}
 				ListEmptyComponent={() =>
 					state.end ? (
 						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>

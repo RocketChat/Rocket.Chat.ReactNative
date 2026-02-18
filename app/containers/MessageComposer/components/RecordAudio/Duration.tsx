@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { FontVariant, Text } from 'react-native';
+import { type FontVariant, Text } from 'react-native';
 import { RecorderState } from 'expo-audio';
 
 import sharedStyles from '../../../../views/Styles';

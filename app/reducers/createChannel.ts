@@ -1,4 +1,4 @@
-import { TApplicationActions } from '../definitions';
+import { type TApplicationActions } from '../definitions';
 import { CREATE_CHANNEL } from '../actions/actionsTypes';
 
 interface ICreateChannelResult {

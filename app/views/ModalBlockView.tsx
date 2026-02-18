@@ -1,20 +1,20 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
 
-import { TSupportedThemes } from '../theme';
+import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
-import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
-import { IApplicationState } from '../definitions';
+import { type IApplicationState } from '../definitions';
 import KeyboardView from '../containers/KeyboardView';
 
 const styles = StyleSheet.create({

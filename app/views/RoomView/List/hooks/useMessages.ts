@@ -1,8 +1,8 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { Subscription } from 'rxjs';
+import { type Subscription } from 'rxjs';
 
-import { TAnyMessageModel } from '../../../../definitions';
+import { type TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';

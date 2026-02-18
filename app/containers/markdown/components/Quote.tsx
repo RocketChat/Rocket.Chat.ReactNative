@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Quote as QuoteProps } from '@rocket.chat/message-parser';
+import { type Quote as QuoteProps } from '@rocket.chat/message-parser';
 
 import { themes } from '../../../lib/constants/colors';
 import { useTheme } from '../../../theme';

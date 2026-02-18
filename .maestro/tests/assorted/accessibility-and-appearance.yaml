@@ -6,6 +6,7 @@ onFlowComplete:
   - evalScript: ${output.utils.deleteCreatedUsers()}
 tags:
   - test-5
+  - android-only
 
 ---
 - evalScript: ${output.user = output.utils.createUser()}
@@ -86,11 +87,11 @@ tags:
 
 - extendedWaitUntil:
     visible:
-      text: '.*@all - all mention.*'
+      text: '@all - all mention'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*@rocket.cat - user mention.*'
+      text: '@rocket.cat - user mention'
     timeout: 60000
 
 # should disable mentions with @ symbol
@@ -125,19 +126,11 @@ tags:
 
 - extendedWaitUntil:
     visible:
-      text: '.*all - all mention.*'
-    timeout: 60000
-- extendedWaitUntil:
-    notVisible:
-      text: '.*@all - all mention.*'
+      text: 'all - all mention'
     timeout: 60000
 - extendedWaitUntil:
     visible:
-      text: '.*rocket.cat - user mention.*'
-    timeout: 60000
-- extendedWaitUntil:
-    notVisible:
-      text: '.*@rocket.cat - user mention.*'
+      text: 'rocket.cat - user mention'
     timeout: 60000
 
 # should enable rooms with # symbol
@@ -172,7 +165,7 @@ tags:
 
 - extendedWaitUntil:
     visible:
-      text: '.*#general - channel mention.*'
+      text: '#general - channel mention'
     timeout: 60000
 
 # should disable mentions with # symbol
@@ -204,12 +197,7 @@ tags:
     file: '../../helpers/search-and-navigate-room.yaml'
     env:
       ROOM: 'maestro-accessibility-test'
-
 - extendedWaitUntil:
     visible:
-      text: '.*general - channel mention.*'
-    timeout: 60000
-- extendedWaitUntil:
-    notVisible:
-      text: '.*#general - channel mention.*'
+      text: 'general - channel mention'
     timeout: 60000

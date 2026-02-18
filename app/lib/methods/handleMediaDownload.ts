@@ -1,9 +1,9 @@
 import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
-import { Model } from '@nozbe/watermelondb';
+import { type Model } from '@nozbe/watermelondb';
 
-import { IAttachment, TAttachmentEncryption, TMessageModel } from '../../definitions';
+import { type IAttachment, type TAttachmentEncryption, type TMessageModel } from '../../definitions';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';

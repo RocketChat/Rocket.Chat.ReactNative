@@ -7,16 +7,22 @@ import Audio from './Audio';
 import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
+import Reply from './Reply';
 import MessageContext from '../../Context';
-import { IMessageAttachments } from '../../interfaces';
-import { IAttachment } from '../../../../definitions';
+import { type IMessageAttachments } from '../../interfaces';
+import { type IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
-	file?.image_url || file?.audio_url || file?.video_url || (file?.actions?.length || 0) > 0 || file?.collapsed;
+	file?.image_url ||
+	file?.audio_url ||
+	file?.video_url ||
+	file?.collapsed ||
+	(file?.actions?.length || 0) > 0 ||
+	(file?.attachments?.length || 0) > 0;
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
 		'use memo';
 
 		const { translateLanguage } = useContext(MessageContext);
@@ -26,7 +32,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 		if (!nonQuoteAttachments || nonQuoteAttachments.length === 0) {
 			return null;
 		}
-		// TODO: memo?
+
 		const attachmentsElements = nonQuoteAttachments.map((file: IAttachment, index: number) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
@@ -36,8 +42,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}
-						style={style}
-						isReply={isReply}
 						author={author}
 						msg={msg}
 						imagePreview={file.image_preview}
@@ -47,17 +51,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 
 			if (file && file.audio_url) {
-				return (
-					<Audio
-						key={file.audio_url}
-						file={file}
-						getCustomEmoji={getCustomEmoji}
-						isReply={isReply}
-						style={style}
-						author={author}
-						msg={msg}
-					/>
-				);
+				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} author={author} msg={msg} />;
 			}
 
 			if (file.video_url) {
@@ -67,8 +61,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						file={file}
 						showAttachment={showAttachment}
 						getCustomEmoji={getCustomEmoji}
-						style={style}
-						isReply={isReply}
 						author={author}
 						msg={msg}
 					/>
@@ -80,6 +72,19 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 			if (typeof file.collapsed === 'boolean') {
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
+			}
+
+			if (file.attachments?.length) {
+				return (
+					<Reply
+						key={index}
+						attachment={file}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						showAttachment={showAttachment}
+						msg={msg}
+					/>
+				);
 			}
 
 			return null;

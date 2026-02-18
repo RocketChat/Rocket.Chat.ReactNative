@@ -1,18 +1,18 @@
 import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { ChatsStackParamList } from '../../../stacks/types';
-import { ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { TNavigation } from '../../../stacks/stackType';
+import { type ChatsStackParamList } from '../../../stacks/types';
+import { type ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { type TNavigation } from '../../../stacks/stackType';
 import database from '../../../lib/database';
 import I18n from '../../../i18n';
 import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '../../../lib/methods/helpers';
 import log from '../../../lib/methods/helpers/log';
 import { deleteRoom as actionDeleteRoom } from '../../../actions/room';
 import { ERoomType } from '../../../definitions/ERoomType';
-import { ISubscription, TSubscriptionModel } from '../../../definitions';
+import { type ISubscription, type TSubscriptionModel } from '../../../definitions';
 
 interface IUseRoomDeletionActions {
 	navigation: NativeStackNavigationProp<(ChatsStackParamList | ModalStackParamList) & TNavigation, 'RoomInfoEditView'>;

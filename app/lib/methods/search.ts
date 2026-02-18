@@ -4,7 +4,7 @@ import { sanitizeLikeString, slugifyLikeString } from '../database/utils';
 import database from '../database/index';
 import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
-import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { type ISearch, type ISearchLocal, type IUserMessage, SubscriptionType, type TSubscriptionModel } from '../../definitions';
 import { isGroupChat, isReadOnly } from './helpers';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 
@@ -137,7 +137,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 	try {
 		if (searchText && localSearchData.length < 7) {
 			const { users, rooms } = (await Promise.race([
-				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }, rid),
+				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms, mentions: true }, rid),
 				new Promise((resolve, reject) => (debounce = reject))
 			])) as { users: ISearch[]; rooms: ISearch[] };
 

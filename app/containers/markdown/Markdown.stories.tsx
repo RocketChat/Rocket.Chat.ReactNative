@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
 import { themes } from '../../lib/constants/colors';
-import { TGetCustomEmoji, ICustomEmoji } from '../../definitions/IEmoji';
+import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions/IEmoji';
 
 const theme = 'light';
 
@@ -69,29 +69,19 @@ export const Preview = () => (
 	</View>
 );
 
+const msgMentions = '@rocket.cat @name1 @all @here @unknown @team';
+const mentions = [
+	{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat', type: 'user' },
+	{ _id: 'random2', name: 'Name', username: 'name1', type: 'user' },
+	{ _id: 'here', username: 'here', type: 'user' },
+	{ _id: 'all', username: 'all', type: 'user' },
+	{ _id: 'team', name: 'team', type: 'team' }
+];
+
 export const Mentions = () => (
 	<ScrollView style={styles.container}>
-		<Markdown
-			msg='@rocket.cat @name1 @all @here @unknown'
-			mentions={[
-				{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
-				{ _id: 'random2', name: 'Name', username: 'name1' },
-				{ _id: 'here', username: 'here' },
-				{ _id: 'all', username: 'all' }
-			]}
-			username='rocket.cat'
-		/>
-		<Markdown
-			msg='@rocket.cat @name1 @all @here @unknown'
-			mentions={[
-				{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
-				{ _id: 'random2', name: 'Name', username: 'name1' },
-				{ _id: 'here', username: 'here' },
-				{ _id: 'all', username: 'all' }
-			]}
-			username='rocket.cat'
-			useRealName
-		/>
+		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' />
+		<Markdown msg={msgMentions} mentions={mentions} username='rocket.cat' useRealName />
 	</ScrollView>
 );
 
@@ -124,10 +114,7 @@ export const Links = () => (
 		<Markdown msg='[Markdown link](https://rocket.chat): `[description](url)`' />
 		<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' />
 		<Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' />
-		<Markdown
-			msg='[Markdown link](https://rocket.chat) and the text with a color specific as fontSecondaryInfo'
-			style={[{ color: themes[theme].fontSecondaryInfo }]}
-		/>
+		<Markdown msg='[Markdown link](https://rocket.chat) and the text continues on the next line' />
 	</View>
 );
 
@@ -167,5 +154,17 @@ export const Lists = () => (
 				'- *bold* \n- _italic_ \n- ~strikethrough~ \n- _*bold italic*_ \n- *~bold strikethrough~* \n- _~italic strikethrough~_ \n- _*~bold italic strikethrough~*_'
 			}
 		/>
+	</View>
+);
+
+export const Timestamp = () => (
+	<View style={styles.container}>
+		<Markdown msg='t: <t:1735732800:t>' />
+		<Markdown msg='T: <t:1735732800:T>' />
+		<Markdown msg='d: <t:1735732800:d>' />
+		<Markdown msg='D: <t:1735732800:D>' />
+		<Markdown msg='f: <t:1735732800:f>' />
+		<Markdown msg='F: <t:1735732800:F>' />
+		<Markdown msg='R: <t:1735732800:R>' />
 	</View>
 );

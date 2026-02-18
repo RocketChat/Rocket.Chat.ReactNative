@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useWindowDimensions, View, ViewProps, StyleSheet } from 'react-native';
+import { useWindowDimensions, View, type ViewProps, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../../../theme';

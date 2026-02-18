@@ -5,7 +5,7 @@ import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import log from './helpers/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
-import { ICustomEmojiModel, TCustomEmojiModel, ICustomEmojis } from '../../definitions';
+import { type ICustomEmojiModel, type TCustomEmojiModel, type ICustomEmojis } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
 

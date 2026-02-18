@@ -1,5 +1,5 @@
 import { Audio, AudioMode, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import { RecordingOptions } from 'expo-audio';
+import { type RecordingOptions } from 'expo-audio';
 
 export const RECORDING_EXTENSION = '.aac';
 export const RECORDING_SETTINGS: RecordingOptions = {
