@@ -1,4 +1,4 @@
-import { FlatList, Text, useWindowDimensions, type ViewProps } from 'react-native';
+import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -63,8 +63,8 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 		);
 	}
 	return (
-		<GestureHandlerRootView testID='action-sheet' onLayout={onLayout} style={styles.contentContainer}>
-			{children}
+		<GestureHandlerRootView style={styles.contentContainer} testID='action-sheet'>
+			<View onLayout={onLayout}>{children}</View>
 		</GestureHandlerRootView>
 	);
 });

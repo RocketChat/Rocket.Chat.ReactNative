@@ -163,8 +163,7 @@ tags:
 - tapOn:
     id: 'profile-view-enter-password-sheet-input'
 - inputText: ${output.user.password}
-- tapOn:
-    text: 'Save'
+- pressKey: enter
 - extendedWaitUntil:
     notVisible:
       id: 'profile-view-enter-password-sheet-input'
