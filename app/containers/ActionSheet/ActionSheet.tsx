@@ -4,6 +4,7 @@ import React, { forwardRef, isValidElement, useCallback, useEffect, useImperativ
 import { Keyboard, Pressable, type LayoutChangeEvent } from 'react-native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
@@ -76,7 +77,9 @@ const ActionSheet = React.memo(
 				<Pressable onPress={hide} accessible accessibilityRole='button' accessibilityLabel={I18n.t('Hide_action_sheet')}>
 					<Handle />
 				</Pressable>
-				{isValidElement(data?.customHeader) ? data.customHeader : null}
+				{isValidElement(data?.customHeader) ? (
+					<GestureHandlerRootView style={{ flexGrow: 1 }}>{data.customHeader}</GestureHandlerRootView>
+				) : null}
 			</>
 		);
 

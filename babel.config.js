@@ -8,9 +8,9 @@ module.exports = {
 			}
 		],
 		['@babel/plugin-proposal-decorators', { legacy: true }],
-		'react-native-worklets/plugin',
 		'@babel/plugin-transform-named-capturing-groups-regex',
-		['module:react-native-dotenv']
+		['module:react-native-dotenv'],
+		'react-native-worklets/plugin'
 	],
 	env: {
 		production: {

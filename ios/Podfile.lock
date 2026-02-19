@@ -3267,6 +3267,7 @@ PODS:
     - React-NativeModulesApple
     - React-RCTFabric
     - React-RCTImage
+    - React-RCTImage
     - React-renderercss
     - React-rendererdebug
     - React-utils

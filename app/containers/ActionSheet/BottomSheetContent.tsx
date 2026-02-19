@@ -1,6 +1,5 @@
 import { FlatList, Text, useWindowDimensions, View, type ViewProps } from 'react-native';
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
@@ -24,9 +23,9 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 	'use memo';
 
 	const { colors } = useTheme();
-	const { bottom } = useSafeAreaInsets();
-	const { fontScale } = useWindowDimensions();
+	const { fontScale, height: windowHeight } = useWindowDimensions();
 	const height = 48 * fontScale;
+	const paddingBottom = windowHeight * 0.05;
 
 	const renderFooter = () =>
 		hasCancel ? (
@@ -42,28 +41,30 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 
 	if (options) {
 		return (
-			<FlatList
-				testID='action-sheet'
-				data={options}
-				refreshing={false}
-				keyExtractor={(item: TActionSheetOptionsItem) => item.title}
-				bounces={false}
-				renderItem={renderItem}
-				style={{ backgroundColor: colors.surfaceLight }}
-				keyboardDismissMode='interactive'
-				indicatorStyle='black'
-				contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
-				ItemSeparatorComponent={List.Separator}
-				ListHeaderComponent={List.Separator}
-				ListFooterComponent={renderFooter}
-				onLayout={onLayout}
-				nestedScrollEnabled={isAndroid}
-			/>
+			<GestureHandlerRootView style={styles.contentContainer}>
+				<FlatList
+					testID='action-sheet'
+					data={options}
+					refreshing={false}
+					keyExtractor={item => item.title}
+					bounces={false}
+					renderItem={renderItem}
+					style={{ backgroundColor: colors.surfaceLight }}
+					keyboardDismissMode='interactive'
+					indicatorStyle='black'
+					contentContainerStyle={{ paddingBottom, backgroundColor: colors.surfaceLight }}
+					ItemSeparatorComponent={List.Separator}
+					ListHeaderComponent={List.Separator}
+					ListFooterComponent={renderFooter}
+					onLayout={onLayout}
+					nestedScrollEnabled={isAndroid}
+				/>
+			</GestureHandlerRootView>
 		);
 	}
 	return (
-		<GestureHandlerRootView style={styles.contentContainer}>
-			<View testID='action-sheet' onLayout={onLayout}>
+		<GestureHandlerRootView style={styles.contentContainer} testID='action-sheet'>
+			<View onLayout={onLayout} style={{ flex: 1 }}>
 				{children}
 			</View>
 		</GestureHandlerRootView>
