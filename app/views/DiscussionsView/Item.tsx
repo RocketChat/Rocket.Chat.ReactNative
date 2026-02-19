@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
 import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
@@ -10,6 +9,7 @@ import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
 import { type IMessageFromServer } from '../../definitions';
+import Touch from '../../containers/Touch';
 
 const styles = StyleSheet.create({
 	container: {
@@ -63,7 +63,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 	}
 
 	return (
-		<Touchable
+		<Touch
 			onPress={() => onPress(item)}
 			testID={`discussions-view-${item.msg}`}
 			style={{ backgroundColor: colors.surfaceRoom }}>
@@ -82,7 +82,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 					{messageDate ? <DiscussionDetails item={item} date={messageDate} /> : null}
 				</View>
 			</View>
-		</Touchable>
+		</Touch>
 	);
 };
 

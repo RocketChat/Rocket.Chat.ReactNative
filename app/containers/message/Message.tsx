@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, type ViewStyle } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
 
 import MessageContext from './Context';
@@ -27,6 +26,7 @@ import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import Quote from './Components/Attachments/Quote';
 import translationLanguages from '../../lib/constants/translationLanguages';
+import Touch from '../Touch';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -237,15 +237,18 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	return (
 		<A11y.Order>
 			<A11y.Index index={1}>
-				<Touchable
+				<Touch
 					onLongPress={onLongPress}
 					onPress={onPress}
-					disabled={
-						(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'
+					enabled={
+						!(props.isInfo && !props.isThreadReply) &&
+						!props.archived &&
+						!props.isTemp &&
+						props.type !== 'jitsi_call_started'
 					}
 					style={{ backgroundColor }}>
 					<Message {...props} />
-				</Touchable>
+				</Touch>
 			</A11y.Index>
 		</A11y.Order>
 	);

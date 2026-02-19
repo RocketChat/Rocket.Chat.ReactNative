@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { A11y } from 'react-native-a11y-order';
@@ -16,6 +15,7 @@ import { CallHeader } from '../../CallHeader';
 import { useStyle } from './style';
 import useUserData from '../../../lib/hooks/useUserData';
 import Ringer, { ERingerSounds } from '../../Ringer';
+import Touch from '../../Touch';
 
 export interface INotifierComponent {
 	notification: {
@@ -84,7 +84,7 @@ const IncomingCallHeader = React.memo(
 						</A11y.Index>
 						<View style={styles.row}>
 							<A11y.Index index={3} style={{ flex: 1 }}>
-								<Touchable
+								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
@@ -93,10 +93,10 @@ const IncomingCallHeader = React.memo(
 									accessibilityLabel={i18n.t('A11y_incoming_call_dismiss')}
 									style={styles.closeButton}>
 									<CustomIcon name='close' size={20} />
-								</Touchable>
+								</Touch>
 							</A11y.Index>
 							<A11y.Index index={4} style={{ flex: 1 }}>
-								<Touchable
+								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
@@ -105,10 +105,10 @@ const IncomingCallHeader = React.memo(
 									}}
 									style={styles.cancelButton}>
 									<Text style={styles.buttonText}>{i18n.t('decline')}</Text>
-								</Touchable>
+								</Touch>
 							</A11y.Index>
 							<A11y.Index index={5} style={{ flex: 1 }}>
-								<Touchable
+								<Touch
 									hitSlop={BUTTON_HIT_SLOP}
 									onPress={() => {
 										setAudio(!audio);
@@ -117,7 +117,7 @@ const IncomingCallHeader = React.memo(
 									}}
 									style={styles.acceptButton}>
 									<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
-								</Touchable>
+								</Touch>
 							</A11y.Index>
 						</View>
 						{audio ? <Ringer ringer={ERingerSounds.RINGTONE} /> : null}
