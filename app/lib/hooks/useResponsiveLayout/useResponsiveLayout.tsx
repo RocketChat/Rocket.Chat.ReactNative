@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 import { useWindowDimensions } from 'react-native';
 
 interface IResponsiveLayoutContextData {
@@ -12,7 +12,7 @@ interface IResponsiveLayoutContextData {
 }
 
 interface IResponsiveFontScaleProviderProps {
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 export const ResponsiveLayoutContext = createContext({} as IResponsiveLayoutContextData);

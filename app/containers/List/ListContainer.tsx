@@ -1,5 +1,5 @@
-import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { type ReactElement } from 'react';
 
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 interface IListContainer {
-	children: (React.ReactElement | null)[] | React.ReactElement | null;
+	children: (ReactElement | null)[] | ReactElement | null;
 	testID?: string;
 }
 const ListContainer = ({ children, ...props }: IListContainer) => {

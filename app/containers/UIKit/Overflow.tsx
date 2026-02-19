@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { type RefObject, useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
 
@@ -41,7 +41,7 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable: { [key: string]: React.RefObject<any> | null } = {};
+const touchable: { [key: string]: RefObject<any> | null } = {};
 
 export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	const { theme } = useTheme();

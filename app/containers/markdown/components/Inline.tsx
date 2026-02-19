@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { type ReactElement, useContext } from 'react';
 import { Text } from 'react-native';
 import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
@@ -18,7 +18,7 @@ interface IParagraphProps {
 	forceTrim?: boolean;
 }
 
-const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
+const Inline = ({ value, forceTrim }: IParagraphProps): ReactElement | null => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
 		<Text style={styles.inline}>

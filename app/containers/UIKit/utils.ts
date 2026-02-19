@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 import { BlockContext } from '@rocket.chat/ui-kit';
-import React, { useContext, useState } from 'react';
+import { createContext, type Dispatch, type SetStateAction, useContext, useState } from 'react';
 
 import { videoConfJoin } from '../../lib/methods/videoConf';
 import { type IText } from './interfaces';
@@ -14,11 +14,11 @@ export const defaultContext: any = {
 	errors: {}
 };
 
-export const KitContext = React.createContext(defaultContext);
+export const KitContext = createContext(defaultContext);
 
 type TObjectReturn = {
 	loading: boolean;
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	setLoading: Dispatch<SetStateAction<boolean>>;
 	error: any;
 	value: any;
 	language: any;

@@ -1,5 +1,5 @@
-import React from 'react';
 import { type StyleProp, Text, type TextStyle } from 'react-native';
+import { memo } from 'react';
 
 import { useTheme } from '../../../../theme';
 import { themes } from '../../../../lib/constants/colors';
@@ -18,7 +18,7 @@ interface IAtMention {
 	mentions?: IUserMention[];
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
+const AtMention = memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
 	const { theme } = useTheme();
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const preffix = mentionsWithAtSymbol ? '@' : '';

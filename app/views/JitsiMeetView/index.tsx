@@ -1,7 +1,7 @@
 import CookieManager from '@react-native-cookies/cookies';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import React, { useCallback, useEffect, useState } from 'react';
+import { type ReactElement, useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
 import WebView, { type WebViewNavigation } from 'react-native-webview';
 
@@ -15,7 +15,7 @@ import { getUserSelector } from '../../selectors/login';
 import { type ChatsStackParamList } from '../../stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
 
-const JitsiMeetView = (): React.ReactElement => {
+const JitsiMeetView = (): ReactElement => {
 	const {
 		params: { rid, url, videoConf }
 	} = useRoute<RouteProp<ChatsStackParamList, 'JitsiMeetView'>>();

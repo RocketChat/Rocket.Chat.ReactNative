@@ -1,6 +1,6 @@
-import React from 'react';
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 import { Pressable, type PressableProps } from 'react-native-gesture-handler';
+import type { FC } from 'react';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Button: React.FC<IButtonProps> = ({
+const Button: FC<IButtonProps> = ({
 	type = 'primary',
 	disabled,
 	loading,

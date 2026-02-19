@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { type ReactElement, useContext } from 'react';
 import { View } from 'react-native';
 
 import Markdown from '../../../../markdown';
@@ -17,7 +17,7 @@ const ImageContainer = ({
 	msg,
 	imagePreview,
 	imageType
-}: IImageContainer): React.ReactElement | null => {
+}: IImageContainer): ReactElement | null => {
 	'use memo';
 
 	const { user } = useContext(MessageContext);

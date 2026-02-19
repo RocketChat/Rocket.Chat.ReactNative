@@ -1,4 +1,4 @@
-import React, { createContext, type ReactElement, useContext, useMemo, useReducer } from 'react';
+import { createContext, type ReactElement, useContext, useMemo, useReducer } from 'react';
 
 import { type IEmoji } from '../../definitions';
 import { type IAutocompleteBase, type TMicOrSend } from './interfaces';

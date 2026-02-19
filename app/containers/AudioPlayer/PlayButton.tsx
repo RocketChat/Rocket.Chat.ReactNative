@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
@@ -41,7 +41,7 @@ const Icon = ({ audioState, disabled }: { audioState: TAudioState; disabled: boo
 	);
 };
 
-const PlayButton = ({ onPress, disabled = false, audioState }: IButton): React.ReactElement => {
+const PlayButton = ({ onPress, disabled = false, audioState }: IButton): ReactElement => {
 	const { colors } = useTheme();
 
 	return (

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	View,
 	StyleSheet,
@@ -10,12 +9,13 @@ import {
 	TouchableOpacity,
 	type TouchableWithoutFeedbackProps
 } from 'react-native';
+import { forwardRef, type ReactNode } from 'react';
 
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
 
 export interface ITouchProps extends TouchableWithoutFeedbackProps {
-	children: React.ReactNode;
+	children: ReactNode;
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	accessibilityHint?: string;
@@ -29,7 +29,7 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 
 const Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
-const Touch = React.forwardRef<View, ITouchProps>(
+const Touch = forwardRef<View, ITouchProps>(
 	(
 		{
 			children,

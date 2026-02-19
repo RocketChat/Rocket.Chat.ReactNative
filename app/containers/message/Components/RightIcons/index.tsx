@@ -1,5 +1,5 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { type ReactElement } from 'react';
 
 import { type MessageType } from '../../../../definitions';
 import Edited from './Edited';
@@ -35,7 +35,7 @@ const RightIcons = ({
 	unread,
 	isTranslated,
 	pinned
-}: IRightIcons): React.ReactElement => {
+}: IRightIcons): ReactElement => {
 	'use memo';
 
 	return (

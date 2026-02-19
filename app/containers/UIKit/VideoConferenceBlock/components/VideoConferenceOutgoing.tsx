@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text } from 'react-native';
+import type { ReactElement } from 'react';
 
 import i18n from '../../../../i18n';
 import { videoConfJoin } from '../../../../lib/methods/videoConf';
@@ -8,7 +8,7 @@ import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
 import Touch from '../../../Touch';
 
-export default function VideoConferenceOutgoing({ users, blockId }: { users: TCallUsers; blockId: string }): React.ReactElement {
+export default function VideoConferenceOutgoing({ users, blockId }: { users: TCallUsers; blockId: string }): ReactElement {
 	const style = useStyle();
 
 	return (

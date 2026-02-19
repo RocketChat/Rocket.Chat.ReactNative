@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import dayjs from '../../lib/dayjs';
@@ -51,7 +50,7 @@ export interface IItem {
 	onPress: Function;
 }
 
-const Item = ({ item, onPress }: IItem): React.ReactElement => {
+const Item = ({ item, onPress }: IItem) => {
 	const { colors } = useTheme();
 	const username = item?.u?.username;
 	let messageTime = '';

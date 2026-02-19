@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { type ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View, PixelRatio, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
 	cancelAnimation,
@@ -42,7 +42,7 @@ interface ILoadingEvent {
 export const sendLoadingEvent = ({ visible, onCancel }: ILoadingEvent): void =>
 	EventEmitter.emit(LOADING_EVENT, { visible, onCancel });
 
-const Loading = (): React.ReactElement | null => {
+const Loading = (): ReactElement | null => {
 	const [visible, setVisible] = useState(false);
 	const [onCancel, setOnCancel] = useState<null | Function>(null);
 	const opacity = useSharedValue(0);

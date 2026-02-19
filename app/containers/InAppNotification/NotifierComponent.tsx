@@ -1,7 +1,7 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { memo } from 'react';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../CustomIcon';
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
+const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
 	const { rowHeight } = useResponsiveLayout();
 	const insets = useSafeAreaInsets();

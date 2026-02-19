@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { type ReactElement, useEffect } from 'react';
 import { ScrollView, Share, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,7 +18,7 @@ import styles from './styles';
 
 type IInviteUsersViewProps = IBaseScreen<ChatsStackParamList, 'InviteUsersView'>;
 
-const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.ReactElement => {
+const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): ReactElement => {
 	const rid = route.params?.rid;
 	const timeDateFormat = useSelector((state: IApplicationState) => state.settings.Message_TimeAndDateFormat as string);
 	const invite = useSelector((state: IApplicationState) => state.inviteLinks.invite);

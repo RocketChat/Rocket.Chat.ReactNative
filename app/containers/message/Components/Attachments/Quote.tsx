@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { type FC, memo, useContext } from 'react';
 import { dequal } from 'dequal';
 import { View } from 'react-native';
 
@@ -29,7 +29,7 @@ const isQuoteAttachment = (file?: IAttachment): boolean => {
 	return true;
 };
 
-const Quote: React.FC<IMessageAttachments> = React.memo(
+const Quote: FC<IMessageAttachments> = memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
 		'use memo';
 

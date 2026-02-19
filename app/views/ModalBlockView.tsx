@@ -1,8 +1,8 @@
-import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import { Component, Fragment } from 'react';
 
 import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
@@ -93,7 +93,7 @@ const LoadingIndicator = ({ loading }: { loading: boolean }) => {
 	return null;
 };
 
-class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockViewState> {
+class ModalBlockView extends Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
 
 	private values: IValues;
@@ -264,7 +264,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		return (
 			<KeyboardView>
 				<ScrollView style={styles.content}>
-					<React.Fragment key={modalKey}>
+					<Fragment key={modalKey}>
 						<ModalBlockWithContext
 							action={this.action}
 							state={this.changeState}
@@ -274,7 +274,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 							language={language}
 							values={values}
 						/>
-					</React.Fragment>
+					</Fragment>
 				</ScrollView>
 				<LoadingIndicator loading={loading} />
 			</KeyboardView>

@@ -1,5 +1,5 @@
-import React from 'react';
 import { Keyboard } from 'react-native';
+import { Component } from 'react';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -69,7 +69,7 @@ interface IMessageContainerState {
 	isManualUnignored: boolean;
 }
 
-class MessageContainer extends React.Component<IMessageContainerProps, IMessageContainerState> {
+class MessageContainer extends Component<IMessageContainerProps, IMessageContainerState> {
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},

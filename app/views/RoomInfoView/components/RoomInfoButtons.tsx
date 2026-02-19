@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { type ReactElement } from 'react';
 
 import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
 import { type ISubscription, SubscriptionType } from '../../../definitions';
@@ -25,7 +25,7 @@ function BaseButton({
 	label: string;
 	showIcon?: boolean;
 	enabled?: boolean;
-}): React.ReactElement | null {
+}): ReactElement | null {
 	const { colors } = useTheme();
 	const color = danger ? colors.buttonBackgroundDangerDefault : colors.fontHint;
 
@@ -41,7 +41,7 @@ function BaseButton({
 	return null;
 }
 
-function CallButton({ rid, roomFromRid }: { rid: string; isDirect: boolean; roomFromRid: boolean }): React.ReactElement | null {
+function CallButton({ rid, roomFromRid }: { rid: string; isDirect: boolean; roomFromRid: boolean }): ReactElement | null {
 	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
 	return (
 		<BaseButton
@@ -82,7 +82,7 @@ export const RoomInfoButtons = ({
 	roomFromRid,
 	serverVersion,
 	itsMe
-}: IRoomInfoButtons): React.ReactElement => {
+}: IRoomInfoButtons): ReactElement => {
 	const room = roomFromRid || roomFromProps;
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;

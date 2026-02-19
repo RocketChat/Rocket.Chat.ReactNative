@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component, createRef, type RefObject } from 'react';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp } from '@react-navigation/native';
 import { Keyboard, Text, View } from 'react-native';
@@ -68,7 +68,7 @@ interface IShareViewProps {
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
-	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
+	private messageComposerRef: RefObject<IMessageComposerRef | null>;
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
@@ -77,7 +77,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	constructor(props: IShareViewProps) {
 		super(props);
-		this.messageComposerRef = React.createRef();
+		this.messageComposerRef = createRef();
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};

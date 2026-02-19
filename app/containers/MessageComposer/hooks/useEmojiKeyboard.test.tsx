@@ -1,6 +1,6 @@
-import React from 'react';
 import { renderHook, act } from '@testing-library/react-native';
 import { useSharedValue } from 'react-native-reanimated';
+import { type ReactElement } from 'react';
 
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
 import { MessageInnerContext } from '../context';
@@ -67,7 +67,7 @@ describe('useEmojiKeyboard', () => {
 			focus
 		};
 
-		return ({ children }: { children: React.ReactElement }) => (
+		return ({ children }: { children: ReactElement }) => (
 			<EmojiKeyboardProvider>
 				<MessageInnerContext.Provider value={messageInnerContextValue}>{children}</MessageInnerContext.Provider>
 			</EmojiKeyboardProvider>
@@ -225,7 +225,7 @@ describe('useEmojiKeyboard', () => {
 				focus: mockFocus
 			};
 
-			const wrapper = ({ children }: { children: React.ReactElement }) => (
+			const wrapper = ({ children }: { children: ReactElement }) => (
 				<MessageInnerContext.Provider value={messageInnerContextValue}>{children}</MessageInnerContext.Provider>
 			);
 

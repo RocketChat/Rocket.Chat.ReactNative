@@ -1,6 +1,6 @@
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { StyleSheet, Text } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import { type ReactElement, useEffect, useRef } from 'react';
 import { type Subscription } from 'rxjs';
 import { Q } from '@nozbe/watermelondb';
 
@@ -15,7 +15,7 @@ import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
-export const SendThreadToChannel = (): React.ReactElement | null => {
+export const SendThreadToChannel = (): ReactElement | null => {
 	'use memo';
 
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();

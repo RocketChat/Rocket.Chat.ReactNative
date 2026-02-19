@@ -1,4 +1,3 @@
-import React from 'react';
 import { type StyleProp, Text, type TextStyle } from 'react-native';
 
 import { themes } from '../../../lib/constants/colors';
