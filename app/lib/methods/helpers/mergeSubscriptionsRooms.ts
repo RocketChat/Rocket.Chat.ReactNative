@@ -47,7 +47,7 @@ export const merge = (
 			mergedSubscription.roomUpdatedAt = Math.max(updatedAt, lastMessageTs);
 		} else {
 			// https://github.com/RocketChat/Rocket.Chat/blob/develop/app/ui-sidenav/client/roomList.js#L180
-			const lastRoomUpdate = room?.lm || mergedSubscription.ts || mergedSubscription._updatedAt;
+			const lastRoomUpdate = room?.lastMessage?.ts || room?.lm || mergedSubscription.ts || mergedSubscription._updatedAt;
 			// @ts-ignore Same as above scenario
 			mergedSubscription.roomUpdatedAt = mergedSubscription.lr
 				? // @ts-ignore Same as above scenario
