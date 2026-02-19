@@ -14,10 +14,6 @@ tags:
     visible:
       id: action-sheet
     timeout: 60000
-- assertVisible:
-    id: action-sheet-handle
-- tapOn:
-    id: action-sheet-handle
 - extendedWaitUntil:
     visible:
       id: action-sheet
