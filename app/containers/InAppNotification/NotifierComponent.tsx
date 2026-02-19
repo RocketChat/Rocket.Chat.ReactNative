@@ -109,11 +109,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 					height: rowHeight
 				}
 			]}>
-			<Touch
-				style={styles.content}
-				onPress={onPress}
-				hitSlop={BUTTON_HIT_SLOP}
-				testID={`in-app-notification-${text}`}>
+			<Touch style={styles.content} onPress={onPress} hitSlop={BUTTON_HIT_SLOP} testID={`in-app-notification-${text}`}>
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 					<View style={styles.inner}>

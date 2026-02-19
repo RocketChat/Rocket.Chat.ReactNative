@@ -62,9 +62,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 
 	if (context === BlockContext.FORM) {
 		button = (
-			<Touch
-				onPress={() => onShow(!show)}
-				style={{ backgroundColor: themes[theme].surfaceRoom }}>
+			<Touch onPress={() => onShow(!show)} style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<View
 					style={[
 						styles.input,

@@ -27,9 +27,7 @@ const styles = StyleSheet.create({
 });
 
 const Option = ({ option: { text, value }, onOptionPress, parser }: IOption) => (
-	<Touch
-		onPress={() => onOptionPress({ value })}
-		style={styles.option}>
+	<Touch onPress={() => onOptionPress({ value })} style={styles.option}>
 		<Text>{parser.text(text)}</Text>
 	</Touch>
 );
@@ -71,10 +69,7 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 					<ActivityIndicator style={styles.loading} />
 				)}
 			</Touch>
-			<Popover
-				isVisible={show}
-				from={touchable[blockId]}
-				onRequestClose={() => onShow(false)}>
+			<Popover isVisible={show} from={touchable[blockId]} onRequestClose={() => onShow(false)}>
 				<Options options={options} onOptionPress={onOptionPress} parser={parser} theme={theme} />
 			</Popover>
 		</>

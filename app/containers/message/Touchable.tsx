@@ -15,5 +15,4 @@ const RCTouchable: any = React.memo(({ children, ...props }: any) => {
 	);
 });
 
-
 export default RCTouchable;
