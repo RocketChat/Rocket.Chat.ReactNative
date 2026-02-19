@@ -4,3 +4,5 @@ coverage
 e2e/docker
 android
 ios
+!.rnstorybook
+.rnstorybook/storybook.requires.ts
