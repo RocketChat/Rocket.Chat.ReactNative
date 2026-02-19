@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { type ViewToken, type ViewabilityConfigCallbackPairs } from 'react-native';
+import type { ViewToken, ViewabilityConfigCallbackPairs } from 'react-native';
 
-import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
+import type { IListContainerRef, IListProps, TListRef, TMessagesIdsRef } from '../definitions';
 import { VIEWABILITY_CONFIG } from '../constants';
 
 export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; messagesIds: TMessagesIdsRef }) => {

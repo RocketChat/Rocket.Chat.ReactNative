@@ -10,9 +10,9 @@ import {
 	type Ref,
 	useContext
 } from 'react';
-import { type AccessibilityRole } from 'react-native';
+import type { AccessibilityRole } from 'react-native';
 
-import { type TIconsName } from '../CustomIcon';
+import type { TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {

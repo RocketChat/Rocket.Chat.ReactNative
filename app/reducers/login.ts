@@ -1,6 +1,6 @@
 import * as types from '../actions/actionsTypes';
-import { type TActionsLogin } from '../actions/login';
-import { type IUser, type TUserStatus } from '../definitions';
+import type { TActionsLogin } from '../actions/login';
+import type { IUser, TUserStatus } from '../definitions';
 
 export interface IUserLogin {
 	id: string;

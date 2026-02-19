@@ -1,7 +1,7 @@
 import { createContext, type ReactElement, useContext, useMemo, useReducer } from 'react';
 
-import { type IEmoji } from '../../definitions';
-import { type IAutocompleteBase, type TMicOrSend } from './interfaces';
+import type { IEmoji } from '../../definitions';
+import type { IAutocompleteBase, TMicOrSend } from './interfaces';
 
 type TMessageComposerContextApi = {
 	setFocused(focused: boolean): void;

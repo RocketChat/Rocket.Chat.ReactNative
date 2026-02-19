@@ -1,5 +1,5 @@
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
@@ -24,7 +24,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo, { type IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import styles from './styles';
-import { type InsideStackParamList, type ChatsStackParamList } from '../../stacks/types';
+import type { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 import { compareServerVersion, debounce, isIOS } from '../../lib/methods/helpers';
 import {
 	type IMessageFromServer,
@@ -39,7 +39,7 @@ import {
 	type ICustomEmoji
 } from '../../definitions';
 import { searchMessages } from '../../lib/services/restApi';
-import { type TNavigation } from '../../stacks/stackType';
+import type { TNavigation } from '../../stacks/stackType';
 import Navigation from '../../lib/navigation/appNavigation';
 
 const QUERY_SIZE = 50;

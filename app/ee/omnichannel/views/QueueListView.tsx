@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react';
 import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, type ListRenderItem, useWindowDimensions } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -13,10 +13,10 @@ import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
-import { type IOmnichannelRoom, type IApplicationState } from '../../../definitions';
+import type { IOmnichannelRoom, IApplicationState } from '../../../definitions';
 import { MAX_SIDEBAR_WIDTH } from '../../../lib/constants/tablet';
-import { type ChatsStackParamList } from '../../../stacks/types';
-import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
+import type { ChatsStackParamList } from '../../../stacks/types';
+import type { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 

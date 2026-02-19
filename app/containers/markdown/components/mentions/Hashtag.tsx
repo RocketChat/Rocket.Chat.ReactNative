@@ -12,7 +12,7 @@ import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
-import { type IUserChannel } from '../../interfaces';
+import type { IUserChannel } from '../../interfaces';
 import styles from '../../styles';
 
 interface IHashtag {

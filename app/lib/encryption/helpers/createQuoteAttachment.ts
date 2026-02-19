@@ -1,5 +1,5 @@
 import { store } from '../../store/auxStore';
-import { type IAttachment, type IAttachmentTranslations, type IMessage } from '../../../definitions';
+import type { IAttachment, IAttachmentTranslations, IMessage } from '../../../definitions';
 import { getAvatarURL } from '../../methods/helpers';
 
 export function createQuoteAttachment(message: IMessage, messageLink: string): IAttachment {

@@ -1,9 +1,9 @@
 import { memo, useEffect, useReducer, useRef } from 'react';
-import { type Subscription } from 'rxjs';
+import type { Subscription } from 'rxjs';
 
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
-import { type IRoomItemContainerProps } from './interfaces';
+import type { IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 

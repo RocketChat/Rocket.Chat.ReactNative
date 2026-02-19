@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 
 import sharedStyles from '../../../../views/Styles';
-import { type IAutocompleteCannedResponse } from '../../interfaces';
+import type { IAutocompleteCannedResponse } from '../../interfaces';
 import I18n from '../../../../i18n';
 import { CustomIcon } from '../../../CustomIcon';
 import { NO_CANNED_RESPONSES } from '../../constants';

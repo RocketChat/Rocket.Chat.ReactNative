@@ -1,7 +1,7 @@
 import { createElement } from 'react';
 
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
-import { type IMessageBlocks } from './interfaces';
+import type { IMessageBlocks } from './interfaces';
 
 const Blocks = ({ blocks, id: mid, rid, blockAction }: IMessageBlocks) => {
 	'use memo';

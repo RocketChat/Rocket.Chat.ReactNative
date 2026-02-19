@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useFocused } from '../../context';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';

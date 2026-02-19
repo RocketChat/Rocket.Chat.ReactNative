@@ -1,12 +1,12 @@
 import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
-import { type NavigationContainerProps } from '@react-navigation/core';
+import type { NavigationContainerProps } from '@react-navigation/core';
 import { useKeyboard } from '@react-native-community/hooks';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type ReactNode } from 'react';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { ReactNode } from 'react';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
-import { type TSupportedThemes } from '../../theme';
+import type { TSupportedThemes } from '../../theme';
 import { isAndroid } from '../../lib/methods/helpers';
 
 const MODAL_MARGIN = 32;

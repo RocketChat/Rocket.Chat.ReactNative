@@ -15,15 +15,15 @@ import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actio
 import { debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
-import {
-	type IMessage,
-	type TMessageModel,
-	type TSubscriptionModel,
-	type TThreadMessageModel,
-	type TThreadModel,
-	type IDeleteMessageBulkParams
+import type {
+	IMessage,
+	TMessageModel,
+	TSubscriptionModel,
+	TThreadMessageModel,
+	TThreadModel,
+	IDeleteMessageBulkParams
 } from '../../../definitions';
-import { type IDDPMessage } from '../../../definitions/IDDPMessage';
+import type { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';

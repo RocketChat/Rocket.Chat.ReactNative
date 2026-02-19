@@ -6,7 +6,7 @@ import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
 import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
-import { type IMessageImage } from './definitions';
+import type { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
 import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';

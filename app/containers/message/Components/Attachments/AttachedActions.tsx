@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import Button from '../../../Button';
 import MessageContext from '../../Context';
-import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
+import type { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import Markdown from '../../../markdown';
 

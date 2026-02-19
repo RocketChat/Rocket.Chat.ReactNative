@@ -3,7 +3,7 @@ import { memo, useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
+import type { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants/colors';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';

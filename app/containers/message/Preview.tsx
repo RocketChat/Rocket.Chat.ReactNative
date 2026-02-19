@@ -1,7 +1,7 @@
 import Message from './index';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserSelector } from '../../selectors/login';
-import { type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
+import type { TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 	'use memo';

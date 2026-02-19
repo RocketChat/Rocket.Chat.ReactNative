@@ -1,6 +1,6 @@
-import { type NewMessageStackParamList } from '../../stacks/types';
-import { type ISubscription, type SubscriptionType } from '../../definitions/ISubscription';
-import { type IBaseScreen, type IMessage, type ISearchLocal, type IUser } from '../../definitions';
+import type { NewMessageStackParamList } from '../../stacks/types';
+import type { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
+import type { IBaseScreen, IMessage, ISearchLocal, IUser } from '../../definitions';
 
 export interface IResult {
 	rid: string;

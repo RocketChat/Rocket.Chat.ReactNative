@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { View } from 'react-native';
 
 import { useFocused } from '../../context';

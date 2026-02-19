@@ -1,11 +1,11 @@
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 import { Component } from 'react';
 
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import type { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -17,8 +17,8 @@ import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type IRoomInfoParam } from '../SearchMessagesView';
+import type { ChatsStackParamList } from '../../stacks/types';
+import type { IRoomInfoParam } from '../SearchMessagesView';
 import {
 	type IApplicationState,
 	type TMessageModel,
@@ -32,7 +32,7 @@ import {
 	type ICustomEmoji
 } from '../../definitions';
 import { getFiles, getMessages, getPinnedMessages, togglePinMessage, toggleStarMessage } from '../../lib/services/restApi';
-import { type TNavigation } from '../../stacks/stackType';
+import type { TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
 import Navigation from '../../lib/navigation/appNavigation';

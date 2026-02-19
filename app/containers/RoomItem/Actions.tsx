@@ -14,7 +14,7 @@ import { memo } from 'react';
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
-import { type ILeftActionsProps, type IRightActionsProps } from './interfaces';
+import type { ILeftActionsProps, IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';

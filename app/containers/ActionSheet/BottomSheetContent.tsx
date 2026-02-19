@@ -6,7 +6,7 @@ import { memo, type ReactElement } from 'react';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { type IActionSheetItem, Item } from './Item';
-import { type TActionSheetOptionsItem } from './Provider';
+import type { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';

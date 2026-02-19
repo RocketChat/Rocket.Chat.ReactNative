@@ -15,7 +15,7 @@ import { sendFileMessage } from '../../../../lib/methods/sendFileMessage';
 import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../../../lib/constants/audio';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import log from '../../../../lib/methods/helpers/log';
-import { type IUpload } from '../../../../definitions';
+import type { IUpload } from '../../../../definitions';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, type IDurationRef } from './Duration';

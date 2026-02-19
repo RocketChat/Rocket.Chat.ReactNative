@@ -1,5 +1,5 @@
-import { type Dispatch } from 'redux';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { Dispatch } from 'redux';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
@@ -22,7 +22,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../../definitions';
-import { type ShareInsideStackParamList } from '../../definitions/navigationTypes';
+import type { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
 import { shareSetParams } from '../../actions/share';
 import { appStart } from '../../actions/app';

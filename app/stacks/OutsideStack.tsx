@@ -13,7 +13,7 @@ import SendEmailConfirmationView from '../views/SendEmailConfirmationView';
 import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
-import { type OutsideModalParamList, type OutsideParamList } from './types';
+import type { OutsideModalParamList, OutsideParamList } from './types';
 
 // Outside
 const Outside = createNativeStackNavigator<OutsideParamList>();

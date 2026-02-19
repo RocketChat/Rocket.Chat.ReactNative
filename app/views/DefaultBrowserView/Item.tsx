@@ -1,7 +1,7 @@
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import * as List from '../../containers/List';
-import { type IBrowsersValues, type TValue } from '.';
+import type { IBrowsersValues, TValue } from '.';
 
 interface IRenderItem extends IBrowsersValues {
 	browser: string | null;

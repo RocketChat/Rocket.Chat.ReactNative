@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -13,7 +13,7 @@ import {
 	VIDEO_PREFERENCE_DOWNLOAD
 } from '../../lib/constants/mediaAutoDownload';
 import i18n from '../../i18n';
-import { type SettingsStackParamList } from '../../stacks/types';
+import type { SettingsStackParamList } from '../../stacks/types';
 
 const MediaAutoDownload = () => {
 	const [imagesPreference, setImagesPreference] = useUserPreferences<MediaDownloadOption>(

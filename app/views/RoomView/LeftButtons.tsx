@@ -1,5 +1,5 @@
 import { StyleSheet, useWindowDimensions } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import Avatar from '../../containers/Avatar';
 import { useAppNavigation } from '../../lib/hooks/navigation';

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
@@ -10,8 +10,8 @@ import { type TSupportedThemes, useTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { themes } from '../lib/constants/colors';
 import Markdown from '../containers/markdown';
-import { type ICannedResponse } from '../definitions/ICannedResponse';
-import { type ChatsStackParamList } from '../stacks/types';
+import type { ICannedResponse } from '../definitions/ICannedResponse';
+import type { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 

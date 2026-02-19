@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useFocused, useShowMarkdownToolbar } from '../../context';
 import { Markdown } from './Markdown';

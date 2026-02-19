@@ -7,7 +7,7 @@ import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../lib/methods/helpers/room';
-import { type ISubscription, type TThreadModel } from '../../definitions';
+import type { ISubscription, TThreadModel } from '../../definitions';
 import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { getMessageById } from '../../lib/database/services/Message';
 

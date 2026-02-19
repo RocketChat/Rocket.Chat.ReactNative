@@ -1,5 +1,5 @@
 import { ScrollView, View } from 'react-native';
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { RoomInfoABAC } from './RoomInfoABAC';
 import type { TSupportedThemes } from '../../../theme';

@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { type Code as CodeProps } from '@rocket.chat/message-parser';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import styles from '../../styles';
 import { useTheme } from '../../../../theme';

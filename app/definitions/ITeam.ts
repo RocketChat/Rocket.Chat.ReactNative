@@ -1,6 +1,6 @@
-import { type IRocketChatRecord } from './IRocketChatRecord';
-import { type IUser } from './IUser';
-import { type IServerRoom } from './IRoom';
+import type { IRocketChatRecord } from './IRocketChatRecord';
+import type { IUser } from './IUser';
+import type { IServerRoom } from './IRoom';
 
 export enum TEAM_TYPE {
 	PUBLIC = 0,

@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../theme';
-import { type ISelectedUser } from '../../reducers/selectedUsers';
+import type { ISelectedUser } from '../../reducers/selectedUsers';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import Chip from '../Chip';

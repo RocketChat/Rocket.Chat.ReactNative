@@ -7,7 +7,7 @@ import { memo } from 'react';
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
-import { type IAvatar } from './interfaces';
+import type { IAvatar } from './interfaces';
 import MarkdownContext from '../markdown/contexts/MarkdownContext';
 import I18n from '../../i18n';
 

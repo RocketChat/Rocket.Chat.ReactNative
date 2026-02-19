@@ -1,10 +1,10 @@
 import { View, Pressable } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
-import { type IFooterProps } from './interfaces';
+import type { IFooterProps } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 
 const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): ReactElement => {

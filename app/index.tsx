@@ -15,7 +15,7 @@ import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
-import { type IThemePreference } from './definitions/ITheme';
+import type { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
 import { colors, themes } from './lib/constants/colors';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './lib/constants/tablet';

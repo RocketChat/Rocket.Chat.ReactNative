@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import i18n from '../../../../i18n';
 import { videoConfJoin } from '../../../../lib/methods/videoConf';

@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../i18n';
 import openLink from '../lib/methods/helpers/openLink';
@@ -9,8 +9,8 @@ import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import NewWindowIcon from '../containers/NewWindowIcon';
-import { type OutsideParamList } from '../stacks/types';
-import { type IApplicationState } from '../definitions';
+import type { OutsideParamList } from '../stacks/types';
+import type { IApplicationState } from '../definitions';
 
 const LegalView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LegalView'>>();

@@ -14,7 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
-import { type IUrl } from '../../definitions';
+import type { IUrl } from '../../definitions';
 import { WidthAwareContext } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({

@@ -1,5 +1,5 @@
 import { AccessibilityInfo, Switch as RNSwitch, type SwitchProps } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';

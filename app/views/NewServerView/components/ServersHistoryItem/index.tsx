@@ -5,7 +5,7 @@ import { memo } from 'react';
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../../../theme';
 import { ServerItemTouchable as Touchable } from '../../../../containers/ServerItem';
-import { type TServerHistoryModel } from '../../../../definitions';
+import type { TServerHistoryModel } from '../../../../definitions';
 import I18n from '../../../../i18n';
 import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 

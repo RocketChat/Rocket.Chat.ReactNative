@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { Header, HeaderBackground, SafeAreaProviderCompat } from '@react-navigation/elements';
 import { NavigationContainer } from '@react-navigation/native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import * as HeaderButton from '.';
 import { type TColors, ThemeContext, type TSupportedThemes } from '../../../../theme';

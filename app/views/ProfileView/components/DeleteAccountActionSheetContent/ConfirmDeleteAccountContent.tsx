@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';

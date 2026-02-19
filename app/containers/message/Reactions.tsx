@@ -9,7 +9,7 @@ import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
+import type { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 interface IReaction {
 	_id: string;

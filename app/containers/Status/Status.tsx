@@ -3,7 +3,7 @@ import { memo } from 'react';
 
 import { useTheme } from '../../theme';
 import { CustomIcon, hasIcon, type TIconsName } from '../CustomIcon';
-import { type IStatusComponentProps } from './definition';
+import type { IStatusComponentProps } from './definition';
 import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
 
 const Status = memo(({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {

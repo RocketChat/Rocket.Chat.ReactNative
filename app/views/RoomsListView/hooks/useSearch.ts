@@ -1,7 +1,7 @@
 import { useCallback, useReducer } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
-import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
+import type { IRoomItem } from '../../../containers/RoomItem/interfaces';
 import { search as searchLib } from '../../../lib/methods/search';
 import { useDebounce } from '../../../lib/methods/helpers/debounce';
 import i18n from '../../../i18n';

@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { themes } from '../../lib/constants/colors';
 import UnreadBadge from '.';

@@ -1,9 +1,9 @@
 import { shallowEqual } from 'react-redux';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
-import { type IAvatar } from './interfaces';
+import type { IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 

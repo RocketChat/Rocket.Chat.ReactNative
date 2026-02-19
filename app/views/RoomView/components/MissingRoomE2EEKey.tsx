@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';

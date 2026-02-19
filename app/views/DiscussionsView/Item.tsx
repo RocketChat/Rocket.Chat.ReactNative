@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import dayjs from '../../lib/dayjs';
 import { useTheme } from '../../theme';
@@ -9,7 +9,7 @@ import sharedStyles from '../Styles';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
-import { type IMessageFromServer } from '../../definitions';
+import type { IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {

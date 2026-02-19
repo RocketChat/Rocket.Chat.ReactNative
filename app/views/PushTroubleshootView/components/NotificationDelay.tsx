@@ -1,5 +1,5 @@
 import { Linking } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import NewWindowIcon from '../../../containers/NewWindowIcon';
 import * as List from '../../../containers/List';

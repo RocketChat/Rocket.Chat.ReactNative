@@ -21,7 +21,7 @@ import {
 	teamListRoomsOfUser
 } from '../../lib/services/restApi';
 import database from '../../lib/database';
-import { type RoomTypes } from '../../lib/methods/roomTypeToApiType';
+import type { RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;

@@ -5,7 +5,7 @@ import { CustomIcon } from './CustomIcon';
 import { themes } from '../lib/constants/colors';
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
-import { type TThreadModel } from '../definitions/IThread';
+import type { TThreadModel } from '../definitions/IThread';
 import i18n from '../i18n';
 
 const styles = StyleSheet.create({

@@ -1,4 +1,4 @@
-import { type TUserStatus } from '../definitions';
+import type { TUserStatus } from '../definitions';
 import {
 	clearUser,
 	loginFailure,

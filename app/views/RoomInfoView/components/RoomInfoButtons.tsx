@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
 import { type ISubscription, SubscriptionType } from '../../../definitions';

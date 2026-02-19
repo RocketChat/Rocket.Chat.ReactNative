@@ -1,13 +1,13 @@
 import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import {
-	type ErrorResult,
-	type MatchPathPattern,
-	type OperationParams,
-	type PathFor,
-	type ResultFor,
-	type Serialized
+import type {
+	ErrorResult,
+	MatchPathPattern,
+	OperationParams,
+	PathFor,
+	ResultFor,
+	Serialized
 } from '../../definitions/rest/helpers';
 import sdk from '../services/sdk';
 

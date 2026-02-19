@@ -10,7 +10,7 @@ import {
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
-import { type ITouchableProps } from './interfaces';
+import type { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { toggleFav } from '../../lib/methods/toggleFav';

@@ -1,11 +1,11 @@
 import { View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import Avatar from '../Avatar';
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
-import { type IIconOrAvatar } from './interfaces';
+import type { IIconOrAvatar } from './interfaces';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const IconOrAvatar = ({

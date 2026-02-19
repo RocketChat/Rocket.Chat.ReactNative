@@ -1,13 +1,13 @@
 import { Component, createRef, type RefObject } from 'react';
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { type RouteProp } from '@react-navigation/native';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
 import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { type Dispatch } from 'redux';
+import type { Dispatch } from 'redux';
 
 import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
-import { type InsideStackParamList } from '../../stacks/types';
+import type { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../lib/constants/colors';
 import I18n from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';

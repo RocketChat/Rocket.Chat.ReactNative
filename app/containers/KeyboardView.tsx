@@ -1,6 +1,6 @@
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import { type StyleProp, type ViewStyle } from 'react-native';
-import { type ReactElement } from 'react';
+import type { StyleProp, ViewStyle } from 'react-native';
+import type { ReactElement } from 'react';
 
 import { useTheme } from '../theme';
 
