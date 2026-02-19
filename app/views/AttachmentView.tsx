@@ -5,7 +5,7 @@ import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
-import { type Dispatch, type ReactElement, type SetStateAction, useLayoutEffect, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, useLayoutEffect, useRef, useState } from 'react';
 
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
@@ -92,7 +92,7 @@ const RenderContent = ({
 	return null;
 };
 
-const AttachmentView = (): ReactElement => {
+const AttachmentView = () => {
 	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const {
 		params: { attachment }

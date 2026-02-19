@@ -1,5 +1,5 @@
 import { Text, View, type ViewStyle } from 'react-native';
-import { memo, type ReactElement } from 'react';
+import { memo } from 'react';
 
 import Touch from '../Touch';
 import Avatar from '../Avatar';
@@ -46,7 +46,7 @@ const DirectoryItem = ({
 	type,
 	rid,
 	teamMain
-}: IDirectoryItem): ReactElement => {
+}: IDirectoryItem) => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
 	const height = ROW_HEIGHT * fontScale;

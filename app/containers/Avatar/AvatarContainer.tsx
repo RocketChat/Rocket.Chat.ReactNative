@@ -1,5 +1,4 @@
 import { shallowEqual } from 'react-redux';
-import type { ReactElement } from 'react';
 
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
@@ -22,7 +21,7 @@ const AvatarContainer = ({
 	rid,
 	accessibilityLabel,
 	accessible
-}: IAvatar): ReactElement => {
+}: IAvatar) => {
 	const server = useAppSelector(state => state.server.server);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const { id, token, username } = useAppSelector(

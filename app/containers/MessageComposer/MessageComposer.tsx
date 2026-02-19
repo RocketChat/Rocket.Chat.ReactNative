@@ -24,13 +24,7 @@ import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
 import { useTheme } from '../../theme';
 
-export const MessageComposer = ({
-	forwardedRef,
-	children
-}: {
-	forwardedRef: any;
-	children?: ReactElement;
-}): ReactElement | null => {
+export const MessageComposer = ({ forwardedRef, children }: { forwardedRef: any; children?: ReactElement }) => {
 	'use memo';
 
 	const composerInputRef = useRef(null);

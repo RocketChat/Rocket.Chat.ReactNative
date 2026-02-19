@@ -1,4 +1,4 @@
-import { type ReactElement, useContext } from 'react';
+import { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import type { IUserMessage } from '../../../../definitions';
@@ -70,7 +70,7 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 	);
 };
 
-const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVideo): ReactElement | null => {
+const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVideo) => {
 	'use memo';
 
 	const { user } = useContext(MessageContext);

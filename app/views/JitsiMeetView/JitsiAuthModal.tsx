@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
-import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 import sharedStyles from '../Styles';
 import Button from '../../containers/Button';
@@ -33,13 +33,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const JitsiAuthModal = ({
-	setAuthModal,
-	callUrl
-}: {
-	setAuthModal: Dispatch<SetStateAction<boolean>>;
-	callUrl: string;
-}): ReactElement => {
+const JitsiAuthModal = ({ setAuthModal, callUrl }: { setAuthModal: Dispatch<SetStateAction<boolean>>; callUrl: string }) => {
 	const { goBack } = useNavigation();
 	const { colors } = useTheme();
 	const user = useAppSelector(state => getUserSelector(state));

@@ -1,5 +1,3 @@
-import type { ReactElement } from 'react';
-
 import { useFocused, useShowMarkdownToolbar } from '../../context';
 import { Markdown } from './Markdown';
 import { Default } from './Default';
@@ -10,7 +8,7 @@ import { EmptySpace } from './EmptySpace';
 import { CancelEdit } from '../CancelEdit';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
-export const Toolbar = (): ReactElement | null => {
+export const Toolbar = () => {
 	'use memo';
 
 	const focused = useFocused();

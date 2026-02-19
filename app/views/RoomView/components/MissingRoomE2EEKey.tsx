@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
@@ -10,7 +9,7 @@ import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption';
 
 const GAP = 32;
 
-export const MissingRoomE2EEKey = (): ReactElement => {
+export const MissingRoomE2EEKey = () => {
 	const { colors } = useTheme();
 	const styles = useStyle();
 	return (

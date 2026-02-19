@@ -120,7 +120,7 @@ export const FormTextInput = ({
 	accessibilityLabel,
 	showErrorMessage = true,
 	...inputProps
-}: IRCTextInputProps): ReactElement => {
+}: IRCTextInputProps) => {
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;

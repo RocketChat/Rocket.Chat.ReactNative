@@ -1,9 +1,7 @@
-import type { ReactElement } from 'react';
-
 import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 
-const Radio = ({ check, testID, size }: { check: boolean; testID?: string; size?: number }): ReactElement => {
+const Radio = ({ check, testID, size }: { check: boolean; testID?: string; size?: number }) => {
 	const { colors } = useTheme();
 	return (
 		<CustomIcon

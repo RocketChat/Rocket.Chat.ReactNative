@@ -1,4 +1,4 @@
-import { type ReactElement, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -25,7 +25,7 @@ interface ISubmit {
 	email: string;
 }
 
-const ForgotPasswordView = (): ReactElement => {
+const ForgotPasswordView = () => {
 	const {
 		control,
 		handleSubmit,

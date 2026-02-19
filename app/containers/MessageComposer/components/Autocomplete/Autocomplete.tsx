@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { FlatList, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,7 +18,7 @@ export const Autocomplete = ({
 	onPress: IAutocompleteItemProps['onPress'];
 	style: ViewStyle;
 	accessibilityFocusOnInput: () => void;
-}): ReactElement | null => {
+}) => {
 	'use memo';
 
 	const { rid, updateAutocompleteVisible } = useRoomContext();

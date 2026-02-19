@@ -1,4 +1,4 @@
-import { type ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
@@ -27,7 +27,7 @@ const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server,
 	</>
 );
 
-const LoginServices = ({ separator }: { separator: boolean }): ReactElement => {
+const LoginServices = ({ separator }: { separator: boolean }) => {
 	const [collapsed, setCollapsed] = useState(true);
 
 	const { Gitlab_URL, CAS_enabled, CAS_login_url } = useAppSelector(

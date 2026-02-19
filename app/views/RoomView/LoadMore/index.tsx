@@ -42,7 +42,7 @@ const LoadMore = memo(
 		separator?: ReactElement | null;
 		dateSeparator?: Date | string | null;
 		showUnreadSeparator?: boolean;
-	}): ReactElement => {
+	}) => {
 		const { colors } = useTheme();
 		const dispatch = useDispatch();
 		const loading = useAppSelector(state => state.room.historyLoaders.some(historyLoader => historyLoader === loaderId));
