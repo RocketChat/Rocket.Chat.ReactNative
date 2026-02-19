@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import * as List from '../../../containers/List';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';

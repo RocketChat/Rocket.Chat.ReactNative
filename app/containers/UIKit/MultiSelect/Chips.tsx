@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { textParser } from '../utils';
 import { CustomIcon } from '../../CustomIcon';
 import styles from './styles';
-import { type IItemData } from '.';
+import type { IItemData } from '.';
 import { useTheme } from '../../../theme';
 import Touch from '../../Touch';
 

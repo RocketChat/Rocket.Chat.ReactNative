@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import Markdown from '../../containers/markdown';
 import styles from './styles';

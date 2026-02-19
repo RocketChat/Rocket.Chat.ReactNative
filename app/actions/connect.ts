@@ -1,4 +1,4 @@
-import { type Action } from 'redux';
+import type { Action } from 'redux';
 
 import * as types from './actionsTypes';
 

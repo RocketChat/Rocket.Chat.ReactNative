@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { type ISubscription, SubscriptionType } from '../../../definitions';
 import styles from '../styles';

@@ -1,4 +1,4 @@
-import { type Action } from 'redux';
+import type { Action } from 'redux';
 
 import { DEEP_LINKING } from './actionsTypes';
 

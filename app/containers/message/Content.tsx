@@ -8,10 +8,10 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
-import { type IMessageContent } from './interfaces';
+import type { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
-import { type MessageTypesValues } from '../../definitions';
+import type { MessageTypesValues } from '../../definitions';
 
 const Content = memo(
 	(props: IMessageContent) => {

@@ -1,15 +1,15 @@
-import { type EdgeInsets } from 'react-native-safe-area-context';
+import type { EdgeInsets } from 'react-native-safe-area-context';
 
-import { type ChatsStackParamList } from '../../stacks/types';
-import {
-	type IBaseScreen,
-	type ILastMessage,
-	type ILoggedUser,
-	type TSubscriptionModel,
-	type ICustomEmojis,
-	type TMessageAction
+import type { ChatsStackParamList } from '../../stacks/types';
+import type {
+	IBaseScreen,
+	ILastMessage,
+	ILoggedUser,
+	TSubscriptionModel,
+	ICustomEmojis,
+	TMessageAction
 } from '../../definitions';
-import { type IActionSheetProvider } from '../../containers/ActionSheet';
+import type { IActionSheetProvider } from '../../containers/ActionSheet';
 
 export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;

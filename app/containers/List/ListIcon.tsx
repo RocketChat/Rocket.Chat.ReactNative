@@ -1,5 +1,5 @@
 import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { ICON_SIZE } from './constants';

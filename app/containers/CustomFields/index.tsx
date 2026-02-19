@@ -1,5 +1,5 @@
-import { type RefObject } from 'react';
-import { type TextInput } from 'react-native';
+import type { RefObject } from 'react';
+import type { TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import { FormTextInput } from '../TextInput';

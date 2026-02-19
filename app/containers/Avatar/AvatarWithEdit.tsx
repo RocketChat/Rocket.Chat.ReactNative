@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import Button from '../Button';
 import AvatarContainer from './AvatarContainer';
-import { type IAvatar } from './interfaces';
+import type { IAvatar } from './interfaces';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';

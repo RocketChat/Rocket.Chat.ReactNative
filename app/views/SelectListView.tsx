@@ -1,10 +1,10 @@
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { type RouteProp } from '@react-navigation/native';
+import type { RouteProp } from '@react-navigation/native';
 import { Component } from 'react';
 
-import { type ChatsStackParamList } from '../stacks/types';
+import type { ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
@@ -16,8 +16,8 @@ import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
-import { type IApplicationState } from '../definitions';
-import { type TDataSelect } from '../definitions/IDataSelect';
+import type { IApplicationState } from '../definitions';
+import type { TDataSelect } from '../definitions/IDataSelect';
 
 const styles = StyleSheet.create({
 	buttonText: {

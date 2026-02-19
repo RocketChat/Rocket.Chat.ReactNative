@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-native';
 import { useSharedValue } from 'react-native-reanimated';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
 import { MessageInnerContext } from '../context';

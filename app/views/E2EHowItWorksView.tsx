@@ -6,7 +6,7 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import Markdown from '../containers/markdown';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
-import { type E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import type { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({

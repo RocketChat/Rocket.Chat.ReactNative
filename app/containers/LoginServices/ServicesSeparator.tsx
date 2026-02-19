@@ -3,7 +3,7 @@ import OrSeparator from '../OrSeparator';
 import { useTheme } from '../../theme';
 import styles from './styles';
 import I18n from '../../i18n';
-import { type IServicesSeparator } from './interfaces';
+import type { IServicesSeparator } from './interfaces';
 
 const ServicesSeparator = ({ services, separator, collapsed, onPress }: IServicesSeparator) => {
 	const { colors } = useTheme();

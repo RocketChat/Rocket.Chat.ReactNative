@@ -3,7 +3,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 import { createContext, type Dispatch, type SetStateAction, useContext, useState } from 'react';
 
 import { videoConfJoin } from '../../lib/methods/videoConf';
-import { type IText } from './interfaces';
+import type { IText } from './interfaces';
 
 export const textParser = ([{ text }]: IText[]) => text;
 

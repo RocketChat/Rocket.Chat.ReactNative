@@ -9,8 +9,8 @@ import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import Reply from './Reply';
 import MessageContext from '../../Context';
-import { type IMessageAttachments } from '../../interfaces';
-import { type IAttachment } from '../../../../definitions';
+import type { IMessageAttachments } from '../../interfaces';
+import type { IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>

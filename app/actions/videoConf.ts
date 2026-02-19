@@ -1,6 +1,6 @@
-import { type Action } from 'redux';
+import type { Action } from 'redux';
 
-import { type ICallInfo } from '../reducers/videoConf';
+import type { ICallInfo } from '../reducers/videoConf';
 import { VIDEO_CONF } from './actionsTypes';
 
 interface IHandleVideoConfIncomingWebsocketMessages extends Action {

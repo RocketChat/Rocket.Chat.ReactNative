@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { Header } from '.';
 

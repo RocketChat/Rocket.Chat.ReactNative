@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import Touchable from '../../../Touchable';
 import styles from '../../../styles';

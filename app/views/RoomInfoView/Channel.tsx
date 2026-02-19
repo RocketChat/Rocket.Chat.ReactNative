@@ -1,7 +1,7 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import I18n from '../../i18n';
-import { type ISubscription } from '../../definitions';
+import type { ISubscription } from '../../definitions';
 import Item from './Item';
 import { RoomInfoABAC } from './components/RoomInfoABAC';
 

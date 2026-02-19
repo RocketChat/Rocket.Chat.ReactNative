@@ -2,7 +2,7 @@ import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 
-import { type INotification } from '../../definitions';
+import type { INotification } from '../../definitions';
 import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
 import { registerPushToken } from '../services/restApi';

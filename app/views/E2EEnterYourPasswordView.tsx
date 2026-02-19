@@ -3,9 +3,9 @@ import { type ReactElement, useCallback, useEffect, useLayoutEffect, useRef } fr
 import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { type E2EEnterYourPasswordStackParamList, type InsideStackParamList } from '../stacks/types';
+import type { E2EEnterYourPasswordStackParamList, InsideStackParamList } from '../stacks/types';
 import { encryptionDecodeKey } from '../actions/encryption';
 import Button from '../containers/Button';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';

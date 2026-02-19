@@ -3,7 +3,7 @@ import { memo } from 'react';
 
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import { type IMessageEmoji } from './interfaces';
+import type { IMessageEmoji } from './interfaces';
 
 const Emoji = memo(
 	({ content, standardEmojiStyle, customEmojiStyle, getCustomEmoji }: IMessageEmoji) => {

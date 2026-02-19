@@ -1,10 +1,10 @@
 import { View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import { useTheme } from '../../theme';
 import IconOrAvatar from './IconOrAvatar';
-import { type IWrapperProps } from './interfaces';
+import type { IWrapperProps } from './interfaces';
 import styles from './styles';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 

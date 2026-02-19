@@ -7,7 +7,7 @@ import { themes } from '../../lib/constants/colors';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import ThreadDetails from '../../containers/ThreadDetails';
-import { type TThreadModel } from '../../definitions';
+import type { TThreadModel } from '../../definitions';
 import Touch from '../../containers/Touch';
 
 const styles = StyleSheet.create({

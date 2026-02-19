@@ -67,14 +67,14 @@ import SelectListView from '../../views/SelectListView';
 import DiscussionsView from '../../views/DiscussionsView';
 import AccessibilityAndAppearanceView from '../../views/AccessibilityAndAppearanceView';
 import { ModalContainer } from './ModalContainer';
-import {
-	type MasterDetailChatsStackParamList,
-	type MasterDetailDrawerParamList,
-	type MasterDetailInsideStackParamList,
-	type ModalStackParamList
+import type {
+	MasterDetailChatsStackParamList,
+	MasterDetailDrawerParamList,
+	MasterDetailInsideStackParamList,
+	ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
-import { type TNavigation } from '../stackType';
+import type { TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 // ChatsStackNavigator

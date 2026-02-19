@@ -1,14 +1,8 @@
 import type Animated from 'react-native-reanimated';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
-import { type TSupportedThemes } from '../../theme';
-import {
-	type TUserStatus,
-	type ILastMessage,
-	type SubscriptionType,
-	type IOmnichannelSource,
-	type ISubscription
-} from '../../definitions';
+import type { TSupportedThemes } from '../../theme';
+import type { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource, ISubscription } from '../../definitions';
 
 export interface ILeftActionsProps {
 	transX: Animated.SharedValue<number>;

@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
@@ -20,8 +20,8 @@ import Avatar from '../../containers/Avatar';
 import AvatarPresentational from '../../containers/Avatar/Avatar';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
-import { type ChatsStackParamList } from '../../stacks/types';
-import { type IAvatar } from '../../definitions';
+import type { ChatsStackParamList } from '../../stacks/types';
+import type { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';

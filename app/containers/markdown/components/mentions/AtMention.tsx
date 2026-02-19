@@ -6,7 +6,7 @@ import { themes } from '../../../../lib/constants/colors';
 import { USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import styles from '../../styles';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { type IUserMention } from '../../interfaces';
+import type { IUserMention } from '../../interfaces';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 
 interface IAtMention {

@@ -10,9 +10,9 @@ import { ImageViewer } from '../../containers/ImageViewer';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import { THUMBS_HEIGHT } from './constants';
-import { type TSupportedThemes } from '../../theme';
+import type { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
-import { type IShareAttachment } from '../../definitions';
+import type { IShareAttachment } from '../../definitions';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
 

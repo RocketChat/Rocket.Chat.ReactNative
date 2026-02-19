@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { A11y } from 'react-native-a11y-order';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useTheme } from '../theme';

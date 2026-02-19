@@ -1,5 +1,5 @@
 import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
