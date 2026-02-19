@@ -64,7 +64,9 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 	}
 	return (
 		<GestureHandlerRootView style={styles.contentContainer} testID='action-sheet'>
-			<View onLayout={onLayout}>{children}</View>
+			<View onLayout={onLayout} style={{ flex: 1 }}>
+				{children}
+			</View>
 		</GestureHandlerRootView>
 	);
 });
