@@ -17,9 +17,10 @@ interface IBottomSheetContentProps {
 	hide: () => void;
 	children?: React.ReactElement | null;
 	onLayout: ViewProps['onLayout'];
+	fillContent?: boolean;
 }
 
-const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
+const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onLayout, fillContent }: IBottomSheetContentProps) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -64,9 +65,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 	}
 	return (
 		<GestureHandlerRootView style={styles.contentContainer} testID='action-sheet'>
-			<View onLayout={onLayout} style={{ flex: 1 }}>
-				{children}
-			</View>
+			<View onLayout={onLayout} style={fillContent ? { flex: 1 } : undefined}>{children}</View>
 		</GestureHandlerRootView>
 	);
 });

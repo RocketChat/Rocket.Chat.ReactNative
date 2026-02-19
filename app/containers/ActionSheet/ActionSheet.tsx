@@ -112,6 +112,7 @@ const ActionSheet = React.memo(
 						children={data?.children}
 						hasCancel={data?.hasCancel}
 						onLayout={handleContentLayout}
+						fillContent={data?.fillContent}
 					/>
 				</TrueSheet>
 			</>
