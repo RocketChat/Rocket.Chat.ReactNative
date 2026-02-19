@@ -1,7 +1,7 @@
-import { type ViewStyle } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ViewStyle } from 'react-native';
+import type { ReactElement } from 'react';
 
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
+import type { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 export interface IAvatar {
 	server?: string;

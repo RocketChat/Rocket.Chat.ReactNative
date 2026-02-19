@@ -1,7 +1,7 @@
 import { type ReactElement, forwardRef } from 'react';
 
 import { MessageComposerProvider } from './context';
-import { type IMessageComposerContainerProps, type IMessageComposerRef } from './interfaces';
+import type { IMessageComposerContainerProps, IMessageComposerRef } from './interfaces';
 import { MessageComposer } from './MessageComposer';
 import { EmojiKeyboardProvider } from './hooks/useEmojiKeyboard';
 

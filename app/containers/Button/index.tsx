@@ -1,6 +1,6 @@
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 import Touchable, { type PlatformTouchableProps } from 'react-native-platform-touchable';
-import { type FC } from 'react';
+import type { FC } from 'react';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';

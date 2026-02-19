@@ -1,12 +1,12 @@
 import { useLayoutEffect } from 'react';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
-import { type OutsideParamList } from '../../stacks/types';
+import type { OutsideParamList } from '../../stacks/types';
 import UserForm from './UserForm';
 
 const LoginView = () => {

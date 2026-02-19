@@ -1,5 +1,5 @@
 import { ScrollView, type ScrollViewProps, StyleSheet, View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';

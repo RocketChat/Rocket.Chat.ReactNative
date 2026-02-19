@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
 import DepartmentItemFilter, { ROW_HEIGHT } from './DepartmentItemFilter';
-import { type ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
+import type { ILivechatDepartment } from '../../../definitions/ILivechatDepartment';
 
 const MAX_ROWS = 5;
 

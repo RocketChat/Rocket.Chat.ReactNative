@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { CustomIcon } from '../../containers/CustomIcon';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
-import { type IMessageFromServer } from '../../definitions';
+import type { IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {

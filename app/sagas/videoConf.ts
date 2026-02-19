@@ -1,4 +1,4 @@
-import { type Action } from 'redux';
+import type { Action } from 'redux';
 import { delay, put, takeEvery } from 'redux-saga/effects';
 import { call } from 'typed-redux-saga';
 import { AccessibilityInfo } from 'react-native';
@@ -19,7 +19,7 @@ import { hideNotification } from '../lib/methods/helpers/notifications';
 import { showToast } from '../lib/methods/helpers/showToast';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { videoConferenceCancel, notifyUser, videoConferenceStart } from '../lib/services/restApi';
-import { type ICallInfo } from '../reducers/videoConf';
+import type { ICallInfo } from '../reducers/videoConf';
 
 interface IGenericAction extends Action {
 	type: string;

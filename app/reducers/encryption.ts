@@ -1,5 +1,5 @@
 import { ENCRYPTION } from '../actions/actionsTypes';
-import { type TApplicationActions } from '../definitions';
+import type { TApplicationActions } from '../definitions';
 
 export type IBanner = string;
 export interface IEncryption {

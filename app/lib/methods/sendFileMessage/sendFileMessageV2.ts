@@ -1,11 +1,11 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { type TSendFileMessageFileInfo, type IUser, type TUploadModel } from '../../../definitions';
+import type { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
-import { type IFormData } from '../helpers/fileUpload/definitions';
+import type { IFormData } from '../helpers/fileUpload/definitions';
 import fetch from '../helpers/fetch';
 
 export async function sendFileMessageV2(

@@ -2,7 +2,7 @@ import dayjs from '../../dayjs';
 import { themes } from '../../constants/colors';
 import I18n from '../../../i18n';
 import { type IAttachment, SubscriptionType, type TSubscriptionModel } from '../../../definitions';
-import { type TSupportedThemes } from '../../../theme';
+import type { TSupportedThemes } from '../../../theme';
 
 export const isBlocked = (room: TSubscriptionModel): boolean => {
 	if (room) {

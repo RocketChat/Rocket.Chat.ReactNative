@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import I18n from '../../../../i18n';
 import { useTheme } from '../../../../theme';

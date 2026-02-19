@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { MicOrSendButton, ActionsButton, BaseButton } from '..';

@@ -1,7 +1,7 @@
-import { type Action } from 'redux';
+import type { Action } from 'redux';
 
 import { SUPPORTED_VERSIONS } from './actionsTypes';
-import { type TSVDictionary, type TSVMessage, type TSVStatus } from '../definitions';
+import type { TSVDictionary, TSVMessage, TSVStatus } from '../definitions';
 
 type TSetSupportedVersions = {
 	status: TSVStatus;

@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import i18n from '../../../../i18n';
 import useStyle from './styles';

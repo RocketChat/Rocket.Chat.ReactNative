@@ -1,11 +1,11 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import isEmpty from 'lodash/isEmpty';
 import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { type Observable, type Subscription } from 'rxjs';
-import { type CompositeNavigationProp } from '@react-navigation/native';
+import type { Observable, Subscription } from 'rxjs';
+import type { CompositeNavigationProp } from '@react-navigation/native';
 import { Component } from 'react';
 
 import { leaveRoom } from '../../actions/room';
@@ -29,7 +29,7 @@ import I18n from '../../i18n';
 import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { getUserSelector } from '../../selectors/login';
-import { type ChatsStackParamList } from '../../stacks/types';
+import type { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -66,12 +66,12 @@ import {
 } from '../../lib/services/restApi';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { type IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import type { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { closeLivechat } from '../../lib/methods/helpers/closeLivechat';
-import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { type ILivechatTag } from '../../definitions/ILivechatTag';
+import type { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import type { ILivechatTag } from '../../definitions/ILivechatTag';
 import CallSection from './components/CallSection';
-import { type TNavigation } from '../../stacks/stackType';
+import type { TNavigation } from '../../stacks/stackType';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import Navigation from '../../lib/navigation/appNavigation';
 

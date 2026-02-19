@@ -6,13 +6,7 @@ import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/nati
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
 import I18n from '../../../i18n';
-import {
-	type IAutocompleteItemProps,
-	type IComposerInput,
-	type IComposerInputProps,
-	type IInputSelection,
-	type TSetInput
-} from '../interfaces';
+import type { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useAutoSaveDraft } from '../hooks';
@@ -39,7 +33,7 @@ import { executeCommandPreview } from '../../../lib/services/restApi';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { usePrevious } from '../../../lib/hooks/usePrevious';
-import { type ChatsStackParamList } from '../../../stacks/types';
+import type { ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
 

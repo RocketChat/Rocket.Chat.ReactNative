@@ -1,20 +1,20 @@
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { type TNavigation } from '../../stacks/stackType';
-import {
-	type AdminPanelStackParamList,
-	type ChatsStackParamList,
-	type DisplayPrefStackParamList,
-	type DrawerParamList,
-	type E2EEnterYourPasswordStackParamList,
-	type E2ESaveYourPasswordStackParamList,
-	type InsideStackParamList,
-	type NewMessageStackParamList,
-	type OutsideModalParamList,
-	type OutsideParamList,
-	type ProfileStackParamList,
-	type SettingsStackParamList
+import type { TNavigation } from '../../stacks/stackType';
+import type {
+	AdminPanelStackParamList,
+	ChatsStackParamList,
+	DisplayPrefStackParamList,
+	DrawerParamList,
+	E2EEnterYourPasswordStackParamList,
+	E2ESaveYourPasswordStackParamList,
+	InsideStackParamList,
+	NewMessageStackParamList,
+	OutsideModalParamList,
+	OutsideParamList,
+	ProfileStackParamList,
+	SettingsStackParamList
 } from '../../stacks/types';
 
 type TRoutes =

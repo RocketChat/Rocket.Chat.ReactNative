@@ -4,7 +4,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
 import I18n from '../../i18n';
-import { type IActions } from './interfaces';
+import type { IActions } from './interfaces';
 
 const styles = StyleSheet.create({
 	hidden: {

@@ -1,4 +1,4 @@
-import { type TActionServer } from '../actions/server';
+import type { TActionServer } from '../actions/server';
 import { SERVER } from '../actions/actionsTypes';
 
 export interface IServer {

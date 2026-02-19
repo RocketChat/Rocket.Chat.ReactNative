@@ -13,7 +13,7 @@ import { CustomIcon } from '../CustomIcon';
 import { isAndroid } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
-import { type IDatePicker } from './interfaces';
+import type { IDatePicker } from './interfaces';
 
 const styles = StyleSheet.create({
 	input: {

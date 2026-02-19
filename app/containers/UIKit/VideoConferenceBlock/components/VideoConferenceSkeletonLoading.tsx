@@ -1,5 +1,5 @@
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useTheme } from '../../../../theme';
 

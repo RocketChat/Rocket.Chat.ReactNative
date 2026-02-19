@@ -16,8 +16,8 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 import SelectChannel from './SelectChannel';
-import { type ICreateChannelViewProps, type IResult, type IError } from './interfaces';
-import { type ISearchLocal, type ISubscription } from '../../definitions';
+import type { ICreateChannelViewProps, IResult, IError } from './interfaces';
+import type { ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES } from '../../lib/constants/keys';
 import { getRoomTitle } from '../../lib/methods/helpers';
 import * as List from '../../containers/List';
@@ -28,7 +28,7 @@ import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import SelectedUsers from '../../containers/SelectedUsers';
-import { type ISelectedUser } from '../../reducers/selectedUsers';
+import type { ISelectedUser } from '../../reducers/selectedUsers';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const schema = yup.object().shape({

@@ -8,9 +8,9 @@ import SearchBox from '../containers/SearchBox';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { useDebounce } from '../lib/methods/helpers';
-import { type TNavigation } from '../stacks/stackType';
+import type { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
-import { type IOptionsField } from './NotificationPreferencesView/options';
+import type { IOptionsField } from './NotificationPreferencesView/options';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({

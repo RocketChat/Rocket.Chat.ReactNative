@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
@@ -9,7 +9,7 @@ import { themes } from '../../lib/constants/colors';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import ThreadDetails from '../../containers/ThreadDetails';
-import { type TThreadModel } from '../../definitions';
+import type { TThreadModel } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {

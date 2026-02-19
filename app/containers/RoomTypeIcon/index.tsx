@@ -1,5 +1,5 @@
 import { StyleSheet, type ViewStyle } from 'react-native';
-import { type ImageStyle } from 'expo-image';
+import type { ImageStyle } from 'expo-image';
 import { memo } from 'react';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
@@ -7,7 +7,7 @@ import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { themes } from '../../lib/constants/colors';
 import Status from '../Status';
 import { useTheme } from '../../theme';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import type { TUserStatus, IOmnichannelSource, ISubscription } from '../../definitions';
 
 const styles = StyleSheet.create({
 	icon: {

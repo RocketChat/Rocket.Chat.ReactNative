@@ -1,6 +1,6 @@
 import { type CodeLine as CodeLineProps } from '@rocket.chat/message-parser';
 import { Text } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { useTheme } from '../../../../theme';
 import styles from '../../styles';

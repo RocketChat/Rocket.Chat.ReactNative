@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -10,8 +10,8 @@ import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
-import { type ShareInsideStackParamList } from '../definitions/navigationTypes';
-import { type TServerModel } from '../definitions';
+import type { ShareInsideStackParamList } from '../definitions/navigationTypes';
+import type { TServerModel } from '../definitions';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
 

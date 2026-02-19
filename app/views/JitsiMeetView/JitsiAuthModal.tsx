@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
-import { type Dispatch, type ReactElement, type SetStateAction } from 'react';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
 
 import sharedStyles from '../Styles';
 import Button from '../../containers/Button';

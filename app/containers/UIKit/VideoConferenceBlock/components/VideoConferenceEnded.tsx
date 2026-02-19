@@ -1,9 +1,9 @@
 import { Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
-import { type IUser } from '../../../../definitions';
-import { type VideoConferenceType } from '../../../../definitions/IVideoConference';
+import type { IUser } from '../../../../definitions';
+import type { VideoConferenceType } from '../../../../definitions/IVideoConference';
 import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { useVideoConf } from '../../../../lib/hooks/useVideoConf';

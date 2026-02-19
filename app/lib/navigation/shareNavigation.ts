@@ -1,4 +1,4 @@
-import { type NavigationContainerRef } from '@react-navigation/native';
+import type { NavigationContainerRef } from '@react-navigation/native';
 import { createRef, type RefObject } from 'react';
 
 // TODO: we need change this any to the correctly types from our stacks

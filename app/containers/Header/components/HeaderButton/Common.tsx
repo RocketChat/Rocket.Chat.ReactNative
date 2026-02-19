@@ -1,5 +1,5 @@
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { type StyleProp, type ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 import { memo } from 'react';
 
 import I18n from '../../../../i18n';

@@ -1,5 +1,5 @@
 import { type StyleProp, StyleSheet, View, type ViewProps, type ViewStyle } from 'react-native';
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { isAndroid, isTablet } from '../../../../lib/methods/helpers/deviceInfo';
 

@@ -1,5 +1,5 @@
 import { memo, type ReactElement } from 'react';
-import { type AccessibilityRole } from 'react-native';
+import type { AccessibilityRole } from 'react-native';
 
 import SwipeableDeleteTouchable from './SwipeableDeleteItem/Touchable';
 import Touch from '../Touch';

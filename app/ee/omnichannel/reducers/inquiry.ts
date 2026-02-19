@@ -1,4 +1,4 @@
-import { type IOmnichannelRoom, type TApplicationActions } from '../../../definitions';
+import type { IOmnichannelRoom, TApplicationActions } from '../../../definitions';
 import { INQUIRY } from '../../../actions/actionsTypes';
 
 export interface IInquiry {

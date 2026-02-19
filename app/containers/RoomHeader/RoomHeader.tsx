@@ -7,11 +7,11 @@ import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import type { TUserStatus, IOmnichannelSource, ISubscription } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
-import { type IUsersTyping } from '../../reducers/usersTyping';
+import type { IUsersTyping } from '../../reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,

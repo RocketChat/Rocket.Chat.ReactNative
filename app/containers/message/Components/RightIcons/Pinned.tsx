@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';

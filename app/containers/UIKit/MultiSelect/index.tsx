@@ -4,7 +4,7 @@ import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
 import { useTheme } from '../../../theme';
-import { type IText } from '../interfaces';
+import type { IText } from '../interfaces';
 import Chips from './Chips';
 import Input from './Input';
 import styles from './styles';

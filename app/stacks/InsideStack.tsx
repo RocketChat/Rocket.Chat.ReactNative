@@ -75,20 +75,20 @@ import SelectListView from '../views/SelectListView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
 import LegalView from '../views/LegalView';
-import {
-	type AdminPanelStackParamList,
-	type ChatsStackParamList,
-	type DrawerParamList,
-	type E2EEnterYourPasswordStackParamList,
-	type E2ESaveYourPasswordStackParamList,
-	type InsideStackParamList,
-	type NewMessageStackParamList,
-	type ProfileStackParamList,
-	type SettingsStackParamList,
-	type AccessibilityStackParamList
+import type {
+	AdminPanelStackParamList,
+	ChatsStackParamList,
+	DrawerParamList,
+	E2EEnterYourPasswordStackParamList,
+	E2ESaveYourPasswordStackParamList,
+	InsideStackParamList,
+	NewMessageStackParamList,
+	ProfileStackParamList,
+	SettingsStackParamList,
+	AccessibilityStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
-import { type TNavigation } from './stackType';
+import type { TNavigation } from './stackType';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 
 // ChatsStackNavigator

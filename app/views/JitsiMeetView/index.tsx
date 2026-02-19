@@ -12,7 +12,7 @@ import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFr
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoConfTimer';
 import { getUserSelector } from '../../selectors/login';
-import { type ChatsStackParamList } from '../../stacks/types';
+import type { ChatsStackParamList } from '../../stacks/types';
 import JitsiAuthModal from './JitsiAuthModal';
 
 const JitsiMeetView = (): ReactElement => {

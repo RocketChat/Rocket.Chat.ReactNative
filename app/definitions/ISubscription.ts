@@ -1,14 +1,14 @@
 import type Model from '@nozbe/watermelondb/Model';
 import type Relation from '@nozbe/watermelondb/Relation';
 
-import { type ILastMessage, type TMessageModel } from './IMessage';
-import { type IRocketChatRecord } from './IRocketChatRecord';
-import { type IOmnichannelSource, type RoomID, type RoomType, type TUserWaitingForE2EKeys } from './IRoom';
-import { type IServedBy } from './IServedBy';
-import { type TThreadModel } from './IThread';
-import { type TThreadMessageModel } from './IThreadMessage';
-import { type TUploadModel } from './IUpload';
-import { type IUser } from './IUser';
+import type { ILastMessage, TMessageModel } from './IMessage';
+import type { IRocketChatRecord } from './IRocketChatRecord';
+import type { IOmnichannelSource, RoomID, RoomType, TUserWaitingForE2EKeys } from './IRoom';
+import type { IServedBy } from './IServedBy';
+import type { TThreadModel } from './IThread';
+import type { TThreadMessageModel } from './IThreadMessage';
+import type { TUploadModel } from './IUpload';
+import type { IUser } from './IUser';
 
 export enum SubscriptionType {
 	GROUP = 'p',

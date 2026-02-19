@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import Chip, { type IChip } from '.';
-import { type ISelectedUser } from '../../reducers/selectedUsers';
+import type { ISelectedUser } from '../../reducers/selectedUsers';
 import { mockedStore as store } from '../../reducers/mockedStore';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 import * as stories from './Chip.stories';
