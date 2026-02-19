@@ -13,7 +13,6 @@ import { Handle } from './Handle';
 import { type TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import styles from './styles';
-import { ACTION_SHEET_MAX_HEIGHT_FRACTION } from './utils';
 import { useActionSheetDetents } from './useActionSheetDetents';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
@@ -97,7 +96,6 @@ const ActionSheet = React.memo(
 				<TrueSheet
 					ref={sheetRef}
 					detents={detents}
-					maxHeight={windowHeight * ACTION_SHEET_MAX_HEIGHT_FRACTION}
 					backgroundColor={colors.surfaceLight}
 					cornerRadius={16}
 					dimmed

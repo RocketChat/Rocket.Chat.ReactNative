@@ -4089,10 +4089,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@lodev09/react-native-true-sheet@~3.6.0":
-  version "3.6.11"
-  resolved "https://registry.yarnpkg.com/@lodev09/react-native-true-sheet/-/react-native-true-sheet-3.6.11.tgz#12bd378b1ee3d2ba5bc04f5b654916233f356583"
-  integrity sha512-Je7zXgKrLUUnIjj+fXASiOg4PDXUPeD510awlZU5vkDXDhfLZ4gMqeYE/I93nZPI5AC3qQXFQ4Zek3JnhzwgIw==
+"@lodev09/react-native-true-sheet@3.9.4":
+  version "3.9.4"
+  resolved "https://registry.yarnpkg.com/@lodev09/react-native-true-sheet/-/react-native-true-sheet-3.9.4.tgz#794137206d8010a7e9c8ee293c7cbd1ec0fd126a"
+  integrity sha512-4M7VnKO4pt6aVqrznNCtT6G4MRmTsqD59Jymh01BCpSjenVCn0+FKRu9Jl9zDwg2nMvffFd5M186SIaii4AqUA==
 
 "@napi-rs/wasm-runtime@^0.2.11":
   version "0.2.12"
