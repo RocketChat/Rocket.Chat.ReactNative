@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
+import { memo } from 'react';
 
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
@@ -15,7 +15,7 @@ export interface IActionSheetItem {
 	hide(): void;
 }
 
-export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
+export const Item = memo(({ item, hide }: IActionSheetItem) => {
 	'use memo';
 
 	const enabled = item?.enabled ?? true;

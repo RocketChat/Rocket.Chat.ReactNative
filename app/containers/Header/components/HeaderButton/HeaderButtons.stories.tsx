@@ -1,15 +1,15 @@
-import React from 'react';
 import { View } from 'react-native';
 import { Header, HeaderBackground, SafeAreaProviderCompat } from '@react-navigation/elements';
 import { NavigationContainer } from '@react-navigation/native';
+import { type ReactElement } from 'react';
 
 import * as HeaderButton from '.';
 import { type TColors, ThemeContext, type TSupportedThemes } from '../../../../theme';
 import { colors } from '../../../../lib/constants/colors';
 
 interface IHeader {
-	left?: () => React.ReactElement | null;
-	right?: () => React.ReactElement;
+	left?: () => ReactElement | null;
+	right?: () => ReactElement;
 	title?: string;
 	colors?: TColors;
 }

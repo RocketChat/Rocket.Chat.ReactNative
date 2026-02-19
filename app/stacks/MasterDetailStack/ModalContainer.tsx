@@ -1,8 +1,8 @@
-import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
 import { type NavigationContainerProps } from '@react-navigation/core';
 import { useKeyboard } from '@react-native-community/hooks';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type ReactNode } from 'react';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
@@ -14,7 +14,7 @@ const MODAL_MARGIN = 32;
 // @ts-ignore
 interface IModalContainer extends NavigationContainerProps {
 	navigation: NativeStackNavigationProp<any>;
-	children: React.ReactNode;
+	children: ReactNode;
 	theme: TSupportedThemes;
 }
 

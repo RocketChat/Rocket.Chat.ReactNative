@@ -1,4 +1,4 @@
-import React, { type ElementType, memo, useEffect } from 'react';
+import { type ElementType, memo, useEffect } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 import { useDispatch } from 'react-redux';
 import { AccessibilityInfo } from 'react-native';

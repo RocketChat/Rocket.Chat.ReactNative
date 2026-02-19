@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useState } from 'react';
+import { type ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 const COUNT_DEPARTMENT = 50;
 
-const ForwardLivechatView = (): React.ReactElement => {
+const ForwardLivechatView = (): ReactElement => {
 	const { navigate, setOptions } = useAppNavigation<TNavigation, 'PickerView'>();
 	const {
 		params: { rid }

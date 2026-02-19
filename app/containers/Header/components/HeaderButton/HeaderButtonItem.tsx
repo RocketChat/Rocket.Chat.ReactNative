@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo, type ReactElement } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
@@ -11,7 +11,7 @@ export interface IHeaderButtonItem {
 	iconName?: TIconsName;
 	onPress?: <T>(arg: T) => void;
 	testID?: string;
-	badge?(): React.ReactElement | null;
+	badge?(): ReactElement | null;
 	color?: string;
 	disabled?: boolean;
 	accessibilityLabel?: string;
@@ -52,7 +52,7 @@ const Item = memo(
 		disabled,
 		accessibilityLabel,
 		...props
-	}: IHeaderButtonItem): React.ReactElement => {
+	}: IHeaderButtonItem): ReactElement => {
 		'use memo';
 
 		const { colors } = useTheme();

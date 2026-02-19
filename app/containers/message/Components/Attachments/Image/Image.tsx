@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { memo, useContext, useEffect, useState } from 'react';
 import { View, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 
@@ -13,7 +13,7 @@ import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
 
-export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
+export const MessageImage = memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	'use memo';
 
 	const { colors } = useTheme();

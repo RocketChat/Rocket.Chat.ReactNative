@@ -1,5 +1,5 @@
-import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+import { memo } from 'react';
 
 import type { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor, ISubscription } from '../../definitions';
 import I18n from '../../i18n';
@@ -24,7 +24,7 @@ interface IRoomHeaderContainerProps {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-const RoomHeaderContainer = React.memo(
+const RoomHeaderContainer = memo(
 	({
 		isGroupChat,
 		onPress,

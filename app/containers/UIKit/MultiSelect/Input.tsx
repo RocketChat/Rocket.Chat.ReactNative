@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 

@@ -1,7 +1,7 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
+import { type ReactElement } from 'react';
 
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useTheme } from '../theme';
@@ -25,7 +25,7 @@ type TCallHeader = {
 	direct: boolean;
 };
 
-export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): React.ReactElement => {
+export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): ReactElement => {
 	const style = useStyle();
 	const { colors } = useTheme();
 	const calling = useAppSelector(state => state.videoConf.calling);

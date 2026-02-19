@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, type TextInputProps, View } from 'react-native';
 import { type Control } from 'react-hook-form';
 

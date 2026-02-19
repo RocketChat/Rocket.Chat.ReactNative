@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { memo, type ReactElement, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -32,7 +32,7 @@ export interface INotifierComponent {
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const IncomingCallHeader = React.memo(
+const IncomingCallHeader = memo(
 	({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string }) => {
 		const componentRef = useRef<View>(null);
 		const [mic, setMic] = useState(true);
@@ -132,7 +132,7 @@ const IncomingCallNotification = ({
 	notification: { rid, callId }
 }: {
 	notification: { rid: string; callId: string };
-}): React.ReactElement | null => {
+}): ReactElement | null => {
 	const { result } = useEndpointData('video-conference.info', { callId });
 
 	const user = useUserData(rid);

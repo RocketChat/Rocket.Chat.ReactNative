@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { type ReactNode, useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { TabView as ReanimatedTabView, type Route, type NavigationState } from 'reanimated-tab-view';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -8,8 +8,8 @@ import { useTheme } from '../../theme';
 
 interface TabViewProps {
 	routes: Route[];
-	renderTabItem: (tab: Route, color: string) => React.ReactNode;
-	renderScene: (props: { route: Route }) => React.ReactNode;
+	renderTabItem: (tab: Route, color: string) => ReactNode;
+	renderScene: (props: { route: Route }) => ReactNode;
 }
 
 export const TabView = ({ routes, renderTabItem, renderScene }: TabViewProps) => {

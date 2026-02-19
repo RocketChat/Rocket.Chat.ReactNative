@@ -1,6 +1,6 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { type Subscription } from 'rxjs';
+import { Component } from 'react';
 
 import I18n from '../i18n';
 import { type TSupportedThemes, withTheme } from '../theme';
@@ -42,7 +42,7 @@ interface IScreenLockConfigViewState {
 	biometryLabel: string | null;
 }
 
-class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
+class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
 	private serverRecord?: TServerModel;
 
 	private observable?: Subscription;

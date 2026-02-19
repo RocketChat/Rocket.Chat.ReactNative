@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Button from '../Button';
 import OrSeparator from '../OrSeparator';
 import { useTheme } from '../../theme';

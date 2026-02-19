@@ -1,5 +1,5 @@
-import React from 'react';
 import { StyleSheet } from 'react-native';
+import { type ReactElement } from 'react';
 
 import Button from '../Button';
 import AvatarContainer from './AvatarContainer';
@@ -44,7 +44,7 @@ const AvatarWithEdit = ({
 	rid,
 	handleEdit,
 	editAccessibilityLabel
-}: IAvatarContainer): React.ReactElement => {
+}: IAvatarContainer): ReactElement => {
 	const { colors } = useTheme();
 
 	const { serverVersion } = useAppSelector(state => ({

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { type ReactElement, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const E2EHowItWorksView = (): React.ReactElement => {
+const E2EHowItWorksView = (): ReactElement => {
 	const { setOptions } = useNavigation();
 	const { colors } = useTheme();
 	const { params } = useRoute<RouteProp<E2ESaveYourPasswordStackParamList, 'E2EHowItWorksView'>>();

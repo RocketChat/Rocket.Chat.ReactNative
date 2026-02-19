@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactElement, useState } from 'react';
 import { View } from 'react-native';
 
 import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
@@ -17,9 +17,9 @@ interface IReactionPickerProps {
 	onEmojiSelected: (emoji: IEmoji, id: string) => void;
 }
 
-const ReactionPicker = ({ onEmojiSelected, messageId, reactionClose }: IReactionPickerProps): React.ReactElement => {
-	const [searchedEmojis, setSearchedEmojis] = React.useState<IEmoji[]>([]);
-	const [searching, setSearching] = React.useState<boolean>(false);
+const ReactionPicker = ({ onEmojiSelected, messageId, reactionClose }: IReactionPickerProps): ReactElement => {
+	const [searchedEmojis, setSearchedEmojis] = useState<IEmoji[]>([]);
+	const [searching, setSearching] = useState<boolean>(false);
 
 	const handleTextChange = useDebounce((text: string) => {
 		setSearching(text !== '');

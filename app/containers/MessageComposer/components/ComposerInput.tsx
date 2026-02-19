@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -52,9 +52,9 @@ export const ComposerInput = memo(
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
-		const textRef = React.useRef('');
-		const firstRender = React.useRef(true);
-		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
+		const textRef = useRef('');
+		const firstRender = useRef(true);
+		const selectionRef = useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';

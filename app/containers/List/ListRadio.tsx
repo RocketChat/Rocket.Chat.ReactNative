@@ -1,5 +1,3 @@
-import React from 'react';
-
 import i18n from '../../i18n';
 import ListItem, { type IListItem } from './ListItem';
 import ListIcon from './ListIcon';

@@ -1,4 +1,4 @@
-import React, { type ReactElement, useRef, useImperativeHandle } from 'react';
+import { type ReactElement, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';

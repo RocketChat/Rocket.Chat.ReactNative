@@ -1,6 +1,6 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import { type ReactElement } from 'react';
 
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
@@ -65,7 +65,7 @@ export interface IItem {
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
-const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): React.ReactElement => {
+const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): ReactElement => {
 	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;

@@ -1,5 +1,5 @@
-import React from 'react';
 import { Pressable } from 'react-native';
+import { type ReactElement } from 'react';
 
 import styles, { EMOJI_BUTTON_SIZE } from './styles';
 import { type IEmoji } from '../../definitions/IEmoji';
@@ -7,7 +7,7 @@ import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
 import { Emoji } from './Emoji';
 
-export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (emoji: IEmoji) => void }): React.ReactElement => {
+export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (emoji: IEmoji) => void }): ReactElement => {
 	const { colors } = useTheme();
 	const accessibilityLabel = typeof emoji === 'string' ? emoji : emoji.name;
 

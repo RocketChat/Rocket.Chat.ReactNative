@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
+import { memo } from 'react';
 
 import styles, { ROW_HEIGHT } from './styles';
 import { useTheme } from '../../../../theme';
@@ -19,7 +19,7 @@ export interface IServersHistoryItem {
 
 const defaultLogo = require('../../../../static/images/logo.png');
 
-const ServersHistoryItem = React.memo(({ item, onPress, onDeletePress }: IServersHistoryItem) => {
+const ServersHistoryItem = memo(({ item, onPress, onDeletePress }: IServersHistoryItem) => {
 	const { colors } = useTheme();
 	const { width } = useResponsiveLayout();
 

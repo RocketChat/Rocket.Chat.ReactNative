@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { memo, type ReactElement, useRef } from 'react';
 import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -9,7 +9,7 @@ import styles from './styles';
 import * as ServiceLogin from './serviceLogin';
 import ButtonService from './ButtonService';
 
-const Service = React.memo(
+const Service = memo(
 	({
 		CAS_enabled,
 		CAS_login_url,
@@ -26,7 +26,7 @@ const Service = React.memo(
 	}) => {
 		const { colors } = useTheme();
 		const onPress = useRef<any>(null);
-		const buttonText = useRef<React.ReactElement | null>(null);
+		const buttonText = useRef<ReactElement | null>(null);
 		const modifiedName = useRef<string | null>(null);
 
 		const { name } = service;

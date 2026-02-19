@@ -2,7 +2,7 @@ import { type CompositeNavigationProp, type RouteProp, useNavigation, useRoute }
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { type ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { type Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
@@ -36,7 +36,7 @@ type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
-const RoomInfoView = (): React.ReactElement => {
+const RoomInfoView = (): ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();

@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { ActionsButton, BaseButton } from '..';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { type Strike as StrikeProps } from '@rocket.chat/message-parser';
 

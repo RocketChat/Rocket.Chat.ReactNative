@@ -1,4 +1,3 @@
-import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import { Image } from 'expo-image';
@@ -176,9 +175,9 @@ jest.mock('react-native-math-view', () => {
 jest.mock('react-native-keyboard-controller');
 
 jest.mock('react-native-webview', () => {
-	const React = require('react');
+	const { forwardRef } = require('react');
 	const { View } = require('react-native');
-	const WebView = React.forwardRef(() => <View />);
+	const WebView = forwardRef(() => <View />);
 	WebView.defaultProps = {};
 	return { WebView };
 });

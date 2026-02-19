@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 
 import { themes } from '../../lib/constants/colors';

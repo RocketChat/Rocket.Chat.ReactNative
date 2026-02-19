@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
 import Touchable from 'react-native-platform-touchable';

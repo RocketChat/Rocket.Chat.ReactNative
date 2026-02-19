@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
@@ -65,7 +65,7 @@ interface IMessageUser {
 	isTranslated: boolean;
 }
 
-const User = React.memo(
+const User = memo(
 	({
 		isHeader,
 		useRealName,
