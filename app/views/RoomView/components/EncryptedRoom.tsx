@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -20,7 +19,7 @@ export const EncryptedRoom = ({
 }: {
 	roomName: string;
 	navigation: NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
-}): ReactElement => {
+}) => {
 	const { colors } = useTheme();
 	const styles = useStyle();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);

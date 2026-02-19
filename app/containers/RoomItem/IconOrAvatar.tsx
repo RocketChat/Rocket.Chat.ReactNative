@@ -1,5 +1,4 @@
 import { View } from 'react-native';
-import type { ReactElement } from 'react';
 
 import Avatar from '../Avatar';
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
@@ -22,7 +21,7 @@ const IconOrAvatar = ({
 	displayMode,
 	sourceType,
 	abacAttributes
-}: IIconOrAvatar): ReactElement | null => {
+}: IIconOrAvatar) => {
 	const { rowHeight } = useResponsiveLayout();
 
 	if (showAvatar) {

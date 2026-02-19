@@ -1,11 +1,11 @@
-import { type ReactElement, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import Status from './Status';
 import type { IStatus } from './definition';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getUserPresence } from '../../lib/methods/getUsersPresence';
 
-const StatusContainer = ({ id, style, status, size = 32, ...props }: IStatus): ReactElement => {
+const StatusContainer = ({ id, style, status, size = 32, ...props }: IStatus) => {
 	const connected = useAppSelector(state => state.meteor.connected);
 	const statusState = useAppSelector(state => {
 		if (state.settings.Presence_broadcast_disabled) {

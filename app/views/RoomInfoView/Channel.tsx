@@ -1,11 +1,9 @@
-import type { ReactElement } from 'react';
-
 import I18n from '../../i18n';
 import type { ISubscription } from '../../definitions';
 import Item from './Item';
 import { RoomInfoABAC } from './components/RoomInfoABAC';
 
-const Channel = ({ room }: { room?: ISubscription }): ReactElement => {
+const Channel = ({ room }: { room?: ISubscription }) => {
 	const description = room?.description || `__${I18n.t('No_label_provided', { label: 'description' })}__`;
 	const topic = room?.topic || `__${I18n.t('No_label_provided', { label: 'topic' })}__`;
 	const announcement = room?.announcement || `__${I18n.t('No_label_provided', { label: 'announcement' })}__`;

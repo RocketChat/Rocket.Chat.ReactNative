@@ -1,4 +1,4 @@
-import { type ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import type { ISubscription } from '../../definitions';
@@ -25,7 +25,7 @@ const Title = ({ title }: { title: string }) => {
 	return <Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>;
 };
 
-const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechatVisitorModified }): ReactElement => {
+const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechatVisitorModified }) => {
 	const [department, setDepartment] = useState<ILivechatDepartment>({} as ILivechatDepartment);
 
 	const getDepartment = async (id: string) => {

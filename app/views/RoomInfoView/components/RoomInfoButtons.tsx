@@ -82,7 +82,7 @@ export const RoomInfoButtons = ({
 	roomFromRid,
 	serverVersion,
 	itsMe
-}: IRoomInfoButtons): ReactElement => {
+}: IRoomInfoButtons) => {
 	const room = roomFromRid || roomFromProps;
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;

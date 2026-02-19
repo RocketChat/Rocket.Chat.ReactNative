@@ -1,5 +1,5 @@
 import { Text } from 'react-native';
-import { type ReactElement, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import dayjs from '../../../lib/dayjs';
 import { useTheme } from '../../../theme';
@@ -11,7 +11,7 @@ interface ITimestampProps {
 	value: { timestamp: string; format: 't' | 'T' | 'd' | 'D' | 'f' | 'F' | 'R' };
 }
 
-const Timestamp = ({ value }: ITimestampProps): ReactElement => {
+const Timestamp = ({ value }: ITimestampProps) => {
 	const { colors } = useTheme();
 
 	const timestampMs = useMemo(() => parseInt(value.timestamp, 10) * 1000, [value.timestamp]);

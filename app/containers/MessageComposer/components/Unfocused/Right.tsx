@@ -1,5 +1,4 @@
 import { View } from 'react-native';
-import type { ReactElement } from 'react';
 
 import { useFocused } from '../../context';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
@@ -7,7 +6,7 @@ import { MicOrSendButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
 import { CancelEdit } from '../CancelEdit';
 
-export const Right = (): ReactElement | null => {
+export const Right = () => {
 	'use memo';
 
 	const focused = useFocused();

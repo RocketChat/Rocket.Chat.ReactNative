@@ -79,7 +79,7 @@ const reducer = (state: State, action: Actions): State => {
 	}
 };
 
-export const MessageComposerProvider = ({ children }: { children: ReactElement }): ReactElement => {
+export const MessageComposerProvider = ({ children }: { children: ReactElement }) => {
 	'use memo';
 
 	const [state, dispatch] = useReducer(reducer, {

@@ -1,5 +1,5 @@
 import { type NavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type ReactElement, useCallback, useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 
@@ -68,7 +68,7 @@ const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 	);
 };
 
-const RoomMembersView = (): ReactElement => {
+const RoomMembersView = () => {
 	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 

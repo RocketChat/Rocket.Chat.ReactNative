@@ -1,10 +1,9 @@
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { View } from 'react-native';
-import type { ReactElement } from 'react';
 
 import { useTheme } from '../../../../theme';
 
-export const AutocompleteItemLoading = ({ preview = false }: { preview?: boolean }): ReactElement => {
+export const AutocompleteItemLoading = ({ preview = false }: { preview?: boolean }) => {
 	'use memo';
 
 	const { colors } = useTheme();

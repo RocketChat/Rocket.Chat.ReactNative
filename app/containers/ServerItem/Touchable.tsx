@@ -26,7 +26,7 @@ const Touchable = ({
 	accessibilityLabel,
 	accessibilityHint,
 	accessibilityRole = 'button'
-}: IServerItemTouchableProps): ReactElement => {
+}: IServerItemTouchableProps) => {
 	const { colors } = useTheme();
 
 	if (onDeletePress) {

@@ -1,5 +1,4 @@
 import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from 'react-native';
-import type { ReactElement } from 'react';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const BackgroundContainer = ({ text, loading }: IBackgroundContainer): ReactElement => {
+const BackgroundContainer = ({ text, loading }: IBackgroundContainer) => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>

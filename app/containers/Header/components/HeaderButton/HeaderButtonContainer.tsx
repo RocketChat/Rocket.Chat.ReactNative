@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Container = ({ children, left = false, onLayout, style = {} }: IHeaderButtonContainer): ReactElement => (
+const Container = ({ children, left = false, onLayout, style = {} }: IHeaderButtonContainer) => (
 	<View style={[styles.container, left ? styles.left : styles.right, style]} onLayout={onLayout || undefined}>
 		{children}
 	</View>

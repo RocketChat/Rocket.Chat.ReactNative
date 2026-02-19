@@ -11,7 +11,7 @@ type VideoConfMessageIconProps = {
 	children: ReactElement | ReactElement[];
 };
 
-export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMessageIconProps): ReactElement => {
+export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMessageIconProps) => {
 	const { colors } = useTheme();
 	const style = useStyle();
 

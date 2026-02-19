@@ -1,14 +1,6 @@
-import type { ReactElement } from 'react';
-
 import { BaseButton, type IBaseButton } from '../Buttons';
 
-export const CancelButton = ({
-	onPress,
-	cancelAndDelete
-}: {
-	onPress: IBaseButton['onPress'];
-	cancelAndDelete?: boolean;
-}): ReactElement => (
+export const CancelButton = ({ onPress, cancelAndDelete }: { onPress: IBaseButton['onPress']; cancelAndDelete?: boolean }) => (
 	<BaseButton
 		onPress={onPress}
 		testID='message-composer-delete-audio'

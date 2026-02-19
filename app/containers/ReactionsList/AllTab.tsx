@@ -1,4 +1,4 @@
-import { memo, type ReactElement } from 'react';
+import { memo } from 'react';
 import { Text, View, FlatList } from 'react-native';
 
 import Emoji from '../message/Emoji';
@@ -60,7 +60,7 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 	);
 };
 
-const AllTab = ({ reactions, getCustomEmoji }: IAllTabProps): ReactElement => (
+const AllTab = ({ reactions, getCustomEmoji }: IAllTabProps) => (
 	<View style={styles.allTabContainer} testID='reactionsListAllTab'>
 		<FlatList
 			data={reactions}

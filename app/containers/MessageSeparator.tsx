@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from 'react-native';
-import type { ReactElement } from 'react';
 
 import dayjs from '../lib/dayjs';
 import I18n from '../i18n';
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: boolean }): ReactElement | null => {
+const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: boolean }) => {
 	const { theme } = useTheme();
 
 	if (!ts && !unread) {

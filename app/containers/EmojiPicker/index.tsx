@@ -1,4 +1,4 @@
-import { type ReactElement, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import type { Route } from 'reanimated-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,12 +20,7 @@ const routes = categories.tabs.map(tab => ({
 	accessibilityLabel: tab.accessibilityLabel
 }));
 
-const EmojiPicker = ({
-	onItemClicked,
-	isEmojiKeyboard = false,
-	searching = false,
-	searchedEmojis = []
-}: IEmojiPickerProps): ReactElement | null => {
+const EmojiPicker = ({ onItemClicked, isEmojiKeyboard = false, searching = false, searchedEmojis = [] }: IEmojiPickerProps) => {
 	const [parentWidth, setParentWidth] = useState(0);
 	const { bottom } = useSafeAreaInsets();
 	const { colors } = useTheme();

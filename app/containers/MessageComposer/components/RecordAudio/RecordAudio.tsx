@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { type ReactElement, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
 import { getInfoAsync } from 'expo-file-system';
 import { useKeepAwake } from 'expo-keep-awake';
@@ -23,7 +23,7 @@ import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
 
-export const RecordAudio = (): ReactElement | null => {
+export const RecordAudio = () => {
 	const [styles, colors] = useStyle();
 	const recordingRef = useRef<Audio.Recording | null>(null);
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);

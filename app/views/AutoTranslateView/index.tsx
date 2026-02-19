@@ -1,4 +1,4 @@
-import { memo, type ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
 import type { Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AutoTranslateView = (): ReactElement => {
+const AutoTranslateView = () => {
 	const navigation = useNavigation();
 	const {
 		params: { rid, room }

@@ -1,6 +1,6 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
-import { type ReactElement, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
 import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
@@ -33,7 +33,7 @@ import SidebarView from '../SidebarView';
 
 type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' | 'SE_GO_PROFILE' | 'SE_GO_SECURITYPRIVACY';
 
-const SettingsView = (): ReactElement => {
+const SettingsView = () => {
 	'use memo';
 
 	const { colors, theme } = useTheme();

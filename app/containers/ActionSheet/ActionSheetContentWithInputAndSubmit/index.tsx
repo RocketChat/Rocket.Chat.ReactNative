@@ -45,7 +45,7 @@ const FooterButtons = ({
 	cancelBackgroundColor = '',
 	confirmBackgroundColor = '',
 	testID = ''
-}): ReactElement => {
+}) => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.footerButtonsContainer}>
@@ -104,7 +104,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	inputs?: { placeholder: string; secureTextEntry?: boolean; key: string }[];
 	isDisabled?: (inputValues: string[]) => boolean;
 	autoComplete?: TextInputProps['autoComplete'];
-}): ReactElement => {
+}) => {
 	const { colors } = useTheme();
 	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
 	const inputRefs = useRef(inputs.map(() => createRef()));

@@ -1,5 +1,4 @@
 import { ActivityIndicator, type ActivityIndicatorProps, StyleSheet } from 'react-native';
-import type { ReactElement } from 'react';
 
 import { useTheme } from '../theme';
 import { themes } from '../lib/constants/colors';
@@ -24,7 +23,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RCActivityIndicator = ({ absolute, ...props }: IActivityIndicator): ReactElement => {
+const RCActivityIndicator = ({ absolute, ...props }: IActivityIndicator) => {
 	const { theme } = useTheme();
 	return (
 		<ActivityIndicator

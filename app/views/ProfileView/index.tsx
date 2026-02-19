@@ -1,6 +1,6 @@
 import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
-import { type ReactElement, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, type TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
@@ -48,7 +48,7 @@ const MAX_NICKNAME_LENGTH = 120;
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
-const ProfileView = ({ navigation }: IProfileViewProps): ReactElement => {
+const ProfileView = ({ navigation }: IProfileViewProps) => {
 	const validationSchema = yup.object().shape({
 		name: yup.string().required(I18n.t('Name_required')),
 		email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),

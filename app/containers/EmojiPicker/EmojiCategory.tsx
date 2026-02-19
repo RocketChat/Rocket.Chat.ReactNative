@@ -1,4 +1,4 @@
-import { memo, type ReactElement } from 'react';
+import { memo } from 'react';
 import { FlatList } from 'react-native';
 
 import type { ICustomEmojis, IEmoji } from '../../definitions/IEmoji';
@@ -38,7 +38,7 @@ const useEmojis = (category?: TEmojiCategory) => {
 	return emojisByCategory[category];
 };
 
-const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmojiCategoryProps): ReactElement | null => {
+const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmojiCategoryProps) => {
 	const items = useEmojis(category);
 
 	if (!parentWidth) {

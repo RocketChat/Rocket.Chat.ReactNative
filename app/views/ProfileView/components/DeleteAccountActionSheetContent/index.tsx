@@ -2,7 +2,6 @@ import { AccessibilityInfo, Keyboard, StyleSheet, Text, View } from 'react-nativ
 import { sha256 } from 'js-sha256';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import type { ReactElement } from 'react';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DeleteAccountActionSheetContent = (): ReactElement => {
+const DeleteAccountActionSheetContent = () => {
 	const { colors } = useTheme();
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();

@@ -1,5 +1,4 @@
 import { View } from 'react-native';
-import type { ReactElement } from 'react';
 
 import Markdown from '../../containers/markdown';
 import styles from './styles';
@@ -11,7 +10,7 @@ interface IItem {
 	testID?: string;
 }
 
-const Item = ({ label, content, testID }: IItem): ReactElement | null => {
+const Item = ({ label, content, testID }: IItem) => {
 	if (!content) return null;
 
 	return (

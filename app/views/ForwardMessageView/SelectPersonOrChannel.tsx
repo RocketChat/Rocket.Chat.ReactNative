@@ -1,4 +1,4 @@
-import { type ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -19,7 +19,7 @@ const SelectPersonOrChannel = ({
 	onRoomSelect,
 	blockUnauthenticatedAccess,
 	serverVersion
-}: IForwardMessageViewSelectRoom): ReactElement => {
+}: IForwardMessageViewSelectRoom) => {
 	const [rooms, setRooms] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
 

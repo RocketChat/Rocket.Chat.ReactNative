@@ -1,4 +1,4 @@
-import { type ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
@@ -19,7 +19,7 @@ const SelectChannel = ({
 	initial,
 	blockUnauthenticatedAccess,
 	serverVersion
-}: ICreateDiscussionViewSelectChannel): ReactElement => {
+}: ICreateDiscussionViewSelectChannel) => {
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
 

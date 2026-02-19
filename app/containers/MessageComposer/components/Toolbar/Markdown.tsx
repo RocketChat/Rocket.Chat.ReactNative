@@ -1,12 +1,10 @@
-import type { ReactElement } from 'react';
-
 import { BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import type { TMarkdownStyle } from '../../interfaces';
 import { emitter } from '../../../../lib/methods/helpers/emitter';
 
-export const Markdown = (): ReactElement => {
+export const Markdown = () => {
 	'use memo';
 
 	const { setMarkdownToolbar } = useMessageComposerApi();

@@ -1,4 +1,4 @@
-import { type ComponentProps, memo, type ReactElement } from 'react';
+import { type ComponentProps, memo } from 'react';
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
 import type { StyleProp, TextStyle } from 'react-native';
 
@@ -27,7 +27,7 @@ export interface ICustomIcon extends ComponentProps<typeof IconSet> {
 	style?: StyleProp<TextStyle>;
 }
 
-const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): ReactElement => {
+const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon) => {
 	const { colors } = useTheme();
 	const { fontScaleLimited } = useResponsiveLayout();
 

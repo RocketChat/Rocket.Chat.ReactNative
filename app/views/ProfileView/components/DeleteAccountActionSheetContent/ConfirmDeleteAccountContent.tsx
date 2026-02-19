@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import type { ReactElement } from 'react';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -44,11 +43,7 @@ interface IConfirmDeleteAccountContent {
 	removedRooms: string;
 }
 
-const ConfirmDeleteAccountContent = ({
-	password,
-	changeOwnerRooms,
-	removedRooms
-}: IConfirmDeleteAccountContent): ReactElement => {
+const ConfirmDeleteAccountContent = ({ password, changeOwnerRooms, removedRooms }: IConfirmDeleteAccountContent) => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const { hideActionSheet } = useActionSheet();

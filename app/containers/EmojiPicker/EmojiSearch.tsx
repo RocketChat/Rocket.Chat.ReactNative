@@ -1,4 +1,4 @@
-import { type ReactElement, useState } from 'react';
+import { useState } from 'react';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';
@@ -7,7 +7,7 @@ import { isIOS } from '../../lib/methods/helpers';
 import type { IEmojiSearchBarProps } from './interfaces';
 import styles from './styles';
 
-export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps): ReactElement => {
+export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchBarProps) => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 
