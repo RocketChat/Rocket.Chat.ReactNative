@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { memo, useState } from 'react';
 import { Text, View } from 'react-native';
 import { BorderlessButton, ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
@@ -16,7 +16,7 @@ interface IBannerProps {
 	closeBanner: () => void;
 }
 
-const Banner = React.memo(
+const Banner = memo(
 	({ text, title, bannerClosed, closeBanner }: IBannerProps) => {
 		const [showModal, openModal] = useState(false);
 		const { theme } = useTheme();

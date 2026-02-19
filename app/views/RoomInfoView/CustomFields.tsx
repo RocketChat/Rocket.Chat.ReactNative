@@ -1,8 +1,8 @@
-import React from 'react';
+import { type ReactElement } from 'react';
 
 import Item from './Item';
 
-const CustomFields = ({ customFields }: { customFields?: { [key: string]: string } }): React.ReactElement | null => {
+const CustomFields = ({ customFields }: { customFields?: { [key: string]: string } }): ReactElement | null => {
 	if (customFields) {
 		return (
 			<>

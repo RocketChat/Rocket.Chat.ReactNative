@@ -1,9 +1,9 @@
-import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { type CompositeNavigationProp, type RouteProp } from '@react-navigation/core';
+import { Component } from 'react';
 
 import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
@@ -78,7 +78,7 @@ interface IParams {
 	roomUserId?: string;
 }
 
-class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewState> {
+class MessagesView extends Component<IMessagesViewProps, IMessagesViewState> {
 	private rid: string;
 	private t: SubscriptionType;
 	private content: any;

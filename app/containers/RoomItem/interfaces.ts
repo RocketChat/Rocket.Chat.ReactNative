@@ -1,4 +1,3 @@
-import type React from 'react';
 import type Animated from 'react-native-reanimated';
 import { type ReactElement } from 'react';
 
@@ -46,7 +45,7 @@ export interface IWrapperProps {
 	type: string;
 	userId: string | null;
 	rid: string;
-	children: React.ReactElement;
+	children: ReactElement;
 	displayMode: string;
 	prid: string;
 	showLastMessage: boolean;

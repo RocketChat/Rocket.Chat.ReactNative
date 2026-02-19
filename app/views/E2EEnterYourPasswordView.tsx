@@ -1,5 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { type ReactElement, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Text, AccessibilityInfo, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -44,7 +44,7 @@ interface IE2EEnterYourPasswordView {
 	navigation: NativeStackNavigationProp<E2EEnterYourPasswordStackParamList, 'E2EEnterYourPasswordView'>;
 }
 
-const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): React.ReactElement => {
+const E2EEnterYourPasswordView = ({ navigation }: IE2EEnterYourPasswordView): ReactElement => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const { enabled: encryptionEnabled, failure: encryptionFailure } = useAppSelector(state => state.encryption);

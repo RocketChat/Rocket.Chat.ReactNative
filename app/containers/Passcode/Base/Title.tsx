@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { Row } from 'react-native-easy-grid';
+import { memo } from 'react';
 
 import styles from './styles';
 import { useTheme } from '../../../theme';
@@ -9,7 +9,7 @@ interface IPasscodeTitle {
 	text: string;
 }
 
-const Title = React.memo(({ text }: IPasscodeTitle) => {
+const Title = memo(({ text }: IPasscodeTitle) => {
 	const { colors } = useTheme();
 
 	return (

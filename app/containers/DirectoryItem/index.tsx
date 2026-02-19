@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text, View, type ViewStyle } from 'react-native';
+import { memo, type ReactElement } from 'react';
 
 import Touch from '../Touch';
 import Avatar from '../Avatar';
@@ -28,7 +28,7 @@ interface IDirectoryItem {
 	teamMain?: boolean;
 }
 
-const DirectoryItemLabel = React.memo(({ text, color }: IDirectoryItemLabel) => {
+const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {
 	if (!text) {
 		return null;
 	}
@@ -46,7 +46,7 @@ const DirectoryItem = ({
 	type,
 	rid,
 	teamMain
-}: IDirectoryItem): React.ReactElement => {
+}: IDirectoryItem): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useResponsiveLayout();
 	const height = ROW_HEIGHT * fontScale;

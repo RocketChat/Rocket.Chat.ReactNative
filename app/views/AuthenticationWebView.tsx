@@ -1,7 +1,7 @@
 import { type RouteProp } from '@react-navigation/core';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
 import { type WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';

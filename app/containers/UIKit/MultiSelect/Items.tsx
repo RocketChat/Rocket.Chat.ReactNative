@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { Image } from 'expo-image';

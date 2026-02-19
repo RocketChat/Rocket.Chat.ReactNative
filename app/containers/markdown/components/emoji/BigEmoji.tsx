@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { type BigEmoji as BigEmojiProps } from '@rocket.chat/message-parser';
 

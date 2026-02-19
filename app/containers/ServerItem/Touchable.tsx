@@ -1,4 +1,4 @@
-import React, { memo, type ReactElement } from 'react';
+import { memo, type ReactElement } from 'react';
 import { type AccessibilityRole } from 'react-native';
 
 import SwipeableDeleteTouchable from './SwipeableDeleteItem/Touchable';
@@ -26,7 +26,7 @@ const Touchable = ({
 	accessibilityLabel,
 	accessibilityHint,
 	accessibilityRole = 'button'
-}: IServerItemTouchableProps): React.ReactElement => {
+}: IServerItemTouchableProps): ReactElement => {
 	const { colors } = useTheme();
 
 	if (onDeletePress) {

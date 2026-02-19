@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text } from 'react-native';
+import { type ReactElement, useCallback, useMemo } from 'react';
 
 import dayjs from '../../../lib/dayjs';
 import { useTheme } from '../../../theme';
@@ -11,12 +11,12 @@ interface ITimestampProps {
 	value: { timestamp: string; format: 't' | 'T' | 'd' | 'D' | 'f' | 'F' | 'R' };
 }
 
-const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
+const Timestamp = ({ value }: ITimestampProps): ReactElement => {
 	const { colors } = useTheme();
 
-	const timestampMs = React.useMemo(() => parseInt(value.timestamp, 10) * 1000, [value.timestamp]);
+	const timestampMs = useMemo(() => parseInt(value.timestamp, 10) * 1000, [value.timestamp]);
 
-	const formatDate = React.useMemo(() => {
+	const formatDate = useMemo(() => {
 		if (value.format === 't') {
 			return dayjs(timestampMs).format('hh:mm A');
 		}
@@ -48,7 +48,7 @@ const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
 		return 'Invalid Date';
 	}, [timestampMs, value.format]);
 
-	const handlePress = React.useCallback(() => {
+	const handlePress = useCallback(() => {
 		const message = dayjs(timestampMs).format('dddd, MMM DD, YYYY hh:mm A');
 		EventEmitter.emit(LISTENER, { message });
 	}, [timestampMs]);

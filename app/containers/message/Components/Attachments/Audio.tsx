@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { View } from 'react-native';
 
 import { type IAttachment, type IUserMessage } from '../../../../definitions';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
@@ -67,7 +67,7 @@ interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'Thr
 	isMasterDetail: boolean;
 }
 
-class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
+class ThreadMessagesView extends Component<IThreadMessagesViewProps, IThreadMessagesViewState> {
 	private mounted: boolean;
 
 	private rid: string;

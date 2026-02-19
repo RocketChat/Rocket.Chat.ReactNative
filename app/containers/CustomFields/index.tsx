@@ -1,4 +1,4 @@
-import React from 'react';
+import { type RefObject } from 'react';
 import { type TextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -9,7 +9,7 @@ interface ICustomFields {
 	Accounts_CustomFields: string;
 	customFields: any;
 	onCustomFieldChange: (value: any) => void;
-	customFieldsRef: React.MutableRefObject<{
+	customFieldsRef: RefObject<{
 		[key: string]: TextInput | undefined;
 	}>;
 	onSubmit?: () => void;

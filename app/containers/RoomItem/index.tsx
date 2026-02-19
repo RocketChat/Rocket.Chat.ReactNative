@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef } from 'react';
+import { memo, useEffect, useReducer, useRef } from 'react';
 import { type Subscription } from 'rxjs';
 
 import { isGroupChat } from '../../lib/methods/helpers';
@@ -9,7 +9,7 @@ import { isInviteSubscription } from '../../lib/methods/isInviteSubscription';
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
-const RoomItemContainer = React.memo(
+const RoomItemContainer = memo(
 	({
 		item,
 		id,

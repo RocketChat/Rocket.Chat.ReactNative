@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
@@ -11,6 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import { memo } from 'react';
 
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
@@ -28,7 +28,7 @@ export interface IDeleteActionProps {
 
 const SERVER_ITEM_PADDING_VERTICAL = 12;
 
-export const DeleteAction = React.memo(
+export const DeleteAction = memo(
 	({ transX, width, rowHeight, actionWidth, longSwipe, onDeletePress, testID }: IDeleteActionProps) => {
 		const { colors } = useTheme();
 

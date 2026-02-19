@@ -1,7 +1,7 @@
-import type * as React from 'react';
 import { screen, render, fireEvent, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { type ReactElement, type ReactNode } from 'react';
 
 import ReactionsList from './index';
 import { type IReaction } from '../../definitions';
@@ -32,7 +32,6 @@ jest.mock('../../i18n', () => ({
 
 // Mock Avatar component
 jest.mock('../Avatar', () => {
-	const React = require('react');
 	const { View, Text } = require('react-native');
 	return {
 		__esModule: true,
@@ -54,18 +53,18 @@ interface IRoute {
 
 interface ITabViewProps {
 	routes: IRoute[];
-	renderScene: (props: { route: IRoute }) => React.ReactNode;
-	renderTabItem: (route: IRoute, color: string) => React.ReactNode;
+	renderScene: (props: { route: IRoute }) => ReactNode;
+	renderTabItem: (route: IRoute, color: string) => ReactNode;
 }
 
 // Mock TabView to better match the actual implementation
 jest.mock('../TabView', () => {
-	const React = require('react');
+	const { useState } = require('react');
 	const { View, TouchableOpacity } = require('react-native');
 
 	return {
 		TabView: ({ routes, renderScene, renderTabItem }: ITabViewProps) => {
-			const [index, setIndex] = React.useState(0);
+			const [index, setIndex] = useState(0);
 
 			const jumpTo = (key: string) => {
 				const newIndex = routes.findIndex((route: IRoute) => route.key === key);
@@ -130,7 +129,7 @@ const mockReactions: IReaction[] = [
 	}
 ];
 
-const renderWithRedux = (component: React.ReactElement) => render(<Provider store={mockStore}>{component}</Provider>);
+const renderWithRedux = (component: ReactElement) => render(<Provider store={mockStore}>{component}</Provider>);
 
 describe('ReactionsList Integration Tests', () => {
 	beforeEach(() => {

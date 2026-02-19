@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentType, createElement } from 'react';
 import { composeStories } from '@storybook/react';
 import { render } from '@testing-library/react-native';
 import preview from './preview';
@@ -14,7 +14,7 @@ export function generateSnapshots(stories: any) {
 		});
 		Object.entries(composedStories).forEach(([name, story]) => {
 			test(`${name} should match snapshot`, () => {
-				const rendered = render(React.createElement(story as React.ComponentType));
+				const rendered = render(createElement(story as ComponentType));
 				expect(rendered.toJSON()).toMatchSnapshot();
 			});
 		});

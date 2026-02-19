@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { UiKitMessage, UiKitModal } from './index';
 import { KitContext } from './utils';
 

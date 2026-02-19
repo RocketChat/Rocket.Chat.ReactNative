@@ -1,4 +1,12 @@
-import React, { forwardRef, useRef, useLayoutEffect } from 'react';
+import {
+	forwardRef,
+	useRef,
+	useLayoutEffect,
+	type RefAttributes,
+	type ComponentRef,
+	type ComponentType,
+	type MutableRefObject
+} from 'react';
 import {
 	findNodeHandle,
 	requireNativeComponent,
@@ -30,8 +38,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-type ScrollViewPropsWithRef = ScrollViewProps & React.RefAttributes<NativeScrollInstance | null>;
-type NativeScrollInstance = React.ComponentRef<NonNullable<typeof NativeInvertedScrollView>>;
+type ScrollViewPropsWithRef = ScrollViewProps & RefAttributes<NativeScrollInstance | null>;
+type NativeScrollInstance = ComponentRef<NonNullable<typeof NativeInvertedScrollView>>;
 interface IScrollableMethods {
 	scrollTo(options?: { x?: number; y?: number; animated?: boolean }): void;
 	scrollToEnd(options?: { animated?: boolean }): void;
@@ -98,7 +106,7 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((p
 		if (typeof externalRef === 'function') {
 			externalRef(node as InvertedScrollViewRef);
 		} else if (externalRef) {
-			(externalRef as React.MutableRefObject<NativeScrollInstance | null>).current = node;
+			(externalRef as MutableRefObject<NativeScrollInstance | null>).current = node;
 		}
 	};
 
@@ -135,8 +143,8 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((p
 	if (!NativeInvertedScrollView || !NativeInvertedScrollContentView) {
 		return null;
 	}
-	const ScrollView = NativeInvertedScrollView as React.ComponentType<ScrollViewPropsWithRef>;
-	const ContentView = NativeInvertedScrollContentView as React.ComponentType<ViewProps & { removeClippedSubviews?: boolean }>;
+	const ScrollView = NativeInvertedScrollView as ComponentType<ScrollViewPropsWithRef>;
+	const ContentView = NativeInvertedScrollContentView as ComponentType<ViewProps & { removeClippedSubviews?: boolean }>;
 
 	return (
 		<ScrollView ref={setRef} {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)} horizontal={horizontal}>

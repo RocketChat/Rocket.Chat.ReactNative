@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 

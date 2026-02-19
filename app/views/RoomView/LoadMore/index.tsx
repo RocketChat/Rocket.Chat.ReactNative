@@ -1,4 +1,4 @@
-import React, { type ReactElement, useEffect } from 'react';
+import { memo, type ReactElement, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const LoadMore = React.memo(
+const LoadMore = memo(
 	({
 		rid,
 		t,
@@ -42,7 +42,7 @@ const LoadMore = React.memo(
 		separator?: ReactElement | null;
 		dateSeparator?: Date | string | null;
 		showUnreadSeparator?: boolean;
-	}): React.ReactElement => {
+	}): ReactElement => {
 		const { colors } = useTheme();
 		const dispatch = useDispatch();
 		const loading = useAppSelector(state => state.room.historyLoaders.some(historyLoader => historyLoader === loaderId));

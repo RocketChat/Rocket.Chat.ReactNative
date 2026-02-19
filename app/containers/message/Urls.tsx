@@ -1,4 +1,4 @@
-import React, { type ReactElement, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { memo, type ReactElement, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
@@ -186,7 +186,7 @@ const Url = ({ url }: { url: IUrl }) => {
 		</Touchable>
 	);
 };
-const Urls = React.memo(
+const Urls = memo(
 	({ urls }: { urls?: IUrl[] }): ReactElement[] | null => {
 		'use memo';
 

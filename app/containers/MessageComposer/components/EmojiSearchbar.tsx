@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { type ReactElement, useContext, useState } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
 import { textInputDebounceTime } from '../../../lib/constants/debounceConfig';
@@ -18,7 +18,7 @@ import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
-export const EmojiSearchbar = (): React.ReactElement | null => {
+export const EmojiSearchbar = (): ReactElement | null => {
 	'use memo';
 
 	const { colors } = useTheme();

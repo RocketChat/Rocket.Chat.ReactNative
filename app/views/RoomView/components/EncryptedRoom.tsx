@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 

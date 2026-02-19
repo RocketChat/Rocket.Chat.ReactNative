@@ -1,5 +1,5 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { memo } from 'react';
 
 import sharedStyles from '../views/Styles';
 import { getReadableVersion } from '../lib/methods/helpers';
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AppVersion = React.memo(() => {
+const AppVersion = memo(() => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.container}>

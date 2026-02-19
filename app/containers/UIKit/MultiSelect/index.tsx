@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Text, type TextStyle } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
@@ -41,7 +41,7 @@ interface IMultiSelect {
 	testID?: string;
 }
 
-export const MultiSelect = React.memo(
+export const MultiSelect = memo(
 	({
 		options = [],
 		onChange,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
 import DateTimePicker, { type BaseProps } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';

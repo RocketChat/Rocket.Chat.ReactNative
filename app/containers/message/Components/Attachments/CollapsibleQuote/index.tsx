@@ -1,6 +1,6 @@
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
-import React, { useContext, useState } from 'react';
+import { memo, useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../../../lib/constants/colors';
@@ -83,7 +83,7 @@ interface IMessageReply {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const AttText = React.memo(
+const AttText = memo(
 	({ text, getCustomEmoji }: IMessageAttText) => {
 		'use memo';
 
@@ -98,7 +98,7 @@ const AttText = React.memo(
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
 
-const Fields = React.memo(
+const Fields = memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
 		'use memo';
 
@@ -125,7 +125,7 @@ const Fields = React.memo(
 	(prevProps, nextProps) => dequal(prevProps.attachment.fields, nextProps.attachment.fields)
 );
 
-const CollapsibleQuote = React.memo(
+const CollapsibleQuote = memo(
 	({ attachment, getCustomEmoji }: IMessageReply) => {
 		'use memo';
 

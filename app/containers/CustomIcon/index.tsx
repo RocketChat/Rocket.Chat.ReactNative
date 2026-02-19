@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { type ComponentProps, memo, type ReactElement } from 'react';
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
 import type { StyleProp, TextStyle } from 'react-native';
 
@@ -20,14 +20,14 @@ export const hasIcon = (name: string) => Object.prototype.hasOwnProperty.call(gl
 
 export type TIconsName = keyof typeof mappedIcons;
 
-export interface ICustomIcon extends React.ComponentProps<typeof IconSet> {
+export interface ICustomIcon extends ComponentProps<typeof IconSet> {
 	name: TIconsName;
 	size: number;
 	color?: string;
 	style?: StyleProp<TextStyle>;
 }
 
-const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
+const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): ReactElement => {
 	const { colors } = useTheme();
 	const { fontScaleLimited } = useResponsiveLayout();
 

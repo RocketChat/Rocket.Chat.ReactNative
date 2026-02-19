@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';

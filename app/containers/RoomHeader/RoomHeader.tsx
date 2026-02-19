@@ -1,6 +1,6 @@
-import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { memo, type ReactElement } from 'react';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../../i18n';
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
 	subtitle?: string;
-	renderFunc?: () => React.ReactElement;
+	renderFunc?: () => ReactElement;
 	scale: number;
 };
 
@@ -83,7 +83,7 @@ interface IRoomHeader {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -115,7 +115,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 	return null;
 });
 
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 
@@ -131,7 +131,7 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeade
 	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
-const Header = React.memo(
+const Header = memo(
 	({
 		title,
 		subtitle,

@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, memo, useImperativeHandle } from 'react';
 import { Alert, Share } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
@@ -69,7 +69,7 @@ export interface IMessageActions {
 	showMessageActions: (message: TAnyMessageModel) => Promise<void>;
 }
 
-const MessageActions = React.memo(
+const MessageActions = memo(
 	forwardRef<IMessageActions, IMessageActionsProps>(
 		(
 			{

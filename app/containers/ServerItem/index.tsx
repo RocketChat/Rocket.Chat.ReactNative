@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
+import { memo } from 'react';
 
 import * as List from '../List';
 import styles, { ROW_HEIGHT } from './styles';
@@ -27,7 +27,7 @@ export interface IServerItem {
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const ServerItem = React.memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
+const ServerItem = memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();
 	const { width } = useResponsiveLayout();
 

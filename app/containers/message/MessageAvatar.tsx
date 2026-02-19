@@ -1,4 +1,4 @@
-import React, { type ReactElement, useContext } from 'react';
+import { memo, type ReactElement, useContext } from 'react';
 import { View } from 'react-native';
 
 import Avatar from '../Avatar';
@@ -16,7 +16,7 @@ export const AvatarContainer = ({ children }: { children?: ReactElement | null }
 	return <View style={{ width, alignItems: 'flex-end' }}>{children}</View>;
 };
 
-const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
+const MessageAvatar = memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
 	'use memo';
 
 	const { user } = useContext(MessageContext);

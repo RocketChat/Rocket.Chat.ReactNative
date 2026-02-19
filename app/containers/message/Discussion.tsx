@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
@@ -13,7 +13,7 @@ import { type IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
 
 // TODO: Create a reusable button component for message
-const Discussion = React.memo(
+const Discussion = memo(
 	({ msg, dcount, dlm }: Pick<IMessage, 'msg' | 'dcount' | 'dlm'>) => {
 		'use memo';
 

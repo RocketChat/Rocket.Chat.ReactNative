@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { memo, type ReactElement, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
 import { type Subscription } from 'rxjs';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AutoTranslateView = (): React.ReactElement => {
+const AutoTranslateView = (): ReactElement => {
 	const navigation = useNavigation();
 	const {
 		params: { rid, room }
@@ -93,7 +93,7 @@ const AutoTranslateView = (): React.ReactElement => {
 		}
 	};
 
-	const LanguageItem = React.memo(({ language, name }: { language: string; name?: string }) => (
+	const LanguageItem = memo(({ language, name }: { language: string; name?: string }) => (
 		<List.Item
 			title={name || language}
 			onPress={() => saveAutoTranslateLanguage(language)}

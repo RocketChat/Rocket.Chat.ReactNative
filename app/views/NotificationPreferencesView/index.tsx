@@ -1,5 +1,5 @@
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react';
+import { type ReactElement, useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -86,7 +86,7 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 	);
 };
 
-const NotificationPreferencesView = (): React.ReactElement => {
+const NotificationPreferencesView = (): ReactElement => {
 	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { rid, room } = route.params;
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>>();

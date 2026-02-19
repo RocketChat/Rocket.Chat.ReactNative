@@ -1,4 +1,3 @@
-import React from 'react';
 import { type Dispatch } from 'redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, Text, View } from 'react-native';
@@ -7,6 +6,7 @@ import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
+import { Component } from 'react';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -66,7 +66,7 @@ interface IShareListViewProps extends INavigationOption {
 const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TSubscriptionModel) => item.rid;
 
-class ShareListView extends React.Component<IShareListViewProps, IState> {
+class ShareListView extends Component<IShareListViewProps, IState> {
 	private unsubscribeFocus: (() => void) | undefined;
 
 	private unsubscribeBlur: (() => void) | undefined;

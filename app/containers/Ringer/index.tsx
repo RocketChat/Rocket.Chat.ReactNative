@@ -1,12 +1,12 @@
 import { Audio } from 'expo-av';
-import React, { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 export enum ERingerSounds {
 	DIALTONE = 'dialtone',
 	RINGTONE = 'ringtone'
 }
 
-const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
+const Ringer = memo(({ ringer }: { ringer: ERingerSounds }) => {
 	const sound = useRef(new Audio.Sound());
 
 	useEffect(() => {

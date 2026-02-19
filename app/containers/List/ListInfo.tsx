@@ -1,5 +1,5 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { memo } from 'react';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
@@ -24,7 +24,7 @@ interface IListInfo {
 	translateInfo?: boolean;
 }
 
-const ListInfo = React.memo(({ info, translateInfo = true }: IListInfo) => {
+const ListInfo = memo(({ info, translateInfo = true }: IListInfo) => {
 	'use memo';
 
 	const { theme } = useTheme();

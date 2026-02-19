@@ -1,11 +1,11 @@
-import React from 'react';
 import { Text } from 'react-native';
+import { memo } from 'react';
 
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { type IMessageEmoji } from './interfaces';
 
-const Emoji = React.memo(
+const Emoji = memo(
 	({ content, standardEmojiStyle, customEmojiStyle, getCustomEmoji }: IMessageEmoji) => {
 		'use memo';
 

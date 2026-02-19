@@ -1,6 +1,16 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
+import {
+	forwardRef,
+	isValidElement,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+	useCallback,
+	type ReactElement,
+	memo
+} from 'react';
 import { Keyboard, type LayoutChangeEvent, useWindowDimensions } from 'react-native';
 import { Easing, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetBackdrop, type BottomSheetBackdropProps } from '@discord/bottom-sheet';
@@ -23,8 +33,8 @@ const ANIMATION_CONFIG = {
 	easing: Easing.bezier(0.645, 0.045, 0.355, 1.0)
 };
 
-const ActionSheet = React.memo(
-	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
+const ActionSheet = memo(
+	forwardRef(({ children }: { children: ReactElement }, ref) => {
 		const { colors } = useTheme();
 		const { height: windowHeight } = useWindowDimensions();
 		const { bottom, right, left } = useSafeAreaInsets();

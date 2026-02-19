@@ -1,5 +1,5 @@
-import React from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { memo } from 'react';
 
 import { type TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
@@ -91,7 +91,7 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	</Touch>
 );
 
-const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
+const Header = memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
 	const { width } = useWindowDimensions();
 	const { theme } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji(true);

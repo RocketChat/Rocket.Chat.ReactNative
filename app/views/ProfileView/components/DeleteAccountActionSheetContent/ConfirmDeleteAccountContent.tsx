@@ -1,6 +1,6 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { type ReactElement } from 'react';
 
 import i18n from '../../../../i18n';
 import sharedStyles from '../../../Styles';
@@ -48,7 +48,7 @@ const ConfirmDeleteAccountContent = ({
 	password,
 	changeOwnerRooms,
 	removedRooms
-}: IConfirmDeleteAccountContent): React.ReactElement => {
+}: IConfirmDeleteAccountContent): ReactElement => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const { hideActionSheet } = useActionSheet();

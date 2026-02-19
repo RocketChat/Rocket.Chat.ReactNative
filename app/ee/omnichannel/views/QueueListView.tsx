@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, type ListRenderItem, useWindowDimensions } from 'react-native';
@@ -29,7 +29,7 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
-const QueueListView = React.memo(() => {
+const QueueListView = memo(() => {
 	const navigation = useNavigation<TNavigation>();
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
 	const { colors } = useTheme();

@@ -1,6 +1,6 @@
-import React from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import { memo } from 'react';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../lib/constants/colors';
@@ -70,7 +70,7 @@ interface IThumbs extends Omit<IThumb, 'item'> {
 	attachments: IShareAttachment[];
 }
 
-const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
+const ThumbContent = memo(({ item, theme }: IThumbContent) => {
 	const type = item?.mime;
 
 	if (type?.match(/image/)) {

@@ -1,6 +1,6 @@
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { dequal } from 'dequal';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { type Dispatch } from 'redux';
 import { type Observable, type Subscription } from 'rxjs';

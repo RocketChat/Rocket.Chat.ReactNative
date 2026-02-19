@@ -1,4 +1,3 @@
-import React from 'react';
 import { type TextInputProps } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useDispatch } from 'react-redux';

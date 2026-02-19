@@ -1,7 +1,7 @@
-import React from 'react';
 import { I18nManager } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useContext } from 'react';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
@@ -96,7 +96,7 @@ const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>
 const ChatsStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 	return (
 		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<ChatsStack.Screen name='RoomsListView' component={RoomsListView} />
@@ -163,7 +163,7 @@ const ProfileStack = createNativeStackNavigator<ProfileStackParamList & TNavigat
 const ProfileStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 	return (
 		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} />
@@ -182,7 +182,7 @@ const SettingsStack = createNativeStackNavigator<SettingsStackParamList>();
 const SettingsStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<SettingsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -211,7 +211,7 @@ const AdminPanelStack = createNativeStackNavigator<AdminPanelStackParamList>();
 const AdminPanelStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<AdminPanelStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -225,7 +225,7 @@ const AccessibilityStack = createNativeStackNavigator<AccessibilityStackParamLis
 const AccessibilityStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 	return (
 		<AccessibilityStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<AccessibilityStack.Screen name='AccessibilityAndAppearanceView' component={AccessibilityAndAppearanceView} />
@@ -240,7 +240,7 @@ const Drawer = createDrawerNavigator<DrawerParamList>();
 const DrawerNavigator = () => {
 	'use memo';
 
-	const { colors } = React.useContext(ThemeContext);
+	const { colors } = useContext(ThemeContext);
 
 	return (
 		<Drawer.Navigator
@@ -268,7 +268,7 @@ const NewMessageStack = createNativeStackNavigator<NewMessageStackParamList>();
 const NewMessageStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<NewMessageStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -287,7 +287,7 @@ const E2ESaveYourPasswordStack = createNativeStackNavigator<E2ESaveYourPasswordS
 const E2ESaveYourPasswordStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<E2ESaveYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -302,7 +302,7 @@ const E2EEnterYourPasswordStack = createNativeStackNavigator<E2EEnterYourPasswor
 const E2EEnterYourPasswordStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -317,7 +317,7 @@ const InsideStack = createNativeStackNavigator<InsideStackParamList & TNavigatio
 const InsideStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<InsideStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), presentation: 'containedModal' }}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 
 import { type IUserMention, type IUserChannel } from '../interfaces';
 
@@ -20,5 +20,5 @@ const defaultState = {
 	navToRoomInfo: () => {}
 };
 
-const MarkdownContext = React.createContext<IMarkdownContext>(defaultState);
+const MarkdownContext = createContext<IMarkdownContext>(defaultState);
 export default MarkdownContext;

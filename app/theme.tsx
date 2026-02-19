@@ -1,5 +1,5 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React from 'react';
+import { type ComponentType, createContext, useContext } from 'react';
 
 import { type IThemePreference } from './definitions/ITheme';
 import { type TNavigationOptions } from './definitions/navigationTypes';
@@ -15,9 +15,9 @@ export interface IThemeContextProps {
 	colors: TColors;
 }
 
-export const ThemeContext = React.createContext<IThemeContextProps>({ theme: 'light', colors: colors.light });
+export const ThemeContext = createContext<IThemeContextProps>({ theme: 'light', colors: colors.light });
 
-export function withTheme<T extends object>(Component: React.ComponentType<T> & TNavigationOptions): typeof Component {
+export function withTheme<T extends object>(Component: ComponentType<T> & TNavigationOptions): typeof Component {
 	const ThemedComponent = (props: T) => (
 		<ThemeContext.Consumer>{contexts => <Component {...props} {...contexts} />}</ThemeContext.Consumer>
 	);
@@ -26,4 +26,4 @@ export function withTheme<T extends object>(Component: React.ComponentType<T> & 
 	return ThemedComponent;
 }
 
-export const useTheme = (): IThemeContextProps => React.useContext(ThemeContext);
+export const useTheme = (): IThemeContextProps => useContext(ThemeContext);

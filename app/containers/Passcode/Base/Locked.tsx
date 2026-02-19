@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Grid } from 'react-native-easy-grid';
 
 import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
@@ -20,7 +20,7 @@ interface IPasscodeLocked {
 	setStatus: Function;
 }
 
-const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
+const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
 	const calcTimeLeft = () => {
 		const diff = getDiff(time || 0);
 		if (diff > 0) {
@@ -47,7 +47,7 @@ const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
 	return <Subtitle text={I18n.t('Passcode_app_locked_subtitle', { timeLeft })} />;
 });
 
-const Locked = React.memo(({ setStatus }: IPasscodeLocked) => {
+const Locked = memo(({ setStatus }: IPasscodeLocked) => {
 	const [lockedUntil, setLockedUntil] = useState<Date | null>(null);
 	const { colors } = useTheme();
 

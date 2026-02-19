@@ -1,6 +1,6 @@
-import React from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { type StyleProp, type ViewStyle } from 'react-native';
+import { memo } from 'react';
 
 import I18n from '../../../../i18n';
 import { isIOS } from '../../../../lib/methods/helpers/deviceInfo';
@@ -36,7 +36,7 @@ export const Drawer = ({
 	);
 };
 
-export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
+export const CloseModal = memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
 	const { dispatch } = useNavigation();
 	return (
 		<Container left>
@@ -54,7 +54,7 @@ export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButt
 	);
 });
 
-export const CancelModal = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
+export const CancelModal = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container left>
 		{isIOS ? (
 			<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} {...props} />
@@ -65,25 +65,25 @@ export const CancelModal = React.memo(({ onPress, testID, ...props }: IHeaderBut
 ));
 
 // Right
-export const More = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
+export const More = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container>
 		<Item iconName='kebab' onPress={onPress} testID={testID} {...props} />
 	</Container>
 ));
 
-export const Download = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
+export const Download = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container>
 		<Item iconName='download' onPress={onPress} testID={testID} {...props} />
 	</Container>
 ));
 
-export const Preferences = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
+export const Preferences = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container>
 		<Item iconName='settings' onPress={onPress} testID={testID} {...props} />
 	</Container>
 ));
 
-export const Legal = React.memo(
+export const Legal = memo(
 	({ navigation, testID, onPress = () => navigation?.navigate('LegalView'), ...props }: IHeaderButtonCommon) => (
 		<More accessibilityLabel={I18n.t('More')} onPress={onPress} testID={testID} {...props} />
 	)

@@ -1,5 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 
-// @ts-ignore
-const MessageContext = React.createContext<any>();
+const MessageContext = createContext<any>(undefined);
 export default MessageContext;

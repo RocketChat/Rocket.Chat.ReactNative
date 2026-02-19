@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
@@ -28,7 +28,7 @@ interface IArgs {
 	force: boolean;
 }
 
-const ChangePasscodeView = React.memo(() => {
+const ChangePasscodeView = memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<Partial<IArgs>>({});
 

@@ -1,4 +1,4 @@
-import React, { useRef, memo } from 'react';
+import { useRef, memo, type ReactElement } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
 import {
 	Gesture,
@@ -31,7 +31,7 @@ const Touchable = ({
 	isFocused,
 	swipeEnabled,
 	displayMode
-}: ITouchableProps): React.ReactElement => {
+}: ITouchableProps): ReactElement => {
 	const { colors } = useTheme();
 	const serverVersion = useAppSelector(state => state.server.version);
 	const rowOffSet = useSharedValue(0);
