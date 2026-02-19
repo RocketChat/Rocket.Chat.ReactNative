@@ -1,8 +1,8 @@
 import React from 'react';
+import { type RouteProp } from '@react-navigation/native';
 import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { type RouteProp } from '@react-navigation/native';
 
 import { type ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
@@ -18,10 +18,19 @@ import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
 import { type IApplicationState } from '../definitions';
 import { type TDataSelect } from '../definitions/IDataSelect';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+
+const InfoText = ({ text, theme }: { text: string; theme: TSupportedThemes }) => {
+	const { scaleFontSize } = useResponsiveLayout();
+	return (
+		<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
+			<Text style={[styles.buttonText, { color: themes[theme].fontDefault, fontSize: scaleFontSize(16) }]}>{I18n.t(text)}</Text>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	buttonText: {
-		fontSize: 16,
 		margin: 16,
 		...sharedStyles.textRegular
 	}
@@ -98,11 +107,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 
 	renderInfoText = () => {
 		const { theme } = this.props;
-		return (
-			<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
-				<Text style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.infoText)}</Text>
-			</View>
-		);
+		return <InfoText text={this.infoText} theme={theme} />;
 	};
 
 	renderSearch = () => <SearchBox onChangeText={(text: string) => this.search(text)} testID='select-list-view-search' />;

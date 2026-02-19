@@ -5,6 +5,7 @@ import { CustomIcon } from '../../containers/CustomIcon';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
 import { type IMessageFromServer } from '../../definitions';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,6 +37,7 @@ interface IDiscussionDetails {
 
 const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactElement => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	let count: string | number | undefined = item.dcount;
 	if (count && count >= 1000) {
 		count = '+999';
@@ -46,14 +48,14 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactEleme
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'discussions'} size={24} color={colors.fontSecondaryInfo} />
-					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(10) }]} numberOfLines={1}>
 						{count}
 					</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'clock'} size={24} color={colors.fontSecondaryInfo} />
-					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(10) }]} numberOfLines={1}>
 						{date}
 					</Text>
 				</View>

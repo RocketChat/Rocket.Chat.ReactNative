@@ -17,17 +17,14 @@ import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import { useActionSheet } from '../../../../containers/ActionSheet/Provider';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { getTranslations } from './getTranslations';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	subtitleText: {
-		...sharedStyles.textRegular,
-		fontSize: 16,
-		lineHeight: 24
+		...sharedStyles.textRegular
 	},
 	titleContainerText: {
 		...sharedStyles.textBold,
-		fontSize: 16,
-		lineHeight: 24,
 		paddingLeft: 12
 	},
 	titleContainer: {
@@ -44,6 +41,7 @@ const styles = StyleSheet.create({
 
 const DeleteAccountActionSheetContent = (): React.ReactElement => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
 	const {
@@ -93,11 +91,11 @@ const DeleteAccountActionSheetContent = (): React.ReactElement => {
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<View accessible accessibilityLabel={i18n.t('Are_you_sure_you_want_to_delete_your_account')} style={styles.titleContainer}>
 				<CustomIcon name={'warning'} size={32} color={colors.buttonBackgroundDangerDefault} />
-				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>
+				<Text style={[styles.titleContainerText, { color: colors.fontDefault, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(24) }]}>
 					{i18n.t('Are_you_sure_you_want_to_delete_your_account')}
 				</Text>
 			</View>
-			<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>
+			<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(24) }]}>
 				{i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
 			</Text>
 

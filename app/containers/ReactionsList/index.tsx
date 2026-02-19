@@ -9,6 +9,7 @@ import AllTab from './AllTab';
 import UsersList from './UsersList';
 import { TabView } from '../TabView';
 import Emoji from '../message/Emoji';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IReactionsListProps {
 	getCustomEmoji: TGetCustomEmoji;
@@ -53,6 +54,7 @@ const useRoutes = (reactions: IReaction[] | undefined) => {
 
 const ReactionsList = ({ reactions, getCustomEmoji }: IReactionsListProps) => {
 	const { routes, sortedReactions } = useRoutes(reactions);
+	const { scaleFontSize } = useResponsiveLayout();
 
 	const renderScene = ({ route }: { route: IRoute }) => {
 		if (route.key === 'all') {
@@ -68,7 +70,7 @@ const ReactionsList = ({ reactions, getCustomEmoji }: IReactionsListProps) => {
 		if (tab.key === 'all') {
 			return (
 				<View style={styles.tabBarItem}>
-					<Text style={[styles.allTabItem, { color }]}>{I18n.t('All')}</Text>
+					<Text style={[styles.allTabItem, { color, fontSize: scaleFontSize(16) }]}>{I18n.t('All')}</Text>
 				</View>
 			);
 		}
@@ -77,7 +79,7 @@ const ReactionsList = ({ reactions, getCustomEmoji }: IReactionsListProps) => {
 				<View style={styles.tabBarItem}>
 					<Emoji
 						content={tab.emoji}
-						standardEmojiStyle={styles.standardEmojiStyle}
+						standardEmojiStyle={{ ...styles.standardEmojiStyle, fontSize: scaleFontSize(20) }}
 						customEmojiStyle={styles.customEmojiStyle}
 						getCustomEmoji={getCustomEmoji}
 					/>

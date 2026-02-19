@@ -29,7 +29,8 @@ const responsiveLayoutProviderValue = {
 	rowHeight: BASE_ROW_HEIGHT,
 	rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
 	width: 300,
-	height: 800
+	height: 800,
+	scaleFontSize: (size: number) => size
 };
 
 const RoomItem = (props: any) => (

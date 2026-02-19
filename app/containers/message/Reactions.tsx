@@ -10,6 +10,7 @@ import { themes } from '../../lib/constants/colors';
 import { type TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
 import { type TGetCustomEmoji } from '../../definitions/IEmoji';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IReaction {
 	_id: string;
@@ -54,6 +55,7 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 
 	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
 	const { fontScale } = useWindowDimensions();
+	const { scaleFontSize } = useResponsiveLayout();
 	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
 	return (
@@ -72,11 +74,11 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 				]}>
 				<Emoji
 					content={reaction.emoji}
-					standardEmojiStyle={styles.reactionEmoji}
+					standardEmojiStyle={{ ...styles.reactionEmoji, fontSize: scaleFontSize(13) }}
 					customEmojiStyle={styles.reactionCustomEmoji}
 					getCustomEmoji={getCustomEmoji}
 				/>
-				<Text style={[styles.reactionCount, { color: themes[theme].badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
+				<Text style={[styles.reactionCount, { color: themes[theme].badgeBackgroundLevel2, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(18) }]}>{reaction.usernames.length}</Text>
 			</View>
 		</Touchable>
 	);

@@ -15,6 +15,7 @@ import { PressableEmoji } from '../../EmojiPicker/PressableEmoji';
 import { EmojiSearch } from '../../EmojiPicker/EmojiSearch';
 import { EMOJI_BUTTON_SIZE } from '../../EmojiPicker/styles';
 import { useEmojiKeyboard } from '../hooks/useEmojiKeyboard';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const BUTTON_HIT_SLOP = { top: 4, right: 4, bottom: 4, left: 4 };
 
@@ -22,6 +23,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 	'use memo';
 
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const [searchText, setSearchText] = useState<string>('');
 	const { showEmojiSearchbar, closeEmojiSearchbar } = useEmojiKeyboard();
 	const { onEmojiSelected } = useContext(MessageInnerContext);
@@ -54,7 +56,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 				showsHorizontalScrollIndicator={false}
 				ListEmptyComponent={() => (
 					<View style={styles.emptyContainer} testID='no-results-found'>
-						<Text style={[styles.emptyText, { color: colors.fontHint }]}>{I18n.t('No_results_found')}</Text>
+						<Text style={[styles.emptyText, { color: colors.fontHint, fontSize: scaleFontSize(16) }]}>{I18n.t('No_results_found')}</Text>
 					</View>
 				)}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
@@ -103,8 +105,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	emptyText: {
-		...sharedStyles.textRegular,
-		fontSize: 16
+		...sharedStyles.textRegular
 	},
 	inputContainer: {
 		flex: 1

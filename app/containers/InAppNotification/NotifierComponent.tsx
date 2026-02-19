@@ -53,13 +53,9 @@ const styles = StyleSheet.create({
 		marginRight: 10
 	},
 	roomName: {
-		fontSize: 17,
-		lineHeight: 20,
 		...sharedStyles.textMedium
 	},
 	message: {
-		fontSize: 14,
-		lineHeight: 17,
 		...sharedStyles.textRegular
 	},
 	close: {
@@ -73,7 +69,7 @@ const styles = StyleSheet.create({
 
 const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
-	const { rowHeight } = useResponsiveLayout();
+	const { rowHeight, scaleFontSize } = useResponsiveLayout();
 	const insets = useSafeAreaInsets();
 	const { text, payload } = notification;
 	const { type, rid } = payload;
@@ -118,10 +114,10 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 					<View style={styles.inner}>
-						<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+						<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels, fontSize: scaleFontSize(17), lineHeight: scaleFontSize(20) }]} numberOfLines={1}>
 							{title}
 						</Text>
-						<Text style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+						<Text style={[styles.message, { color: themes[theme].fontTitlesLabels, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(17) }]} numberOfLines={1}>
 							{text}
 						</Text>
 					</View>

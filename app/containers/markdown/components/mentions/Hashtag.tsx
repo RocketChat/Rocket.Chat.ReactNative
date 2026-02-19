@@ -14,6 +14,7 @@ import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
 import { type IUserChannel } from '../../interfaces';
 import styles from '../../styles';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IHashtag {
 	hashtag: string;
@@ -24,6 +25,7 @@ interface IHashtag {
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const preffix = roomsWithHashTagSymbol ? '#' : '';
@@ -57,7 +59,8 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].fontInfo
+						color: themes[theme].fontInfo,
+						fontSize: scaleFontSize(16)
 					},
 					...style
 				]}
@@ -66,7 +69,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].fontDefault, fontSize: scaleFontSize(16) }, ...style]}>{`#${hashtag}`}</Text>;
 });
 
 export default Hashtag;

@@ -24,12 +24,9 @@ const styles = StyleSheet.create({
 	},
 	username: {
 		flexShrink: 1,
-		fontSize: 16,
-		lineHeight: 22,
 		...sharedStyles.textSemibold
 	},
 	usernameInfoMessage: {
-		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
@@ -39,7 +36,6 @@ const styles = StyleSheet.create({
 		gap: 4
 	},
 	alias: {
-		fontSize: 14,
 		...sharedStyles.textRegular
 	}
 });
@@ -84,11 +80,11 @@ const User = React.memo(
 
 		const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
-		const { isLargeFontScale } = useResponsiveLayout();
+		const { isLargeFontScale, scaleFontSize } = useResponsiveLayout();
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
-			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
+			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]}> @{username}</Text> : null;
 			const itsMe = author?._id === user.id;
 
 			const onUserPress = () => {
@@ -108,7 +104,7 @@ const User = React.memo(
 
 			if (messageHaveAuthorName(type as MessageTypesValues)) {
 				return (
-					<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels }]} onPress={onUserPress}>
+					<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16) }]} onPress={onUserPress}>
 						{textContent}
 					</Text>
 				);
@@ -117,7 +113,7 @@ const User = React.memo(
 			return (
 				<View style={styles.container}>
 					<TouchableOpacity testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
-						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+						<Text style={[styles.username, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(22) }]} numberOfLines={1}>
 							{textContent}
 						</Text>
 						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
