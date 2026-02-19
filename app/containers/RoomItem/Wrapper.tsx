@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import { useTheme } from '../../theme';
@@ -11,6 +11,7 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapperProps): React.ReactElement => {
 	const { colors } = useTheme();
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
+	const borderWidth = Math.max(StyleSheet.hairlineWidth || 0, 0.5);
 	return (
 		<View
 			style={[styles.container, { height: displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight }]}
@@ -22,7 +23,8 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapp
 				style={[
 					styles.centerContainer,
 					{
-						borderColor: colors.strokeLight
+						borderColor: colors.strokeLight,
+						borderBottomWidth: borderWidth
 					}
 				]}>
 				{children}
