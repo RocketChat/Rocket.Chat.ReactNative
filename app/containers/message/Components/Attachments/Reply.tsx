@@ -247,7 +247,6 @@ const Reply = React.memo(
 							borderColor: strokeLight
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
 						<View style={styles.titleAndDescriptionContainer}>
