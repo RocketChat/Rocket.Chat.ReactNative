@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
-import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
 import NavBottomFAB from './NavBottomFAB';
 import { type IListProps } from '../definitions';
@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
 		paddingTop: 10
 	}
 });
+
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
@@ -34,20 +36,15 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	return (
 		<View style={styles.list}>
 			{/* @ts-ignore */}
-			<Animated.FlatList
+			<AnimatedFlashList
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
-				ref={listRef}
-				keyExtractor={item => item.id}
+				ref={listRef as any}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				inverted
-				removeClippedSubviews={isIOS}
-				initialNumToRender={7}
 				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
 				scrollEventThrottle={16}
 				onScroll={scrollHandler}
 				{...props}

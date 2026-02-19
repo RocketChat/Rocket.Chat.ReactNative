@@ -5042,6 +5042,11 @@
   resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.31.19.tgz#737103123bc7e635382217eef75965b7e0f44703"
   integrity sha512-8zRKQ5CoC4hIuYHVheO0d7etX9oizmM18fu99r5s/deciL/0MRWocdb4H/QsmbsNrkKCO6Z6wr7f9zzJCNTRHg==
 
+"@shopify/flash-list@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-2.2.2.tgz#552c4959f2ab3bc5cc69fac1e3fb514b5502e6ad"
+  integrity sha512-YrvLBK5FCpvuX+d9QvJvjVqyi4eBUaEamkyfh9CjPdF6c+AukP0RSBh97qHyTwOEaVq21A5ukwgyWMDIbmxpmQ==
+
 "@sideway/address@^4.1.5":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.5.tgz#4bc149a0076623ced99ca8208ba780d65a99b9d5"

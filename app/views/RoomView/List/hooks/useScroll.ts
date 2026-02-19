@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { type ViewToken, type ViewabilityConfigCallbackPairs } from 'react-native';
+import { type ViewToken } from '@shopify/flash-list';
 
+import { type TAnyMessageModel } from '../../../../definitions';
 import { type IListContainerRef, type IListProps, type TListRef, type TMessagesIdsRef } from '../definitions';
 import { VIEWABILITY_CONFIG } from '../constants';
 
@@ -8,7 +9,7 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 	const [highlightedMessageId, setHighlightedMessageId] = useState<string | null>(null);
 	const cancelJump = useRef(false);
 	const jumping = useRef(false);
-	const viewableItems = useRef<ViewToken[] | null>(null);
+	const viewableItems = useRef<ViewToken<TAnyMessageModel>[] | null>(null);
 	const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	useEffect(
@@ -28,13 +29,9 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		viewableItems.current = vi;
 	};
 
-	const viewabilityConfigCallbackPairs = useRef<ViewabilityConfigCallbackPairs>([
+	const viewabilityConfigCallbackPairs = useRef<NonNullable<IListProps['viewabilityConfigCallbackPairs']>>([
 		{ onViewableItemsChanged, viewabilityConfig: VIEWABILITY_CONFIG }
 	]);
-
-	const handleScrollToIndexFailed: IListProps['onScrollToIndexFailed'] = params => {
-		listRef.current?.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
-	};
 
 	const setHighlightTimeout = () => {
 		if (highlightTimeout.current) {
@@ -59,7 +56,9 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 
 			// if found message, scroll to it
 			if (index !== -1) {
-				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 }).catch(() => {
+					listRef.current?.scrollToEnd();
+				});
 
 				// wait for scroll animation to finish
 				await new Promise(res => setTimeout(res, 300));
@@ -99,7 +98,6 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		jumpToMessage,
 		cancelJumpToMessage,
 		viewabilityConfigCallbackPairs,
-		handleScrollToIndexFailed,
 		highlightedMessageId
 	};
 };
