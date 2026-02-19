@@ -74,8 +74,6 @@ tags:
     timeout: 60000
 - tapOn:
     id: multi-select-item-${output.otherUser.username.toLowerCase()}
-- tapOn:
-    id: multi-select-item-${output.otherUser.username.toLowerCase()}
 - swipe:
     from:
       id: 'action-sheet-handle'

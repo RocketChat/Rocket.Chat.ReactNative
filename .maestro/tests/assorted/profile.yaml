@@ -163,7 +163,8 @@ tags:
 - tapOn:
     id: 'profile-view-enter-password-sheet-input'
 - inputText: ${output.user.password}
-- pressKey: enter
+- tapOn:
+    text: 'Save'
 - extendedWaitUntil:
     notVisible:
       id: 'profile-view-enter-password-sheet-input'
@@ -176,8 +177,6 @@ tags:
     timeout: 60000
 - tapOn:
     id: 'profile-view-change-my-password-button'
-- waitForAnimationToEnd:
-    timeout: 2000
 - extendedWaitUntil:
     visible:
       id: 'change-password-view-current-password'
