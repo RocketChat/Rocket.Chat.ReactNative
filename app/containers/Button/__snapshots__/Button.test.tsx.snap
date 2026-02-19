@@ -104,6 +104,7 @@ exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+  testOnly_onPress={[Function]}
 >
   <Text
     style={
@@ -164,6 +165,7 @@ exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+  testOnly_onPress={[Function]}
 >
   <ActivityIndicator
     color="#FFFFFF"
@@ -213,6 +215,7 @@ exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
     ]
   }
   testID="testButton"
+  testOnly_onPress={[Function]}
 >
   <ActivityIndicator
     color="#FFFFFF"
