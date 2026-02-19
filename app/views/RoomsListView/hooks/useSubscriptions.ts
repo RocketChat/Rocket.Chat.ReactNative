@@ -2,6 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import type { Subscription } from 'rxjs';
+import { useIsFocused } from '@react-navigation/native';
 
 import { type TSubscriptionModel } from '../../../definitions';
 import { SortBy } from '../../../lib/constants/constantDisplayMode';
@@ -45,6 +46,7 @@ export const useSubscriptions = () => {
 	const [loading, setLoading] = useState(true);
 	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
 	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
+	const isFocused = useIsFocused();
 	const isGrouping = showUnread || showFavorites || groupByType;
 
 	useEffect(() => {
@@ -112,19 +114,19 @@ export const useSubscriptions = () => {
 					tempChats = chats;
 				}
 
-				// const chatsUpdate = tempChats.map(item => item.rid);
-
 				setSubscriptions(tempChats);
 				setLoading(false);
 			});
 		};
 
-		getSubscriptions();
+		if (isFocused) {
+			getSubscriptions();
+		}
 
 		return () => {
 			subscriptionRef.current?.unsubscribe();
 		};
-	}, [isGrouping, sortBy, useRealName, showUnread, showFavorites, groupByType, roles, server]);
+	}, [isGrouping, sortBy, useRealName, showUnread, showFavorites, groupByType, roles, server, isFocused]);
 
 	return {
 		subscriptions,

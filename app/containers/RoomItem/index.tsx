@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useRef } from 'react';
 import { type Subscription } from 'rxjs';
+import { useNavigation } from '@react-navigation/native';
 
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
@@ -38,10 +39,12 @@ const RoomItemContainer = React.memo(
 		const roomSubscription = useRef<Subscription | null>(null);
 		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
 		const accessibilityDate = formatDateAccessibility(item.roomUpdatedAt);
+		const navigation = useNavigation();
 
 		useEffect(() => {
 			const init = () => {
-				if (item?.observe) {
+				const isFocused = navigation.isFocused();
+				if (item?.observe && isFocused) {
 					const observable = item.observe();
 					roomSubscription.current = observable?.subscribe?.(() => {
 						if (_) forceUpdate();
