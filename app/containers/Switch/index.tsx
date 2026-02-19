@@ -1,11 +1,10 @@
 import { AccessibilityInfo, Switch as RNSwitch, type SwitchProps } from 'react-native';
-import type { ReactElement } from 'react';
 
 import { useTheme } from '../../theme';
 import { isIOS } from '../../lib/methods/helpers';
 import I18n from '../../i18n';
 
-const Switch = (props: SwitchProps): ReactElement => {
+const Switch = (props: SwitchProps) => {
 	const { colors } = useTheme();
 
 	const trackColor = {

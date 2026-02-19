@@ -1,4 +1,4 @@
-import { type ReactElement, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerProps): ReactElement => {
+export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerProps) => {
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
 	const expoImageRef = useRef<Image>(null);

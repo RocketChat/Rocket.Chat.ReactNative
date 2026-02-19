@@ -1,4 +1,4 @@
-import { memo, type ReactElement, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -128,11 +128,7 @@ const IncomingCallHeader = memo(
 	}
 );
 
-const IncomingCallNotification = ({
-	notification: { rid, callId }
-}: {
-	notification: { rid: string; callId: string };
-}): ReactElement | null => {
+const IncomingCallNotification = ({ notification: { rid, callId } }: { notification: { rid: string; callId: string } }) => {
 	const { result } = useEndpointData('video-conference.info', { callId });
 
 	const user = useUserData(rid);

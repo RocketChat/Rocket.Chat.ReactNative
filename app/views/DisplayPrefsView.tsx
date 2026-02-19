@@ -1,4 +1,4 @@
-import { type ReactElement, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -18,7 +18,7 @@ import { events, logEvent } from '../lib/methods/helpers/log';
 import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 
-const DisplayPrefsView = (): ReactElement => {
+const DisplayPrefsView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
 	const { colors } = useTheme();
 

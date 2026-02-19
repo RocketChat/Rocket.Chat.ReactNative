@@ -1,10 +1,10 @@
-import { type ReactElement, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FlatList } from 'react-native';
 
 import { Quote } from './Quote';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
-export const Quotes = (): ReactElement | null => {
+export const Quotes = () => {
 	'use memo';
 
 	const { selectedMessages, action } = useRoomContext();

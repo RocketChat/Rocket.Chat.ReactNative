@@ -1,5 +1,4 @@
 import { Text, View } from 'react-native';
-import type { ReactElement } from 'react';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -28,7 +27,7 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	return null;
 };
 
-const Direct = ({ roomUser }: { roomUser: IUser }): ReactElement => (
+const Direct = ({ roomUser }: { roomUser: IUser }) => (
 	<>
 		<Roles roles={roomUser.roles} />
 		<Timezone utcOffset={roomUser.utcOffset} />

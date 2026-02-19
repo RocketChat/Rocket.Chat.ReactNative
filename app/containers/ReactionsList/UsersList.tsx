@@ -1,4 +1,4 @@
-import { memo, type ReactElement } from 'react';
+import { memo } from 'react';
 import { Text, View, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -7,7 +7,7 @@ import type { IApplicationState } from '../../definitions';
 import Avatar from '../Avatar';
 import styles from './styles';
 
-const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: string[]; names: string[] }): ReactElement => {
+const UsersList = ({ emoji, usernames, names }: { emoji: string; usernames: string[]; names: string[] }) => {
 	const { colors } = useTheme();
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 

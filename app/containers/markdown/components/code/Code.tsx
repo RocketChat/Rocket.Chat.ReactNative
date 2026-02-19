@@ -1,6 +1,5 @@
 import { View } from 'react-native';
 import { type Code as CodeProps } from '@rocket.chat/message-parser';
-import type { ReactElement } from 'react';
 
 import styles from '../../styles';
 import { useTheme } from '../../../../theme';
@@ -10,7 +9,7 @@ interface ICodeProps {
 	value: CodeProps['value'];
 }
 
-const Code = ({ value }: ICodeProps): ReactElement => {
+const Code = ({ value }: ICodeProps) => {
 	const { colors } = useTheme();
 
 	return (

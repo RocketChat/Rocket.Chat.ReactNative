@@ -42,17 +42,7 @@ const styles = StyleSheet.create({
 });
 
 const Item = memo(
-	({
-		title,
-		iconName,
-		onPress,
-		testID,
-		badge,
-		color,
-		disabled,
-		accessibilityLabel,
-		...props
-	}: IHeaderButtonItem): ReactElement => {
+	({ title, iconName, onPress, testID, badge, color, disabled, accessibilityLabel, ...props }: IHeaderButtonItem) => {
 		'use memo';
 
 		const { colors } = useTheme();

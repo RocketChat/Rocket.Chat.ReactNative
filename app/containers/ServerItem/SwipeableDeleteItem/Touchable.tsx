@@ -41,7 +41,7 @@ const SwipeableDeleteTouchable = ({
 	onDeletePress,
 	accessibilityLabel,
 	accessibilityHint
-}: ISwipeableDeleteTouchableProps): ReactElement => {
+}: ISwipeableDeleteTouchableProps) => {
 	const { colors } = useTheme();
 
 	const transX = useSharedValue(0);

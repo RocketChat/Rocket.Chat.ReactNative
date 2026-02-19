@@ -1,4 +1,3 @@
-import type { ReactElement } from 'react';
 import { View } from 'react-native';
 
 import { useFocused } from '../../context';
@@ -7,7 +6,7 @@ import { ActionsButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
-export const Left = (): ReactElement | null => {
+export const Left = () => {
 	'use memo';
 
 	const { sharing } = useRoomContext();
