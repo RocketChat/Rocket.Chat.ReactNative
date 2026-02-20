@@ -2,6 +2,7 @@ import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
+import { useFonts } from 'expo-font';
 
 import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
@@ -43,7 +44,11 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 		}
 	}, [root]);
 
-	if (!root) {
+	const [loaded] = useFonts({
+		custom: require('./static/fonts/custom.ttf')
+	});
+
+	if (!loaded && !root) {
 		return null;
 	}
 
