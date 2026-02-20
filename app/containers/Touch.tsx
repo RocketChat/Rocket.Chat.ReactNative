@@ -79,9 +79,9 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				activeOpacity={1}
 				underlayColor={underlayColor || colors.surfaceNeutral}
 				rippleColor={colors.surfaceNeutral}
-				enabled={!disabled}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
-				{...props}>
+				{...props}
+				enabled={!disabled}>
 				<View
 					accessible={accessible}
 					accessibilityRole={props.accessibilityRole}
