@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import { Image } from 'expo-image';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -11,6 +10,7 @@ import { type IItemData } from '.';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
 import I18n from '../../../i18n';
+import Touch from '../../Touch';
 
 interface IItem {
 	item: IItemData;
@@ -34,7 +34,7 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 	const iconColor = selected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
 
 	return (
-		<Touchable
+		<Touch
 			accessible
 			accessibilityLabel={`${textParser([item.text])}. ${selected ? I18n.t('Selected') : ''}`}
 			accessibilityRole='checkbox'
@@ -54,7 +54,7 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 					<CustomIcon color={iconColor} size={22} name={iconName} />
 				</View>
 			</View>
-		</Touchable>
+		</Touch>
 	);
 };
 
