@@ -154,6 +154,8 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 			: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 	};
 
+	const showRightIcons = !props.isHeader;
+
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
@@ -195,7 +197,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 					<View style={styles.messageContent}>
 						<MessageInner {...props} />
 					</View>
-					{!props.isHeader ? (
+					{showRightIcons ? (
 						<RightIcons
 							type={props.type}
 							msg={props.msg}
