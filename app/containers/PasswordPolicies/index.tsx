@@ -39,8 +39,8 @@ const PasswordPolicies = ({ isDirty, password, policies }: IPasswordTips) => {
 				{i18n.t('Your_Password_Must_Have')}
 			</Text>
 			<View style={styles.policies}>
-				{policies.map(item => (
-					<Tip iconType={selectTipIconType(item.name, item.regex)} description={item.label} />
+				{policies.map((item, index) => (
+					<Tip key={index} iconType={selectTipIconType(item.name, item.regex)} description={item.label} />
 				))}
 			</View>
 		</View>

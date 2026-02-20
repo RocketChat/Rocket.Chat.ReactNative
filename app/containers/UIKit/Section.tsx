@@ -29,8 +29,10 @@ const Accessory = ({ element, parser }: IAccessoryComponent) =>
 
 const Fields = ({ fields, parser, theme }: IFields) => (
 	<>
-		{fields.map(field => (
-			<Text style={[styles.text, styles.field, { color: themes[theme].fontDefault }]}>{parser.text(field)}</Text>
+		{fields.map((field, index) => (
+			<Text key={index} style={[styles.text, styles.field, { color: themes[theme].fontDefault }]}>
+				{parser.text(field)}
+			</Text>
 		))}
 	</>
 );

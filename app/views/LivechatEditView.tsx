@@ -236,6 +236,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
 						<FormTextInput
+							key={key}
 							label={key}
 							defaultValue={value}
 							inputRef={e => {
@@ -278,6 +279,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array: any) => (
 						<FormTextInput
+							key={key}
 							label={key}
 							defaultValue={value}
 							inputRef={e => {

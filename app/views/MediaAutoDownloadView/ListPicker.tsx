@@ -72,6 +72,7 @@ const ListPicker = ({
 		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			{OPTIONS.map(i => (
 				<List.Radio
+					key={i.label}
 					onPress={() => {
 						hideActionSheet();
 						onChangeValue(i.value);

@@ -14,8 +14,8 @@ const UnorderedList = ({ value }: IUnorderedListProps) => {
 	const { theme } = useTheme();
 	return (
 		<View>
-			{value.map(item => (
-				<View style={styles.row}>
+			{value.map((item, index) => (
+				<View key={index} style={styles.row}>
 					<Text style={[styles.text, { color: themes[theme].fontDefault }]}>{'\u2022 '}</Text>
 					<Text style={[styles.inline, { color: themes[theme].fontDefault }]}>
 						<Inline value={item.value} />
