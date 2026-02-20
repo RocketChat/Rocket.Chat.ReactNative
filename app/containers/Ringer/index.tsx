@@ -6,7 +6,7 @@ export enum ERingerSounds {
 	RINGTONE = 'ringtone'
 }
 
-const Ringer = memo(({ ringer }: { ringer: ERingerSounds }) => {
+const Ringer = ({ ringer }: { ringer: ERingerSounds }) => {
 	const sound = useRef(new Audio.Sound());
 
 	useEffect(() => {
@@ -29,6 +29,6 @@ const Ringer = memo(({ ringer }: { ringer: ERingerSounds }) => {
 	}, []);
 
 	return null;
-});
+};
 
-export default Ringer;
+export default memo(Ringer);

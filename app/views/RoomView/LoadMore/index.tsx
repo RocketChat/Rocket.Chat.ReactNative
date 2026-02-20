@@ -24,58 +24,56 @@ const styles = StyleSheet.create({
 	}
 });
 
-const LoadMore = memo(
-	({
-		rid,
-		t,
-		loaderId,
-		type,
-		runOnRender,
-		dateSeparator,
-		showUnreadSeparator
-	}: {
-		rid: string;
-		t: RoomType;
-		loaderId: string;
-		type: MessageType;
-		runOnRender: boolean;
-		separator?: ReactElement | null;
-		dateSeparator?: Date | string | null;
-		showUnreadSeparator?: boolean;
-	}) => {
-		const { colors } = useTheme();
-		const dispatch = useDispatch();
-		const loading = useAppSelector(state => state.room.historyLoaders.some(historyLoader => historyLoader === loaderId));
+const LoadMore = ({
+	rid,
+	t,
+	loaderId,
+	type,
+	runOnRender,
+	dateSeparator,
+	showUnreadSeparator
+}: {
+	rid: string;
+	t: RoomType;
+	loaderId: string;
+	type: MessageType;
+	runOnRender: boolean;
+	separator?: ReactElement | null;
+	dateSeparator?: Date | string | null;
+	showUnreadSeparator?: boolean;
+}) => {
+	const { colors } = useTheme();
+	const dispatch = useDispatch();
+	const loading = useAppSelector(state => state.room.historyLoaders.some(historyLoader => historyLoader === loaderId));
 
-		const handleLoad = () => dispatch(roomHistoryRequest({ rid, t, loaderId }));
+	const handleLoad = () => dispatch(roomHistoryRequest({ rid, t, loaderId }));
 
-		useEffect(() => {
-			if (runOnRender) {
-				handleLoad();
-			}
-		}, []);
-
-		let text = 'Load_More';
-		if (type === MessageTypeLoad.NEXT_CHUNK) {
-			text = 'Load_Newer';
+	useEffect(() => {
+		if (runOnRender) {
+			handleLoad();
 		}
-		if (type === MessageTypeLoad.PREVIOUS_CHUNK) {
-			text = 'Load_Older';
-		}
+	}, []);
 
-		return (
-			<>
-				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
-				<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
-					{loading ? (
-						<ActivityIndicator color={colors.fontSecondaryInfo} />
-					) : (
-						<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
-					)}
-				</Touch>
-			</>
-		);
+	let text = 'Load_More';
+	if (type === MessageTypeLoad.NEXT_CHUNK) {
+		text = 'Load_Newer';
 	}
-);
+	if (type === MessageTypeLoad.PREVIOUS_CHUNK) {
+		text = 'Load_Older';
+	}
 
-export default LoadMore;
+	return (
+		<>
+			<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
+			<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
+				{loading ? (
+					<ActivityIndicator color={colors.fontSecondaryInfo} />
+				) : (
+					<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
+				)}
+			</Touch>
+		</>
+	);
+};
+
+export default memo(LoadMore);

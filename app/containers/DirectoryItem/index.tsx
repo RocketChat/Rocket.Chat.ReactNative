@@ -28,7 +28,7 @@ interface IDirectoryItem {
 	teamMain?: boolean;
 }
 
-const DirectoryItemLabel = memo(({ text, color }: IDirectoryItemLabel) => {
+const DirectoryItemLabel = memo(function DirectoryItemLabel({ text, color }: IDirectoryItemLabel) {
 	if (!text) {
 		return null;
 	}

@@ -18,7 +18,7 @@ interface IAtMention {
 	mentions?: IUserMention[];
 }
 
-const AtMention = memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
+const AtMention = ({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
 	const { theme } = useTheme();
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const preffix = mentionsWithAtSymbol ? '@' : '';
@@ -82,6 +82,6 @@ const AtMention = memo(({ mention, mentions, username, navToRoomInfo, style = []
 	}
 
 	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`@${mention}`}</Text>;
-});
+};
 
-export default AtMention;
+export default memo(AtMention);

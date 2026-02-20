@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AuthLoadingView = memo(() => {
+const AuthLoadingView = () => {
 	const text = useAppSelector(state => state.app.text);
 	const { colors } = useTheme();
 	return (
@@ -33,6 +33,6 @@ const AuthLoadingView = memo(() => {
 			) : null}
 		</View>
 	);
-});
+};
 
-export default AuthLoadingView;
+export default memo(AuthLoadingView);

@@ -10,7 +10,7 @@ interface IPasscodeSubtitle {
 	text: string;
 }
 
-const Subtitle = memo(({ text }: IPasscodeSubtitle) => {
+const Subtitle = ({ text }: IPasscodeSubtitle) => {
 	const { theme } = useTheme();
 
 	return (
@@ -20,6 +20,6 @@ const Subtitle = memo(({ text }: IPasscodeSubtitle) => {
 			</View>
 		</Row>
 	);
-});
+};
 
-export default Subtitle;
+export default memo(Subtitle);

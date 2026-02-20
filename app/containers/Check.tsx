@@ -4,9 +4,9 @@ import { CustomIcon } from './CustomIcon';
 import { themes } from '../lib/constants/colors';
 import { useTheme } from '../theme';
 
-const Check = memo(() => {
+const Check = () => {
 	const { theme } = useTheme();
 	return <CustomIcon color={themes[theme].fontInfo} size={22} name='check' />;
-});
+};
 
-export default Check;
+export default memo(Check);

@@ -7,7 +7,7 @@ import Audio from './Audio';
 import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
-import Reply from './Reply';
+import MessageReply from './Reply';
 import MessageContext from '../../Context';
 import type { IMessageAttachments } from '../../interfaces';
 import type { IAttachment } from '../../../../definitions';
@@ -76,7 +76,7 @@ const Attachments: FC<IMessageAttachments> = memo(
 
 			if (file.attachments?.length) {
 				return (
-					<Reply
+					<MessageReply
 						key={index}
 						attachment={file}
 						timeFormat={timeFormat}

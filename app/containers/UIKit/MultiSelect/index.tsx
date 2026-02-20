@@ -41,85 +41,99 @@ interface IMultiSelect {
 	testID?: string;
 }
 
-export const MultiSelect = memo(
-	({
-		options = [],
-		onChange,
-		placeholder = { text: 'Search' },
-		context,
-		loading,
-		value: values,
-		multiselect = false,
-		onSearch,
-		onClose = () => {},
-		disabled,
-		inputStyle,
-		innerInputStyle,
-		testID
-	}: IMultiSelectWithMultiSelect | IMultiSelectWithoutMultiSelect) => {
-		const { colors } = useTheme();
-		const [selected, select] = useState<IItemData[]>(Array.isArray(values) ? values : []);
-		const [currentValue, setCurrentValue] = useState('');
+export const MultiSelect = memo(function MultiSelect({
+	options = [],
+	onChange,
+	placeholder = { text: 'Search' },
+	context,
+	loading,
+	value: values,
+	multiselect = false,
+	onSearch,
+	onClose = () => {},
+	disabled,
+	inputStyle,
+	innerInputStyle,
+	testID
+}: IMultiSelectWithMultiSelect | IMultiSelectWithoutMultiSelect) {
+	const { colors } = useTheme();
+	const [selected, select] = useState<IItemData[]>(Array.isArray(values) ? values : []);
+	const [currentValue, setCurrentValue] = useState('');
 
-		const { showActionSheet, hideActionSheet } = useActionSheet();
+	const { showActionSheet, hideActionSheet } = useActionSheet();
 
-		useEffect(() => {
-			if (Array.isArray(values)) {
-				select(values);
-			}
-		}, []);
+	useEffect(() => {
+		if (Array.isArray(values)) {
+			select(values);
+		}
+	}, []);
 
-		useEffect(() => {
-			if (values && values.length && !multiselect) {
-				setCurrentValue(values[0].text);
-			}
-		}, []);
+	useEffect(() => {
+		if (values && values.length && !multiselect) {
+			setCurrentValue(values[0].text);
+		}
+	}, []);
 
-		const onShow = () => {
-			showActionSheet({
-				children: (
-					<MultiSelectContent
-						options={options}
-						onSearch={onSearch}
-						select={select}
-						onChange={onChange}
-						setCurrentValue={setCurrentValue}
-						onHide={onHide}
-						multiselect={multiselect}
-						selectedItems={selected}
-					/>
-				),
-				onClose
-			});
-		};
-		const onHide = () => {
-			onClose();
-			hideActionSheet();
-		};
+	const onShow = () => {
+		showActionSheet({
+			children: (
+				<MultiSelectContent
+					options={options}
+					onSearch={onSearch}
+					select={select}
+					onChange={onChange}
+					setCurrentValue={setCurrentValue}
+					onHide={onHide}
+					multiselect={multiselect}
+					selectedItems={selected}
+				/>
+			),
+			onClose
+		});
+	};
+	const onHide = () => {
+		onClose();
+		hideActionSheet();
+	};
 
-		const onSelect = (item: IItemData) => {
-			const {
-				value,
-				text: { text }
-			} = item;
-			if (multiselect) {
-				let newSelect = [];
-				if (!selected.find(s => s.value === value)) {
-					newSelect = [...selected, item];
-				} else {
-					newSelect = selected.filter((s: any) => s.value !== value);
-				}
-				select(newSelect);
-				onChange({ value: newSelect.map(s => s.value) });
+	const onSelect = (item: IItemData) => {
+		const {
+			value,
+			text: { text }
+		} = item;
+		if (multiselect) {
+			let newSelect = [];
+			if (!selected.find(s => s.value === value)) {
+				newSelect = [...selected, item];
 			} else {
-				onChange({ value });
-				setCurrentValue(text);
+				newSelect = selected.filter((s: any) => s.value !== value);
 			}
-		};
+			select(newSelect);
+			onChange({ value: newSelect.map(s => s.value) });
+		} else {
+			onChange({ value });
+			setCurrentValue(text);
+		}
+	};
 
-		let button = multiselect ? (
-			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} testID={testID} />
-		) : (
+	let button = multiselect ? (
+		<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} testID={testID} />
+	) : (
+		<Input
+			onPress={onShow}
+			loading={loading}
+			disabled={disabled}
+			inputStyle={inputStyle}
+			innerInputStyle={innerInputStyle}
+			testID={testID}>
+			<Text style={[styles.pickerText, { color: currentValue ? colors.fontTitlesLabels : colors.fontSecondaryInfo }]}>
+				{currentValue || placeholder.text}
+			</Text>
+		</Input>
+	);
+
+	if (context === BlockContext.FORM) {
+		button = (
 			<Input
 				onPress={onShow}
 				loading={loading}
@@ -127,30 +141,14 @@ export const MultiSelect = memo(
 				inputStyle={inputStyle}
 				innerInputStyle={innerInputStyle}
 				testID={testID}>
-				<Text style={[styles.pickerText, { color: currentValue ? colors.fontTitlesLabels : colors.fontSecondaryInfo }]}>
-					{currentValue || placeholder.text}
-				</Text>
+				{selected.length ? (
+					<Chips items={selected} onSelect={(item: any) => (disabled ? {} : onSelect(item))} />
+				) : (
+					<Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder.text}</Text>
+				)}
 			</Input>
 		);
-
-		if (context === BlockContext.FORM) {
-			button = (
-				<Input
-					onPress={onShow}
-					loading={loading}
-					disabled={disabled}
-					inputStyle={inputStyle}
-					innerInputStyle={innerInputStyle}
-					testID={testID}>
-					{selected.length ? (
-						<Chips items={selected} onSelect={(item: any) => (disabled ? {} : onSelect(item))} />
-					) : (
-						<Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder.text}</Text>
-					)}
-				</Input>
-			);
-		}
-
-		return <>{button}</>;
 	}
-);
+
+	return <>{button}</>;
+});

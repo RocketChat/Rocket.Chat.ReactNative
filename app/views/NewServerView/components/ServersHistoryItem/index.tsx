@@ -19,7 +19,7 @@ export interface IServersHistoryItem {
 
 const defaultLogo = require('../../../../static/images/logo.png');
 
-const ServersHistoryItem = memo(({ item, onPress, onDeletePress }: IServersHistoryItem) => {
+const ServersHistoryItem = ({ item, onPress, onDeletePress }: IServersHistoryItem) => {
 	const { colors } = useTheme();
 	const { width } = useResponsiveLayout();
 
@@ -48,6 +48,6 @@ const ServersHistoryItem = memo(({ item, onPress, onDeletePress }: IServersHisto
 			</View>
 		</Touchable>
 	);
-});
+};
 
-export default ServersHistoryItem;
+export default memo(ServersHistoryItem);

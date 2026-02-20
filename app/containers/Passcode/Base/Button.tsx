@@ -14,7 +14,7 @@ interface IPasscodeButton {
 	style?: StyleProp<ViewStyle>;
 }
 
-const Button = memo(({ style, text, disabled, onPress, icon }: IPasscodeButton) => {
+const Button = ({ style, text, disabled, onPress, icon }: IPasscodeButton) => {
 	const { colors } = useTheme();
 
 	const press = () => onPress && onPress(text);
@@ -33,6 +33,6 @@ const Button = memo(({ style, text, disabled, onPress, icon }: IPasscodeButton) 
 			)}
 		</Touch>
 	);
-});
+};
 
-export default Button;
+export default memo(Button);

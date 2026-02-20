@@ -56,9 +56,12 @@ export const useActionSheet = () => useContext(context);
 const { Provider, Consumer } = context;
 
 export const withActionSheet = (Component: ComponentType<any>): typeof Component => {
-	const WithActionSheetComponent = forwardRef((props: typeof Component, ref: ForwardedRef<IActionSheetProvider>) => (
-		<Consumer>{(contexts: IActionSheetProvider) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
-	));
+	const WithActionSheetComponent = forwardRef(function WithActionSheetComponent(
+		props: typeof Component,
+		ref: ForwardedRef<IActionSheetProvider>
+	) {
+		return <Consumer>{(contexts: IActionSheetProvider) => <Component {...props} {...contexts} ref={ref} />}</Consumer>;
+	});
 
 	hoistNonReactStatics(WithActionSheetComponent as any, Component as any);
 	return WithActionSheetComponent;
@@ -66,7 +69,7 @@ export const withActionSheet = (Component: ComponentType<any>): typeof Component
 
 const actionSheetRef: Ref<IActionSheetProvider> = createRef();
 
-export const ActionSheetProvider = memo(({ children }: { children: ReactElement | ReactElement[] }) => {
+export const ActionSheetProvider = memo(function ActionSheetProvider({ children }: { children: ReactElement | ReactElement[] }) {
 	'use memo';
 
 	const getContext = (): IActionSheetProvider => ({

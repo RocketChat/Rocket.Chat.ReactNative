@@ -10,7 +10,7 @@ interface ITag {
 	testID?: string;
 }
 
-const Tag = memo(({ name, testID }: ITag) => {
+const Tag = ({ name, testID }: ITag) => {
 	const { theme } = useTheme();
 
 	return (
@@ -20,6 +20,6 @@ const Tag = memo(({ name, testID }: ITag) => {
 			</Text>
 		</View>
 	);
-});
+};
 
-export default Tag;
+export default memo(Tag);

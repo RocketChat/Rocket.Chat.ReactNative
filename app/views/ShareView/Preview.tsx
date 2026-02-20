@@ -43,19 +43,21 @@ interface IIconPreview {
 	danger?: boolean;
 }
 
-const IconPreview = memo(({ iconName, title, description, theme, width, height, danger }: IIconPreview) => (
-	<ScrollView
-		style={{ backgroundColor: themes[theme].surfaceNeutral }}
-		contentContainerStyle={[styles.fileContainer, { width, height }]}>
-		<CustomIcon
-			name={iconName}
-			size={56}
-			color={danger ? themes[theme].buttonBackgroundDangerDefault : themes[theme].badgeBackgroundLevel2}
-		/>
-		<Text style={[styles.fileName, { color: themes[theme].fontTitlesLabels }]}>{title}</Text>
-		{description ? <Text style={[styles.fileSize, { color: themes[theme].fontDefault }]}>{description}</Text> : null}
-	</ScrollView>
-));
+const IconPreview = memo(function IconPreview({ iconName, title, description, theme, width, height, danger }: IIconPreview) {
+	return (
+		<ScrollView
+			style={{ backgroundColor: themes[theme].surfaceNeutral }}
+			contentContainerStyle={[styles.fileContainer, { width, height }]}>
+			<CustomIcon
+				name={iconName}
+				size={56}
+				color={danger ? themes[theme].buttonBackgroundDangerDefault : themes[theme].badgeBackgroundLevel2}
+			/>
+			<Text style={[styles.fileName, { color: themes[theme].fontTitlesLabels }]}>{title}</Text>
+			{description ? <Text style={[styles.fileSize, { color: themes[theme].fontDefault }]}>{description}</Text> : null}
+		</ScrollView>
+	);
+});
 
 interface IPreview {
 	item: IShareAttachment;
@@ -63,7 +65,7 @@ interface IPreview {
 	length: number;
 }
 
-const Preview = memo(({ item, theme, length }: IPreview) => {
+const Preview = ({ item, theme, length }: IPreview) => {
 	const type = item?.mime;
 	const { width, height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
@@ -125,6 +127,6 @@ const Preview = memo(({ item, theme, length }: IPreview) => {
 			danger
 		/>
 	);
-});
+};
 
-export default Preview;
+export default memo(Preview);
