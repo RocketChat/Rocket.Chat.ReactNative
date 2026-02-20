@@ -11,8 +11,6 @@ import {
 	type ViewProps
 } from 'react-native';
 
-import { isAndroid } from '../../../../lib/methods/helpers';
-
 const COMMAND_SCROLL_TO = 1;
 const COMMAND_SCROLL_TO_END = 2;
 const COMMAND_FLASH_SCROLL_INDICATORS = 3;
@@ -44,11 +42,11 @@ interface IScrollableMethods {
 
 export type InvertedScrollViewRef = NativeScrollInstance & IScrollableMethods;
 
-const NativeInvertedScrollView = isAndroid ? requireNativeComponent<ScrollViewProps>('InvertedScrollView') : null;
+const NativeInvertedScrollView = requireNativeComponent<ScrollViewProps>('InvertedScrollView');
 
-const NativeInvertedScrollContentView = isAndroid
-	? requireNativeComponent<ViewProps & { removeClippedSubviews?: boolean }>('InvertedScrollContentView')
-	: null;
+const NativeInvertedScrollContentView = requireNativeComponent<ViewProps & { removeClippedSubviews?: boolean }>(
+	'InvertedScrollContentView'
+);
 
 const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((props, externalRef) => {
 	const internalRef = useRef<NativeScrollInstance | null>(null);
@@ -115,7 +113,7 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((p
 		...rest
 	} = props;
 
-	const preserveChildren = maintainVisibleContentPosition != null || (isAndroid && snapToAlignment != null);
+	const preserveChildren = maintainVisibleContentPosition != null || snapToAlignment != null;
 	const hasStickyHeaders = Array.isArray(stickyHeaderIndices) && stickyHeaderIndices.length > 0;
 
 	const contentContainerStyleArray = [props.horizontal ? { flexDirection: 'row' as const } : null, contentContainerStyle];
@@ -144,7 +142,7 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((p
 		<ScrollView ref={setRef} {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)} horizontal={horizontal}>
 			<ContentView
 				{...contentSizeChangeProps}
-				removeClippedSubviews={isAndroid && hasStickyHeaders ? false : removeClippedSubviews}
+				removeClippedSubviews={hasStickyHeaders ? false : removeClippedSubviews}
 				collapsable={false}
 				collapsableChildren={!preserveChildren}
 				style={contentContainerStyleArray as StyleProp<ViewStyle>}>
