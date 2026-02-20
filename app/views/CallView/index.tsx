@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 import { useCallStore } from '../../lib/services/voip/useCallStore';
 import CallerInfo from './components/CallerInfo';
@@ -13,13 +12,6 @@ const CallView = (): React.ReactElement | null => {
 
 	const { colors } = useTheme();
 	const call = useCallStore(state => state.call);
-
-	useEffect(() => {
-		activateKeepAwakeAsync();
-		return () => {
-			deactivateKeepAwake();
-		};
-	}, []);
 
 	if (!call) {
 		return null;
