@@ -72,6 +72,10 @@ const styles = StyleSheet.create({
 	},
 	iconRight: {
 		right: 12
+	},
+	clearInputIcon: {
+		width: 20,
+		height: 20
 	}
 });
 
@@ -194,7 +198,9 @@ export const FormTextInput = ({
 						) : null}
 
 						{showClearInput ? (
-							<Touch onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
+							<Touch
+								onPress={() => onClearInput?.()}
+								rectButtonStyle={[styles.iconContainer, styles.iconRight, styles.clearInputIcon]}>
 								<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
 							</Touch>
 						) : null}
