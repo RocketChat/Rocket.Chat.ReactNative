@@ -71,6 +71,7 @@ export interface IMessageContent {
 	isHeader: boolean;
 	isTranslated: boolean;
 	pinned?: boolean;
+	starred?: boolean;
 }
 
 export interface IMessageEmoji {

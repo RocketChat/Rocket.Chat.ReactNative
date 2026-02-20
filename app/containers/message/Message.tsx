@@ -204,6 +204,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 							isReadReceiptEnabled={props.isReadReceiptEnabled}
 							unread={props.unread}
 							pinned={props.pinned}
+							starred={props.starred}
 							isTranslated={props.isTranslated}
 						/>
 					) : null}
