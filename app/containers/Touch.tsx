@@ -20,6 +20,7 @@ export interface ITouchProps extends RectButtonProps {
 	onAccessibilityAction?: (event: AccessibilityActionEvent) => void;
 	testID?: string;
 	rectButtonStyle?: StyleProp<ViewStyle>;
+	disabled?: boolean;
 }
 
 const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
@@ -35,6 +36,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 			onAccessibilityAction,
 			style,
 			rectButtonStyle,
+			disabled,
 			...props
 		},
 		ref
@@ -77,6 +79,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				activeOpacity={1}
 				underlayColor={underlayColor || colors.surfaceNeutral}
 				rippleColor={colors.surfaceNeutral}
+				enabled={!disabled}
 				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...props}>
 				<View

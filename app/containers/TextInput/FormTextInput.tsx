@@ -201,6 +201,8 @@ export const FormTextInput = ({
 							<Touch
 								testID='clear-text-input'
 								onPress={() => onClearInput?.()}
+								accessible
+								accessibilityLabel={i18n.t('Clear_input')}
 								rectButtonStyle={[styles.iconContainer, styles.iconRight]}
 								style={styles.clearInputIcon}>
 								<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
