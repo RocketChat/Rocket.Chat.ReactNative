@@ -843,6 +843,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
     activeOpacity={1}
     collapsable={false}
     delayLongPress={600}
+    enabled={true}
     handlerTag={1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}

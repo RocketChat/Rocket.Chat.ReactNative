@@ -1735,6 +1735,7 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
     activeOpacity={1}
     collapsable={false}
     delayLongPress={600}
+    enabled={true}
     handlerTag={37}
     handlerType="NativeViewGestureHandler"
     hitSlop={
