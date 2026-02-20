@@ -450,8 +450,10 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 						) : null}
 						{room.broadcast
 							? [
-									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
-									<View style={[styles.divider, { borderColor: colors.strokeLight }]} />
+									<Text key='broadcast' style={styles.broadcast}>
+										{I18n.t('Broadcast')}
+									</Text>,
+									<View key='divider' style={[styles.divider, { borderColor: colors.strokeLight }]} />
 							  ]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (

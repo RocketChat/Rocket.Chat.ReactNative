@@ -173,7 +173,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 
 		if (!item.error) {
 			return [
-				<A11y.Order>
+				<A11y.Order key='a11y-order'>
 					<A11y.Index index={1}>
 						<View accessible accessibilityLabel={`${I18n.t('Uploading')} ${item.name}`} key='row' style={styles.row}>
 							<CustomIcon name='attach' size={20} color={themes[theme!].fontSecondaryInfo} />
