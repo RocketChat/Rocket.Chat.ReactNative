@@ -68,7 +68,7 @@ const Attachments: FC<IMessageAttachments> = memo(
 			}
 
 			if (file && file.actions && file.actions.length > 0) {
-				return <AttachedActions attachment={file} getCustomEmoji={getCustomEmoji} />;
+				return <AttachedActions key={index} attachment={file} getCustomEmoji={getCustomEmoji} />;
 			}
 			if (typeof file.collapsed === 'boolean') {
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;

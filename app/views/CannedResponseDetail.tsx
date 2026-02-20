@@ -116,7 +116,7 @@ const CannedResponseDetail = () => {
 						<View style={styles.cannedTagContainer}>
 							{cannedResponse?.tags?.length > 0 ? (
 								cannedResponse.tags.map(t => (
-									<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
+									<View key={t} style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
 										<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 									</View>
 								))

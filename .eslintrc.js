@@ -52,7 +52,6 @@ module.exports = {
 			}
 		],
 		'react/jsx-fragments': ['error', 'syntax'],
-		'react/jsx-key': 'off',
 		'react/no-direct-mutation-state': 'off',
 		'react/prop-types': 'off',
 		'react/react-in-jsx-scope': 'off',
