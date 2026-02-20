@@ -8752,6 +8752,10 @@ expo-navigation-bar@^4.2.4:
     react-native-edge-to-edge "1.6.0"
     react-native-is-edge-to-edge "^1.1.6"
 
+expo-sharing@~13.1.5:
+  version "13.1.5"
+  resolved "https://registry.yarnpkg.com/expo-sharing/-/expo-sharing-13.1.5.tgz#73d86cdcc037b46ddc82be224dfd3d6bceec497c"
+  integrity sha512-X/5sAEiWXL2kdoGE3NO5KmbfcmaCWuWVZXHu8OQef7Yig4ZgHFkGD11HKJ5KqDrDg+SRZe4ISd6MxE7vGUgm4w==
 expo-notifications@0.32.11:
   version "0.32.11"
   resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.32.11.tgz#0d90d08efdf4693ceaa32ab8bb7455d56424c441"
