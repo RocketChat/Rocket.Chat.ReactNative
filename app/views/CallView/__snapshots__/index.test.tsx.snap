@@ -76,7 +76,9 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -650,7 +652,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
         </View>
         <View>
           <View
-            accessibilityLabel="More"
+            accessibilityLabel="Dialpad"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -697,7 +699,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-more"
+            testID="call-view-dialpad"
           >
             <Text
               allowFontScaling={false}
@@ -723,7 +725,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -743,7 +745,7 @@ exports[`Story Snapshots: ConnectedCall should match snapshot 1`] = `
               ]
             }
           >
-            More
+            Dialpad
           </Text>
         </View>
       </View>
@@ -828,7 +830,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -1406,7 +1410,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
         </View>
         <View>
           <View
-            accessibilityLabel="More"
+            accessibilityLabel="Dialpad"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -1453,7 +1457,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-more"
+            testID="call-view-dialpad"
           >
             <Text
               allowFontScaling={false}
@@ -1479,7 +1483,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -1499,7 +1503,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               ]
             }
           >
-            More
+            Dialpad
           </Text>
         </View>
       </View>
@@ -1584,7 +1588,9 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -2158,7 +2164,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
         </View>
         <View>
           <View
-            accessibilityLabel="More"
+            accessibilityLabel="Dialpad"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -2205,7 +2211,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-more"
+            testID="call-view-dialpad"
           >
             <Text
               allowFontScaling={false}
@@ -2231,7 +2237,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -2251,7 +2257,7 @@ exports[`Story Snapshots: MutedAndOnHold should match snapshot 1`] = `
               ]
             }
           >
-            More
+            Dialpad
           </Text>
         </View>
       </View>
@@ -2336,7 +2342,9 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -2910,7 +2918,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
         </View>
         <View>
           <View
-            accessibilityLabel="More"
+            accessibilityLabel="Dialpad"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -2957,7 +2965,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-more"
+            testID="call-view-dialpad"
           >
             <Text
               allowFontScaling={false}
@@ -2983,7 +2991,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -3003,7 +3011,7 @@ exports[`Story Snapshots: MutedCall should match snapshot 1`] = `
               ]
             }
           >
-            More
+            Dialpad
           </Text>
         </View>
       </View>
@@ -3088,7 +3096,9 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -3662,7 +3672,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
         </View>
         <View>
           <View
-            accessibilityLabel="More"
+            accessibilityLabel="Dialpad"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -3709,7 +3719,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-more"
+            testID="call-view-dialpad"
           >
             <Text
               allowFontScaling={false}
@@ -3735,7 +3745,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -3755,7 +3765,7 @@ exports[`Story Snapshots: OnHoldCall should match snapshot 1`] = `
               ]
             }
           >
-            More
+            Dialpad
           </Text>
         </View>
       </View>
@@ -3840,7 +3850,9 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
             source={
               [
                 {
-                  "headers": undefined,
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
                   "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=240",
                 },
               ]
@@ -4414,7 +4426,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
         </View>
         <View>
           <View
-            accessibilityLabel="More"
+            accessibilityLabel="Dialpad"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -4461,7 +4473,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                 },
               ]
             }
-            testID="call-view-more"
+            testID="call-view-dialpad"
           >
             <Text
               allowFontScaling={false}
@@ -4487,7 +4499,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
                 ]
               }
             >
-              
+              
             </Text>
           </View>
           <Text
@@ -4507,7 +4519,7 @@ exports[`Story Snapshots: SpeakerOn should match snapshot 1`] = `
               ]
             }
           >
-            More
+            Dialpad
           </Text>
         </View>
       </View>
