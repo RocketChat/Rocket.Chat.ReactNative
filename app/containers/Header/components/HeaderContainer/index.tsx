@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useWindowDimensions, View, type ViewProps, StyleSheet } from 'react-native';
+import { useWindowDimensions, View, type ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../../../theme';
@@ -35,7 +35,7 @@ const HeaderContainer = memo(
 					paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
 					gap: isMasterDetail ? 4 : 12,
 					backgroundColor: colors.surfaceNeutral,
-					borderBottomWidth: StyleSheet.hairlineWidth,
+					borderBottomWidth: 1,
 					borderBottomColor: colors.strokeLight
 				}}>
 				{children}
