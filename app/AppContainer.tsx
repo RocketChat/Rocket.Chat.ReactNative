@@ -32,7 +32,7 @@ const SetUsernameStack = () => (
 
 // App
 const Stack = createStackNavigator<StackParamList>();
-const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
+const App = ({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
 	useEffect(() => {
 		if (root) {
@@ -80,11 +80,11 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
-});
+};
 const mapStateToProps = (state: any) => ({
 	root: state.app.root,
 	isMasterDetail: state.app.isMasterDetail
 });
 
-const AppContainer = connect(mapStateToProps)(App);
+const AppContainer = connect(mapStateToProps)(memo(App));
 export default AppContainer;

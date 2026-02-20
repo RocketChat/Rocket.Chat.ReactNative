@@ -5,7 +5,7 @@ import styles from './styles';
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 
-export const Handle = memo(() => {
+export const Handle = memo(function Handle() {
 	'use memo';
 
 	const { theme } = useTheme();

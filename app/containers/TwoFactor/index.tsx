@@ -61,7 +61,7 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = memo(() => {
+const TwoFactor = () => {
 	const schema = yup.object().shape({
 		code: yup.string().required(I18n.t('Code_required'))
 	});
@@ -201,6 +201,6 @@ const TwoFactor = memo(() => {
 			</View>
 		</Modal>
 	);
-});
+};
 
-export default TwoFactor;
+export default memo(TwoFactor);

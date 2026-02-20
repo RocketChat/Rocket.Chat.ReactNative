@@ -13,7 +13,7 @@ interface IPasscodeDots {
 	length: number;
 }
 
-const Dots = memo(({ passcode, length }: IPasscodeDots) => {
+const Dots = ({ passcode, length }: IPasscodeDots) => {
 	const { colors } = useTheme();
 
 	return (
@@ -48,6 +48,6 @@ const Dots = memo(({ passcode, length }: IPasscodeDots) => {
 			})}
 		</View>
 	);
-});
+};
 
-export default Dots;
+export default memo(Dots);

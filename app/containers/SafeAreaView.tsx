@@ -19,7 +19,7 @@ interface ISafeAreaView extends ViewProps {
 	children: TSafeAreaViewChildren;
 }
 
-const SafeAreaView = memo(({ style, children, vertical = true, ...props }: ISafeAreaView) => {
+const SafeAreaView = ({ style, children, vertical = true, ...props }: ISafeAreaView) => {
 	const { theme } = useTheme();
 	return (
 		<SafeAreaContext
@@ -29,6 +29,6 @@ const SafeAreaView = memo(({ style, children, vertical = true, ...props }: ISafe
 			{children}
 		</SafeAreaContext>
 	);
-});
+};
 
-export default SafeAreaView;
+export default memo(SafeAreaView);

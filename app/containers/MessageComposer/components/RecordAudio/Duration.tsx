@@ -10,7 +10,7 @@ export interface IDurationRef {
 	onRecordingStatusUpdate: (status: Audio.RecordingStatus) => void;
 }
 
-export const Duration = forwardRef<IDurationRef>((_, ref) => {
+export const Duration = forwardRef<IDurationRef>(function Duration(_, ref) {
 	const [styles] = useStyle();
 	const [duration, setDuration] = useState('00:00');
 

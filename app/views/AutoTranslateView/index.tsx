@@ -93,21 +93,23 @@ const AutoTranslateView = () => {
 		}
 	};
 
-	const LanguageItem = memo(({ language, name }: { language: string; name?: string }) => (
-		<List.Item
-			title={name || language}
-			onPress={() => saveAutoTranslateLanguage(language)}
-			testID={`auto-translate-view-${language}`}
-			right={() =>
-				selectedLanguage === language ? (
-					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
-				) : null
-			}
-			translateTitle={false}
-			additionalAccessibilityLabel={selectedLanguage === language}
-			additionalAccessibilityLabelCheck
-		/>
-	));
+	const LanguageItem = memo(function LanguageItem({ language, name }: { language: string; name?: string }) {
+		return (
+			<List.Item
+				title={name || language}
+				onPress={() => saveAutoTranslateLanguage(language)}
+				testID={`auto-translate-view-${language}`}
+				right={() =>
+					selectedLanguage === language ? (
+						<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
+					) : null
+				}
+				translateTitle={false}
+				additionalAccessibilityLabel={selectedLanguage === language}
+				additionalAccessibilityLabelCheck
+			/>
+		);
+	});
 
 	return (
 		<SafeAreaView>

@@ -70,7 +70,7 @@ interface IThumbs extends Omit<IThumb, 'item'> {
 	attachments: IShareAttachment[];
 }
 
-const ThumbContent = memo(({ item, theme }: IThumbContent) => {
+const ThumbContent = memo(function ThumbContent({ item, theme }: IThumbContent) {
 	const type = item?.mime;
 
 	if (type?.match(/image/)) {

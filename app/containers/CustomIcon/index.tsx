@@ -27,7 +27,7 @@ export interface ICustomIcon extends ComponentProps<typeof IconSet> {
 	style?: StyleProp<TextStyle>;
 }
 
-const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon) => {
+export const CustomIcon = memo(function CustomIcon({ name, size, color, style, ...props }: ICustomIcon) {
 	const { colors } = useTheme();
 	const { fontScaleLimited } = useResponsiveLayout();
 
@@ -43,5 +43,3 @@ const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon) =>
 		/>
 	);
 });
-
-export { CustomIcon };

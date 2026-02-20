@@ -5,7 +5,7 @@ import i18n from '../../../../i18n';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
 
-const VideoConferenceDirect = memo(() => {
+const VideoConferenceDirect = () => {
 	const style = useStyle();
 
 	return (
@@ -13,6 +13,6 @@ const VideoConferenceDirect = memo(() => {
 			<Text style={style.callBack}>{i18n.t('Waiting_for_answer')}</Text>
 		</VideoConferenceBaseContainer>
 	);
-});
+};
 
-export default VideoConferenceDirect;
+export default memo(VideoConferenceDirect);

@@ -30,7 +30,7 @@ interface IServerAvatar {
 }
 
 // TODO: missing skeleton
-const ServerAvatar = memo(({ url, image }: IServerAvatar) => {
+const ServerAvatar = ({ url, image }: IServerAvatar) => {
 	const { colors } = useTheme();
 
 	return (
@@ -38,6 +38,6 @@ const ServerAvatar = memo(({ url, image }: IServerAvatar) => {
 			{image && <Image style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
 		</View>
 	);
-});
+};
 
-export default ServerAvatar;
+export default memo(ServerAvatar);

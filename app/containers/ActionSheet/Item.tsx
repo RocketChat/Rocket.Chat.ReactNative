@@ -15,7 +15,7 @@ export interface IActionSheetItem {
 	hide(): void;
 }
 
-export const Item = memo(({ item, hide }: IActionSheetItem) => {
+export const Item = memo(function Item({ item, hide }: IActionSheetItem) {
 	'use memo';
 
 	const enabled = item?.enabled ?? true;

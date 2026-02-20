@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 
-const Edited = memo(({ isEdited, testID }: { isEdited: boolean; testID?: string }) => {
+const Edited = ({ isEdited, testID }: { isEdited: boolean; testID?: string }) => {
 	'use memo';
 
 	if (!isEdited) {
@@ -16,6 +16,6 @@ const Edited = memo(({ isEdited, testID }: { isEdited: boolean; testID?: string 
 			<CustomIcon name='edit' size={16} />
 		</View>
 	);
-});
+};
 
-export default Edited;
+export default memo(Edited);

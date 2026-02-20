@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Function }) => {
+const NavBottomFAB = ({ visible, onPress }: { visible: boolean; onPress: Function }) => {
 	const { colors } = useTheme();
 
 	if (!visible) {
@@ -47,6 +47,6 @@ const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Fu
 			</Touch>
 		</View>
 	);
-});
+};
 
-export default NavBottomFAB;
+export default memo(NavBottomFAB);

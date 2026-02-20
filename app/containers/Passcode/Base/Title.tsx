@@ -9,7 +9,7 @@ interface IPasscodeTitle {
 	text: string;
 }
 
-const Title = memo(({ text }: IPasscodeTitle) => {
+const Title = ({ text }: IPasscodeTitle) => {
 	const { colors } = useTheme();
 
 	return (
@@ -19,6 +19,6 @@ const Title = memo(({ text }: IPasscodeTitle) => {
 			</View>
 		</Row>
 	);
-});
+};
 
-export default Title;
+export default memo(Title);

@@ -36,7 +36,7 @@ export const Drawer = ({
 	);
 };
 
-export const CloseModal = memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
+export const CloseModal = memo(function CloseModal({ testID, onPress, ...props }: IHeaderButtonCommon) {
 	const { dispatch } = useNavigation();
 	return (
 		<Container left>
@@ -54,37 +54,48 @@ export const CloseModal = memo(({ testID, onPress, ...props }: IHeaderButtonComm
 	);
 });
 
-export const CancelModal = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
-	<Container left>
-		{isIOS ? (
-			<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} {...props} />
-		) : (
-			<Item iconName='close' onPress={onPress} testID={testID} {...props} />
-		)}
-	</Container>
-));
+export const CancelModal = memo(function CancelModal({ onPress, testID, ...props }: IHeaderButtonCommon) {
+	return (
+		<Container left>
+			{isIOS ? (
+				<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} {...props} />
+			) : (
+				<Item iconName='close' onPress={onPress} testID={testID} {...props} />
+			)}
+		</Container>
+	);
+});
 
 // Right
-export const More = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
-	<Container>
-		<Item iconName='kebab' onPress={onPress} testID={testID} {...props} />
-	</Container>
-));
+export const More = memo(function More({ onPress, testID, ...props }: IHeaderButtonCommon) {
+	return (
+		<Container>
+			<Item iconName='kebab' onPress={onPress} testID={testID} {...props} />
+		</Container>
+	);
+});
 
-export const Download = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
-	<Container>
-		<Item iconName='download' onPress={onPress} testID={testID} {...props} />
-	</Container>
-));
+export const Download = memo(function Download({ onPress, testID, ...props }: IHeaderButtonCommon) {
+	return (
+		<Container>
+			<Item iconName='download' onPress={onPress} testID={testID} {...props} />
+		</Container>
+	);
+});
 
-export const Preferences = memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
-	<Container>
-		<Item iconName='settings' onPress={onPress} testID={testID} {...props} />
-	</Container>
-));
+export const Preferences = memo(function Preferences({ onPress, testID, ...props }: IHeaderButtonCommon) {
+	return (
+		<Container>
+			<Item iconName='settings' onPress={onPress} testID={testID} {...props} />
+		</Container>
+	);
+});
 
-export const Legal = memo(
-	({ navigation, testID, onPress = () => navigation?.navigate('LegalView'), ...props }: IHeaderButtonCommon) => (
-		<More accessibilityLabel={I18n.t('More')} onPress={onPress} testID={testID} {...props} />
-	)
-);
+export const Legal = memo(function Legal({
+	navigation,
+	testID,
+	onPress = () => navigation?.navigate('LegalView'),
+	...props
+}: IHeaderButtonCommon) {
+	return <More accessibilityLabel={I18n.t('More')} onPress={onPress} testID={testID} {...props} />;
+});

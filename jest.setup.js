@@ -177,7 +177,9 @@ jest.mock('react-native-keyboard-controller');
 jest.mock('react-native-webview', () => {
 	const { forwardRef } = require('react');
 	const { View } = require('react-native');
-	const WebView = forwardRef(() => <View />);
+	const WebView = forwardRef(function WebView() {
+		return <View />;
+	});
 	WebView.defaultProps = {};
 	return { WebView };
 });

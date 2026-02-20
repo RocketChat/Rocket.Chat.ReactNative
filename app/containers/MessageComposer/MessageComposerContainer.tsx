@@ -5,14 +5,16 @@ import type { IMessageComposerContainerProps, IMessageComposerRef } from './inte
 import { MessageComposer } from './MessageComposer';
 import { EmojiKeyboardProvider } from './hooks/useEmojiKeyboard';
 
-export const MessageComposerContainer = forwardRef<IMessageComposerRef, IMessageComposerContainerProps>(({ children }, ref) => {
-	'use memo';
+export const MessageComposerContainer = forwardRef<IMessageComposerRef, IMessageComposerContainerProps>(
+	function MessageComposerContainer({ children }, ref) {
+		'use memo';
 
-	return (
-		<MessageComposerProvider>
-			<EmojiKeyboardProvider>
-				<MessageComposer forwardedRef={ref}>{children}</MessageComposer>
-			</EmojiKeyboardProvider>
-		</MessageComposerProvider>
-	);
-});
+		return (
+			<MessageComposerProvider>
+				<EmojiKeyboardProvider>
+					<MessageComposer forwardedRef={ref}>{children}</MessageComposer>
+				</EmojiKeyboardProvider>
+			</MessageComposerProvider>
+		);
+	}
+);

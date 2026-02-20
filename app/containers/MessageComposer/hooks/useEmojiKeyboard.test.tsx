@@ -67,11 +67,13 @@ describe('useEmojiKeyboard', () => {
 			focus
 		};
 
-		return ({ children }: { children: ReactElement }) => (
+		const Wrapper = ({ children }: { children: ReactElement }) => (
 			<EmojiKeyboardProvider>
 				<MessageInnerContext.Provider value={messageInnerContextValue}>{children}</MessageInnerContext.Provider>
 			</EmojiKeyboardProvider>
 		);
+
+		return Wrapper;
 	};
 
 	describe('EmojiKeyboardProvider', () => {

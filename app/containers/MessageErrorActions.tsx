@@ -13,7 +13,7 @@ export interface IMessageErrorActions {
 	showMessageErrorActions: (message: TMessageModel) => void;
 }
 
-const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(({ tmid }, ref) => {
+const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(function MessageErrorActions({ tmid }, ref) {
 	const { showActionSheet } = useActionSheet();
 
 	const handleResend = protectedFunction(async (message: TMessageModel) => {

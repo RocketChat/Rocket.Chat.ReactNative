@@ -91,7 +91,7 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	</Touch>
 );
 
-const Header = memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
+const Header = ({ handleReaction, message, isMasterDetail }: IHeader) => {
 	const { width } = useWindowDimensions();
 	const { theme } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji(true);
@@ -127,6 +127,6 @@ const Header = memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
 			/>
 		</View>
 	);
-});
+};
 
-export default Header;
+export default memo(Header);

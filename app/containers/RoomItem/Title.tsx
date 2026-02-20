@@ -5,7 +5,7 @@ import styles from './styles';
 import type { ITitleProps } from './interfaces';
 import { useTheme } from '../../theme';
 
-const Title = memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {
+const Title = ({ name, hideUnreadStatus, alert }: ITitleProps) => {
 	const { colors } = useTheme();
 	return (
 		<Text
@@ -15,6 +15,6 @@ const Title = memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {
 			{name}
 		</Text>
 	);
-});
+};
 
-export default Title;
+export default memo(Title);

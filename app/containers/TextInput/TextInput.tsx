@@ -15,7 +15,7 @@ export interface IThemedTextInput extends IRCTextInputProps {
 	style: StyleProp<TextStyle>;
 }
 
-export const TextInput = forwardRef<RNTextInput, IThemedTextInput>(({ style, ...props }, ref) => {
+export const TextInput = forwardRef<RNTextInput, IThemedTextInput>(function TextInput({ style, ...props }, ref) {
 	const { theme } = useTheme();
 	return (
 		<RNTextInput

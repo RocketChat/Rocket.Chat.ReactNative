@@ -42,7 +42,7 @@ interface IHeader {
 	thread: TThreadModel | string;
 }
 
-const Header = memo(({ room, thread }: IHeader) => {
+const Header = ({ room, thread }: IHeader) => {
 	const [title, setTitle] = useState('');
 	const { theme } = useTheme();
 	let type;
@@ -112,6 +112,6 @@ const Header = memo(({ room, thread }: IHeader) => {
 			</View>
 		</View>
 	);
-});
+};
 
-export default Header;
+export default memo(Header);

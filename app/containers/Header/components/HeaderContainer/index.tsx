@@ -11,37 +11,41 @@ interface IHeaderContainer extends ViewProps {
 	customRightIcon?: boolean;
 }
 
-const HeaderContainer = memo(
-	({ addExtraNotchPadding = false, isMasterDetail = false, customRightIcon, customLeftIcon, children }: IHeaderContainer) => {
-		'use memo';
+const HeaderContainer = ({
+	addExtraNotchPadding = false,
+	isMasterDetail = false,
+	customRightIcon,
+	customLeftIcon,
+	children
+}: IHeaderContainer) => {
+	'use memo';
 
-		const insets = useSafeAreaInsets();
-		const { colors } = useTheme();
-		const { height, width } = useWindowDimensions();
-		const isPortrait = height > width;
-		const paddingTop = isPortrait && !isMasterDetail ? 0 : 4;
-		const paddingBottom = 4;
-		const statusBarPadding = addExtraNotchPadding ? insets.top : 0;
-		const paddingRight = isMasterDetail || !customRightIcon ? 4 : 16;
+	const insets = useSafeAreaInsets();
+	const { colors } = useTheme();
+	const { height, width } = useWindowDimensions();
+	const isPortrait = height > width;
+	const paddingTop = isPortrait && !isMasterDetail ? 0 : 4;
+	const paddingBottom = 4;
+	const statusBarPadding = addExtraNotchPadding ? insets.top : 0;
+	const paddingRight = isMasterDetail || !customRightIcon ? 4 : 16;
 
-		return (
-			<View
-				style={{
-					alignItems: 'center',
-					flexDirection: 'row',
-					paddingBottom,
-					paddingTop: statusBarPadding + paddingTop,
-					paddingRight: paddingRight + insets.right,
-					paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
-					gap: isMasterDetail ? 4 : 12,
-					backgroundColor: colors.surfaceNeutral,
-					borderBottomWidth: StyleSheet.hairlineWidth,
-					borderBottomColor: colors.strokeLight
-				}}>
-				{children}
-			</View>
-		);
-	}
-);
+	return (
+		<View
+			style={{
+				alignItems: 'center',
+				flexDirection: 'row',
+				paddingBottom,
+				paddingTop: statusBarPadding + paddingTop,
+				paddingRight: paddingRight + insets.right,
+				paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
+				gap: isMasterDetail ? 4 : 12,
+				backgroundColor: colors.surfaceNeutral,
+				borderBottomWidth: StyleSheet.hairlineWidth,
+				borderBottomColor: colors.strokeLight
+			}}>
+			{children}
+		</View>
+	);
+};
 
-export default HeaderContainer;
+export default memo(HeaderContainer);

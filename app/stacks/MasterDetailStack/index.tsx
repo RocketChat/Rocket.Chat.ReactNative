@@ -79,7 +79,7 @@ import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<MasterDetailChatsStackParamList>();
-const ChatsStackNavigator = memo(() => {
+const ChatsStackNavigator = memo(function ChatsStackNavigator() {
 	'use memo';
 
 	const { theme } = useContext(ThemeContext);
@@ -93,7 +93,7 @@ const ChatsStackNavigator = memo(() => {
 
 // DrawerNavigator
 const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
-const DrawerNavigator = memo(() => {
+const DrawerNavigator = memo(function DrawerNavigator() {
 	'use memo';
 
 	return (
@@ -110,7 +110,7 @@ export interface INavigation {
 }
 
 const ModalStack = createNativeStackNavigator<ModalStackParamList & TNavigation>();
-const ModalStackNavigator = memo(({ navigation }: INavigation) => {
+const ModalStackNavigator = memo(function ModalStackNavigator({ navigation }: INavigation) {
 	'use memo';
 
 	const { theme } = useContext(ThemeContext);
@@ -208,7 +208,7 @@ const ModalStackNavigator = memo(({ navigation }: INavigation) => {
 
 // InsideStackNavigator
 const InsideStack = createNativeStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
-const InsideStackNavigator = memo(() => {
+const InsideStackNavigator = () => {
 	'use memo';
 
 	const { theme } = useContext(ThemeContext);
@@ -236,6 +236,6 @@ const InsideStackNavigator = memo(() => {
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 		</InsideStack.Navigator>
 	);
-});
+};
 
-export default InsideStackNavigator;
+export default memo(InsideStackNavigator);

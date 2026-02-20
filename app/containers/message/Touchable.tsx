@@ -3,7 +3,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
 
-const RCTouchable: any = memo(({ children, ...props }: any) => {
+const RCTouchable: any = memo(function RCTouchable({ children, ...props }: any) {
 	'use memo';
 
 	const { onLongPress } = useContext(MessageContext);
@@ -15,8 +15,11 @@ const RCTouchable: any = memo(({ children, ...props }: any) => {
 	);
 });
 
-// @ts-ignore
-RCTouchable.Ripple = (...args: any[]) => Touchable.Ripple(...args);
-RCTouchable.SelectableBackgroundBorderless = () => Touchable.SelectableBackgroundBorderless();
+RCTouchable.Ripple = function RCTouchableRipple(...args: Parameters<typeof Touchable.Ripple>) {
+	return Touchable.Ripple(...args);
+};
+RCTouchable.SelectableBackgroundBorderless = function RCTouchableSelectableBackgroundBorderless() {
+	return Touchable.SelectableBackgroundBorderless();
+};
 
 export default RCTouchable;

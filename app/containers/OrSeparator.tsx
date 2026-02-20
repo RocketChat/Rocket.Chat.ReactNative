@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const OrSeparator = memo(() => {
+const OrSeparator = () => {
 	const { colors } = useTheme();
 	const line = { backgroundColor: colors.strokeLight };
 	const text = { color: colors.fontSecondaryInfo };
@@ -34,6 +34,6 @@ const OrSeparator = memo(() => {
 			<View style={[styles.line, line]} />
 		</View>
 	);
-});
+};
 
-export default OrSeparator;
+export default memo(OrSeparator);

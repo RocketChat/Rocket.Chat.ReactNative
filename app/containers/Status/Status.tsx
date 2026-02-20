@@ -6,7 +6,7 @@ import { CustomIcon, hasIcon, type TIconsName } from '../CustomIcon';
 import type { IStatusComponentProps } from './definition';
 import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
 
-const Status = memo(({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {
+const Status = ({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {
 	const { colors } = useTheme();
 	const userStatusColor = useUserStatusColor(status);
 
@@ -33,6 +33,6 @@ const Status = memo(({ style, status = 'offline', size = 32, ...props }: IStatus
 			color={userStatusColor ?? colors.userPresenceOffline}
 		/>
 	);
-});
+};
 
-export default Status;
+export default memo(Status);

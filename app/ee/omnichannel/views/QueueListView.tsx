@@ -29,7 +29,7 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
-const QueueListView = memo(() => {
+const QueueListView = () => {
 	const navigation = useNavigation<TNavigation>();
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
 	const { colors } = useTheme();
@@ -125,6 +125,6 @@ const QueueListView = memo(() => {
 			/>
 		</SafeAreaView>
 	);
-});
+};
 
-export default QueueListView;
+export default memo(QueueListView);

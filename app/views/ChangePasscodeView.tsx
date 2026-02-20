@@ -28,7 +28,7 @@ interface IArgs {
 	force: boolean;
 }
 
-const ChangePasscodeView = memo(() => {
+const ChangePasscodeView = () => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<Partial<IArgs>>({});
 
@@ -77,6 +77,6 @@ const ChangePasscodeView = memo(() => {
 			) : null}
 		</Modal>
 	);
-});
+};
 
-export default ChangePasscodeView;
+export default memo(ChangePasscodeView);

@@ -16,47 +16,47 @@ interface IBannerProps {
 	closeBanner: () => void;
 }
 
-const Banner = memo(
-	({ text, title, bannerClosed, closeBanner }: IBannerProps) => {
-		const [showModal, openModal] = useState(false);
-		const { theme } = useTheme();
+const Banner = ({ text, title, bannerClosed, closeBanner }: IBannerProps) => {
+	const [showModal, openModal] = useState(false);
+	const { theme } = useTheme();
 
-		const toggleModal = () => openModal(prevState => !prevState);
+	const toggleModal = () => openModal(prevState => !prevState);
 
-		if (text && !bannerClosed) {
-			return (
-				<>
-					<BorderlessButton
-						style={[styles.bannerContainer, { backgroundColor: themes[theme].surfaceNeutral }]}
-						testID='room-view-banner'
-						onPress={toggleModal}>
-						{/* eslint-disable-next-line react-native/no-single-element-style-arrays */}
-						<MarkdownPreview msg={text} style={[styles.bannerText]} />
-						<BorderlessButton onPress={closeBanner} hitSlop={10}>
-							<CustomIcon color={themes[theme].fontSecondaryInfo} name='close' size={20} />
-						</BorderlessButton>
+	if (text && !bannerClosed) {
+		return (
+			<>
+				<BorderlessButton
+					style={[styles.bannerContainer, { backgroundColor: themes[theme].surfaceNeutral }]}
+					testID='room-view-banner'
+					onPress={toggleModal}>
+					{/* eslint-disable-next-line react-native/no-single-element-style-arrays */}
+					<MarkdownPreview msg={text} style={[styles.bannerText]} />
+					<BorderlessButton onPress={closeBanner} hitSlop={10}>
+						<CustomIcon color={themes[theme].fontSecondaryInfo} name='close' size={20} />
 					</BorderlessButton>
-					<Modal
-						onBackdropPress={toggleModal}
-						onBackButtonPress={toggleModal}
-						useNativeDriver
-						isVisible={showModal}
-						animationIn='fadeIn'
-						animationOut='fadeOut'>
-						<View style={[styles.modalView, { backgroundColor: themes[theme].surfaceNeutral }]}>
-							<Text style={[styles.bannerModalTitle, { color: themes[theme].fontSecondaryInfo }]}>{title}</Text>
-							<ScrollView style={styles.modalScrollView}>
-								<Markdown msg={text} />
-							</ScrollView>
-						</View>
-					</Modal>
-				</>
-			);
-		}
+				</BorderlessButton>
+				<Modal
+					onBackdropPress={toggleModal}
+					onBackButtonPress={toggleModal}
+					useNativeDriver
+					isVisible={showModal}
+					animationIn='fadeIn'
+					animationOut='fadeOut'>
+					<View style={[styles.modalView, { backgroundColor: themes[theme].surfaceNeutral }]}>
+						<Text style={[styles.bannerModalTitle, { color: themes[theme].fontSecondaryInfo }]}>{title}</Text>
+						<ScrollView style={styles.modalScrollView}>
+							<Markdown msg={text} />
+						</ScrollView>
+					</View>
+				</Modal>
+			</>
+		);
+	}
 
-		return null;
-	},
+	return null;
+};
+
+export default memo(
+	Banner,
 	(prevProps, nextProps) => prevProps.text === nextProps.text && prevProps.bannerClosed === nextProps.bannerClosed
 );
-
-export default Banner;

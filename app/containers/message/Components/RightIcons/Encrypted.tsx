@@ -7,7 +7,7 @@ import MessageContext from '../../Context';
 import styles from '../../styles';
 import { E2E_MESSAGE_TYPE } from '../../../../lib/constants/keys';
 
-const Encrypted = memo(({ type }: { type: string }) => {
+const Encrypted = ({ type }: { type: string }) => {
 	'use memo';
 
 	const { onEncryptedPress } = useContext(MessageContext);
@@ -21,6 +21,6 @@ const Encrypted = memo(({ type }: { type: string }) => {
 			<CustomIcon name='encrypted' size={16} />
 		</Touchable>
 	);
-});
+};
 
-export default Encrypted;
+export default memo(Encrypted);

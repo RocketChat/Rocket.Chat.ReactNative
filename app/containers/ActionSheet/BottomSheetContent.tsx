@@ -19,7 +19,7 @@ interface IBottomSheetContentProps {
 	onLayout: ViewProps['onLayout'];
 }
 
-const BottomSheetContent = memo(({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
+const BottomSheetContent = ({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -64,6 +64,6 @@ const BottomSheetContent = memo(({ options, hasCancel, hide, children, onLayout 
 			{children}
 		</BottomSheetView>
 	);
-});
+};
 
-export default BottomSheetContent;
+export default memo(BottomSheetContent);

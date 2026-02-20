@@ -22,7 +22,7 @@ interface IHashtag {
 	channels?: IUserChannel[];
 }
 
-const Hashtag = memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+const Hashtag = ({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -67,6 +67,6 @@ const Hashtag = memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag
 		);
 	}
 	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
-});
+};
 
-export default Hashtag;
+export default memo(Hashtag);
