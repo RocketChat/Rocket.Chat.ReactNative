@@ -4,8 +4,8 @@ import { memo, useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../../../lib/constants/colors';
-import type { IAttachment } from '../../../../../definitions/IAttachment';
-import type { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
+import { type IAttachment } from '../../../../../definitions/IAttachment';
+import { type TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../../CustomIcon';
 import { useTheme } from '../../../../../theme';
 import sharedStyles from '../../../../../views/Styles';
@@ -84,7 +84,7 @@ interface IMessageReply {
 }
 
 const AttText = memo(
-	({ text, getCustomEmoji }: IMessageAttText) => {
+	function AttText({ text, getCustomEmoji }: IMessageAttText) {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -98,8 +98,8 @@ const AttText = memo(
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
 
-const Fields = memo(
-	({ attachment, getCustomEmoji }: IMessageFields) => {
+const CollapsibleQuoteFields = memo(
+	function CollapsibleQuoteFields({ attachment, getCustomEmoji }: IMessageFields) {
 		'use memo';
 
 		const { theme } = useTheme();
@@ -126,7 +126,7 @@ const Fields = memo(
 );
 
 const CollapsibleQuote = memo(
-	({ attachment, getCustomEmoji }: IMessageReply) => {
+	function CollapsibleQuote({ attachment, getCustomEmoji }: IMessageReply) {
 		'use memo';
 
 		const { theme } = useTheme();
@@ -178,7 +178,7 @@ const CollapsibleQuote = memo(
 								<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
 							</View>
 							{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
-							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
+							{!collapsed && <CollapsibleQuoteFields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
 						<View style={styles.iconContainer}>
 							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
@@ -190,8 +190,5 @@ const CollapsibleQuote = memo(
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)
 );
-
-CollapsibleQuote.displayName = 'CollapsibleQuote';
-Fields.displayName = 'CollapsibleQuoteFields';
 
 export default CollapsibleQuote;

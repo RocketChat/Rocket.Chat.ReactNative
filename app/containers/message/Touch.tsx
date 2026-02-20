@@ -29,80 +29,78 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 
 const Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
-const Touch = forwardRef<View, ITouchProps>(
-	(
-		{
-			children,
-			onPress,
-			android_rippleColor,
-			accessible,
-			accessibilityLabel,
-			accessibilityHint,
-			accessibilityActions,
-			onAccessibilityAction,
-			style,
-			rectButtonStyle,
-			enabled = true,
-			...props
-		},
-		ref
-	) => {
-		const { colors } = useTheme();
-		// The background color must be applied to the RectButton, not the View.
-		// If set on the View, the touch opacity animation won't work properly.
-		const flattenedStyle = StyleSheet.flatten(style) || {};
-		const {
-			borderRadius,
-			backgroundColor,
-			marginBottom,
-			margin,
-			marginLeft,
-			marginVertical,
-			marginHorizontal,
-			marginEnd,
-			marginRight,
-			marginStart,
-			marginTop,
-			...viewStyle
-		} = flattenedStyle;
-		// The margin should be applied to the parent component.
-		// If set on the View, it will create an internal margin inside the RectButton.
-		const marginStyles = {
-			margin,
-			marginBottom,
-			marginLeft,
-			marginVertical,
-			marginHorizontal,
-			marginEnd,
-			marginRight,
-			marginStart,
-			marginTop
-		};
-		const touchableProps = isIOS
-			? {}
-			: { background: TouchableNativeFeedback.Ripple(android_rippleColor ?? colors.surfaceNeutral, false) };
+const Touch = forwardRef<View, ITouchProps>(function Touch(
+	{
+		children,
+		onPress,
+		android_rippleColor,
+		accessible,
+		accessibilityLabel,
+		accessibilityHint,
+		accessibilityActions,
+		onAccessibilityAction,
+		style,
+		rectButtonStyle,
+		enabled = true,
+		...props
+	},
+	ref
+) {
+	const { colors } = useTheme();
+	// The background color must be applied to the RectButton, not the View.
+	// If set on the View, the touch opacity animation won't work properly.
+	const flattenedStyle = StyleSheet.flatten(style) || {};
+	const {
+		borderRadius,
+		backgroundColor,
+		marginBottom,
+		margin,
+		marginLeft,
+		marginVertical,
+		marginHorizontal,
+		marginEnd,
+		marginRight,
+		marginStart,
+		marginTop,
+		...viewStyle
+	} = flattenedStyle;
+	// The margin should be applied to the parent component.
+	// If set on the View, it will create an internal margin inside the RectButton.
+	const marginStyles = {
+		margin,
+		marginBottom,
+		marginLeft,
+		marginVertical,
+		marginHorizontal,
+		marginEnd,
+		marginRight,
+		marginStart,
+		marginTop
+	};
+	const touchableProps = isIOS
+		? {}
+		: { background: TouchableNativeFeedback.Ripple(android_rippleColor ?? colors.surfaceNeutral, false) };
 
-		return (
-			<Component
-				ref={ref}
-				onPress={onPress}
-				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
-				disabled={!enabled}
-				{...touchableProps}
-				{...props}>
-				<View
-					accessible={accessible}
-					accessibilityRole={props.accessibilityRole}
-					accessibilityLabel={accessibilityLabel}
-					accessibilityHint={accessibilityHint}
-					accessibilityActions={accessibilityActions}
-					onAccessibilityAction={onAccessibilityAction}
-					style={viewStyle}>
-					{children}
-				</View>
-			</Component>
-		);
-	}
-);
+	return (
+		<Component
+			ref={ref}
+			onPress={onPress}
+			style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
+			disabled={!enabled}
+			{...touchableProps}
+			{...props}>
+			<View
+				accessible={accessible}
+				accessibilityRole={props.accessibilityRole}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityHint={accessibilityHint}
+				accessibilityActions={accessibilityActions}
+				onAccessibilityAction={onAccessibilityAction}
+				style={viewStyle}>
+				{children}
+			</View>
+		</Component>
+	);
+});
 
 export default Touch;

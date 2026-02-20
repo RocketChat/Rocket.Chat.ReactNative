@@ -51,7 +51,6 @@ module.exports = {
 				'newlines-between': 'ignore'
 			}
 		],
-		'react/display-name': 'off',
 		'react/jsx-fragments': ['error', 'syntax'],
 		'react/jsx-key': 'off',
 		'react/no-direct-mutation-state': 'off',

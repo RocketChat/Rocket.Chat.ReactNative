@@ -20,7 +20,7 @@ interface IPasscodeLocked {
 	setStatus: Function;
 }
 
-const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
+const Timer = memo(function Timer({ time, setStatus }: IPasscodeTimer) {
 	const calcTimeLeft = () => {
 		const diff = getDiff(time || 0);
 		if (diff > 0) {
@@ -47,7 +47,7 @@ const Timer = memo(({ time, setStatus }: IPasscodeTimer) => {
 	return <Subtitle text={I18n.t('Passcode_app_locked_subtitle', { timeLeft })} />;
 });
 
-const Locked = memo(({ setStatus }: IPasscodeLocked) => {
+const Locked = ({ setStatus }: IPasscodeLocked) => {
 	const [lockedUntil, setLockedUntil] = useState<Date | null>(null);
 	const { colors } = useTheme();
 
@@ -67,6 +67,6 @@ const Locked = memo(({ setStatus }: IPasscodeLocked) => {
 			<Timer time={lockedUntil} setStatus={setStatus} />
 		</Grid>
 	);
-});
+};
 
-export default Locked;
+export default memo(Locked);

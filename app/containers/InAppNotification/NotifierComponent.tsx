@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierComponent) => {
+const NotifierComponent = ({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
 	const { rowHeight } = useResponsiveLayout();
 	const insets = useSafeAreaInsets();
@@ -124,10 +124,10 @@ const NotifierComponent = memo(({ notification, isMasterDetail }: INotifierCompo
 			</Touch>
 		</View>
 	);
-});
+};
 
 const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(NotifierComponent);
+export default connect(mapStateToProps)(memo(NotifierComponent));

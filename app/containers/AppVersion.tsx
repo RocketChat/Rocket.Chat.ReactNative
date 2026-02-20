@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AppVersion = memo(() => {
+const AppVersion = () => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.container}>
@@ -30,6 +30,6 @@ const AppVersion = memo(() => {
 			</Text>
 		</View>
 	);
-});
+};
 
-export default AppVersion;
+export default memo(AppVersion);

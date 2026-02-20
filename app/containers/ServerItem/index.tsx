@@ -27,7 +27,7 @@ export interface IServerItem {
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const ServerItem = memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
+const ServerItem = ({ item, onPress, onDeletePress, hasCheck }: IServerItem) => {
 	const { colors } = useTheme();
 	const { width } = useResponsiveLayout();
 
@@ -75,6 +75,6 @@ const ServerItem = memo(({ item, onPress, onDeletePress, hasCheck }: IServerItem
 			</View>
 		</Touchable>
 	);
-});
+};
 
-export default ServerItem;
+export default memo(ServerItem);

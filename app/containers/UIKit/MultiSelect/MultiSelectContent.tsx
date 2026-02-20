@@ -23,65 +23,72 @@ interface IMultiSelectContentProps {
 	selectedItems: IItemData[];
 }
 
-export const MultiSelectContent = memo(
-	({ onSearch, options, multiselect, select, onChange, setCurrentValue, onHide, selectedItems }: IMultiSelectContentProps) => {
-		const { colors } = useTheme();
-		const [selected, setSelected] = useState<IItemData[]>(Array.isArray(selectedItems) ? selectedItems : []);
-		const [items, setItems] = useState<IItemData[] | undefined>(options);
-		const { hideActionSheet } = useActionSheet();
+export const MultiSelectContent = memo(function MultiSelectContent({
+	onSearch,
+	options,
+	multiselect,
+	select,
+	onChange,
+	setCurrentValue,
+	onHide,
+	selectedItems
+}: IMultiSelectContentProps) {
+	const { colors } = useTheme();
+	const [selected, setSelected] = useState<IItemData[]>(Array.isArray(selectedItems) ? selectedItems : []);
+	const [items, setItems] = useState<IItemData[] | undefined>(options);
+	const { hideActionSheet } = useActionSheet();
 
-		const onSelect = (item: IItemData) => {
-			const {
-				value,
-				text: { text }
-			} = item;
-			if (multiselect) {
-				let newSelect = [];
-				if (!selected.find(s => s.value === value)) {
-					newSelect = [...selected, item];
-				} else {
-					newSelect = selected.filter((s: any) => s.value !== value);
-				}
-				setSelected(newSelect);
-				select(newSelect);
-				onChange({ value: newSelect.map(s => s.value) });
+	const onSelect = (item: IItemData) => {
+		const {
+			value,
+			text: { text }
+		} = item;
+		if (multiselect) {
+			let newSelect = [];
+			if (!selected.find(s => s.value === value)) {
+				newSelect = [...selected, item];
 			} else {
-				onChange({ value });
-				setCurrentValue(text);
-				onHide();
+				newSelect = selected.filter((s: any) => s.value !== value);
 			}
-		};
+			setSelected(newSelect);
+			select(newSelect);
+			onChange({ value: newSelect.map(s => s.value) });
+		} else {
+			onChange({ value });
+			setCurrentValue(text);
+			onHide();
+		}
+	};
 
-		const handleSearch = debounce(
-			async (text: string) => {
-				if (onSearch) {
-					const res = await onSearch(text);
-					setItems(res);
-				} else {
-					setItems(options?.filter((option: any) => textParser([option.text]).toLowerCase().includes(text.toLowerCase())));
-				}
-			},
-			onSearch ? textInputDebounceTime : 0
-		);
+	const handleSearch = debounce(
+		async (text: string) => {
+			if (onSearch) {
+				const res = await onSearch(text);
+				setItems(res);
+			} else {
+				setItems(options?.filter((option: any) => textParser([option.text]).toLowerCase().includes(text.toLowerCase())));
+			}
+		},
+		onSearch ? textInputDebounceTime : 0
+	);
 
-		return (
-			<View style={styles.actionSheetContainer}>
-				<View style={styles.inputStyle}>
-					<FormTextInput
-						testID='multi-select-search'
-						onChangeText={handleSearch}
-						placeholder={I18n.t('Search')}
-						inputStyle={{ backgroundColor: colors.surfaceLight }}
-						bottomSheet={true}
-						onSubmitEditing={() => {
-							setTimeout(() => {
-								hideActionSheet();
-							}, 150);
-						}}
-					/>
-				</View>
-				<Items items={items || []} selected={selected} onSelect={onSelect} />
+	return (
+		<View style={styles.actionSheetContainer}>
+			<View style={styles.inputStyle}>
+				<FormTextInput
+					testID='multi-select-search'
+					onChangeText={handleSearch}
+					placeholder={I18n.t('Search')}
+					inputStyle={{ backgroundColor: colors.surfaceLight }}
+					bottomSheet={true}
+					onSubmitEditing={() => {
+						setTimeout(() => {
+							hideActionSheet();
+						}, 150);
+					}}
+				/>
 			</View>
-		);
-	}
-);
+			<Items items={items || []} selected={selected} onSelect={onSelect} />
+		</View>
+	);
+});
