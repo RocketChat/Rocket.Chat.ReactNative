@@ -44,11 +44,11 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 		}
 	}, [root]);
 
-	const [loaded] = useFonts({
+	const [loaded, fontError] = useFonts({
 		custom: require('./static/fonts/custom.ttf')
 	});
 
-	if (!loaded && !root) {
+	if ((!loaded && !fontError) || !root) {
 		return null;
 	}
 
