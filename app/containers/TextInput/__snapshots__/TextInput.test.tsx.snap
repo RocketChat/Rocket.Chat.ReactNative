@@ -594,7 +594,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
               }
             />
             <View
-              accessibilityLabel="[missing "en.Clear_input" translation]"
+              accessibilityLabel="Clear input"
               accessible={true}
               style={
                 {
