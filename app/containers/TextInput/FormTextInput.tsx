@@ -199,8 +199,10 @@ export const FormTextInput = ({
 
 						{showClearInput ? (
 							<Touch
+								testID='clear-text-input'
 								onPress={() => onClearInput?.()}
-								rectButtonStyle={[styles.iconContainer, styles.iconRight, styles.clearInputIcon]}>
+								rectButtonStyle={[styles.iconContainer, styles.iconRight]}
+								style={styles.clearInputIcon}>
 								<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
 							</Touch>
 						) : null}

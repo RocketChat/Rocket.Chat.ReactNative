@@ -553,7 +553,6 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 {
                   "backgroundColor": undefined,
                   "borderRadius": undefined,
-                  "height": 20,
                   "margin": undefined,
                   "marginBottom": undefined,
                   "marginEnd": undefined,
@@ -565,13 +564,13 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   "marginVertical": undefined,
                   "position": "absolute",
                   "right": 12,
-                  "width": 20,
                 },
                 {
                   "cursor": undefined,
                 },
               ]
             }
+            testID="clear-text-input"
             underlayColor="#E4E7EA"
           >
             <View
@@ -594,7 +593,12 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
               }
             />
             <View
-              style={{}}
+              style={
+                {
+                  "height": 20,
+                  "width": 20,
+                }
+              }
             >
               <Text
                 allowFontScaling={false}
