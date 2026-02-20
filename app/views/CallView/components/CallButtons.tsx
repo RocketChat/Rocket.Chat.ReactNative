@@ -6,6 +6,8 @@ import { useCallStore } from '../../../lib/services/voip/useCallStore';
 import CallActionButton from './CallActionButton';
 import { styles } from '../styles';
 import { useTheme } from '../../../theme';
+import { showActionSheetRef } from '../../../containers/ActionSheet';
+import Dialpad from './Dialpad/Dialpad';
 
 export const CallButtons = () => {
 	'use memo';
@@ -30,9 +32,8 @@ export const CallButtons = () => {
 		alert('Message');
 	};
 
-	const handleMore = () => {
-		// TODO: Show action sheet with more options (DTMF, transfer, etc.)
-		alert('More');
+	const handleDialpad = () => {
+		showActionSheetRef({ children: <Dialpad /> });
 	};
 
 	const handleEndCall = () => {
@@ -76,7 +77,7 @@ export const CallButtons = () => {
 					variant='danger'
 					testID='call-view-end'
 				/>
-				<CallActionButton icon='kebab' label={I18n.t('More')} onPress={handleMore} testID='call-view-more' />
+				<CallActionButton icon='dialpad' label={I18n.t('Dialpad')} onPress={handleDialpad} testID='call-view-dialpad' />
 			</View>
 		</View>
 	);

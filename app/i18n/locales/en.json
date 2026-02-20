@@ -241,6 +241,7 @@
   "Device_notification_settings": "Device notification settings",
   "Device_notifications_alert_description": "Please go to your settings app and enable notifications for Rocket.Chat",
   "Device_notifications_alert_title": "Notifications disabled",
+  "Dialpad": "Dialpad",
   "Direct_message": "Direct message",
   "Direct_message_someone": "Direct message someone",
   "Direct_Messages": "Direct messages",

@@ -4,6 +4,7 @@ import RNCallKeep from 'react-native-callkeep';
 import InCallManager from 'react-native-incall-manager';
 
 import Navigation from '../../navigation/appNavigation';
+import { hideActionSheetRef } from '../../../containers/ActionSheet';
 
 interface CallStoreState {
 	// Call reference
@@ -19,6 +20,7 @@ interface CallStoreState {
 	isSpeakerOn: boolean;
 	callStartTime: number | null;
 	focused: boolean;
+	dialpadValue: string;
 
 	// Contact info
 	contact: CallContact;
@@ -33,6 +35,7 @@ interface CallStoreActions {
 	toggleFocus: () => void;
 	endCall: () => void;
 	reset: () => void;
+	setDialpadValue: (value: string) => void;
 }
 
 export type CallStore = CallStoreState & CallStoreActions;
@@ -48,7 +51,8 @@ const initialState: CallStoreState = {
 	isSpeakerOn: false,
 	callStartTime: null,
 	contact: {},
-	focused: true
+	focused: true,
+	dialpadValue: ''
 };
 
 export const useCallStore = create<CallStore>((set, get) => ({
@@ -68,7 +72,6 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			isOnHold: call.held,
 			remoteMute: call.remoteMute,
 			remoteHeld: call.remoteHeld,
-			// isSpeakerOn: call.
 			contact: {
 				id: call.contact.id,
 				displayName: call.contact.displayName,
@@ -160,6 +163,15 @@ export const useCallStore = create<CallStore>((set, get) => ({
 		}
 	},
 
+	setDialpadValue: (value: string) => {
+		const { call } = get();
+		if (!call) return;
+
+		call.sendDTMF(value);
+		const newValue = get().dialpadValue + value;
+		set({ dialpadValue: newValue });
+	},
+
 	endCall: () => {
 		const { call, callState, callUUID } = get();
 
@@ -186,31 +198,14 @@ export const useCallStore = create<CallStore>((set, get) => ({
 			console.error('[VoIP] InCallManager.stop failed:', error);
 		}
 		set(initialState);
+		hideActionSheetRef();
 	}
 }));
 
-// const isConnecting = callState === 'none' || callState === 'ringing' || callState === 'accepted';
-// const isConnected = callState === 'active';
 export const useCallState = () => {
 	const callState = useCallStore(state => state.callState);
 	return callState === 'none' || callState === 'ringing' || callState === 'accepted';
 };
 
-// // Selector hooks for better performance
-// export const useCallState = () => useCallStore(state => state.callState);
 export const useCallContact = () => useCallStore(state => state.contact);
-// export const useCallControls = () =>
-// 	useCallStore(
-// 		useShallow(state => ({
-// 			isMuted: state.isMuted,
-// 			isOnHold: state.isOnHold,
-// 			isSpeakerOn: state.isSpeakerOn
-// 		}))
-// 	);
-// export const useCallActions = () =>
-// 	useCallStore(state => ({
-// 		toggleMute: state.toggleMute,
-// 		toggleHold: state.toggleHold,
-// 		toggleSpeaker: state.toggleSpeaker,
-// 		endCall: state.endCall
-// 	}));
+export const useDialpadValue = () => useCallStore(state => state.dialpadValue);

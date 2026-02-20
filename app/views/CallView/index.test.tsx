@@ -8,12 +8,6 @@ import { mockedStore } from '../../reducers/mockedStore';
 import * as stories from './CallView.stories';
 import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
-// Mock expo-keep-awake
-jest.mock('expo-keep-awake', () => ({
-	activateKeepAwakeAsync: jest.fn(() => Promise.resolve()),
-	deactivateKeepAwake: jest.fn()
-}));
-
 // Mock ResponsiveLayoutContext for snapshots
 jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 	const React = require('react');
@@ -34,6 +28,12 @@ jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => {
 
 // Mock alert
 global.alert = jest.fn();
+
+const mockShowActionSheetRef = jest.fn();
+jest.mock('../../containers/ActionSheet', () => ({
+	...jest.requireActual('../../containers/ActionSheet'),
+	showActionSheetRef: (options: any) => mockShowActionSheetRef(options)
+}));
 
 // Helper to create a mock call
 const createMockCall = (overrides: any = {}) => ({
@@ -108,7 +108,7 @@ describe('CallView', () => {
 		expect(getByTestId('call-view-mute')).toBeTruthy();
 		expect(getByTestId('call-view-message')).toBeTruthy();
 		expect(getByTestId('call-view-end')).toBeTruthy();
-		expect(getByTestId('call-view-more')).toBeTruthy();
+		expect(getByTestId('call-view-dialpad')).toBeTruthy();
 	});
 
 	it('should show CallStatusText when call is active', () => {
@@ -253,7 +253,7 @@ describe('CallView', () => {
 		expect(global.alert).toHaveBeenCalledWith('Message');
 	});
 
-	it('should show alert when more button is pressed', () => {
+	it('should show action sheet with dialpad when dialpad button is pressed', () => {
 		setStoreState({ callState: 'active' });
 		const { getByTestId } = render(
 			<Wrapper>
@@ -261,8 +261,12 @@ describe('CallView', () => {
 			</Wrapper>
 		);
 
-		fireEvent.press(getByTestId('call-view-more'));
-		expect(global.alert).toHaveBeenCalledWith('More');
+		fireEvent.press(getByTestId('call-view-dialpad'));
+		expect(mockShowActionSheetRef).toHaveBeenCalledWith(
+			expect.objectContaining({
+				children: expect.anything()
+			})
+		);
 	});
 
 	it('should show "Cancel" label when call is connecting', () => {
@@ -382,31 +386,6 @@ describe('CallView', () => {
 		);
 
 		expect(getByText('Unmute')).toBeTruthy();
-	});
-
-	it('should activate keep awake on mount', () => {
-		const { activateKeepAwakeAsync } = require('expo-keep-awake');
-		setStoreState();
-		render(
-			<Wrapper>
-				<CallView />
-			</Wrapper>
-		);
-
-		expect(activateKeepAwakeAsync).toHaveBeenCalled();
-	});
-
-	it('should deactivate keep awake on unmount', () => {
-		const { deactivateKeepAwake } = require('expo-keep-awake');
-		setStoreState();
-		const { unmount } = render(
-			<Wrapper>
-				<CallView />
-			</Wrapper>
-		);
-
-		unmount();
-		expect(deactivateKeepAwake).toHaveBeenCalled();
 	});
 });
 

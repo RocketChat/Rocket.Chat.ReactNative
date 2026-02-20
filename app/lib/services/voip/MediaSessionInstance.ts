@@ -99,6 +99,7 @@ class MediaSessionInstance {
 			Navigation.navigate('CallView', { callUUID });
 		} else {
 			RNCallKeep.endCall(callUUID);
+			alert('Call not found'); // TODO: Show error message?
 		}
 	};
 

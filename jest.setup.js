@@ -160,7 +160,8 @@ jest.mock('@discord/bottom-sheet', () => {
 	return {
 		__esModule: true,
 		default: react.View,
-		BottomSheetScrollView: react.ScrollView
+		BottomSheetScrollView: react.ScrollView,
+		BottomSheetTextInput: react.TextInput
 	};
 });
 
