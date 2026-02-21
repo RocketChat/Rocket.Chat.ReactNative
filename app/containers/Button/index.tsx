@@ -1,6 +1,8 @@
 import React from 'react';
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 import Touchable, { type PlatformTouchableProps } from 'react-native-platform-touchable';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
@@ -18,6 +20,8 @@ interface IButtonProps extends PlatformTouchableProps {
 	style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
 	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
 	small?: boolean;
+	/** Use Gesture.Tap so first tap registers inside TrueSheet on Android. */
+	useGestureHandlerTouchable?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -61,6 +65,7 @@ const Button: React.FC<IButtonProps> = ({
 	style,
 	styleText,
 	small,
+	useGestureHandlerTouchable = false,
 	...otherProps
 }) => {
 	const { colors } = useTheme();
@@ -87,9 +92,9 @@ const Button: React.FC<IButtonProps> = ({
 		styleText
 	];
 
-	return (
+	const touchable = (
 		<Touchable
-			onPress={onPress}
+			onPress={useGestureHandlerTouchable ? undefined : onPress}
 			disabled={isDisabled}
 			// @ts-ignore
 			style={containerStyle}
@@ -99,6 +104,18 @@ const Button: React.FC<IButtonProps> = ({
 			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
 		</Touchable>
 	);
+
+	if (useGestureHandlerTouchable) {
+		const firePress = () => {
+			if (!isDisabled) onPress();
+		};
+		const tap = Gesture.Tap().onStart(() => {
+			runOnJS(firePress)();
+		});
+		return <GestureDetector gesture={tap}>{touchable}</GestureDetector>;
+	}
+
+	return touchable;
 };
 
 export default Button;
