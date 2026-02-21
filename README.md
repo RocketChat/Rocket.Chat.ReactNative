@@ -1,8 +1,8 @@
 # Rocket.Chat Mobile
 
 - **Supported server versions:** 0.70.0+
-- **Supported iOS versions**: 13.4+
-- **Supported Android versions**: 6.0+
+- **Supported iOS versions**: 15.1+
+- **Supported Android versions**: 7.0+
 
 ## Download
 
