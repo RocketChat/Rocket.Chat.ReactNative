@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React, { type ReactElement, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
-import { getInfoAsync } from 'expo-file-system';
+import { getInfoAsync } from 'expo-file-system/legacy';
 import { useKeepAwake } from 'expo-keep-awake';
 import { shallowEqual } from 'react-redux';
 

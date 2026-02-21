@@ -5,7 +5,7 @@ import React from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';

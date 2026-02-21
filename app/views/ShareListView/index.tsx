@@ -2,7 +2,7 @@ import React from 'react';
 import { type Dispatch } from 'redux';
 import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, type NativeEventSubscription, Text, View } from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
@@ -101,7 +101,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const { mediaUris } = shareExtensionParams;
 		if (mediaUris) {
 			try {
-				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri, { size: true })));
+				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri)));
 				const attachments = info.map(file => {
 					if (!file.exists) {
 						return null;

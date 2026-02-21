@@ -57,6 +57,7 @@ const FooterButtons = ({
 				title={cancelTitle}
 				color={colors.buttonFontSecondary}
 				onPress={cancelAction}
+				useGestureHandlerTouchable
 				testID={`${testID}-cancel`}
 			/>
 			<Button
@@ -64,6 +65,7 @@ const FooterButtons = ({
 				title={confirmTitle}
 				onPress={confirmAction}
 				disabled={disabled}
+				useGestureHandlerTouchable
 				testID={`${testID}-confirm`}
 			/>
 		</View>
