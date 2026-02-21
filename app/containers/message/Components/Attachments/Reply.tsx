@@ -261,7 +261,7 @@ const Reply = React.memo(
 							/>
 							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 							{loading ? (
-								<View style={[styles.backdrop]}>
+								<View style={styles.backdrop}>
 									<View
 										style={[
 											styles.backdrop,

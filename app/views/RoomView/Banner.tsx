@@ -30,6 +30,7 @@ const Banner = React.memo(
 						style={[styles.bannerContainer, { backgroundColor: themes[theme].surfaceNeutral }]}
 						testID='room-view-banner'
 						onPress={toggleModal}>
+						{/* eslint-disable-next-line react-native/no-single-element-style-arrays */}
 						<MarkdownPreview msg={text} style={[styles.bannerText]} />
 						<BorderlessButton onPress={closeBanner} hitSlop={10}>
 							<CustomIcon color={themes[theme].fontSecondaryInfo} name='close' size={20} />
