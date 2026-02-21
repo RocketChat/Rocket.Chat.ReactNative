@@ -5214,12 +5214,12 @@
   dependencies:
     eslint-plugin-import "^2.17.2"
 
-"@rocket.chat/message-parser@^0.31.31":
-  version "0.31.31"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.31.31.tgz#9a3eea7602ac37387c6384577623865c8d536003"
-  integrity sha512-YWHdin2ejndwgQJXlHIzAmQB+xvZLeEOqOkPq8RxdyTjAaGo1DbBCrc0aU7u0LOUnGN+jm3H4grnYdI9SPwitA==
+"@rocket.chat/message-parser@^0.31.33":
+  version "0.31.33"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.31.33.tgz#cf5d883731a311f4676d762964b48088a18a09d5"
+  integrity sha512-0ADgbPelF+U88oobkxIPBvwjeElrHqcGJACz6x2Er/nrp2J3rU27L6DRb3b5t8otyiHuqLX8mm/NM7Lfta0Epg==
   dependencies:
-    tldts "~5.7.112"
+    tldts "~6.1.86"
 
 "@rocket.chat/mobile-crypto@RocketChat/rocket.chat-mobile-crypto":
   version "0.2.1"
@@ -14518,17 +14518,17 @@ tinyspy@^4.0.3:
   resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-4.0.4.tgz#d77a002fb53a88aa1429b419c1c92492e0c81f78"
   integrity sha512-azl+t0z7pw/z958Gy9svOTuzqIk6xq+NSheJzn5MMWtWTFywIacg2wUlzKFGtt3cthx0r2SxMK0yzJOR0IES7Q==
 
-tldts-core@^5.7.112:
-  version "5.7.112"
-  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-5.7.112.tgz#168459aa79495f5d46407a685a7a9f0cdc9a272b"
-  integrity sha512-mutrEUgG2sp0e/MIAnv9TbSLR0IPbvmAImpzqul5O/HJ2XM1/I1sajchQ/fbj0fPdA31IiuWde8EUhfwyldY1Q==
+tldts-core@^6.1.86:
+  version "6.1.86"
+  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-6.1.86.tgz#a93e6ed9d505cb54c542ce43feb14c73913265d8"
+  integrity sha512-Je6p7pkk+KMzMv2XXKmAE3McmolOQFdxkKw0R8EYNr7sELW46JqnNeTX8ybPiQgvg1ymCoF8LXs5fzFaZvJPTA==
 
-tldts@~5.7.112:
-  version "5.7.112"
-  resolved "https://registry.yarnpkg.com/tldts/-/tldts-5.7.112.tgz#f3d7a5ade3ee09a48a1ecb4f05f04335b0787c84"
-  integrity sha512-6VSJ/C0uBtc2PQlLsp4IT8MIk2UUh6qVeXB1HZtK+0HiXlAPzNcfF3p2WM9RqCO/2X1PIa4danlBLPoC2/Tc7A==
+tldts@~6.1.86:
+  version "6.1.86"
+  resolved "https://registry.yarnpkg.com/tldts/-/tldts-6.1.86.tgz#087e0555b31b9725ee48ca7e77edc56115cd82f7"
+  integrity sha512-WMi/OQ2axVTf/ykqCQgXiIct+mSQDFdH2fkwhPwgEwvJ1kSzZRiinb0zF2Xb8u4+OqPChmyI6MEu4EezNJz+FQ==
   dependencies:
-    tldts-core "^5.7.112"
+    tldts-core "^6.1.86"
 
 tmp@^0.0.33:
   version "0.0.33"
