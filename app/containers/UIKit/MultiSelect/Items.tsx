@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { Image } from 'expo-image';
@@ -7,7 +6,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import * as List from '../../List';
 import { textParser } from '../utils';
 import styles from './styles';
-import { type IItemData } from '.';
+import type { IItemData } from '.';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
 import I18n from '../../../i18n';

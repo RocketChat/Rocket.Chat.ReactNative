@@ -1,6 +1,6 @@
-import { type Action } from 'redux';
+import type { Action } from 'redux';
 
-import { type IBanner } from '../reducers/encryption';
+import type { IBanner } from '../reducers/encryption';
 import { ENCRYPTION } from './actionsTypes';
 
 export interface IEncryptionSet extends Action {

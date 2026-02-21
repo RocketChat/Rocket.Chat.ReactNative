@@ -1,5 +1,4 @@
 import { type CodeLine as CodeLineProps } from '@rocket.chat/message-parser';
-import React from 'react';
 import { Text } from 'react-native';
 
 import { useTheme } from '../../../../theme';
@@ -9,7 +8,7 @@ interface ICodeLineProps {
 	value: CodeLineProps['value'];
 }
 
-const CodeLine = ({ value }: ICodeLineProps): React.ReactElement | null => {
+const CodeLine = ({ value }: ICodeLineProps) => {
 	const { colors } = useTheme();
 	if (value.type !== 'PLAIN_TEXT') {
 		return null;

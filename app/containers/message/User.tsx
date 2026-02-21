@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { type MessageType, type MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
-import { type IRoomInfoParam } from '../../views/SearchMessagesView';
+import type { IRoomInfoParam } from '../../views/SearchMessagesView';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
@@ -65,7 +65,7 @@ interface IMessageUser {
 	isTranslated: boolean;
 }
 
-const User = React.memo(
+const User = memo(
 	({
 		isHeader,
 		useRealName,

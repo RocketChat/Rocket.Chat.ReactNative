@@ -1,19 +1,19 @@
-import { type RouteProp } from '@react-navigation/core';
+import type { RouteProp } from '@react-navigation/core';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useLayoutEffect, useState } from 'react';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useLayoutEffect, useState } from 'react';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
-import { type WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
+import type { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import { type ICredentials } from '../definitions';
+import type { ICredentials } from '../definitions';
 import { userAgent } from '../lib/constants/userAgent';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useDebounce } from '../lib/methods/helpers';
 import { loginOAuthOrSso } from '../lib/services/connect';
-import { type OutsideModalParamList } from '../stacks/types';
+import type { OutsideModalParamList } from '../stacks/types';
 import fetch, { type TMethods } from '../lib/methods/helpers/fetch';
 
 // iframe uses a postMessage to send the token to the client

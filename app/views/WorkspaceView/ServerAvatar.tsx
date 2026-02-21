@@ -1,6 +1,6 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
+import { memo } from 'react';
 
 import { isTablet } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
@@ -30,7 +30,7 @@ interface IServerAvatar {
 }
 
 // TODO: missing skeleton
-const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
+const ServerAvatar = ({ url, image }: IServerAvatar) => {
 	const { colors } = useTheme();
 
 	return (
@@ -38,6 +38,6 @@ const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 			{image && <Image style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
 		</View>
 	);
-});
+};
 
-export default ServerAvatar;
+export default memo(ServerAvatar);

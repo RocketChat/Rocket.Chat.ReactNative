@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../i18n';
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AuthLoadingView = React.memo((): React.ReactElement => {
+const AuthLoadingView = () => {
 	const text = useAppSelector(state => state.app.text);
 	const { colors } = useTheme();
 	return (
@@ -33,6 +33,6 @@ const AuthLoadingView = React.memo((): React.ReactElement => {
 			) : null}
 		</View>
 	);
-});
+};
 
-export default AuthLoadingView;
+export default memo(AuthLoadingView);

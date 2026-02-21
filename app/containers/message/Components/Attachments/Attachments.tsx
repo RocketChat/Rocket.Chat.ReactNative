@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { type FC, memo, useContext } from 'react';
 import { dequal } from 'dequal';
 import { View } from 'react-native';
 
@@ -7,10 +7,10 @@ import Audio from './Audio';
 import Video from './Video';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
-import Reply from './Reply';
+import MessageReply from './Reply';
 import MessageContext from '../../Context';
-import { type IMessageAttachments } from '../../interfaces';
-import { type IAttachment } from '../../../../definitions';
+import type { IMessageAttachments } from '../../interfaces';
+import type { IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
 
 const removeQuote = (file?: IAttachment) =>
@@ -21,7 +21,7 @@ const removeQuote = (file?: IAttachment) =>
 	(file?.actions?.length || 0) > 0 ||
 	(file?.attachments?.length || 0) > 0;
 
-const Attachments: React.FC<IMessageAttachments> = React.memo(
+const Attachments: FC<IMessageAttachments> = memo(
 	({ attachments, timeFormat, showAttachment, getCustomEmoji, author }: IMessageAttachments) => {
 		'use memo';
 
@@ -68,7 +68,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			}
 
 			if (file && file.actions && file.actions.length > 0) {
-				return <AttachedActions attachment={file} getCustomEmoji={getCustomEmoji} />;
+				return <AttachedActions key={index} attachment={file} getCustomEmoji={getCustomEmoji} />;
 			}
 			if (typeof file.collapsed === 'boolean') {
 				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
@@ -76,7 +76,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 
 			if (file.attachments?.length) {
 				return (
-					<Reply
+					<MessageReply
 						key={index}
 						attachment={file}
 						timeFormat={timeFormat}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
@@ -8,11 +8,11 @@ import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants/colors';
 import MessageContext from './Context';
-import { type IMessageBroadcast } from './interfaces';
+import type { IMessageBroadcast } from './interfaces';
 import { useTheme } from '../../theme';
 
 // TODO: Create a reusable button component for message
-const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
+const Broadcast = memo(({ author, broadcast }: IMessageBroadcast) => {
 	'use memo';
 
 	const { user, replyBroadcast } = useContext(MessageContext);

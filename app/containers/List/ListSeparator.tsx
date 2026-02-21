@@ -1,5 +1,5 @@
-import React from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
+import { memo } from 'react';
 
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
@@ -14,7 +14,7 @@ interface IListSeparator {
 	style?: ViewStyle;
 }
 
-const ListSeparator = React.memo(({ style }: IListSeparator) => {
+const ListSeparator = memo(({ style }: IListSeparator) => {
 	'use memo';
 
 	const { theme } = useTheme();

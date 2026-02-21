@@ -1,6 +1,6 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -10,16 +10,16 @@ import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
-import { type ShareInsideStackParamList } from '../definitions/navigationTypes';
-import { type TServerModel } from '../definitions';
+import type { ShareInsideStackParamList } from '../definitions/navigationTypes';
+import type { TServerModel } from '../definitions';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
 
-const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const getItemLayout = (_data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
-	const [servers, setServers] = React.useState<TServerModel[]>([]);
+	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
 
 	const server = useAppSelector(state => state.server.server);

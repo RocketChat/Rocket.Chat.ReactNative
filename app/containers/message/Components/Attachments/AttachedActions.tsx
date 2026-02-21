@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 import Button from '../../../Button';
 import MessageContext from '../../Context';
-import { type IAttachment, type TGetCustomEmoji } from '../../../../definitions';
+import type { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import Markdown from '../../../markdown';
 
@@ -34,7 +34,7 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 		};
 
 		if (element.type === 'button') {
-			return <Button onPress={onPress} title={element.text} />;
+			return <Button key={element.text} onPress={onPress} title={element.text} />;
 		}
 
 		return null;

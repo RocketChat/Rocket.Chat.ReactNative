@@ -1,4 +1,3 @@
-import React from 'react';
 import { View } from 'react-native';
 
 import { AvatarWithEdit } from '../../../containers/Avatar';
@@ -23,7 +22,7 @@ const RoomInfoViewAvatar = ({
 	rid?: string;
 	handleEditAvatar: () => void;
 	userId: string;
-}): React.ReactElement => {
+}) => {
 	const { colors } = useTheme();
 
 	const showAvatarEdit = showEdit && type !== SubscriptionType.OMNICHANNEL;

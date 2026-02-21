@@ -1,10 +1,9 @@
-import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
 import { themes } from '../../lib/constants/colors';
-import { type TGetCustomEmoji, type ICustomEmoji } from '../../definitions/IEmoji';
+import type { TGetCustomEmoji, ICustomEmoji } from '../../definitions/IEmoji';
 
 const theme = 'light';
 

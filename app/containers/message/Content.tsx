@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { Text, View } from 'react-native';
 import { dequal } from 'dequal';
 
@@ -8,12 +8,12 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
-import { type IMessageContent } from './interfaces';
+import type { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
-import { type MessageTypesValues } from '../../definitions';
+import type { MessageTypesValues } from '../../definitions';
 
-const Content = React.memo(
+const Content = memo(
 	(props: IMessageContent) => {
 		'use memo';
 

@@ -1,8 +1,7 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { type TSupportedThemes } from '../../theme';
+import type { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants/colors';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
@@ -26,7 +25,7 @@ const CannedResponseItem = ({
 	onPressUse = () => {},
 	text,
 	tags = []
-}: ICannedResponseItem): JSX.Element => (
+}: ICannedResponseItem) => (
 	<Touchable onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].surfaceLight }]}>
 		<>
 			<View style={styles.cannedRow}>
@@ -50,7 +49,7 @@ const CannedResponseItem = ({
 			<View style={styles.cannedTagContainer}>
 				{tags?.length > 0
 					? tags.map(t => (
-							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
+							<View key={t} style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
 								<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 							</View>
 					  ))

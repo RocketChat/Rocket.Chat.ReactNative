@@ -1,5 +1,5 @@
-import React from 'react';
 import { type StyleProp, Text, type TextStyle } from 'react-native';
+import { memo } from 'react';
 
 import i18n from '../../../../i18n';
 import { themes } from '../../../../lib/constants/colors';
@@ -12,7 +12,7 @@ import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { getRoomInfo } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
-import { type IUserChannel } from '../../interfaces';
+import type { IUserChannel } from '../../interfaces';
 import styles from '../../styles';
 
 interface IHashtag {
@@ -22,7 +22,7 @@ interface IHashtag {
 	channels?: IUserChannel[];
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+const Hashtag = ({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
 	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY, false);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -67,6 +67,6 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 		);
 	}
 	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
-});
+};
 
-export default Hashtag;
+export default memo(Hashtag);

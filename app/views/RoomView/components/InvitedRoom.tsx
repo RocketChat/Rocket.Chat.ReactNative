@@ -1,4 +1,3 @@
-import React, { type ReactElement } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
@@ -20,7 +19,7 @@ type InvitedRoomProps = {
 	onReject: () => Promise<void>;
 };
 
-export const InvitedRoom = ({ title, description, inviter, loading, onAccept, onReject }: InvitedRoomProps): ReactElement => {
+export const InvitedRoom = ({ title, description, inviter, loading, onAccept, onReject }: InvitedRoomProps) => {
 	const { colors } = useTheme();
 	const styles = useStyle();
 

@@ -1,6 +1,6 @@
-import React from 'react';
 import { createNativeStackNavigator, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { memo, useContext } from 'react';
 
 import { ThemeContext } from '../../theme';
 import { defaultHeader, themedHeader, drawerStyle } from '../../lib/methods/helpers/navigation';
@@ -67,22 +67,22 @@ import SelectListView from '../../views/SelectListView';
 import DiscussionsView from '../../views/DiscussionsView';
 import AccessibilityAndAppearanceView from '../../views/AccessibilityAndAppearanceView';
 import { ModalContainer } from './ModalContainer';
-import {
-	type MasterDetailChatsStackParamList,
-	type MasterDetailDrawerParamList,
-	type MasterDetailInsideStackParamList,
-	type ModalStackParamList
+import type {
+	MasterDetailChatsStackParamList,
+	MasterDetailDrawerParamList,
+	MasterDetailInsideStackParamList,
+	ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
-import { type TNavigation } from '../stackType';
+import type { TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<MasterDetailChatsStackParamList>();
-const ChatsStackNavigator = React.memo(() => {
+const ChatsStackNavigator = memo(function ChatsStackNavigator() {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 
 	return (
 		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -93,7 +93,7 @@ const ChatsStackNavigator = React.memo(() => {
 
 // DrawerNavigator
 const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
-const DrawerNavigator = React.memo(() => {
+const DrawerNavigator = memo(function DrawerNavigator() {
 	'use memo';
 
 	return (
@@ -110,10 +110,10 @@ export interface INavigation {
 }
 
 const ModalStack = createNativeStackNavigator<ModalStackParamList & TNavigation>();
-const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
+const ModalStackNavigator = memo(function ModalStackNavigator({ navigation }: INavigation) {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 	return (
 		<ModalContainer navigation={navigation} theme={theme}>
 			<ModalStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -208,10 +208,10 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 
 // InsideStackNavigator
 const InsideStack = createNativeStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
-const InsideStackNavigator = React.memo(() => {
+const InsideStackNavigator = () => {
 	'use memo';
 
-	const { theme } = React.useContext(ThemeContext);
+	const { theme } = useContext(ThemeContext);
 	return (
 		<InsideStack.Navigator
 			screenOptions={{
@@ -236,6 +236,6 @@ const InsideStackNavigator = React.memo(() => {
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 		</InsideStack.Navigator>
 	);
-});
+};
 
-export default InsideStackNavigator;
+export default memo(InsideStackNavigator);

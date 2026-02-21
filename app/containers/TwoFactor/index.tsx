@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { AccessibilityInfo, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -15,7 +15,7 @@ import { useTheme } from '../../theme';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { type ICredentials } from '../../definitions';
+import type { ICredentials } from '../../definitions';
 import { sendEmailCode } from '../../lib/services/restApi';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Toast from '../Toast';
@@ -61,7 +61,7 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = React.memo(() => {
+const TwoFactor = () => {
 	const schema = yup.object().shape({
 		code: yup.string().required(I18n.t('Code_required'))
 	});
@@ -201,6 +201,6 @@ const TwoFactor = React.memo(() => {
 			</View>
 		</Modal>
 	);
-});
+};
 
-export default TwoFactor;
+export default memo(TwoFactor);

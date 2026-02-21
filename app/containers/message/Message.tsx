@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { View, type ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
@@ -17,7 +17,7 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
-import { type IMessage, type IMessageInner, type IMessageTouchable } from './interfaces';
+import type { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 import { WidthAwareView } from './Components/WidthAwareView';
@@ -28,7 +28,7 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 import Quote from './Components/Attachments/Quote';
 import translationLanguages from '../../lib/constants/translationLanguages';
 
-const MessageInner = React.memo((props: IMessageInner) => {
+const MessageInner = memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
 	const showTimeLarge = isLargeFontScale && props.isHeader;
 
@@ -103,7 +103,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: IMessageTouchable & IMessage) => {
+const Message = memo((props: IMessageTouchable & IMessage) => {
 	const handleMentionsOnAccessibilityLabel = (label: string) => {
 		const { mentions = [], channels = [] } = props;
 
@@ -214,7 +214,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 });
 Message.displayName = 'Message';
 
-const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
+const MessageTouchable = memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { colors } = useTheme();
 

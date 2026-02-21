@@ -1,4 +1,4 @@
-import { type Database, type Collection } from '@nozbe/watermelondb';
+import type { Database, Collection } from '@nozbe/watermelondb';
 
 import type * as models from './model';
 import type * as definitions from '../../definitions';

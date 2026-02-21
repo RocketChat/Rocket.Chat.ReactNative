@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 
 import Avatar from '../../containers/Avatar';
@@ -35,7 +34,7 @@ const LeftButtons = ({
 	t,
 	goRoomActionsView,
 	isMasterDetail
-}: ILeftButtonsProps): React.ReactElement | null => {
+}: ILeftButtonsProps) => {
 	const { goBack } = useAppNavigation();
 	const onPress = () => goRoomActionsView();
 	const { fontScale } = useWindowDimensions();

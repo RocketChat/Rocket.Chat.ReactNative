@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
+import { type ComponentProps, memo } from 'react';
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
 import type { StyleProp, TextStyle } from 'react-native';
 
-import { type mappedIcons } from './mappedIcons';
+import type { mappedIcons } from './mappedIcons';
 import { useTheme } from '../../theme';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import icoMoonConfig from './selection.json';
@@ -20,14 +20,14 @@ export const hasIcon = (name: string) => Object.prototype.hasOwnProperty.call(gl
 
 export type TIconsName = keyof typeof mappedIcons;
 
-export interface ICustomIcon extends React.ComponentProps<typeof IconSet> {
+export interface ICustomIcon extends ComponentProps<typeof IconSet> {
 	name: TIconsName;
 	size: number;
 	color?: string;
 	style?: StyleProp<TextStyle>;
 }
 
-const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
+export const CustomIcon = memo(function CustomIcon({ name, size, color, style, ...props }: ICustomIcon) {
 	const { colors } = useTheme();
 	const { fontScaleLimited } = useResponsiveLayout();
 
@@ -43,5 +43,3 @@ const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): R
 		/>
 	);
 });
-
-export { CustomIcon };

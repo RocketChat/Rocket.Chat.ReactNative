@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Image, type ImageStyle } from 'expo-image';
 
 import { OmnichannelSourceType, type IOmnichannelSource, type TUserStatus } from '../../definitions';

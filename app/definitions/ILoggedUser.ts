@@ -1,7 +1,7 @@
 import type Model from '@nozbe/watermelondb/Model';
 
-import { type IUserEmail, type IUserSettings } from './IUser';
-import { type TUserStatus } from './TUserStatus';
+import type { IUserEmail, IUserSettings } from './IUser';
+import type { TUserStatus } from './TUserStatus';
 
 export interface ILoggedUser {
 	id: string;

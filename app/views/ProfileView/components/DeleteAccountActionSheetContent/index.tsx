@@ -1,4 +1,3 @@
-import React from 'react';
 import { AccessibilityInfo, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { sha256 } from 'js-sha256';
 import { useForm } from 'react-hook-form';
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DeleteAccountActionSheetContent = (): React.ReactElement => {
+const DeleteAccountActionSheetContent = () => {
 	const { colors } = useTheme();
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();

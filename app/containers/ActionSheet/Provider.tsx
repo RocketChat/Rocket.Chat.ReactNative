@@ -1,8 +1,18 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { createRef, type ForwardedRef, forwardRef, useContext } from 'react';
-import { type AccessibilityRole } from 'react-native';
+import {
+	type ComponentType,
+	createContext,
+	createRef,
+	type ForwardedRef,
+	forwardRef,
+	memo,
+	type ReactElement,
+	type Ref,
+	useContext
+} from 'react';
+import type { AccessibilityRole } from 'react-native';
 
-import { type TIconsName } from '../CustomIcon';
+import type { TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {
@@ -13,7 +23,7 @@ export type TActionSheetOptionsItem = {
 	danger?: boolean;
 	testID?: string;
 	onPress: () => void;
-	right?: () => React.ReactElement;
+	right?: () => ReactElement;
 	enabled?: boolean;
 	accessibilityRole?: AccessibilityRole;
 	disabledReason?: string;
@@ -22,10 +32,10 @@ export type TActionSheetOptionsItem = {
 export type TActionSheetOptions = {
 	options?: TActionSheetOptionsItem[];
 	headerHeight?: number;
-	customHeader?: React.ReactElement | null;
+	customHeader?: ReactElement | null;
 	hasCancel?: boolean;
 	// children can both use snaps or dynamic
-	children?: React.ReactElement | null;
+	children?: ReactElement | null;
 	/** Required if your action sheet needs vertical scroll */
 	snaps?: (string | number)[];
 	onClose?: () => void;
@@ -36,7 +46,7 @@ export interface IActionSheetProvider {
 	hideActionSheet: () => void;
 }
 
-const context = React.createContext<IActionSheetProvider>({
+const context = createContext<IActionSheetProvider>({
 	showActionSheet: () => {},
 	hideActionSheet: () => {}
 });
@@ -45,18 +55,21 @@ export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export const withActionSheet = (Component: React.ComponentType<any>): typeof Component => {
-	const WithActionSheetComponent = forwardRef((props: typeof React.Component, ref: ForwardedRef<IActionSheetProvider>) => (
-		<Consumer>{(contexts: IActionSheetProvider) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
-	));
+export const withActionSheet = (Component: ComponentType<any>): typeof Component => {
+	const WithActionSheetComponent = forwardRef(function WithActionSheetComponent(
+		props: typeof Component,
+		ref: ForwardedRef<IActionSheetProvider>
+	) {
+		return <Consumer>{(contexts: IActionSheetProvider) => <Component {...props} {...contexts} ref={ref} />}</Consumer>;
+	});
 
 	hoistNonReactStatics(WithActionSheetComponent as any, Component as any);
 	return WithActionSheetComponent;
 };
 
-const actionSheetRef: React.Ref<IActionSheetProvider> = createRef();
+const actionSheetRef: Ref<IActionSheetProvider> = createRef();
 
-export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
+export const ActionSheetProvider = memo(function ActionSheetProvider({ children }: { children: ReactElement | ReactElement[] }) {
 	'use memo';
 
 	const getContext = (): IActionSheetProvider => ({

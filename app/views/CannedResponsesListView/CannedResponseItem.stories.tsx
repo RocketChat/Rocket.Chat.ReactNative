@@ -1,5 +1,3 @@
-import React from 'react';
-
 import CannedResponseItem from './CannedResponseItem';
 
 export default {

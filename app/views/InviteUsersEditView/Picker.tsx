@@ -1,5 +1,4 @@
-import React from 'react';
-import { type TextInputProps } from 'react-native';
+import type { TextInputProps } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useDispatch } from 'react-redux';
 
@@ -57,7 +56,7 @@ const OPTIONS = {
 	]
 };
 
-const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }): JSX.Element => {
+const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }) => {
 	const { colors } = useTheme();
 	const inviteLinkParam = useAppSelector(state => state.inviteLinks[param]);
 	const dispatch = useDispatch();

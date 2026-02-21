@@ -1,5 +1,3 @@
-import React from 'react';
-
 import i18n from '../../i18n';
 import ListItem, { type IListItem } from './ListItem';
 import ListIcon from './ListIcon';
@@ -10,7 +8,7 @@ interface IListRadio extends IListItem {
 	isSelected: boolean;
 }
 
-const ListRadio = ({ value, isSelected, ...rest }: IListRadio) => {
+const ListRadio = ({ value: _, isSelected, ...rest }: IListRadio) => {
 	const { colors } = useTheme();
 
 	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';

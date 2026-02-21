@@ -1,4 +1,4 @@
-import { type Action } from 'redux';
+import type { Action } from 'redux';
 import { call, takeLatest, put } from 'typed-redux-saga';
 import * as Notifications from 'expo-notifications';
 

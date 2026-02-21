@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import { type FC, memo, type ReactElement } from 'react';
 import { Text, type TextStyle, View, type ViewStyle } from 'react-native';
 
 import { useTheme } from '../../theme';
@@ -17,52 +17,50 @@ interface ISwitchContainer {
 	leftLabelStyle?: TextStyle;
 }
 
-const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
-	({
-		children,
-		value,
-		disabled,
-		onValueChange,
-		leftLabelPrimary,
-		leftLabelSecondary,
-		testID,
-		labelContainerStyle,
-		leftLabelStyle
-	}) => {
-		const { colors } = useTheme();
+const SwitchContainer: FC<ISwitchContainer> = ({
+	children,
+	value,
+	disabled,
+	onValueChange,
+	leftLabelPrimary,
+	leftLabelSecondary,
+	testID,
+	labelContainerStyle,
+	leftLabelStyle
+}) => {
+	const { colors } = useTheme();
 
-		return (
-			<View>
-				<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
-					{leftLabelPrimary && (
-						<View
-							accessible
-							accessibilityLabel={`${leftLabelPrimary}. ${leftLabelSecondary ?? ''}. `}
-							style={[styles.switchLabelContainer, labelContainerStyle]}>
-							<Text style={[styles.switchLabelPrimary, { color: colors.fontTitlesLabels }, leftLabelStyle]}>
-								{leftLabelPrimary}
-							</Text>
-							{leftLabelSecondary && (
-								<Text style={[styles.switchLabelSecondary, { color: colors.fontSecondaryInfo }, leftLabelStyle]}>
-									{leftLabelSecondary}
-								</Text>
-							)}
-						</View>
-					)}
-					<Switch
-						accessibilityRole='switch'
+	return (
+		<View>
+			<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
+				{leftLabelPrimary && (
+					<View
 						accessible
-						style={styles.switch}
-						onValueChange={onValueChange}
-						value={value}
-						disabled={disabled}
-						testID={testID}
-					/>
-				</View>
-				{children}
+						accessibilityLabel={`${leftLabelPrimary}. ${leftLabelSecondary ?? ''}. `}
+						style={[styles.switchLabelContainer, labelContainerStyle]}>
+						<Text style={[styles.switchLabelPrimary, { color: colors.fontTitlesLabels }, leftLabelStyle]}>
+							{leftLabelPrimary}
+						</Text>
+						{leftLabelSecondary && (
+							<Text style={[styles.switchLabelSecondary, { color: colors.fontSecondaryInfo }, leftLabelStyle]}>
+								{leftLabelSecondary}
+							</Text>
+						)}
+					</View>
+				)}
+				<Switch
+					accessibilityRole='switch'
+					accessible
+					style={styles.switch}
+					onValueChange={onValueChange}
+					value={value}
+					disabled={disabled}
+					testID={testID}
+				/>
 			</View>
-		);
-	}
-);
+			{children}
+		</View>
+	);
+};
 
-export default SwitchContainer;
+export default memo(SwitchContainer);

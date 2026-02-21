@@ -1,12 +1,12 @@
-import React from 'react';
 import { type StyleProp, Text, type TextStyle } from 'react-native';
+import { memo } from 'react';
 
 import { useTheme } from '../../../../theme';
 import { themes } from '../../../../lib/constants/colors';
 import { USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants/keys';
 import styles from '../../styles';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { type IUserMention } from '../../interfaces';
+import type { IUserMention } from '../../interfaces';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
 
 interface IAtMention {
@@ -18,7 +18,7 @@ interface IAtMention {
 	mentions?: IUserMention[];
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
+const AtMention = ({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
 	const { theme } = useTheme();
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const preffix = mentionsWithAtSymbol ? '@' : '';
@@ -82,6 +82,6 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	}
 
 	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`@${mention}`}</Text>;
-});
+};
 
-export default AtMention;
+export default memo(AtMention);

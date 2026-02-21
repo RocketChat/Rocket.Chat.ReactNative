@@ -1,5 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { type Model } from '@nozbe/watermelondb';
+import type { Model } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from './helpers/log';

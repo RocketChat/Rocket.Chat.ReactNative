@@ -1,4 +1,4 @@
 import Attachments from './Attachments';
-import Reply from './Reply';
+import MessageReply from './Reply';
 
-export { Attachments, Reply };
+export { Attachments, MessageReply as Reply };

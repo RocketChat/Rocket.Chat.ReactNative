@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -14,7 +14,7 @@ import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { type IApplicationState, type TUserStatus } from '../../definitions';
+import type { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { setUserStatus } from '../../lib/services/restApi';
@@ -98,7 +98,7 @@ const Status = ({
 	);
 };
 
-const StatusView = (): React.ReactElement => {
+const StatusView = () => {
 	const validationSchema = yup.object().shape({
 		statusText: yup
 			.string()

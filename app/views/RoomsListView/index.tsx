@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { memo, useContext, useEffect } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { BackHandler, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
@@ -8,7 +8,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 import RoomItem from '../../containers/RoomItem';
-import { type IRoomItem } from '../../containers/RoomItem/interfaces';
+import type { IRoomItem } from '../../containers/RoomItem/interfaces';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import i18n from '../../i18n';
 import { MAX_SIDEBAR_WIDTH } from '../../lib/constants/tablet';

@@ -1,7 +1,6 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 
-import { type IAutocompleteUserRoom } from '../../interfaces';
+import type { IAutocompleteUserRoom } from '../../interfaces';
 import Avatar from '../../../Avatar';
 import RoomTypeIcon from '../../../RoomTypeIcon';
 import { fetchIsAllOrHere } from '../../helpers';

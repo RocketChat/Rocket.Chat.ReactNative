@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useContext } from 'react';
+import { type ReactElement, useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
 	UiKitParserMessage,
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
 
 const plainText = ({ text } = { text: '' }) => text;
 
-class MessageParser extends UiKitParserMessage<React.ReactElement> {
+class MessageParser extends UiKitParserMessage<ReactElement> {
 	get current() {
 		return this as unknown as IParser;
 	}
 
-	plain_text(element: PlainText, context: BlockContext): React.ReactElement {
+	plain_text(element: PlainText, context: BlockContext): ReactElement {
 		const { theme } = useContext(ThemeContext);
 
 		const isContext = context === BlockContext.CONTEXT;
@@ -153,7 +153,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 
 // plain_text and mrkdwn functions are created in MessageParser and the ModalParser's constructor use the same functions
 // @ts-ignore
-class ModalParser extends UiKitParserModal<React.ReactElement> {
+class ModalParser extends UiKitParserModal<ReactElement> {
 	constructor() {
 		super();
 		Object.getOwnPropertyNames(MessageParser.prototype).forEach(method => {

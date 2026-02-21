@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -7,7 +6,7 @@ import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import { type MediaDownloadOption } from '../../lib/constants/mediaAutoDownload';
+import type { MediaDownloadOption } from '../../lib/constants/mediaAutoDownload';
 
 const styles = StyleSheet.create({
 	leftTitleContainer: {
@@ -73,6 +72,7 @@ const ListPicker = ({
 		<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: insets.bottom }}>
 			{OPTIONS.map(i => (
 				<List.Radio
+					key={i.label}
 					onPress={() => {
 						hideActionSheet();
 						onChangeValue(i.value);

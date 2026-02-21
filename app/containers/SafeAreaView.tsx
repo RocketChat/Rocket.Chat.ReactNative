@@ -1,6 +1,6 @@
-import React from 'react';
 import { StyleSheet, type ViewProps } from 'react-native';
 import { SafeAreaView as SafeAreaContext } from 'react-native-safe-area-context';
+import { memo, type ReactElement } from 'react';
 
 import { themes } from '../lib/constants/colors';
 import { useTheme } from '../theme';
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-type SupportedChildren = React.ReactElement | React.ReactElement[] | null;
+type SupportedChildren = ReactElement | ReactElement[] | null;
 type TSafeAreaViewChildren = SupportedChildren | SupportedChildren[];
 
 interface ISafeAreaView extends ViewProps {
@@ -19,7 +19,7 @@ interface ISafeAreaView extends ViewProps {
 	children: TSafeAreaViewChildren;
 }
 
-const SafeAreaView = React.memo(({ style, children, vertical = true, ...props }: ISafeAreaView) => {
+const SafeAreaView = ({ style, children, vertical = true, ...props }: ISafeAreaView) => {
 	const { theme } = useTheme();
 	return (
 		<SafeAreaContext
@@ -29,6 +29,6 @@ const SafeAreaView = React.memo(({ style, children, vertical = true, ...props }:
 			{children}
 		</SafeAreaContext>
 	);
-});
+};
 
-export default SafeAreaView;
+export default memo(SafeAreaView);

@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import UnreadBadge from '../../../UnreadBadge';
@@ -15,8 +14,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const BadgeUnread = ({ ...props }): React.ReactElement => <UnreadBadge {...props} style={styles.badgeContainer} small />;
+export const BadgeUnread = ({ ...props }) => <UnreadBadge {...props} style={styles.badgeContainer} small />;
 
-export const BadgeWarn = ({ color }: { color: string }): React.ReactElement => (
+export const BadgeWarn = ({ color }: { color: string }) => (
 	<View style={[styles.badgeContainer, { width: 10, height: 10, backgroundColor: color }]} />
 );

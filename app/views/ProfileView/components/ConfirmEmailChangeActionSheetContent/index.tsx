@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 
@@ -47,7 +46,7 @@ const FooterButtons = ({
 	disabled = false,
 	cancelBackgroundColor = '',
 	confirmBackgroundColor = ''
-}): React.ReactElement => {
+}) => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.footerButtonsContainer}>
@@ -69,11 +68,7 @@ const FooterButtons = ({
 	);
 };
 
-const ConfirmEmailChangeActionSheetContent = ({
-	onSubmit = () => {}
-}: {
-	onSubmit: (inputValue: string) => void;
-}): React.ReactElement => {
+const ConfirmEmailChangeActionSheetContent = ({ onSubmit = () => {} }: { onSubmit: (inputValue: string) => void }) => {
 	const { colors } = useTheme();
 	const {
 		control,

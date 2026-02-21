@@ -1,6 +1,6 @@
-import { type TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
+import type { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
 import { Upload } from './Upload';
-import { type IFormData } from './definitions';
+import type { IFormData } from './definitions';
 
 class FileUpload {
 	private upload: Upload;

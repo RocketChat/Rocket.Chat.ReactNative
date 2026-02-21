@@ -1,18 +1,18 @@
 import { type CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React from 'react';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import type { ReactElement } from 'react';
 
 import { setLoading } from '../../../actions/selectedUsers';
 import * as List from '../../../containers/List';
-import { type TSubscriptionModel } from '../../../definitions';
+import type { TSubscriptionModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import { usePermissions } from '../../../lib/hooks/usePermissions';
 import log, { events, logEvent } from '../../../lib/methods/helpers/log';
 import { addUsersToRoom } from '../../../lib/services/restApi';
-import { type MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../../stacks/types';
+import type { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
+import type { ChatsStackParamList } from '../../../stacks/types';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
@@ -26,7 +26,7 @@ interface IActionsSection {
 	abacAttributes: TSubscriptionModel['abacAttributes'];
 }
 
-export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): React.ReactElement {
+export default function ActionsSection({ rid, t, joined, abacAttributes }: IActionsSection): ReactElement {
 	const { navigate, pop } = useNavigation<TNavigation>();
 	const dispatch = useDispatch();
 	const [addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, createInviteLinksPermission] =

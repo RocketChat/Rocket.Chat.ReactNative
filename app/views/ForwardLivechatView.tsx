@@ -1,18 +1,18 @@
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { forwardRoom, type ITransferData } from '../actions/room';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
-import { type IServerRoom } from '../definitions';
+import type { IServerRoom } from '../definitions';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { usersAutoComplete, getRoomInfo, getDepartments } from '../lib/services/restApi';
-import { type TNavigation } from '../stacks/stackType';
+import type { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
-import { type IOptionsField } from './NotificationPreferencesView/options';
+import type { IOptionsField } from './NotificationPreferencesView/options';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 const COUNT_DEPARTMENT = 50;
 
-const ForwardLivechatView = (): React.ReactElement => {
+const ForwardLivechatView = () => {
 	const { navigate, setOptions } = useAppNavigation<TNavigation, 'PickerView'>();
 	const {
 		params: { rid }

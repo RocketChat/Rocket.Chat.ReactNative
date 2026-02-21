@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import React, { type ReactElement, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
 import { getInfoAsync } from 'expo-file-system';
 import { useKeepAwake } from 'expo-keep-awake';
@@ -15,7 +15,7 @@ import { sendFileMessage } from '../../../../lib/methods/sendFileMessage';
 import { RECORDING_EXTENSION, RECORDING_MODE, RECORDING_SETTINGS } from '../../../../lib/constants/audio';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import log from '../../../../lib/methods/helpers/log';
-import { type IUpload } from '../../../../definitions';
+import type { IUpload } from '../../../../definitions';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useCanUploadFile } from '../../hooks';
 import { Duration, type IDurationRef } from './Duration';
@@ -23,12 +23,12 @@ import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
 
-export const RecordAudio = (): ReactElement | null => {
+export const RecordAudio = () => {
 	const [styles, colors] = useStyle();
 	const recordingRef = useRef<Audio.Recording | null>(null);
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const numberOfTriesRef = useRef(0);
-	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
+	const [status, setStatus] = useState<'recording' | 'reviewing'>('recording');
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
 	const server = useAppSelector(state => state.server.server);

@@ -1,6 +1,6 @@
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
-import { type IEmoji, type IPreviewItem, type TUserStatus } from '../../definitions';
+import type { IEmoji, IPreviewItem, TUserStatus } from '../../definitions';
 
 export interface IMessageComposerRef {
 	closeEmojiKeyboardAndAction: (action?: Function, params?: any) => void;

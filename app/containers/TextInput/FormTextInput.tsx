@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { type ReactElement, type Ref, useMemo, useState } from 'react';
 import {
 	type StyleProp,
 	StyleSheet,
@@ -83,10 +83,10 @@ export interface IRCTextInputProps extends TextInputProps {
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
-	inputRef?: React.Ref<RNTextInput>;
+	inputRef?: Ref<RNTextInput>;
 	iconLeft?: TIconsName;
 	iconRight?: TIconsName;
-	left?: JSX.Element;
+	left?: ReactElement;
 	bottomSheet?: boolean;
 	onClearInput?: () => void;
 }
@@ -120,7 +120,7 @@ export const FormTextInput = ({
 	accessibilityLabel,
 	showErrorMessage = true,
 	...inputProps
-}: IRCTextInputProps): React.ReactElement => {
+}: IRCTextInputProps) => {
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;

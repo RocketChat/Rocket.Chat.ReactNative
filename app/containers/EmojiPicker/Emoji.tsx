@@ -1,12 +1,11 @@
-import React from 'react';
 import { Text } from 'react-native';
 
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
-import { type IEmojiProps } from './interfaces';
+import type { IEmojiProps } from './interfaces';
 
-export const Emoji = ({ emoji }: IEmojiProps): React.ReactElement => {
+export const Emoji = ({ emoji }: IEmojiProps) => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode(true);
 	const unicodeEmoji = formatShortnameToUnicode(`:${emoji}:`);
 

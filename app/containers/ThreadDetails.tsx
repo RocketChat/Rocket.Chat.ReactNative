@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
@@ -6,7 +5,7 @@ import { CustomIcon } from './CustomIcon';
 import { themes } from '../lib/constants/colors';
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
-import { type TThreadModel } from '../definitions/IThread';
+import type { TThreadModel } from '../definitions/IThread';
 import i18n from '../i18n';
 
 const styles = StyleSheet.create({
@@ -51,7 +50,7 @@ interface IThreadDetails {
 	style: ViewStyle;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails) => {
 	const { theme } = useTheme();
 	let count: string | number | undefined | null = item.tcount;
 	if (count && count >= 1000) {

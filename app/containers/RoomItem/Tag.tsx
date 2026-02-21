@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text, View } from 'react-native';
+import { memo } from 'react';
 
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
@@ -10,7 +10,7 @@ interface ITag {
 	testID?: string;
 }
 
-const Tag = React.memo(({ name, testID }: ITag) => {
+const Tag = ({ name, testID }: ITag) => {
 	const { theme } = useTheme();
 
 	return (
@@ -20,6 +20,6 @@ const Tag = React.memo(({ name, testID }: ITag) => {
 			</Text>
 		</View>
 	);
-});
+};
 
-export default Tag;
+export default memo(Tag);
