@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
-import { themes } from '../../lib/constants/colors';
 import { type IAccessoryComponent, type IFields, type ISection } from './interfaces';
 import { useTheme } from '../../theme';
 
@@ -17,7 +16,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	text: {
-		flex: 1,
 		padding: 4
 	},
 	field: {
@@ -28,10 +26,12 @@ const styles = StyleSheet.create({
 const Accessory = ({ element, parser }: IAccessoryComponent) =>
 	parser.renderAccessories({ ...element }, BlockContext.SECTION, parser);
 
-const Fields = ({ fields, parser, theme }: IFields) => (
+const Fields = ({ fields, parser }: IFields) => (
 	<>
-		{fields.map(field => (
-			<Text style={[styles.text, styles.field, { color: themes[theme].fontDefault }]}>{parser.text(field)}</Text>
+		{fields.map((field, index) => (
+			<View key={index} style={[styles.text, styles.field]}>
+				{parser.text(field)}
+			</View>
 		))}
 	</>
 );
