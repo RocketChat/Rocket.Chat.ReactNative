@@ -67,6 +67,8 @@ PODS:
     - ExpoModulesCore
   - ExpoAsset (11.1.5):
     - ExpoModulesCore
+  - ExpoAudio (0.4.9):
+    - ExpoModulesCore
   - ExpoCamera (16.1.5):
     - ExpoModulesCore
     - ZXingObjC/OneD
@@ -2642,6 +2644,7 @@ DEPENDENCIES:
   - Expo (from `../node_modules/expo`)
   - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
+  - ExpoAudio (from `../node_modules/expo-audio/ios`)
   - ExpoCamera (from `../node_modules/expo-camera/ios`)
   - ExpoDevice (from `../node_modules/expo-device/ios`)
   - ExpoDocumentPicker (from `../node_modules/expo-document-picker/ios`)
@@ -2809,6 +2812,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-apple-authentication/ios"
   ExpoAsset:
     :path: "../node_modules/expo-asset/ios"
+  ExpoAudio:
+    :path: "../node_modules/expo-audio/ios"
   ExpoCamera:
     :path: "../node_modules/expo-camera/ios"
   ExpoDevice:
@@ -3049,6 +3054,7 @@ SPEC CHECKSUMS:
   Expo: bb70dfd014457bcca19f33e8c783afdc18308434
   ExpoAppleAuthentication: b589b71be6bb817decf8f35e92c6281365140289
   ExpoAsset: 3bc9adb7dbbf27ae82c18ca97eb988a3ae7e73b1
+  ExpoAudio: d98f922b17a945cd33f8462d086278dbd810c537
   ExpoCamera: 105a9a963c443a3e112c51dd81290d81cd8da94a
   ExpoDevice: 6327c3c200816795708885adf540d26ecab83d1a
   ExpoDocumentPicker: 344f16224e6a8a088f2693667a8b713160f8f57b
