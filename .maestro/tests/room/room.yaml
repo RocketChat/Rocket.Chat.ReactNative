@@ -4,7 +4,7 @@ jsEngine: graaljs
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
+  - evalScript: ${output.utils.cleanUp()}
 tags:
   - test-12
 
