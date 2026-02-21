@@ -56,6 +56,7 @@ const FooterButtons = ({
 				title={cancelTitle}
 				color={colors.buttonFontSecondary}
 				onPress={cancelAction}
+				useGestureHandlerTouchable
 				testID='profile-view-enter-password-sheet-cancel'
 			/>
 			<Button
@@ -63,6 +64,7 @@ const FooterButtons = ({
 				title={confirmTitle}
 				onPress={confirmAction}
 				disabled={disabled}
+				useGestureHandlerTouchable
 				testID='profile-view-enter-password-sheet-confirm'
 			/>
 		</View>

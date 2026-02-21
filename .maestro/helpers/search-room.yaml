@@ -11,6 +11,13 @@ tags:
     id: 'rooms-list-view-search-input'
 - inputText:
     text: ${ROOM}
+
+- runFlow:
+    when:
+      true: ${EXTENDED_SEARCH_TIMEOUT}
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 20000
 - extendedWaitUntil:
     visible:
       id: 'rooms-list-view-item-${ROOM}'

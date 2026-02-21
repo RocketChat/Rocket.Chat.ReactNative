@@ -757,7 +757,11 @@ exports[`Story Snapshots: ListItemWithRightContainerStyle should match snapshot 
     }
   />
   <View
-    style={{}}
+    style={
+      {
+        "height": 46,
+      }
+    }
   >
     <View
       accessibilityLabel="Chats All"
@@ -1024,7 +1028,11 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         }
       />
       <View
-        style={{}}
+        style={
+          {
+            "height": 46,
+          }
+        }
       >
         <View
           accessibilityLabel="Press me"
@@ -1156,7 +1164,11 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
         }
       />
       <View
-        style={{}}
+        style={
+          {
+            "height": 46,
+          }
+        }
       >
         <View
           accessibilityLabel="I'm disabled"
@@ -1323,7 +1335,11 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         }
       />
       <View
-        style={{}}
+        style={
+          {
+            "height": 46,
+          }
+        }
       >
         <View
           accessibilityLabel="Option 1 Selected"
@@ -1504,7 +1520,11 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         }
       />
       <View
-        style={{}}
+        style={
+          {
+            "height": 46,
+          }
+        }
       >
         <View
           accessibilityLabel="Option 2 Unselected"
@@ -1685,7 +1705,11 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         }
       />
       <View
-        style={{}}
+        style={
+          {
+            "height": 46,
+          }
+        }
       >
         <View
           accessibilityLabel="Option 3 Unselected"
@@ -1866,7 +1890,11 @@ exports[`Story Snapshots: Radio should match snapshot 1`] = `
         }
       />
       <View
-        style={{}}
+        style={
+          {
+            "height": 46,
+          }
+        }
       >
         <View
           accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Selected"
@@ -3490,7 +3518,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -3736,7 +3768,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -4061,7 +4097,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -4307,7 +4347,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -4674,7 +4718,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -4920,7 +4968,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -5245,7 +5297,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -5491,7 +5547,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -5883,7 +5943,11 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
         }
       />
       <View
-        style={{}}
+        style={
+          {
+            "height": 46,
+          }
+        }
       >
         <View
           accessibilityLabel="Press me!"
@@ -6104,7 +6168,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -6350,7 +6418,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -6675,7 +6747,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -6921,7 +6997,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -8920,7 +9000,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -9166,7 +9250,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -9491,7 +9579,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"
@@ -9737,7 +9829,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
             }
           />
           <View
-            style={{}}
+            style={
+              {
+                "height": 46,
+              }
+            }
           >
             <View
               accessibilityLabel="Chats All"

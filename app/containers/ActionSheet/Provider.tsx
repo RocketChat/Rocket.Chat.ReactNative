@@ -26,8 +26,10 @@ export type TActionSheetOptions = {
 	hasCancel?: boolean;
 	// children can both use snaps or dynamic
 	children?: React.ReactElement | null;
-	/** Required if your action sheet needs vertical scroll */
+	// / Required if your action sheet needs vertical scroll
 	snaps?: (string | number)[];
+	// When true, content fills the sheet (needed for TabView/EmojiPicker). Default false for natural sizing.
+	fillContent?: boolean;
 	onClose?: () => void;
 	enableContentPanningGesture?: boolean;
 };

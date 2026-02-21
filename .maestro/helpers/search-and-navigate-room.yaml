@@ -7,6 +7,7 @@ tags:
     file: '../helpers/search-room.yaml'
     env:
       ROOM: ${ROOM}
+      EXTENDED_SEARCH_TIMEOUT: ${EXTENDED_SEARCH_TIMEOUT}
 - runFlow:
     file: '../helpers/navigate-to-room.yaml'
     env:

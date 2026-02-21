@@ -29,6 +29,7 @@ tags:
     file: '../../helpers/navigate-to-room-action.yaml'
     env:
       ROOM: ${output.publicChannelToBeConverted}
+      EXTENDED_SEARCH_TIMEOUT: true
 - scrollUntilVisible:
     element:
       id: 'room-actions-convert-to-team'
@@ -61,6 +62,7 @@ tags:
     file: '../../helpers/navigate-to-room-action.yaml'
     env:
       ROOM: ${output.toBeConverted}
+      EXTENDED_SEARCH_TIMEOUT: true
 - scrollUntilVisible:
     element:
       id: 'room-actions-convert-to-team'
@@ -93,6 +95,7 @@ tags:
     file: '../../helpers/navigate-to-room-action.yaml'
     env:
       ROOM: ${output.toBeMoved}
+      EXTENDED_SEARCH_TIMEOUT: true
 - scrollUntilVisible:
     element:
       id: 'room-actions-move-to-team'
@@ -146,6 +149,7 @@ tags:
     file: '../../helpers/navigate-to-room-action.yaml'
     env:
       ROOM: ${output.toBeConverted}
+      EXTENDED_SEARCH_TIMEOUT: true
 - scrollUntilVisible:
     element:
       text: 'Convert to channel'

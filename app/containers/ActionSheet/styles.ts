@@ -69,7 +69,9 @@ export default StyleSheet.create({
 	buttonSeparator: {
 		marginRight: 8
 	},
+	// No flex so content sizes naturally; avoids compressing FlatList/children on Android
 	contentContainer: {
-		flex: 1
+		width: '100%',
+		height: '100%'
 	}
 });
