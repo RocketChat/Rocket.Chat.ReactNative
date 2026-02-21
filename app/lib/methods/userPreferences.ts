@@ -1,5 +1,5 @@
-import { MMKV, Mode, useMMKVString } from 'react-native-mmkv';
-import type { Configuration } from 'react-native-mmkv';
+import { createMMKV, useMMKVString } from 'react-native-mmkv';
+import type { Configuration, MMKV } from 'react-native-mmkv';
 import { NativeModules } from 'react-native';
 
 import { isAndroid } from './helpers';
@@ -23,13 +23,9 @@ const getEncryptionKey = (): string | undefined => {
 
 const buildConfiguration = (): Configuration => {
 	const config: Configuration = {
-		id: 'default'
+		id: 'default',
+		mode: 'multi-process'
 	};
-
-	const multiProcessMode = (Mode as { MULTI_PROCESS?: Mode })?.MULTI_PROCESS;
-	if (multiProcessMode) {
-		config.mode = multiProcessMode;
-	}
 
 	const appGroupPath = getAppGroupPath();
 	if (!isAndroid && appGroupPath) {
@@ -58,7 +54,7 @@ const getAppGroupPath = (): string => {
 	}
 };
 
-const MMKV_INSTANCE = new MMKV(buildConfiguration());
+const MMKV_INSTANCE = createMMKV(buildConfiguration());
 
 export const useUserPreferences = <T>(key: string, defaultValue?: T): [T | undefined, (value: T | undefined) => void] => {
 	const [storedValue, setStoredValue] = useMMKVString(key, MMKV_INSTANCE);
@@ -134,7 +130,7 @@ class UserPreferences {
 	}
 
 	removeItem(key: string): void {
-		this.mmkv.delete(key);
+		this.mmkv.remove(key);
 	}
 
 	getNumber(key: string): number | null {
