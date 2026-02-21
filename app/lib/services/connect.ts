@@ -230,6 +230,22 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					} catch {
 						// We can't create a new record since we don't receive the user._id
 					}
+					// Also update logged-in user's avatarETag in servers database if it's their avatar
+					const { user: loggedUser } = store.getState().login;
+					if (loggedUser && loggedUser.username === username) {
+						const serversDB = database.servers;
+						const serversUserCollection = serversDB.get('users');
+						try {
+							const loggedUserRecord = await serversUserCollection.find(loggedUser.id);
+							await serversDB.write(async () => {
+								await loggedUserRecord.update(u => {
+									u.avatarETag = etag;
+								});
+							});
+						} catch {
+							// User record not found in servers database
+						}
+					}
 				} else if (/permissions-changed/.test(eventName)) {
 					const { _id, roles } = ddpMessage.fields.args[1];
 					const db = database.active;
