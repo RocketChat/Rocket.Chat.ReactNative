@@ -75,7 +75,7 @@ interface IRoomHeader {
 	usersTyping: IUsersTyping;
 	isGroupChat?: boolean;
 	parentTitle?: string;
-	onPress: Function;
+	onPress: () => void;
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
