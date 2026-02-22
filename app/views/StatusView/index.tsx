@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -98,12 +98,6 @@ const Status = ({
 	);
 };
 
-const FooterComponent = ({ isSaveDisabled, submit }: { isSaveDisabled: boolean; submit: () => void }) => (
-	<View style={styles.footerComponent}>
-		<Button testID='status-view-submit' disabled={isSaveDisabled} onPress={submit} title={I18n.t('Save')} />
-	</View>
-);
-
 const StatusView = (): React.ReactElement => {
 	const validationSchema = yup.object().shape({
 		statusText: yup
@@ -135,13 +129,35 @@ const StatusView = (): React.ReactElement => {
 	const { setOptions, goBack } = useNavigation();
 	const { colors } = useTheme();
 
-	const submit = async () => {
+	const setCustomStatus = useCallback(
+		async (status: TUserStatus, statusText: string) => {
+			sendLoadingEvent({ visible: true });
+			try {
+				await setUserStatus(status, statusText);
+				dispatch(setUser({ statusText, status }));
+				logEvent(events.STATUS_CUSTOM);
+				showToast(I18n.t('Status_saved_successfully'));
+			} catch (e: any) {
+				const messageError =
+					e.error && e.error.includes('[error-too-many-requests]')
+						? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
+						: e.reason;
+				logEvent(events.STATUS_CUSTOM_F);
+				showErrorAlert(messageError);
+				log(e);
+			}
+			sendLoadingEvent({ visible: false });
+		},
+		[dispatch]
+	);
+
+	const submit = useCallback(async () => {
 		logEvent(events.STATUS_DONE);
 		if (statusText !== user.statusText || watchedStatus !== user.status) {
 			await setCustomStatus(watchedStatus, statusText);
 		}
 		goBack();
-	};
+	}, [statusText, user.statusText, watchedStatus, user.status, goBack, setCustomStatus]);
 
 	useA11yErrorAnnouncement({ errors, inputValues: { status: watchedStatus, statusText } });
 
@@ -153,29 +169,10 @@ const StatusView = (): React.ReactElement => {
 			});
 		};
 		setHeader();
-	}, [isMasterDetail]);
+	}, [isMasterDetail, goBack, setOptions]);
 
 	const setStatus = (updatedStatus: TUserStatus) => {
 		setValue('status', updatedStatus);
-	};
-
-	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
-		sendLoadingEvent({ visible: true });
-		try {
-			await setUserStatus(status, statusText);
-			dispatch(setUser({ statusText, status }));
-			logEvent(events.STATUS_CUSTOM);
-			showToast(I18n.t('Status_saved_successfully'));
-		} catch (e: any) {
-			const messageError =
-				e.error && e.error.includes('[error-too-many-requests]')
-					? I18n.t('error-too-many-requests', { seconds: e.reason.replace(/\D/g, '') })
-					: e.reason;
-			logEvent(events.STATUS_CUSTOM_F);
-			showErrorAlert(messageError);
-			log(e);
-		}
-		sendLoadingEvent({ visible: false });
 	};
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
@@ -187,8 +184,12 @@ const StatusView = (): React.ReactElement => {
 		return isStatusEqual && isStatusTextEqual;
 	}, [isValid, watchedStatus, statusText, user.status, user.statusText]);
 
-	const listFooterComponent = useMemo(
-		() => <FooterComponent isSaveDisabled={isSaveDisabled} submit={submit} />,
+	const FooterComponent = useCallback(
+		() => (
+			<View style={styles.footerComponent}>
+				<Button testID='status-view-submit' disabled={isSaveDisabled} onPress={submit} title={I18n.t('Save')} />
+			</View>
+		),
 		[isSaveDisabled, submit]
 	);
 
@@ -213,7 +214,7 @@ const StatusView = (): React.ReactElement => {
 						<List.Separator />
 					</>
 				}
-				ListFooterComponent={listFooterComponent}
+				ListFooterComponent={FooterComponent}
 				style={{ backgroundColor: colors.surfaceTint }}
 			/>
 		</SafeAreaView>
