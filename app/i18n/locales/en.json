@@ -495,6 +495,7 @@
   "Logout": "Logout",
   "Logout_failed": "Logout failed!",
   "Logout_from_other_logged_in_locations": "Logout from other logged in locations",
+  "Mark_as_read": "Mark as read",
   "Mark_as_unread": "Mark as unread",
   "Mark_as_unread_Info": "Display room as unread when there are unread messages",
   "Mark_read": "Mark read",
