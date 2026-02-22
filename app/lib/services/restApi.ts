@@ -719,7 +719,9 @@ export const setAvatarFromService = ({
 		return sdk.post('users.setAvatar', { avatarUrl: data });
 	}
 	if (service === 'upload' && url && server && user?.id && user?.token) {
-		const extension = url.split('.').pop() || 'png';
+		const rawExtension = url.split('.').pop() || 'png';
+		const extension = rawExtension.split('?')[0].toLowerCase();
+		
 		const formData = [
 			{
 				name: 'image',
@@ -732,8 +734,8 @@ export const setAvatarFromService = ({
 		const headers = {
 			...RocketChatSettings.customHeaders,
 			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': user?.token,
-			'X-User-Id': user?.id
+			'X-Auth-Token': user.token,
+			'X-User-Id': user.id
 		};
 
 		const upload = new FileUpload(`${server}/api/v1/users.setAvatar`, headers, formData);
