@@ -251,9 +251,9 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 		params = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0')
 			? { channelId: rid }
 			: {
-				channelId: rid,
-				channelName: name
-			};
+					channelId: rid,
+					channelName: name
+			  };
 	} else {
 		params = {
 			roomId: rid,
@@ -712,20 +712,22 @@ export const setAvatarFromService = ({
 	service?: string | null;
 	url?: string;
 	server: string;
-	user: { id?: string, token?: string }
+	user: { id?: string; token?: string };
 }): Promise<any> => {
 	// RC 0.51.0
-	if (service === "url"){
-		return sdk.post('users.setAvatar', { avatarUrl: data })
+	if (service === 'url') {
+		return sdk.post('users.setAvatar', { avatarUrl: data });
 	}
-	if (service === "upload" && url && server && user?.id && user?.token) {
+	if (service === 'upload' && url && server && user?.id && user?.token) {
 		const extension = url.split('.').pop() || 'png';
-		const formData = [{
-			name: 'image',
-			type: `image/${extension}`,
-			filename: `image.${extension}`,
-			uri: url
-		}];
+		const formData = [
+			{
+				name: 'image',
+				type: `image/${extension}`,
+				filename: `image.${extension}`,
+				uri: url
+			}
+		];
 
 		const headers = {
 			...RocketChatSettings.customHeaders,
@@ -736,7 +738,7 @@ export const setAvatarFromService = ({
 
 		const upload = new FileUpload(`${server}/api/v1/users.setAvatar`, headers, formData);
 
-		return upload.send()
+		return upload.send();
 	}
 
 	return sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
