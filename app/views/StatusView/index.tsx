@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -175,19 +175,17 @@ const StatusView = (): React.ReactElement => {
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
-	const isStatusChanged = () => {
+	const isSaveDisabled = useMemo(() => {
 		const { status } = inputValues;
-		if (!isValid) {
-			return true;
-		}
+		if (!isValid) return true;
 		const isStatusEqual = status === user.status;
-		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) ?? (!user.statusText && !statusText);
-		return !isValid && isStatusEqual && isStatusTextEqual;
-	};
+		const isStatusTextEqual = statusText === (user.statusText ?? '');
+		return isStatusEqual && isStatusTextEqual;
+	}, [isValid, inputValues, statusText, user.status, user.statusText]);
 
 	const FooterComponent = () => (
 		<View style={styles.footerComponent}>
-			<Button testID='status-view-submit' disabled={isStatusChanged()} onPress={submit} title={I18n.t('Save')} />
+			<Button testID='status-view-submit' disabled={isSaveDisabled} onPress={submit} title={I18n.t('Save')} />
 		</View>
 	);
 
