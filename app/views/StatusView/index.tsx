@@ -98,6 +98,12 @@ const Status = ({
 	);
 };
 
+const FooterComponent = ({ isSaveDisabled, submit }: { isSaveDisabled: boolean; submit: () => void }) => (
+	<View style={styles.footerComponent}>
+		<Button testID='status-view-submit' disabled={isSaveDisabled} onPress={submit} title={I18n.t('Save')} />
+	</View>
+);
+
 const StatusView = (): React.ReactElement => {
 	const validationSchema = yup.object().shape({
 		statusText: yup
@@ -122,23 +128,22 @@ const StatusView = (): React.ReactElement => {
 
 		resolver: yupResolver(validationSchema)
 	});
-	const inputValues = watch();
-	const { statusText } = inputValues;
+	const watchedStatus = watch('status');
+	const statusText = watch('statusText');
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 	const { colors } = useTheme();
 
 	const submit = async () => {
-		const { status } = inputValues;
 		logEvent(events.STATUS_DONE);
-		if (statusText !== user.statusText || status !== user.status) {
-			await setCustomStatus(status, statusText);
+		if (statusText !== user.statusText || watchedStatus !== user.status) {
+			await setCustomStatus(watchedStatus, statusText);
 		}
 		goBack();
 	};
 
-	useA11yErrorAnnouncement({ errors, inputValues });
+	useA11yErrorAnnouncement({ errors, inputValues: { status: watchedStatus, statusText } });
 
 	useEffect(() => {
 		const setHeader = () => {
@@ -176,17 +181,15 @@ const StatusView = (): React.ReactElement => {
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
 	const isSaveDisabled = useMemo(() => {
-		const { status } = inputValues;
 		if (!isValid) return true;
-		const isStatusEqual = status === user.status;
+		const isStatusEqual = watchedStatus === user.status;
 		const isStatusTextEqual = statusText === (user.statusText ?? '');
 		return isStatusEqual && isStatusTextEqual;
-	}, [isValid, inputValues, statusText, user.status, user.statusText]);
+	}, [isValid, watchedStatus, statusText, user.status, user.statusText]);
 
-	const FooterComponent = () => (
-		<View style={styles.footerComponent}>
-			<Button testID='status-view-submit' disabled={isSaveDisabled} onPress={submit} title={I18n.t('Save')} />
-		</View>
+	const listFooterComponent = useMemo(
+		() => <FooterComponent isSaveDisabled={isSaveDisabled} submit={submit} />,
+		[isSaveDisabled, submit]
 	);
 
 	return (
@@ -194,7 +197,7 @@ const StatusView = (): React.ReactElement => {
 			<FlatList
 				data={statusType}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} />}
+				renderItem={({ item }) => <Status statusType={item} status={watchedStatus} setStatus={setStatus} />}
 				ListHeaderComponent={
 					<>
 						<ControlledFormTextInput
@@ -210,7 +213,7 @@ const StatusView = (): React.ReactElement => {
 						<List.Separator />
 					</>
 				}
-				ListFooterComponent={FooterComponent}
+				ListFooterComponent={listFooterComponent}
 				style={{ backgroundColor: colors.surfaceTint }}
 			/>
 		</SafeAreaView>
