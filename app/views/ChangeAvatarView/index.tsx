@@ -79,11 +79,12 @@ const ChangeAvatarView = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
-	const { userId, username, server } = useAppSelector(
+	const { userId, username, server, user } = useAppSelector(
 		state => ({
 			userId: getUserSelector(state).id,
 			username: getUserSelector(state).username,
-			server: state.server.server
+			server: state.server.server,
+			user: state.login.user
 		}),
 		shallowEqual
 	);
@@ -162,7 +163,7 @@ const ChangeAvatarView = () => {
 				await changeRoomsAvatar(room.rid, state?.data);
 			} else if (state?.url) {
 				// Change User's Avatar
-				await changeUserAvatar(state);
+				await changeUserAvatar(state, server, { id: user.id, token: user.token });
 			} else if (state.resetUserAvatar) {
 				// Change User's Avatar
 				await resetUserAvatar(userId);

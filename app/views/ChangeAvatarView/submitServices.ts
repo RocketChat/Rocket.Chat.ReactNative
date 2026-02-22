@@ -12,9 +12,9 @@ export const changeRoomsAvatar = async (rid: string, roomAvatar: string | null) 
 	}
 };
 
-export const changeUserAvatar = async (avatarUpload: IAvatar) => {
+export const changeUserAvatar = async (avatarUpload: IAvatar, server: string, user: { id?: string; token?: string }) => {
 	try {
-		await setAvatarFromService(avatarUpload);
+		await setAvatarFromService({ ...avatarUpload, server, user });
 	} catch (e) {
 		return handleError(e, 'changing_avatar');
 	}

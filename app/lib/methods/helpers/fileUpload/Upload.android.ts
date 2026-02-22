@@ -10,6 +10,7 @@ export class Upload {
 		type: string | undefined;
 		name: string | undefined;
 	} | null;
+	private fieldName: string;
 	private headers: { [key: string]: string };
 	private formData: any;
 	private uploadTask: FileSystem.UploadTask | null;
@@ -19,6 +20,7 @@ export class Upload {
 	constructor() {
 		this.uploadUrl = '';
 		this.file = null;
+		this.fieldName = 'file';
 		this.headers = {};
 		this.formData = {};
 		this.uploadTask = null;
@@ -37,6 +39,7 @@ export class Upload {
 
 	public appendFile(item: IFormData): void {
 		if (item.uri) {
+			this.fieldName = item.name;
 			this.file = { uri: item.uri, type: item.type, name: item.filename };
 		} else {
 			this.formData[item.name] = item.data;
@@ -56,7 +59,7 @@ export class Upload {
 						headers: this.headers,
 						httpMethod: 'POST',
 						uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-						fieldName: 'file',
+						fieldName: this.fieldName,
 						mimeType: this.file.type,
 						parameters: this.formData
 					},
