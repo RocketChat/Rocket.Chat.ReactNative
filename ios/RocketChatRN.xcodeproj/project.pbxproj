@@ -11,10 +11,6 @@
 		05F9D701BF644C25192B8E79 /* Pods_defaults_RocketChatRN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A46AABC73B7E9703E69AF850 /* Pods_defaults_RocketChatRN.framework */; };
 		0C6E2DE448364EA896869ADF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B37C79D9BD0742CE936B6982 /* libc++.tbd */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		169F81322F2BDBB700DF8EA5 /* WatchBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F812E2F2BDBB700DF8EA5 /* WatchBridge.swift */; };
-		169F81372F2BFC4000DF8EA5 /* WatchBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F81362F2BFC4000DF8EA5 /* WatchBridge.m */; };
-		169F81382F2BFC4000DF8EA5 /* WatchBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F81362F2BFC4000DF8EA5 /* WatchBridge.m */; };
-		169F81392F2BFCE600DF8EA5 /* WatchBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F812E2F2BDBB700DF8EA5 /* WatchBridge.swift */; };
 		16A2DDFC2F4B3F1700051F86 /* RCTWatchModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */; };
 		16A2DDFD2F4B3F1700051F86 /* RCTWatchModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */; };
 		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
@@ -475,8 +471,6 @@
 		13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
-		169F812E2F2BDBB700DF8EA5 /* WatchBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridge.swift; sourceTree = "<group>"; };
-		169F81362F2BFC4000DF8EA5 /* WatchBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WatchBridge.m; sourceTree = "<group>"; };
 		16A2DDFA2F4B3F1700051F86 /* RCTWatchModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTWatchModule.h; sourceTree = "<group>"; };
 		16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RCTWatchModule.mm; sourceTree = "<group>"; };
 		194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-NotificationService/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
@@ -738,12 +732,10 @@
 				66C2701E2EBBCB780062725F /* SecureStorage.h */,
 				66C2701F2EBBCB780062725F /* SecureStorage.m */,
 				7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */,
-				169F812E2F2BDBB700DF8EA5 /* WatchBridge.swift */,
 				16A2DDFA2F4B3F1700051F86 /* RCTWatchModule.h */,
 				16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
 				A48B46D82D3FFBD200945489 /* A11yFlowModule.m */,
-				169F81362F2BFC4000DF8EA5 /* WatchBridge.m */,
 				7A8B30742BCD9D3F00146A40 /* SSLPinning.h */,
 				7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */,
 				65B9A7192AFC24190088956F /* ringtone.mp3 */,
@@ -2066,12 +2058,10 @@
 				1E0426E6251A5467008F022C /* RoomType.swift in Sources */,
 				1E76CBCD25152C2C0067298C /* MessageType.swift in Sources */,
 				1E76CBC925152C1F0067298C /* PushResponse.swift in Sources */,
-				169F81382F2BFC4000DF8EA5 /* WatchBridge.m in Sources */,
 				1E76CBD325152C770067298C /* Encryption.swift in Sources */,
 				1E76CBC825152C070067298C /* RocketChat.swift in Sources */,
 				1E76CBD725152C840067298C /* HTTPMethod.swift in Sources */,
 				1E76CBC725152BFF0067298C /* Payload.swift in Sources */,
-				169F81322F2BDBB700DF8EA5 /* WatchBridge.swift in Sources */,
 				1E76CBD225152C730067298C /* Data+Extensions.swift in Sources */,
 				1E76CBD125152C710067298C /* Date+Extensions.swift in Sources */,
 				1E76CBD425152C790067298C /* Database.swift in Sources */,
@@ -2348,13 +2338,11 @@
 				7AAB3E1F257E6A6E00707CF6 /* RocketChat.swift in Sources */,
 				7AAB3E20257E6A6E00707CF6 /* HTTPMethod.swift in Sources */,
 				7AAB3E21257E6A6E00707CF6 /* Payload.swift in Sources */,
-				169F81392F2BFCE600DF8EA5 /* WatchBridge.swift in Sources */,
 				7AAB3E23257E6A6E00707CF6 /* Data+Extensions.swift in Sources */,
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
 				7ACFE7D92DDE48760090D9BC /* AppDelegate.swift in Sources */,
 				1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */,
-				169F81372F2BFC4000DF8EA5 /* WatchBridge.m in Sources */,
 				A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */,
 				3F56D232A9EBA1C9C749F160 /* MMKVBridge.mm in Sources */,
 				7AACF8AE2C94B28B0082844E /* DecryptedContent.swift in Sources */,

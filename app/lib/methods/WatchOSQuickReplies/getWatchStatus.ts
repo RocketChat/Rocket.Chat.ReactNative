@@ -1,9 +1,16 @@
-import { NativeModules } from 'react-native';
+import NativeWatchModule from '../../native/NativeWatchModule';
 
-const { WatchBridge } = NativeModules;
+export interface IWatchStatus {
+	isWatchSupported: boolean;
+	isWatchPaired: boolean;
+	isWatchAppInstalled: boolean;
+}
 
-export async function checkWatch() {
-	const status = await WatchBridge.getWatchStatus();
-
+export function checkWatch(): IWatchStatus {
+	const status: IWatchStatus = {
+		isWatchSupported: NativeWatchModule.isWatchSupported(),
+		isWatchPaired: NativeWatchModule.isWatchPaired(),
+		isWatchAppInstalled: NativeWatchModule.isWatchAppInstalled()
+	};
 	return status;
 }

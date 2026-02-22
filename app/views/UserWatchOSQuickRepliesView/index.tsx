@@ -23,19 +23,18 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Preferences')
+			title: I18n.t('WatchOS_Quick_Replies')
 		});
 	}, [navigation]);
 
 	useEffect(() => {
-		const load = async () => {
-			const status = await checkWatch();
+		const load = () => {
+			const status = checkWatch();
 			console.log(status);
-			const result = await syncWatchOSQuickReplies(quickReplies ?? []);
-			console.log(result);
+			syncWatchOSQuickReplies();
 		};
 		load();
-	}, [quickReplies]);
+	}, [quickReplies?.length]);
 
 	const removeQuickReply = (reply: string) => {
 		const newReplies = quickReplies?.filter(quickreply => quickreply !== reply);
