@@ -186,7 +186,7 @@ const ChangeAvatarView = () => {
 			cropperAvoidEmptySpaceAroundImage: false,
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
+			includeBase64: false
 		};
 		try {
 			const response: Image =
@@ -195,7 +195,7 @@ const ChangeAvatarView = () => {
 					: await ImagePicker.openPicker(options);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
+				payload: { url: response.path, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {
