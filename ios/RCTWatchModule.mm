@@ -69,6 +69,7 @@ NSString *mmkvQuickRepliesKey = @"RC_WATCHOS_QUICKREPIES";
     if (replies && replies.length > 0) {
         NSData *data = [replies dataUsingEncoding:NSUTF8StringEncoding];
 
+        // string to json conversion
         NSError *error = nil;
         id json = [NSJSONSerialization
             JSONObjectWithData:data
@@ -81,6 +82,7 @@ NSString *mmkvQuickRepliesKey = @"RC_WATCHOS_QUICKREPIES";
                       : "JSON parse error";
             throw std::runtime_error(message);
         } else {
+            // quick replies are stored as array of strings
             if ([json isKindOfClass:[NSArray class]]) {
                 NSArray *array = (NSArray *)json;
                 try {
