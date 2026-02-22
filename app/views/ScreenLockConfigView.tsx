@@ -12,7 +12,7 @@ import {
 	supportedBiometryLabel,
 	handleLocalAuthentication
 } from '../lib/methods/helpers/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../lib/constants/localAuthentication';
+import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, MODAL_TRANSITION_DELAY_MS } from '../lib/constants/localAuthentication';
 import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
@@ -132,7 +132,15 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	changePasscode = async ({ force }: { force: boolean }) => {
 		const { autoLock } = this.state;
 		if (autoLock) {
-			await handleLocalAuthentication(true);
+			try {
+				await handleLocalAuthentication(true);
+				// Add a small delay to ensure the first modal is fully closed before opening the next one
+				// This prevents the app from hanging on iOS when two modals open back-to-back
+				await new Promise(resolve => setTimeout(resolve, MODAL_TRANSITION_DELAY_MS));
+			} catch {
+				// User cancelled or authentication failed
+				return;
+			}
 		}
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		await changePasscode({ force });
@@ -264,11 +272,12 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	render() {
 		const { autoLock } = this.state;
 		return (
-			<SafeAreaView>
+			<SafeAreaView testID='screen-lock-config-view'>
 				<List.Container>
 					<List.Section>
 						<List.Separator />
 						<List.Item
+							testID='screen-lock-config-view-autolock'
 							title='Local_authentication_unlock_option'
 							right={() => this.renderAutoLockSwitch()}
 							additionalAccessibilityLabel={autoLock}
@@ -276,7 +285,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 						{autoLock ? (
 							<>
 								<List.Separator />
-								<List.Item title='Local_authentication_change_passcode' onPress={this.changePasscode} showActionIndicator />
+								<List.Item testID='screen-lock-config-view-change-passcode' title='Local_authentication_change_passcode' onPress={this.changePasscode} showActionIndicator />
 							</>
 						) : null}
 						<List.Separator />
@@ -295,5 +304,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Force_Screen_Lock: state.settings.Force_Screen_Lock as boolean,
 	Force_Screen_Lock_After: state.settings.Force_Screen_Lock_After as number
 });
+
+export { ScreenLockConfigView };
 
 export default connect(mapStateToProps)(withTheme(ScreenLockConfigView));
