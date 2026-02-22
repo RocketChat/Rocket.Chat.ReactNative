@@ -272,11 +272,12 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	render() {
 		const { autoLock } = this.state;
 		return (
-			<SafeAreaView>
+			<SafeAreaView testID='screen-lock-config-view'>
 				<List.Container>
 					<List.Section>
 						<List.Separator />
 						<List.Item
+							testID='screen-lock-config-view-autolock'
 							title='Local_authentication_unlock_option'
 							right={() => this.renderAutoLockSwitch()}
 							additionalAccessibilityLabel={autoLock}
@@ -284,7 +285,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 						{autoLock ? (
 							<>
 								<List.Separator />
-								<List.Item title='Local_authentication_change_passcode' onPress={this.changePasscode} showActionIndicator />
+								<List.Item testID='screen-lock-config-view-change-passcode' title='Local_authentication_change_passcode' onPress={this.changePasscode} showActionIndicator />
 							</>
 						) : null}
 						<List.Separator />
