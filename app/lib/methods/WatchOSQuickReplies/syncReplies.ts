@@ -11,6 +11,9 @@ export async function syncWatchOSQuickReplies(replies: string[]) {
 		const success: boolean = await WatchBridge.syncQuickReplies(replies);
 
 		console.log(NativeWatchModule.testModule());
+		console.log(NativeWatchModule.isWatchSupported());
+		console.log(NativeWatchModule.isWatchPaired());
+		console.log(NativeWatchModule.isWatchAppInstalled());
 
 		return success;
 	} catch (e) {
