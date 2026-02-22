@@ -89,7 +89,8 @@ tags:
       id: 'username-header-${output.otherUser.username}'
     timeout: 60000
 - tapOn:
-    id: 'username-header-${output.otherUser.username}'
+    text: ${output.otherUser.username}
+    index: 1
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -210,7 +211,9 @@ tags:
     visible:
       text: ${output.otherUser.username}
     timeout: 60000
-- tapOn: ${output.otherUser.username}
+- tapOn:
+    text: ${output.otherUser.username}
+    index: 1
 - extendedWaitUntil:
     visible:
       id: 'room-info-view'
