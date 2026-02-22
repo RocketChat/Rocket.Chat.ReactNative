@@ -15,6 +15,8 @@
 		169F81372F2BFC4000DF8EA5 /* WatchBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F81362F2BFC4000DF8EA5 /* WatchBridge.m */; };
 		169F81382F2BFC4000DF8EA5 /* WatchBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F81362F2BFC4000DF8EA5 /* WatchBridge.m */; };
 		169F81392F2BFCE600DF8EA5 /* WatchBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F812E2F2BDBB700DF8EA5 /* WatchBridge.swift */; };
+		16A2DDFC2F4B3F1700051F86 /* RCTWatchModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */; };
+		16A2DDFD2F4B3F1700051F86 /* RCTWatchModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */; };
 		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
 		1E01C8212511301400FEF824 /* PushResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8202511301400FEF824 /* PushResponse.swift */; };
 		1E01C8252511303100FEF824 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8242511303100FEF824 /* Notification.swift */; };
@@ -475,6 +477,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
 		169F812E2F2BDBB700DF8EA5 /* WatchBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchBridge.swift; sourceTree = "<group>"; };
 		169F81362F2BFC4000DF8EA5 /* WatchBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WatchBridge.m; sourceTree = "<group>"; };
+		16A2DDFA2F4B3F1700051F86 /* RCTWatchModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTWatchModule.h; sourceTree = "<group>"; };
+		16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = RCTWatchModule.mm; sourceTree = "<group>"; };
 		194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-NotificationService/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		1E01C81B2511208400FEF824 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		1E01C8202511301400FEF824 /* PushResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushResponse.swift; sourceTree = "<group>"; };
@@ -735,6 +739,8 @@
 				66C2701F2EBBCB780062725F /* SecureStorage.m */,
 				7ACFE7D82DDE48760090D9BC /* AppDelegate.swift */,
 				169F812E2F2BDBB700DF8EA5 /* WatchBridge.swift */,
+				16A2DDFA2F4B3F1700051F86 /* RCTWatchModule.h */,
+				16A2DDFB2F4B3F1700051F86 /* RCTWatchModule.mm */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
 				A48B46D82D3FFBD200945489 /* A11yFlowModule.m */,
 				169F81362F2BFC4000DF8EA5 /* WatchBridge.m */,
@@ -2051,6 +2057,7 @@
 				1E76CBCB25152C250067298C /* Sender.swift in Sources */,
 				1E5141182B856673007BE94A /* SSLPinning.swift in Sources */,
 				1E76CBD825152C870067298C /* Request.swift in Sources */,
+				16A2DDFD2F4B3F1700051F86 /* RCTWatchModule.mm in Sources */,
 				1E51411C2B85683C007BE94A /* SSLPinning.m in Sources */,
 				66C2701B2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
 				1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */,
@@ -2328,6 +2335,7 @@
 				7AAB3E15257E6A6E00707CF6 /* Sender.swift in Sources */,
 				1E5141192B856673007BE94A /* SSLPinning.swift in Sources */,
 				7AAB3E16257E6A6E00707CF6 /* Request.swift in Sources */,
+				16A2DDFC2F4B3F1700051F86 /* RCTWatchModule.mm in Sources */,
 				1E51411D2B85683C007BE94A /* SSLPinning.m in Sources */,
 				66C2701C2EBBCB570062725F /* MMKVKeyManager.mm in Sources */,
 				7AAB3E17257E6A6E00707CF6 /* ReplyNotification.swift in Sources */,

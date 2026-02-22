@@ -31,21 +31,21 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		const load = async () => {
 			const status = await checkWatch();
 			console.log(status);
-			const result = await syncWatchOSQuickReplies(quickreplies ?? []);
+			const result = await syncWatchOSQuickReplies(quickReplies ?? []);
 			console.log(result);
 		};
 		load();
-	}, [quickreplies]);
+	}, [quickReplies]);
 
 	const removeQuickReply = (reply: string) => {
-		const newReplies = quickreplies?.filter(quickreply => quickreply !== reply);
-		setQuickreplies(newReplies);
+		const newReplies = quickReplies?.filter(quickreply => quickreply !== reply);
+		setQuickReplies(newReplies);
 	};
 
 	const addQuickReply = () => {
 		const value = input.trim();
 		if (!value) return;
-		if (!quickreplies?.includes(input.trim())) setQuickreplies([...(quickreplies ?? []), value]);
+		if (!quickReplies?.includes(input.trim())) setQuickReplies([...(quickReplies ?? []), value]);
 		setInput('');
 	};
 
@@ -54,9 +54,9 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 			<List.Container>
 				<List.Section title='WatchOS_Quick_Replies'>
 					<>
-						{quickreplies && quickreplies.length !== 0 && (
+						{quickReplies && quickReplies.length !== 0 && (
 							<ScrollView horizontal style={{ marginVertical: 8, paddingHorizontal: 4 }}>
-								{quickreplies.map((reply, index) => (
+								{quickReplies.map((reply, index) => (
 									<Chip key={index} text={reply} onPress={() => removeQuickReply(reply)} />
 								))}
 							</ScrollView>

@@ -1,5 +1,7 @@
 import { NativeModules } from 'react-native';
 
+import NativeWatchModule from '../../native/NativeWatchModule';
+
 const { WatchBridge } = NativeModules;
 
 export async function syncWatchOSQuickReplies(replies: string[]) {
@@ -7,6 +9,8 @@ export async function syncWatchOSQuickReplies(replies: string[]) {
 
 	try {
 		const success: boolean = await WatchBridge.syncQuickReplies(replies);
+
+		console.log(NativeWatchModule.testModule());
 
 		return success;
 	} catch (e) {
