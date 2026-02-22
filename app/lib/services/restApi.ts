@@ -721,7 +721,7 @@ export const setAvatarFromService = ({
 	if (service === 'upload' && url && server && user?.id && user?.token) {
 		const rawExtension = url.split('.').pop() || 'png';
 		const extension = rawExtension.split('?')[0].toLowerCase();
-		
+
 		const formData = [
 			{
 				name: 'image',
