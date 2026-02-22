@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import { Button, View } from 'react-native';
+
 import { UiKitComponent, UiKitModal } from '.';
 import { KitContext, defaultContext } from './utils';
 import MessageContext from '../message/Context';
@@ -759,3 +762,53 @@ export const ModalDatePickerWithError = () => (
 	</KitContext.Provider>
 );
 ModalDatePickerWithError.storyName = 'Modal - DatePicker with error';
+
+const initialInputBlocks = [
+	{
+		type: 'input',
+		element: { type: 'plain_text_input', actionId: 'input-1' },
+		label: { type: 'plain_text', text: 'First field', emoji: true },
+		placeholder: { type: 'plain_text', text: 'Type here…', emoji: true }
+	},
+	{
+		type: 'input',
+		element: { type: 'plain_text_input', actionId: 'input-2' },
+		label: { type: 'plain_text', text: 'Second field', emoji: true },
+		placeholder: { type: 'plain_text', text: 'Type here…', emoji: true }
+	}
+];
+
+export const ModalInputWithAddField = () => {
+	const [values, setValues] = useState<Record<string, { blockId: string; value: string }>>({});
+	const [blocks, setBlocks] = useState(initialInputBlocks);
+	const changeState = ({ actionId, value, blockId = 'default' }: { actionId: string; value: string; blockId?: string }) => {
+		setValues(prev => ({ ...prev, [actionId]: { blockId, value } }));
+	};
+	const addField = () => {
+		const nextId = `input-${blocks.length + 1}`;
+		setBlocks(prev => [
+			...prev,
+			{
+				type: 'input',
+				element: { type: 'plain_text_input', actionId: nextId },
+				label: { type: 'plain_text', text: `Field ${blocks.length + 1}`, emoji: true },
+				placeholder: { type: 'plain_text', text: 'Type here…', emoji: true }
+			}
+		]);
+	};
+	const modalKey = `${blocks.length}-${blocks
+		.map((b: any, index: number) => `${b.element?.actionId || b.type}-${index}`)
+		.join('-')}`;
+
+	return (
+		<View>
+			<React.Fragment key={modalKey}>
+				<KitContext.Provider value={{ ...defaultContext, state: changeState, values }}>
+					<UiKitComponent render={UiKitModal} blocks={blocks} />
+				</KitContext.Provider>
+			</React.Fragment>
+			<Button title='Add field' onPress={addField} />
+		</View>
+	);
+};
+ModalInputWithAddField.storyName = 'Modal - Input with add field';
