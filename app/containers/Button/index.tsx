@@ -1,6 +1,6 @@
 import React from 'react';
 import { type StyleProp, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
-import { Pressable, type PressableProps } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, Pressable, type PressableProps } from 'react-native-gesture-handler';
 
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
@@ -87,15 +87,17 @@ const Button: React.FC<IButtonProps> = ({
 	];
 
 	return (
-		<Pressable
-			onPress={onPress}
-			disabled={isDisabled}
-			style={containerStyle}
-			accessibilityLabel={title}
-			accessibilityRole='button'
-			{...otherProps}>
-			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
-		</Pressable>
+		<GestureHandlerRootView>
+			<Pressable
+				onPress={onPress}
+				disabled={isDisabled}
+				style={containerStyle}
+				accessibilityLabel={title}
+				accessibilityRole='button'
+				{...otherProps}>
+				{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
+			</Pressable>
+		</GestureHandlerRootView>
 	);
 };
 
