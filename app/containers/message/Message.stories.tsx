@@ -1116,7 +1116,7 @@ export const FileAttachmentsWithFilenamesLargeFont = () => (
 			]}
 			isHeader={false}
 		/>
-		<Message
+		<MessageLargeFont
 			msg='multi file'
 			attachments={[
 				{
