@@ -43,12 +43,12 @@ const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 			<FormTextInput
 				value={dialpadValue}
 				placeholder=''
-				clearButtonMode='while-editing'
 				keyboardType='phone-pad'
 				containerStyle={styles.inputContainer}
 				showErrorMessage={false}
 				bottomSheet
 				testID={testID ? `${testID}-input` : 'dialpad-input'}
+				editable={false}
 			/>
 			<View style={styles.grid}>
 				{DIALPAD_KEYS.map((row, rowIndex) => (
