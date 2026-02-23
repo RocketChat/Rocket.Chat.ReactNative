@@ -22,7 +22,7 @@ const getDeepLink = (method, server, ...params) => {
 
 
 const login = (username, password) => {
-    const response = http.post(`${data.server}/api/v1/login`, {
+    const response = postWithRetry(`${data.server}/a1pi/v1/login`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -44,7 +44,7 @@ const createUser = (customProps) => {
 
     login(output.account.adminUser, output.account.adminPassword);
 
-    http.post(`${data.server}/api/v1/users.create`, {
+    postWithRetry(`${data.server}/api/v1/users.create`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -74,7 +74,7 @@ const deleteCreatedUser = async ({ username: usernameToDelete }) => {
     try {
         login(output.account.adminUser, output.account.adminPassword);
 
-        const result = http.get(`${data.server}/api/v1/users.info?username=${usernameToDelete}`, {
+        const result = getWithRetry(`${data.server}/api/v1/users.info?username=${usernameToDelete}`, {
             headers: {
                 'Content-Type': 'application/json',
                 ...headers
@@ -82,7 +82,7 @@ const deleteCreatedUser = async ({ username: usernameToDelete }) => {
         });
 
         const userId = json(result.body)?.data?.user?._id;
-        http.post(`${data.server}/api/v1/users.delete`, { userId, confirmRelinquish: true }, {
+        postWithRetry(`${data.server}/api/v1/users.delete`, { userId, confirmRelinquish: true }, {
             headers: {
                 'Content-Type': 'application/json',
                 ...headers
@@ -98,7 +98,7 @@ const createRandomTeam = (username, password) => {
 
     const teamName = output.randomTeamName();
 
-    http.post(`${data.server}/api/v1/teams.create`, {
+    postWithRetry(`${data.server}/api/v1/teams.create`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -113,7 +113,7 @@ const createRandomRoom = (username, password, type = 'c') => {
     login(username, password);
     const room = `room${output.random()}`;
 
-    const response = http.post(`${data.server}/api/v1/${type === 'c' ? 'channels.create' : 'groups.create'}`, {
+    const response = postWithRetry(`${data.server}/api/v1/${type === 'c' ? 'channels.create' : 'groups.create'}`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -133,7 +133,7 @@ const sendMessage = (username, password, channel, msg, tmid) => {
     login(username, password);
     const channelParam = tmid ? { roomId: channel } : { channel };
 
-    const response = http.post(`${data.server}/api/v1/chat.postMessage`, {
+    const response = postWithRetry(`${data.server}/api/v1/chat.postMessage`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -153,7 +153,7 @@ const sendMessage = (username, password, channel, msg, tmid) => {
 const getProfileInfo = (userId) => {
     login(output.account.adminUser, output.account.adminPassword);
     
-    const result = http.get(`${data.server}/api/v1/users.info?userId=${userId}`, {
+    const result = getWithRetry(`${data.server}/api/v1/users.info?userId=${userId}`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -168,7 +168,7 @@ const getProfileInfo = (userId) => {
 const post = (endpoint, username, password, body) => {
     login(username, password);
 
-    const response = http.post(`${data.server}/api/v1/${endpoint}`, {
+    const response = postWithRetry(`${data.server}/api/v1/${endpoint}`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -182,7 +182,7 @@ const post = (endpoint, username, password, body) => {
 const createDM = (username, password, otherUsername) => {
     login(username, password);
 
-    const result = http.post(`${data.server}/api/v1/im.create`, {
+    const result = postWithRetry(`${data.server}/api/v1/im.create`, {
         headers: {
             'Content-Type': 'application/json',
             ...headers
@@ -207,6 +207,49 @@ const deleteCreatedUsers = () => {
 function logAccounts() {
     console.log(JSON.stringify(data.accounts));
 }
+
+function sleep(ms) {
+    const start = Date.now();
+    while (Date.now() - start < ms) { }
+}
+
+const retryRequest = (fn, {
+    retries = 3,
+    delay = 1000,
+    factor = 2
+} = {}) => {
+    let lastError;
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+            const response = fn();
+
+            if (response && response.status >= 200 && response.status < 300) {
+                return response;
+            }
+
+            if (response && response.status >= 400 && response.status < 500) {
+                throw new Error(`Non-retryable error ${response.status}`);
+            }
+
+            lastError = new Error(`HTTP ${response ? response.status : 'unknown'}`);
+        } catch (err) {
+            lastError = err;
+        }
+
+        if (attempt < retries) {
+            const wait = delay * Math.pow(factor, attempt - 1);
+            console.log(`Retry ${attempt}/${retries} after ${wait}ms`);
+            sleep(wait);
+        }
+    }
+
+    throw lastError;
+};
+
+const postWithRetry = (url, options) => retryRequest(() => http.post(url, options));
+
+const getWithRetry = (url, options) => retryRequest(() => http.get(url, options));
 
 output.utils = {
     createUser,
