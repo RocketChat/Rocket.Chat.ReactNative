@@ -22,6 +22,7 @@ const serverInfoKeys = [
 	'FileUpload_MaxFileSize',
 	'Force_Screen_Lock',
 	'Force_Screen_Lock_After',
+	'Apple_Watch_Quick_Actions',
 	'uniqueID',
 	'E2E_Enable',
 	'E2E_Enabled_Default_PrivateRooms'
