@@ -56,9 +56,7 @@ const setStoreState = (overrides: Partial<ReturnType<typeof useCallStore.getStat
 	});
 };
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => (
-	<Provider store={mockedStore}>{children}</Provider>
-);
+const Wrapper = ({ children }: { children: React.ReactNode }) => <Provider store={mockedStore}>{children}</Provider>;
 
 describe('MediaCallHeader', () => {
 	beforeEach(() => {
