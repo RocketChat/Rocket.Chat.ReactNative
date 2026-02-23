@@ -82,11 +82,12 @@ const deleteCreatedUser = async ({ username: usernameToDelete }) => {
         });
 
         const userId = json(result.body)?.data?.user?._id;
-        postWithRetry(`${data.server}/api/v1/users.delete`, { userId, confirmRelinquish: true }, {
+        postWithRetry(`${data.server}/api/v1/users.delete`, {
             headers: {
                 'Content-Type': 'application/json',
                 ...headers
-            }
+            },
+            body: JSON.stringify({ userId, confirmRelinquish: true })
         });
     } catch (error) {
         console.log(JSON.stringify(error));
