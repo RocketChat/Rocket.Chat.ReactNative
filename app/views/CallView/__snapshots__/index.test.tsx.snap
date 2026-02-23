@@ -912,7 +912,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -947,7 +947,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   "marginBottom": 8,
                   "width": 64,
                 },
-                false,
+                {
+                  "opacity": 0.5,
+                },
                 {
                   "backgroundColor": "#E4E7EA",
                 },
@@ -1416,7 +1418,7 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               {
                 "busy": undefined,
                 "checked": undefined,
-                "disabled": false,
+                "disabled": true,
                 "expanded": undefined,
                 "selected": undefined,
               }
@@ -1451,7 +1453,9 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
                   "marginBottom": 8,
                   "width": 64,
                 },
-                false,
+                {
+                  "opacity": 0.5,
+                },
                 {
                   "backgroundColor": "#E4E7EA",
                 },
