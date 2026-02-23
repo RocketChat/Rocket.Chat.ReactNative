@@ -161,7 +161,6 @@ tags:
 - tapOn:
     id: emoji-searchbar-input
 - inputText: 'laughing'
-- hideKeyboard
 - extendedWaitUntil:
     visible:
       id: emoji-laughing
@@ -487,7 +486,6 @@ tags:
 - tapOn:
     id: message-composer-input
 - inputText: ${output.replyMessage}
-- hideKeyboard
 - tapOn:
     id: message-composer-send
 - extendedWaitUntil:
@@ -510,7 +508,6 @@ tags:
 - tapOn:
     id: message-composer-input
 - inputText: 'draft'
-- hideKeyboard
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
@@ -565,7 +562,6 @@ tags:
 - tapOn:
     id: message-composer-input
 - inputText: ${output.draftMessage}
-- hideKeyboard
 - runFlow: '../../helpers/go-back.yaml'
 - runFlow:
     file: '../../helpers/navigate-to-room.yaml'
