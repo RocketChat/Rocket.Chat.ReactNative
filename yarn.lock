@@ -3663,14 +3663,6 @@
     "@gorhom/portal" "1.0.14"
     invariant "^2.2.4"
 
-"@gorhom/bottom-sheet@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-5.1.2.tgz#509992983ce2905d5899d1c7cab1cd3950c8c238"
-  integrity sha512-5np8oL2krqAsVKLRE4YmtkZkyZeFiitoki72bEpVhZb8SRTNuAEeSbP3noq5srKpcRsboCr7uI+xmMyrWUd9kw==
-  dependencies:
-    "@gorhom/portal" "1.0.14"
-    invariant "^2.2.4"
-
 "@gorhom/portal@1.0.14":
   version "1.0.14"
   resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.14.tgz#1953edb76aaba80fb24021dc774550194a18e111"
@@ -12802,6 +12794,11 @@ react-native-edge-to-edge@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/react-native-edge-to-edge/-/react-native-edge-to-edge-1.6.0.tgz#2ba63b941704a7f713e298185c26cde4d9e4b973"
   integrity sha512-2WCNdE3Qd6Fwg9+4BpbATUxCLcouF6YRY7K+J36KJ4l3y+tWN6XCqAC4DuoGblAAbb2sLkhEDp4FOlbOIot2Og==
+
+react-native-external-keyboard@0.5.4-rc:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-external-keyboard/-/react-native-external-keyboard-0.7.0.tgz#8543336df67faaedec41e17faab665aff98c8dfe"
+  integrity sha512-8r544OV+1t7AiI7+4TVPrRfi5AULbR5DFL9XLojgi6q67h285BqxLRj9nrwYqE/3QHO5G5VuGForJ6ZGpfBBoQ==
 
 react-native-file-viewer@2.1.4:
   version "2.1.4"
