@@ -22,7 +22,7 @@ const getDeepLink = (method, server, ...params) => {
 
 
 const login = (username, password) => {
-    const response = postWithRetry(`${data.server}/a1pi/v1/login`, {
+    const response = postWithRetry(`${data.server}/api/v1/login`, {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -219,7 +219,6 @@ const retryRequest = (fn, {
     factor = 2
 } = {}) => {
     let lastError;
-
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
             const response = fn();
