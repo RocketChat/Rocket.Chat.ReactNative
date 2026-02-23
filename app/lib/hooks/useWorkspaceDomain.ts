@@ -1,6 +1,6 @@
 import parse from 'url-parse';
 
-import { useAppSelector } from "./useAppSelector"
+import { useAppSelector } from './useAppSelector';
 
 export const useWorkspaceDomain = (): string => {
 	const { Site_Url } = useAppSelector(state => ({

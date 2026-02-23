@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text } from 'react-native';
 
 import * as List from '../../../containers/List';
 import i18n from '../../../i18n';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
 
@@ -41,7 +41,7 @@ export default function CommunityEditionPushQuota(): React.ReactElement | null {
 				testID='push-troubleshoot-view-workspace-consumption'
 				onPress={alertWorkspaceConsumption}
 				right={() => <Text style={[styles.pickerText, { color: percentageColor }]}>{percentage}</Text>}
-				additionalAcessibilityLabel={percentage}
+				additionalAccessibilityLabel={percentage}
 			/>
 			<List.Separator />
 			<List.Info info='Workspace_consumption_description' />

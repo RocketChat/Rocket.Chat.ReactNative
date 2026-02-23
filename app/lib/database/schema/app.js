@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 26,
+	version: 28,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -69,7 +69,12 @@ export default appSchema({
 				{ name: 'hide_mention_status', type: 'boolean', isOptional: true },
 				{ name: 'users_count', type: 'number', isOptional: true },
 				{ name: 'unmuted', type: 'string', isOptional: true },
-				{ name: 'disable_notifications', type: 'boolean', isOptional: true }
+				{ name: 'disable_notifications', type: 'boolean', isOptional: true },
+				{ name: 'federated', type: 'boolean', isOptional: true },
+				{ name: 'abac_attributes', type: 'string', isOptional: true },
+				{ name: 'federation', type: 'string', isOptional: true },
+				{ name: 'status', type: 'string', isOptional: true },
+				{ name: 'inviter', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

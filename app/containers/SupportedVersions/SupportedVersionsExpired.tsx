@@ -3,7 +3,7 @@ import { View, Text, Linking } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import I18n from '../../i18n';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getServerById } from '../../lib/database/services/Server';
 import log from '../../lib/methods/helpers/log';
 import database from '../../lib/database';
@@ -47,7 +47,7 @@ export const SupportedVersionsExpired = () => {
 
 	return (
 		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
-			<View style={styles.iconContainer}>
+			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
 			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>

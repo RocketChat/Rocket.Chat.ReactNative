@@ -11,6 +11,8 @@ Refer to [React Native environment setup](https://reactnative.dev/docs/set-up-yo
 
 ### How to run
 
+Minimum Node version: 22.14.0
+
 Clone repository and install dependencies:
 ```sh
 git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
@@ -20,7 +22,7 @@ yarn
 
 Run the app:
 ```sh
-npx pod-install
+yarn pod-install
 yarn ios
 ```
 
@@ -33,10 +35,6 @@ yarn android
 At this point, the app should be running on the simulator or on your device!
 
 *Note: npm won't work on this project*
-
-### How to inspect the app
-
-We use [Reactotron](https://github.com/infinitered/reactotron) to inspect logs, redux state, redux-sagas, HTTP requests, etc.
 
 ## Issues needing help
 
@@ -78,7 +76,8 @@ We use [Jest](https://jestjs.io/) and [Storybook](https://storybook.js.org/) on 
 
 Storybook is a tool for developing UI Components and has some plugins to make Jest generate snapshots of them.
 
-[On the root of the project](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/index.js#L24), comment everything leaving only the last import to Storybook left  and refresh your project.
+To open the Storybook, run yarn `storybook:start`, and then use `yarn android` or `yarn ios` to launch it on your desired platform.
+
 You'll see some tests like this:
 
 <img src="https://user-images.githubusercontent.com/804994/89677725-56393200-d8c4-11ea-84b0-213be1d24e98.png" width="350" />
@@ -92,12 +91,6 @@ To check for test issues on your code, run this on your terminal:
 ```sh
 yarn test
 ```
-
-### E2E tests
-
-We use [Detox](https://github.com/wix/Detox) framework to end-to-end test our app and ensure everything is working properly.
-
-[Follow this documentation to learn how to run it](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/e2e).
 
 ### Pull request
 

@@ -13,7 +13,8 @@ export default StyleSheet.create({
 	item: {
 		paddingVertical: 10,
 		paddingHorizontal: 20,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		gap: 8
 	},
 	avatarContainer: {
 		minHeight: 320,
@@ -48,7 +49,6 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	itemLabel: {
-		marginBottom: 10,
 		fontSize: 14,
 		...sharedStyles.textMedium
 	},
@@ -61,17 +61,20 @@ export default StyleSheet.create({
 	},
 	rolesContainer: {
 		flexDirection: 'row',
-		flexWrap: 'wrap'
+		flexWrap: 'wrap',
+		gap: 4
 	},
 	roleBadge: {
-		padding: 6,
-		borderRadius: 4,
-		marginRight: 6,
-		marginBottom: 6
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 2,
+		padding: 4,
+		borderRadius: 4
 	},
 	role: {
-		fontSize: 14,
-		...sharedStyles.textRegular
+		fontSize: 12,
+		lineHeight: 16,
+		...sharedStyles.textBold
 	},
 	roomButtonsContainer: {
 		flexDirection: 'row',
@@ -90,5 +93,10 @@ export default StyleSheet.create({
 		paddingTop: 16,
 		paddingHorizontal: 20,
 		alignItems: 'center'
+	},
+	abacDescription: {
+		lineHeight: 22,
+		fontSize: 16,
+		...sharedStyles.textRegular
 	}
 });

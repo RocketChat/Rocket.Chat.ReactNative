@@ -1,6 +1,6 @@
-import { TSVDictionary, TSVMessage, TSVStatus } from '../definitions';
+import { type TSVDictionary, type TSVMessage, type TSVStatus } from '../definitions';
 import { SUPPORTED_VERSIONS } from '../actions/actionsTypes';
-import { TActionSupportedVersions } from '../actions/supportedVersions';
+import { type TActionSupportedVersions } from '../actions/supportedVersions';
 
 export interface ISupportedVersionsState {
 	status: TSVStatus;

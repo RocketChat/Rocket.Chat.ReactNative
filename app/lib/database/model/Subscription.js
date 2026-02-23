@@ -151,6 +151,16 @@ export default class Subscription extends Model {
 
 	@field('disable_notifications') disableNotifications;
 
+	@field('federated') federated;
+
+	@json('abac_attributes', sanitizer) abacAttributes;
+
+	@json('federation', sanitizer) federation;
+
+	@field('status') status;
+
+	@json('inviter', sanitizer) inviter;
+
 	asPlain() {
 		return {
 			_id: this._id,
@@ -183,8 +193,8 @@ export default class Subscription extends Model {
 			reactWhenReadOnly: this.reactWhenReadOnly,
 			archived: this.archived,
 			joinCodeRequired: this.joinCodeRequired,
-			notifications: this.notifications,
 			muted: this.muted,
+			unmuted: this.unmuted,
 			ignored: this.ignored,
 			broadcast: this.broadcast,
 			prid: this.prid,
@@ -205,7 +215,7 @@ export default class Subscription extends Model {
 			livechatData: this.livechatData,
 			tags: this.tags,
 			E2EKey: this.E2EKey,
-			oldKeys: this.oldKeys,
+			oldRoomKeys: this.oldRoomKeys,
 			E2ESuggestedKey: this.E2ESuggestedKey,
 			encrypted: this.encrypted,
 			e2eKeyId: this.e2eKeyId,
@@ -216,7 +226,12 @@ export default class Subscription extends Model {
 			onHold: this.onHold,
 			usersCount: this.usersCount,
 			source: this.source,
-			disableNotifications: this.disableNotifications
+			disableNotifications: this.disableNotifications,
+			federated: this.federated,
+			abacAttributes: this.abacAttributes,
+			federation: this.federation,
+			status: this.status,
+			inviter: this.inviter
 		};
 	}
 }

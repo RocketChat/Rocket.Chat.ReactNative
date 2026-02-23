@@ -1,0 +1,83 @@
+name: "Bug Report"
+description: "Report a bug to help us improve."
+title: "bug: "
+labels: ["🐛 bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thank you for taking the time to report this bug!  
+        Before submitting, please check if a similar issue exists.  
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Describe the Bug"
+      description: "A clear and concise description of the issue."
+      placeholder: "A bug happened!"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to Reproduce"
+      description: "List the steps to reproduce the issue."
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Observe the issue
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: "Expected Behavior"
+      description: "What should have happened?"
+      placeholder: "Describe the expected outcome."
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: "Actual Behavior"
+      description: "What actually happened?"
+      placeholder: "Describe what actually happens."
+
+  - type: input
+    id: server-version
+    attributes:
+      label: "Rocket.Chat Server Version"
+      placeholder: "Enter the server version"
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: "Rocket.Chat App Version"
+      placeholder: "Enter the app version"
+    validations:
+      required: true
+
+  - type: input
+    id: device-name
+    attributes:
+      label: "Device Name"
+      placeholder: "e.g., iPhone 13, Samsung Galaxy S22"
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: "OS Version"
+      placeholder: "e.g., iOS 17, Android 14"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "Additional Context"
+      description: "Provide any other relevant information about the problem."

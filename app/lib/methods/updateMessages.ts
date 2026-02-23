@@ -1,8 +1,14 @@
-import { Model, Q } from '@nozbe/watermelondb';
+import { type Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { MESSAGE_TYPE_ANY_LOAD } from '../constants';
-import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import { MESSAGE_TYPE_ANY_LOAD } from '../constants/messageTypeLoad';
+import {
+	type IMessage,
+	type TMessageModel,
+	type TSubscriptionModel,
+	type TThreadMessageModel,
+	type TThreadModel
+} from '../../definitions';
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { Encryption } from '../encryption';
@@ -12,7 +18,7 @@ import protectedFunction from './helpers/protectedFunction';
 
 interface IUpdateMessages {
 	rid: string;
-	update: Partial<IMessage>[];
+	update: IMessage[];
 	remove?: Partial<IMessage>[];
 	loaderItem?: TMessageModel;
 }
@@ -37,7 +43,7 @@ export default async function updateMessages({
 	const db = database.active;
 	return db.write(async () => {
 		// Decrypt these messages
-		update = await Encryption.decryptMessages(update);
+		update = (await Encryption.decryptMessages(update)) as IMessage[];
 
 		const messagesIds: string[] = [...update.map(m => m._id as string), ...remove.map(m => m._id as string)];
 		const msgCollection = db.get('messages');
@@ -84,12 +90,16 @@ export default async function updateMessages({
 		// filter threads
 		const allThreads = update.filter(m => m.tlm);
 		const filteredThreadsToCreate = allThreads.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
-		const filteredThreadsToUpdate = allThreadsRecords.filter(i1 => allThreads.find(i2 => i1.id === i2._id));
+		const filteredThreadsToUpdate = allThreadsRecords.filter(i1 =>
+			allThreads.find(i2 => i1.id === i2._id && i1._updatedAt < i2._updatedAt)
+		);
 
 		// filter thread messages
 		const allThreadMessages = update.filter(m => m.tmid);
 		const filteredThreadMessagesToCreate = allThreadMessages.filter(i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id));
-		const filteredThreadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => allThreadMessages.find(i2 => i1.id === i2._id));
+		const filteredThreadMessagesToUpdate = allThreadMessagesRecords.filter(i1 =>
+			allThreadMessages.find(i2 => i1.id === i2._id && i1._updatedAt < i2._updatedAt)
+		);
 
 		// Create
 		const msgsToCreate = filteredMsgsToCreate.map(message =>
@@ -142,6 +152,10 @@ export default async function updateMessages({
 						}
 						if (newMessage && !newMessage?.md) {
 							newMessage.md = undefined;
+						}
+						if (!m?.unread && newMessage?.unread) {
+							newMessage.unread = false;
+							m.unread = false;
 						}
 						Object.assign(m, newMessage);
 

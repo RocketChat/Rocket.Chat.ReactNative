@@ -1,10 +1,12 @@
 import React from 'react';
-import { Dimensions, EmitterSubscription, Linking } from 'react-native';
+import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
-import RNScreens from 'react-native-screens';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
+import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -13,10 +15,11 @@ import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
-import { IThemePreference } from './definitions/ITheme';
+import { type IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
-import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
+import { colors, themes } from './lib/constants/colors';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './lib/constants/tablet';
+import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods/crashReport';
 import { debounce, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
@@ -29,14 +32,15 @@ import {
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
 import { initializePushNotifications, onNotification } from './lib/notifications';
-import { getInitialNotification } from './lib/notifications/videoConf/getInitialNotification';
+import { getInitialNotification, setupVideoConfActionListener } from './lib/notifications/videoConf/getInitialNotification';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
-import { TSupportedThemes, ThemeContext } from './theme';
+import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+import StatusBar from './containers/StatusBar';
 
-RNScreens.enableScreens();
+enableScreens();
 initStore(store);
 
 interface IDimensions {
@@ -81,13 +85,12 @@ const parseDeepLinking = (url: string) => {
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
 	private dimensionsListener?: EmitterSubscription;
+	private videoConfActionCleanup?: () => void;
 
 	constructor(props: any) {
 		super(props);
 		this.init();
-		if (!isFDroidBuild) {
-			this.initCrashReport();
-		}
+		this.initCrashReport();
 		const { width, height, scale, fontScale } = Dimensions.get('window');
 		const theme = initialTheme();
 		this.state = {
@@ -114,11 +117,15 @@ export default class Root extends React.Component<{}, IState> {
 			});
 		}, 5000);
 		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
+
+		// Set up video conf action listener for background accept/decline
+		this.videoConfActionCleanup = setupVideoConfActionListener();
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
 		this.dimensionsListener?.remove?.();
+		this.videoConfActionCleanup?.();
 
 		unsubscribeTheme();
 	}
@@ -129,11 +136,17 @@ export default class Root extends React.Component<{}, IState> {
 		// Open app from push notification
 		const notification = await initializePushNotifications();
 		if (notification) {
+			if ('configured' in notification) {
+				return;
+			}
 			onNotification(notification);
 			return;
 		}
 
-		await getInitialNotification();
+		const handledVideoConf = await getInitialNotification();
+		if (handledVideoConf) {
+			return;
+		}
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
@@ -203,7 +216,7 @@ export default class Root extends React.Component<{}, IState> {
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
-			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
+			<SafeAreaProvider style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
 					<ThemeContext.Provider
 						value={{
@@ -212,26 +225,31 @@ export default class Root extends React.Component<{}, IState> {
 							setTheme: this.setTheme,
 							colors: colors[theme]
 						}}>
-						<DimensionsContext.Provider
-							value={{
-								width,
-								height,
-								scale,
-								fontScale,
-								setDimensions: this.setDimensions
-							}}>
-							<GestureHandlerRootView>
-								<ActionSheetProvider>
-									<AppContainer />
-									<TwoFactor />
-									<ScreenLockedView />
-									<ChangePasscodeView />
-									<InAppNotification />
-									<Toast />
-									<Loading />
-								</ActionSheetProvider>
-							</GestureHandlerRootView>
-						</DimensionsContext.Provider>
+						<ResponsiveLayoutProvider>
+							<DimensionsContext.Provider
+								value={{
+									width,
+									height,
+									scale,
+									fontScale,
+									setDimensions: this.setDimensions
+								}}>
+								<GestureHandlerRootView>
+									<KeyboardProvider>
+										<ActionSheetProvider>
+											<StatusBar />
+											<AppContainer />
+											<TwoFactor />
+											<ScreenLockedView />
+											<ChangePasscodeView />
+											<InAppNotification />
+											<Toast />
+											<Loading />
+										</ActionSheetProvider>
+									</KeyboardProvider>
+								</GestureHandlerRootView>
+							</DimensionsContext.Provider>
+						</ResponsiveLayoutProvider>
 					</ThemeContext.Provider>
 				</Provider>
 			</SafeAreaProvider>

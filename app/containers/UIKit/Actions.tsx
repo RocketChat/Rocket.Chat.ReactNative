@@ -1,22 +1,44 @@
 import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../Button';
 import I18n from '../../i18n';
-import { IActions } from './interfaces';
+import { type IActions } from './interfaces';
+
+const styles = StyleSheet.create({
+	hidden: {
+		overflow: 'hidden',
+		height: 0
+	}
+});
 
 export const Actions = ({ blockId, appId, elements, parser }: IActions) => {
 	const [showMoreVisible, setShowMoreVisible] = useState(() => elements && elements.length > 5);
-	const renderedElements = showMoreVisible ? elements?.slice(0, 5) : elements;
 
-	const Elements = () => (
-		<>{renderedElements?.map(element => parser?.renderActions({ blockId, appId, ...element }, BlockContext.ACTION, parser))}</>
-	);
+	const shouldShowMore = elements && elements.length > 5;
+	const maxVisible = 5;
 
+	if (!elements || !parser) {
+		return null;
+	}
+
+	// Always render all elements to maintain consistent hook calls
+	// This ensures hooks are always called in the same order
+	// Use View wrapper to conditionally hide elements instead of conditionally rendering
 	return (
 		<>
-			<Elements />
-			{showMoreVisible && <Button title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
+			{elements.map((element, index) => {
+				const isVisible = !showMoreVisible || index < maxVisible;
+				const component = parser.renderActions({ blockId, appId, ...element }, BlockContext.ACTION, parser);
+				// Always render the component, but hide it with styles if needed
+				return (
+					<View key={element.actionId || `action-${index}`} style={!isVisible ? styles.hidden : undefined}>
+						{component}
+					</View>
+				);
+			})}
+			{shouldShowMore && showMoreVisible && <Button title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />}
 		</>
 	);
 };

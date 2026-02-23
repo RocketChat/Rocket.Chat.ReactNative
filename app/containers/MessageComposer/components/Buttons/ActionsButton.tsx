@@ -2,15 +2,18 @@ import React, { useContext } from 'react';
 
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
-import { TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
+import { type TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
 import { MessageInnerContext } from '../../context';
 import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';
-import { useAppSelector, usePermissions } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { usePermissions } from '../../../../lib/hooks/usePermissions';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
 
 export const ActionsButton = () => {
+	'use memo';
+
 	const { rid, tmid, t } = useRoomContext();
 	const { closeEmojiKeyboardAndAction } = useContext(MessageInnerContext);
 	const permissionToUpload = useCanUploadFile(rid);
@@ -20,7 +23,7 @@ export const ActionsButton = () => {
 		tmid,
 		permissionToUpload
 	});
-	const { showActionSheet } = useActionSheet();
+	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const createDiscussion = async () => {
@@ -48,17 +51,35 @@ export const ActionsButton = () => {
 				{
 					title: I18n.t('Take_a_photo'),
 					icon: 'camera-photo',
-					onPress: () => takePhoto()
+					onPress: () => {
+						hideActionSheet();
+						// This is necessary because the action sheet does not close properly on Android
+						setTimeout(() => {
+							takePhoto();
+						}, 250);
+					}
 				},
 				{
 					title: I18n.t('Take_a_video'),
 					icon: 'camera',
-					onPress: () => takeVideo()
+					onPress: () => {
+						hideActionSheet();
+						// This is necessary because the action sheet does not close properly on Android
+						setTimeout(() => {
+							takeVideo();
+						}, 250);
+					}
 				},
 				{
 					title: I18n.t('Choose_from_library'),
 					icon: 'image',
-					onPress: () => chooseFromLibrary()
+					onPress: () => {
+						hideActionSheet();
+						// This is necessary because the action sheet does not close properly on Android
+						setTimeout(() => {
+							chooseFromLibrary();
+						}, 250);
+					}
 				},
 				{
 					title: I18n.t('Choose_file'),
@@ -77,5 +98,5 @@ export const ActionsButton = () => {
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};
 
-	return <BaseButton onPress={onPress} testID='message-composer-actions' accessibilityLabel='Message_actions' icon='add' />;
+	return <BaseButton onPress={onPress} testID='message-composer-actions' accessibilityLabel='Actions' icon='add' />;
 };

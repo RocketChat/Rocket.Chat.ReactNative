@@ -1,0 +1,2151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: ReactionsListFullName should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+      "paddingVertical": 10,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flex": 1,
+      }
+    }
+    testID="reactionsList"
+  >
+    <View
+      testID="tabView"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-all"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#FF0000",
+                  },
+                ]
+              }
+            >
+              All
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:marioparty:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <ViewManagerAdapter_ExpoImage
+              containerViewRef={"[React.ref]"}
+              contentFit="contain"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={24}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              source={
+                [
+                  {
+                    "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+                  },
+                ]
+              }
+              style={
+                {
+                  "height": 24,
+                  "width": 24,
+                }
+              }
+              transition={null}
+              width={24}
+            />
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              2
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:react_rocket:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <ViewManagerAdapter_ExpoImage
+              containerViewRef={"[React.ref]"}
+              contentFit="contain"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={24}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              source={
+                [
+                  {
+                    "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+                  },
+                ]
+              }
+              style={
+                {
+                  "height": 24,
+                  "width": 24,
+                }
+              }
+              transition={null}
+              width={24}
+            />
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              2
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:nyan_rocket:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <ViewManagerAdapter_ExpoImage
+              containerViewRef={"[React.ref]"}
+              contentFit="contain"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={24}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              source={
+                [
+                  {
+                    "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                  },
+                ]
+              }
+              style={
+                {
+                  "height": 24,
+                  "width": 24,
+                }
+              }
+              transition={null}
+              width={24}
+            />
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:grinning:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#fff",
+                  "fontSize": 20,
+                  "height": 24,
+                  "textAlign": "center",
+                  "width": 24,
+                }
+              }
+            >
+              😀
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:tada:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#fff",
+                  "fontSize": 20,
+                  "height": 24,
+                  "textAlign": "center",
+                  "width": 24,
+                }
+              }
+            >
+              🎉
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flex": 1,
+          }
+        }
+        testID="reactionsListAllTab"
+      >
+        <RCTScrollView
+          contentContainerStyle={
+            {
+              "marginHorizontal": 12,
+              "marginVertical": 8,
+              "paddingBottom": 30,
+            }
+          }
+          data={
+            [
+              {
+                "_id": "marioparty",
+                "emoji": ":marioparty:",
+                "names": [
+                  "Rocket Cat",
+                  "Diego Mello",
+                ],
+                "usernames": [
+                  "rocket.cat",
+                  "diego.mello",
+                ],
+              },
+              {
+                "_id": "react_rocket",
+                "emoji": ":react_rocket:",
+                "names": [
+                  "Rocket Cat",
+                  "Diego Mello",
+                ],
+                "usernames": [
+                  "rocket.cat",
+                  "diego.mello",
+                ],
+              },
+              {
+                "_id": "nyan_rocket",
+                "emoji": ":nyan_rocket:",
+                "names": [
+                  "Rocket Cat",
+                ],
+                "usernames": [
+                  "rocket.cat",
+                ],
+              },
+              {
+                "_id": "grinning",
+                "emoji": ":grinning:",
+                "names": [
+                  "Diego Mello",
+                ],
+                "usernames": [
+                  "diego.mello",
+                ],
+              },
+              {
+                "_id": "tada",
+                "emoji": ":tada:",
+                "names": [
+                  "Diego Mello",
+                ],
+                "usernames": [
+                  "diego.mello",
+                ],
+              },
+            ]
+          }
+          getItem={[Function]}
+          getItemCount={[Function]}
+          keyExtractor={[Function]}
+          onContentSizeChange={[Function]}
+          onLayout={[Function]}
+          onMomentumScrollBegin={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={0.0001}
+          stickyHeaderIndices={[]}
+          viewabilityConfigCallbackPairs={[]}
+        >
+          <View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  containerViewRef={"[React.ref]"}
+                  contentFit="contain"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  source={
+                    [
+                      {
+                        "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    2 people reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    you and Diego Mello
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  containerViewRef={"[React.ref]"}
+                  contentFit="contain"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  source={
+                    [
+                      {
+                        "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    2 people reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    you and Diego Mello
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  containerViewRef={"[React.ref]"}
+                  contentFit="contain"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  source={
+                    [
+                      {
+                        "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    1 person reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    you
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#fff",
+                      "fontSize": 30,
+                      "textAlign": "center",
+                      "width": 36,
+                    }
+                  }
+                >
+                  😀
+                </Text>
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    1 person reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    Diego Mello
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#fff",
+                      "fontSize": 30,
+                      "textAlign": "center",
+                      "width": 36,
+                    }
+                  }
+                >
+                  🎉
+                </Text>
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    1 person reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    Diego Mello
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </RCTScrollView>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ReactionsListStory should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+      "paddingVertical": 10,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flex": 1,
+      }
+    }
+    testID="reactionsList"
+  >
+    <View
+      testID="tabView"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-all"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#FF0000",
+                  },
+                ]
+              }
+            >
+              All
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:marioparty:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <ViewManagerAdapter_ExpoImage
+              containerViewRef={"[React.ref]"}
+              contentFit="contain"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={24}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              source={
+                [
+                  {
+                    "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+                  },
+                ]
+              }
+              style={
+                {
+                  "height": 24,
+                  "width": 24,
+                }
+              }
+              transition={null}
+              width={24}
+            />
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              2
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:react_rocket:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <ViewManagerAdapter_ExpoImage
+              containerViewRef={"[React.ref]"}
+              contentFit="contain"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={24}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              source={
+                [
+                  {
+                    "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+                  },
+                ]
+              }
+              style={
+                {
+                  "height": 24,
+                  "width": 24,
+                }
+              }
+              transition={null}
+              width={24}
+            />
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              2
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:nyan_rocket:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <ViewManagerAdapter_ExpoImage
+              containerViewRef={"[React.ref]"}
+              contentFit="contain"
+              contentPosition={
+                {
+                  "left": "50%",
+                  "top": "50%",
+                }
+              }
+              height={24}
+              nativeViewRef={"[React.ref]"}
+              onError={[Function]}
+              onLoad={[Function]}
+              onLoadStart={[Function]}
+              onProgress={[Function]}
+              placeholder={[]}
+              source={
+                [
+                  {
+                    "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                  },
+                ]
+              }
+              style={
+                {
+                  "height": 24,
+                  "width": 24,
+                }
+              }
+              transition={null}
+              width={24}
+            />
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:grinning:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#fff",
+                  "fontSize": 20,
+                  "height": 24,
+                  "textAlign": "center",
+                  "width": 24,
+                }
+              }
+            >
+              😀
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "opacity": 1,
+            }
+          }
+          testID="tab-:tada:"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "height": 44,
+                "justifyContent": "center",
+                "paddingBottom": 4,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#fff",
+                  "fontSize": 20,
+                  "height": 24,
+                  "textAlign": "center",
+                  "width": 24,
+                }
+              }
+            >
+              🎉
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontWeight": "600",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#666666",
+                  },
+                ]
+              }
+            >
+              1
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "flex": 1,
+          }
+        }
+        testID="reactionsListAllTab"
+      >
+        <RCTScrollView
+          contentContainerStyle={
+            {
+              "marginHorizontal": 12,
+              "marginVertical": 8,
+              "paddingBottom": 30,
+            }
+          }
+          data={
+            [
+              {
+                "_id": "marioparty",
+                "emoji": ":marioparty:",
+                "names": [
+                  "Rocket Cat",
+                  "Diego Mello",
+                ],
+                "usernames": [
+                  "rocket.cat",
+                  "diego.mello",
+                ],
+              },
+              {
+                "_id": "react_rocket",
+                "emoji": ":react_rocket:",
+                "names": [
+                  "Rocket Cat",
+                  "Diego Mello",
+                ],
+                "usernames": [
+                  "rocket.cat",
+                  "diego.mello",
+                ],
+              },
+              {
+                "_id": "nyan_rocket",
+                "emoji": ":nyan_rocket:",
+                "names": [
+                  "Rocket Cat",
+                ],
+                "usernames": [
+                  "rocket.cat",
+                ],
+              },
+              {
+                "_id": "grinning",
+                "emoji": ":grinning:",
+                "names": [
+                  "Diego Mello",
+                ],
+                "usernames": [
+                  "diego.mello",
+                ],
+              },
+              {
+                "_id": "tada",
+                "emoji": ":tada:",
+                "names": [
+                  "Diego Mello",
+                ],
+                "usernames": [
+                  "diego.mello",
+                ],
+              },
+            ]
+          }
+          getItem={[Function]}
+          getItemCount={[Function]}
+          keyExtractor={[Function]}
+          onContentSizeChange={[Function]}
+          onLayout={[Function]}
+          onMomentumScrollBegin={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={0.0001}
+          stickyHeaderIndices={[]}
+          viewabilityConfigCallbackPairs={[]}
+        >
+          <View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  containerViewRef={"[React.ref]"}
+                  contentFit="contain"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  source={
+                    [
+                      {
+                        "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    2 people reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    you and diego.mello
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  containerViewRef={"[React.ref]"}
+                  contentFit="contain"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  source={
+                    [
+                      {
+                        "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    2 people reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    you and diego.mello
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <ViewManagerAdapter_ExpoImage
+                  containerViewRef={"[React.ref]"}
+                  contentFit="contain"
+                  contentPosition={
+                    {
+                      "left": "50%",
+                      "top": "50%",
+                    }
+                  }
+                  height={36}
+                  nativeViewRef={"[React.ref]"}
+                  onError={[Function]}
+                  onLoad={[Function]}
+                  onLoadStart={[Function]}
+                  onProgress={[Function]}
+                  placeholder={[]}
+                  source={
+                    [
+                      {
+                        "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                      },
+                    ]
+                  }
+                  style={
+                    {
+                      "height": 36,
+                      "width": 36,
+                    }
+                  }
+                  transition={null}
+                  width={36}
+                />
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    1 person reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    you
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#fff",
+                      "fontSize": 30,
+                      "textAlign": "center",
+                      "width": 36,
+                    }
+                  }
+                >
+                  😀
+                </Text>
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    1 person reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              onFocusCapture={[Function]}
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginVertical": 6,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#fff",
+                      "fontSize": 30,
+                      "textAlign": "center",
+                      "width": 36,
+                    }
+                  }
+                >
+                  🎉
+                </Text>
+                <View
+                  style={
+                    {
+                      "flex": 1,
+                      "justifyContent": "center",
+                      "marginLeft": 8,
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
+                    }
+                  >
+                    1 person reacted
+                  </Text>
+                  <Text
+                    style={
+                      [
+                        {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        {
+                          "color": "#6C727A",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </RCTScrollView>
+      </View>
+    </View>
+  </View>
+</View>
+`;

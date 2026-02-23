@@ -1,5 +1,7 @@
-import { TIconsName } from '../CustomIcon';
-import { IEmoji } from '../../definitions';
+import { type ImageStyle, type StyleProp, type TextInputProps } from 'react-native';
+
+import { type emojisByCategory } from '../../lib/constants/emojis';
+import { type ICustomEmoji, type IEmoji } from '../../definitions';
 
 export enum EventTypes {
 	EMOJI_PRESSED = 'emojiPressed',
@@ -19,8 +21,26 @@ export interface IFooterProps {
 	onSearchPressed: () => void;
 }
 
-export interface ITabBarProps {
-	goToPage?: (page: number) => void;
-	activeTab?: number;
-	tabs?: TIconsName[];
+export type TEmojiCategory = keyof typeof emojisByCategory | 'frequentlyUsed' | 'custom';
+
+export interface IEmojiCategoryProps {
+	onEmojiSelected: (emoji: IEmoji) => void;
+	parentWidth: number;
+	category?: TEmojiCategory;
+	emojis?: IEmoji[];
+}
+
+export interface IEmojiSearchBarProps {
+	onBlur?: TextInputProps['onBlur'];
+	onChangeText: TextInputProps['onChangeText'];
+	bottomSheet?: boolean;
+}
+
+export interface ICustomEmojiProps {
+	emoji: ICustomEmoji;
+	style: StyleProp<ImageStyle>;
+}
+
+export interface IEmojiProps {
+	emoji: IEmoji;
 }

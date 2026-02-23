@@ -1,0 +1,189 @@
+appId: chat.rocket.reactnative
+name: Change Avatar
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-5
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- evalScript: ${output.loggedInUser = output.utils.login(output.user.username, output.user.password)}
+
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-sidebar'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-profile'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-profile'
+- extendedWaitUntil:
+    visible:
+      id: 'profile-view'
+    timeout: 60000
+
+# should click on the reset avatar button
+- extendedWaitUntil:
+    visible:
+      id: 'avatar-edit-button'
+    timeout: 60000
+- tapOn:
+    id: 'avatar-edit-button'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-avatar'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'reset-avatar-suggestion'
+    timeout: 60000
+- tapOn:
+    id: 'reset-avatar-suggestion'
+
+# should appear the discard alert when click the back icon
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    visible:
+      text: '.*Discard changes?.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: '.*Cancel.*'
+    timeout: 60000
+- tapOn:
+    text: '.*Cancel.*'
+- tapOn:
+    id: 'header-back'
+- extendedWaitUntil:
+    visible:
+      text: '.*Discard changes?.*'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Discard'
+    timeout: 60000
+- tapOn:
+    text: 'Discard'
+
+# should change the avatar through upload image
+- evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- extendedWaitUntil:
+    visible:
+      id: 'avatar-edit-button'
+    timeout: 60000
+- tapOn:
+    id: 'avatar-edit-button'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: false
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Upload image'
+    timeout: 60000
+- tapOn:
+    text: 'Upload image'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: true
+    timeout: 60000
+- tapOn:
+    id: 'change-avatar-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'profile-view'
+    timeout: 60000
+- evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}
+
+# should change the avatar taking a photo
+- evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- extendedWaitUntil:
+    visible:
+      id: 'avatar-edit-button'
+    timeout: 60000
+- tapOn:
+    id: 'avatar-edit-button'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: false
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      text: 'Take a photo'
+    timeout: 60000
+- tapOn:
+    text: 'Take a photo'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: true
+    timeout: 60000
+- tapOn:
+    id: 'change-avatar-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'profile-view'
+    timeout: 60000
+- evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}
+
+# should change avatar from URL
+- evalScript: ${output.previousUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- extendedWaitUntil:
+    visible:
+      id: 'avatar-edit-button'
+    timeout: 60000
+- tapOn:
+    id: 'avatar-edit-button'
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: false
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-avatar-url'
+    timeout: 60000
+- tapOn:
+    id: 'change-avatar-view-avatar-url'
+- inputText: 'https://play-lh.googleusercontent.com/AMPmTxPV498lwVj3HsEJkvoUF6RurRcwYz2xbTCP7XndQdaWBmll4eSCcnwtbehUUw=w480-h960-rw'
+- extendedWaitUntil:
+    visible:
+      text: 'Fetch image from URL'
+    timeout: 60000
+- tapOn:
+    text: 'Fetch image from URL'
+- hideKeyboard
+- extendedWaitUntil:
+    visible:
+      id: 'change-avatar-view-submit'
+      enabled: true
+    timeout: 60000
+- tapOn:
+    id: 'change-avatar-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'profile-view'
+    timeout: 60000
+- evalScript: ${output.newUserInfo = output.utils.getProfileInfo(output.loggedInUser.userId)}
+- assertTrue: ${output.previousUserInfo.avatarETag !== output.newUserInfo.avatarETag}

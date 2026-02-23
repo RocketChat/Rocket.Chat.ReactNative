@@ -1,22 +1,18 @@
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import Markdown from '../containers/markdown';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
-import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import { type E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		padding: 16
-	},
-	info: {
-		fontSize: 16,
-		marginBottom: 16
 	}
 });
 
@@ -32,14 +28,12 @@ const E2EHowItWorksView = (): React.ReactElement => {
 		});
 	}, []);
 
-	const infoStyle = [styles.info, { color: colors.fontDefault }];
-
 	return (
 		<SafeAreaView style={[styles.container, { backgroundColor: colors.surfaceRoom }]} testID='e2e-how-it-works-view'>
-			<Markdown msg={I18n.t('E2E_How_It_Works_info1')} style={infoStyle} />
-			<Markdown msg={I18n.t('E2E_How_It_Works_info2')} style={infoStyle} />
-			<Markdown msg={I18n.t('E2E_How_It_Works_info3')} style={infoStyle} />
-			<Markdown msg={I18n.t('E2E_How_It_Works_info4')} style={infoStyle} />
+			<Markdown msg={I18n.t('E2E_How_It_Works_info1')} />
+			<Markdown msg={I18n.t('E2E_How_It_Works_info2')} />
+			<Markdown msg={I18n.t('E2E_How_It_Works_info3')} />
+			<Markdown msg={I18n.t('E2E_How_It_Works_info4')} />
 		</SafeAreaView>
 	);
 };

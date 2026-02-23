@@ -1,0 +1,660 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Itens should match snapshot 1`] = `
+[
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "backgroundColor": "#FFFFFF",
+        "maxHeight": 141,
+        "minHeight": 117,
+        "opacity": 1,
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "height": 36,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flex": 1,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flex": 1,
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "500",
+                "paddingBottom": 0,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          !
+          !FAQ4
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flex": 1,
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Private
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Use"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderRadius": 4,
+            "height": 28,
+            "justifyContent": "center",
+            "marginBottom": 12,
+            "marginLeft": 8,
+            "opacity": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+            "width": 56,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#1F2329",
+                "fontSize": 12,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Use
+        </Text>
+      </View>
+    </View>
+    <Text
+      ellipsizeMode="tail"
+      numberOfLines={2}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "marginTop": 8,
+            "paddingBottom": 0,
+            "paddingTop": 0,
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      “
+      ZCVXZVXCZVZXVZXCVZXCVXZCVZX
+      ”
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "overflow": "hidden",
+        }
+      }
+    />
+  </View>,
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "backgroundColor": "#FFFFFF",
+        "maxHeight": 141,
+        "minHeight": 117,
+        "opacity": 1,
+        "padding": 16,
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "height": 36,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flex": 1,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flex": 1,
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "500",
+                "paddingBottom": 0,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          !
+          test4mobilePrivate
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flex": 1,
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Private
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Use"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#F7F8FA",
+            "borderRadius": 4,
+            "height": 28,
+            "justifyContent": "center",
+            "marginBottom": 12,
+            "marginLeft": 8,
+            "opacity": 1,
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+            "width": 56,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#1F2329",
+                "fontSize": 12,
+              },
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "500",
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+        >
+          Use
+        </Text>
+      </View>
+    </View>
+    <Text
+      ellipsizeMode="tail"
+      numberOfLines={2}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "marginTop": 8,
+            "paddingBottom": 0,
+            "paddingTop": 0,
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      “
+      test for mobile private
+      ”
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "overflow": "hidden",
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            {
+              "backgroundColor": "#EBECEF",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          HQ
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            {
+              "backgroundColor": "#EBECEF",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Closed
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            {
+              "backgroundColor": "#EBECEF",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          HQ
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            {
+              "backgroundColor": "#EBECEF",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Problem in Product Y
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            {
+              "backgroundColor": "#EBECEF",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          HQ
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            {
+              "backgroundColor": "#EBECEF",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Closed
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            {
+              "backgroundColor": "#EBECEF",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Problem in Product Y
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;

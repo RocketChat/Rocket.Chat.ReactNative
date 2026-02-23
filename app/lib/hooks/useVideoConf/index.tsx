@@ -1,13 +1,14 @@
-import { Camera } from 'expo-camera';
+import { useCameraPermissions } from 'expo-camera';
 import React, { useMemo } from 'react';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
-import { compareServerVersion, showErrorAlert } from '../../methods/helpers';
+import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
+import { showErrorAlert } from '../../methods/helpers/info';
 import log from '../../methods/helpers/log';
 import { handleAndroidBltPermission } from '../../methods/videoConf';
-import { Services } from '../../services';
+import { videoConferenceGetCapabilities } from '../../services/restApi';
 import { useAppSelector } from '../useAppSelector';
 import StartACallActionSheet from './StartACallActionSheet';
 import { useVideoConfCall } from './useVideoConfCall';
@@ -33,7 +34,7 @@ export const useVideoConf = (
 
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
 
-	const [permission, requestPermission] = Camera.useCameraPermissions();
+	const [permission, requestPermission] = useCameraPermissions();
 	const { showActionSheet } = useActionSheet();
 
 	const isServer5OrNewer = useMemo(() => compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0'), [serverVersion]);
@@ -43,7 +44,7 @@ export const useVideoConf = (
 
 		if (isServer5OrNewer) {
 			try {
-				await Services.videoConferenceGetCapabilities();
+				await videoConferenceGetCapabilities();
 				return true;
 			} catch (error: any) {
 				const isAdmin = !!user.roles?.includes('admin');

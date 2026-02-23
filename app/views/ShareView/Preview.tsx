@@ -5,14 +5,14 @@ import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-n
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
+import { CustomIcon, type TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer } from '../../containers/ImageViewer';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import { THUMBS_HEIGHT } from './constants';
-import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
-import { IShareAttachment } from '../../definitions';
+import { type TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants/colors';
+import { type IShareAttachment } from '../../definitions';
 
 const MESSAGE_COMPOSER_HEIGHT = 56;
 
@@ -98,7 +98,8 @@ const Preview = React.memo(({ item, theme, length }: IPreview) => {
 		}
 
 		if (type?.match(/image/)) {
-			return <ImageViewer uri={item.path} width={width} height={calculatedHeight} />;
+			const imageViewerWidth = width - insets.left - insets.right;
+			return <ImageViewer uri={item.path} width={imageViewerWidth} height={calculatedHeight} />;
 		}
 
 		return (

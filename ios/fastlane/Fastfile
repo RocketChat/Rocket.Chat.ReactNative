@@ -17,31 +17,51 @@ default_platform :ios
 
 platform :ios do
   before_all do
-    setup_circle_ci	
+    setup_ci	
     create_keychain(	
       name: ENV["MATCH_KEYCHAIN_NAME"],	
       password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
-      timeout: 1200	
+      timeout: 0,
+      lock_when_sleeps: false,
+      unlock: true
     )	
   end
 
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do |options|
+    changelog_path = File.expand_path('../../changelog.txt', __dir__)
+
+    changelog = if File.exist?(changelog_path)
+        content = File.read(changelog_path)
+        content.length > 4000 ? content[0, 3997] + "..." : content
+    end
+
     api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
       issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
       key_filepath: 'fastlane/app_store_connect_api_key.p8',
       in_house: false
     )
-    pilot(
-      ipa: 'ios/Rocket.Chat.ipa',
-      app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
-      skip_waiting_for_build_processing: true
-    )
-    upload_symbols_to_crashlytics(dsym_path: "./ios/Rocket.Chat.app.dSYM.zip")
+
+    pilot_options = {
+        ipa: 'Rocket.Chat.ipa',
+        app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
+        skip_waiting_for_build_processing: !(options[:official] && changelog),
+        reject_build_waiting_for_review: true,
+    }
+
+    if options[:official] && changelog
+        pilot_options[:changelog] = changelog
+        pilot_options[:distribute_external] = true
+        pilot_options[:notify_external_testers] = true
+        pilot_options[:groups] = ["External Testers"]
+    end
+
+    pilot(pilot_options)
+    upload_symbols_to_crashlytics(dsym_path: "Rocket.Chat.app.dSYM.zip")
     upload_symbols_to_bugsnag(
-      config_file: "./RocketChatRN/Info.plist",
-      dsym_path: "./ios/Rocket.Chat.app.dSYM.zip",
+      config_file: "RocketChatRN/Info.plist",
+      dsym_path: "Rocket.Chat.app.dSYM.zip",
       api_key: options[:official] ? ENV["BUGSNAG_KEY_OFFICIAL"] : ENV["BUGSNAG_KEY"]
     )
   end
@@ -54,11 +74,16 @@ platform :ios do
       key_filepath: 'fastlane/app_store_connect_api_key.p8',
       in_house: false
     )
-    match(type: "appstore")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
-    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp")
+    match(type: "appstore", platform: "ios")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension", platform: "ios")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService", platform: "ios")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp", platform: "ios")
     # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
+    # Allow codesign to access keys without prompting
+    keychain_path = "~/Library/Keychains/#{ENV['MATCH_KEYCHAIN_NAME']}-db"
+    sh "security unlock-keychain -p \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" #{keychain_path}"
+    sh "security set-keychain-settings -lut 3600 #{keychain_path}"
+    sh "security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" #{keychain_path}"
     gym(
       scheme: "RocketChatRN",
       workspace: "RocketChatRN.xcworkspace",
@@ -72,10 +97,17 @@ platform :ios do
 
     match(
       type: "appstore",
+      platform: "ios",
       app_identifier: ["chat.rocket.ios", "chat.rocket.ios.NotificationService", "chat.rocket.ios.Rocket-Chat-ShareExtension", "chat.rocket.ios.watchkitapp"],
       readonly: true,
       output_path: './'
     )
+
+    # Allow codesign to access keys without prompting
+    keychain_path = "~/Library/Keychains/#{ENV['MATCH_KEYCHAIN_NAME']}-db"
+    sh "security unlock-keychain -p \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" #{keychain_path}"
+    sh "security set-keychain-settings -lut 3600 #{keychain_path}"
+    sh "security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k \"#{ENV['MATCH_KEYCHAIN_PASSWORD']}\" #{keychain_path} || true"
 
     update_code_signing_settings(
       profile_name: "match AppStore chat.rocket.ios.NotificationService",
@@ -109,6 +141,21 @@ platform :ios do
   desc "Build fork app"
   lane :build_fork do
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
+  end
+
+  desc "Build Experimental app for Simulator"
+  lane :build_experimental_simulator do
+    gym(
+      scheme: "RocketChatRN",
+      workspace: "RocketChatRN.xcworkspace",
+      destination: "generic/platform=iOS Simulator",
+      skip_package_ipa: true,
+      output_directory: "./fastlane/output",
+      build_path: "./fastlane/build",
+      configuration: "Release",
+      derived_data_path: "./fastlane/derived_data",
+      xcargs: "-parallelizeTargets -jobs 4 ARCHS=arm64"
+    )
   end
 
   after_all do |lane|

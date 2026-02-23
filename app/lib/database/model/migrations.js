@@ -322,6 +322,29 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 27,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'federated', type: 'boolean', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 28,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'abac_attributes', type: 'string', isOptional: true },
+						{ name: 'federation', type: 'string', isOptional: true },
+						{ name: 'status', type: 'string', isOptional: true },
+						{ name: 'inviter', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

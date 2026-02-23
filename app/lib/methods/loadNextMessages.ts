@@ -1,12 +1,12 @@
 import EJSON from 'ejson';
-import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 
+import dayjs from '../dayjs';
 import log from './helpers/log';
 import { getMessageById } from '../database/services/Message';
-import { MessageTypeLoad } from '../constants';
+import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import updateMessages from './updateMessages';
-import { TMessageModel } from '../../definitions';
+import { type TMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
@@ -31,7 +31,7 @@ export function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 					const loadMoreItem = {
 						_id: generateLoadMoreId(lastMessage._id),
 						rid: lastMessage.rid,
-						ts: moment(lastMessage.ts).add(1, 'millisecond'),
+						ts: dayjs(lastMessage.ts).add(1, 'millisecond'),
 						t: MessageTypeLoad.NEXT_CHUNK
 					};
 					messages.push(loadMoreItem);

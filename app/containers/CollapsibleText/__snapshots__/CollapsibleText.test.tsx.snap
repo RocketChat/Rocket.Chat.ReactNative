@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Item should match snapshot 1`] = `
+<View
+  style={
+    {
+      "padding": 20,
+    }
+  }
+>
+  <Text
+    accessibilityLabel="Lorem ipsum dolor sit amet"
+    onTextLayout={[Function]}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "textAlign": "left",
+          "textAlignVertical": "center",
+        },
+        {
+          "color": "#2F343D",
+          "height": 0,
+        },
+      ]
+    }
+    testID="collapsible-text-Lorem ipsum dolor sit amet"
+  >
+    Lorem ipsum dolor sit amet
+  </Text>
+  <Text
+    accessibilityLabel="linesToTruncate: 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel vestibulum neque. Proin dignissim neque in urna nec."
+    onTextLayout={[Function]}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "textAlign": "left",
+          "textAlignVertical": "center",
+        },
+        {
+          "color": "#2F343D",
+          "height": 0,
+        },
+      ]
+    }
+    testID="collapsible-text-linesToTruncate: 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel vestibulum neque. Proin dignissim neque in urna nec."
+  >
+    linesToTruncate: 1 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel vestibulum neque. Proin dignissim neque in urna nec.
+  </Text>
+  <Text
+    accessibilityLabel="linesToTruncate: 2 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel vestibulum neque. Proin dignissim neque in urna nec."
+    onTextLayout={[Function]}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "textAlign": "left",
+          "textAlignVertical": "center",
+        },
+        {
+          "color": "#2F343D",
+          "height": 0,
+        },
+      ]
+    }
+    testID="collapsible-text-linesToTruncate: 2 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel vestibulum neque. Proin dignissim neque in urna nec."
+  >
+    linesToTruncate: 2 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vel vestibulum neque. Proin dignissim neque in urna nec.
+  </Text>
+</View>
+`;

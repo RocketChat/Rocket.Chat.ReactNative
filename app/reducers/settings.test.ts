@@ -1,6 +1,6 @@
 import { addSettings, clearSettings, updateSettings } from '../actions/settings';
 import { mockedStore } from './mockedStore';
-import { initialState, TSettingsState } from './settings';
+import { initialState, type TSettingsState } from './settings';
 
 describe('test settings reducer', () => {
 	it('should return initial state', () => {

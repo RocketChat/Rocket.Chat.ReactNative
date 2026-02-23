@@ -2,12 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ROW_HEIGHT = 54;
-
 export default StyleSheet.create({
-	directoryItemButton: {
-		height: ROW_HEIGHT
-	},
 	directoryItemContainer: {
 		flex: 1,
 		flexDirection: 'row',

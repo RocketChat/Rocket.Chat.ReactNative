@@ -7,8 +7,9 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate
 
 import android.os.Bundle
 import com.zoontek.rnbootsplash.RNBootSplash
-import android.content.Intent;
-import android.content.res.Configuration;
+import android.content.Intent
+import android.content.res.Configuration
+import chat.rocket.reactnative.notification.NotificationIntentHandler
  
 class MainActivity : ReactActivity() {
  
@@ -25,9 +26,20 @@ class MainActivity : ReactActivity() {
   override fun createReactActivityDelegate(): ReactActivityDelegate =
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-    RNBootSplash.init(this)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    RNBootSplash.init(this, R.style.BootTheme)
     super.onCreate(null)
+    
+    // Handle notification intents
+    intent?.let { NotificationIntentHandler.handleIntent(this, it) }
+  }
+  
+  public override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    setIntent(intent)
+    
+    // Handle notification intents when activity is already running
+    NotificationIntentHandler.handleIntent(this, intent)
   }
 
   override fun invokeDefaultOnBackPressed() {

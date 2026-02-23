@@ -1,6 +1,6 @@
 import * as types from '../actions/actionsTypes';
-import { TActionsLogin } from '../actions/login';
-import { IUser, TUserStatus } from '../definitions';
+import { type TActionsLogin } from '../actions/login';
+import { type IUser, type TUserStatus } from '../definitions';
 
 export interface IUserLogin {
 	id: string;
@@ -12,7 +12,6 @@ export interface IUserLogin {
 	statusText: string;
 	roles: string[];
 	avatarETag?: string;
-	isFromWebView: boolean;
 	showMessageInMainThread: boolean;
 	enableMessageParserEarlyAdoption: boolean;
 	emails: Record<string, any>[];

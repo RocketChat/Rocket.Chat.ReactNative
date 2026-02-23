@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
-import Model from '@nozbe/watermelondb/Model';
+import type Model from '@nozbe/watermelondb/Model';
 
 import database from '../../database';
 import protectedFunction from '../helpers/protectedFunction';
@@ -16,21 +16,21 @@ import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotificatio
 import { Encryption } from '../../encryption';
 import updateMessages from '../updateMessages';
 import {
-	IMessage,
-	IServerRoom,
-	IRoom,
-	ISubscription,
-	TMessageModel,
-	TRoomModel,
-	TThreadMessageModel,
-	TThreadModel,
+	type IMessage,
+	type IServerRoom,
+	type IRoom,
+	type ISubscription,
+	type TMessageModel,
+	type TRoomModel,
+	type TThreadMessageModel,
+	type TThreadModel,
 	SubscriptionType
 } from '../../../definitions';
 import sdk from '../../services/sdk';
-import { IDDPMessage } from '../../../definitions/IDDPMessage';
+import { type IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
-import { E2E_MESSAGE_TYPE } from '../../constants';
+import { E2E_MESSAGE_TYPE } from '../../constants/keys';
 import { getRoom } from '../getRoom';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
@@ -149,28 +149,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 			}
 		}
 
-		let tmp = merge(subscription, room);
-		tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
+		const tmp = merge(subscription, room);
 		const sub = await getSubscriptionByRoomId(tmp.rid);
-
-		// If we're receiving a E2EKey of a room
-		if (sub && !sub.E2EKey && subscription?.E2EKey) {
-			// Assing info from database subscription to tmp
-			// It should be a plain object
-			tmp = Object.assign(tmp, {
-				rid: sub.rid,
-				encrypted: sub.encrypted,
-				lastMessage: sub.lastMessage,
-				E2EKey: subscription.E2EKey,
-				e2eKeyId: sub.e2eKeyId
-			});
-			// Decrypt lastMessage using the received E2EKey
-			tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
-			// Decrypt all pending messages of this room in parallel
-			Encryption.decryptPendingMessages(tmp.rid);
-		} else if (sub && subscription.E2ESuggestedKey) {
-			await Encryption.evaluateSuggestedKey(sub.rid, subscription.E2ESuggestedKey);
-		}
 
 		const batch: Model[] = [];
 		if (sub) {
@@ -240,6 +220,10 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		await db.write(async () => {
 			await db.batch(batch);
 		});
+
+		Encryption.decryptPendingSubscriptions();
+		Encryption.decryptPendingMessages(tmp.rid);
+		Encryption.getRoomInstance(tmp.rid);
 	} catch (e) {
 		log(e);
 	}
@@ -286,6 +270,33 @@ const debouncedUpdate = (subscription: ISubscription) => {
 	queue[subscription.rid ? getSubQueueId(subscription.rid) : getRoomQueueId(subscription._id)] = subscription;
 };
 
+const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
+	if (diff?.emails?.length > 0) {
+		store.dispatch(setUser({ emails: diff.emails }));
+	}
+	if (diff?.statusLivechat) {
+		store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
+	}
+	if (diff?.['settings.preferences.showMessageInMainThread'] !== undefined) {
+		store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
+	}
+	if (diff?.['settings.preferences.alsoSendThreadToChannel'] !== undefined) {
+		store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
+	}
+	if (diff?.avatarETag) {
+		store.dispatch(setUser({ avatarETag: diff.avatarETag }));
+	}
+	if (unset?.avatarETag) {
+		store.dispatch(setUser({ avatarETag: '' }));
+	}
+	if (diff?.bio) {
+		store.dispatch(setUser({ bio: diff.bio }));
+	}
+	if (diff?.nickname) {
+		store.dispatch(setUser({ nickname: diff.nickname }));
+	}
+};
+
 export default function subscribeRooms() {
 	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const db = database.active;
@@ -301,30 +312,7 @@ export default function subscribeRooms() {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/userData/.test(ev)) {
 			const [{ diff, unset }] = ddpMessage.fields.args;
-			if (diff?.emails?.length > 0) {
-				store.dispatch(setUser({ emails: diff.emails }));
-			}
-			if (diff?.statusLivechat) {
-				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
-			}
-			if ((['settings.preferences.showMessageInMainThread'] as any) in diff) {
-				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
-			}
-			if ((['settings.preferences.alsoSendThreadToChannel'] as any) in diff) {
-				store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
-			}
-			if (diff?.avatarETag) {
-				store.dispatch(setUser({ avatarETag: diff.avatarETag }));
-			}
-			if (unset?.avatarETag) {
-				store.dispatch(setUser({ avatarETag: '' }));
-			}
-			if (diff?.bio) {
-				store.dispatch(setUser({ bio: diff.bio }));
-			}
-			if (diff?.nickname) {
-				store.dispatch(setUser({ nickname: diff.nickname }));
-			}
+			handleUserData({ diff, unset });
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
@@ -399,7 +387,7 @@ export default function subscribeRooms() {
 
 				// If it's from a encrypted room
 				if (message?.t === E2E_MESSAGE_TYPE) {
-					if (message.msg) {
+					if (message.msg || message.content) {
 						// Decrypt this message content
 						const { msg } = await Encryption.decryptMessage({ ...message, rid });
 						// If it's a direct the content is the message decrypted

@@ -1,4 +1,4 @@
-import { IPermission } from '../../IPermission';
+import { type IPermission } from '../../IPermission';
 
 type PermissionsUpdateProps = { permissions: { _id: string; roles: string[] }[] };
 

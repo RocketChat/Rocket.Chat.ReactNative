@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { type Route } from 'reanimated-tab-view';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
-import { categories, emojisByCategory } from '../../lib/constants';
+import { categories } from '../../lib/constants/emojis';
+import { type IEmoji } from '../../definitions';
+import { addFrequentlyUsed } from '../../lib/methods/emojis';
+import { type IEmojiPickerProps, EventTypes } from './interfaces';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
+import { TabView } from '../TabView';
 import { useTheme } from '../../theme';
-import { IEmoji, ICustomEmojis } from '../../definitions';
-import { useAppSelector, useFrequentlyUsedEmoji } from '../../lib/hooks';
-import { addFrequentlyUsed } from '../../lib/methods';
-import { IEmojiPickerProps, EventTypes } from './interfaces';
+
+const routes = categories.tabs.map(tab => ({
+	key: tab.category,
+	title: tab.tabLabel,
+	accessibilityLabel: tab.accessibilityLabel
+}));
 
 const EmojiPicker = ({
 	onItemClicked,
@@ -19,55 +26,38 @@ const EmojiPicker = ({
 	searching = false,
 	searchedEmojis = []
 }: IEmojiPickerProps): React.ReactElement | null => {
-	const { colors } = useTheme();
 	const [parentWidth, setParentWidth] = useState(0);
+	const { bottom } = useSafeAreaInsets();
+	const { colors } = useTheme();
 
-	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
-
-	const allCustomEmojis: ICustomEmojis = useAppSelector(
-		state => state.customEmojis,
-		() => true
+	const handleEmojiSelect = useCallback(
+		(emoji: IEmoji) => {
+			onItemClicked(EventTypes.EMOJI_PRESSED, emoji);
+			addFrequentlyUsed(emoji);
+		},
+		[onItemClicked]
 	);
-	const customEmojis = Object.keys(allCustomEmojis)
-		.filter(item => item === allCustomEmojis[item].name)
-		.map(item => ({
-			name: allCustomEmojis[item].name,
-			extension: allCustomEmojis[item].extension
-		}));
 
-	const handleEmojiSelect = (emoji: IEmoji) => {
-		onItemClicked(EventTypes.EMOJI_PRESSED, emoji);
-		addFrequentlyUsed(emoji);
-	};
+	const renderScene = ({ route }: { route: Route }) => (
+		<EmojiCategory parentWidth={parentWidth} onEmojiSelected={handleEmojiSelect} category={route.key as any} />
+	);
 
-	const renderCategory = (category: keyof typeof emojisByCategory, i: number, label: string) => {
-		let emojis = [];
-		if (i === 0) {
-			emojis = frequentlyUsed;
-		} else if (i === 1) {
-			emojis = customEmojis;
-		} else {
-			emojis = emojisByCategory[category];
-		}
-		if (!emojis.length) {
-			return null;
-		}
-		return (
-			<EmojiCategory
-				parentWidth={parentWidth}
-				emojis={emojis}
-				onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
-				tabLabel={label}
-			/>
-		);
-	};
-
-	if (!loaded) {
-		return null;
-	}
+	const renderTabItem = (tab: Route, color: string) => (
+		<CustomIcon
+			accessible
+			accessibilityLabel={tab?.accessibilityLabel}
+			size={24}
+			name={tab.title as TIconsName}
+			color={color}
+			style={styles.tabEmoji}
+			testID={`emoji-picker-tab-${tab.title}`}
+		/>
+	);
 
 	return (
-		<View style={styles.emojiPickerContainer} onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
+		<View
+			style={[styles.emojiPickerContainer, { marginBottom: bottom, backgroundColor: colors.surfaceLight }]}
+			onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
 			{searching ? (
 				<EmojiCategory
 					emojis={searchedEmojis}
@@ -75,15 +65,7 @@ const EmojiPicker = ({
 					parentWidth={parentWidth}
 				/>
 			) : (
-				<ScrollableTabView
-					renderTabBar={() => <TabBar />}
-					contentProps={{
-						keyboardShouldPersistTaps: 'always',
-						keyboardDismissMode: 'none'
-					}}
-					style={{ backgroundColor: colors.surfaceLight }}>
-					{categories.tabs.map((tab: any, i) => renderCategory(tab.category, i, tab.tabLabel))}
-				</ScrollableTabView>
+				<TabView renderScene={renderScene} renderTabItem={renderTabItem} routes={routes} />
 			)}
 			{isEmojiKeyboard && (
 				<Footer
@@ -94,5 +76,4 @@ const EmojiPicker = ({
 		</View>
 	);
 };
-
 export default EmojiPicker;

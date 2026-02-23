@@ -10,20 +10,35 @@ function setParamInUrl({ url, token, userId }: { url: string; token: string; use
 	return urlObj.toString();
 }
 
-export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: string, token: string, server: string): string => {
+export const formatAttachmentUrl = (
+	attachmentUrl: string | undefined,
+	userId: string,
+	token: string,
+	server: string,
+	_originalUrl?: string | null
+): string => {
+	const protectFiles = store.getState().settings.FileUpload_ProtectFiles;
+
 	if ((attachmentUrl && isImageBase64(attachmentUrl)) || attachmentUrl?.startsWith('file://')) {
 		return attachmentUrl;
 	}
 	if (attachmentUrl && attachmentUrl.startsWith('http')) {
+		if (_originalUrl && !_originalUrl.startsWith(server)) {
+			return _originalUrl;
+		}
+
 		if (attachmentUrl.includes('rc_token')) {
 			return encodeURI(attachmentUrl);
 		}
-		return setParamInUrl({ url: attachmentUrl, token, userId });
+
+		if (protectFiles) return setParamInUrl({ url: attachmentUrl, token, userId });
+		return attachmentUrl;
 	}
 	let cdnPrefix = store?.getState().settings.CDN_PREFIX as string;
 	cdnPrefix = cdnPrefix?.trim();
 	if (cdnPrefix && cdnPrefix.startsWith('http')) {
 		server = cdnPrefix.replace(/\/+$/, '');
 	}
-	return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
+	if (protectFiles) return setParamInUrl({ url: `${server}${attachmentUrl}`, token, userId });
+	return `${server}${attachmentUrl}`;
 };

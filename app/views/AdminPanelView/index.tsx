@@ -2,15 +2,14 @@ import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { AdminPanelStackParamList } from '../../stacks/types';
-import { IApplicationState } from '../../definitions';
+import { type AdminPanelStackParamList } from '../../stacks/types';
+import { type IApplicationState } from '../../definitions';
 
 const AdminPanelView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AdminPanelStackParamList, 'AdminPanelView'>>();
@@ -33,7 +32,6 @@ const AdminPanelView = () => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<WebView
 				// https://github.com/react-native-community/react-native-webview/issues/1311
 				onMessage={() => {}}

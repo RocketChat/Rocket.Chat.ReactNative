@@ -1,38 +1,21 @@
 import React, { useLayoutEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Text, View } from 'react-native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Button from '../../containers/Button';
-import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 import { logout } from '../../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
-import sharedStyles from '../Styles';
-import { Services } from '../../lib/services';
-import { SettingsStackParamList } from '../../stacks/types';
+import { e2eResetOwnKey } from '../../lib/services/restApi';
+import { type SettingsStackParamList } from '../../stacks/types';
 import ChangePassword from './ChangePassword';
-
-const styles = StyleSheet.create({
-	container: {
-		paddingHorizontal: PADDING_HORIZONTAL
-	},
-	title: {
-		fontSize: 16,
-		...sharedStyles.textMedium
-	},
-	description: {
-		fontSize: 14,
-		paddingVertical: 10,
-		...sharedStyles.textRegular
-	}
-});
+import { styles } from './styles';
 
 const E2EEncryptionSecurityView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'E2EEncryptionSecurityView'>>();
@@ -53,12 +36,9 @@ const E2EEncryptionSecurityView = () => {
 			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					const res = await Services.e2eResetOwnKey();
-					/**
-					 * It might return an empty object when TOTP is enabled,
-					 * that's why we're using strict equality to boolean
-					 */
-					if (res === true) {
+					const res = await e2eResetOwnKey();
+
+					if (res?.success === true) {
 						dispatch(logout());
 					}
 				} catch (e) {
@@ -71,21 +51,20 @@ const E2EEncryptionSecurityView = () => {
 
 	return (
 		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.surfaceRoom }}>
-			<StatusBar />
 			<List.Container>
 				<View style={styles.container}>
 					<ChangePassword />
 
-					<List.Section>
-						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
+					<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
+					<View style={styles.content}>
+						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Reset_E2EE_Password_Description')}</Text>
 						<Button
 							onPress={resetOwnKey}
 							title={I18n.t('E2E_encryption_reset_button')}
-							type='secondary'
+							type='primary'
 							testID='e2e-encryption-security-view-reset-key'
 						/>
-					</List.Section>
+					</View>
 				</View>
 			</List.Container>
 		</SafeAreaView>

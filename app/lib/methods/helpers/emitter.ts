@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 
-import { TMarkdownStyle } from '../../../containers/MessageComposer/interfaces';
+import { type TMarkdownStyle } from '../../../containers/MessageComposer/interfaces';
 
 type TDynamicMediaDownloadEvents = {
 	[key: `downloadMedia${string}`]: string;
@@ -16,6 +16,7 @@ export type TEmitterEvents = TDynamicMediaDownloadEvents & {
 	setComposerHeight: number;
 	setComposerHeightThread: number;
 	audioFocused: string;
+	navigationReady: undefined;
 };
 
 export type TKeyEmitterEvent = keyof TEmitterEvents;

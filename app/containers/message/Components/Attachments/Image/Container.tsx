@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
 
-import { useTheme } from '../../../../../theme';
 import Markdown from '../../../../markdown';
 import { useMediaAutoDownload } from '../../../hooks/useMediaAutoDownload';
 import { Button } from './Button';
 import { MessageImage } from './Image';
-import { IImageContainer } from './definitions';
+import { type IImageContainer } from './definitions';
 import MessageContext from '../../../Context';
 import { WidthAwareView } from '../../WidthAwareView';
 
@@ -14,27 +13,28 @@ const ImageContainer = ({
 	file,
 	showAttachment,
 	getCustomEmoji,
-	style,
-	isReply,
 	author,
-	msg
+	msg,
+	imagePreview,
+	imageType
 }: IImageContainer): React.ReactElement | null => {
+	'use memo';
+
 	const { user } = useContext(MessageContext);
-	const { theme } = useTheme();
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const image = (
 		<Button onPress={onPress}>
 			<WidthAwareView>
-				<MessageImage uri={url} status={status} encrypted={isEncrypted} />
+				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={imagePreview} imageType={imageType} />
 			</WidthAwareView>
 		</Button>
 	);
 
 	if (msg) {
 		return (
-			<View>
-				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
+			<View style={{ gap: 4 }}>
+				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} />
 				{image}
 			</View>
 		);
