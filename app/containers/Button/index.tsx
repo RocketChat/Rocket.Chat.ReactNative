@@ -95,7 +95,11 @@ const Button: React.FC<IButtonProps> = ({
 				accessibilityLabel={title}
 				accessibilityRole='button'
 				{...otherProps}>
-				{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
+				{loading ? (
+					<ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} />
+				) : (
+					<Text style={textStyle}>{title}</Text>
+				)}
 			</Pressable>
 		</GestureHandlerRootView>
 	);
