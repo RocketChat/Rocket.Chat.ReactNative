@@ -9,7 +9,7 @@ on:
 
 jobs:
   ios-test:
-    runs-on: macos-14
+    runs-on: macos-26
 
     steps:
       - name: Checkout Repo
@@ -32,12 +32,19 @@ jobs:
         with:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
+      - name: Cache Maestro
+        uses: actions/cache@v4
+        with:
+          path: ~/.maestro
+          key: maestro-macos
+
       - name: Install Maestro
         run: |
           brew tap facebook/fb
           brew install facebook/fb/idb-companion
-          curl -fsSL "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+        env:
+          MAESTRO_VERSION: 2.2.0
 
       - name: Configure Simulator
         run: |
@@ -50,6 +57,8 @@ jobs:
       - name: Boot Simulator
         timeout-minutes: 30
         run: |
+          open -a Simulator
+
           SIM_NAME="iPhone 16 Pro Max"
           TIMEOUT=300  # 5 minutes in seconds
           INTERVAL=5   # Check every 5 seconds
@@ -87,12 +96,21 @@ jobs:
       - name: Make Maestro script executable
         run: chmod +x .github/scripts/run-maestro.sh
 
+      - name: Set Maestro Driver Startup Timeout
+        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=180000" >> $GITHUB_ENV
+
       - name: Install App
         run: |
           xcrun simctl install $UDID "ios-simulator-app"
 
       - name: Run Tests
-        timeout-minutes: 120
+        timeout-minutes: 60
+        id: maestro_run
+        run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
+
+      - name: Run Tests (Retry)
+        if: steps.maestro_run.outcome == 'failure'
+        timeout-minutes: 60
         run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
 
       - name: iOS Maestro Logs
