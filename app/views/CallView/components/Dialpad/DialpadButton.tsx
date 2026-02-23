@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 import { useCallStore } from '../../../../lib/services/voip/useCallStore';
 import { useTheme } from '../../../../theme';
@@ -18,6 +19,7 @@ const DialpadButton = ({ digit, letters }: IDialpadButton): React.ReactElement =
 
 	const handleDigitPress = () => {
 		setDialpadValue(digit);
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 	};
 
 	return (

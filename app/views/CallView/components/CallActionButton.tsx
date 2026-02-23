@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, Pressable } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 import { CustomIcon, type TIconsName } from '../../../containers/CustomIcon';
 import { styles } from '../styles';
@@ -51,10 +52,15 @@ const CallActionButton = ({
 		return variant === 'danger' ? colors.buttonBackgroundDangerDefault : colors.buttonBackgroundSecondaryDefault;
 	};
 
+	const handlePress = () => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		onPress();
+	};
+
 	return (
 		<View>
 			<Pressable
-				onPress={onPress}
+				onPress={handlePress}
 				disabled={disabled}
 				style={({ pressed }) => [
 					styles.actionButton,
