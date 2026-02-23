@@ -49,6 +49,7 @@ const Dialpad = ({ testID }: IDialpad): React.ReactElement => {
 				bottomSheet
 				testID={testID ? `${testID}-input` : 'dialpad-input'}
 				editable={false}
+				multiline
 			/>
 			<View style={styles.grid}>
 				{DIALPAD_KEYS.map((row, rowIndex) => (
