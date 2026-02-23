@@ -7,9 +7,11 @@ tags:
 - tapOn: Enter manually
 - tapOn: New password
 - inputText: ${output.data.e2eePassword}
-- swipe:
-    direction: DOWN
-    duration: 100
+- scrollUntilVisible:
+    element:
+      text: 'Save Changes'
+    timeout: 60000
+    centerElement: true
 - tapOn: Save Changes
 - extendedWaitUntil:
     visible:
