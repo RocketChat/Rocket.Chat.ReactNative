@@ -44,7 +44,9 @@ tags:
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${ROOM}
-- hideKeyboard
+- swipe:
+    direction: DOWN
+    duration: 100
 - extendedWaitUntil:
     visible:
       id: 'create-channel-encrypted'

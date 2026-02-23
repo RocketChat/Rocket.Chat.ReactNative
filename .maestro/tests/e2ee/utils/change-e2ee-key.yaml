@@ -7,7 +7,6 @@ tags:
 - tapOn: Enter manually
 - tapOn: New password
 - inputText: ${output.data.e2eePassword}
-- hideKeyboard
 - swipe:
     direction: DOWN
     duration: 100
