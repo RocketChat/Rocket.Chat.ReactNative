@@ -171,7 +171,7 @@ tags:
 - tapOn:
     id: 'create-channel-name'
 - inputText: 'general'
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-submit'
@@ -190,7 +190,7 @@ tags:
     id: 'create-channel-name'
 - eraseText: 100
 - inputText: ${output.publicRoomName}
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - tapOn:
     id: 'create-channel-type'
 - extendedWaitUntil:
@@ -258,7 +258,7 @@ tags:
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${output.privateRoomName}
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-submit'
@@ -322,7 +322,7 @@ tags:
 - tapOn:
     id: 'create-channel-name'
 - inputText: ${output.emptyRoomName}
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'create-channel-submit'
@@ -392,7 +392,7 @@ tags:
       - tapOn:
           id: 'create-channel-name'
       - inputText: ${output.nonLatinRoomName}
-      - hideKeyboard
+      - runFlow: '../../helpers/hide-keyboard.yaml'
       - extendedWaitUntil:
           visible:
             id: 'create-channel-submit'
@@ -429,7 +429,7 @@ tags:
       - tapOn:
           id: 'rooms-list-view-search-input'
       - inputText: ${output.nonLatinRoomNameLower}
-      - hideKeyboard
+      - runFlow: '../../helpers/hide-keyboard.yaml'
       - extendedWaitUntil:
           visible:
             id: ${'rooms-list-view-item-' + output.nonLatinRoomName}
