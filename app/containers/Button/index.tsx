@@ -87,7 +87,7 @@ const Button: React.FC<IButtonProps> = ({
 	];
 
 	return (
-		<GestureHandlerRootView>
+		<GestureHandlerRootView style={{ flexShrink: 1 }}>
 			<Pressable
 				onPress={onPress}
 				disabled={isDisabled}
