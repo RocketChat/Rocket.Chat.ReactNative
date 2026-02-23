@@ -5004,10 +5004,10 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.2.1.tgz#9403f51c17cae37edf870c6bc0c81c1ece5ccef8"
   integrity sha512-1dgmkh+3so0+LlBWRhGA33ua4MYr7tUOj+a9Si28vUi0IUFNbff1T3sgpeDJI/LaC75bBYnQ0A3wXjn0OrRNBA==
 
-"@rocket.chat/emitter@~0.31.25":
-  version "0.31.25"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/emitter/-/emitter-0.31.25.tgz#17dd7838dc988ebc5fcd96343c4431d5cef45845"
-  integrity sha512-hw5BpDlNwpYSb+K5X3DNMNUVEVXxmXugUPetGZGCWvntSVFsOjYuVEypoKW6vBBXSfqCBb0kN1npYcKEb4NFBw==
+"@rocket.chat/emitter@^0.32.0":
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/emitter/-/emitter-0.32.0.tgz#6fe39474684ad6c97109df160cdd9c18a6beebbc"
+  integrity sha512-QCXNGDm5xjJPePMeP9GknMAZne5xhNmLLD/ZVVqNgOyeWdfQKddwBUqtMiWDaFCRq1bC22kNf3WQLqt89CO6fg==
 
 "@rocket.chat/eslint-config@^0.4.0":
   version "0.4.0"
@@ -5016,11 +5016,11 @@
   dependencies:
     eslint-plugin-import "^2.17.2"
 
-"@rocket.chat/media-signaling@file:./packages/rocket.chat-media-signaling-0.1.0.tgz":
-  version "0.1.0"
-  resolved "file:./packages/rocket.chat-media-signaling-0.1.0.tgz#b73f0c2a642b65ecce4df8da2f44b22f93cd75fb"
+"@rocket.chat/media-signaling@file:./packages/rocket.chat-media-signaling-0.1.1.tgz":
+  version "0.1.1"
+  resolved "file:./packages/rocket.chat-media-signaling-0.1.1.tgz#b9859941d78af41e1fd82d2e0cf53d119aeaac9b"
   dependencies:
-    "@rocket.chat/emitter" "~0.31.25"
+    "@rocket.chat/emitter" "^0.32.0"
     ajv "^8.17.1"
 
 "@rocket.chat/message-parser@^0.31.31":
@@ -5992,9 +5992,9 @@ ajv@^8.0.0, ajv@^8.9.0:
     uri-js "^4.2.2"
 
 ajv@^8.17.1:
-  version "8.17.1"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.17.1.tgz#37d9a5c776af6bc92d7f4f9510eba4c0a60d11a6"
-  integrity sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==
+  version "8.18.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.18.0.tgz#8864186b6738d003eb3a933172bb3833e10cefbc"
+  integrity sha512-PlXPeEWMXMZ7sPYOHqmDyCJzcfNrUr3fGNKtezX14ykXOEIvyK81d+qydx89KY5O71FKMPaQ2vBfBFI5NHR63A==
   dependencies:
     fast-deep-equal "^3.1.3"
     fast-uri "^3.0.1"

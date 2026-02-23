@@ -38,7 +38,14 @@ jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
 }));
 
-jest.mock('expo-haptics', () => jest.fn(() => null));
+jest.mock('expo-haptics', () => ({
+	impactAsync: jest.fn(),
+	ImpactFeedbackStyle: {
+		Light: 'light',
+		Medium: 'medium',
+		Heavy: 'heavy'
+	}
+}));
 
 jest.mock('expo-font', () => ({
 	isLoaded: jest.fn(() => true),
@@ -160,7 +167,8 @@ jest.mock('@discord/bottom-sheet', () => {
 	return {
 		__esModule: true,
 		default: react.View,
-		BottomSheetScrollView: react.ScrollView
+		BottomSheetScrollView: react.ScrollView,
+		BottomSheetTextInput: react.TextInput
 	};
 });
 
