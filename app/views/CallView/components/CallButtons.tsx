@@ -48,6 +48,7 @@ export const CallButtons = () => {
 					label={I18n.t('Speaker')}
 					onPress={toggleSpeaker}
 					variant={isSpeakerOn ? 'active' : 'default'}
+					disabled={isConnecting}
 					testID='call-view-speaker'
 				/>
 				<CallActionButton
@@ -77,7 +78,13 @@ export const CallButtons = () => {
 					variant='danger'
 					testID='call-view-end'
 				/>
-				<CallActionButton icon='dialpad' label={I18n.t('Dialpad')} onPress={handleDialpad} testID='call-view-dialpad' />
+				<CallActionButton
+					icon='dialpad'
+					label={I18n.t('Dialpad')}
+					onPress={handleDialpad}
+					disabled={isConnecting}
+					testID='call-view-dialpad'
+				/>
 			</View>
 		</View>
 	);
