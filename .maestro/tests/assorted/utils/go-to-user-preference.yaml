@@ -1,0 +1,32 @@
+appId: chat.rocket.reactnative
+name: Go To User Preferences
+tags:
+  - 'util'
+
+---
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-sidebar'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-profile'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-profile'
+- extendedWaitUntil:
+    visible:
+      id: 'profile-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'preferences-view-open'
+    timeout: 60000
+- tapOn:
+    id: 'preferences-view-open'
+- extendedWaitUntil:
+    visible:
+      id: 'preferences-view'
+    timeout: 60000

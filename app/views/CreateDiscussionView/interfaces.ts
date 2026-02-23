@@ -1,6 +1,6 @@
-import { NewMessageStackParamList } from '../../stacks/types';
-import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
-import { IBaseScreen, IMessage, ISearchLocal, IUser } from '../../definitions';
+import { type NewMessageStackParamList } from '../../stacks/types';
+import { type ISubscription, type SubscriptionType } from '../../definitions/ISubscription';
+import { type IBaseScreen, type IMessage, type ISearchLocal, type IUser } from '../../definitions';
 
 export interface IResult {
 	rid: string;
@@ -43,14 +43,4 @@ export interface ICreateDiscussionViewSelectChannel {
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
 	required?: boolean;
-}
-
-export interface ICreateDiscussionViewSelectUsers {
-	server: string;
-	token: string;
-	userId: string;
-	selected: any[];
-	onUserSelect: ({ value }: { value: string[] }) => void;
-	blockUnauthenticatedAccess: boolean;
-	serverVersion: string;
 }

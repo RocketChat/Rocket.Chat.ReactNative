@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import { Link as LinkProps } from '@rocket.chat/message-parser';
+import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { Bold, Italic, Strike } from './index';
@@ -9,7 +9,7 @@ import { LISTENER } from '../../../Toast';
 import { useTheme } from '../../../../theme';
 import openLink from '../../../../lib/methods/helpers/openLink';
 import EventEmitter from '../../../../lib/methods/helpers/events';
-import { themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants/colors';
 import MarkdownContext from '../../contexts/MarkdownContext';
 import styles from '../../styles';
 

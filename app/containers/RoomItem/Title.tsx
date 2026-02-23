@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import styles from './styles';
-import { ITitleProps } from './interfaces';
+import { type ITitleProps } from './interfaces';
 import { useTheme } from '../../theme';
 
 const Title = React.memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {

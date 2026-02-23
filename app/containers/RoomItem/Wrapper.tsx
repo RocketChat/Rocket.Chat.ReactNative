@@ -2,18 +2,18 @@ import React from 'react';
 import { KeyboardExtendedBaseView } from 'react-native-external-keyboard';
 import { View as RNView, Platform } from 'react-native';
 
-import { DisplayMode } from '../../lib/constants';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import { useTheme } from '../../theme';
 import IconOrAvatar from './IconOrAvatar';
-import { IWrapperProps } from './interfaces';
+import { type IWrapperProps } from './interfaces';
 import styles from './styles';
-import { useRowHeight } from '../../lib/hooks/useRowHeight';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const View = Platform.OS === 'android' ? KeyboardExtendedBaseView : RNView;
 
 const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapperProps): React.ReactElement => {
 	const { colors } = useTheme();
-	const { rowHeight, rowHeightCondensed } = useRowHeight();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 	return (
 		<View
 			focusable={false}

@@ -7,12 +7,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Avatar from '../Avatar';
 import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
+import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
+import { type IApplicationState, type ISubscription, type SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
-import { useRowHeight } from '../../lib/hooks/useRowHeight';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export interface INotifierComponent {
 	notification: {
@@ -20,7 +20,7 @@ export interface INotifierComponent {
 		payload: {
 			sender: { username: string };
 			type: SubscriptionType;
-			message?: { message: string; t?: string };
+			message?: { message?: string; msg?: string; t?: string };
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
 		avatar: string;
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 
 const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
-	const { rowHeight } = useRowHeight();
+	const { rowHeight } = useResponsiveLayout();
 	const insets = useSafeAreaInsets();
 	const { text, payload } = notification;
 	const { type, rid } = payload;
@@ -93,7 +93,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			prid
 		};
 
-		goRoom({ item, isMasterDetail, jumpToMessageId: _id, popToRoot: true });
+		goRoom({ item, isMasterDetail, jumpToMessageId: _id });
 		hideNotification();
 	};
 

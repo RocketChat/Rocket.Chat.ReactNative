@@ -2,9 +2,7 @@ import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-import * as Keychain from 'react-native-keychain';
-
-import moment from 'moment';
+import dayjs from '../lib/dayjs';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
@@ -24,33 +22,27 @@ import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry'
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import {
-	getCustomEmojis,
-	getEnterpriseModules,
-	getPermissions,
-	getRoles,
-	getSlashCommands,
-	getUserPresence,
-	isOmnichannelModuleAvailable,
-	logout,
-	removeServerData,
-	removeServerDatabase,
-	subscribeSettings,
-	subscribeUsersPresence
-} from '../lib/methods';
-import { Services } from '../lib/services';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { getCustomEmojis } from '../lib/methods/getCustomEmojis';
+import { getEnterpriseModules, isOmnichannelModuleAvailable } from '../lib/methods/enterpriseModules';
+import { getPermissions } from '../lib/methods/getPermissions';
+import { getRoles } from '../lib/methods/getRoles';
+import { getSlashCommands } from '../lib/methods/getSlashCommands';
+import { getUserPresence, subscribeUsersPresence } from '../lib/methods/getUsersPresence';
+import { logout, removeServerData, removeServerDatabase } from '../lib/methods/logout';
+import { subscribeSettings } from '../lib/methods/getSettings';
+import { connect, loginWithPassword, login } from '../lib/services/connect';
+import { saveUserProfile, registerPushToken, getUsersRoles, setUserPresenceAway } from '../lib/services/restApi';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
-import { appGroupSuiteName } from '../lib/methods/appGroup';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
 import { isIOS } from '../lib/methods/helpers';
 
 const getServer = state => state.server.server;
-const loginWithPasswordCall = args => Services.loginWithPassword(args);
-const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
+const loginWithPasswordCall = args => loginWithPassword(args);
+const loginCall = credentials => login(credentials);
 const logoutCall = args => logout(args);
 
 const showSupportedVersionsWarning = function* showSupportedVersionsWarning(server) {
@@ -60,13 +52,13 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 	const serverRecord = yield getServerById(server);
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	if (!serverRecord || moment(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
+	if (!serverRecord || dayjs(new Date()).diff(serverRecord?.supportedVersionsWarningAt, 'hours') <= 12) {
 		return;
 	}
 
 	const serversDB = database.servers;
 	yield serversDB.write(async () => {
-		await serverRecord.update(r => {
+		await serverRecord.update((r) => {
 			r.supportedVersionsWarningAt = new Date();
 		});
 	});
@@ -77,17 +69,12 @@ const showSupportedVersionsWarning = function* showSupportedVersionsWarning(serv
 	}
 };
 
-const handleLoginRequest = function* handleLoginRequest({
-	credentials,
-	logoutOnError = false,
-	isFromWebView = false,
-	registerCustomFields
-}) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, registerCustomFields }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
-			result = yield loginCall(credentials, isFromWebView);
+			result = yield loginCall(credentials);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
@@ -102,15 +89,27 @@ const handleLoginRequest = function* handleLoginRequest({
 			// Saves username on server history
 			const serversDB = database.servers;
 			const serversHistoryCollection = serversDB.get('servers_history');
+			const serversCollection = serversDB.get('servers');
 			yield serversDB.write(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (serversHistory?.length) {
 						const serverHistoryRecord = serversHistory[0];
+						// Get server iconURL from servers table
+						let iconURL = null;
+						try {
+							const serverRecord = await serversCollection.find(server);
+							iconURL = serverRecord.iconURL;
+						} catch (e) {
+							// Server record might not exist yet
+						}
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update(s => {
+						await serverHistoryRecord.update((s) => {
 							s.username = result.username;
+							if (iconURL) {
+								s.iconURL = iconURL;
+							}
 						});
 					}
 				} catch (e) {
@@ -119,7 +118,7 @@ const handleLoginRequest = function* handleLoginRequest({
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
+				const updatedUser = yield call(saveUserProfile, {}, { ...registerCustomFields });
 				yield put(setUser({ ...result, ...updatedUser.user }));
 			}
 		}
@@ -187,7 +186,7 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 
 const registerPushTokenFork = function* registerPushTokenFork() {
 	try {
-		yield Services.registerPushToken();
+		yield registerPushToken();
 	} catch (e) {
 		log(e);
 	}
@@ -205,7 +204,7 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 	try {
 		yield getEnterpriseModules();
 
-		if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
+		if (isOmnichannelStatusAvailable(user.statusLivechat) && isOmnichannelModuleAvailable()) {
 			yield put(inquiryRequest());
 		}
 	} catch (e) {
@@ -215,10 +214,27 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 
 const fetchUsersRoles = function* fetchRoomsFork() {
 	try {
-		const roles = yield Services.getUsersRoles();
+		const roles = yield getUsersRoles();
 		if (roles.length) {
 			yield put(setUsersRoles(roles));
 		}
+	} catch (e) {
+		log(e);
+	}
+};
+
+const checkBackgroundAndSetAway = function* checkBackgroundAndSetAway() {
+	try {
+		const { background, root } = yield select(state => state.app);
+		if (root !== RootEnum.ROOT_INSIDE || !background) {
+			return;
+		}
+		const isAuthenticated = yield select(state => state.login.isAuthenticated);
+		const isConnected = yield select(state => state.meteor.connected);
+		if (!isAuthenticated || !isConnected) {
+			return;
+		}
+		yield setUserPresenceAway();
 	} catch (e) {
 		log(e);
 	}
@@ -240,6 +256,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield fork(checkBackgroundAndSetAway);
 
 		setLanguage(user?.language);
 
@@ -253,7 +270,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			statusText: user.statusText,
 			roles: user.roles,
-			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag,
 			bio: user.bio,
@@ -263,12 +279,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				await userRecord.update(record => {
+				await userRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
 				});
 			} catch (e) {
-				await usersCollection.create(record => {
+				await usersCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
 					Object.assign(record, u);
 				});
@@ -278,12 +294,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		if (isIOS) {
-			yield Keychain.setInternetCredentials(server, user.id, user.token, {
-				accessGroup: appGroupSuiteName,
-				securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
-			});
-		}
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
@@ -352,7 +362,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield serversDB.write(async () => {
 			try {
 				const record = await userCollections.find(userId);
-				await record.update(userRecord => {
+				await record.update((userRecord) => {
 					if ('avatarETag' in user) {
 						userRecord.avatarETag = user.avatarETag;
 					}
@@ -369,7 +379,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
 
 	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
-		if (isOmnichannelStatusAvailable(user)) {
+		if (isOmnichannelStatusAvailable(user.statusLivechat)) {
 			yield put(inquiryRequest());
 		} else {
 			yield put(inquiryReset());

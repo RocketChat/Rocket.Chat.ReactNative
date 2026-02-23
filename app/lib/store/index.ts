@@ -5,23 +5,21 @@ import reducers from '../../reducers';
 import sagas from '../../sagas';
 import applyAppStateMiddleware from './appStateMiddleware';
 import applyInternetStateMiddleware from './internetStateMiddleware';
+import { logger } from './reduxLogger';
 
 let sagaMiddleware;
 let enhancers;
 
 if (__DEV__) {
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
-	const Reactotron = require('reactotron-react-native').default;
-	sagaMiddleware = createSagaMiddleware({
-		sagaMonitor: Reactotron.createSagaMonitor()
-	});
+	sagaMiddleware = createSagaMiddleware();
 
 	enhancers = compose(
 		applyAppStateMiddleware(),
 		applyInternetStateMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
-		Reactotron.createEnhancer()
+		applyMiddleware(logger)
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();

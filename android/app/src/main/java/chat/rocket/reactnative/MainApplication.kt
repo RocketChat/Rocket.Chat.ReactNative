@@ -1,9 +1,7 @@
 package chat.rocket.reactnative
 
 import android.app.Application
-import android.content.Context
 import android.content.res.Configuration
-import android.os.Bundle
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -12,31 +10,43 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
+import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
-import com.facebook.react.bridge.JSIModulePackage;
-import com.wix.reactnativenotifications.core.AppLaunchHelper
-import com.wix.reactnativenotifications.core.AppLifecycleFacade
-import com.wix.reactnativenotifications.core.JsIOHelper
-import com.wix.reactnativenotifications.core.notification.INotificationsApplication
-import com.wix.reactnativenotifications.core.notification.IPushNotification
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
-import chat.rocket.reactnative.networking.SSLPinningPackage;
-import chat.rocket.reactnative.notification.CustomPushNotification;
+import chat.rocket.reactnative.networking.SSLPinningTurboPackage;
+import chat.rocket.reactnative.storage.MMKVKeyManager;
+import chat.rocket.reactnative.storage.SecureStoragePackage;
+import chat.rocket.reactnative.notification.VideoConfTurboPackage
+import chat.rocket.reactnative.notification.PushNotificationTurboPackage
+import chat.rocket.reactnative.scroll.InvertedScrollPackage
 
-open class MainApplication : Application(), ReactApplication, INotificationsApplication {
+/**
+ * Main Application class.
+ * 
+ * NOTIFICATION ARCHITECTURE:
+ * - JS layer uses expo-notifications for token registration and event handling
+ * - Native layer uses RCFirebaseMessagingService + CustomPushNotification for:
+ *   - FCM message handling
+ *   - Notification display with MessagingStyle
+ *   - E2E encrypted message decryption
+ *   - Direct reply functionality
+ *   - Message-id-only notification loading
+ */
+open class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
-              add(SSLPinningPackage())
+              add(SSLPinningTurboPackage())
+              add(WatermelonDBJSIPackage())
+              add(VideoConfTurboPackage())
+              add(PushNotificationTurboPackage())
+              add(SecureStoragePackage())
+              add(InvertedScrollPackage())
             }
-
-        override fun getJSIModulePackage(): JSIModulePackage {
-            return WatermelonDBJSIPackage()
-        }
 
         override fun getJSMainModuleName(): String = "index"
 
@@ -47,37 +57,25 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
       }
 
   override val reactHost: ReactHost
-    get() = getDefaultReactHost(this.applicationContext, reactNativeHost)
+    get() = getDefaultReactHost(applicationContext, reactNativeHost)
 
   override fun onCreate() {
     super.onCreate()
-    SoLoader.init(this, false)
+    SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
+    
+    // Initialize MMKV encryption - reads existing key or generates new one
+    // Must run before React Native starts to avoid race conditions
+    MMKVKeyManager.initialize(this)
 
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
-      load()
-    }
+    // Load the native entry point for the New Architecture
+    load()
+    
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
 	override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
-  }
-
-  override fun getPushNotification(
-    context: Context,
-    bundle: Bundle,
-    defaultFacade: AppLifecycleFacade,
-    defaultAppLaunchHelper: AppLaunchHelper
-  ): IPushNotification {
-    return CustomPushNotification(
-      context,
-      bundle,
-      defaultFacade,
-      defaultAppLaunchHelper,
-      JsIOHelper()
-    )
   }
 }

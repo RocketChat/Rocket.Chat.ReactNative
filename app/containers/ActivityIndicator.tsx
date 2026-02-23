@@ -1,8 +1,8 @@
 import React from 'react';
-import { ActivityIndicator, ActivityIndicatorProps, StyleSheet } from 'react-native';
+import { ActivityIndicator, type ActivityIndicatorProps, StyleSheet } from 'react-native';
 
 import { useTheme } from '../theme';
-import { themes } from '../lib/constants';
+import { themes } from '../lib/constants/colors';
 
 interface IActivityIndicator extends ActivityIndicatorProps {
 	absolute?: boolean;

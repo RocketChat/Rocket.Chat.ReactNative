@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { IApplicationState, TServerModel } from '../../definitions';
+import { type IApplicationState, type TServerModel } from '../../definitions';
 import database from '../database';
-import { useAppSelector } from '../hooks';
+import { useAppSelector } from '../hooks/useAppSelector';
 
 export default function useServer() {
 	const [server, setServer] = useState<TServerModel | null>(null);

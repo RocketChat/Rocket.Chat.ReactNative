@@ -5,9 +5,16 @@ import { Encryption } from '../../encryption';
 import { store as reduxStore } from '../../store/auxStore';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import { ISubscription, IServerSubscription, IServerRoom, IRoom, IOmnichannelRoom } from '../../../definitions';
+import {
+	type ISubscription,
+	type IServerSubscription,
+	type IServerRoom,
+	type IRoom,
+	type IOmnichannelRoom
+} from '../../../definitions';
 import { compareServerVersion } from './compareServerVersion';
 
+// eslint-disable-next-line complexity
 export const merge = (
 	subscription: ISubscription | IServerSubscription,
 	room?: IRoom | IServerRoom | IOmnichannelRoom
@@ -57,6 +64,10 @@ export const merge = (
 		mergedSubscription.avatarETag = room?.avatarETag;
 		mergedSubscription.teamId = room?.teamId;
 		mergedSubscription.teamMain = room?.teamMain;
+		mergedSubscription.federated = room?.federated;
+		if (room && 'abacAttributes' in room) {
+			mergedSubscription.abacAttributes = room.abacAttributes || [];
+		}
 		if (!mergedSubscription.roles || !mergedSubscription.roles.length) {
 			mergedSubscription.roles = [];
 		}
@@ -95,6 +106,10 @@ export const merge = (
 		if (room && 'usersCount' in room) {
 			mergedSubscription.usersCount = room.usersCount;
 		}
+
+		if (room && 'federation' in room) {
+			mergedSubscription.federation = room.federation;
+		}
 	}
 
 	if (!mergedSubscription.name) {
@@ -105,6 +120,8 @@ export const merge = (
 		mergedSubscription.autoTranslate = false;
 	}
 
+	mergedSubscription.status = mergedSubscription.status ?? undefined;
+	mergedSubscription.inviter = mergedSubscription.inviter ?? undefined;
 	mergedSubscription.blocker = !!mergedSubscription.blocker;
 	mergedSubscription.blocked = !!mergedSubscription.blocked;
 	mergedSubscription.hideMentionStatus = !!mergedSubscription.hideMentionStatus;
@@ -116,7 +133,7 @@ export const merge = (
 	return mergedSubscription;
 };
 
-export default async (
+export default async function mergeSubscriptionsRooms(
 	serverSubscriptions: {
 		update: IServerSubscription[];
 		remove: IServerSubscription[];
@@ -127,14 +144,14 @@ export default async (
 		remove: IServerRoom[];
 		success: boolean;
 	}
-): Promise<ISubscription[]> => {
+): Promise<ISubscription[]> {
 	const subscriptions = serverSubscriptions.update;
 	const rooms = serverRooms.update;
 
 	// Find missing rooms/subscriptions on local database
 	const findData = await findSubscriptionsRooms(subscriptions, rooms);
 	// Merge each subscription into a room
-	const mergedSubscriptions = findData.subscriptions.map(subscription => {
+	const mergedSubscriptions = findData.map(subscription => {
 		const index = rooms.findIndex(({ _id }) => _id === subscription.rid);
 		// Room not found
 		if (index < 0) {
@@ -147,4 +164,4 @@ export default async (
 	const decryptedSubscriptions = (await Encryption.decryptSubscriptions(mergedSubscriptions)) as ISubscription[];
 
 	return decryptedSubscriptions;
-};
+}

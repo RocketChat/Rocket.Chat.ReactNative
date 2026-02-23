@@ -1,5 +1,5 @@
-import { IAttachment } from '../definitions';
-import { IOptionsField } from '../views/NotificationPreferencesView/options';
+import { type IAttachment } from '../definitions';
+import { type IOptionsField } from '../views/NotificationPreferencesView/options';
 
 export type TNavigation = {
 	PickerView: {

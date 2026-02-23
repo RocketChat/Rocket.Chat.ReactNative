@@ -1,15 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import I18n from '../i18n';
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants';
-import { useAppSelector } from '../lib/hooks';
+import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
-import { SettingsStackParamList } from '../stacks/types';
+import { type SettingsStackParamList } from '../stacks/types';
 import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
 import {
 	events,
@@ -67,7 +66,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 
 	return (
 		<SafeAreaView testID='security-privacy-view'>
-			<StatusBar />
 			<List.Container testID='security-privacy-view-list'>
 				<List.Section>
 					<List.Separator />
@@ -97,14 +95,14 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						title='Log_analytics_events'
 						testID='security-privacy-view-analytics-events'
 						right={() => <Switch value={analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
-						additionalAcessibilityLabel={analyticsEventsState}
+						additionalAccessibilityLabel={analyticsEventsState}
 					/>
 					<List.Separator />
 					<List.Item
 						title='Send_crash_report'
 						testID='security-privacy-view-crash-report'
 						right={() => <Switch value={crashReportState} onValueChange={toggleCrashReport} />}
-						additionalAcessibilityLabel={analyticsEventsState}
+						additionalAccessibilityLabel={analyticsEventsState}
 					/>
 					<List.Separator />
 					<List.Info info='Crash_report_disclaimer' />

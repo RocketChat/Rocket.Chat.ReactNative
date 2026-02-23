@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
+import { type Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
@@ -10,6 +10,7 @@ import Plain from './Plain';
 import InlineCode from './InlineCode';
 import Image from './Image';
 import MarkdownContext from '../contexts/MarkdownContext';
+import Timestamp from './Timestamp';
 // import { InlineKaTeX, KaTeX } from './Katex';
 
 interface IParagraphProps {
@@ -62,7 +63,7 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 							/>
 						);
 					case 'EMOJI':
-						return <Emoji block={block} />;
+						return <Emoji block={block} index={index} />;
 					case 'MENTION_CHANNEL':
 						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':
@@ -70,6 +71,8 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 					case 'INLINE_KATEX':
 						// return <InlineKaTeX value={block.value} />;
 						return <Text>{block.value}</Text>;
+					case 'TIMESTAMP':
+						return <Timestamp value={block.value} />;
 					default:
 						return null;
 				}

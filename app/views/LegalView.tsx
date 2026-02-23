@@ -1,17 +1,16 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../i18n';
-import StatusBar from '../containers/StatusBar';
 import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import NewWindowIcon from '../containers/NewWindowIcon';
-import { OutsideParamList } from '../stacks/types';
-import { IApplicationState } from '../definitions';
+import { type OutsideParamList } from '../stacks/types';
+import { type IApplicationState } from '../definitions';
 
 const LegalView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LegalView'>>();
@@ -33,7 +32,6 @@ const LegalView = () => {
 
 	return (
 		<SafeAreaView testID='legal-view'>
-			<StatusBar />
 			<List.Container>
 				<List.Section>
 					<List.Separator />

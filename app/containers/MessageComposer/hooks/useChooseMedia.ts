@@ -2,18 +2,16 @@ import { Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
+import { forceJpgExtension } from '../helpers';
 import I18n from '../../../i18n';
 import { canUploadFile } from '../../../lib/methods/helpers';
 import log from '../../../lib/methods/helpers/log';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { useRoomContext } from '../../../views/RoomView/context';
-import ImagePicker from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
-import { mapMediaResult } from '../../../lib/methods/helpers/ImagePicker/mapMediaResult';
-import { getPermissions } from '../../../lib/methods/helpers/ImagePicker/getPermissions';
-import { IShareAttachment } from '../../../definitions';
+import ImagePicker, { type ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 
 export const useChooseMedia = ({
 	rid,
@@ -24,27 +22,31 @@ export const useChooseMedia = ({
 	tmid?: string;
 	permissionToUpload: boolean;
 }) => {
+	'use memo';
+
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
 	const { action, setQuotesAndText, selectedMessages, getText } = useRoomContext();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
+	const libPickerLabels = {
+		cropperChooseText: I18n.t('Choose'),
+		cropperCancelText: I18n.t('Cancel'),
+		loadingLabelText: I18n.t('Processing')
+	};
 
 	const takePhoto = async () => {
 		try {
-			await getPermissions('camera');
-			const result = await ImagePicker.launchCameraAsync(IMAGE_PICKER_CONFIG);
-			if (result.canceled) {
-				return;
-			}
-			const media = mapMediaResult(result.assets);
+			let image = await ImagePicker.openCamera({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
+			image = forceJpgExtension(image);
+			const file = image as any; // FIXME: unify those types to remove the need for any
 			const canUploadResult = canUploadFile({
-				file: media[0],
+				file,
 				allowList,
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
 			if (canUploadResult.success) {
-				return openShareView(media);
+				return openShareView([image]);
 			}
 
 			handleError(canUploadResult.error);
@@ -55,20 +57,16 @@ export const useChooseMedia = ({
 
 	const takeVideo = async () => {
 		try {
-			await getPermissions('camera');
-			const result = await ImagePicker.launchCameraAsync(VIDEO_PICKER_CONFIG);
-			if (result.canceled) {
-				return;
-			}
-			const media = mapMediaResult(result.assets);
+			const video = await ImagePicker.openCamera({ ...VIDEO_PICKER_CONFIG, ...libPickerLabels });
+			const file = video as any; // FIXME: unify those types to remove the need for any
 			const canUploadResult = canUploadFile({
-				file: media[0],
+				file,
 				allowList,
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
 			if (canUploadResult.success) {
-				return openShareView(media);
+				return openShareView([video]);
 			}
 
 			handleError(canUploadResult.error);
@@ -79,13 +77,13 @@ export const useChooseMedia = ({
 
 	const chooseFromLibrary = async () => {
 		try {
-			await getPermissions('library');
-			const result = await ImagePicker.launchImageLibraryAsync(LIBRARY_PICKER_CONFIG);
-			if (result.canceled) {
-				return;
-			}
-			const media = mapMediaResult(result.assets);
-			openShareView(media);
+			// The type can be video or photo, however the lib understands that it is just one of them.
+			let attachments = (await ImagePicker.openPicker({
+				...LIBRARY_PICKER_CONFIG,
+				...libPickerLabels
+			})) as unknown as ImageOrVideo[]; // FIXME: type this
+			attachments = attachments.map(att => forceJpgExtension(att));
+			openShareView(attachments);
 		} catch (e) {
 			log(e);
 		}
@@ -128,7 +126,7 @@ export const useChooseMedia = ({
 
 	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 
-	const openShareView = async (attachments: IShareAttachment[]) => {
+	const openShareView = async (attachments: any) => {
 		if (!rid) return;
 		const room = await getSubscriptionByRoomId(rid);
 		let thread;

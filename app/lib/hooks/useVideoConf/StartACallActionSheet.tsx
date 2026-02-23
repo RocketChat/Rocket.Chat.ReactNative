@@ -1,10 +1,10 @@
-import { Camera, CameraType } from 'expo-camera';
+import { CameraView } from 'expo-camera';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
-import { useAppSelector } from '..';
+import { useAppSelector } from '../useAppSelector';
 import { cancelCall, initVideoCall } from '../../../actions/videoConf';
 import AvatarContainer from '../../../containers/Avatar';
 import Button from '../../../containers/Button';
@@ -66,7 +66,7 @@ export default function StartACallActionSheet({
 					{ backgroundColor: cam ? undefined : colors.surfaceNeutral, width: containerWidth }
 				]}>
 				{cam ? (
-					<Camera style={[style.cameraContainer, { width: containerWidth }]} type={CameraType.front} />
+					<CameraView style={[style.cameraContainer, { width: containerWidth }]} facing='front' />
 				) : (
 					<AvatarContainer size={62} text={username} rid={rid} type={user.type} />
 				)}

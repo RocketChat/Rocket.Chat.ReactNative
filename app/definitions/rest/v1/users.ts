@@ -1,7 +1,6 @@
-import { IProfileParams } from '../../IProfile';
+import { type IAvatarSuggestion, type IProfileParams } from '../../IProfile';
 import type { ITeam } from '../../ITeam';
-import type { IUser } from '../../IUser';
-import { INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
+import type { IUser, INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
 
 export type UsersEndpoints = {
 	'users.2fa.sendEmailCode': {
@@ -48,6 +47,12 @@ export type UsersEndpoints = {
 	};
 	'users.getUsernameSuggestion': {
 		GET: () => { result: string };
+	};
+	'users.getAvatarSuggestion': {
+		GET: () => {
+			suggestions: { [service: string]: IAvatarSuggestion };
+			success: boolean;
+		};
 	};
 	'users.resetAvatar': {
 		POST: (params: { userId: string }) => {};

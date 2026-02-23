@@ -3,8 +3,8 @@ import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { TIconsName } from '../CustomIcon';
-import { IItemService, IOauthProvider } from './interfaces';
+import { type TIconsName } from '../CustomIcon';
+import { type IItemService, type IOauthProvider } from './interfaces';
 import styles from './styles';
 import * as ServiceLogin from './serviceLogin';
 import ButtonService from './ButtonService';
@@ -25,9 +25,9 @@ const Service = React.memo(
 		storiesTestOnPress?: () => void;
 	}) => {
 		const { colors } = useTheme();
-		const onPress = useRef<any>();
-		const buttonText = useRef<React.ReactElement>();
-		const modifiedName = useRef<string>();
+		const onPress = useRef<any>(null);
+		const buttonText = useRef<React.ReactElement | null>(null);
+		const modifiedName = useRef<string | null>(null);
 
 		const { name } = service;
 		modifiedName.current = name === 'meteor-developer' ? 'meteor' : name;

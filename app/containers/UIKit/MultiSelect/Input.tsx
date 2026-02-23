@@ -15,17 +15,19 @@ interface IInput {
 	placeholder?: string;
 	loading?: boolean;
 	innerInputStyle?: object;
+	testID?: string;
 }
 
-const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, innerInputStyle }: IInput) => {
+const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, innerInputStyle, testID }: IInput) => {
 	const { colors } = useTheme();
 	return (
 		<Touchable
 			onPress={onPress}
+			testID={testID}
 			style={[{ backgroundColor: colors.surfaceRoom }, styles.inputBorder, inputStyle]}
 			background={Touchable.Ripple(colors.surfaceNeutral)}
 			disabled={disabled}>
-			<View style={[styles.input, styles.inputBorder, { borderColor: colors.strokeLight }, innerInputStyle]}>
+			<View style={[styles.input, styles.inputBorder, { borderColor: colors.strokeMedium }, innerInputStyle]}>
 				{placeholder ? <Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder}</Text> : children}
 				{loading ? (
 					<ActivityIndicator style={styles.icon} />

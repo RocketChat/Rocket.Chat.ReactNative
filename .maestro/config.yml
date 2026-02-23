@@ -1,0 +1,5 @@
+appId: chat.rocket.reactnative
+flows:
+  - tests/**
+excludeTags:
+  - 'util'

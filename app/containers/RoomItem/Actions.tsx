@@ -10,13 +10,13 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 
-import { DisplayMode } from '../../lib/constants';
+import { CustomIcon } from '../CustomIcon';
+import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
-import { ILeftActionsProps, IRightActionsProps } from './interfaces';
+import { type ILeftActionsProps, type IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { useRowHeight } from '../../lib/hooks/useRowHeight';
-import ActionButton from './ActionButton';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export const LeftActions = React.memo(function LeftActions({
 	transX,
@@ -28,7 +28,7 @@ export const LeftActions = React.memo(function LeftActions({
 }: ILeftActionsProps) {
 	const { colors } = useTheme();
 
-	const { rowHeight, rowHeightCondensed } = useRowHeight();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
@@ -47,14 +47,17 @@ export const LeftActions = React.memo(function LeftActions({
 					animatedStyles
 				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
-					<ActionButton
-						enabled={enabled}
-						onPress={onToggleReadPress}
-						iconName={isRead ? 'flag' : 'check'}
-						backgroundColor={colors.badgeBackgroundLevel2}
-						isCondensed={isCondensed}
-						iconColor={colors.fontWhite}
-					/>
+					<RectButton
+						accessible
+						accessibilityLabel={I18n.t(isRead ? 'Mark_unread' : 'Mark_read')}
+						style={styles.actionButton}
+						onPress={onToggleReadPress}>
+						<CustomIcon
+							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+							name={isRead ? 'flag' : 'check'}
+							color={colors.fontWhite}
+						/>
+					</RectButton>
 				</View>
 			</Animated.View>
 		</View>
@@ -72,7 +75,7 @@ export const RightActions = React.memo(function RightActionsContainer({
 }: IRightActionsProps) {
 	const { colors } = useTheme();
 
-	const { rowHeight, rowHeightCondensed } = useRowHeight();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
@@ -140,14 +143,17 @@ export const RightActions = React.memo(function RightActionsContainer({
 					viewHeight,
 					animatedFavStyles
 				]}>
-				<ActionButton
-					enabled={enabled}
-					onPress={toggleFav}
-					iconName={favorite ? 'star-filled' : 'star'}
-					iconColor={colors.fontWhite}
-					backgroundColor={colors.statusFontWarning}
-					isCondensed={isCondensed}
-				/>
+				<RectButton
+					accessible
+					accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
+					style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]}
+					onPress={toggleFav}>
+					<CustomIcon
+						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+						name={favorite ? 'star-filled' : 'star'}
+						color={colors.fontWhite}
+					/>
+				</RectButton>
 			</Animated.View>
 			<Animated.View
 				style={[
@@ -160,14 +166,17 @@ export const RightActions = React.memo(function RightActionsContainer({
 					viewHeight,
 					animatedHideStyles
 				]}>
-				<ActionButton
-					enabled={enabled}
-					onPress={onHidePress}
-					iconName='unread-on-top-disabled'
-					iconColor={colors.fontWhite}
-					backgroundColor={colors.buttonBackgroundSecondaryPress}
-					isCondensed={isCondensed}
-				/>
+				<RectButton
+					accessible
+					accessibilityLabel={I18n.t('Hide')}
+					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
+					onPress={onHidePress}>
+					<CustomIcon
+						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+						name='unread-on-top-disabled'
+						color={colors.fontWhite}
+					/>
+				</RectButton>
 			</Animated.View>
 		</View>
 	);

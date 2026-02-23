@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -10,9 +10,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginRequest } from '../actions/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import { ControlledFormTextInput } from '../containers/TextInput';
-import { SetUsernameStackParamList } from '../definitions/navigationTypes';
+import { type SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
@@ -20,8 +19,8 @@ import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
-import { Services } from '../lib/services';
-import { useAppSelector } from '../lib/hooks';
+import { getUsernameSuggestion, saveUserProfile } from '../lib/services/restApi';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -63,7 +62,7 @@ const SetUsernameView = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const suggestion = await Services.getUsernameSuggestion();
+			const suggestion = await getUsernameSuggestion();
 			if (suggestion.success) {
 				setValue('username', suggestion.result, { shouldValidate: true });
 			}
@@ -83,7 +82,7 @@ const SetUsernameView = () => {
 		}
 		setLoading(true);
 		try {
-			await Services.saveUserProfile({ username, name });
+			await saveUserProfile({ username, name });
 			dispatch(loginRequest({ resume: user.token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
@@ -92,8 +91,7 @@ const SetUsernameView = () => {
 	};
 
 	return (
-		<KeyboardView style={{ backgroundColor: colors.surfaceHover }} contentContainerStyle={sharedStyles.container}>
-			<StatusBar />
+		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView testID='set-username-view'>
 					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.fontTitlesLabels }]}>

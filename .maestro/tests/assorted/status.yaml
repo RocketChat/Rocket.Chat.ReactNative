@@ -1,0 +1,93 @@
+appId: chat.rocket.reactnative
+name: Status
+onFlowStart:
+  - runFlow: '../../helpers/setup.yaml'
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
+tags:
+  - test-8
+
+---
+- evalScript: ${output.user = output.utils.createUser()}
+- runFlow:
+    file: '../../helpers/login-with-deeplink.yaml'
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-sidebar'
+    timeout: 60000
+- tapOn:
+    id: 'rooms-list-view-sidebar'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-custom-status-online'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-custom-status-online'
+- extendedWaitUntil:
+    visible:
+      id: 'status-view'
+    timeout: 60000
+
+# should have status input
+- assertVisible:
+    id: 'status-view-input'
+
+# should have online button
+- assertVisible:
+    id: 'status-view-online'
+
+# should have busy button
+- assertVisible:
+    id: 'status-view-busy'
+
+# should have away button
+- assertVisible:
+    id: 'status-view-away'
+
+# should have offline button
+- assertVisible:
+    id: 'status-view-offline'
+
+# should have submit button
+- assertVisible:
+    id: 'status-view-submit'
+
+# should change status
+- tapOn:
+    id: 'status-view-busy'
+- tapOn:
+    id: 'status-view-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-view'
+    timeout: 60000
+- extendedWaitUntil:
+    visible:
+      id: 'sidebar-custom-status-busy'
+    timeout: 60000
+- tapOn:
+    id: 'sidebar-custom-status-busy'
+
+# should change status text
+- extendedWaitUntil:
+    visible:
+      id: 'status-view-input'
+    timeout: 60000
+- tapOn:
+    id: 'status-view-input'
+- inputText: 'status-text-new'
+- tapOn:
+    id: 'status-view'
+- tapOn:
+    id: 'status-view-submit'
+- extendedWaitUntil:
+    visible:
+      text: 'status-text-new'
+    timeout: 60000

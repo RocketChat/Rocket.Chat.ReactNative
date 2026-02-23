@@ -1,6 +1,6 @@
 import database from '..';
-import { TSubscriptionModel } from '../../../definitions';
-import { TAppDatabase } from '../interfaces';
+import { type TSubscriptionModel } from '../../../definitions';
+import { type TAppDatabase } from '../interfaces';
 import { SUBSCRIPTIONS_TABLE } from '../model/Subscription';
 
 const getCollection = (db: TAppDatabase) => db.get(SUBSCRIPTIONS_TABLE);

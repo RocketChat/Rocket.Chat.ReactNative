@@ -1,12 +1,12 @@
-import { AVPlaybackStatus, Audio } from 'expo-av';
+import { type AVPlaybackStatus, Audio } from 'expo-av';
 import { Q } from '@nozbe/watermelondb';
-import moment from 'moment';
 
+import dayjs from '../dayjs';
 import { getMessageById } from '../database/services/Message';
 import database from '../database';
 import { getFilePathAudio } from './getFilePathAudio';
-import { TMessageModel } from '../../definitions';
-import { AUDIO_MODE } from '../constants';
+import { type TMessageModel } from '../../definitions';
+import { AUDIO_MODE } from '../constants/audio';
 import { emitter } from './helpers';
 
 const getAudioKey = ({ msgId, rid, uri }: { msgId?: string; rid: string; uri: string }) => `${msgId}-${rid}-${uri}`;
@@ -120,7 +120,7 @@ class AudioManagerClass {
 		const msg = await getMessageById(msgId);
 		if (msg) {
 			const db = database.active;
-			const whereClause: Q.Clause[] = [Q.sortBy('ts', Q.asc), Q.where('ts', Q.gt(moment(msg.ts).valueOf())), Q.take(1)];
+			const whereClause: Q.Clause[] = [Q.sortBy('ts', Q.asc), Q.where('ts', Q.gt(dayjs(msg.ts).valueOf())), Q.take(1)];
 
 			if (msg.tmid) {
 				whereClause.push(Q.where('tmid', msg.tmid || msg.id));

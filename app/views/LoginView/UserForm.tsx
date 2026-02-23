@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Keyboard, Text, View, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -12,11 +12,11 @@ import Button from '../../containers/Button';
 import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import I18n from '../../i18n';
-import { OutsideParamList } from '../../stacks/types';
+import { type OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import UGCRules from '../../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import styles from './styles';
 import { handleLoginErrors } from './handleLoginErrors';
 
@@ -127,6 +127,7 @@ const UserForm = () => {
 					testID='login-view-password'
 					textContentType='password'
 					autoComplete='password'
+					importantForAutofill='yes'
 				/>
 				<Button
 					title={I18n.t('Login')}

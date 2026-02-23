@@ -1,19 +1,18 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { FlatList } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
 import I18n from '../i18n';
-import StatusBar from '../containers/StatusBar';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
-import { ShareInsideStackParamList } from '../definitions/navigationTypes';
-import { TServerModel } from '../definitions';
-import { useAppSelector } from '../lib/hooks';
+import { type ShareInsideStackParamList } from '../definitions/navigationTypes';
+import { type TServerModel } from '../definitions';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { selectServerRequest } from '../actions/server';
 
 const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -51,7 +50,6 @@ const SelectServerView = () => {
 
 	return (
 		<SafeAreaView testID='select-server-view'>
-			<StatusBar />
 			<FlatList
 				data={servers}
 				renderItem={({ item }: { item: TServerModel }) => (

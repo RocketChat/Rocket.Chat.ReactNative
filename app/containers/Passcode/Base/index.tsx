@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import range from 'lodash/range';
-import { View } from 'react-native';
+import { type View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Haptics from 'expo-haptics';
 
@@ -9,12 +9,12 @@ import styles from './styles';
 import Button from './Button';
 import Dots from './Dots';
 import { TYPE } from '../constants';
-import { PASSCODE_LENGTH } from '../../../lib/constants';
+import { PASSCODE_LENGTH } from '../../../lib/constants/localAuthentication';
 import { useTheme } from '../../../theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
 import Subtitle from './Subtitle';
-import { useDimensions } from '../../../dimensions';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IPasscodeBase {
 	type: string;
@@ -36,7 +36,7 @@ export interface IBase {
 const Base = forwardRef<IBase, IPasscodeBase>(
 	({ type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress }, ref) => {
 		const { colors } = useTheme();
-		const { height } = useDimensions();
+		const { height } = useResponsiveLayout();
 
 		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
 		// 56 is a fixed number to decrease the height of button numbers.

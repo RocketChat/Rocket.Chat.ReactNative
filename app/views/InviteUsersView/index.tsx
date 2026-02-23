@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
 import { ScrollView, Share, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import dayjs from '../../lib/dayjs';
 import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
 import Button from '../../containers/Button';
 import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { FormTextInput } from '../../containers/TextInput';
-import { IApplicationState, IBaseScreen } from '../../definitions';
+import { type IApplicationState, type IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
-import { ChatsStackParamList } from '../../stacks/types';
+import { type ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -63,12 +62,12 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 			if (invite.maxUses) {
 				const usesLeft = invite.maxUses - invite.uses;
 				return I18n.t('Your_invite_link_will_expire_on__date__or_after__usesLeft__uses', {
-					date: moment(expiration).format(timeDateFormat),
+					date: dayjs(expiration).format(timeDateFormat),
 					usesLeft
 				});
 			}
 
-			return I18n.t('Your_invite_link_will_expire_on__date__', { date: moment(expiration).format(timeDateFormat) });
+			return I18n.t('Your_invite_link_will_expire_on__date__', { date: dayjs(expiration).format(timeDateFormat) });
 		}
 
 		if (invite.maxUses) {
@@ -87,7 +86,6 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 	return (
 		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }}>
 			<ScrollView {...scrollPersistTaps} style={{ backgroundColor: colors.surfaceHover }} showsVerticalScrollIndicator={false}>
-				<StatusBar />
 				<View style={styles.innerContainer}>
 					<FormTextInput label={I18n.t('Invite_Link')} value={invite && invite.url} editable={false} />
 					{renderExpiration()}

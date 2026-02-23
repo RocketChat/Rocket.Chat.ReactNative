@@ -21,7 +21,13 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
+		lineHeight: 22,
 		...sharedStyles.textMedium
+	},
+	subtitle: {
+		fontSize: 14,
+		lineHeight: 20,
+		...sharedStyles.textRegular
 	},
 	handle: {
 		justifyContent: 'center',

@@ -157,7 +157,8 @@ export default StyleSheet.create({
 		textAlign: 'right'
 	},
 	inline: {
-		flexShrink: 1
+		flexShrink: 1,
+		...sharedStyles.textRegular
 	},
 	listPrefix: {
 		fontVariant: ['tabular-nums']

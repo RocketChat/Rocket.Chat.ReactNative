@@ -1,23 +1,22 @@
 import React, { useLayoutEffect } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
-import { DisplayMode, SortBy } from '../lib/constants';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import Radio from '../containers/Radio';
-import { IPreferences } from '../definitions';
+import { type IPreferences } from '../definitions';
 import I18n from '../i18n';
-import { SettingsStackParamList } from '../stacks/types';
+import { type SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../lib/methods/helpers/log';
-import { saveSortPreference } from '../lib/methods';
-import { useAppSelector } from '../lib/hooks';
+import { saveSortPreference } from '../lib/methods/userPreferencesMethods';
+import { useAppSelector } from '../lib/hooks/useAppSelector';
 
 const DisplayPrefsView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
@@ -84,14 +83,13 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
-		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
+		<Switch accessible={false} value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
 	const renderRadio = (value: boolean) => <Radio check={value} size={ICON_SIZE} />;
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container testID='display-view-list'>
 				<List.Section title='Display'>
 					<List.Separator />
@@ -101,7 +99,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-expanded'
 						right={() => renderRadio(displayMode === DisplayMode.Expanded)}
 						onPress={displayExpanded}
-						additionalAcessibilityLabel={displayMode === DisplayMode.Expanded}
+						additionalAccessibilityLabel={displayMode === DisplayMode.Expanded}
 						accessibilityRole='radio'
 					/>
 					<List.Separator />
@@ -111,7 +109,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-condensed'
 						right={() => renderRadio(displayMode === DisplayMode.Condensed)}
 						onPress={displayCondensed}
-						additionalAcessibilityLabel={displayMode === DisplayMode.Condensed}
+						additionalAccessibilityLabel={displayMode === DisplayMode.Condensed}
 						accessibilityRole='radio'
 					/>
 					<List.Separator />
@@ -120,7 +118,8 @@ const DisplayPrefsView = (): React.ReactElement => {
 						title='Avatars'
 						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
-						additionalAcessibilityLabel={showAvatar}
+						additionalAccessibilityLabel={showAvatar}
+						accessibilityRole='switch'
 					/>
 					<List.Separator />
 				</List.Section>
@@ -133,7 +132,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
 						right={() => renderRadio(sortBy === SortBy.Activity)}
-						additionalAcessibilityLabel={sortBy === SortBy.Activity}
+						additionalAccessibilityLabel={sortBy === SortBy.Activity}
 						accessibilityRole='radio'
 					/>
 					<List.Separator />
@@ -143,7 +142,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
 						right={() => renderRadio(sortBy === SortBy.Alphabetical)}
-						additionalAcessibilityLabel={sortBy === SortBy.Alphabetical}
+						additionalAccessibilityLabel={sortBy === SortBy.Alphabetical}
 						accessibilityRole='radio'
 					/>
 					<List.Separator />
@@ -157,7 +156,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
 						right={() => renderCheckBox(showUnread)}
-						additionalAcessibilityLabel={showUnread}
+						additionalAccessibilityLabel={showUnread}
 						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
@@ -167,7 +166,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
 						right={() => renderCheckBox(showFavorites)}
-						additionalAcessibilityLabel={showFavorites}
+						additionalAccessibilityLabel={showFavorites}
 						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
@@ -177,7 +176,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleGroupByType}
 						right={() => renderCheckBox(groupByType)}
-						additionalAcessibilityLabel={groupByType}
+						additionalAccessibilityLabel={groupByType}
 						accessibilityRole='checkbox'
 					/>
 					<List.Separator />

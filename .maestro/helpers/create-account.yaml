@@ -1,0 +1,37 @@
+appId: chat.rocket.reactnative
+name: Create Account
+tags:
+  - 'util'
+
+---
+- evalScript: ${output.user = output.randomUser()}
+- tapOn:
+    id: register-view-name
+- inputText: ${output.user.name}
+- pressKey: enter
+- tapOn:
+    id: register-view-username
+- inputText: ${output.user.username}
+- pressKey: enter
+- tapOn:
+    id: register-view-email
+- inputText: ${output.user.email}
+- pressKey: enter
+- tapOn:
+    id: register-view-password
+- inputText: ${output.user.password}
+- pressKey: enter
+- tapOn:
+    id: register-view-confirm-password
+- inputText: ${output.user.password}
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: register-view-submit
+    centerElement: true
+- tapOn:
+    id: register-view-submit
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
+    timeout: 60000

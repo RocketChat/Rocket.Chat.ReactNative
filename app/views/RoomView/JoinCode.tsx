@@ -7,10 +7,10 @@ import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
-import { IApplicationState } from '../../definitions';
-import { Services } from '../../lib/services';
-import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants/colors';
+import { type IApplicationState } from '../../definitions';
+import { joinRoom } from '../../lib/services/restApi';
+import { type TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -66,7 +66,7 @@ const JoinCode = React.memo(
 
 		const handleJoinRoom = async () => {
 			try {
-				await Services.joinRoom(rid, code, t as any);
+				await joinRoom(rid, code, t as any);
 				onJoin();
 				hide();
 			} catch (e) {
@@ -88,8 +88,13 @@ const JoinCode = React.memo(
 						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}
-							// TODO: find a way to type this ref
-							inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
+							inputRef={(e: any) => {
+								if (e) {
+									InteractionManager.runAfterInteractions(() => {
+										e.focus();
+									});
+								}
+							}}
 							returnKeyType='send'
 							autoCapitalize='none'
 							onChangeText={setCode}

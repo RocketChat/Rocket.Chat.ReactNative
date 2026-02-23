@@ -1,18 +1,14 @@
 import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, LogBox } from 'react-native';
 
-import { name as appName, share as shareName } from './app.json';
+import { name as appName } from './app.json';
 import { isAndroid } from './app/lib/methods/helpers';
 
 if (process.env.USE_STORYBOOK) {
-	require('./app/ReactotronConfig');
-
-	AppRegistry.registerComponent(appName, () => require('./.storybook/index').default);
+	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default);
 } else {
-	if (__DEV__) {
-		require('./app/ReactotronConfig');
-	} else {
+	if (!__DEV__) {
 		console.log = () => {};
 		console.time = () => {};
 		console.timeLog = () => {};
@@ -24,9 +20,10 @@ if (process.env.USE_STORYBOOK) {
 		console.info = () => {};
 	}
 
-	if (isAndroid) {
-		require('./app/lib/notifications/videoConf/backgroundNotificationHandler');
-	}
+	LogBox.ignoreAllLogs();
+
+	// Note: Android video conference notifications are now handled natively
+	// in RCFirebaseMessagingService -> CustomPushNotification -> VideoConfNotification
 
 	AppRegistry.registerComponent(appName, () => require('./app/index').default);
 }

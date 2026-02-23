@@ -1,30 +1,25 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
-import { TSupportedThemes, withTheme } from '../theme';
+import { type TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
-import { themes } from '../lib/constants';
-import * as HeaderButton from '../containers/HeaderButton';
-import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
+import { ModalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
-import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import { type MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
-import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods';
-import { IApplicationState } from '../definitions';
+import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods/triggerActions';
+import { type IApplicationState } from '../definitions';
+import KeyboardView from '../containers/KeyboardView';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		paddingHorizontal: 16
-	},
 	content: {
-		paddingVertical: 16
+		padding: 16
 	}
 });
 
@@ -90,6 +85,13 @@ const mapElementToState = ({ element, blockId, elements = [] }: { element: any; 
 };
 const reduceState = (obj: any, el: any) =>
 	Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] };
+
+const LoadingIndicator = ({ loading }: { loading: boolean }) => {
+	if (loading) {
+		return <ActivityIndicator absolute size='large' />;
+	}
+	return null;
+};
 
 class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
@@ -245,36 +247,37 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 			blockId,
 			value
 		};
+		this.setState({});
 	};
 
 	render() {
 		const { data, loading, errors } = this.state;
-		const { theme, language } = this.props;
+		const { language } = this.props;
 		const { values } = this;
 		const { view } = data;
 		const { blocks } = view;
-
+		// Key must change when block structure changes so the tree remounts and hook count matches.
+		// Kept stable when only form values change (typing) so the input keeps focus.
+		const modalKey = `${data.viewId}-${blocks.length}-${blocks
+			.map((b: any, index: number) => `${b.blockId || b.type}-${index}`)
+			.join('-')}`;
 		return (
-			<KeyboardAwareScrollView
-				style={[styles.container, { backgroundColor: themes[theme].surfaceHover }]}
-				keyboardShouldPersistTaps='always'>
-				<View style={styles.content}>
-					{React.createElement(
-						modalBlockWithContext({
-							action: this.action,
-							state: this.changeState,
-							...data
-						}),
-						{
-							blocks,
-							errors,
-							language,
-							values
-						}
-					)}
-				</View>
-				{loading ? <ActivityIndicator absolute size='large' /> : null}
-			</KeyboardAwareScrollView>
+			<KeyboardView>
+				<ScrollView style={styles.content}>
+					<React.Fragment key={modalKey}>
+						<ModalBlockWithContext
+							action={this.action}
+							state={this.changeState}
+							{...data}
+							blocks={blocks}
+							errors={errors}
+							language={language}
+							values={values}
+						/>
+					</React.Fragment>
+				</ScrollView>
+				<LoadingIndicator loading={loading} />
+			</KeyboardView>
 		);
 	}
 }
@@ -283,4 +286,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	language: state.login.user.language as string
 });
 
-export default connect(mapStateToProps)(withTheme(ModalBlockView));
+export default connect(mapStateToProps)(ModalBlockView);

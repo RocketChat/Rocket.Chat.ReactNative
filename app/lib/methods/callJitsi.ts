@@ -1,4 +1,4 @@
-import { ISubscription } from '../../definitions';
+import { type ISubscription } from '../../definitions';
 import { events, logEvent } from './helpers/log';
 import { store } from '../store/auxStore';
 import Navigation from '../navigation/appNavigation';

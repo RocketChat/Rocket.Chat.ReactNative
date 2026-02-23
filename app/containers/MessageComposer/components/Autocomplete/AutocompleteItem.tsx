@@ -2,7 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { IAutocompleteItemProps, TAutocompleteItem } from '../../interfaces';
+import i18n from '../../../../i18n';
+import { type IAutocompleteItemProps, type TAutocompleteItem } from '../../interfaces';
 import { AutocompleteUserRoom } from './AutocompleteUserRoom';
 import { AutocompleteEmoji } from './AutocompleteEmoji';
 import { AutocompleteSlashCommand } from './AutocompleteSlashCommand';
@@ -20,8 +21,60 @@ const getTestIDSuffix = (item: TAutocompleteItem) => {
 	return item.id;
 };
 
+const getAutocompleteAccessibilityLabel = (item: TAutocompleteItem): string => {
+	switch (item.type) {
+		case '@':
+		case '#': {
+			const subtitleIsUsername = item.id !== 'all' && item.id !== 'here' && item.t === 'd' && !!item.id;
+
+			const usernameLabel = subtitleIsUsername ? i18n.t('Username') : '';
+			const subtitle = item.subtitle ? item.subtitle : '';
+
+			return `${item.title}. ${usernameLabel} ${subtitle}`.trim();
+		}
+
+		case ':':
+			return `:${item.emoji}:`;
+
+		case '/': {
+			if (!item.subtitle) {
+				return `/${item.title}.`;
+			}
+
+			const shouldTranslate = i18n.isTranslated(item.subtitle);
+			let { subtitle } = item;
+
+			if (shouldTranslate) {
+				subtitle = i18n.t(item.subtitle);
+			}
+
+			return `/${item.title}. ${subtitle}`;
+		}
+		case '!': {
+			let subtitle = '';
+			if (item.subtitle) {
+				if (i18n.isTranslated(item.subtitle)) {
+					subtitle = i18n.t(item.subtitle);
+				} else {
+					subtitle = item.subtitle;
+				}
+			}
+			return `${item.title}. ${subtitle}`.trim();
+		}
+
+		case 'loading':
+			return i18n.t('Loading');
+
+		default:
+			return '';
+	}
+};
+
 export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
+	'use memo';
+
 	const [styles, colors] = useStyle();
+	const autocompleteAccessibilityLabel = getAutocompleteAccessibilityLabel(item);
 	return (
 		<RectButton
 			onPress={() => onPress(item)}
@@ -29,7 +82,7 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 			style={{ backgroundColor: colors.surfaceLight }}
 			rippleColor={colors.buttonBackgroundPrimaryPress}
 			testID={`autocomplete-item-${getTestIDSuffix(item)}`}>
-			<View style={styles.item}>
+			<View accessible accessibilityLabel={autocompleteAccessibilityLabel} style={styles.item}>
 				{item.type === '@' || item.type === '#' ? <AutocompleteUserRoom item={item} /> : null}
 				{item.type === ':' ? <AutocompleteEmoji item={item} /> : null}
 				{item.type === '/' ? <AutocompleteSlashCommand item={item} /> : null}
