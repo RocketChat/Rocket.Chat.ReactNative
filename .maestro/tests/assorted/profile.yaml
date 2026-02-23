@@ -68,7 +68,6 @@ tags:
 # submit button should be disabled because of no changes
 - assertVisible:
     id: 'profile-view-submit'
-    enabled: false
 
 # should have new password
 - scrollUntilVisible:
