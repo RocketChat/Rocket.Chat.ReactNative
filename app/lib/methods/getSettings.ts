@@ -14,6 +14,7 @@ import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
 import { compareServerVersion } from './helpers';
+import syncWatchOSQuickRepliesWithServer from './WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -185,6 +186,12 @@ export async function getSettings(): Promise<void> {
 		const parsedSettings = parseSettings(filteredSettings);
 
 		reduxStore.dispatch(addSettings(parsedSettings));
+
+		try {
+			syncWatchOSQuickRepliesWithServer();
+		} catch (e) {
+			log(e);
+		}
 
 		setPresenceCap(parsedSettings.Presence_broadcast_disabled);
 

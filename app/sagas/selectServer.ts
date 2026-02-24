@@ -43,6 +43,8 @@ import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
+import { syncWatchOSQuickReplies } from '../lib/methods/WatchOSQuickReplies/syncReplies';
+import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -271,8 +273,26 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	}
 };
 
+function* handleServerFinishAdd() {
+	try {
+		const state = yield* appSelector(s => s);
+
+		const { server } = state.server;
+		if (!server) return;
+
+		// sets the local mmkv
+		syncWatchOSQuickRepliesWithServer();
+
+		// sets the watch app quick replies
+		syncWatchOSQuickReplies();
+	} catch (e) {
+		log(e);
+	}
+}
+
 const root = function* root() {
 	yield takeLatest<IServerRequestAction>(SERVER.REQUEST, handleServerRequest);
 	yield takeLatest<ISelectServerAction>(SERVER.SELECT_REQUEST, handleSelectServer);
+	yield takeLatest(SERVER.FINISH_ADD, handleServerFinishAdd);
 };
 export default root;

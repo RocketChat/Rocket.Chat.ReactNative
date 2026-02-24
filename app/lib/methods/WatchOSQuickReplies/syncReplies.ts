@@ -8,6 +8,9 @@ export function syncWatchOSQuickReplies() {
 		console.log(NativeWatchModule.isWatchSupported());
 		console.log(NativeWatchModule.isWatchPaired());
 		console.log(NativeWatchModule.isWatchAppInstalled());
+		console.log(NativeWatchModule.getCurrentServerFromNative());
+		console.log(NativeWatchModule.getReplies());
+		console.log(NativeWatchModule.getkey());
 
 		return true;
 	} catch (e) {

@@ -11,7 +11,8 @@
 @implementation RCTWatchModule
 
 // sync this with key declared in keys.ts
-NSString *mmkvQuickRepliesKey = @"RC_WATCHOS_QUICKREPIES";
+NSString *mmkvQuickRepliesKey = @"RC_WATCHOS_QUICKREPLIES";
+NSString *mmkvCurrentServerKey = @"currentServer";
 
 #pragma mark - initialisation
 
@@ -64,7 +65,14 @@ NSString *mmkvQuickRepliesKey = @"RC_WATCHOS_QUICKREPIES";
 
 #pragma mark - spec methods (declared in spec)
 - (void)syncQuickReplies {
-    NSString *replies = [self getValueFromMMKV:mmkvQuickRepliesKey];
+    NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];
+    if (!currentServer || currentServer.length == 0) {
+        RCTLogInfo(@"No current server found");
+        return;
+    }
+    NSString *quickRepliesKey = [NSString stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
+    
+    NSString *replies = [self getValueFromMMKV:quickRepliesKey];
 
     if (replies && replies.length > 0) {
         NSData *data = [replies dataUsingEncoding:NSUTF8StringEncoding];
@@ -137,6 +145,28 @@ NSString *mmkvQuickRepliesKey = @"RC_WATCHOS_QUICKREPIES";
         BOOL available = [_session isWatchAppInstalled];
         return @(available);
     }
+}
+
+- (NSString *)getCurrentServerFromNative{
+    NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];
+    return currentServer;
+}
+
+- (NSString *)getkey{
+    NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];
+    NSString *quickRepliesKey = [NSString stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
+    return quickRepliesKey;
+}
+- (NSString *)getReplies{
+    NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];
+    if (!currentServer || currentServer.length == 0) {
+        RCTLogInfo(@"No current server found");
+        return @"error no current server found";
+    }
+    NSString *quickRepliesKey = [NSString stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
+    
+    NSString *replies = [self getValueFromMMKV:quickRepliesKey];
+    return replies;
 }
 
 @end
