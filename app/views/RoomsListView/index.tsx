@@ -28,6 +28,9 @@ import { useRefresh } from './hooks/useRefresh';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import styles from './styles';
 
+const ITEM_TYPE_SECTION = 'section';
+const ITEM_TYPE_ROOM = 'room';
+
 const RoomsListView = memo(function RoomsListView() {
 	'use memo';
 
@@ -75,6 +78,8 @@ const RoomsListView = memo(function RoomsListView() {
 		},
 		[navigation, subscribedRoom, stopSearch, isMasterDetail]
 	);
+
+	const getItemType = useCallback((item: IRoomItem) => (item.separator ? ITEM_TYPE_SECTION : ITEM_TYPE_ROOM), []);
 
 	const renderItem = useCallback(
 		({ item }: { item: IRoomItem }) => {
@@ -134,6 +139,7 @@ const RoomsListView = memo(function RoomsListView() {
 		<FlashList
 			data={searchEnabled ? searchResults : subscriptions}
 			extraData={searchEnabled ? searchResults : subscriptions}
+			getItemType={getItemType}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 			renderItem={renderItem}
