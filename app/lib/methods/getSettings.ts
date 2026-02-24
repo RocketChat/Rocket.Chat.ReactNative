@@ -188,7 +188,7 @@ export async function getSettings(): Promise<void> {
 		reduxStore.dispatch(addSettings(parsedSettings));
 
 		try {
-			syncWatchOSQuickRepliesWithServer();
+			syncWatchOSQuickRepliesWithServer(reduxStore.getState());
 		} catch (e) {
 			log(e);
 		}

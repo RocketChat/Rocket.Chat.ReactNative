@@ -281,7 +281,7 @@ function* handleServerFinishAdd() {
 		if (!server) return;
 
 		// sets the local mmkv
-		syncWatchOSQuickRepliesWithServer();
+		syncWatchOSQuickRepliesWithServer(state);
 
 		// sets the watch app quick replies
 		syncWatchOSQuickReplies();

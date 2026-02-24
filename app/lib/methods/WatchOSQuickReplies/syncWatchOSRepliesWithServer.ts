@@ -1,11 +1,9 @@
-import store from '../../store';
 import { WATCHOS_QUICKREPLIES } from '../../constants/keys';
 import UserPreferences from '../userPreferences';
 import { syncWatchOSQuickReplies } from './syncReplies';
 import { type IApplicationState } from '../../../definitions';
 
-const syncWatchOSQuickRepliesWithServer = () => {
-	const state = store.getState() as IApplicationState;
+const syncWatchOSQuickRepliesWithServer = (state: IApplicationState) => {
 	const isFirstLogin = state.app.isFirstServerLogin;
 	const { server } = state.server;
 	const appleWatchReplies = state.settings.Apple_Watch_Quick_Actions;
