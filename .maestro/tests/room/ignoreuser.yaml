@@ -142,14 +142,14 @@ tags:
 - runFlow:
     when:
       platform: iOS
-    commands: 
+    commands:
       - tapOn:
           id: username-header-${output.otherUser.username}
           retryTapIfNoChange: true
 - runFlow:
     when:
       platform: Android
-    commands: 
+    commands:
       - tapOn:
           text: .*${output.otherUser.username}.*
           retryTapIfNoChange: true
@@ -223,14 +223,14 @@ tags:
 - runFlow:
     when:
       platform: iOS
-    commands: 
+    commands:
       - tapOn:
           id: username-header-${output.otherUser.username}
           retryTapIfNoChange: true
 - runFlow:
     when:
       platform: Android
-    commands: 
+    commands:
       - tapOn:
           text: .*${output.otherUser.username}.*
           retryTapIfNoChange: true
