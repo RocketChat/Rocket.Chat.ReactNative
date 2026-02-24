@@ -7,6 +7,7 @@ import i18n from '../../../i18n';
 import EventEmitter from './events';
 import { Encryption } from '../../encryption';
 import { sanitizeFileName } from '../handleMediaDownload';
+import { headers } from './fetch';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 
@@ -18,7 +19,7 @@ export const fileDownload = async (url: string, attachment?: IAttachment, fileNa
 	if (attachment?.title) {
 		path = `${path}${sanitizeFileName(attachment.title)}`;
 	}
-	const file = await FileSystem.downloadAsync(url, path);
+	const file = await FileSystem.downloadAsync(url, path, { headers: headers as Record<string, string> });
 	return file.uri;
 };
 
