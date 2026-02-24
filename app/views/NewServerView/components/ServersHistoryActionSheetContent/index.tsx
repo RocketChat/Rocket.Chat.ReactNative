@@ -13,7 +13,7 @@ import sharedStyles from '../../../Styles';
 const styles = StyleSheet.create({
 	header: {
 		height: 41,
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: 1,
 		alignItems: 'center',
 		flexDirection: 'row',
 		justifyContent: 'space-between'
