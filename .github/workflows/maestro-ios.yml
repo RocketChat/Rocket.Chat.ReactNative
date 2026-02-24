@@ -53,7 +53,7 @@ jobs:
       - name: Boot Simulator
         timeout-minutes: 15
         run: |
-          SIM_NAME="iPhone SE (3rd generation)"
+          SIM_NAME="iPhone 16 Pro"
 
           echo "Booting simulator: $SIM_NAME"
 
