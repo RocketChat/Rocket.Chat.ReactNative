@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
+
+: "${ANDROID_HOME:=${ANDROID_SDK_ROOT:-}}"
+: "${ANDROID_HOME:?Set ANDROID_HOME or ANDROID_SDK_ROOT}"
 
 AVD_NAME="pixel_7_pro"
 API_LEVEL="34"
@@ -8,6 +11,7 @@ TARGET="google_apis"
 ARCH="arm64-v8a"
 
 SDK_BIN="$ANDROID_HOME/cmdline-tools/latest/bin"
+[[ -x "$SDK_BIN/sdkmanager" ]] || { echo "sdkmanager not found at $SDK_BIN" >&2; exit 1; }
 
 echo "Installing Android emulator + system image..."
 
