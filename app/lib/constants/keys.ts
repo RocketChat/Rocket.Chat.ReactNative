@@ -26,3 +26,4 @@ export const TOKEN_KEY = 'reactnativemeteor_usertoken';
 export const CURRENT_SERVER = 'currentServer';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const WATCHOS_QUICKREPLIES = 'RC_WATCHOS_QUICKREPIES';
+export const FIRST_START = 'RC_FIRST_START';
