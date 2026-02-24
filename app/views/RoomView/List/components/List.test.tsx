@@ -5,15 +5,6 @@ import List from './List';
 import { RoomContext } from '../../context';
 import { type TAnyMessageModel } from '../../../../definitions';
 
-jest.mock('@shopify/flash-list', () => {
-	const React = require('react');
-	const { FlatList } = require('react-native');
-
-	return {
-		FlashList: React.forwardRef((props: any, ref: any) => <FlatList ref={ref} {...props} />)
-	};
-});
-
 const messages = [{ id: '1' }, { id: '2' }] as TAnyMessageModel[];
 
 const renderList = (isAutocompleteVisible: boolean) =>
@@ -24,7 +15,7 @@ const renderList = (isAutocompleteVisible: boolean) =>
 				jumpToBottom={jest.fn()}
 				data={messages}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => null}
+				renderItem={() => null}
 			/>
 		</RoomContext.Provider>
 	);

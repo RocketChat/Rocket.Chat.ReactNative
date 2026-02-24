@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { memo, useContext, useEffect } from 'react';
+import React, { memo, useCallback, useContext, useEffect } from 'react';
 import { BackHandler, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
@@ -60,48 +60,54 @@ const RoomsListView = memo(function RoomsListView() {
 		return () => subscription.remove();
 	}, [searchEnabled]);
 
-	const onPressItem = (item = {} as IRoomItem) => {
-		if (!navigation.isFocused()) {
-			return;
-		}
-		if (item.rid === subscribedRoom) {
-			return;
-		}
+	const onPressItem = useCallback(
+		(item = {} as IRoomItem) => {
+			if (!navigation.isFocused()) {
+				return;
+			}
+			if (item.rid === subscribedRoom) {
+				return;
+			}
 
-		logEvent(events.RL_GO_ROOM);
-		stopSearch();
-		goRoom({ item, isMasterDetail });
-	};
+			logEvent(events.RL_GO_ROOM);
+			stopSearch();
+			goRoom({ item, isMasterDetail });
+		},
+		[navigation, subscribedRoom, stopSearch, isMasterDetail]
+	);
 
-	const renderItem = ({ item }: { item: IRoomItem }) => {
-		if (item.separator) {
-			return <SectionHeader header={item.rid} />;
-		}
+	const renderItem = useCallback(
+		({ item }: { item: IRoomItem }) => {
+			if (item.separator) {
+				return <SectionHeader header={item.rid} />;
+			}
 
-		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
-		// TODO: move to RoomItem
-		const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
+			const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
+			// TODO: move to RoomItem
+			const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
 
-		return (
-			<RoomItem
-				item={item}
-				id={id}
-				username={username}
-				showLastMessage={showLastMessage}
-				onPress={onPressItem}
-				// TODO: move to RoomItem
-				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-				useRealName={useRealName}
-				getRoomTitle={getRoomTitle}
-				getRoomAvatar={getRoomAvatar}
-				getIsRead={isRead}
-				isFocused={subscribedRoom === item.rid}
-				swipeEnabled={swipeEnabled}
-				showAvatar={showAvatar}
-				displayMode={displayMode}
-			/>
-		);
-	};
+			return (
+				<RoomItem
+					item={item}
+					id={id}
+					username={username}
+					showLastMessage={showLastMessage}
+					onPress={onPressItem}
+					// TODO: move to RoomItem
+					width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
+					useRealName={useRealName}
+					getRoomTitle={getRoomTitle}
+					getRoomAvatar={getRoomAvatar}
+					getIsRead={isRead}
+					isFocused={subscribedRoom === item.rid}
+					swipeEnabled={swipeEnabled}
+					showAvatar={showAvatar}
+					displayMode={displayMode}
+				/>
+			);
+		},
+		[username, showLastMessage, onPressItem, isMasterDetail, width, useRealName, subscribedRoom, showAvatar, displayMode]
+	);
 
 	if (searchEnabled) {
 		if (searching) {
@@ -136,6 +142,7 @@ const RoomsListView = memo(function RoomsListView() {
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
 			onEndReachedThreshold={0.5}
 			keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
+			drawDistance={300}
 		/>
 	);
 });

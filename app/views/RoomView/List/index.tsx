@@ -20,6 +20,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			jumpToMessage,
 			cancelJumpToMessage,
 			viewabilityConfigCallbackPairs,
+			handleScrollToIndexFailed,
 			highlightedMessageId
 		} = useScroll({ listRef, messagesIds });
 
@@ -40,12 +41,13 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 				<List
 					listRef={listRef}
 					data={messages}
-					keyExtractor={item => item.id}
 					renderItem={renderItem}
 					onEndReached={onEndReached}
+					onScrollToIndexFailed={handleScrollToIndexFailed}
 					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
 					jumpToBottom={jumpToBottom}
 					maintainVisibleContentPosition={{
+						minIndexForVisible: 0,
 						autoscrollToTopThreshold: 0
 					}}
 				/>
