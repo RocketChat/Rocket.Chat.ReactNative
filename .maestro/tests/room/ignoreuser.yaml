@@ -89,7 +89,7 @@ tags:
       id: 'username-header-${output.otherUser.username}'
     timeout: 60000
 - tapOn:
-    text: ${output.otherUser.username}
+    text: .*${output.otherUser.username}.*
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -151,7 +151,7 @@ tags:
       platform: Android
     commands: 
       - tapOn:
-          text: ${output.otherUser.username}
+          text: .*${output.otherUser.username}.*
           retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -232,7 +232,7 @@ tags:
       platform: Android
     commands: 
       - tapOn:
-          text: ${output.otherUser.username}
+          text: .*${output.otherUser.username}.*
           retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
