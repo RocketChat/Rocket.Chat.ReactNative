@@ -90,7 +90,6 @@ tags:
     timeout: 60000
 - tapOn:
     text: ${output.otherUser.username}
-    index: 0
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -140,9 +139,20 @@ tags:
     visible:
       id: 'username-header-${output.otherUser.username}'
     timeout: 60000
-- tapOn:
-    id: 'username-header-${output.otherUser.username}'
-    retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: iOS
+    commands: 
+      - tapOn:
+          id: username-header-${output.otherUser.username}
+          retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: Android
+    commands: 
+      - tapOn:
+          text: ${output.otherUser.username}
+          retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Unignore'
@@ -210,9 +220,20 @@ tags:
     visible:
       id: username-header-${output.otherUser.username}
     timeout: 60000
-- tapOn:
-    id: username-header-${output.otherUser.username}
-    retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: iOS
+    commands: 
+      - tapOn:
+          id: username-header-${output.otherUser.username}
+          retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: Android
+    commands: 
+      - tapOn:
+          text: ${output.otherUser.username}
+          retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       id: 'room-info-view'
