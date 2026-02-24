@@ -20,13 +20,19 @@ $SDK_BIN/sdkmanager "platform-tools"
 $SDK_BIN/sdkmanager "platforms;android-$API_LEVEL"
 $SDK_BIN/sdkmanager "system-images;android-$API_LEVEL;$TARGET;$ARCH"
 
-yes | $SDK_BIN/sdkmanager --licenses
+$SDK_BIN/sdkmanager --licenses < /dev/null || true
 
 echo "Checking existing AVD..."
 
-if $SDK_BIN/avdmanager list avd | grep -q "$AVD_NAME"; then
+EMU_BIN="$ANDROID_HOME/emulator/emulator"
+
+echo "Checking existing AVD..."
+
+if "$EMU_BIN" -list-avds | grep -qx "$AVD_NAME"; then
   echo "AVD already exists — deleting for clean alignment"
   $SDK_BIN/avdmanager delete avd -n "$AVD_NAME"
+else
+  echo "No existing AVD found"
 fi
 
 echo "Creating Pixel 7 Pro AVD..."
