@@ -49,7 +49,3 @@ fastboot.forceColdBoot=yes
 EOF
 
 echo "✅ Emulator '$AVD_NAME' created successfully"
-echo ""
-echo "You can start it using:"
-echo ""
-echo "emulator -avd $AVD_NAME -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot -no-snapshot-save -wipe-data"
