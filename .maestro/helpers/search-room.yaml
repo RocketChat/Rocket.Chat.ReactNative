@@ -5,6 +5,8 @@ tags:
 ---
 - assertVisible:
     id: 'rooms-list-view'
+- waitForAnimationToEnd:
+    timeout: 5000
 - tapOn:
     id: 'rooms-list-view-search'
 - tapOn:
