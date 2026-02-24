@@ -2,6 +2,7 @@ import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
+import { useFonts } from 'expo-font';
 
 import type { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
@@ -16,7 +17,7 @@ import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import ShareExtensionStack from './stacks/ShareExtensionStack';
 import { ThemeContext } from './theme';
-import { setCurrentScreen } from './lib/methods/helpers/log';
+import log, { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants/colors';
 import { emitter } from './lib/methods/helpers';
 
@@ -43,7 +44,15 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 		}
 	}, [root]);
 
-	if (!root) {
+	const [loaded, fontError] = useFonts({
+		custom: require('./static/fonts/custom.ttf')
+	});
+
+	if (fontError) {
+		log(fontError);
+	}
+
+	if ((!loaded && !fontError) || !root) {
 		return null;
 	}
 
