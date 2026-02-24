@@ -32,7 +32,7 @@ const ForwardMessageView = () => {
 	const { blockUnauthenticatedAccess, server, serverVersion, user } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		server: state.server.server,
-		blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+		blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess,
 		serverVersion: state.server.version as string
 	}));
 
