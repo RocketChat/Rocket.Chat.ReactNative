@@ -138,7 +138,7 @@ const RoomsListView = memo(function RoomsListView() {
 	return (
 		<FlashList
 			data={searchEnabled ? searchResults : subscriptions}
-			extraData={searchEnabled ? searchResults : subscriptions}
+			extraData={[searchEnabled ? searchResults : subscriptions, subscribedRoom]}
 			getItemType={getItemType}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
