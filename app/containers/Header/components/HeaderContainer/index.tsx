@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useWindowDimensions, View, type ViewProps, StyleSheet } from 'react-native';
+import { useWindowDimensions, View, type ViewProps, StyleSheet, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../../../theme';
@@ -17,6 +17,7 @@ const HeaderContainer = memo(
 
 		const insets = useSafeAreaInsets();
 		const { colors } = useTheme();
+		const isAndroid = Platform.OS === 'android';
 		const { height, width } = useWindowDimensions();
 		const isPortrait = height > width;
 		const paddingTop = isPortrait && !isMasterDetail ? 0 : 4;
@@ -27,6 +28,7 @@ const HeaderContainer = memo(
 		return (
 			<View
 				style={{
+					minHeight: isAndroid ? 56 : 44,
 					alignItems: 'center',
 					flexDirection: 'row',
 					paddingBottom,
