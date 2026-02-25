@@ -22,6 +22,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Create AVD
+        run: |
+          chmod +x scripts/create-avd.sh
+          scripts/create-avd.sh
+
       - name: Download APK
         uses: actions/download-artifact@v4
         with:
@@ -46,17 +54,22 @@ jobs:
       - name: Make Maestro script executable
         run: chmod +x .github/scripts/run-maestro.sh
 
+      - name: Prepare Emulator Config
+        run: |
+          chmod +x scripts/create-avd.sh
+          scripts/create-avd.sh
+
       - name: Start Android Emulator and Run Maestro Tests
         uses: reactivecircus/android-emulator-runner@v2
-        timeout-minutes: 120
+        timeout-minutes: 60
         with:
-          api-level: 34
-          disk-size: 4096M
-          arch: x86_64
-          target: google_apis
-          profile: pixel_7_pro
+          api-level: ${{ env.API_LEVEL }}
+          arch: ${{ env.ABI }}
+          target: ${{ env.TARGET }}
+          profile: ${{ env.PROFILE }}
           cores: 4
           ram-size: 4096M
+          disk-size: 4096M
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
