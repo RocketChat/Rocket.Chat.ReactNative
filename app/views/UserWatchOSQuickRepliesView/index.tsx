@@ -82,6 +82,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 						onChangeText={text => setInput(text)}
 						placeholder={I18n.t('Add_Quick_Reply')}
 						onSubmitEditing={addQuickReply}
+						maxLength={30}
 					/>
 					<List.Separator />
 					<List.Info info='WatchOS_Quick_Replies_Description' />
