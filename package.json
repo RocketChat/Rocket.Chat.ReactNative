@@ -151,7 +151,6 @@
 		"@babel/runtime": "~7.25.9",
 		"@bugsnag/cli": "^3.2.1",
 		"@bugsnag/source-maps": "^2.3.3",
-		"@gorhom/bottom-sheet": "^5.1.6",
 		"@react-native-community/cli": "18.0.0",
 		"@react-native-community/cli-platform-android": "18.0.0",
 		"@react-native-community/cli-platform-ios": "18.0.0",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { KeyboardExtendedBaseView } from 'react-native-external-keyboard';
-import { View as RNView, Platform } from 'react-native';
+import { View as RNView } from 'react-native';
 
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
 import { useTheme } from '../../theme';
@@ -8,8 +8,9 @@ import IconOrAvatar from './IconOrAvatar';
 import { type IWrapperProps } from './interfaces';
 import styles from './styles';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { isAndroid } from '../../lib/methods/helpers';
 
-const View = Platform.OS === 'android' ? KeyboardExtendedBaseView : RNView;
+const View = isAndroid ? KeyboardExtendedBaseView : RNView;
 
 const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapperProps): React.ReactElement => {
 	const { colors } = useTheme();
