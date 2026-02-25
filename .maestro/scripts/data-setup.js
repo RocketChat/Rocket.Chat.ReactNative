@@ -20,7 +20,6 @@ const getDeepLink = (method, server, ...params) => {
     return deeplink;
 };
 
-
 const login = (username, password) => {
     const response = http.post(`${data.server}/api/v1/login`, {
         headers: {
@@ -43,7 +42,6 @@ const createUser = (customProps) => {
     const user = output.randomUser();
 
     login(output.account.adminUser, output.account.adminPassword);
-
     http.post(`${data.server}/api/v1/users.create`, {
         headers: {
             'Content-Type': 'application/json',
@@ -70,29 +68,6 @@ const createUserWithPasswordChange = () => {
     return createUser({ requirePasswordChange: true });
 }
 
-const deleteCreatedUser = async ({ username: usernameToDelete }) => {
-    try {
-        login(output.account.adminUser, output.account.adminPassword);
-
-        const result = http.get(`${data.server}/api/v1/users.info?username=${usernameToDelete}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers
-            }
-        });
-
-        const userId = json(result.body)?.data?.user?._id;
-        http.post(`${data.server}/api/v1/users.delete`, { userId, confirmRelinquish: true }, {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers
-            }
-        });
-    } catch (error) {
-        console.log(JSON.stringify(error));
-    }
-};
-
 const createRandomTeam = (username, password) => {
     login(username, password);
 
@@ -104,6 +79,10 @@ const createRandomTeam = (username, password) => {
             ...headers
         },
         body: JSON.stringify({ "name": teamName, "members": [], "type": 1, "room": { "readOnly": false, "extraData": { "topic": "", "broadcast": false, "encrypted": false } } })
+    });
+
+    data.teams.push({
+        name: teamName
     });
 
     return teamName;
@@ -122,6 +101,11 @@ const createRandomRoom = (username, password, type = 'c') => {
     });
 
     const result = json(response.body);
+
+    data.rooms.push({
+        name: type === 'c' ? result.channel.name : result.group.name,
+        _id: type === 'c' ? result.channel._id : result.group._id
+    });
 
     return {
         _id: type === 'c' ? result.channel._id : result.group._id,
@@ -195,24 +179,92 @@ const createDM = (username, password, otherUsername) => {
     return json(result.body);
 }
 
-// Delete created users to avoid use all the Seats Available on the server
+const deleteCreatedUser = async (username) => {
+    try {
+        http.post(`${data.server}/api/v1/users.delete`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers
+            },
+            body: JSON.stringify({
+                username,
+                confirmRelinquish: true
+            })
+        });
+    } catch (error) {
+        console.log(JSON.stringify(error));
+    }
+};
+
 const deleteCreatedUsers = () => {
     if (data.accounts.length) {
         for (const deleteUser of data.accounts) {
-            deleteCreatedUser(deleteUser);
+            deleteCreatedUser(deleteUser.username);
         }
     }
 };
 
-function logAccounts() {
-    console.log(JSON.stringify(data.accounts));
-}
+const deleteCreatedRoom = async (roomId) => {
+    try {
+        http.post(`${data.server}/api/v1/rooms.delete`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers
+            },
+            body: JSON.stringify({
+                roomId
+            })
+        });
+    } catch (error) {
+        console.log(JSON.stringify(error));
+    }
+};
+
+const deleteCreatedRooms = () => {
+    if (data.rooms.length) {
+        for (const deleteRoom of data.rooms) {
+            deleteCreatedRoom(deleteRoom._id);
+        }
+    }
+};
+
+const deleteCreatedTeam = async (teamName) => {
+    try {
+        http.post(`${data.server}/api/v1/teams.delete`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers
+            },
+            body: JSON.stringify({
+                teamName
+            })
+        });
+    } catch (error) {
+        console.log(JSON.stringify(error));
+    }
+};
+
+const deleteCreatedTeams = () => {
+    if (data.teams.length) {
+        for (const deleteTeam of data.teams) {
+            deleteCreatedTeam(deleteTeam.name);
+        }
+    }
+};
+
+const cleanUp = () => {
+    login(output.account.adminUser, output.account.adminPassword);
+
+    deleteCreatedUsers();
+    deleteCreatedRooms();
+    deleteCreatedTeams();
+};
+
 
 output.utils = {
     createUser,
     createUserWithPasswordChange,
-    logAccounts,
-    deleteCreatedUsers,
+    cleanUp,
     createRandomTeam,
     createRandomRoom,
     sendMessage,

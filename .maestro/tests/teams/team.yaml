@@ -2,8 +2,8 @@ appId: chat.rocket.reactnative
 name: Team
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
-onFlowEnd:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
+onFlowComplete:
+  - evalScript: ${output.utils.cleanUp()}
 tags:
   - test-4
 
@@ -106,7 +106,7 @@ tags:
 - tapOn:
     id: create-channel-name
 - inputText: ${output.privateRoomName}
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: create-channel-submit
@@ -297,7 +297,7 @@ tags:
 - tapOn:
     id: select-users-view-search
 - inputText: rocket.cat
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: select-users-view-item-rocket.cat
@@ -316,7 +316,7 @@ tags:
     id: select-users-view-search
 - eraseText
 - inputText: ${output.secondUser.username}
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: select-users-view-item-${output.secondUser.username}

@@ -4,7 +4,7 @@ onFlowStart:
   - runFlow: ../../../helpers/setup.yaml
   - evalScript: ${output.createdUser = output.utils.createUser()}
 onFlowComplete:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
+  - evalScript: ${output.utils.cleanUp()}
 tags:
   - test-2
 
@@ -18,7 +18,7 @@ tags:
 - tapOn:
     id: 'login-view-password'
 - inputText: ${output.createdUser.password}
-- hideKeyboard
+- runFlow: '../../../helpers/hide-keyboard.yaml'
 - tapOn:
     id: login-view-submit
 - extendedWaitUntil:

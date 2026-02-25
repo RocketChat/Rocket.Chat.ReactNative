@@ -3,7 +3,7 @@ name: Change Avatar
 onFlowStart:
   - runFlow: '../../helpers/setup.yaml'
 onFlowComplete:
-  - evalScript: ${output.utils.deleteCreatedUsers()}
+  - evalScript: ${output.utils.cleanUp()}
 tags:
   - test-5
 
@@ -173,7 +173,7 @@ tags:
     timeout: 60000
 - tapOn:
     text: 'Fetch image from URL'
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: 'change-avatar-view-submit'
