@@ -88,9 +88,20 @@ tags:
     visible:
       id: 'username-header-${output.otherUser.username}'
     timeout: 60000
-- tapOn:
-    text: .*${output.otherUser.username}.*
-    retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn:
+          text: .*${output.otherUser.username}.*
+          retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'username-header-${output.otherUser.username}'
+          retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
       text: 'Ignore'
@@ -141,17 +152,17 @@ tags:
     timeout: 60000
 - runFlow:
     when:
-      platform: iOS
-    commands:
-      - tapOn:
-          id: username-header-${output.otherUser.username}
-          retryTapIfNoChange: true
-- runFlow:
-    when:
       platform: Android
     commands:
       - tapOn:
           text: .*${output.otherUser.username}.*
+          retryTapIfNoChange: true
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          text: 'username-header-${output.otherUser.username}'
           retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
