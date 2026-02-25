@@ -21,6 +21,7 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
         }
       >
         <View
+          focusable={false}
           style={
             [
               {
@@ -274,6 +275,7 @@ exports[`Story Snapshots: Black should match snapshot 1`] = `
         }
       >
         <View
+          focusable={false}
           style={
             [
               {
@@ -939,6 +941,7 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
         }
       >
         <View
+          focusable={false}
           style={
             [
               {
@@ -1192,6 +1195,7 @@ exports[`Story Snapshots: Dark should match snapshot 1`] = `
         }
       >
         <View
+          focusable={false}
           style={
             [
               {
@@ -1857,6 +1861,7 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
         }
       >
         <View
+          focusable={false}
           style={
             [
               {
@@ -2110,6 +2115,7 @@ exports[`Story Snapshots: Light should match snapshot 1`] = `
         }
       >
         <View
+          focusable={false}
           style={
             [
               {
