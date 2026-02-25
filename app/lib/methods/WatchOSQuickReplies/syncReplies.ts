@@ -1,17 +1,10 @@
 import NativeWatchModule from '../../native/NativeWatchModule';
+import { shouldShowWatchAppOptions } from './getWatchStatus';
 
 export function syncWatchOSQuickReplies() {
+	if (!shouldShowWatchAppOptions()) return;
 	try {
-		// const success: boolean = await WatchBridge.syncQuickReplies(replies);
-
-		console.log(NativeWatchModule.syncQuickReplies());
-		console.log(NativeWatchModule.isWatchSupported());
-		console.log(NativeWatchModule.isWatchPaired());
-		console.log(NativeWatchModule.isWatchAppInstalled());
-		console.log(NativeWatchModule.getCurrentServerFromNative());
-		console.log(NativeWatchModule.getReplies());
-		console.log(NativeWatchModule.getkey());
-
+		NativeWatchModule.syncQuickReplies();
 		return true;
 	} catch (e) {
 		console.error('Failed to send quick replies', e);

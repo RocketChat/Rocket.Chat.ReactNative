@@ -15,6 +15,7 @@ import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
 import { compareServerVersion } from './helpers';
 import syncWatchOSQuickRepliesWithServer from './WatchOSQuickReplies/syncWatchOSRepliesWithServer';
+import { shouldShowWatchAppOptions } from './WatchOSQuickReplies/getWatchStatus';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -187,10 +188,13 @@ export async function getSettings(): Promise<void> {
 
 		reduxStore.dispatch(addSettings(parsedSettings));
 
-		try {
-			syncWatchOSQuickRepliesWithServer(reduxStore.getState());
-		} catch (e) {
-			log(e);
+		if (shouldShowWatchAppOptions()) {
+			try {
+				// case: when we switched to another server which is already added
+				syncWatchOSQuickRepliesWithServer(reduxStore.getState());
+			} catch (e) {
+				log(e);
+			}
 		}
 
 		setPresenceCap(parsedSettings.Presence_broadcast_disabled);

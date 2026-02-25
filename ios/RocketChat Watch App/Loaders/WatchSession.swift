@@ -69,8 +69,6 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
         _ session: WCSession,
         didReceiveApplicationContext applicationContext: [String: Any]
     ) {
-        print(applicationContext)
-
         guard
             let serverString = applicationContext["server"] as? String,
             let replies = applicationContext["quickReplies"] as? [String],
@@ -81,12 +79,9 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
             return
         }
 
+        // store quick replies per server
         server.quickReplies = replies
-
-        // Save DB
         serversDB.save()
-
-        print("Quick replies stored for server:", serverString)
     }
 }
 

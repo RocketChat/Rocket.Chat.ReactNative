@@ -5,6 +5,7 @@ import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
 import { call } from 'typed-redux-saga';
 
+import { shouldShowWatchAppOptions } from '../lib/methods/WatchOSQuickReplies/getWatchStatus';
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
 import {
@@ -280,11 +281,14 @@ function* handleServerFinishAdd() {
 		const { server } = state.server;
 		if (!server) return;
 
-		// sets the local mmkv
-		syncWatchOSQuickRepliesWithServer(state);
+		if (shouldShowWatchAppOptions()) {
+			// case: when new server is added and switched
+			// sets the local mmkv
+			syncWatchOSQuickRepliesWithServer(state);
 
-		// sets the watch app quick replies
-		syncWatchOSQuickReplies();
+			// sets the watch app quick replies
+			syncWatchOSQuickReplies();
+		}
 	} catch (e) {
 		log(e);
 	}

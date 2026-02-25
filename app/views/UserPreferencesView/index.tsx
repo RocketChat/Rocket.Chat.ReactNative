@@ -15,6 +15,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
 import { type IUser } from '../../definitions';
+import { shouldShowWatchAppOptions } from '../../lib/methods/WatchOSQuickReplies/getWatchStatus';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -116,16 +117,18 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					/>
 					<List.Separator />
 				</List.Section>
-				<List.Section title='WatchOS_Quick_Replies'>
-					<List.Separator />
-					<List.Item
-						title='WatchOS_Quick_Replies'
-						onPress={() => navigateToScreen('UserWatchOSQuickRepliesView')}
-						showActionIndicator
-						testID='preferences-view-watchos-quickreplies'
-					/>
-					<List.Separator />
-				</List.Section>
+				{shouldShowWatchAppOptions() ? (
+					<List.Section title='WatchOS_Quick_Replies'>
+						<List.Separator />
+						<List.Item
+							title='WatchOS_Quick_Replies'
+							onPress={() => navigateToScreen('UserWatchOSQuickRepliesView')}
+							showActionIndicator
+							testID='preferences-view-watchos-quickreplies'
+						/>
+						<List.Separator />
+					</List.Section>
+				) : null}
 			</List.Container>
 		</SafeAreaView>
 	);

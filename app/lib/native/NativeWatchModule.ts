@@ -6,11 +6,6 @@ export interface Spec extends TurboModule {
 	isWatchSupported(): boolean;
 	isWatchPaired(): boolean;
 	isWatchAppInstalled(): boolean;
-
-	// debug
-	getCurrentServerFromNative(): string;
-	getkey(): string;
-	getReplies(): string;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('WatchModule');
