@@ -12795,7 +12795,7 @@ react-native-edge-to-edge@1.6.0:
   resolved "https://registry.yarnpkg.com/react-native-edge-to-edge/-/react-native-edge-to-edge-1.6.0.tgz#2ba63b941704a7f713e298185c26cde4d9e4b973"
   integrity sha512-2WCNdE3Qd6Fwg9+4BpbATUxCLcouF6YRY7K+J36KJ4l3y+tWN6XCqAC4DuoGblAAbb2sLkhEDp4FOlbOIot2Og==
 
-react-native-external-keyboard@0.5.4-rc:
+react-native-external-keyboard@0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-external-keyboard/-/react-native-external-keyboard-0.7.0.tgz#8543336df67faaedec41e17faab665aff98c8dfe"
   integrity sha512-8r544OV+1t7AiI7+4TVPrRfi5AULbR5DFL9XLojgi6q67h285BqxLRj9nrwYqE/3QHO5G5VuGForJ6ZGpfBBoQ==
