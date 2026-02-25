@@ -70,8 +70,9 @@ NSString *mmkvCurrentServerKey = @"currentServer";
         RCTLogInfo(@"No current server found");
         return;
     }
-    NSString *quickRepliesKey = [NSString stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
-    
+    NSString *quickRepliesKey = [NSString
+        stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
+
     NSString *replies = [self getValueFromMMKV:quickRepliesKey];
 
     if (replies && replies.length > 0) {
@@ -96,9 +97,11 @@ NSString *mmkvCurrentServerKey = @"currentServer";
                 try {
                     NSError *error = nil;
 
-                    BOOL success = [_session
-                        updateApplicationContext:@{@"quickReplies" : array}
-                                           error:&error];
+                    BOOL success = [_session updateApplicationContext:@{
+                        @"quickReplies" : array,
+                        @"server" : currentServer
+                    }
+                                                                error:&error];
 
                     if (!success || error) {
                         std::string message =
@@ -147,24 +150,26 @@ NSString *mmkvCurrentServerKey = @"currentServer";
     }
 }
 
-- (NSString *)getCurrentServerFromNative{
+- (NSString *)getCurrentServerFromNative {
     NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];
     return currentServer;
 }
 
-- (NSString *)getkey{
+- (NSString *)getkey {
     NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];
-    NSString *quickRepliesKey = [NSString stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
+    NSString *quickRepliesKey = [NSString
+        stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
     return quickRepliesKey;
 }
-- (NSString *)getReplies{
+- (NSString *)getReplies {
     NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];
     if (!currentServer || currentServer.length == 0) {
         RCTLogInfo(@"No current server found");
         return @"error no current server found";
     }
-    NSString *quickRepliesKey = [NSString stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
-    
+    NSString *quickRepliesKey = [NSString
+        stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
+
     NSString *replies = [self getValueFromMMKV:quickRepliesKey];
     return replies;
 }

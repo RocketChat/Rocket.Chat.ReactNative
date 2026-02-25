@@ -4,11 +4,13 @@ struct MessageComposerView: View {
 	@State private var message = ""
 	
 	let room: Room
+    let server: Server
 	let onSend: (String) -> Void
     
-    @Storage(.quickReplies, defaultValue: [])
-    private var quickReplies: [String]?
-	
+    private var quickReplies: [String] {
+        server.quickReplies
+    }
+    
 	var body: some View {
 		if room.isReadOnly {
 			HStack {
@@ -25,10 +27,10 @@ struct MessageComposerView: View {
                     .submitLabel(.send)
                     .onSubmit(send)
                 
-                if let replies = quickReplies, !replies.isEmpty {
+                if !quickReplies.isEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 6) {
-                            ForEach(replies, id: \.self) { reply in
+                            ForEach(quickReplies, id: \.self) { reply in
                                 if #available(watchOS 26.0, *) {
                                     Button {
                                         message = reply

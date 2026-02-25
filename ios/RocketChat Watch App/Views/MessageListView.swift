@@ -75,7 +75,7 @@ struct MessageListView: View {
 						}
 					}
 					
-					MessageComposerView(room: room) {
+					MessageComposerView(room: room, server: server) {
 						messageSender.sendMessage($0, in: room)
 						
 						lastOpen = nil
