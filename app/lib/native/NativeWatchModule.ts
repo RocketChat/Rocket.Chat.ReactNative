@@ -1,5 +1,5 @@
 import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
+import { Platform, TurboModuleRegistry } from 'react-native';
 
 export interface Spec extends TurboModule {
 	syncQuickReplies(): void;
@@ -8,4 +8,6 @@ export interface Spec extends TurboModule {
 	isWatchAppInstalled(): boolean;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('WatchModule');
+const NativeWatchModule = Platform.OS === 'ios' ? TurboModuleRegistry.getEnforcing<Spec>('WatchModule') : null;
+
+export default NativeWatchModule;

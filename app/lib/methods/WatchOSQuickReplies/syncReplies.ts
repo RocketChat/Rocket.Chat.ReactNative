@@ -4,7 +4,7 @@ import { shouldShowWatchAppOptions } from './getWatchStatus';
 export function syncWatchOSQuickReplies() {
 	if (!shouldShowWatchAppOptions()) return;
 	try {
-		NativeWatchModule.syncQuickReplies();
+		NativeWatchModule?.syncQuickReplies();
 		return true;
 	} catch (e) {
 		console.error('Failed to send quick replies', e);

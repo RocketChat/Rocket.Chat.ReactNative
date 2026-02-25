@@ -8,6 +8,12 @@ export interface IWatchStatus {
 }
 
 export function checkWatch(): IWatchStatus {
+	if (isAndroid || !NativeWatchModule)
+		return {
+			isWatchSupported: false,
+			isWatchPaired: false,
+			isWatchAppInstalled: false
+		};
 	const status: IWatchStatus = {
 		isWatchSupported: NativeWatchModule.isWatchSupported(),
 		isWatchPaired: NativeWatchModule.isWatchPaired(),
@@ -17,9 +23,10 @@ export function checkWatch(): IWatchStatus {
 }
 
 export const shouldShowWatchAppOptions = (): boolean => {
+	if (isAndroid || !NativeWatchModule) return false;
 	const watchStatus = checkWatch();
 
 	console.log(watchStatus);
-	if (isAndroid || !watchStatus.isWatchSupported || !watchStatus.isWatchAppInstalled) return false;
+	if (!watchStatus.isWatchSupported || !watchStatus.isWatchAppInstalled) return false;
 	return true;
 };
