@@ -100,7 +100,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          text: 'username-header-${output.otherUser.username}'
+          id: 'username-header-${output.otherUser.username}'
           retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -162,7 +162,7 @@ tags:
       platform: iOS
     commands:
       - tapOn:
-          text: 'username-header-${output.otherUser.username}'
+          id: 'username-header-${output.otherUser.username}'
           retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
