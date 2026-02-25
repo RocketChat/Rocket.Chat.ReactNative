@@ -2,9 +2,9 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	TextInputProps,
+	type TextInputProps,
 	TouchableOpacity,
-	TouchableOpacityProps,
+	type TouchableOpacityProps,
 	View,
 	useWindowDimensions
 } from 'react-native';
@@ -14,7 +14,7 @@ import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
 import { isTablet } from '../../../lib/methods/helpers';
 
 const styles = StyleSheet.create({

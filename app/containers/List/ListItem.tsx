@@ -21,6 +21,7 @@ import { CustomIcon } from '../CustomIcon';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
+import { isAndroid } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
@@ -109,7 +110,7 @@ interface IListItemContent {
 	numberOfLines?: number;
 }
 
-const View = Platform.OS === 'android' ? KeyboardExtendedView : RNView;
+const View = isAndroid ? KeyboardExtendedView : RNView;
 
 const Content = React.memo(
 	({

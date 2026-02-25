@@ -4,7 +4,6 @@ import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import Avatar from '../../containers/Avatar';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
 import styles from './styles';
 
 const Pressable = withKeyboardFocus(RNPressable);
@@ -26,7 +25,7 @@ export default function SidebarHeader({
 	siteName: string;
 	onPress: () => void;
 }) {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	return (
 		<Pressable
 			focusable={!disabled}
@@ -34,16 +33,16 @@ export default function SidebarHeader({
 			disabled={disabled}
 			onPress={onPress}
 			testID='sidebar-close-drawer'
-			style={[styles.header, { backgroundColor: themes[theme!].surfaceRoom }]}>
+			style={[styles.header, { backgroundColor: colors.surfaceRoom }]}>
 			<Avatar text={username} style={styles.avatar} size={30} />
 			<View style={styles.headerTextContainer}>
 				<View style={styles.headerUsername}>
-					<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].fontTitlesLabels }]}>
+					<Text numberOfLines={1} style={[styles.username, { color: colors.fontTitlesLabels }]}>
 						{useRealName ? name : username}
 					</Text>
 				</View>
 				<Text
-					style={[styles.currentServerText, { color: themes[theme!].fontTitlesLabels }]}
+					style={[styles.currentServerText, { color: colors.fontTitlesLabels }]}
 					numberOfLines={1}
 					accessibilityLabel={`Connected to ${baseUrl}`}>
 					{siteName}

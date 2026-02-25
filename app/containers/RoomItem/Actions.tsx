@@ -9,6 +9,7 @@ import Animated, {
 	useSharedValue
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode } from '../../lib/constants/constantDisplayMode';
@@ -18,9 +19,11 @@ import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
+const CONDENSED_ICON_SIZE = 24;
+const EXPANDED_ICON_SIZE = 28;
+
 export const LeftActions = React.memo(function LeftActions({
 	transX,
-	enabled,
 	isRead,
 	width,
 	onToggleReadPress,
@@ -70,8 +73,7 @@ export const RightActions = React.memo(function RightActionsContainer({
 	width,
 	toggleFav,
 	onHidePress,
-	displayMode,
-	enabled
+	displayMode
 }: IRightActionsProps) {
 	const { colors } = useTheme();
 

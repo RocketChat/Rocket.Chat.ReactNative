@@ -1,7 +1,7 @@
 import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { CustomIcon, ICustomIcon } from '../CustomIcon';
+import { CustomIcon, type ICustomIcon } from '../CustomIcon';
 import styles from './styles';
 
 const CONDENSED_ICON_SIZE = 24;
