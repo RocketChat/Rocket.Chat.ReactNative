@@ -32,9 +32,9 @@ IMAGE="system-images;android-${API_LEVEL};google_apis;${ABI}"
 
 echo "Installing emulator + system image"
 
+yes | sdkmanager --licenses
 sdkmanager --install emulator
 sdkmanager "$IMAGE"
-yes | sdkmanager --licenses
 
 echo "Creating AVD"
 
