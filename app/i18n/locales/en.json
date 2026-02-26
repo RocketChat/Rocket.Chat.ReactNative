@@ -114,7 +114,7 @@
   "Call_started": "Call started",
   "Call_was_canceled_before_being_answered": "Call was canceled before being answered",
   "Call_was_not_answered": "Call was not answered",
-  "Calling": "Calling",
+  "Calling": "Calling...",
   "Cancel": "Cancel",
   "Cancel_and_delete_recording": "Cancel and delete recording",
   "Cancel_editing": "Cancel editing",

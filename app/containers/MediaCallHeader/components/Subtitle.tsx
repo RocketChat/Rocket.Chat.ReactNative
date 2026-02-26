@@ -22,11 +22,11 @@ const Subtitle = () => {
 	const remoteHeld = useCallStore(state => state.remoteHeld);
 	const remoteMute = useCallStore(state => state.remoteMute);
 	const callState = useCallStore(state => state.callState);
-	const isConnected = callState === 'active';
 
 	let subtitle = '';
-
-	if (!isConnected) {
+	if (callState === 'ringing') {
+		subtitle = I18n.t('Calling');
+	} else if (callState !== 'active') {
 		subtitle = I18n.t('Connecting');
 	} else {
 		subtitle = extension ? `${extension}` : '';

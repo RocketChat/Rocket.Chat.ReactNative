@@ -2,16 +2,20 @@ import React from 'react';
 
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 // import { useVideoConf } from '../../../lib/hooks/useVideoConf';
-import { useCallStore } from '../../../lib/services/voip/useCallStore';
+import { mediaSessionInstance } from '../../../lib/services/voip/MediaSessionInstance';
+import type { TSubscriptionModel } from '../../../definitions';
+import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 
 export const HeaderCallButton = ({
 	// rid,
 	disabled,
-	accessibilityLabel
+	accessibilityLabel,
+	room
 }: {
 	rid: string;
 	disabled: boolean;
 	accessibilityLabel: string;
+	room?: TSubscriptionModel;
 }): React.ReactElement | null => {
 	// const { showInitCallActionSheet, callEnabled, disabledTooltip } = useVideoConf(rid);
 
@@ -26,13 +30,24 @@ export const HeaderCallButton = ({
 	// 		/>
 	// 	);
 	// return null;
-	const toggleFocus = useCallStore(state => state.toggleFocus);
+	// const toggleFocus = useCallStore(state => state.toggleFocus);
+	// void session.startCall(peerInfo.userId, 'user');
+
+	const handlePress = () => {
+		if (!room) return;
+
+		const otherUserId = getUidDirectMessage(room);
+		if (otherUserId) {
+			mediaSessionInstance.startCall(otherUserId, 'user');
+		}
+	};
+
 	return (
 		<HeaderButton.Item
 			accessibilityLabel={accessibilityLabel}
 			disabled={disabled}
 			iconName='phone'
-			onPress={() => toggleFocus()}
+			onPress={handlePress}
 			testID='room-view-header-call'
 		/>
 	);
