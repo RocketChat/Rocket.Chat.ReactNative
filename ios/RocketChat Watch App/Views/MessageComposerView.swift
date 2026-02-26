@@ -1,82 +1,80 @@
 import SwiftUI
 
 struct MessageComposerView: View {
-	@State private var message = ""
-	
-	let room: Room
+    @State private var message = ""
+
+    let room: Room
     let server: Server
-	let onSend: (String) -> Void
-    
+    let anchorID: String
+    let onSend: (String) -> Void
+
     private var quickReplies: [String] {
         server.quickReplies
     }
-    
-	var body: some View {
-		if room.isReadOnly {
-			HStack {
-				Spacer()
-				Text("This room is read only")
-					.font(.caption.bold())
-					.foregroundStyle(.white)
-					.multilineTextAlignment(.center)
-				Spacer()
-			}
-		} else {
+
+    var body: some View {
+        if room.isReadOnly {
+            HStack {
+                Spacer()
+                Text("This room is read only")
+                    .font(.caption.bold())
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                Spacer()
+            }
+        } else {
             VStack(alignment: .leading, spacing: 4) {
                 TextField("Message", text: $message)
                     .submitLabel(.send)
                     .onSubmit(send)
-                
+
+                Color.clear
+                    .frame(height: 1)
+                    .id(anchorID)
+
                 if !quickReplies.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 6) {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 6) {
                             ForEach(quickReplies, id: \.self) { reply in
-                                if #available(watchOS 26.0, *) {
-                                    Button {
+                                Text(reply)
+                                    .font(.caption)
+                                    .foregroundStyle(.white)
+                                    .frame(
+                                        maxWidth: .infinity,
+                                        alignment: .leading
+                                    )
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 8)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(Color.white.opacity(0.12))
+                                    )
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
                                         message = reply
                                         send()
-                                    } label: {
-                                        Text(reply)
-                                            .font(.caption2)
-                                            .foregroundStyle(.primary)
-                                            .padding(.horizontal, 10)
-                                            .padding(.vertical, 4)
                                     }
-                                    .buttonStyle(.plain)
-                                    .glassEffect(.regular)
-                                    .clipShape(Capsule())
-                                } else {
-                                    Button {
-                                        message = reply
-                                        send()
-                                    } label: {
-                                        Text(reply)
-                                            .font(.caption2)
-                                            .foregroundStyle(.primary)
-                                            .padding(.horizontal, 10)
-                                            .padding(.vertical, 6)
-                                            .background(
-                                                Capsule()
-                                                    .fill(Color.white.opacity(0.12))
-                                            )
-                                    }
-                                    .buttonStyle(.borderedProminent)
-                                }
                             }
                         }
+                        .frame(maxWidth: .infinity)
                     }
+                    .frame(maxHeight: 120)
+                } else {
+                    Color.clear
+                        .frame(height: 1)
+                        .id(anchorID)
                 }
             }
-            
-		}
-	}
-	
-	func send() {
-		guard !message.isEmpty else {
-			return
-		}
-		
-		onSend(message)
-		message = ""
-	}
+
+        }
+    }
+
+    func send() {
+        guard !message.isEmpty else {
+            return
+        }
+
+        onSend(message)
+        message = ""
+    }
 }
