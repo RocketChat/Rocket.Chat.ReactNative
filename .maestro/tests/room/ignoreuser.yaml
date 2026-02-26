@@ -215,7 +215,7 @@ tags:
       id: 'report-user-view-submit'
     timeout: 60000
 - tapOn:
-    text: 'Report'
+    id: 'report-user-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.otherUser.username}'
@@ -272,7 +272,7 @@ tags:
       id: 'report-user-view-submit'
     timeout: 60000
 - tapOn:
-    text: 'Report'
+    id: 'report-user-view-submit'
 - extendedWaitUntil:
     visible:
       id: 'room-view-title-${output.room.name}'
