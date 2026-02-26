@@ -105,5 +105,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: iOS Maestro Logs - Shard ${{ inputs.shard }}
-          path: ~/.maestro
+          path: ~/.maestro/tests/**/*.png
           retention-days: 7
