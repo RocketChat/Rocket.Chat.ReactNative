@@ -5,10 +5,11 @@ import {
 	StyleSheet,
 	Text,
 	type TextStyle,
-	View,
+	View as RNView,
 	type AccessibilityRole,
 	type ViewStyle
 } from 'react-native';
+import { KeyboardExtendedView } from 'react-native-external-keyboard';
 
 import Touch from '../Touch';
 import sharedStyles from '../../views/Styles';
@@ -20,6 +21,7 @@ import { CustomIcon } from '../CustomIcon';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../Toast';
+import { isAndroid } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
@@ -108,6 +110,8 @@ interface IListItemContent {
 	numberOfLines?: number;
 }
 
+const View = isAndroid ? KeyboardExtendedView : RNView;
+
 const Content = React.memo(
 	({
 		title,
@@ -169,6 +173,7 @@ const Content = React.memo(
 
 		return (
 			<View
+				focusable={false}
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
 				testID={testID}
 				accessible
