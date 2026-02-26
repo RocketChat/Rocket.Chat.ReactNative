@@ -31,12 +31,4 @@ public class InvertedScrollView extends ReactScrollView {
       Collections.reverse(outChildren);
     }
   }
-
-  @Override
-  public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
-    super.addFocusables(views, direction, focusableMode);
-    if (mIsInvertedVirtualizedList) {
-      Collections.reverse(views);
-    }
-  }
 }

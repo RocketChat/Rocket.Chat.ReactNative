@@ -44,9 +44,9 @@ export type InvertedScrollViewRef = NativeScrollInstance & IScrollableMethods;
 
 const NativeInvertedScrollView = requireNativeComponent<ScrollViewProps>('InvertedScrollView');
 
-const NativeInvertedScrollContentView = requireNativeComponent<ViewProps & { removeClippedSubviews?: boolean }>(
-	'InvertedScrollContentView'
-);
+const NativeInvertedScrollContentView = requireNativeComponent<
+	ViewProps & { removeClippedSubviews?: boolean; isInvertedContent?: boolean }
+>('InvertedScrollContentView');
 
 const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((props, externalRef) => {
 	const internalRef = useRef<NativeScrollInstance | null>(null);
@@ -136,13 +136,16 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((p
 		return null;
 	}
 	const ScrollView = NativeInvertedScrollView as React.ComponentType<ScrollViewPropsWithRef>;
-	const ContentView = NativeInvertedScrollContentView as React.ComponentType<ViewProps & { removeClippedSubviews?: boolean }>;
+	const ContentView = NativeInvertedScrollContentView as React.ComponentType<
+		ViewProps & { removeClippedSubviews?: boolean; isInvertedContent?: boolean }
+	>;
 
 	return (
 		<ScrollView ref={setRef} {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)} horizontal={horizontal}>
 			<ContentView
 				{...contentSizeChangeProps}
 				removeClippedSubviews={hasStickyHeaders ? false : removeClippedSubviews}
+				isInvertedContent={!!props.inverted}
 				collapsable={false}
 				collapsableChildren={!preserveChildren}
 				style={contentContainerStyleArray as StyleProp<ViewStyle>}>

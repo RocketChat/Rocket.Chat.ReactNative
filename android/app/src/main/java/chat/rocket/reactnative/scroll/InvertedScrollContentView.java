@@ -11,19 +11,29 @@ import java.util.Collections;
  */
 public class InvertedScrollContentView extends ReactViewGroup {
 
+  private boolean mIsInvertedContent = false;
+
   public InvertedScrollContentView(android.content.Context context) {
     super(context);
+  }
+
+  public void setIsInvertedContent(boolean isInverted) {
+    mIsInvertedContent = isInverted;
   }
 
   @Override
   public void addChildrenForAccessibility(ArrayList<View> outChildren) {
     super.addChildrenForAccessibility(outChildren);
-    Collections.reverse(outChildren);
+    if (mIsInvertedContent) {
+      Collections.reverse(outChildren);
+    }
   }
 
   @Override
   public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
     super.addFocusables(views, direction, focusableMode);
-    Collections.reverse(views);
+    if (mIsInvertedContent) {
+      Collections.reverse(views);
+    }
   }
 }
