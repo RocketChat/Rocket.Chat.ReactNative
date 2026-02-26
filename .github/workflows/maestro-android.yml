@@ -11,6 +11,8 @@ jobs:
   android-test:
     name: 'Android Tests'
     runs-on: ubuntu-latest
+    env:
+      MAESTRO_VERSION: 2.2.0
 
     steps:
       - name: Checkout Repository
@@ -34,7 +36,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.maestro
-          key: maestro-${{ runner.os }}
+          key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
 
       - name: Download APK
         uses: actions/download-artifact@v4
@@ -50,8 +52,6 @@ jobs:
         run: |
           curl -Ls "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
-        env:
-          MAESTRO_VERSION: 2.2.0
 
       - name: Enable KVM group permissions
         run: |
