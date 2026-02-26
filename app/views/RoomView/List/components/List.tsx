@@ -44,7 +44,7 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
 				inverted
-				renderScrollComponent={isIOS ? undefined : props => <InvertedScrollView {...props} />}
+				renderScrollComponent={isIOS ? undefined : props => <InvertedScrollView {...props} inverted={true} />}
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}

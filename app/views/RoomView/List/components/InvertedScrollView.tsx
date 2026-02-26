@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 });
 
 type ScrollViewPropsWithRef = ScrollViewProps & React.RefAttributes<NativeScrollInstance | null>;
+type InvertedScrollViewProps = ScrollViewProps & { inverted?: boolean };
 type NativeScrollInstance = React.ComponentRef<NonNullable<typeof NativeInvertedScrollView>>;
 interface IScrollableMethods {
 	scrollTo(options?: { x?: number; y?: number; animated?: boolean }): void;
@@ -48,7 +49,7 @@ const NativeInvertedScrollContentView = requireNativeComponent<
 	ViewProps & { removeClippedSubviews?: boolean; isInvertedContent?: boolean }
 >('InvertedScrollContentView');
 
-const InvertedScrollView = forwardRef<InvertedScrollViewRef, ScrollViewProps>((props, externalRef) => {
+const InvertedScrollView = forwardRef<InvertedScrollViewRef, InvertedScrollViewProps>((props, externalRef) => {
 	const internalRef = useRef<NativeScrollInstance | null>(null);
 
 	useLayoutEffect(() => {
