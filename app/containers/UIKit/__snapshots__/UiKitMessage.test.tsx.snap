@@ -3,511 +3,8 @@
 exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
 [
   <View>
-    <View
-      style={
-        {
-          "flex": 1,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        accessibilityLabel="Approve"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
-        style={
-          [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#156FF5",
-              },
-              {},
-              {
-                "marginBottom": 16,
-              },
-            ],
-          ]
-        }
-        testOnly_onPress={[Function]}
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#FFFFFF",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          Approve
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
-  </View>,
-  <View>
-    <View
-      style={
-        {
-          "flex": 1,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        accessibilityLabel="Deny"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
-        style={
-          [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
-              },
-              {},
-              {
-                "marginBottom": 16,
-              },
-            ],
-          ]
-        }
-        testOnly_onPress={[Function]}
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          Deny
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
-  </View>,
-  <View>
-    <View
-      style={
-        {
-          "flex": 1,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        accessibilityLabel="Deny"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
-        style={
-          [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
-              },
-              {},
-              {
-                "marginBottom": 16,
-              },
-            ],
-          ]
-        }
-        testOnly_onPress={[Function]}
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          Deny
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
-  </View>,
-  <View>
-    <View
-      style={
-        {
-          "flex": 1,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        accessibilityLabel="Deny"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
-        style={
-          [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
-              },
-              {},
-              {
-                "marginBottom": 16,
-              },
-            ],
-          ]
-        }
-        testOnly_onPress={[Function]}
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          Deny
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
-  </View>,
-  <View>
-    <View
-      style={
-        {
-          "flex": 1,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        accessibilityLabel="Deny"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
-        style={
-          [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
-              },
-              {},
-              {
-                "marginBottom": 16,
-              },
-            ],
-          ]
-        }
-        testOnly_onPress={[Function]}
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          Deny
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
-  </View>,
-  <View
-    style={
-      {
-        "height": 0,
-        "overflow": "hidden",
-      }
-    }
-  >
-    <View
-      style={
-        {
-          "flex": 1,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        accessibilityLabel="Deny"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
-        style={
-          [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
-              },
-              {},
-              {
-                "marginBottom": 16,
-              },
-            ],
-          ]
-        }
-        testOnly_onPress={[Function]}
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          Deny
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
-  </View>,
-  <View
-    style={
-      {
-        "height": 0,
-        "overflow": "hidden",
-      }
-    }
-  >
-    <View
-      style={
-        {
-          "flex": 1,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        accessibilityLabel="Deny"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
-        style={
-          [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#E4E7EA",
-              },
-              {},
-              {
-                "marginBottom": 16,
-              },
-            ],
-          ]
-        }
-        testOnly_onPress={[Function]}
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          Deny
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
-  </View>,
-  <View
-    style={
-      {
-        "flex": 1,
-      }
-    }
-  >
     <RNGestureHandlerButton
-      accessibilityLabel="Show more"
+      accessibilityLabel="Approve"
       accessibilityRole="button"
       collapsable={false}
       enabled={true}
@@ -537,7 +34,9 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
               "backgroundColor": "#156FF5",
             },
             {},
-            undefined,
+            {
+              "marginBottom": 16,
+            },
           ],
         ]
       }
@@ -560,10 +59,447 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           ]
         }
       >
-        Show more
+        Approve
       </Text>
     </RNGestureHandlerButton>
   </View>,
+  <View>
+    <RNGestureHandlerButton
+      accessibilityLabel="Deny"
+      accessibilityRole="button"
+      collapsable={false}
+      enabled={true}
+      hitSlop={
+        {
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
+        }
+      }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Deny
+      </Text>
+    </RNGestureHandlerButton>
+  </View>,
+  <View>
+    <RNGestureHandlerButton
+      accessibilityLabel="Deny"
+      accessibilityRole="button"
+      collapsable={false}
+      enabled={true}
+      hitSlop={
+        {
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
+        }
+      }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Deny
+      </Text>
+    </RNGestureHandlerButton>
+  </View>,
+  <View>
+    <RNGestureHandlerButton
+      accessibilityLabel="Deny"
+      accessibilityRole="button"
+      collapsable={false}
+      enabled={true}
+      hitSlop={
+        {
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
+        }
+      }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Deny
+      </Text>
+    </RNGestureHandlerButton>
+  </View>,
+  <View>
+    <RNGestureHandlerButton
+      accessibilityLabel="Deny"
+      accessibilityRole="button"
+      collapsable={false}
+      enabled={true}
+      hitSlop={
+        {
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
+        }
+      }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Deny
+      </Text>
+    </RNGestureHandlerButton>
+  </View>,
+  <View
+    style={
+      {
+        "height": 0,
+        "overflow": "hidden",
+      }
+    }
+  >
+    <RNGestureHandlerButton
+      accessibilityLabel="Deny"
+      accessibilityRole="button"
+      collapsable={false}
+      enabled={true}
+      hitSlop={
+        {
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
+        }
+      }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Deny
+      </Text>
+    </RNGestureHandlerButton>
+  </View>,
+  <View
+    style={
+      {
+        "height": 0,
+        "overflow": "hidden",
+      }
+    }
+  >
+    <RNGestureHandlerButton
+      accessibilityLabel="Deny"
+      accessibilityRole="button"
+      collapsable={false}
+      enabled={true}
+      hitSlop={
+        {
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
+        }
+      }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#2F343D",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        Deny
+      </Text>
+    </RNGestureHandlerButton>
+  </View>,
+  <RNGestureHandlerButton
+    accessibilityLabel="Show more"
+    accessibilityRole="button"
+    collapsable={false}
+    enabled={true}
+    hitSlop={
+      {
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+      }
+    }
+    rippleColor="transparent"
+    style={
+      [
+        {},
+        [
+          {
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "borderRadius": 4,
+            "marginBottom": 12,
+          },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          {},
+          undefined,
+        ],
+      ]
+    }
+    testOnly_onPress={[Function]}
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 16,
+          },
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "500",
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      Show more
+    </Text>
+  </RNGestureHandlerButton>,
 ]
 `;
 
@@ -1049,73 +985,65 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
       </Text>
     </View>
   </View>
-  <View
-    style={
+  <RNGestureHandlerButton
+    accessibilityLabel="button"
+    accessibilityRole="button"
+    collapsable={false}
+    enabled={true}
+    hitSlop={
       {
-        "flex": 1,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
       }
     }
+    rippleColor="transparent"
+    style={
+      [
+        {},
+        [
+          {
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "borderRadius": 4,
+            "marginBottom": 12,
+          },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          {},
+          {
+            "marginBottom": 16,
+          },
+        ],
+      ]
+    }
+    testOnly_onPress={[Function]}
   >
-    <RNGestureHandlerButton
-      accessibilityLabel="button"
-      accessibilityRole="button"
-      collapsable={false}
-      enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+    <Text
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            {
-              "marginBottom": 16,
-            },
-          ],
+          {
+            "color": "#FFFFFF",
+            "fontSize": 16,
+          },
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "500",
+            "textAlign": "center",
+          },
+          undefined,
         ]
       }
-      testOnly_onPress={[Function]}
     >
-      <Text
-        style={
-          [
-            {
-              "color": "#FFFFFF",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        button
-      </Text>
-    </RNGestureHandlerButton>
-  </View>
+      button
+    </Text>
+  </RNGestureHandlerButton>
 </View>
 `;
 
@@ -1196,71 +1124,63 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
       </Text>
     </View>
   </View>
-  <View
-    style={
+  <RNGestureHandlerButton
+    accessibilityLabel="Select a date"
+    accessibilityRole="button"
+    collapsable={false}
+    enabled={true}
+    hitSlop={
       {
-        "flex": 1,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
       }
     }
+    rippleColor="transparent"
+    style={
+      [
+        {},
+        [
+          {
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "borderRadius": 4,
+            "marginBottom": 12,
+          },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          {},
+          undefined,
+        ],
+      ]
+    }
+    testOnly_onPress={[Function]}
   >
-    <RNGestureHandlerButton
-      accessibilityLabel="Select a date"
-      accessibilityRole="button"
-      collapsable={false}
-      enabled={true}
-      hitSlop={
-        {
-          "bottom": 0,
-          "left": 0,
-          "right": 0,
-          "top": 0,
-        }
-      }
-      rippleColor="transparent"
+    <Text
       style={
         [
-          {},
-          [
-            {
-              "justifyContent": "center",
-              "paddingHorizontal": 16,
-              "paddingVertical": 14,
-            },
-            {
-              "borderRadius": 4,
-              "marginBottom": 12,
-            },
-            {
-              "backgroundColor": "#156FF5",
-            },
-            {},
-            undefined,
-          ],
+          {
+            "color": "#FFFFFF",
+            "fontSize": 16,
+          },
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "500",
+            "textAlign": "center",
+          },
+          undefined,
         ]
       }
-      testOnly_onPress={[Function]}
     >
-      <Text
-        style={
-          [
-            {
-              "color": "#FFFFFF",
-              "fontSize": 16,
-            },
-            {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontWeight": "500",
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-      >
-        Select a date
-      </Text>
-    </RNGestureHandlerButton>
-  </View>
+      Select a date
+    </Text>
+  </RNGestureHandlerButton>
 </View>
 `;
 
@@ -1539,71 +1459,63 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <View
-      style={
+    <RNGestureHandlerButton
+      accessibilityLabel="2 selecteds"
+      accessibilityRole="button"
+      collapsable={false}
+      enabled={true}
+      hitSlop={
         {
-          "flex": 1,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            undefined,
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
-      <RNGestureHandlerButton
-        accessibilityLabel="2 selecteds"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
+      <Text
         style={
           [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#156FF5",
-              },
-              {},
-              undefined,
-            ],
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
           ]
         }
-        testOnly_onPress={[Function]}
       >
-        <Text
-          style={
-            [
-              {
-                "color": "#FFFFFF",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          2 selecteds
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
+        2 selecteds
+      </Text>
+    </RNGestureHandlerButton>
   </View>,
   <View
     style={
@@ -1681,71 +1593,63 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <View
-      style={
+    <RNGestureHandlerButton
+      accessibilityLabel="0 selecteds"
+      accessibilityRole="button"
+      collapsable={false}
+      enabled={true}
+      hitSlop={
         {
-          "flex": 1,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            undefined,
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
-      <RNGestureHandlerButton
-        accessibilityLabel="0 selecteds"
-        accessibilityRole="button"
-        collapsable={false}
-        enabled={true}
-        hitSlop={
-          {
-            "bottom": 0,
-            "left": 0,
-            "right": 0,
-            "top": 0,
-          }
-        }
-        rippleColor="transparent"
+      <Text
         style={
           [
-            {},
-            [
-              {
-                "justifyContent": "center",
-                "paddingHorizontal": 16,
-                "paddingVertical": 14,
-              },
-              {
-                "borderRadius": 4,
-                "marginBottom": 12,
-              },
-              {
-                "backgroundColor": "#156FF5",
-              },
-              {},
-              undefined,
-            ],
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+            },
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "textAlign": "center",
+            },
+            undefined,
           ]
         }
-        testOnly_onPress={[Function]}
       >
-        <Text
-          style={
-            [
-              {
-                "color": "#FFFFFF",
-                "fontSize": 16,
-              },
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontWeight": "500",
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-        >
-          0 selecteds
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
+        0 selecteds
+      </Text>
+    </RNGestureHandlerButton>
   </View>,
 ]
 `;
