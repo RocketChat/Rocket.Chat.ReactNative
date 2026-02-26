@@ -37,7 +37,7 @@ jobs:
           brew tap facebook/fb
           brew install facebook/fb/idb-companion
           curl -fsSL https://get.maestro.mobile.dev | bash
-          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
       - name: Configure Simulator
         run: |
