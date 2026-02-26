@@ -78,7 +78,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 					</View>
 					<View style={styles.messageContainer}>
 						{/* eslint-disable-next-line react-native/no-single-element-style-arrays */}
-						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} /> : null}
+						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} /> : null}
 					</View>
 					{messageDate ? <DiscussionDetails item={item} date={messageDate} /> : null}
 				</View>
