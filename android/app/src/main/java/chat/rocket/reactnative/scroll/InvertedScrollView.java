@@ -18,10 +18,8 @@ public class InvertedScrollView extends ReactScrollView {
     super(context);
   }
 
-  
   // Set whether this ScrollView is used for an inverted virtualized list. When true, we reverse the
   // accessibility traversal order to match the visual order.
-  
   public void setIsInvertedVirtualizedList(boolean isInverted) {
     mIsInvertedVirtualizedList = isInverted;
   }
@@ -31,6 +29,14 @@ public class InvertedScrollView extends ReactScrollView {
     super.addChildrenForAccessibility(outChildren);
     if (mIsInvertedVirtualizedList) {
       Collections.reverse(outChildren);
+    }
+  }
+
+  @Override
+  public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
+    super.addFocusables(views, direction, focusableMode);
+    if (mIsInvertedVirtualizedList) {
+      Collections.reverse(views);
     }
   }
 }

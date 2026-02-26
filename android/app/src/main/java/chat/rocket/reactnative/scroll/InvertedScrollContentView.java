@@ -20,4 +20,10 @@ public class InvertedScrollContentView extends ReactViewGroup {
     super.addChildrenForAccessibility(outChildren);
     Collections.reverse(outChildren);
   }
+
+  @Override
+  public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
+    super.addFocusables(views, direction, focusableMode);
+    Collections.reverse(views);
+  }
 }
