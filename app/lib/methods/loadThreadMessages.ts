@@ -11,7 +11,7 @@ import { type TThreadMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 
 async function load({ tmid }: { tmid: string }) {
-	const MAX_ATTEMPTS = 3;
+	const MAX_ATTEMPTS = 4;
 	/* eslint-disable no-await-in-loop */
 	for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
 		try {
