@@ -11,16 +11,24 @@ import { type TThreadMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 
 async function load({ tmid }: { tmid: string }) {
-	try {
-		// RC 1.0
-		const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
-		if (!result) {
-			return [];
+	const MAX_RETRIES = 3;
+	for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+		try {
+			// RC 1.0
+			const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
+			if (!result) {
+				return [];
+			}
+			return EJSON.fromJSONValue(result);
+		} catch (e) {
+			if (attempt < MAX_RETRIES) {
+				await new Promise(resolve => setTimeout(resolve, attempt * 500));
+			} else {
+				throw e;
+			}
 		}
-		return EJSON.fromJSONValue(result);
-	} catch {
-		return [];
 	}
+	return [];
 }
 
 export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
