@@ -21,7 +21,7 @@ public class InvertedScrollView extends ReactScrollView {
   
   // Set whether this ScrollView is used for an inverted virtualized list. When true, we reverse the
   // accessibility traversal order to match the visual order.
-  
+
   public void setIsInvertedVirtualizedList(boolean isInverted) {
     mIsInvertedVirtualizedList = isInverted;
   }
