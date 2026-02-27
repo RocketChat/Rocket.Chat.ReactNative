@@ -13,6 +13,7 @@ export interface IApp {
 	background: boolean;
 	notificationPresenceCap: boolean;
 	netInfoState?: NetInfoStateType | null;
+	isFirstServerLogin?: boolean;
 }
 
 export const initialState: IApp = {
@@ -23,7 +24,8 @@ export const initialState: IApp = {
 	foreground: true,
 	background: false,
 	notificationPresenceCap: false,
-	netInfoState: null
+	netInfoState: null,
+	isFirstServerLogin: true
 };
 
 export default function app(state = initialState, action: TActionApp): IApp {
@@ -70,6 +72,11 @@ export default function app(state = initialState, action: TActionApp): IApp {
 			return {
 				...state,
 				netInfoState: action.netInfoState
+			};
+		case APP.SET_FIRST_LOGIN:
+			return {
+				...state,
+				isFirstServerLogin: action.isFirstServerLogin
 			};
 		default:
 			return state;

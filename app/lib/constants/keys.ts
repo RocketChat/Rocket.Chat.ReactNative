@@ -23,5 +23,9 @@ export const ALERT_DISPLAY_TYPE_PREFERENCES_KEY = 'RC_ALERT_DISPLAY_TYPE_PREFERE
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
-export const CURRENT_SERVER = 'currentServer';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
+export const FIRST_START = 'RC_FIRST_START';
+
+// if you change below 2 keys you will need to change them in RCTWatchModule.mm too
+export const CURRENT_SERVER = 'currentServer';
+export const WATCHOS_QUICKREPLIES = 'RC_WATCHOS_QUICKREPLIES';

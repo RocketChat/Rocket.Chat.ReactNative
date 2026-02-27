@@ -5,6 +5,7 @@ import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
 import { call } from 'typed-redux-saga';
 
+import { shouldShowWatchAppOptions } from '../lib/methods/WatchOSQuickReplies/getWatchStatus';
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
 import {
@@ -23,13 +24,13 @@ import database from '../lib/database';
 import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
-import { appStart } from '../actions/app';
+import { appStart, setIsFirstServerLogin } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
+import { CERTIFICATE_KEY, CURRENT_SERVER, FIRST_START, TOKEN_KEY } from '../lib/constants/keys';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
@@ -43,6 +44,8 @@ import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
+import { syncWatchOSQuickReplies } from '../lib/methods/WatchOSQuickReplies/syncReplies';
+import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 
 const getServerVersion = function (version: string | null) {
 	let validVersion = valid(version);
@@ -196,6 +199,14 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
+		const isFirstServerLogin = UserPreferences.getBool(`${server}-${FIRST_START}`);
+		if (isFirstServerLogin == null) {
+			UserPreferences.setBool(`${server}-${FIRST_START}`, false);
+			yield put(setIsFirstServerLogin(true));
+		} else {
+			yield put(setIsFirstServerLogin(isFirstServerLogin));
+		}
+
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
 		setSettings();
@@ -263,8 +274,29 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	}
 };
 
+function* handleServerFinishAdd() {
+	try {
+		const state = yield* appSelector(s => s);
+
+		const { server } = state.server;
+		if (!server) return;
+
+		if (shouldShowWatchAppOptions()) {
+			// case: when new server is added and switched
+			// sets the local mmkv
+			syncWatchOSQuickRepliesWithServer(state);
+
+			// sets the watch app quick replies
+			syncWatchOSQuickReplies();
+		}
+	} catch (e) {
+		log(e);
+	}
+}
+
 const root = function* root() {
 	yield takeLatest<IServerRequestAction>(SERVER.REQUEST, handleServerRequest);
 	yield takeLatest<ISelectServerAction>(SERVER.SELECT_REQUEST, handleSelectServer);
+	yield takeLatest(SERVER.FINISH_ADD, handleServerFinishAdd);
 };
 export default root;

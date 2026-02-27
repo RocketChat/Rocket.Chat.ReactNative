@@ -14,6 +14,8 @@ import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
 import { compareServerVersion } from './helpers';
+import syncWatchOSQuickRepliesWithServer from './WatchOSQuickReplies/syncWatchOSRepliesWithServer';
+import { shouldShowWatchAppOptions } from './WatchOSQuickReplies/getWatchStatus';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -22,6 +24,7 @@ const serverInfoKeys = [
 	'FileUpload_MaxFileSize',
 	'Force_Screen_Lock',
 	'Force_Screen_Lock_After',
+	'Apple_Watch_Quick_Actions',
 	'uniqueID',
 	'E2E_Enable',
 	'E2E_Enabled_Default_PrivateRooms'
@@ -184,6 +187,15 @@ export async function getSettings(): Promise<void> {
 		const parsedSettings = parseSettings(filteredSettings);
 
 		reduxStore.dispatch(addSettings(parsedSettings));
+
+		if (shouldShowWatchAppOptions()) {
+			try {
+				// case: when we switched to another server which is already added
+				syncWatchOSQuickRepliesWithServer(reduxStore.getState());
+			} catch (e) {
+				log(e);
+			}
+		}
 
 		setPresenceCap(parsedSettings.Presence_broadcast_disabled);
 
