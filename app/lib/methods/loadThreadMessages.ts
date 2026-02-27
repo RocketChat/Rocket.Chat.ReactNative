@@ -28,7 +28,6 @@ async function load({ tmid }: { tmid: string }) {
 			}
 		}
 	}
-	return [];
 }
 
 export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
