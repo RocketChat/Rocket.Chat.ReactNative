@@ -33,7 +33,6 @@ struct MessageComposerView: View {
                     .id(anchorID)
 
                 if !quickReplies.isEmpty {
-                    ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 6) {
                             ForEach(quickReplies, id: \.self) { reply in
                                 Text(reply)
@@ -57,8 +56,6 @@ struct MessageComposerView: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                    }
-                    .frame(maxHeight: 120)
                 } else {
                     Color.clear
                         .frame(height: 1)
