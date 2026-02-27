@@ -11,8 +11,9 @@ import { type TThreadMessageModel } from '../../definitions';
 import sdk from '../services/sdk';
 
 async function load({ tmid }: { tmid: string }) {
-	const MAX_RETRIES = 3;
-	for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+	const MAX_ATTEMPTS = 3;
+	/* eslint-disable no-await-in-loop */
+	for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
 		try {
 			// RC 1.0
 			const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
@@ -21,13 +22,14 @@ async function load({ tmid }: { tmid: string }) {
 			}
 			return EJSON.fromJSONValue(result);
 		} catch (e) {
-			if (attempt < MAX_RETRIES) {
+			if (attempt < MAX_ATTEMPTS) {
 				await new Promise(resolve => setTimeout(resolve, attempt * 500));
 			} else {
 				throw e;
 			}
 		}
 	}
+	/* eslint-enable no-await-in-loop */
 }
 
 export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
