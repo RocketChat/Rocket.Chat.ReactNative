@@ -209,7 +209,7 @@ function logAccounts() {
     console.log(JSON.stringify(data.accounts));
 }
 
-function sleep(ms) {
+const sleep = (ms) => {
     const start = Date.now();
     while (Date.now() - start < ms) { }
 }
