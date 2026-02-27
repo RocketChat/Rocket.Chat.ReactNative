@@ -140,7 +140,7 @@ const InvertedScrollView = forwardRef<InvertedScrollViewRef, InvertedScrollViewP
 	const ContentView = NativeInvertedScrollContentView as React.ComponentType<
 		ViewProps & { removeClippedSubviews?: boolean; isInvertedContent?: boolean }
 	>;
-
+	console.log('props.inverted', props.inverted);
 	return (
 		<ScrollView ref={setRef} {...restWithoutStyle} style={StyleSheet.compose(baseStyle, style)} horizontal={horizontal}>
 			<ContentView
