@@ -909,5 +909,18 @@
   "Your_invite_link_will_never_expire": "Ihr Einladungs-Link wird niemals ablaufen.",
   "Your_password_is": "Ihr Passwort lautet",
   "Your_Password_Must_Have": "Ihr Passwort muss:",
-  "Your_workspace": "Ihr Arbeitsbereich"
+  "Your_workspace": "Ihr Arbeitsbereich",
+  "Timestamp_Picker": "Datum und Uhrzeit",
+  "Timestamp_Picker_Date": "Datum",
+  "Timestamp_Picker_Time": "Uhrzeit",
+  "Timestamp_Picker_Format": "Format",
+  "Timestamp_Picker_Preview": "Vorschau",
+  "Timestamp_Picker_Add": "Zur Nachricht hinzufügen",
+  "Timestamp_Picker_Timezone": "Zeitzone",
+  "Timestamp_Short_Time": "Kurze Zeit (13:30)",
+  "Timestamp_Long_Time": "Lange Zeit (13:30:00)",
+  "Timestamp_Short_Date": "Kurzes Datum (11.07.2025)",
+  "Timestamp_Long_Date": "Langes Datum (11. Juli 2025)",
+  "Timestamp_Full": "Vollständig (Freitag, 11. Juli 2025 13:30)",
+  "Timestamp_Relative": "Relativ (vor 3 Stunden)"
 }
