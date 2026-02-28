@@ -13,6 +13,7 @@ import Markdown from '../../../../markdown';
 import MessageContext from '../../../Context';
 import Touchable from '../../../Touchable';
 import { BUTTON_HIT_SLOP } from '../../../utils';
+import { useResponsiveLayout } from '../../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	button: {
@@ -36,12 +37,10 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	fieldText: {
-		fontSize: 15,
 		padding: 10,
 		...sharedStyles.textRegular
 	},
 	fieldTitle: {
-		fontSize: 15,
 		...sharedStyles.textBold
 	},
 	marginTop: {
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	title: {
-		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	touchableContainer: {
@@ -103,6 +101,7 @@ const Fields = React.memo(
 		'use memo';
 
 		const { theme } = useTheme();
+		const { scaleFontSize } = useResponsiveLayout();
 		const { user } = useContext(MessageContext);
 
 		if (!attachment.fields) {
@@ -113,7 +112,7 @@ const Fields = React.memo(
 			<>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
+						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault, fontSize: scaleFontSize(15) }]}>
 							{field.title}
 						</Text>
 						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
@@ -130,6 +129,7 @@ const CollapsibleQuote = React.memo(
 		'use memo';
 
 		const { theme } = useTheme();
+		const { scaleFontSize } = useResponsiveLayout();
 		const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 
 		if (!attachment) {
@@ -176,7 +176,7 @@ const CollapsibleQuote = React.memo(
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>
 							<View style={styles.authorContainer}>
-								<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
+								<Text style={[styles.title, { color: fontSecondaryInfo, fontSize: scaleFontSize(16) }]}>{attachment.title}</Text>
 							</View>
 							{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
 							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}

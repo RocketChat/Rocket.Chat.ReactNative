@@ -42,12 +42,14 @@ import { usePrevious } from '../../../lib/hooks/usePrevious';
 import { type ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 import useIOSBackSwipeHandler from '../hooks/useIOSBackSwipeHandler';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
+		const { scaleFontSize } = useResponsiveLayout();
 		const { rid, tmid, sharing, action, selectedMessages, setQuotesAndText, room } = useRoomContext();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
@@ -366,7 +368,7 @@ export const ComposerInput = memo(
 
 		return (
 			<TextInput
-				style={[styles.textInput, { color: colors.fontDefault }]}
+				style={[styles.textInput, { color: colors.fontDefault, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(22) }]}
 				placeholder={placeholder}
 				placeholderTextColor={colors.fontAnnotation}
 				ref={component => {
@@ -397,9 +399,7 @@ const styles = StyleSheet.create({
 		maxHeight: MAX_HEIGHT,
 		paddingTop: 12,
 		paddingBottom: 12,
-		fontSize: 16,
 		textAlignVertical: 'center',
-		...sharedStyles.textRegular,
-		lineHeight: 22
+		...sharedStyles.textRegular
 	}
 });

@@ -6,6 +6,7 @@ import Inline from './Inline';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants/colors';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
@@ -14,6 +15,7 @@ interface IParagraphProps {
 const Paragraph = ({ value }: IParagraphProps) => {
 	let forceTrim = false;
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	if (
 		value?.[0]?.type === 'LINK' &&
 		// Need to update the @rocket.chat/message-parser to understand that the label can be a Markup | Markup[]
@@ -32,7 +34,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		forceTrim = true;
 	}
 	return (
-		<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
+		<Text style={[styles.text, { color: themes[theme].fontDefault, fontSize: scaleFontSize(16) }]}>
 			<Inline value={value} forceTrim={forceTrim} />
 		</Text>
 	);

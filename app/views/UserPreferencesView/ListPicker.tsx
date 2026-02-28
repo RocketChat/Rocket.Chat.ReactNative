@@ -7,6 +7,7 @@ import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	title: { ...sharedStyles.textRegular, fontSize: 16 }
@@ -49,6 +50,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const [option, setOption] = useState(
 		value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]
 	);
@@ -71,7 +73,7 @@ const ListPicker = ({
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
-			right={() => <Text style={[styles.title, { color: colors.fontHint }]}>{label}</Text>}
+			right={() => <Text style={[styles.title, { color: colors.fontHint, fontSize: scaleFontSize(16) }]}>{label}</Text>}
 			additionalAccessibilityLabel={label}
 		/>
 	);

@@ -8,7 +8,8 @@ export const LONG_SWIPE = ACTION_WIDTH * 2.5;
 
 export default StyleSheet.create({
 	flex: {
-		flex: 1
+		flex: 1,
+		minWidth: 0
 	},
 	container: {
 		flexDirection: 'row',
@@ -17,13 +18,19 @@ export default StyleSheet.create({
 	},
 	centerContainer: {
 		flex: 1,
+		minWidth: 0,
 		paddingVertical: 10,
 		paddingRight: 14,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	title: {
 		flex: 1,
-		fontSize: 17,
+		minWidth: 0,
+		justifyContent: 'center'
+	},
+	titleText: {
+		minWidth: 0,
+		flexShrink: 1,
 		...sharedStyles.textMedium
 	},
 	alert: {
@@ -32,20 +39,23 @@ export default StyleSheet.create({
 	row: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		minWidth: 0,
+		overflow: 'hidden'
 	},
 	wrapUpdatedAndBadge: {
 		alignItems: 'flex-end'
 	},
 	titleContainer: {
-		width: '100%',
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center'
+		minWidth: 0,
+		overflow: 'hidden'
 	},
 	date: {
-		fontSize: 13,
 		marginLeft: 4,
+		flexShrink: 0,
 		...sharedStyles.textRegular
 	},
 	updateAlert: {
@@ -54,10 +64,11 @@ export default StyleSheet.create({
 	status: {
 		marginRight: 2
 	},
-	markdownText: {
+	lastMessageContainer: {
 		flex: 1,
-		fontSize: 14,
-		...sharedStyles.textRegular
+		minWidth: 0,
+		justifyContent: 'center',
+		overflow: 'hidden'
 	},
 	avatar: {
 		marginRight: 10
@@ -97,10 +108,10 @@ export default StyleSheet.create({
 		alignSelf: 'center',
 		alignItems: 'center',
 		borderRadius: 4,
-		marginHorizontal: 4
+		marginHorizontal: 4,
+		flexShrink: 0
 	},
 	tagText: {
-		fontSize: 13,
 		paddingHorizontal: 4,
 		...sharedStyles.textSemibold
 	},

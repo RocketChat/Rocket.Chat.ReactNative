@@ -8,6 +8,7 @@ import styles from '../../styles';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { type IUserMention } from '../../interfaces';
 import { useUserPreferences } from '../../../../lib/methods/userPreferences';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IAtMention {
 	mention: string;
@@ -20,6 +21,7 @@ interface IAtMention {
 
 const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY, false);
 	const preffix = mentionsWithAtSymbol ? '@' : '';
 	if (mention === 'all' || mention === 'here') {
@@ -28,7 +30,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].statusFontService
+						color: themes[theme].statusFontService,
+						fontSize: scaleFontSize(16)
 					},
 					...style
 				]}>
@@ -74,14 +77,14 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 
 		return (
 			// not enough information on mentions to navigate to team info, so we don't handle onPress
-			<Text style={[styles.mention, mentionStyle, ...style]} onPress={atMentioned?.type === 'team' ? undefined : handlePress}>
+			<Text style={[styles.mention, mentionStyle, { fontSize: scaleFontSize(16) }, ...style]} onPress={atMentioned?.type === 'team' ? undefined : handlePress}>
 				{preffix}
 				{text}
 			</Text>
 		);
 	}
 
-	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`@${mention}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].fontDefault, fontSize: scaleFontSize(16) }, ...style]}>{`@${mention}`}</Text>;
 });
 
 export default AtMention;

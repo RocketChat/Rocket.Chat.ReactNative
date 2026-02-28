@@ -22,9 +22,11 @@ import { Duration, type IDurationRef } from './Duration';
 import AudioPlayer from '../../../AudioPlayer';
 import { CancelButton } from './CancelButton';
 import i18n from '../../../../i18n';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
+	const { scaleFontSize } = useResponsiveLayout();
 	const recordingRef = useRef<Audio.Recording | null>(null);
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const numberOfTriesRef = useRef(0);
@@ -150,7 +152,7 @@ export const RecordAudio = (): ReactElement | null => {
 			<View style={styles.buttons}>
 				<CancelButton onPress={cancelRecording} cancelAndDelete />
 				<View accessible accessibilityLabel={i18n.t('Recording_audio_in_progress')} style={styles.recordingNote}>
-					<Text style={styles.recordingNoteText}>{i18n.t('Recording_audio_in_progress')}</Text>
+					<Text style={[styles.recordingNoteText, { fontSize: scaleFontSize(14) }]}>{i18n.t('Recording_audio_in_progress')}</Text>
 				</View>
 				<ReviewButton onPress={goReview} />
 			</View>
@@ -196,7 +198,6 @@ function useStyle() {
 			alignItems: 'center'
 		},
 		recordingNoteText: {
-			fontSize: 14,
 			...sharedStyles.textRegular,
 			color: colors.fontSecondaryInfo
 		}

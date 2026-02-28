@@ -12,6 +12,7 @@ import AvatarContainer from './Avatar';
 import StatusContainer from './Status';
 import DotsLoader from './DotsLoader';
 import I18n from '../i18n';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 type TCallHeader = {
 	mic: boolean;
@@ -28,6 +29,7 @@ type TCallHeader = {
 export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name, direct }: TCallHeader): React.ReactElement => {
 	const style = useStyle();
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const calling = useAppSelector(state => state.videoConf.calling);
 
 	const handleColors = (enabled: boolean) => {
@@ -44,7 +46,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 			<View>
 				<View style={style.actionSheetHeader}>
 					<View style={style.rowContainer}>
-						<Text style={style.actionSheetHeaderTitle}>{title}</Text>
+						<Text style={[style.actionSheetHeaderTitle, { fontSize: scaleFontSize(14) }]}>{title}</Text>
 						{calling && direct ? <DotsLoader /> : null}
 					</View>
 					<View style={style.actionSheetHeaderButtons}>
@@ -73,7 +75,7 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 				<View style={style.actionSheetUsernameContainer}>
 					<AvatarContainer text={avatar} size={36} />
 					{direct ? <StatusContainer size={16} id={uid} style={style.statusContainerMargin} /> : null}
-					<Text style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0 }} numberOfLines={1}>
+					<Text style={{ ...style.actionSheetUsername, marginLeft: !direct ? 8 : 0, fontSize: scaleFontSize(16) }} numberOfLines={1}>
 						{name}
 					</Text>
 				</View>
@@ -87,7 +89,6 @@ function useStyle() {
 	const style = StyleSheet.create({
 		actionSheetHeader: { flexDirection: 'row', alignItems: 'center' },
 		actionSheetHeaderTitle: {
-			fontSize: 14,
 			...sharedStyles.textBold,
 			color: colors.fontDefault
 		},
@@ -103,7 +104,6 @@ function useStyle() {
 		},
 		actionSheetUsernameContainer: { flexDirection: 'row', paddingTop: 8, alignItems: 'center' },
 		actionSheetUsername: {
-			fontSize: 16,
 			...sharedStyles.textBold,
 			color: colors.fontDefault,
 			flexShrink: 1

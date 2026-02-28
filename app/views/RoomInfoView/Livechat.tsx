@@ -11,6 +11,7 @@ import sharedStyles from '../Styles';
 import CustomFields from './CustomFields';
 import Item from './Item';
 import Timezone from './Timezone';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	title: {
@@ -22,7 +23,8 @@ const styles = StyleSheet.create({
 
 const Title = ({ title }: { title: string }) => {
 	const { colors } = useTheme();
-	return <Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>;
+	const { scaleFontSize } = useResponsiveLayout();
+	return <Text style={[styles.title, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16) }]}>{title}</Text>;
 };
 
 const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechatVisitorModified }): React.ReactElement => {

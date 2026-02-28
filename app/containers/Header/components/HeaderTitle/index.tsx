@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { isAndroid } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
 import { styles } from './styles';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IHeaderTitle {
 	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
@@ -13,6 +14,7 @@ const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
 	'use memo';
 
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	if (!headerTitle) {
 		return null;
 	}
@@ -24,7 +26,9 @@ const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
 					numberOfLines={1}
 					style={{
 						...styles.androidTitle,
-						color: colors.fontTitlesLabels
+						color: colors.fontTitlesLabels,
+						fontSize: scaleFontSize(18),
+						lineHeight: scaleFontSize(24)
 					}}>
 					{headerTitle}
 				</Text>
@@ -36,7 +40,9 @@ const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
 					numberOfLines={1}
 					style={{
 						...styles.title,
-						color: colors.fontTitlesLabels
+						color: colors.fontTitlesLabels,
+						fontSize: scaleFontSize(18),
+						lineHeight: scaleFontSize(24)
 					}}>
 					{headerTitle}
 				</Text>

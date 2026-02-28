@@ -11,6 +11,7 @@ import CollapsibleText from '../../../containers/CollapsibleText';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { LISTENER } from '../../../containers/Toast';
 import I18n from '../../../i18n';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomInfoViewTitle {
 	room?: ISubscription;
@@ -22,6 +23,7 @@ interface IRoomInfoViewTitle {
 
 const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfoViewTitle): React.ReactElement => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	const copyInfoToClipboard = (data: string) => {
 		Clipboard.setString(data);
@@ -34,21 +36,21 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				<Text
 					onLongPress={() => (name ? copyInfoToClipboard(name) : {})}
 					testID='room-info-view-name'
-					style={[styles.roomTitle, { color: colors.fontTitlesLabels }]}>
+					style={[styles.roomTitle, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16) }]}>
 					{name}
 				</Text>
 				{username && (
 					<Text
 						onLongPress={() => copyInfoToClipboard(username)}
 						testID='room-info-view-username'
-						style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}>{`@${username}`}</Text>
+						style={[styles.roomUsername, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]}>{`@${username}`}</Text>
 				)}
 				{!!statusText && (
 					<View testID='room-info-view-custom-status'>
 						<CollapsibleText
 							linesToTruncate={2}
 							msg={statusText}
-							style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
+							style={[styles.roomUsername, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]}
 						/>
 					</View>
 				)}
@@ -65,7 +67,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				sourceType={room?.source}
 				abacAttributes={room?.abacAttributes}
 			/>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels }]} key='room-info-name'>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16) }]} key='room-info-name'>
 				{getRoomTitle(room)}
 			</Text>
 		</View>

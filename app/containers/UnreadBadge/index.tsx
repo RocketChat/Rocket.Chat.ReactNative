@@ -4,6 +4,7 @@ import { type StyleProp, StyleSheet, Text, useWindowDimensions, View, type ViewS
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
 import { useTheme } from '../../theme';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	unreadNumberContainerNormal: {
@@ -18,11 +19,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	unreadText: {
-		fontSize: 13,
 		...sharedStyles.textSemibold
 	},
 	textSmall: {
-		fontSize: 10
 	}
 });
 
@@ -67,6 +66,7 @@ const UnreadBadge = React.memo(
 	}: IUnreadBadge) => {
 		const { theme } = useTheme();
 		const { fontScale } = useWindowDimensions();
+		const { scaleFontSize } = useResponsiveLayout();
 
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
@@ -118,7 +118,7 @@ const UnreadBadge = React.memo(
 					style
 				]}
 				testID={testId}>
-				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
+				<Text style={[styles.unreadText, small && styles.textSmall, { color, fontSize: small ? scaleFontSize(10) : scaleFontSize(13) }]} numberOfLines={1}>
 					{text}
 				</Text>
 			</View>

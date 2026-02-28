@@ -5,6 +5,7 @@ import sharedStyles from '../views/Styles';
 import { getReadableVersion } from '../lib/methods/helpers';
 import I18n from '../i18n';
 import { useTheme } from '../theme';
+import { useResponsiveLayout } from '../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -12,8 +13,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
 	text: {
-		...sharedStyles.textRegular,
-		fontSize: 13
+		...sharedStyles.textRegular
 	},
 	bold: {
 		...sharedStyles.textSemibold
@@ -22,9 +22,10 @@ const styles = StyleSheet.create({
 
 const AppVersion = React.memo(() => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(13) }]}>
 				{I18n.t('Version_no', { version: '' })}
 				<Text style={styles.bold}>{getReadableVersion}</Text>
 			</Text>

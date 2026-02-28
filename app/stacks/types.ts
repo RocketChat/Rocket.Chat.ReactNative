@@ -199,6 +199,7 @@ export type ProfileStackParamList = {
 		t?: SubscriptionType;
 	};
 	ChangePasswordView: undefined;
+	FontSizePickerView: undefined;
 };
 
 export type SettingsStackParamList = {

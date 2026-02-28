@@ -9,12 +9,11 @@ import sharedStyles from '../../../views/Styles';
 import Button from '../../Button';
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	subtitleText: {
-		...sharedStyles.textRegular,
-		fontSize: 16,
-		lineHeight: 24
+		...sharedStyles.textRegular
 	},
 	buttonSeparator: {
 		marginRight: 12
@@ -24,9 +23,7 @@ const styles = StyleSheet.create({
 		paddingTop: 16
 	},
 	titleContainerText: {
-		...sharedStyles.textBold,
-		fontSize: 16,
-		lineHeight: 24
+		...sharedStyles.textBold
 	},
 	titleContainer: {
 		paddingRight: 80,
@@ -106,6 +103,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	autoComplete?: TextInputProps['autoComplete'];
 }): React.ReactElement => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
 	const inputRefs = useRef(inputs.map(() => React.createRef()));
 
@@ -170,9 +168,9 @@ const ActionSheetContentWithInputAndSubmit = ({
 			<>
 				<View accessible accessibilityLabel={title} style={styles.titleContainer}>
 					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.buttonBackgroundDangerDefault} /> : null}
-					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 12 : 0 }]}>{title}</Text>
+					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 12 : 0, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(24) }]}>{title}</Text>
 				</View>
-				{description ? <Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{description}</Text> : null}
+				{description ? <Text style={[styles.subtitleText, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(24) }]}>{description}</Text> : null}
 				{customText}
 			</>
 			{showInput ? renderInputs() : null}

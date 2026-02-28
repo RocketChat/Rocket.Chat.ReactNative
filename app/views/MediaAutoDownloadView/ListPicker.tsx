@@ -8,6 +8,7 @@ import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { type MediaDownloadOption } from '../../lib/constants/mediaAutoDownload';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	leftTitleContainer: {
@@ -66,6 +67,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const insets = useSafeAreaInsets();
 	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
@@ -93,12 +95,12 @@ const ListPicker = ({
 			onPress={() => showActionSheet({ children: getOptions() })}
 			title={() => (
 				<View style={styles.leftTitleContainer}>
-					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
+					<Text style={[styles.leftTitle, { color: colors.fontDefault, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(24) }]}>{title}</Text>
 				</View>
 			)}
 			right={() => (
 				<View style={styles.rightTitleContainer}>
-					<Text style={[styles.rightTitle, { color: colors.fontHint }]}>{label}</Text>
+					<Text style={[styles.rightTitle, { color: colors.fontHint, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(24) }]}>{label}</Text>
 				</View>
 			)}
 			rightContainerStyle={styles.rightContainer}

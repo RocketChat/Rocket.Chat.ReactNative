@@ -12,7 +12,7 @@ import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
-import { MarkdownPreview } from '../../containers/markdown';
+import usePreviewFormatText from '../../lib/hooks/usePreviewFormatText';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
@@ -30,7 +30,7 @@ import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { getUserSelector } from '../../selectors/login';
 import { type ChatsStackParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
+import { withTheme, type TSupportedThemes } from '../../theme';
 import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import Touch from '../../containers/Touch';
@@ -74,8 +74,34 @@ import CallSection from './components/CallSection';
 import { type TNavigation } from '../../stacks/stackType';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import Navigation from '../../lib/navigation/appNavigation';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 type StackType = ChatsStackParamList & TNavigation;
+
+const RoomTitle = ({ children, theme }: { children: React.ReactNode; theme: TSupportedThemes }) => {
+	const { scaleFontSize } = useResponsiveLayout();
+	return (
+		<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(22) }]} numberOfLines={1}>
+			{children}
+		</Text>
+	);
+};
+
+const RoomDescription = ({ msg, theme }: { msg: string | undefined; theme: TSupportedThemes }) => {
+	const { scaleFontSize } = useResponsiveLayout();
+	const formattedText = usePreviewFormatText(msg || '');
+	if (!msg) {
+		return null;
+	}
+	return (
+		<Text
+			style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo, fontSize: scaleFontSize(13), lineHeight: scaleFontSize(18) }]}
+			numberOfLines={1}
+			ellipsizeMode='tail'>
+			{formattedText}
+		</Text>
+	);
+};
 
 interface IOnPressTouch {
 	<T extends keyof StackType>(item: { route?: T; params?: StackType[T]; event?: Function }): void;
@@ -785,9 +811,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (
-								<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-									{room.fname}
-								</Text>
+								<RoomTitle theme={theme}>{room.fname}</RoomTitle>
 							) : (
 								<View style={styles.roomTitleRow}>
 									<RoomTypeIcon
@@ -797,21 +821,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										sourceType={source}
 										abacAttributes={room.abacAttributes}
 									/>
-									<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-										{getRoomTitle(room)}
-									</Text>
+									<RoomTitle theme={theme}>{getRoomTitle(room)}</RoomTitle>
 								</View>
 							)}
-							<MarkdownPreview
-								msg={t === 'd' ? `@${name}` : topic}
-								style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
-							/>
-							{room.t === 'd' && (
-								<MarkdownPreview
-									msg={member.statusText}
-									style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
-								/>
-							)}
+							<RoomDescription msg={t === 'd' ? `@${name}` : topic || ''} theme={theme} />
+							{room.t === 'd' && member.statusText && <RoomDescription msg={member.statusText} theme={theme} />}
 						</View>
 						{isGroupChatHandler ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>

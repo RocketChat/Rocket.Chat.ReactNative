@@ -9,12 +9,12 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Chip from '../../containers/Chip';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	selectedText: {
 		marginLeft: 16,
 		marginBottom: 12,
-		fontSize: 12,
 		...sharedStyles.textRegular
 	},
 	contentContainerList: {
@@ -34,6 +34,7 @@ const Header = ({
 }) => {
 	const flatlist = useRef<FlatList<ISelectedUser>>(null);
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const { users } = useAppSelector(state => ({
 		users: state.selectedUsers.users
 	}));
@@ -45,7 +46,7 @@ const Header = ({
 			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
 			{users.length === 0 ? null : (
 				<View>
-					<Text style={[styles.selectedText, { color: themes[theme].fontHint }]}>
+					<Text style={[styles.selectedText, { color: themes[theme].fontHint, fontSize: scaleFontSize(12) }]}>
 						{I18n.t('N_Selected_members', { n: users.length })}
 					</Text>
 					<FlatList

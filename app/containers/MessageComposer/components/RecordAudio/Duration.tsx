@@ -5,6 +5,7 @@ import { type Audio } from 'expo-av';
 import sharedStyles from '../../../../views/Styles';
 import { useTheme } from '../../../../theme';
 import { formatTime } from './utils';
+import { useResponsiveLayout } from '../../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export interface IDurationRef {
 	onRecordingStatusUpdate: (status: Audio.RecordingStatus) => void;
@@ -30,11 +31,12 @@ export const Duration = forwardRef<IDurationRef>((_, ref) => {
 
 function useStyle() {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const styles = {
 		text: {
 			marginLeft: 12,
-			fontSize: 16,
 			...sharedStyles.textRegular,
+			fontSize: scaleFontSize(16),
 			color: colors.fontDefault,
 			fontVariant: ['tabular-nums'] as FontVariant[]
 		}
