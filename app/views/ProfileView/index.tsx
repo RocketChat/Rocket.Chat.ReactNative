@@ -282,8 +282,16 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	useFocusEffect(
 		useCallback(() => {
-			reset();
-		}, [])
+			reset({
+				name: user?.name || '',
+				username: user?.username || '',
+				email: user?.emails?.[0]?.address || '',
+				bio: user?.bio || '',
+				nickname: user?.nickname || '',
+				currentPassword: null,
+				saving: false
+			});
+		}, [user?.name, user?.username, user?.emails, user?.bio, user?.nickname, reset])
 	);
 
 	return (
