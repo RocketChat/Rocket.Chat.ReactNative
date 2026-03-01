@@ -98,7 +98,8 @@ export const onPressCustomOAuth = ({ loginService, server }: { loginService: IIt
 	logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 	const { serverURL, authorizePath, clientId, scope, service } = loginService;
 	const redirectUri = `${server}/_oauth/${service}`;
-	const state = getOAuthState();
+	// Use 'redirect' login style to open in external browser (supports WebAuthn/passkeys)
+	const state = getOAuthState('redirect');
 	const separator = authorizePath.indexOf('?') !== -1 ? '&' : '?';
 	const params = `${separator}client_id=${clientId}&redirect_uri=${encodeURIComponent(
 		redirectUri
@@ -106,7 +107,8 @@ export const onPressCustomOAuth = ({ loginService, server }: { loginService: IIt
 	const domain = `${serverURL}`;
 	const absolutePath = `${authorizePath}${params}`;
 	const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;
-	openOAuth({ url });
+	// Open in external browser instead of in-app WebView to support WebAuthn/passkeys
+	Linking.openURL(url);
 };
 
 export const onPressSaml = ({ loginService, server }: { loginService: IItemService; server: string }) => {
