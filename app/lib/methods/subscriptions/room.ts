@@ -6,6 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
+import { getOptimisticUpdate, isRecentOptimisticUpdate, clearOptimisticUpdate } from '../helpers/optimisticUpdates';
 import database from '../../database';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
@@ -281,7 +282,23 @@ export default class RoomSubscription {
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
-								Object.assign(m, message);
+								const optimisticUpdate = getOptimisticUpdate(message._id);
+								const isRecentOptimistic = isRecentOptimisticUpdate(message._id, 2000);
+
+								const { pinned: _pinned, ...restMessage } = message;
+								Object.assign(m, restMessage);
+
+								if (message.pinned !== undefined) {
+									if (isRecentOptimistic && optimisticUpdate?.pinned !== undefined) {
+										m.pinned = optimisticUpdate.pinned;
+									} else {
+										m.pinned = message.pinned;
+									}
+								}
+
+								if (isRecentOptimistic) {
+									clearOptimisticUpdate(message._id);
+								}
 							})
 						)
 					);
