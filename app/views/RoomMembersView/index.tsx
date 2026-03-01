@@ -123,6 +123,13 @@ const RoomMembersView = (): React.ReactElement => {
 	] = usePermissions(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user', ...teamPermissions], params.rid);
 
 	useEffect(() => {
+		const unsubscribeFocus = navigation.addListener('focus', () => {
+			fetchMembers(false);
+		});
+		return unsubscribeFocus;
+	}, [navigation]);
+
+	useEffect(() => {
 		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
 		setHeader(true);
 		return () => subscription?.unsubscribe();
