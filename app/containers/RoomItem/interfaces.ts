@@ -41,6 +41,7 @@ export interface IUpdatedAtProps {
 
 export interface IWrapperProps {
 	accessibilityLabel: string;
+	accessibilityHint?: string;
 	avatar: string;
 	type: string;
 	userId: string | null;
