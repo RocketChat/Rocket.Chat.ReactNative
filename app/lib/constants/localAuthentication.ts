@@ -11,3 +11,6 @@ export const MAX_ATTEMPTS = 6;
 export const TIME_TO_LOCK = 30000;
 
 export const DEFAULT_AUTO_LOCK = 1800;
+
+// Delay between modal transitions to prevent iOS UI thread hang
+export const MODAL_TRANSITION_DELAY_MS = 300;
