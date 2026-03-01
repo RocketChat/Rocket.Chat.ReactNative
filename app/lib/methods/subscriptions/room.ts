@@ -29,6 +29,7 @@ import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
 import { updateLastOpen } from '../updateLastOpen';
 import markMessagesRead from '../helpers/markMessagesRead';
+import { getOptimisticUpdate, isRecentOptimisticUpdate } from '../helpers/optimisticUpdates';
 
 export default class RoomSubscription {
 	private rid: string;
@@ -281,7 +282,27 @@ export default class RoomSubscription {
 					batch.push(
 						messageRecord.prepareUpdate(
 							protectedFunction((m: TMessageModel) => {
-								Object.assign(m, message);
+								const optimisticUpdate = getOptimisticUpdate(message._id);
+								const isRecentOptimistic = isRecentOptimisticUpdate(message._id, 2000);
+
+								const { pinned: _pinned, starred: _starred, ...restMessage } = message;
+								Object.assign(m, restMessage);
+
+								if (message.pinned !== undefined) {
+									if (isRecentOptimistic && optimisticUpdate?.pinned !== undefined) {
+										m.pinned = optimisticUpdate.pinned;
+									} else {
+										m.pinned = message.pinned;
+									}
+								}
+
+								if (message.starred !== undefined) {
+									if (isRecentOptimistic && optimisticUpdate?.starred !== undefined) {
+										m.starred = optimisticUpdate.starred;
+									} else {
+										m.starred = message.starred;
+									}
+								}
 							})
 						)
 					);
