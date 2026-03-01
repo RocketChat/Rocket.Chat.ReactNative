@@ -16,7 +16,7 @@ import { type IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert, shareMedia } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { type TNavigation } from '../stacks/stackType';
@@ -141,7 +141,17 @@ const AttachmentView = (): React.ReactElement => {
 			),
 			headerRight:
 				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url)
-					? () => <HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
+					? () => (
+							<View style={{ flexDirection: 'row' }}>
+								<HeaderButton.Share
+									testID='share-image'
+									onPress={handleShare}
+									color={colors.fontDefault}
+									style={{ marginRight: 8 }}
+								/>
+								<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
+							</View>
+					  )
 					: undefined
 		};
 		navigation.setOptions(options);
@@ -193,6 +203,61 @@ const AttachmentView = (): React.ReactElement => {
 			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
 		}
 		setLoading(false);
+	};
+
+	const handleShare = async () => {
+		try {
+			const { title_link, image_url, image_type, video_url, video_type } = attachment;
+			const url = video_url || title_link || image_url;
+
+			if (!url) {
+				return;
+			}
+
+			if (isAndroid) {
+				const rationale = {
+					title: I18n.t('Write_External_Permission'),
+					message: I18n.t('Write_External_Permission_Message'),
+					buttonPositive: 'Ok'
+				};
+				const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
+				if (!(result || result === PermissionsAndroid.RESULTS.GRANTED)) {
+					return;
+				}
+			}
+
+			setLoading(true);
+
+			if (LOCAL_DOCUMENT_DIRECTORY && url.startsWith(LOCAL_DOCUMENT_DIRECTORY)) {
+				const result = await shareMedia({ url });
+				if (result.success) {
+					EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+				} else {
+					EventEmitter.emit(LISTENER, { message: I18n.t('error-sharing-file') });
+				}
+			} else {
+				const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
+				let filename = '';
+				if (image_url) {
+					filename = getFilename({ title: attachment.title, type: 'image', mimeType: image_type, url });
+				} else {
+					filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
+				}
+				const file = await fileDownload(mediaAttachment, {}, filename);
+				const result = await shareMedia({ url: file });
+				FileSystem.deleteAsync(file, { idempotent: true });
+
+				if (result.success) {
+					EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+				} else {
+					EventEmitter.emit(LISTENER, { message: I18n.t('error-sharing-file') });
+				}
+			}
+		} catch (e) {
+			EventEmitter.emit(LISTENER, { message: I18n.t('error-sharing-file') });
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
