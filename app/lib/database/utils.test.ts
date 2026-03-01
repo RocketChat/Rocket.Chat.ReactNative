@@ -69,4 +69,10 @@ describe('slugifyLikeString', () => {
 		const textSlugified = 'tesuto123';
 		expect(utils.slugifyLikeString(textToSlugify)).toBe(textSlugified);
 	});
+	test('slugify with special characters - should sanitize before slugifying', () => {
+		// Special characters should be replaced with '_' before slugifying
+		expect(utils.slugifyLikeString('test@#$123')).toBe('test___123');
+		expect(utils.slugifyLikeString('hello.world!')).toBe('hello_world_');
+		expect(utils.slugifyLikeString('user-name_123')).toBe('user_name_123');
+	});
 });
