@@ -16,6 +16,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isRead, isTablet } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { events, logEvent } from '../../lib/methods/helpers/log';
+import NativeKeyboardCommand from '../../lib/native/NativeKeyboardCommand';
 import { getUserSelector } from '../../selectors/login';
 import { useTheme } from '../../theme';
 import Container from './components/Container';
@@ -34,7 +35,7 @@ const RoomsListView = memo(function RoomsListView() {
 	'use memo';
 
 	useHeader();
-	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
+	const { searching, searchEnabled, searchResults, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
@@ -52,6 +53,24 @@ const RoomsListView = memo(function RoomsListView() {
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 
 	useEffect(() => {
+		if (!isIOS) {
+			return;
+		}
+
+		const subscription = NativeKeyboardCommand.addListener((event: { command: string }) => {
+			if (event.command === 'commandK' && navigation.isFocused()) {
+				if (!searchEnabled) {
+					startSearch();
+				}
+			}
+		});
+
+		return () => {
+			subscription.remove();
+		};
+	}, [navigation, searchEnabled, startSearch]);
+
+	useEffect(() => {
 		const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
 			if (searchEnabled) {
 				stopSearch();
@@ -61,7 +80,7 @@ const RoomsListView = memo(function RoomsListView() {
 			return false;
 		});
 		return () => subscription.remove();
-	}, [searchEnabled]);
+	}, [navigation, searchEnabled, stopSearch]);
 
 	const onPressItem = (item = {} as IRoomItem) => {
 		if (!navigation.isFocused()) {
