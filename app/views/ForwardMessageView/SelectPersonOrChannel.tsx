@@ -18,7 +18,8 @@ const SelectPersonOrChannel = ({
 	userId,
 	onRoomSelect,
 	blockUnauthenticatedAccess,
-	serverVersion
+	serverVersion,
+	disabled
 }: IForwardMessageViewSelectRoom): React.ReactElement => {
 	const [rooms, setRooms] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
@@ -68,6 +69,7 @@ const SelectPersonOrChannel = ({
 				placeholder={{ text: `${I18n.t('Select')}` }}
 				context={BlockContext.FORM}
 				multiselect
+				disabled={disabled}
 				testID='select-person-or-channel'
 			/>
 		</View>
