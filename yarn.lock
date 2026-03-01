@@ -2655,13 +2655,6 @@
     glob "^7.1.6"
     read-pkg-up "^7.0.1"
 
-"@discord/bottom-sheet@bluesky-social/react-native-bottom-sheet":
-  version "4.6.1"
-  resolved "https://codeload.github.com/bluesky-social/react-native-bottom-sheet/tar.gz/28a87d1bb55e10fc355fa1455545a30734995908"
-  dependencies:
-    "@gorhom/portal" "1.0.14"
-    invariant "^2.2.4"
-
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
@@ -4095,6 +4088,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
+
+"@lodev09/react-native-true-sheet@3.9.4":
+  version "3.9.4"
+  resolved "https://registry.yarnpkg.com/@lodev09/react-native-true-sheet/-/react-native-true-sheet-3.9.4.tgz#794137206d8010a7e9c8ee293c7cbd1ec0fd126a"
+  integrity sha512-4M7VnKO4pt6aVqrznNCtT6G4MRmTsqD59Jymh01BCpSjenVCn0+FKRu9Jl9zDwg2nMvffFd5M186SIaii4AqUA==
 
 "@napi-rs/wasm-runtime@^0.2.11":
   version "0.2.12"
