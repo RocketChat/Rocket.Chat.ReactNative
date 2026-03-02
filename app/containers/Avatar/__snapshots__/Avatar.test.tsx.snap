@@ -1,16 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="[missing {{username}} value]'s avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -26,6 +41,7 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -52,20 +68,35 @@ exports[`Story Snapshots: AvatarBase64 should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="Avatar's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -81,6 +112,7 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -107,20 +139,35 @@ exports[`Story Snapshots: AvatarExternalProviderUrl should match snapshot 1`] = 
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="[missing {{username}} value]'s avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -136,6 +183,7 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -162,20 +210,35 @@ exports[`Story Snapshots: AvatarPath should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="[missing {{username}} value]'s avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -191,6 +254,7 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -217,20 +281,35 @@ exports[`Story Snapshots: AvatarRoomId should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="Avatar's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -246,6 +325,7 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -272,20 +352,35 @@ exports[`Story Snapshots: AvatarText should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="[missing {{username}} value]'s avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -301,6 +396,7 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -327,20 +423,35 @@ exports[`Story Snapshots: AvatarUrl should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: Channel should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="general's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -356,6 +467,7 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -382,20 +494,35 @@ exports[`Story Snapshots: Channel should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: Children should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="Avatar's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -411,6 +538,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -477,20 +605,35 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
   >
     
   </Text>
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="Avatar's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 28,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 28,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -506,6 +649,7 @@ exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -532,23 +676,38 @@ exports[`Story Snapshots: CustomBorderRadius should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="Avatar's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
-      {
-        "padding": 16,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        {
+          "padding": 16,
+        },
+      ],
+      undefined,
     ]
   }
   testID="avatar"
@@ -563,6 +722,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -589,20 +749,35 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: Direct should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="diego.mello's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -618,6 +793,7 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -644,20 +820,35 @@ exports[`Story Snapshots: Direct should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: Emoji should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="[missing {{username}} value]'s avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -711,20 +902,35 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       width={56}
     />
   </View>
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="[missing {{username}} value]'s avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -740,6 +946,7 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -766,20 +973,35 @@ exports[`Story Snapshots: RoomAvatarExternalProviderUrl should match snapshot 1`
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: Static should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="[missing {{username}} value]'s avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -795,6 +1017,7 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -821,19 +1044,34 @@ exports[`Story Snapshots: Static should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: Touchable should match snapshot 1`] = `
-<View
-  accessible={true}
+<ExternalKeyboardView
+  accessible={false}
+  canBeFocused={true}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -884,6 +1122,7 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
           "top": "50%",
         }
       }
+      focusable={false}
       height={56}
       nativeViewRef={"[React.ref]"}
       onError={[Function]}
@@ -911,20 +1150,35 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
       width={56}
     />
   </View>
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: WithETag should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="djorkaeff.alexandre's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -940,6 +1194,7 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -966,20 +1221,35 @@ exports[`Story Snapshots: WithETag should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="djorkaeff.alexandre's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -995,6 +1265,7 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -1021,20 +1292,35 @@ exports[`Story Snapshots: WithoutETag should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;
 
 exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
-<View
+<ExternalKeyboardView
   accessibilityLabel="Avatar's avatar"
   accessible={true}
+  canBeFocused={false}
+  enableA11yFocus={false}
+  group={false}
+  haloEffect={true}
+  hasKeyDownPress={false}
+  hasKeyUpPress={true}
+  hasOnFocusChanged={true}
+  lockFocus={0}
+  onFocusChange={[Function]}
+  onKeyUpPress={[Function]}
+  orderIndex={-1}
+  screenAutoA11yFocusDelay={500}
   style={
     [
-      {
-        "borderRadius": 4,
-        "height": 56,
-        "width": 56,
-      },
+      [
+        {
+          "borderRadius": 4,
+          "height": 56,
+          "width": 56,
+        },
+        undefined,
+      ],
       undefined,
     ]
   }
@@ -1050,6 +1336,7 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
         "top": "50%",
       }
     }
+    focusable={true}
     height={56}
     nativeViewRef={"[React.ref]"}
     onError={[Function]}
@@ -1076,5 +1363,5 @@ exports[`Story Snapshots: WrongServer should match snapshot 1`] = `
     transition={null}
     width={56}
   />
-</View>
+</ExternalKeyboardView>
 `;

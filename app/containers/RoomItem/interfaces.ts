@@ -12,6 +12,7 @@ import {
 
 export interface ILeftActionsProps {
 	transX: Animated.SharedValue<number>;
+	enabled: boolean;
 	isRead: boolean;
 	width: number;
 	onToggleReadPress(): void;
@@ -20,6 +21,7 @@ export interface ILeftActionsProps {
 
 export interface IRightActionsProps {
 	transX: Animated.SharedValue<number>;
+	enabled: boolean;
 	favorite: boolean;
 	width: number;
 	toggleFav(): void;

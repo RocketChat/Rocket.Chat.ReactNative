@@ -1640,6 +1640,30 @@ PODS:
     - Yoga
   - react-native-cookies (6.2.1):
     - React-Core
+  - react-native-external-keyboard (0.7.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-keyboard-controller (1.17.1):
     - DoubleConversion
     - glog
@@ -2698,6 +2722,7 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
+  - react-native-external-keyboard (from `../node_modules/react-native-external-keyboard`)
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -2918,6 +2943,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-cookies:
     :path: "../node_modules/@react-native-cookies/cookies"
+  react-native-external-keyboard:
+    :path: "../node_modules/react-native-external-keyboard"
   react-native-keyboard-controller:
     :path: "../node_modules/react-native-keyboard-controller"
   react-native-mmkv:
@@ -3121,6 +3148,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 4638ae3bee00320753647900b21260b10587b6f7
   react-native-cameraroll: 23d28040c32ca8b20661e0c41b56ab041779244b
   react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
+  react-native-external-keyboard: dc936d6aed4b7ff1d2630367e0dc58243e80766f
   react-native-keyboard-controller: 9ec7ee23328c30251a399cffd8b54324a00343bf
   react-native-mmkv: ec96a16cd90e0d994d486c3993abf712186f7262
   react-native-netinfo: 2e3c27627db7d49ba412bfab25834e679db41e21

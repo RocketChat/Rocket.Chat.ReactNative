@@ -169,20 +169,35 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
         }
       }
     >
-      <View
+      <ExternalKeyboardView
         accessibilityLabel="rocket.cat's avatar"
         accessible={true}
+        canBeFocused={false}
+        enableA11yFocus={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={500}
         style={
           [
-            {
-              "borderRadius": 4,
-              "height": 28,
-              "width": 28,
-            },
-            {
-              "marginRight": 8,
-              "marginVertical": 8,
-            },
+            [
+              {
+                "borderRadius": 4,
+                "height": 28,
+                "width": 28,
+              },
+              {
+                "marginRight": 8,
+                "marginVertical": 8,
+              },
+            ],
+            undefined,
           ]
         }
         testID="avatar"
@@ -197,6 +212,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
               "top": "50%",
             }
           }
+          focusable={true}
           height={28}
           nativeViewRef={"[React.ref]"}
           onError={[Function]}
@@ -223,7 +239,7 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           transition={null}
           width={28}
         />
-      </View>
+      </ExternalKeyboardView>
       <View
         style={
           [
@@ -352,20 +368,35 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
         }
       }
     >
-      <View
+      <ExternalKeyboardView
         accessibilityLabel="rocket.cat's avatar"
         accessible={true}
+        canBeFocused={false}
+        enableA11yFocus={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={500}
         style={
           [
-            {
-              "borderRadius": 4,
-              "height": 28,
-              "width": 28,
-            },
-            {
-              "marginRight": 8,
-              "marginVertical": 8,
-            },
+            [
+              {
+                "borderRadius": 4,
+                "height": 28,
+                "width": 28,
+              },
+              {
+                "marginRight": 8,
+                "marginVertical": 8,
+              },
+            ],
+            undefined,
           ]
         }
         testID="avatar"
@@ -380,6 +411,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
               "top": "50%",
             }
           }
+          focusable={true}
           height={28}
           nativeViewRef={"[React.ref]"}
           onError={[Function]}
@@ -406,7 +438,7 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           transition={null}
           width={28}
         />
-      </View>
+      </ExternalKeyboardView>
       <View
         style={
           [
@@ -765,20 +797,35 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
         }
       }
     >
-      <View
+      <ExternalKeyboardView
         accessibilityLabel="rocket.cat's avatar"
         accessible={true}
+        canBeFocused={false}
+        enableA11yFocus={false}
+        group={false}
+        haloEffect={true}
+        hasKeyDownPress={false}
+        hasKeyUpPress={true}
+        hasOnFocusChanged={true}
+        lockFocus={0}
+        onFocusChange={[Function]}
+        onKeyUpPress={[Function]}
+        orderIndex={-1}
+        screenAutoA11yFocusDelay={500}
         style={
           [
-            {
-              "borderRadius": 4,
-              "height": 28,
-              "width": 28,
-            },
-            {
-              "marginRight": 8,
-              "marginVertical": 8,
-            },
+            [
+              {
+                "borderRadius": 4,
+                "height": 28,
+                "width": 28,
+              },
+              {
+                "marginRight": 8,
+                "marginVertical": 8,
+              },
+            ],
+            undefined,
           ]
         }
         testID="avatar"
@@ -793,6 +840,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
               "top": "50%",
             }
           }
+          focusable={true}
           height={28}
           nativeViewRef={"[React.ref]"}
           onError={[Function]}
@@ -819,7 +867,7 @@ exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
           transition={null}
           width={28}
         />
-      </View>
+      </ExternalKeyboardView>
       <View
         style={
           [

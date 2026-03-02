@@ -1,8 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
 import { Image } from 'expo-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { KeyboardExtendedView } from 'react-native-external-keyboard';
 
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
@@ -86,6 +86,7 @@ const Avatar = React.memo(
 			image = (
 				<Image
 					style={avatarStyle}
+					focusable={!onPress}
 					source={{
 						uri,
 						headers: RocketChatSettings.customHeaders
@@ -104,14 +105,15 @@ const Avatar = React.memo(
 		}
 
 		return (
-			<View
-				accessible={accessible}
+			<KeyboardExtendedView
+				focusable={!!onPress}
+				accessible={!onPress}
 				accessibilityLabel={!onPress ? avatarAccessibilityLabel : undefined}
 				style={[avatarStyle, style]}
 				testID='avatar'>
 				{image}
 				{children}
-			</View>
+			</KeyboardExtendedView>
 		);
 	}
 );
