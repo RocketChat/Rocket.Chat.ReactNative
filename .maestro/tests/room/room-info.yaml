@@ -321,6 +321,14 @@ tags:
     timeout: 60000
 
 # should change room description, topic, announcement
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - extendedWaitUntil:
+          notVisible:
+            text: '.*Settings succesfully changed.*'
+          timeout: 60000
 - scrollUntilVisible:
     element:
       id: 'room-info-edit-view-topic'
