@@ -1,9 +1,8 @@
-import React from 'react';
 import { shallowEqual } from 'react-redux';
 
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
-import { type IAvatar } from './interfaces';
+import type { IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
@@ -22,7 +21,7 @@ const AvatarContainer = ({
 	rid,
 	accessibilityLabel,
 	accessible
-}: IAvatar): React.ReactElement => {
+}: IAvatar) => {
 	const server = useAppSelector(state => state.server.server);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const { id, token, username } = useAppSelector(
@@ -58,7 +57,6 @@ const AvatarContainer = ({
 			size={size}
 			borderRadius={borderRadius}
 			type={type}
-			children={children}
 			userId={id}
 			token={token}
 			onPress={onPress}
@@ -72,8 +70,9 @@ const AvatarContainer = ({
 			serverVersion={serverVersion}
 			cdnPrefix={cdnPrefix}
 			accessibilityLabel={accessibilityLabel}
-			accessible={accessible}
-		/>
+			accessible={accessible}>
+			{children}
+		</Avatar>
 	);
 };
 

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useEffect, useState } from 'react';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -8,7 +8,7 @@ import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants/keys';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import useServer from '../lib/methods/useServer';
-import { type SettingsStackParamList } from '../stacks/types';
+import type { SettingsStackParamList } from '../stacks/types';
 import { handleLocalAuthentication } from '../lib/methods/helpers/localAuthentication';
 import {
 	events,
@@ -24,7 +24,7 @@ interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
-const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
+const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps) => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 	const [server] = useServer();

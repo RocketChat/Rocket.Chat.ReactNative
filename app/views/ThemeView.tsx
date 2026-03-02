@@ -1,9 +1,9 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
-import { type IThemePreference, type TDarkLevel, type TThemeMode } from '../definitions/ITheme';
+import type { IThemePreference, TDarkLevel, TThemeMode } from '../definitions/ITheme';
 import I18n from '../i18n';
 import { THEME_PREFERENCES_KEY } from '../lib/constants/keys';
 import { supportSystemTheme } from '../lib/methods/helpers';
@@ -69,7 +69,7 @@ const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme
 	</>
 );
 
-const ThemeView = (): React.ReactElement => {
+const ThemeView = () => {
 	const { themePreferences, setTheme } = useTheme();
 	const { setOptions } = useNavigation();
 

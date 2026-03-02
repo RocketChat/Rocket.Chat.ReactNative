@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, memo, useImperativeHandle, useState } from 'react';
 import { InteractionManager, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
@@ -8,9 +8,9 @@ import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants/colors';
-import { type IApplicationState } from '../../definitions';
+import type { IApplicationState } from '../../definitions';
 import { joinRoom } from '../../lib/services/restApi';
-import { type TSupportedThemes } from '../../theme';
+import type { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,7 +54,7 @@ export interface IJoinCode {
 	show: () => void;
 }
 
-const JoinCode = React.memo(
+const JoinCode = memo(
 	forwardRef<IJoinCode, IJoinCodeProps>(({ rid, t, onJoin, isMasterDetail, theme }, ref) => {
 		const [visible, setVisible] = useState(false);
 		const [error, setError] = useState(false);

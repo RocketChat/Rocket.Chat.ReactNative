@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -9,7 +9,7 @@ import { textParser } from './utils';
 import { isAndroid, isIOS } from '../../lib/methods/helpers';
 import ActivityIndicator from '../ActivityIndicator';
 import { useTheme } from '../../theme';
-import { type IText, type Option } from './interfaces';
+import type { IText, Option } from './interfaces';
 
 const styles = StyleSheet.create({
 	iosPadding: {

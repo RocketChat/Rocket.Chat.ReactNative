@@ -1,6 +1,16 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
+import {
+	forwardRef,
+	isValidElement,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+	useCallback,
+	type ReactElement,
+	memo
+} from 'react';
 import { Keyboard, type LayoutChangeEvent, useWindowDimensions } from 'react-native';
 import { Easing, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import BottomSheet, { BottomSheetBackdrop, type BottomSheetBackdropProps } from '@discord/bottom-sheet';
@@ -9,7 +19,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme';
 import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
-import { type TActionSheetOptions } from './Provider';
+import type { TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import styles from './styles';
 
@@ -23,8 +33,8 @@ const ANIMATION_CONFIG = {
 	easing: Easing.bezier(0.645, 0.045, 0.355, 1.0)
 };
 
-const ActionSheet = React.memo(
-	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
+const ActionSheet = memo(
+	forwardRef(({ children }: { children: ReactElement }, ref) => {
 		const { colors } = useTheme();
 		const { height: windowHeight } = useWindowDimensions();
 		const { bottom, right, left } = useSafeAreaInsets();
@@ -168,13 +178,9 @@ const ActionSheet = React.memo(
 						// We need this to allow horizontal swipe gesture inside the bottom sheet like in reaction picker
 						enableContentPanningGesture={data?.enableContentPanningGesture ?? true}
 						{...androidTablet}>
-						<BottomSheetContent
-							options={data?.options}
-							hide={hide}
-							children={data?.children}
-							hasCancel={data?.hasCancel}
-							onLayout={handleContentLayout}
-						/>
+						<BottomSheetContent options={data?.options} hide={hide} hasCancel={data?.hasCancel} onLayout={handleContentLayout}>
+							{data?.children}
+						</BottomSheetContent>
 					</BottomSheet>
 				)}
 			</>

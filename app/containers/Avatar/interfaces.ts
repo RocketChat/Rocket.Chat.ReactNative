@@ -1,7 +1,7 @@
-import type React from 'react';
-import { type ViewStyle } from 'react-native';
+import type { ViewStyle } from 'react-native';
+import type { ReactElement } from 'react';
 
-import { type TGetCustomEmoji } from '../../definitions/IEmoji';
+import type { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 export interface IAvatar {
 	server?: string;
@@ -12,7 +12,7 @@ export interface IAvatar {
 	size?: number;
 	borderRadius?: number;
 	type?: string;
-	children?: React.ReactElement | null;
+	children?: ReactElement | null;
 	userId?: string;
 	token?: string;
 	onPress?: () => void;

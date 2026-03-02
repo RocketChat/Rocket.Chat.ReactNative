@@ -1,4 +1,3 @@
-import React from 'react';
 import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
 
 import I18n from '../i18n';
@@ -26,7 +25,7 @@ interface ISearchHeaderProps {
 	style?: StyleProp<ViewStyle>;
 }
 
-const SearchHeader = ({ onSearchChangeText, testID, style }: ISearchHeaderProps): JSX.Element => {
+const SearchHeader = ({ onSearchChangeText, testID, style }: ISearchHeaderProps) => {
 	const { theme } = useTheme();
 	const isLight = theme === 'light';
 

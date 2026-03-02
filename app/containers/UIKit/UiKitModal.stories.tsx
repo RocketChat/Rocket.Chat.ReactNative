@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Button, View } from 'react-native';
 
 import { UiKitComponent, UiKitModal } from '.';
@@ -802,11 +802,11 @@ export const ModalInputWithAddField = () => {
 
 	return (
 		<View>
-			<React.Fragment key={modalKey}>
+			<Fragment key={modalKey}>
 				<KitContext.Provider value={{ ...defaultContext, state: changeState, values }}>
 					<UiKitComponent render={UiKitModal} blocks={blocks} />
 				</KitContext.Provider>
-			</React.Fragment>
+			</Fragment>
 			<Button title='Add field' onPress={addField} />
 		</View>
 	);

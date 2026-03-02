@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { memo, useContext } from 'react';
+import { memo, useContext } from 'react';
 
 import * as List from '../../../containers/List';
 import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelHeader';

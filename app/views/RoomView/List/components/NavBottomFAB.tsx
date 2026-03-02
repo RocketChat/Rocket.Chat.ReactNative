@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { CustomIcon } from '../../../../containers/CustomIcon';
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Function }): React.ReactElement | null => {
+const NavBottomFAB = ({ visible, onPress }: { visible: boolean; onPress: Function }) => {
 	const { colors } = useTheme();
 
 	if (!visible) {
@@ -47,6 +47,6 @@ const NavBottomFAB = memo(({ visible, onPress }: { visible: boolean; onPress: Fu
 			</Touch>
 		</View>
 	);
-});
+};
 
-export default NavBottomFAB;
+export default memo(NavBottomFAB);

@@ -1,7 +1,6 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { type MessageType } from '../../../../definitions';
+import type { MessageType } from '../../../../definitions';
 import Edited from './Edited';
 import Encrypted from './Encrypted';
 import MessageError from './MessageError';
@@ -26,16 +25,7 @@ interface IRightIcons {
 	pinned?: boolean;
 }
 
-const RightIcons = ({
-	type,
-	msg,
-	isEdited,
-	hasError,
-	isReadReceiptEnabled,
-	unread,
-	isTranslated,
-	pinned
-}: IRightIcons): React.ReactElement => {
+const RightIcons = ({ type, msg, isEdited, hasError, isReadReceiptEnabled, unread, isTranslated, pinned }: IRightIcons) => {
 	'use memo';
 
 	return (

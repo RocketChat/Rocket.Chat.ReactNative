@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { type RouteProp } from '@react-navigation/native';
-import { type NativeStackNavigationOptions, type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -19,13 +19,13 @@ import log from '../../lib/methods/helpers/log';
 import CannedResponseItem from './CannedResponseItem';
 import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
-import { type ICannedResponse } from '../../definitions/ICannedResponse';
-import { type ChatsStackParamList } from '../../stacks/types';
+import type { ICannedResponse } from '../../definitions/ICannedResponse';
+import type { ChatsStackParamList } from '../../stacks/types';
 import { useDebounce } from '../../lib/methods/helpers';
 import { getListCannedResponse, getDepartments } from '../../lib/services/restApi';
-import { type ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import type { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { type ISubscription } from '../../definitions';
+import type { ISubscription } from '../../definitions';
 
 const COUNT = 25;
 
@@ -49,7 +49,7 @@ interface ICannedResponsesListViewProps {
 	route: RouteProp<ChatsStackParamList, 'CannedResponsesListView'>;
 }
 
-const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps): JSX.Element => {
+const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps) => {
 	const [room, setRoom] = useState<ISubscription | null>(null);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);

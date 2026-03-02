@@ -1,6 +1,6 @@
-import React from 'react';
 import { connect } from 'react-redux';
-import { type Subscription } from 'rxjs';
+import type { Subscription } from 'rxjs';
+import { Component } from 'react';
 
 import I18n from '../i18n';
 import { type TSupportedThemes, withTheme } from '../theme';
@@ -17,7 +17,7 @@ import { themes } from '../lib/constants/colors';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import userPreferences from '../lib/methods/userPreferences';
-import { type IApplicationState, type TServerModel } from '../definitions';
+import type { IApplicationState, TServerModel } from '../definitions';
 import Switch from '../containers/Switch';
 
 const DEFAULT_BIOMETRY = false;
@@ -42,7 +42,7 @@ interface IScreenLockConfigViewState {
 	biometryLabel: string | null;
 }
 
-class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
+class ScreenLockConfigView extends Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
 	private serverRecord?: TServerModel;
 
 	private observable?: Subscription;

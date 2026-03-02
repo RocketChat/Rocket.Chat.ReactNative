@@ -1,12 +1,12 @@
-import React from 'react';
 import { Text } from 'react-native';
+import { memo } from 'react';
 
 import styles from './styles';
 import { capitalize } from '../../lib/methods/helpers/room';
-import { type IUpdatedAtProps } from './interfaces';
+import type { IUpdatedAtProps } from './interfaces';
 import { useTheme } from '../../theme';
 
-const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
+const UpdatedAt = ({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
 	const { colors } = useTheme();
 
 	if (!date) {
@@ -32,6 +32,6 @@ const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps
 			{capitalize(date)}
 		</Text>
 	);
-});
+};
 
-export default UpdatedAt;
+export default memo(UpdatedAt);

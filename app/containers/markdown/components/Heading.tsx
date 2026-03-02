@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text } from 'react-native';
 import { type Heading as HeadingProps } from '@rocket.chat/message-parser';
 

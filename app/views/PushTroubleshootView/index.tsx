@@ -1,13 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useCallback, useEffect } from 'react';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { initTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import I18n from '../../i18n';
-import { type SettingsStackParamList } from '../../stacks/types';
+import type { SettingsStackParamList } from '../../stacks/types';
 // import CommunityEditionPushQuota from './components/CommunityEditionPushQuota';
 import DeviceNotificationSettings from './components/DeviceNotificationSettings';
 import NotificationDelay from './components/NotificationDelay';
@@ -17,7 +17,7 @@ interface IPushTroubleshootViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
 }
 
-const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.Element => {
+const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps) => {
 	const dispatch = useDispatch();
 
 	useFocusEffect(

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -6,7 +5,7 @@ import { useTheme } from '../../theme';
 import CustomFields from './CustomFields';
 import Timezone from './Timezone';
 import styles from './styles';
-import { type IUser } from '../../definitions';
+import type { IUser } from '../../definitions';
 import { RoomInfoTag, RoomInfoTagContainer } from './components/RoomInfoTag';
 
 const Roles = ({ roles }: { roles?: string[] }) => {
@@ -28,7 +27,7 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 	return null;
 };
 
-const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => (
+const Direct = ({ roomUser }: { roomUser: IUser }) => (
 	<>
 		<Roles roles={roomUser.roles} />
 		<Timezone utcOffset={roomUser.utcOffset} />

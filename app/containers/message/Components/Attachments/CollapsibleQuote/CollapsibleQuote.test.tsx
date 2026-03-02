@@ -1,5 +1,4 @@
 import { fireEvent, render, within } from '@testing-library/react-native';
-import React from 'react';
 import { Provider } from 'react-redux';
 
 import { setUser } from '../../../../../actions/login';

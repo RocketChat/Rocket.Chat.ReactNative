@@ -1,4 +1,4 @@
-import React, { useRef, memo } from 'react';
+import { useRef, memo } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
 import {
 	Gesture,
@@ -10,7 +10,7 @@ import {
 import Touch from '../Touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
-import { type ITouchableProps } from './interfaces';
+import type { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { toggleFav } from '../../lib/methods/toggleFav';
@@ -31,7 +31,7 @@ const Touchable = ({
 	isFocused,
 	swipeEnabled,
 	displayMode
-}: ITouchableProps): React.ReactElement => {
+}: ITouchableProps) => {
 	const { colors } = useTheme();
 	const serverVersion = useAppSelector(state => state.server.version);
 	const rowOffSet = useSharedValue(0);

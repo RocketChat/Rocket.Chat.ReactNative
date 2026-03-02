@@ -62,7 +62,7 @@ import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getMessageById } from '../database/services/Message';
-import { type TEncryptFileResult, type TGetContent } from './definitions';
+import type { TEncryptFileResult, TGetContent } from './definitions';
 import { store } from '../store/auxStore';
 
 type TAlgorithm = 'A128CBC' | 'A256GCM' | '';
@@ -500,7 +500,7 @@ export default class EncryptionRoom {
 		return message;
 	};
 
-	encryptFile = async (rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
+	encryptFile = async (_rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
 		const { path } = file;
 		const vectorBuffer = b64ToBuffer(await randomBytes(16));
 		const keyBuffer = b64ToBuffer(await generateAESCTRKey());

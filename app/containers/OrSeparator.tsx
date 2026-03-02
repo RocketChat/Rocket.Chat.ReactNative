@@ -1,5 +1,5 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { memo } from 'react';
 
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const OrSeparator = React.memo(() => {
+const OrSeparator = () => {
 	const { colors } = useTheme();
 	const line = { backgroundColor: colors.strokeLight };
 	const text = { color: colors.fontSecondaryInfo };
@@ -34,6 +34,6 @@ const OrSeparator = React.memo(() => {
 			<View style={[styles.line, line]} />
 		</View>
 	);
-});
+};
 
-export default OrSeparator;
+export default memo(OrSeparator);

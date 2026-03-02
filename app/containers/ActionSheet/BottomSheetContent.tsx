@@ -1,12 +1,12 @@
 import { Text, useWindowDimensions, type ViewProps } from 'react-native';
-import React from 'react';
 import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { memo, type ReactElement } from 'react';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { type IActionSheetItem, Item } from './Item';
-import { type TActionSheetOptionsItem } from './Provider';
+import type { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';
@@ -15,11 +15,11 @@ interface IBottomSheetContentProps {
 	hasCancel?: boolean;
 	options?: TActionSheetOptionsItem[];
 	hide: () => void;
-	children?: React.ReactElement | null;
+	children?: ReactElement | null;
 	onLayout: ViewProps['onLayout'];
 }
 
-const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
+const BottomSheetContent = ({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
 	'use memo';
 
 	const { colors } = useTheme();
@@ -64,6 +64,6 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 			{children}
 		</BottomSheetView>
 	);
-});
+};
 
-export default BottomSheetContent;
+export default memo(BottomSheetContent);

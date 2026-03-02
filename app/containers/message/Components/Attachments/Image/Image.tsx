@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { memo, useContext, useEffect, useState } from 'react';
 import { View, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 
@@ -6,14 +6,14 @@ import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
 import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
-import { type IMessageImage } from './definitions';
+import type { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
 import { useUserPreferences } from '../../../../../lib/methods/userPreferences';
 import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants/keys';
 import ImageBadge from './ImageBadge';
 import log from '../../../../../lib/methods/helpers/log';
 
-export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
+export const MessageImage = memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	'use memo';
 
 	const { colors } = useTheme();

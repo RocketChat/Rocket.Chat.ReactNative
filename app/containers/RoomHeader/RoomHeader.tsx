@@ -1,17 +1,17 @@
-import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { memo, type ReactElement } from 'react';
 
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { type TUserStatus, type IOmnichannelSource, type ISubscription } from '../../definitions';
+import type { TUserStatus, IOmnichannelSource, ISubscription } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
-import { type IUsersTyping } from '../../reducers/usersTyping';
+import type { IUsersTyping } from '../../reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 type TRoomHeaderSubTitle = {
 	usersTyping: IUsersTyping;
 	subtitle?: string;
-	renderFunc?: () => React.ReactElement;
+	renderFunc?: () => ReactElement;
 	scale: number;
 };
 
@@ -83,7 +83,7 @@ interface IRoomHeader {
 	abacAttributes?: ISubscription['abacAttributes'];
 }
 
-const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = memo(function SubTitle({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) {
 	const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
@@ -115,7 +115,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 	return null;
 });
 
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = memo(function HeaderTitle({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) {
 	const { colors } = useTheme();
 	const { isLargeFontScale } = useResponsiveLayout();
 
@@ -131,96 +131,94 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeade
 	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
-const Header = React.memo(
-	({
-		title,
-		subtitle,
-		parentTitle,
-		type,
-		status,
-		width,
-		height,
-		roomUserId,
-		prid,
-		tmid,
-		onPress,
+const Header = ({
+	title,
+	subtitle,
+	parentTitle,
+	type,
+	status,
+	width,
+	height,
+	roomUserId,
+	prid,
+	tmid,
+	onPress,
+	isGroupChat,
+	teamMain,
+	testID,
+	usersTyping = [],
+	sourceType,
+	disabled,
+	abacAttributes
+}: IRoomHeader) => {
+	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
+		prid,
+		roomUserId,
+		status,
 		teamMain,
-		testID,
-		usersTyping = [],
-		sourceType,
-		disabled,
-		abacAttributes
-	}: IRoomHeader) => {
-		const statusAccessibilityLabel = useStatusAccessibilityLabel({
-			isGroupChat,
-			prid,
-			roomUserId,
-			status,
-			teamMain,
-			type
-		});
-		const { colors } = useTheme();
-		const { fontScale } = useWindowDimensions();
-		const portrait = height > width;
-		let scale = 1;
-		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-		const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
+		type
+	});
+	const { colors } = useTheme();
+	const { fontScale } = useWindowDimensions();
+	const portrait = height > width;
+	let scale = 1;
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
+	const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
 
-		if (!portrait && !tmid && !isMasterDetail) {
-			if (usersTyping.length > 0 || subtitle) {
-				scale = 0.8;
-			}
+	if (!portrait && !tmid && !isMasterDetail) {
+		if (usersTyping.length > 0 || subtitle) {
+			scale = 0.8;
 		}
+	}
 
-		let renderFunc;
-		if (tmid) {
-			renderFunc = () => (
-				<View style={styles.titleContainer}>
-					<RoomTypeIcon
-						userId={roomUserId}
-						type={prid ? 'discussion' : type}
-						isGroupChat={isGroupChat}
-						status={status}
-						teamMain={teamMain}
-						abacAttributes={abacAttributes}
-					/>
-					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
-						{parentTitle}
-					</Text>
-				</View>
-			);
-		}
-
-		const handleOnPress = () => onPress();
-
-		return (
-			<View
-				style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
-				accessible
-				accessibilityLabel={accessibilityLabel}
-				accessibilityRole='header'>
-				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
-					<View style={styles.titleContainer}>
-						{tmid ? null : (
-							<RoomTypeIcon
-								userId={roomUserId}
-								type={prid ? 'discussion' : type}
-								isGroupChat={isGroupChat}
-								status={status}
-								teamMain={teamMain}
-								sourceType={sourceType}
-								abacAttributes={abacAttributes}
-							/>
-						)}
-						<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
-					</View>
-					<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
-				</TouchableOpacity>
+	let renderFunc;
+	if (tmid) {
+		renderFunc = () => (
+			<View style={styles.titleContainer}>
+				<RoomTypeIcon
+					userId={roomUserId}
+					type={prid ? 'discussion' : type}
+					isGroupChat={isGroupChat}
+					status={status}
+					teamMain={teamMain}
+					abacAttributes={abacAttributes}
+				/>
+				<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+					{parentTitle}
+				</Text>
 			</View>
 		);
 	}
-);
 
-export default Header;
+	const handleOnPress = () => onPress();
+
+	return (
+		<View
+			style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
+			accessible
+			accessibilityLabel={accessibilityLabel}
+			accessibilityRole='header'>
+			<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+				<View style={styles.titleContainer}>
+					{tmid ? null : (
+						<RoomTypeIcon
+							userId={roomUserId}
+							type={prid ? 'discussion' : type}
+							isGroupChat={isGroupChat}
+							status={status}
+							teamMain={teamMain}
+							sourceType={sourceType}
+							abacAttributes={abacAttributes}
+						/>
+					)}
+					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
+				</View>
+				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
+			</TouchableOpacity>
+		</View>
+	);
+};
+
+export default memo(Header);

@@ -1,4 +1,3 @@
-import React, { type ReactElement } from 'react';
 import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { ActionsButton, BaseButton } from '..';
@@ -8,7 +7,7 @@ import { emitter } from '../../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
-export const Default = (): ReactElement | null => {
+export const Default = () => {
 	'use memo';
 
 	const { sharing } = useRoomContext();

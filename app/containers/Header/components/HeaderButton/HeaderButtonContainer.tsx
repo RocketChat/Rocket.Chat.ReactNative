@@ -1,10 +1,10 @@
-import React from 'react';
 import { type StyleProp, StyleSheet, View, type ViewProps, type ViewStyle } from 'react-native';
+import type { ReactElement } from 'react';
 
 import { isAndroid, isTablet } from '../../../../lib/methods/helpers/deviceInfo';
 
 interface IHeaderButtonContainer {
-	children?: React.ReactElement | (React.ReactElement | null)[] | null;
+	children?: ReactElement | (ReactElement | null)[] | null;
 	left?: boolean;
 	onLayout?: ViewProps['onLayout'];
 	style?: StyleProp<ViewStyle>;
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Container = ({ children, left = false, onLayout, style = {} }: IHeaderButtonContainer): React.ReactElement => (
+const Container = ({ children, left = false, onLayout, style = {} }: IHeaderButtonContainer) => (
 	<View style={[styles.container, left ? styles.left : styles.right, style]} onLayout={onLayout || undefined}>
 		{children}
 	</View>

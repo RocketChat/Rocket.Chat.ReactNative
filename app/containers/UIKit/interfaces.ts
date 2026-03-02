@@ -1,6 +1,7 @@
-import { type BlockContext } from '@rocket.chat/ui-kit';
+import type { BlockContext } from '@rocket.chat/ui-kit';
+import type { ReactElement } from 'react';
 
-import { type TSupportedThemes } from '../../theme';
+import type { TSupportedThemes } from '../../theme';
 
 export enum ElementTypes {
 	IMAGE = 'image',
@@ -167,11 +168,11 @@ export interface ITriggerCancel {
 
 // UiKit components
 export interface IParser {
-	renderAccessories: (data: TElementAccessory, context: BlockContext, parser: IParser) => JSX.Element;
-	renderActions: (data: Block, context: BlockContext, parser: IParser) => JSX.Element;
-	renderContext: (data: IElement, context: BlockContext, parser: IParser) => JSX.Element;
-	renderInputs: (data: Partial<IElement>, context: BlockContext, parser: IParser) => JSX.Element;
-	text: (data: IText) => JSX.Element;
+	renderAccessories: (data: TElementAccessory, context: BlockContext, parser: IParser) => ReactElement;
+	renderActions: (data: Block, context: BlockContext, parser: IParser) => ReactElement;
+	renderContext: (data: IElement, context: BlockContext, parser: IParser) => ReactElement;
+	renderInputs: (data: Partial<IElement>, context: BlockContext, parser: IParser) => ReactElement;
+	text: (data: IText) => ReactElement;
 }
 export interface IActions extends Block {
 	parser?: IParser;

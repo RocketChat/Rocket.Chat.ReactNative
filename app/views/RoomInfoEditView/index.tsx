@@ -1,9 +1,9 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { AccessibilityInfo, Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
-import { type SetValueConfig } from 'react-hook-form';
+import type { SetValueConfig } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -18,8 +18,8 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { type IBaseScreen, type IRoomSettings, type ISubscription, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import KeyboardView from '../../containers/KeyboardView';
-import { type ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../stacks/types';
+import type { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import type { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -450,8 +450,10 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 						) : null}
 						{room.broadcast
 							? [
-									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
-									<View style={[styles.divider, { borderColor: colors.strokeLight }]} />
+									<Text key='broadcast' style={styles.broadcast}>
+										{I18n.t('Broadcast')}
+									</Text>,
+									<View key='divider' style={[styles.divider, { borderColor: colors.strokeLight }]} />
 							  ]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (

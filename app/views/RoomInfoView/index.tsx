@@ -1,10 +1,10 @@
 import { type CompositeNavigationProp, type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { type NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { type Subscription } from 'rxjs';
+import type { Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
@@ -18,8 +18,8 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { createDirectMessage, getRoomInfo, getUserInfo, getVisitorInfo, toggleBlockUser } from '../../lib/services/restApi';
-import { type MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { type ChatsStackParamList } from '../../stacks/types';
+import type { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import type { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import RoomInfoButtons from './components/RoomInfoButtons';
 import RoomInfoViewAvatar from './components/RoomInfoViewAvatar';
@@ -36,7 +36,7 @@ type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 
-const RoomInfoView = (): React.ReactElement => {
+const RoomInfoView = () => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();

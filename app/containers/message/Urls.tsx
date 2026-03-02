@@ -1,4 +1,4 @@
-import React, { type ReactElement, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { memo, type ReactElement, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image } from 'expo-image';
@@ -14,7 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
-import { type IUrl } from '../../definitions';
+import type { IUrl } from '../../definitions';
 import { WidthAwareContext } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({
@@ -186,7 +186,7 @@ const Url = ({ url }: { url: IUrl }) => {
 		</Touchable>
 	);
 };
-const Urls = React.memo(
+const Urls = memo(
 	({ urls }: { urls?: IUrl[] }): ReactElement[] | null => {
 		'use memo';
 

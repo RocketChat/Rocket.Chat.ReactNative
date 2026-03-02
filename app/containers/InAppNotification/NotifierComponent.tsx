@@ -1,8 +1,8 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { memo } from 'react';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../CustomIcon';
@@ -10,7 +10,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { type IApplicationState, type ISubscription, type SubscriptionType } from '../../definitions';
+import type { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
+const NotifierComponent = ({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
 	const { rowHeight } = useResponsiveLayout();
 	const insets = useSafeAreaInsets();
@@ -132,10 +132,10 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			</Touchable>
 		</View>
 	);
-});
+};
 
 const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(NotifierComponent);
+export default connect(mapStateToProps)(memo(NotifierComponent));

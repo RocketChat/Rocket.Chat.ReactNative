@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
@@ -8,8 +7,8 @@ import { addSettings } from '../../actions/settings';
 import { selectServerRequest } from '../../actions/server';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
-import { type IPermissionsState } from '../../reducers/permissions';
-import { type IMessage } from '../../definitions';
+import type { IPermissionsState } from '../../reducers/permissions';
+import type { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants/colors';
 import { type IRoomContext, RoomContext } from '../../views/RoomView/context';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';

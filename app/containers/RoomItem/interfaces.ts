@@ -1,14 +1,8 @@
-import type React from 'react';
 import type Animated from 'react-native-reanimated';
+import type { ReactElement } from 'react';
 
-import { type TSupportedThemes } from '../../theme';
-import {
-	type TUserStatus,
-	type ILastMessage,
-	type SubscriptionType,
-	type IOmnichannelSource,
-	type ISubscription
-} from '../../definitions';
+import type { TSupportedThemes } from '../../theme';
+import type { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource, ISubscription } from '../../definitions';
 
 export interface ILeftActionsProps {
 	transX: Animated.SharedValue<number>;
@@ -45,7 +39,7 @@ export interface IWrapperProps {
 	type: string;
 	userId: string | null;
 	rid: string;
-	children: React.ReactElement;
+	children: ReactElement;
 	displayMode: string;
 	prid: string;
 	showLastMessage: boolean;
@@ -139,7 +133,7 @@ export interface ILastMessageProps {
 }
 
 export interface ITouchableProps extends IRoomItemTouchables {
-	children: JSX.Element;
+	children: ReactElement;
 	type: SubscriptionType;
 	testID: string;
 	width: number;

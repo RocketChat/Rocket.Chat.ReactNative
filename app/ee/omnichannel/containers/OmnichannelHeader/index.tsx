@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
@@ -17,7 +17,7 @@ import { getUserSelector } from '../../../../selectors/login';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
-const OmnichannelStatus = memo(() => {
+const OmnichannelStatus = () => {
 	const { colors } = useTheme();
 	const { roles, statusLivechat } = useAppSelector(state => getUserSelector(state), shallowEqual);
 	const inquiryEnabled = useAppSelector(state => state.inquiry.enabled);
@@ -82,6 +82,6 @@ const OmnichannelStatus = memo(() => {
 			{isOmnichannelStatusAvailable(statusLivechat) ? <OmnichannelQueue queueSize={queueSize} onPress={goQueue} /> : null}
 		</>
 	);
-});
+};
 
-export default OmnichannelStatus;
+export default memo(OmnichannelStatus);

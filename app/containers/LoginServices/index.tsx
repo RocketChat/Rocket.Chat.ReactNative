@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { type IServices } from '../../selectors/login';
+import type { IServices } from '../../selectors/login';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import { type IItemService, type IServiceList } from './interfaces';
+import type { IItemService, IServiceList } from './interfaces';
 import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
 import Service from './Service';
@@ -27,7 +27,7 @@ const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server,
 	</>
 );
 
-const LoginServices = ({ separator }: { separator: boolean }): React.ReactElement => {
+const LoginServices = ({ separator }: { separator: boolean }) => {
 	const [collapsed, setCollapsed] = useState(true);
 
 	const { Gitlab_URL, CAS_enabled, CAS_login_url } = useAppSelector(

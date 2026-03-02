@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -7,7 +7,7 @@ import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../lib/methods/helpers/room';
-import { type ISubscription, type TThreadModel } from '../../definitions';
+import type { ISubscription, TThreadModel } from '../../definitions';
 import { getRoomTitle, isGroupChat, isAndroid, isTablet } from '../../lib/methods/helpers';
 import { getMessageById } from '../../lib/database/services/Message';
 
@@ -42,7 +42,7 @@ interface IHeader {
 	thread: TThreadModel | string;
 }
 
-const Header = React.memo(({ room, thread }: IHeader) => {
+const Header = ({ room, thread }: IHeader) => {
 	const [title, setTitle] = useState('');
 	const { theme } = useTheme();
 	let type;
@@ -112,6 +112,6 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 			</View>
 		</View>
 	);
-});
+};
 
-export default Header;
+export default memo(Header);

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { memo, useContext } from 'react';
 
 import Touchable from '../../Touchable';
 import { CustomIcon } from '../../../CustomIcon';
@@ -8,7 +8,7 @@ import { themes } from '../../../../lib/constants/colors';
 import MessageContext from '../../Context';
 import { useTheme } from '../../../../theme';
 
-const MessageError = React.memo(
+const MessageError = memo(
 	({ hasError }: { hasError: boolean }) => {
 		'use memo';
 

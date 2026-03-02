@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 
 import dayjs from '../../../../lib/dayjs';
@@ -49,6 +48,7 @@ export const Quote = ({ messageId }: { messageId: string }) => {
 					testID={`composer-quote-remove-${message.id}`}
 				/>
 			</View>
+			{/* eslint-disable-next-line react-native/no-single-element-style-arrays */}
 			<MarkdownPreview style={[styles.message]} numberOfLines={1} msg={msg} />
 		</View>
 	);

@@ -1,13 +1,12 @@
-import React from 'react';
 import { View, Pressable } from 'react-native';
 
 import { useTheme } from '../../theme';
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
-import { type IFooterProps } from './interfaces';
+import type { IFooterProps } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 
-const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): React.ReactElement => {
+const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps) => {
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.footerContainer, { borderTopColor: colors.strokeExtraLight }]}>

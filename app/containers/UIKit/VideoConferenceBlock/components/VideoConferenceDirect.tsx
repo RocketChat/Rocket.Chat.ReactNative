@@ -1,11 +1,11 @@
-import React from 'react';
 import { Text } from 'react-native';
+import { memo } from 'react';
 
 import i18n from '../../../../i18n';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
 
-const VideoConferenceDirect = React.memo(() => {
+const VideoConferenceDirect = () => {
 	const style = useStyle();
 
 	return (
@@ -13,6 +13,6 @@ const VideoConferenceDirect = React.memo(() => {
 			<Text style={style.callBack}>{i18n.t('Waiting_for_answer')}</Text>
 		</VideoConferenceBaseContainer>
 	);
-});
+};
 
-export default VideoConferenceDirect;
+export default memo(VideoConferenceDirect);

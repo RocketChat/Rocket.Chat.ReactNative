@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { Row } from 'react-native-easy-grid';
+import { memo } from 'react';
 
 import styles from './styles';
 import { themes } from '../../../lib/constants/colors';
@@ -10,7 +10,7 @@ interface IPasscodeSubtitle {
 	text: string;
 }
 
-const Subtitle = React.memo(({ text }: IPasscodeSubtitle) => {
+const Subtitle = ({ text }: IPasscodeSubtitle) => {
 	const { theme } = useTheme();
 
 	return (
@@ -20,6 +20,6 @@ const Subtitle = React.memo(({ text }: IPasscodeSubtitle) => {
 			</View>
 		</Row>
 	);
-});
+};
 
-export default Subtitle;
+export default memo(Subtitle);

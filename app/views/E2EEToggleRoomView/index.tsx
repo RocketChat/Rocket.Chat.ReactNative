@@ -1,5 +1,5 @@
 import { type RouteProp, useRoute } from '@react-navigation/native';
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -8,7 +8,7 @@ import I18n from '../../i18n';
 import { useIsMissingRoomE2EEKey } from '../../lib/encryption/helpers/hooks';
 import { toggleRoomE2EE } from '../../lib/encryption/helpers/toggleRoomE2EE';
 import { getRoomTitle } from '../../lib/methods/helpers';
-import { type ChatsStackParamList } from '../../stacks/types';
+import type { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { resetRoomKey } from './resetRoomKey';
 import { useRoom } from './useRoom';

@@ -1,8 +1,8 @@
-import React from 'react';
 import { Dimensions } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
+import { type ComponentType, createContext, useContext } from 'react';
 
-import { type TNavigationOptions } from './definitions/navigationTypes';
+import type { TNavigationOptions } from './definitions/navigationTypes';
 
 export interface IDimensionsContextProps {
 	width: number;
@@ -22,14 +22,12 @@ export interface IDimensionsContextProps {
 	}) => void;
 }
 
-export const DimensionsContext = React.createContext<IDimensionsContextProps>(
-	Dimensions.get('window') as IDimensionsContextProps
-);
+export const DimensionsContext = createContext<IDimensionsContextProps>(Dimensions.get('window') as IDimensionsContextProps);
 
 /**
  * @deprecated use RN's useWindowDimensions hook instead
  */
-export function withDimensions<T extends object>(Component: React.ComponentType<T> & TNavigationOptions): typeof Component {
+export function withDimensions<T extends object>(Component: ComponentType<T> & TNavigationOptions): typeof Component {
 	const DimensionsComponent = (props: T) => (
 		<DimensionsContext.Consumer>{contexts => <Component {...props} {...contexts} />}</DimensionsContext.Consumer>
 	);
@@ -41,13 +39,13 @@ export function withDimensions<T extends object>(Component: React.ComponentType<
 /**
  * @deprecated use RN's useWindowDimensions hook instead
  */
-export const useDimensions = () => React.useContext(DimensionsContext);
+export const useDimensions = () => useContext(DimensionsContext);
 
 /**
  * @deprecated use RN's useWindowDimensions hook instead
  */
 export const useOrientation = () => {
-	const { width, height } = React.useContext(DimensionsContext);
+	const { width, height } = useContext(DimensionsContext);
 	const isPortrait = height > width;
 	return {
 		isPortrait,

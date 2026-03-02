@@ -1,4 +1,3 @@
-import React from 'react';
 import { type LayoutChangeEvent, View, TextInput, type TextInputProps, TouchableNativeFeedback } from 'react-native';
 import { PanGestureHandler, type PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, {
@@ -65,7 +64,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 	};
 
 	const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { offsetX: number }>({
-		onStart: (event, ctx) => {
+		onStart: (_event, ctx) => {
 			isPanning.value = true;
 			ctx.offsetX = translateX.value;
 		},

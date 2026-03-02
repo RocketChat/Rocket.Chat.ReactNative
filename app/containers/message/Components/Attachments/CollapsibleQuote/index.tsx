@@ -1,11 +1,11 @@
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
-import React, { useContext, useState } from 'react';
+import { memo, useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../../../lib/constants/colors';
-import { type IAttachment } from '../../../../../definitions/IAttachment';
-import { type TGetCustomEmoji } from '../../../../../definitions/IEmoji';
+import type { IAttachment } from '../../../../../definitions/IAttachment';
+import type { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { CustomIcon } from '../../../../CustomIcon';
 import { useTheme } from '../../../../../theme';
 import sharedStyles from '../../../../../views/Styles';
@@ -35,17 +35,9 @@ const styles = StyleSheet.create({
 		paddingLeft: 10,
 		paddingVertical: 10
 	},
-	fieldText: {
-		fontSize: 15,
-		padding: 10,
-		...sharedStyles.textRegular
-	},
 	fieldTitle: {
 		fontSize: 15,
 		...sharedStyles.textBold
-	},
-	marginTop: {
-		marginTop: 4
 	},
 	marginBottom: {
 		marginBottom: 4
@@ -83,8 +75,8 @@ interface IMessageReply {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const AttText = React.memo(
-	({ text, getCustomEmoji }: IMessageAttText) => {
+const AttText = memo(
+	function AttText({ text, getCustomEmoji }: IMessageAttText) {
 		'use memo';
 
 		const { user } = useContext(MessageContext);
@@ -98,8 +90,8 @@ const AttText = React.memo(
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
 
-const Fields = React.memo(
-	({ attachment, getCustomEmoji }: IMessageFields) => {
+const CollapsibleQuoteFields = memo(
+	function CollapsibleQuoteFields({ attachment, getCustomEmoji }: IMessageFields) {
 		'use memo';
 
 		const { theme } = useTheme();
@@ -125,74 +117,68 @@ const Fields = React.memo(
 	(prevProps, nextProps) => dequal(prevProps.attachment.fields, nextProps.attachment.fields)
 );
 
-const CollapsibleQuote = React.memo(
-	({ attachment, getCustomEmoji }: IMessageReply) => {
-		'use memo';
+const CollapsibleQuote = ({ attachment, getCustomEmoji }: IMessageReply) => {
+	'use memo';
 
-		const { theme } = useTheme();
-		const [collapsed, setCollapsed] = useState(attachment?.collapsed);
+	const { theme } = useTheme();
+	const [collapsed, setCollapsed] = useState(attachment?.collapsed);
 
-		if (!attachment) {
-			return null;
+	if (!attachment) {
+		return null;
+	}
+
+	const onPress = () => {
+		setCollapsed(!collapsed);
+	};
+
+	let { strokeExtraLight, surfaceTint: backgroundColor, strokeLight, strokeMedium, fontSecondaryInfo } = themes[theme];
+
+	try {
+		if (attachment.color) {
+			backgroundColor = transparentize(attachment.color, 0.8);
+			strokeExtraLight = attachment.color;
+			strokeLight = attachment.color;
+			strokeMedium = attachment.color;
+			fontSecondaryInfo = fontSecondaryInfo;
 		}
+	} catch (e) {
+		// fallback to default
+	}
 
-		const onPress = () => {
-			setCollapsed(!collapsed);
-		};
-
-		let { strokeExtraLight, surfaceTint: backgroundColor, strokeLight, strokeMedium, fontSecondaryInfo } = themes[theme];
-
-		try {
-			if (attachment.color) {
-				backgroundColor = transparentize(attachment.color, 0.8);
-				strokeExtraLight = attachment.color;
-				strokeLight = attachment.color;
-				strokeMedium = attachment.color;
-				fontSecondaryInfo = fontSecondaryInfo;
-			}
-		} catch (e) {
-			// fallback to default
-		}
-
-		return (
-			<>
-				<Touchable
-					testID={`collapsibleQuoteTouchable-${attachment.title}`}
-					onPress={onPress}
-					style={[
-						styles.button,
-						attachment.description && styles.marginBottom,
-						{
-							backgroundColor,
-							borderLeftColor: strokeLight,
-							borderTopColor: strokeExtraLight,
-							borderRightColor: strokeExtraLight,
-							borderBottomColor: strokeExtraLight,
-							borderLeftWidth: 2
-						}
-					]}
-					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-					hitSlop={BUTTON_HIT_SLOP}>
-					<View style={styles.touchableContainer}>
-						<View style={styles.attachmentContainer}>
-							<View style={styles.authorContainer}>
-								<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
-							</View>
-							{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
-							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
+	return (
+		<>
+			<Touchable
+				testID={`collapsibleQuoteTouchable-${attachment.title}`}
+				onPress={onPress}
+				style={[
+					styles.button,
+					attachment.description && styles.marginBottom,
+					{
+						backgroundColor,
+						borderLeftColor: strokeLight,
+						borderTopColor: strokeExtraLight,
+						borderRightColor: strokeExtraLight,
+						borderBottomColor: strokeExtraLight,
+						borderLeftWidth: 2
+					}
+				]}
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
+				hitSlop={BUTTON_HIT_SLOP}>
+				<View style={styles.touchableContainer}>
+					<View style={styles.attachmentContainer}>
+						<View style={styles.authorContainer}>
+							<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
 						</View>
-						<View style={styles.iconContainer}>
-							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
-						</View>
+						{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
+						{!collapsed && <CollapsibleQuoteFields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 					</View>
-				</Touchable>
-			</>
-		);
-	},
-	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)
-);
+					<View style={styles.iconContainer}>
+						<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
+					</View>
+				</View>
+			</Touchable>
+		</>
+	);
+};
 
-CollapsibleQuote.displayName = 'CollapsibleQuote';
-Fields.displayName = 'CollapsibleQuoteFields';
-
-export default CollapsibleQuote;
+export default memo(CollapsibleQuote, (prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment));

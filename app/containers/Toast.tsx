@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Alert, StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 
 import { useUserPreferences } from '../lib/methods/userPreferences';
-import { type TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
+import type { TAlertDisplayType } from '../views/AccessibilityAndAppearanceView';
 import EventEmitter from '../lib/methods/helpers/events';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
@@ -26,7 +26,7 @@ export const LISTENER = 'Toast';
 let listener: Function;
 let toast: EasyToast | null | undefined;
 
-const Toast = (): React.ReactElement => {
+const Toast = () => {
 	const { colors, theme } = useTheme();
 	const [alertDisplayType] = useUserPreferences<TAlertDisplayType>(ALERT_DISPLAY_TYPE_PREFERENCES_KEY, 'TOAST');
 

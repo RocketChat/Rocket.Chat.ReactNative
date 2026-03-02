@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, type TextInputProps } from 'react-native';
 
 import { textInputDebounceTime } from '../lib/constants/debounceConfig';
@@ -8,9 +8,9 @@ import SearchBox from '../containers/SearchBox';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { useDebounce } from '../lib/methods/helpers';
-import { type TNavigation } from '../stacks/stackType';
+import type { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
-import { type IOptionsField } from './NotificationPreferencesView/options';
+import type { IOptionsField } from './NotificationPreferencesView/options';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -49,7 +49,7 @@ const RenderSearch = ({ onChangeText }: TextInputProps) => (
 	</>
 );
 
-const PickerView = (): React.ReactElement => {
+const PickerView = () => {
 	const navigation = useAppNavigation();
 	const {
 		params: { title, data: paramData, value: paramValue, total: paramTotal, onSearch, onChangeValue, onEndReached }

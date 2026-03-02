@@ -1,23 +1,15 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { View } from 'react-native';
 
 import Markdown from '../../../../markdown';
 import { useMediaAutoDownload } from '../../../hooks/useMediaAutoDownload';
 import { Button } from './Button';
 import { MessageImage } from './Image';
-import { type IImageContainer } from './definitions';
+import type { IImageContainer } from './definitions';
 import MessageContext from '../../../Context';
 import { WidthAwareView } from '../../WidthAwareView';
 
-const ImageContainer = ({
-	file,
-	showAttachment,
-	getCustomEmoji,
-	author,
-	msg,
-	imagePreview,
-	imageType
-}: IImageContainer): React.ReactElement | null => {
+const ImageContainer = ({ file, showAttachment, getCustomEmoji, author, msg, imagePreview, imageType }: IImageContainer) => {
 	'use memo';
 
 	const { user } = useContext(MessageContext);

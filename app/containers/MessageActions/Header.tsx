@@ -1,5 +1,5 @@
-import React from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { memo } from 'react';
 
 import { type TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants/colors';
@@ -9,7 +9,7 @@ import { addFrequentlyUsed } from '../../lib/methods/emojis';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import sharedStyles from '../../views/Styles';
-import { type IEmoji, type TAnyMessageModel } from '../../definitions';
+import type { IEmoji, TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
 import I18n from '../../i18n';
 
@@ -91,7 +91,7 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	</Touch>
 );
 
-const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
+const Header = ({ handleReaction, message, isMasterDetail }: IHeader) => {
 	const { width } = useWindowDimensions();
 	const { theme } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji(true);
@@ -127,6 +127,6 @@ const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader)
 			/>
 		</View>
 	);
-});
+};
 
-export default Header;
+export default memo(Header);

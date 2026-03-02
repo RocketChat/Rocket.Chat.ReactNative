@@ -1,7 +1,7 @@
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { type Route } from 'reanimated-tab-view';
+import type { Route } from 'reanimated-tab-view';
 import { Text, View } from 'react-native';
+import type { ReactNode } from 'react';
 
 import { TabView } from './index';
 
@@ -15,8 +15,8 @@ jest.mock('reanimated-tab-view', () => ({
 		onIndexChange
 	}: {
 		navigationState: { routes: Route[]; index: number };
-		renderScene: (props: { route: Route }) => React.ReactNode;
-		renderTabBar: (props: { jumpTo: (key: string) => void; routeIndex: number }) => React.ReactNode;
+		renderScene: (props: { route: Route }) => ReactNode;
+		renderTabBar: (props: { jumpTo: (key: string) => void; routeIndex: number }) => ReactNode;
 		onIndexChange: (index: number) => void;
 	}) => {
 		const jumpTo = (key: string) => {

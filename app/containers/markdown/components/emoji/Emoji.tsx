@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Text, View, useWindowDimensions } from 'react-native';
 import { type Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
@@ -69,7 +69,7 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmoj
 
 	if (emoji) {
 		return (
-			<View style={[{ transform: [{ translateY: isBigEmoji || isAvatar ? 0 : 3 }] }]}>
+			<View style={{ transform: [{ translateY: isBigEmoji || isAvatar ? 0 : 3 }] }}>
 				<CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />
 			</View>
 		);

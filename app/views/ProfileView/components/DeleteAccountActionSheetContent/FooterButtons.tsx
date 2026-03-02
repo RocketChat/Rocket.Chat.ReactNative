@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useTheme } from '../../../../theme';
@@ -35,7 +34,7 @@ const FooterButtons = ({
 	cancelBackgroundColor = '',
 	confirmBackgroundColor = '',
 	testID = ''
-}: IFooterButtons): React.ReactElement => {
+}: IFooterButtons) => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.footerButtonsContainer}>

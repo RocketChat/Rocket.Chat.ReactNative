@@ -1,17 +1,15 @@
 import { dequal } from 'dequal';
-import React from 'react';
-import { type TextStyle } from 'react-native';
+import type { TextStyle } from 'react-native';
+import { memo } from 'react';
 
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import { isAndroid } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { MarkdownPreview } from '../markdown';
-import { type ILastMessageProps } from './interfaces';
+import type { ILastMessageProps } from './interfaces';
 import styles from './styles';
 
-const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
-
-const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, alert, useRealName }: ILastMessageProps) => {
+const LastMessage = ({ lastMessage, type, showLastMessage, username, alert, useRealName }: ILastMessageProps) => {
 	const { colors } = useTheme();
 	// Android has a bug with the text align on the markdown preview
 	const alignSelf: TextStyle = isAndroid ? { alignSelf: 'stretch' } : {};
@@ -29,6 +27,6 @@ const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, 
 			numberOfLines={2}
 		/>
 	);
-}, arePropsEqual);
+};
 
-export default LastMessage;
+export default memo(LastMessage, dequal);

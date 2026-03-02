@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 
 import i18n from '../../../../i18n';
@@ -9,7 +8,7 @@ const MAX_USERS = 3;
 
 export type TCallUsers = { _id: string; username: string; name: string; avatarETag: string }[];
 
-export const CallParticipants = ({ users }: { users: TCallUsers }): React.ReactElement => {
+export const CallParticipants = ({ users }: { users: TCallUsers }) => {
 	const style = useStyle();
 	return (
 		<>

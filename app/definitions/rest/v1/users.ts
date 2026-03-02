@@ -1,4 +1,4 @@
-import { type IAvatarSuggestion, type IProfileParams } from '../../IProfile';
+import type { IAvatarSuggestion, IProfileParams } from '../../IProfile';
 import type { ITeam } from '../../ITeam';
 import type { IUser, INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
 

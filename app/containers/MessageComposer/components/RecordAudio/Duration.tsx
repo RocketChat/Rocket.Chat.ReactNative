@@ -1,6 +1,6 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import { type FontVariant, Text } from 'react-native';
-import { type Audio } from 'expo-av';
+import type { Audio } from 'expo-av';
 
 import sharedStyles from '../../../../views/Styles';
 import { useTheme } from '../../../../theme';
@@ -10,9 +10,9 @@ export interface IDurationRef {
 	onRecordingStatusUpdate: (status: Audio.RecordingStatus) => void;
 }
 
-export const Duration = forwardRef<IDurationRef>((_, ref) => {
+export const Duration = forwardRef<IDurationRef>(function Duration(_, ref) {
 	const [styles] = useStyle();
-	const [duration, setDuration] = React.useState('00:00');
+	const [duration, setDuration] = useState('00:00');
 
 	useImperativeHandle(ref, () => ({
 		onRecordingStatusUpdate

@@ -1,4 +1,3 @@
-import React from 'react';
 import { type StyleProp, View, type ViewStyle } from 'react-native';
 
 import styles from '../../styles';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pressable, StyleSheet, View, Text, type StyleProp, type ViewStyle } from 'react-native';
 
 import { useTheme } from '../../theme';

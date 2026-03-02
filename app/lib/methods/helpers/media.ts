@@ -1,4 +1,4 @@
-import { type IShareAttachment } from '../../../definitions';
+import type { IShareAttachment } from '../../../definitions';
 
 export const canUploadFile = ({
 	file,

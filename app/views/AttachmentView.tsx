@@ -1,25 +1,25 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { ResizeMode, Video } from 'expo-av';
-import React from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
+import { type Dispatch, type SetStateAction, useLayoutEffect, useRef, useState } from 'react';
 
 import { isImageBase64 } from '../lib/methods/isImageBase64';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
 import { LISTENER } from '../containers/Toast';
-import { type IAttachment } from '../definitions';
+import type { IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks/useAppSelector';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
-import { type TNavigation } from '../stacks/stackType';
+import type { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
 
@@ -27,10 +27,10 @@ const RenderContent = ({
 	setLoading,
 	attachment
 }: {
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	setLoading: Dispatch<SetStateAction<boolean>>;
 	attachment: IAttachment;
 }) => {
-	const videoRef = React.useRef<Video>(null);
+	const videoRef = useRef<Video>(null);
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
@@ -43,7 +43,7 @@ const RenderContent = ({
 		shallowEqual
 	);
 
-	React.useLayoutEffect(() => {
+	useLayoutEffect(() => {
 		const blurSub = navigation.addListener('blur', () => {
 			if (videoRef.current && videoRef.current.stopAsync) {
 				videoRef.current.stopAsync();
@@ -92,12 +92,12 @@ const RenderContent = ({
 	return null;
 };
 
-const AttachmentView = (): React.ReactElement => {
+const AttachmentView = () => {
 	const navigation = useAppNavigation<TNavigation, 'AttachmentView'>();
 	const {
 		params: { attachment }
 	} = useAppRoute<TNavigation, 'AttachmentView'>();
-	const [loading, setLoading] = React.useState(true);
+	const [loading, setLoading] = useState(true);
 	const { colors } = useTheme();
 
 	const { baseUrl, user, Allow_Save_Media_to_Gallery } = useAppSelector(
@@ -147,7 +147,7 @@ const AttachmentView = (): React.ReactElement => {
 		navigation.setOptions(options);
 	};
 
-	React.useLayoutEffect(() => {
+	useLayoutEffect(() => {
 		setHeader();
 	}, [navigation]);
 

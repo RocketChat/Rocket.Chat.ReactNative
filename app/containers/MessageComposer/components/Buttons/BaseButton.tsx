@@ -1,5 +1,4 @@
 import { BorderlessButton } from 'react-native-gesture-handler';
-import React from 'react';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 
 import I18n from '../../../../i18n';

@@ -1,15 +1,15 @@
-import {
-	type VideoConfCall,
-	type VideoConfCancelProps,
-	type VideoConference,
-	type VideoConferenceCapabilities,
-	type VideoConferenceInstructions,
-	type VideoConfInfoProps,
-	type VideoConfJoinProps,
-	type VideoConfListProps,
-	type VideoConfStartProps
+import type {
+	VideoConfCall,
+	VideoConfCancelProps,
+	VideoConference,
+	VideoConferenceCapabilities,
+	VideoConferenceInstructions,
+	VideoConfInfoProps,
+	VideoConfJoinProps,
+	VideoConfListProps,
+	VideoConfStartProps
 } from '../../IVideoConference';
-import { type PaginatedResult } from '../helpers/PaginatedResult';
+import type { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type VideoConferenceEndpoints = {
 	'video-conference.start': {

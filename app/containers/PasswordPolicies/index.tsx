@@ -1,7 +1,6 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 
-import { type IPasswordPolicy } from '../../lib/hooks/useVerifyPassword';
+import type { IPasswordPolicy } from '../../lib/hooks/useVerifyPassword';
 import Tip from './components/Tip';
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
@@ -40,8 +39,8 @@ const PasswordPolicies = ({ isDirty, password, policies }: IPasswordTips) => {
 				{i18n.t('Your_Password_Must_Have')}
 			</Text>
 			<View style={styles.policies}>
-				{policies.map(item => (
-					<Tip iconType={selectTipIconType(item.name, item.regex)} description={item.label} />
+				{policies.map((item, index) => (
+					<Tip key={index} iconType={selectTipIconType(item.name, item.regex)} description={item.label} />
 				))}
 			</View>
 		</View>

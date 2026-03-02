@@ -1,7 +1,5 @@
-import React from 'react';
-
 import { type ISubscription, SubscriptionType, type IUser } from '../../../definitions';
-import { type ILivechatVisitorModified } from '../../../definitions/ILivechatVisitor';
+import type { ILivechatVisitorModified } from '../../../definitions/ILivechatVisitor';
 import Channel from '../Channel';
 import Direct from '../Direct';
 import Livechat from '../Livechat';
@@ -14,7 +12,7 @@ const RoomInfoViewBody = ({
 	isDirect: boolean;
 	roomUser: IUser | ILivechatVisitorModified;
 	room?: ISubscription;
-}): React.ReactElement => {
+}) => {
 	if (isDirect) {
 		return <Direct roomUser={roomUser as IUser} />;
 	}

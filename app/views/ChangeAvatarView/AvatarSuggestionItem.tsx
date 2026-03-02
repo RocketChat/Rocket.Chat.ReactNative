@@ -1,7 +1,6 @@
-import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { type IAvatar } from '../../definitions';
+import type { IAvatar } from '../../definitions';
 import Avatar from '../../containers/Avatar';
 import { useTheme } from '../../theme';
 

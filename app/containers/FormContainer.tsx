@@ -1,5 +1,5 @@
-import React from 'react';
 import { ScrollView, type ScrollViewProps, StyleSheet, View } from 'react-native';
+import type { ReactElement } from 'react';
 
 import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
@@ -11,7 +11,7 @@ import SafeAreaView from './SafeAreaView';
 
 interface IFormContainer extends ScrollViewProps {
 	testID: string;
-	children: React.ReactElement | React.ReactElement[] | null;
+	children: ReactElement | ReactElement[] | null;
 	showAppVersion?: boolean;
 }
 
@@ -25,7 +25,7 @@ export const FormContainerInner = ({
 	children,
 	accessibilityLabel
 }: {
-	children: (React.ReactElement | null)[];
+	children: (ReactElement | null)[];
 	accessibilityLabel?: string;
 }) => (
 	<View accessibilityLabel={accessibilityLabel} style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>

@@ -1,5 +1,5 @@
 import { PERMISSIONS } from '../actions/actionsTypes';
-import { type TActionPermissions } from '../actions/permissions';
+import type { TActionPermissions } from '../actions/permissions';
 import { type SUPPORTED_PERMISSIONS } from '../lib/methods/getPermissions';
 
 export type TSupportedPermissions = (typeof SUPPORTED_PERMISSIONS)[number];

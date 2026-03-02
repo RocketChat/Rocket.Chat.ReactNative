@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { type BigEmoji as BigEmojiProps } from '@rocket.chat/message-parser';
 
@@ -16,8 +15,8 @@ const styles = StyleSheet.create({
 
 const BigEmoji = ({ value }: IBigEmojiProps) => (
 	<View style={styles.container}>
-		{value.map(block => (
-			<Emoji block={block} isBigEmoji />
+		{value.map((block, index) => (
+			<Emoji key={index} block={block} isBigEmoji />
 		))}
 	</View>
 );

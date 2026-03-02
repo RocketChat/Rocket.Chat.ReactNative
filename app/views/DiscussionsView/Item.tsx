@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
@@ -9,7 +8,7 @@ import sharedStyles from '../Styles';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
 import DiscussionDetails from './DiscussionDetails';
-import { type IMessageFromServer } from '../../definitions';
+import type { IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,7 +50,7 @@ export interface IItem {
 	onPress: Function;
 }
 
-const Item = ({ item, onPress }: IItem): React.ReactElement => {
+const Item = ({ item, onPress }: IItem) => {
 	const { colors } = useTheme();
 	const username = item?.u?.username;
 	let messageTime = '';
@@ -77,7 +76,8 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 						{messageTime ? <Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{messageTime}</Text> : null}
 					</View>
 					<View style={styles.messageContainer}>
-						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} /> : null}
+						{/* eslint-disable-next-line react-native/no-single-element-style-arrays */}
+						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={styles.markdown} /> : null}
 					</View>
 					{messageDate ? <DiscussionDetails item={item} date={messageDate} /> : null}
 				</View>

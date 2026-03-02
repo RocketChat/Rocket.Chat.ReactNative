@@ -1,4 +1,4 @@
-import React, { type ReactElement, useRef, useImperativeHandle } from 'react';
+import { type ReactElement, useRef, useImperativeHandle } from 'react';
 import { AccessibilityInfo, findNodeHandle, type LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -8,9 +8,9 @@ import { useRoomContext } from '../../views/RoomView/context';
 import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import { MessageInnerContext, useAlsoSendThreadToChannel, useMessageComposerApi, useRecordingAudio } from './context';
-import { type IComposerInput } from './interfaces';
+import type { IComposerInput } from './interfaces';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { type IEmoji } from '../../definitions';
+import type { IEmoji } from '../../definitions';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods/actions';
@@ -24,13 +24,7 @@ import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
 import { useTheme } from '../../theme';
 
-export const MessageComposer = ({
-	forwardedRef,
-	children
-}: {
-	forwardedRef: any;
-	children?: ReactElement;
-}): ReactElement | null => {
+export const MessageComposer = ({ forwardedRef, children }: { forwardedRef: any; children?: ReactElement }) => {
 	'use memo';
 
 	const composerInputRef = useRef(null);

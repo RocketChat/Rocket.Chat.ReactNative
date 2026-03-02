@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -6,7 +6,7 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import Markdown from '../containers/markdown';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
-import { type E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import type { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const E2EHowItWorksView = (): React.ReactElement => {
+const E2EHowItWorksView = () => {
 	const { setOptions } = useNavigation();
 	const { colors } = useTheme();
 	const { params } = useRoute<RouteProp<E2ESaveYourPasswordStackParamList, 'E2EHowItWorksView'>>();

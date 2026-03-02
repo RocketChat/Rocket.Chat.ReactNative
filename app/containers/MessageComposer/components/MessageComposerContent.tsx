@@ -1,8 +1,8 @@
 import { memo, type ReactElement, type RefObject } from 'react';
 import { type LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
-import { type TMessageAction } from '../../../views/RoomView/context';
-import { type IComposerInput } from '../interfaces';
+import type { TMessageAction } from '../../../views/RoomView/context';
+import type { IComposerInput } from '../interfaces';
 import { useTheme } from '../../../theme';
 import { RecordAudio } from './RecordAudio';
 import { Left, Right } from './Unfocused';
@@ -22,36 +22,41 @@ interface MessageComposerContentProps {
 	onLayout: (event: LayoutChangeEvent) => void;
 }
 
-export const MessageComposerContent = memo<MessageComposerContentProps>(
-	({ recordingAudio, action, composerInputComponentRef, composerInputRef, children, onLayout }) => {
-		'use memo';
+export const MessageComposerContent = memo<MessageComposerContentProps>(function MessageComposerContent({
+	recordingAudio,
+	action,
+	composerInputComponentRef,
+	composerInputRef,
+	children,
+	onLayout
+}) {
+	'use memo';
 
-		const { colors } = useTheme();
-		const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
+	const { colors } = useTheme();
+	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
-		if (recordingAudio) {
-			return <RecordAudio />;
-		}
-
-		return (
-			<View
-				style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]}
-				testID='message-composer'
-				onLayout={onLayout}>
-				<View style={styles.input}>
-					<Left />
-					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-					<Right />
-				</View>
-				<Quotes />
-				<Toolbar />
-				<EmojiSearchbar />
-				<SendThreadToChannel />
-				{children}
-			</View>
-		);
+	if (recordingAudio) {
+		return <RecordAudio />;
 	}
-);
+
+	return (
+		<View
+			style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]}
+			testID='message-composer'
+			onLayout={onLayout}>
+			<View style={styles.input}>
+				<Left />
+				<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
+				<Right />
+			</View>
+			<Quotes />
+			<Toolbar />
+			<EmojiSearchbar />
+			<SendThreadToChannel />
+			{children}
+		</View>
+	);
+});
 
 const styles = StyleSheet.create({
 	container: {

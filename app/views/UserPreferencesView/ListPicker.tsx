@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import { type TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';

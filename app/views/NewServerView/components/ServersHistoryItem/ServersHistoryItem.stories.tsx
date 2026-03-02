@@ -1,9 +1,7 @@
-import React from 'react';
-
 import { themes } from '../../../../lib/constants/colors';
 import ServersHistoryItemComponent, { type IServersHistoryItem } from '.';
 import { ThemeContext, type TSupportedThemes } from '../../../../theme';
-import { type TServerHistoryModel } from '../../../../definitions';
+import type { TServerHistoryModel } from '../../../../definitions';
 import {
 	BASE_ROW_HEIGHT,
 	BASE_ROW_HEIGHT_CONDENSED,
