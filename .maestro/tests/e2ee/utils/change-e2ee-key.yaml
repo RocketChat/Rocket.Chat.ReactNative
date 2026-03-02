@@ -7,7 +7,7 @@ tags:
 - tapOn: Enter manually
 - tapOn: New password
 - inputText: ${output.data.e2eePassword}
-- hideKeyboard
+- runFlow: '../../../helpers/hide-keyboard.yaml'
 - swipe:
     direction: DOWN
     duration: 100
