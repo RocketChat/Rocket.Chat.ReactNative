@@ -68,7 +68,7 @@ tags:
 - tapOn:
     id: 'multi-select-search'
 - inputText: ${output.otherUser.username}
-- hideKeyboard
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: multi-select-item-${output.otherUser.username.toLowerCase()}
