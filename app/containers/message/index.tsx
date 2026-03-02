@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -7,11 +7,12 @@ import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
 import { type TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
-import { type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
+import { type IReaction, type IAttachment, type TAnyMessageModel, type TGetCustomEmoji } from '../../definitions';
 import { type IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants/keys';
 import { messagesStatus } from '../../lib/constants/messagesStatus';
 import MessageSeparator from '../MessageSeparator';
+import i18n from '../../i18n';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -39,7 +40,7 @@ interface IMessageContainerProps {
 	highlighted?: boolean;
 	getCustomEmoji: TGetCustomEmoji;
 	onLongPress?: (item: TAnyMessageModel) => void;
-	onReactionPress?: (emoji: string, id: string) => void;
+	onReactionPress?: (emoji: string, id: string) => Promise<boolean> | void;
 	onEncryptedPress?: () => void;
 	onDiscussionPress?: (item: TAnyMessageModel) => void;
 	onThreadPress?: (item: TAnyMessageModel) => void;
@@ -67,6 +68,8 @@ interface IMessageContainerProps {
 
 interface IMessageContainerState {
 	isManualUnignored: boolean;
+	// for optimistic reaction updates
+	proxyReactions?: IReaction[];
 }
 
 class MessageContainer extends React.Component<IMessageContainerProps, IMessageContainerState> {
@@ -80,7 +83,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		theme: 'light' as TSupportedThemes
 	};
 
-	state = { isManualUnignored: false };
+	/**
+	 * set undefined when we are using value from server
+	 */
+	state = { isManualUnignored: false, proxyReactions: undefined };
 
 	private subscription?: Function;
 
@@ -92,13 +98,14 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			// experimentalSubscribe(subscriber: (isDeleted: boolean) => void, debugInfo?: any): Unsubscribe
 			// @ts-ignore
 			this.subscription = item.experimentalSubscribe(() => {
-				this.forceUpdate();
+				this.setState({ proxyReactions: undefined });
 			});
 		}
 	}
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
-		const { isManualUnignored } = this.state;
+		const { isManualUnignored, proxyReactions } = this.state;
+
 		const {
 			threadBadgeColor,
 			isIgnored,
@@ -108,9 +115,18 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			autoTranslateLanguage,
 			isBeingEdited,
 			showUnreadSeparator,
-			dateSeparator
+			dateSeparator,
+			item
 		} = this.props;
 
+		// optimistic UI updates
+		if (nextState.proxyReactions !== proxyReactions) {
+			return true;
+		}
+
+		if (nextProps.item.reactions !== item.reactions) {
+			return true;
+		}
 		if (nextProps.showUnreadSeparator !== showUnreadSeparator) {
 			return true;
 		}
@@ -205,10 +221,57 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		}
 	};
 
-	onReactionPress = (emoji: string) => {
-		const { onReactionPress, item } = this.props;
-		if (onReactionPress) {
-			onReactionPress(emoji, item.id);
+	onReactionPress = async (emoji: string) => {
+		const { onReactionPress, item, user } = this.props;
+		const { username } = user;
+
+		this.setState(prev => {
+			const current = prev.proxyReactions ?? item.reactions ?? [];
+
+			const updated = [...current];
+			const index = updated.findIndex(r => r.emoji === emoji);
+
+			if (index > -1) {
+				const alreadyReacted = updated[index].usernames.includes(username);
+
+				if (alreadyReacted) {
+					// remove
+					const newUsers = updated[index].usernames.filter(u => u !== username);
+
+					if (newUsers.length === 0) {
+						updated.splice(index, 1);
+					} else {
+						updated[index] = {
+							...updated[index],
+							usernames: newUsers
+						};
+					}
+				} else {
+					// add
+					updated[index] = {
+						...updated[index],
+						usernames: [...updated[index].usernames, username]
+					};
+				}
+			} else {
+				updated.push({
+					_id: `${emoji}-${Date.now()}`,
+					emoji,
+					usernames: [username],
+					names: [username]
+				});
+			}
+
+			return { proxyReactions: updated };
+		});
+
+		// still call server
+
+		const success = await onReactionPress?.(emoji, item.id);
+		if (!success) {
+			Alert.alert(i18n.t('Error'), i18n.t('Reaction_Failed'));
+			// rollback on failure
+			this.setState({ proxyReactions: undefined });
 		}
 	};
 
@@ -387,7 +450,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			ts,
 			attachments,
 			urls,
-			reactions,
 			t,
 			avatar,
 			emoji,
@@ -412,6 +474,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			comment,
 			pinned
 		} = item;
+
+		// extract reactions later for optimistic updates
+		const serverReactions = item.reactions;
+		const reactions = this.state.proxyReactions ?? serverReactions;
 
 		let message = msg;
 		let isTranslated = false;
