@@ -10,6 +10,8 @@ on:
 jobs:
   ios-test:
     runs-on: macos-14
+    env:
+      MAESTRO_VERSION: 2.2.0
 
     steps:
       - name: Checkout Repo
@@ -18,8 +20,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: "17"
 
       - name: Download App
         uses: actions/download-artifact@v4
@@ -32,70 +34,73 @@ jobs:
         with:
           E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
-      - name: Install Maestro
+      - name: Cache Maestro
+        uses: actions/cache@v4
+        with:
+          path: ~/.maestro
+          key: maestro-${{ runner.os }}-${{ env.MAESTRO_VERSION }}
+
+      - name: Install Maestro + idb
         run: |
           brew tap facebook/fb
           brew install facebook/fb/idb-companion
           curl -fsSL "https://get.maestro.mobile.dev" | bash
-          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
 
       - name: Configure Simulator
         run: |
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
-          defaults write com.apple.iphonesimulator ShowSingleTouches 1
           defaults write com.apple.iphonesimulator SlowAnimations -bool false
           defaults write com.apple.iphonesimulator ShowDeviceBezels -bool false
           defaults write com.apple.iphonesimulator DisableShadows -bool true
+          defaults write com.apple.iphonesimulator AllowFullscreenMode -bool false
+          defaults write com.apple.iphonesimulator PasteboardAutomaticSync -bool false
+          defaults write com.apple.iphonesimulator ShowChrome -bool false
+          defaults write com.apple.iphonesimulator DeviceFramebufferOnly -bool true
 
       - name: Boot Simulator
-        timeout-minutes: 30
+        timeout-minutes: 15
         run: |
-          SIM_NAME="iPhone 16 Pro Max"
-          TIMEOUT=300  # 5 minutes in seconds
-          INTERVAL=5   # Check every 5 seconds
-    
+          SIM_NAME="iPhone 16 Pro"
+
+          echo "Booting simulator: $SIM_NAME"
+
           xcrun simctl boot "$SIM_NAME" || true
-        
-          ELAPSED=0
-          while true; do
-            BOOTED=$(xcrun simctl list devices | grep "$SIM_NAME (" | grep "(Booted)")
-            if [ -n "$BOOTED" ]; then
-                echo "$SIM_NAME is booted"
-                break
-            fi
-        
-            if [ $ELAPSED -ge $TIMEOUT ]; then
-                echo "Simulator did not boot within 5 minutes. Retrying..."
-                xcrun simctl shutdown "$SIM_NAME"
-                xcrun simctl boot "$SIM_NAME"
-                ELAPSED=0
-            fi
-        
-            sleep $INTERVAL
-            ELAPSED=$((ELAPSED + INTERVAL))
-            done
-        
+          xcrun simctl bootstatus "$SIM_NAME" -b
+
+          echo "Disabling animations"
+          xcrun simctl spawn booted defaults write -g UIAnimationDragCoefficient -float 10
+
+          echo "Warming SpringBoard"
+          xcrun simctl launch booted com.apple.springboard
+          sleep 15
+
+          echo "Booted devices:"
           xcrun simctl list devices | grep Booted
 
-      - name: Get Simulator UDID 
+      - name: Get Booted Simulator UDID
         id: booted-sim
         run: |
-          UDID=$(xcrun simctl list devices | grep "iPhone 16 Pro Max (" | grep "(Booted)" | grep -oE '[A-F0-9-]{36}' | head -n1)
+          UDID=$(xcrun simctl list devices booted | grep -oE '[A-F0-9-]{36}' | head -n1)
           echo "UDID=$UDID"
           echo "UDID=$UDID" >> $GITHUB_ENV
 
-      - name: Make Maestro script executable
-        run: chmod +x .github/scripts/run-maestro.sh
-
       - name: Install App
         run: |
-          xcrun simctl install $UDID "ios-simulator-app"
+          xcrun simctl install booted ios-simulator-app
 
-      - name: Run Tests
-        timeout-minutes: 120
-        run: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
+      - name: Make Maestro Script Executable
+        run: chmod +x .github/scripts/run-maestro.sh
 
-      - name: iOS Maestro Logs
+      - name: Run Maestro Tests
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 30
+          max_attempts: 2
+          retry_on: timeout
+          command: ./.github/scripts/run-maestro.sh ios ${{ inputs.shard }}
+
+      - name: Upload Maestro Logs
         if: always()
         uses: actions/upload-artifact@v4
         with:

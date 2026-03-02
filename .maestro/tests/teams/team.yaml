@@ -106,14 +106,12 @@ tags:
 - tapOn:
     id: create-channel-name
 - inputText: ${output.privateRoomName}
-- swipe:
-    direction: DOWN
-    duration: 100
-- extendedWaitUntil:
-    visible:
-      id: create-channel-submit
+- runFlow: '../../helpers/hide-keyboard.yaml'
+- scrollUntilVisible:
+    element:
+      id: 'create-channel-submit'
     timeout: 60000
-    label: should have submit button
+    centerElement: true
 - tapOn:
     id: create-channel-submit
 - extendedWaitUntil:
@@ -299,6 +297,7 @@ tags:
 - tapOn:
     id: select-users-view-search
 - inputText: rocket.cat
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: select-users-view-item-rocket.cat
@@ -317,6 +316,7 @@ tags:
     id: select-users-view-search
 - eraseText
 - inputText: ${output.secondUser.username}
+- runFlow: '../../helpers/hide-keyboard.yaml'
 - extendedWaitUntil:
     visible:
       id: select-users-view-item-${output.secondUser.username}
