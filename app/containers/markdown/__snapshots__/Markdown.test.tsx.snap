@@ -711,15 +711,13 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         </Text>
         <View
           style={
-            [
-              {
-                "transform": [
-                  {
-                    "translateY": 3,
-                  },
-                ],
-              },
-            ]
+            {
+              "transform": [
+                {
+                  "translateY": 3,
+                },
+              ],
+            }
           }
         >
           <ViewManagerAdapter_ExpoImage
@@ -774,15 +772,13 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         </Text>
         <View
           style={
-            [
-              {
-                "transform": [
-                  {
-                    "translateY": 3,
-                  },
-                ],
-              },
-            ]
+            {
+              "transform": [
+                {
+                  "translateY": 3,
+                },
+              ],
+            }
           }
         >
           <ViewManagerAdapter_ExpoImage
@@ -837,15 +833,13 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         </Text>
         <View
           style={
-            [
-              {
-                "transform": [
-                  {
-                    "translateY": 3,
-                  },
-                ],
-              },
-            ]
+            {
+              "transform": [
+                {
+                  "translateY": 3,
+                },
+              ],
+            }
           }
         >
           <ViewManagerAdapter_ExpoImage
@@ -940,15 +934,13 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       </Text>
       <View
         style={
-          [
-            {
-              "transform": [
-                {
-                  "translateY": 0,
-                },
-              ],
-            },
-          ]
+          {
+            "transform": [
+              {
+                "translateY": 0,
+              },
+            ],
+          }
         }
       >
         <ViewManagerAdapter_ExpoImage

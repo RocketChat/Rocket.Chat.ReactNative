@@ -46,7 +46,7 @@ const waitForNavigation = () => {
 	if (Navigation.navigationRef.current) {
 		return Promise.resolve();
 	}
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		const listener = () => {
 			emitter.off('navigationReady', listener);
 			resolve();

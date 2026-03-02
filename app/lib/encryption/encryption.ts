@@ -596,7 +596,7 @@ class Encryption {
 		return roomE2E.encryptFile(rid, file);
 	};
 
-	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
+	decryptFile: TDecryptFile = async (_messageId, path, encryption, originalChecksum) => {
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
 		if (decryptedFile) {
 			const checksum = await calculateFileChecksum(decryptedFile);
