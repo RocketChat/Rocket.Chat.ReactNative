@@ -43,8 +43,8 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted
-				renderScrollComponent={isIOS ? undefined : props => <InvertedScrollView {...props} inverted={true} />}
+				inverted={props.inverted || true}
+				renderScrollComponent={isIOS ? undefined : scrollProps => <InvertedScrollView {...scrollProps} />}
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}

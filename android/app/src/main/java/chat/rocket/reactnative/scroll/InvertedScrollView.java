@@ -8,7 +8,8 @@ import java.util.Collections;
 
 // When a FlatList is inverted (inverted={true}), React Native uses scaleY: -1 transform which
 // visually inverts the list but Android still reports children in array order. This view overrides
-// addChildrenForAccessibility to reverse the order so TalkBack matches the visual order.
+// addChildrenForAccessibility to reverse the order so TalkBack matches the visual order, and also
+// adjusts keyboard/D-pad focus navigation to behave like a non-inverted list.
 
 public class InvertedScrollView extends ReactScrollView {
 
@@ -24,6 +25,29 @@ public class InvertedScrollView extends ReactScrollView {
 
   public void setIsInvertedVirtualizedList(boolean isInverted) {
     mIsInvertedVirtualizedList = isInverted;
+  }
+
+  @Override
+  public View focusSearch(View focused, int direction) {
+    if (mIsInvertedVirtualizedList) {
+      switch (direction) {
+        case View.FOCUS_DOWN:
+          direction = View.FOCUS_UP;
+          break;
+        case View.FOCUS_UP:
+          direction = View.FOCUS_DOWN;
+          break;
+        case View.FOCUS_FORWARD:
+          direction = View.FOCUS_BACKWARD;
+          break;
+        case View.FOCUS_BACKWARD:
+          direction = View.FOCUS_FORWARD;
+          break;
+        default:
+          break;
+      }
+    }
+    return super.focusSearch(focused, direction);
   }
 
   @Override
