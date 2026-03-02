@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { memo, useContext, useEffect } from 'react';
+import React, { memo, useContext, useEffect, useMemo } from 'react';
 import { BackHandler, FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
@@ -26,6 +26,7 @@ import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
 import { useRefresh } from './hooks/useRefresh';
 import { useSubscriptions } from './hooks/useSubscriptions';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -50,6 +51,14 @@ const RoomsListView = memo(function RoomsListView() {
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
+	const { rowHeight, rowHeightCondensed, fontScale } = useResponsiveLayout();
+
+	const extraData = useMemo(() => {
+		if (searchEnabled) {
+			return searchResults;
+		}
+		return [subscriptions, rowHeight, rowHeightCondensed, fontScale];
+	}, [searchEnabled, searchResults, subscriptions, rowHeight, rowHeightCondensed, fontScale]);
 
 	useEffect(() => {
 		const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -61,7 +70,7 @@ const RoomsListView = memo(function RoomsListView() {
 			return false;
 		});
 		return () => subscription.remove();
-	}, [searchEnabled]);
+	}, [searchEnabled, navigation, stopSearch]);
 
 	const onPressItem = (item = {} as IRoomItem) => {
 		if (!navigation.isFocused()) {
@@ -130,8 +139,8 @@ const RoomsListView = memo(function RoomsListView() {
 	return (
 		<FlatList
 			data={searchEnabled ? searchResults : subscriptions}
-			extraData={searchEnabled ? searchResults : subscriptions}
-			keyExtractor={item => `${item.rid}-${searchEnabled}`}
+			extraData={extraData}
+			keyExtractor={item => `${item.rid}-${searchEnabled}-${fontScale}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}

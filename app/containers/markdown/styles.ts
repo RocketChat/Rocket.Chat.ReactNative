@@ -38,6 +38,7 @@ export default StyleSheet.create({
 	text: {
 		lineHeight: 22,
 		fontSize: 16,
+		minWidth: 0,
 		...sharedStyles.textRegular
 	},
 	textInfo: {

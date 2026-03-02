@@ -29,10 +29,11 @@ interface IDirectoryItem {
 }
 
 const DirectoryItemLabel = React.memo(({ text, color }: IDirectoryItemLabel) => {
+	const { scaleFontSize } = useResponsiveLayout();
 	if (!text) {
 		return null;
 	}
-	return <Text style={[styles.directoryItemLabel, { color }]}>{text}</Text>;
+	return <Text style={[styles.directoryItemLabel, { color, fontSize: scaleFontSize(14) }]}>{text}</Text>;
 });
 
 const DirectoryItem = ({
@@ -48,7 +49,7 @@ const DirectoryItem = ({
 	teamMain
 }: IDirectoryItem): React.ReactElement => {
 	const { colors } = useTheme();
-	const { fontScale } = useResponsiveLayout();
+	const { fontScale, scaleFontSize } = useResponsiveLayout();
 	const height = ROW_HEIGHT * fontScale;
 
 	return (
@@ -59,7 +60,7 @@ const DirectoryItem = ({
 					<View style={styles.directoryItemTextContainer}>
 						<View style={styles.directoryItemTextTitle}>
 							{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
-							<Text style={[styles.directoryItemName, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+							<Text style={[styles.directoryItemName, { color: colors.fontTitlesLabels, fontSize: scaleFontSize(17) }]} numberOfLines={1}>
 								{title}
 							</Text>
 						</View>

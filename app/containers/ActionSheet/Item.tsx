@@ -9,6 +9,7 @@ import { type TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import { LISTENER } from '../Toast';
 import Touch from '../Touch';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export interface IActionSheetItem {
 	item: TActionSheetOptionsItem;
@@ -21,6 +22,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
+	const { scaleFontSize } = useResponsiveLayout();
 	const onPress = () => {
 		if (enabled) {
 			hide();
@@ -51,13 +53,13 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 				testID={item.testID}>
 				{item.icon ? <CustomIcon name={item.icon} size={24} color={color} /> : null}
 				<View style={styles.titleContainer}>
-					<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>
+					<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0, fontSize: scaleFontSize(16), lineHeight: scaleFontSize(22) }]}>
 						{item.title}
 					</Text>
 					{item?.subtitle ? (
 						<Text
 							numberOfLines={1}
-							style={[styles.subtitle, { color: colors.fontSecondaryInfo, marginLeft: item.icon ? 16 : 0 }]}>
+							style={[styles.subtitle, { color: colors.fontSecondaryInfo, marginLeft: item.icon ? 16 : 0, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(20) }]}>
 							{item.subtitle}
 						</Text>
 					) : null}

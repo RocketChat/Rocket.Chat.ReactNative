@@ -8,6 +8,7 @@ import { type TGetCustomEmoji } from '../../definitions/IEmoji';
 import I18n from '../../i18n';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IAllReactionsListItemProps {
 	getCustomEmoji: TGetCustomEmoji;
@@ -21,6 +22,7 @@ interface IAllTabProps {
 
 const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemProps) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const username = useAppSelector(state => state.login.user.username);
 	const count = item.usernames.length;
@@ -46,15 +48,15 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 		<View style={styles.listItemContainer}>
 			<Emoji
 				content={item.emoji}
-				standardEmojiStyle={styles.allTabStandardEmojiStyle}
+				standardEmojiStyle={{ ...styles.allTabStandardEmojiStyle, fontSize: scaleFontSize(30) }}
 				customEmojiStyle={styles.allTabCustomEmojiStyle}
 				getCustomEmoji={getCustomEmoji}
 			/>
 			<View style={styles.textContainer}>
-				<Text style={[styles.allListNPeopleReacted, { color: colors.fontDefault }]}>
+				<Text style={[styles.allListNPeopleReacted, { color: colors.fontDefault, fontSize: scaleFontSize(14) }]}>
 					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
 				</Text>
-				<Text style={[styles.allListWhoReacted, { color: colors.fontSecondaryInfo }]}>{displayNames}</Text>
+				<Text style={[styles.allListWhoReacted, { color: colors.fontSecondaryInfo, fontSize: scaleFontSize(14) }]}>{displayNames}</Text>
 			</View>
 		</View>
 	);

@@ -8,6 +8,7 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Switch from '../../containers/Switch';
 import { useTheme } from '../../theme';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IDirectoryOptionsProps {
 	type: string;
@@ -25,6 +26,7 @@ const DirectoryOptions = ({
 	toggleWorkspace
 }: IDirectoryOptionsProps) => {
 	const { colors } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	const insets = useSafeAreaInsets();
 
 	const renderItem = (itemType: string) => {
@@ -65,8 +67,8 @@ const DirectoryOptions = ({
 					<List.Separator />
 					<View style={[styles.filterItemContainer, styles.globalUsersContainer]}>
 						<View style={styles.globalUsersTextContainer}>
-							<Text style={[styles.filterItemText, { color: colors.fontHint }]}>{I18n.t('Search_global_users')}</Text>
-							<Text style={[styles.filterItemDescription, { color: colors.fontHint }]}>
+							<Text style={[styles.filterItemText, { color: colors.fontHint, fontSize: scaleFontSize(18) }]}>{I18n.t('Search_global_users')}</Text>
+							<Text style={[styles.filterItemDescription, { color: colors.fontHint, fontSize: scaleFontSize(14) }]}>
 								{I18n.t('Search_global_users_description')}
 							</Text>
 						</View>

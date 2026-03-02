@@ -6,6 +6,7 @@ import { themes } from '../../lib/constants/colors';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,7 +14,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	title: {
-		fontSize: 16,
 		...sharedStyles.textRegular
 	}
 });
@@ -28,10 +28,11 @@ const ListHeader = React.memo(({ title, translateTitle = true, numberOfLines }: 
 	'use memo';
 
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 
 	return (
 		<View style={styles.container}>
-			<Text accessibilityRole='header' style={[styles.title, { color: themes[theme].fontHint }]} numberOfLines={numberOfLines}>
+			<Text accessibilityRole='header' style={[styles.title, { color: themes[theme].fontHint, fontSize: scaleFontSize(16) }]} numberOfLines={numberOfLines}>
 				{translateTitle ? I18n.t(title) : title}
 			</Text>
 		</View>

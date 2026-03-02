@@ -6,6 +6,7 @@ import { themes } from '../../lib/constants/colors';
 import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
 import I18n from '../../i18n';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,8 +14,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	text: {
-		fontSize: 14,
-		lineHeight: 20,
 		...sharedStyles.textRegular
 	}
 });
@@ -28,9 +27,10 @@ const ListInfo = React.memo(({ info, translateInfo = true }: IListInfo) => {
 	'use memo';
 
 	const { theme } = useTheme();
+	const { scaleFontSize } = useResponsiveLayout();
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, { color: themes[theme].fontHint }]}>{translateInfo ? I18n.t(info) : info}</Text>
+			<Text style={[styles.text, { color: themes[theme].fontHint, fontSize: scaleFontSize(14), lineHeight: scaleFontSize(20) }]}>{translateInfo ? I18n.t(info) : info}</Text>
 		</View>
 	);
 });
