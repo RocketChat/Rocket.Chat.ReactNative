@@ -225,6 +225,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		const { onReactionPress, item, user } = this.props;
 		const { username } = user;
 
+		if (!onReactionPress) {
+			return;
+		}
+
 		this.setState(prev => {
 			const current = prev.proxyReactions ?? item.reactions ?? [];
 
