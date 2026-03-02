@@ -976,6 +976,7 @@
   "Version_no": "App version: {{version}}",
   "Vibrate": "Vibrate",
   "Video": "Video",
+  "Video_call": "Video call",
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",
   "video-conf-provider-not-configured-header": "Conference call not enabled",
   "View_Original": "View original",

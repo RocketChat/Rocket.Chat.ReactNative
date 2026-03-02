@@ -17,7 +17,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { type NewMessageStackParamList } from '../../stacks/types';
 import { search as searchMethod } from '../../lib/methods/search';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
-import UserItem from '../../containers/UserItem';
+import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
 
 const QUERY_SIZE = 50;
@@ -90,7 +90,8 @@ const NewMessageView = () => {
 					const itemModel = item as TSubscriptionModel;
 
 					return (
-						<UserItem
+						<Item
+							room={itemModel}
 							name={useRealName && itemSearch.fname ? itemSearch.fname : itemModel.name}
 							username={itemSearch.search ? itemSearch.username : itemModel.name}
 							onPress={() => goRoom(itemModel)}
@@ -100,7 +101,7 @@ const NewMessageView = () => {
 				}}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
+				style={{ backgroundColor: colors.surfaceTint }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

@@ -4,7 +4,6 @@ import * as HeaderButton from '../../../containers/Header/components/HeaderButto
 // import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { mediaSessionInstance } from '../../../lib/services/voip/MediaSessionInstance';
 import type { TSubscriptionModel } from '../../../definitions';
-import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 
 export const HeaderCallButton = ({
 	// rid,
@@ -35,11 +34,7 @@ export const HeaderCallButton = ({
 
 	const handlePress = () => {
 		if (!room) return;
-
-		const otherUserId = getUidDirectMessage(room);
-		if (otherUserId) {
-			mediaSessionInstance.startCall(otherUserId, 'user');
-		}
+		mediaSessionInstance.startCallByRoom(room);
 	};
 
 	return (

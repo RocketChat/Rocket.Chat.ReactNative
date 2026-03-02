@@ -7,7 +7,9 @@ import { FormTextInput } from '../TextInput';
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		margin: 16,
+		marginHorizontal: 12,
+		marginTop: 16,
+		// override the default margin bottom of the FormTextInput
 		marginBottom: 16
 	}
 });

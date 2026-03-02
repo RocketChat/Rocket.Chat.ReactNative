@@ -60,7 +60,8 @@ class MediaSessionStore extends Emitter<{ change: void }> {
 			},
 			mediaStreamFactory: (constraints: any) => mediaDevices.getUserMedia(constraints) as unknown as Promise<MediaStream>,
 			randomStringFactory,
-			logger: new MediaCallLogger()
+			logger: new MediaCallLogger(),
+			features: ['audio']
 		});
 
 		this.change();

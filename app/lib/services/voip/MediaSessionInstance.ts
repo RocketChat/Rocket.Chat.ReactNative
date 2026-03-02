@@ -18,6 +18,8 @@ import { parseStringToIceServers } from './parseStringToIceServers';
 import CallIdUUIDModule from '../../native/NativeCallIdUUID';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
+import type { ISubscription, TSubscriptionModel } from '../../../definitions';
+import { getUidDirectMessage } from '../../methods/helpers/helpers';
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -103,6 +105,13 @@ class MediaSessionInstance {
 		} else {
 			RNCallKeep.endCall(callUUID);
 			alert('Call not found'); // TODO: Show error message?
+		}
+	};
+
+	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
+		const otherUserId = getUidDirectMessage(room);
+		if (otherUserId) {
+			this.startCall(otherUserId, 'user');
 		}
 	};
 

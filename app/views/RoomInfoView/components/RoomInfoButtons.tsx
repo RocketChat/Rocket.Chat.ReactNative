@@ -10,6 +10,18 @@ import { useTheme } from '../../../theme';
 import styles from '../styles';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useE2EEWarning } from '../hooks';
+import { useActionSheet } from '../../../containers/ActionSheet';
+import type { TActionSheetOptionsItem } from '../../../containers/ActionSheet';
+import { mediaSessionInstance } from '../../../lib/services/voip/MediaSessionInstance';
+
+type ButtonConfig = {
+	label: string;
+	iconName: TIconsName;
+	onPress: () => void;
+	danger?: boolean;
+	enabled?: boolean;
+	show: boolean;
+};
 
 function BaseButton({
 	danger,
@@ -41,19 +53,6 @@ function BaseButton({
 	return null;
 }
 
-function CallButton({ rid, roomFromRid }: { rid: string; isDirect: boolean; roomFromRid: boolean }): React.ReactElement | null {
-	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
-	return (
-		<BaseButton
-			onPress={showInitCallActionSheet}
-			iconName='phone'
-			label={i18n.t('Call')}
-			enabled={!disabledTooltip}
-			showIcon={callEnabled && !roomFromRid}
-		/>
-	);
-}
-
 interface IRoomInfoButtons {
 	rid: string;
 	room: ISubscription | undefined;
@@ -83,7 +82,12 @@ export const RoomInfoButtons = ({
 	serverVersion,
 	itsMe
 }: IRoomInfoButtons): React.ReactElement => {
+	'use memo';
+
 	const room = roomFromRid || roomFromProps;
+	const { showActionSheet } = useActionSheet();
+	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
+
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
 	const isFromDm = room?.t === SubscriptionType.DIRECT;
@@ -97,23 +101,90 @@ export const RoomInfoButtons = ({
 	const renderReportUser =
 		!itsMe && isDirectFromSaved && !isDmWithMyself && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0');
 
+	const showCall = !hasE2EEWarning && callEnabled && !roomFromRid;
+
+	const handleVoiceCall = () => {
+		if (!room) return;
+		mediaSessionInstance.startCallByRoom(room);
+	};
+
+	const allItems: ButtonConfig[] = [
+		{
+			label: i18n.t('Message'),
+			iconName: 'message',
+			onPress: handleCreateDirectMessage,
+			enabled: true,
+			show: true
+		},
+		{
+			label: i18n.t('Voice_call'),
+			iconName: 'phone',
+			onPress: handleVoiceCall,
+			enabled: !disabledTooltip,
+			show: showCall
+		},
+		{
+			label: i18n.t('Video_call'),
+			iconName: 'camera',
+			onPress: showInitCallActionSheet,
+			enabled: !disabledTooltip,
+			show: showCall
+		},
+		{
+			label: i18n.t(isIgnored ? 'Unignore' : 'Ignore'),
+			iconName: 'ignore',
+			onPress: handleIgnoreUser,
+			enabled: true,
+			show: !!renderIgnoreUser
+		},
+		{
+			label: i18n.t(isBlocked ? 'Unblock' : 'Block'),
+			iconName: 'ignore',
+			onPress: handleBlockUser,
+			enabled: true,
+			show: !!renderBlockUser
+		},
+		{
+			label: i18n.t('Report'),
+			iconName: 'warning',
+			onPress: handleReportUser,
+			danger: true,
+			enabled: true,
+			show: !!renderReportUser
+		}
+	];
+
+	const visibleItems = allItems.filter(i => i.show);
+	const hasOverflow = visibleItems.length > 4;
+	const primaryItems = hasOverflow ? visibleItems.slice(0, 3) : visibleItems;
+	const overflowItems = hasOverflow ? visibleItems.slice(3) : [];
+
+	const overflowOptions: TActionSheetOptionsItem[] = overflowItems.map(item => ({
+		title: item.label,
+		icon: item.iconName,
+		onPress: item.onPress,
+		danger: item.danger,
+		enabled: item.enabled ?? true
+	}));
+
+	const handleMore = () => {
+		showActionSheet({ options: overflowOptions });
+	};
+
 	return (
 		<View style={styles.roomButtonsContainer}>
-			<BaseButton onPress={handleCreateDirectMessage} label={i18n.t('Message')} iconName='message' />
-			{hasE2EEWarning ? null : <CallButton isDirect={isDirect} rid={rid} roomFromRid={!!roomFromRid} />}
-			<BaseButton
-				onPress={handleIgnoreUser}
-				label={i18n.t(isIgnored ? 'Unignore' : 'Ignore')}
-				iconName='ignore'
-				showIcon={!!renderIgnoreUser}
-			/>
-			<BaseButton
-				onPress={handleBlockUser}
-				label={i18n.t(`${isBlocked ? 'Unblock' : 'Block'}`)}
-				iconName='ignore'
-				showIcon={!!renderBlockUser}
-			/>
-			<BaseButton onPress={handleReportUser} label={i18n.t('Report')} iconName='warning' showIcon={!!renderReportUser} danger />
+			{primaryItems.map(item => (
+				<BaseButton
+					key={item.label}
+					onPress={item.onPress}
+					label={item.label}
+					iconName={item.iconName}
+					danger={item.danger}
+					enabled={item.enabled ?? true}
+					showIcon={true}
+				/>
+			))}
+			{hasOverflow && <BaseButton onPress={handleMore} label={i18n.t('More')} iconName='kebab' showIcon={true} enabled={true} />}
 		</View>
 	);
 };
