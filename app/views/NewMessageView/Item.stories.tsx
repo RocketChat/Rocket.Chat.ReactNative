@@ -39,7 +39,7 @@ const createMockRoom = (overrides: Partial<TSubscriptionModel> = {}): TSubscript
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	}) as TSubscriptionModel;
+	} as TSubscriptionModel);
 
 export default {
 	title: 'NewMessageView/Item',
