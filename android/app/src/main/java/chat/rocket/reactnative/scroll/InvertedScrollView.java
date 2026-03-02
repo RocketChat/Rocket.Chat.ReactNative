@@ -51,6 +51,26 @@ public class InvertedScrollView extends ReactScrollView {
   }
 
   @Override
+  public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
+    int initialSize = views.size();
+
+    super.addFocusables(views, direction, focusableMode);
+
+    if (!mIsInvertedVirtualizedList) {
+      return;
+    }
+
+    if (direction == View.FOCUS_FORWARD || direction == View.FOCUS_BACKWARD) {
+      int newSize = views.size();
+      int addedCount = newSize - initialSize;
+      if (addedCount > 1) {
+        java.util.List<View> subList = views.subList(initialSize, newSize);
+        Collections.reverse(subList);
+      }
+    }
+  }
+
+  @Override
   public void addChildrenForAccessibility(ArrayList<View> outChildren) {
     super.addChildrenForAccessibility(outChildren);
     if (mIsInvertedVirtualizedList) {
