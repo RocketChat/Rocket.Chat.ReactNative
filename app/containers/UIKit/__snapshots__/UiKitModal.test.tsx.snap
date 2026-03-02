@@ -999,47 +999,44 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     }
   />,
   <View>
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Primary Action"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -1060,50 +1057,47 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       >
         Primary Action
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
   <View>
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Secondary"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -1124,50 +1118,47 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       >
         Secondary
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
   <View>
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Danger Action"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#E4E7EA",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#E4E7EA",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -1188,50 +1179,47 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       >
         Danger Action
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
   <View>
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Button 4"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -1252,50 +1240,47 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       >
         Button 4
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
   <View>
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Button 5"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -1316,7 +1301,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       >
         Button 5
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
   <View
     style={
@@ -1326,47 +1311,44 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Button 6 - Hidden"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -1387,7 +1369,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       >
         Button 6 - Hidden
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
   <View
     style={
@@ -1397,47 +1379,44 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Button 7 - Hidden"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -1458,7 +1437,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       >
         Button 7 - Hidden
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
   <View
     style={
@@ -1468,47 +1447,44 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       }
     }
   >
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Button 8 - Hidden"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -1529,49 +1505,44 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
       >
         Button 8 - Hidden
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
-  <View
+  <RNGestureHandlerButton
     accessibilityLabel="Show more"
     accessibilityRole="button"
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
     collapsable={false}
-    focusable={true}
-    onClick={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
+    enabled={true}
+    hitSlop={
       {
-        "backgroundColor": "#156FF5",
-        "borderRadius": 4,
-        "justifyContent": "center",
-        "marginBottom": 12,
-        "opacity": 1,
-        "paddingHorizontal": 16,
-        "paddingVertical": 14,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
       }
     }
+    rippleColor="transparent"
+    style={
+      [
+        {},
+        [
+          {
+            "justifyContent": "center",
+            "paddingHorizontal": 16,
+            "paddingVertical": 14,
+          },
+          {
+            "borderRadius": 4,
+            "marginBottom": 12,
+          },
+          {
+            "backgroundColor": "#156FF5",
+          },
+          {},
+          undefined,
+        ],
+      ]
+    }
+    testOnly_onPress={[Function]}
   >
     <Text
       style={
@@ -1592,7 +1563,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     >
       Show more
     </Text>
-  </View>,
+  </RNGestureHandlerButton>,
   <View
     style={
       [
@@ -1891,27 +1862,13 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={28}
+      handlerType="NativeViewGestureHandler"
       hitSlop={
         {
           "bottom": 4,
@@ -1920,47 +1877,88 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      innerRef={[Function]}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "justifyContent": "center",
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        collapsable={false}
         style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 18,
-            },
-            [
-              {
-                "lineHeight": 18,
-              },
-              undefined,
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
-          ]
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "justifyContent": "center",
+          }
         }
       >
-        
-      </Text>
-    </View>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 18,
+              },
+              [
+                {
+                  "lineHeight": 18,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </RNGestureHandlerButton>
   </View>,
   <View
     style={
@@ -2038,27 +2036,13 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={29}
+      handlerType="NativeViewGestureHandler"
       hitSlop={
         {
           "bottom": 4,
@@ -2067,47 +2051,88 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      innerRef={[Function]}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "justifyContent": "center",
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        collapsable={false}
         style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 18,
-            },
-            [
-              {
-                "lineHeight": 18,
-              },
-              undefined,
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
-          ]
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "justifyContent": "center",
+          }
         }
       >
-        
-      </Text>
-    </View>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 18,
+              },
+              [
+                {
+                  "lineHeight": 18,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </RNGestureHandlerButton>
   </View>,
   <View
     style={
@@ -2185,27 +2210,13 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={30}
+      handlerType="NativeViewGestureHandler"
       hitSlop={
         {
           "bottom": 4,
@@ -2214,47 +2225,88 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
           "top": 4,
         }
       }
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      innerRef={[Function]}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "justifyContent": "center",
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": undefined,
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
+        collapsable={false}
         style={
-          [
-            {
-              "color": "#2F343D",
-              "fontSize": 18,
-            },
-            [
-              {
-                "lineHeight": 18,
-              },
-              undefined,
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
-          ]
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "justifyContent": "center",
+          }
         }
       >
-        
-      </Text>
-    </View>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 18,
+              },
+              [
+                {
+                  "lineHeight": 18,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </RNGestureHandlerButton>
   </View>,
 ]
 `;
@@ -2286,107 +2338,130 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
   >
     Label
   </Text>
-  <View
-    accessibilityState={
-      {
-        "busy": undefined,
-        "checked": undefined,
-        "disabled": undefined,
-        "expanded": undefined,
-        "selected": undefined,
-      }
-    }
-    accessibilityValue={
-      {
-        "max": undefined,
-        "min": undefined,
-        "now": undefined,
-        "text": undefined,
-      }
-    }
-    accessible={true}
+  <RNGestureHandlerButton
+    activeOpacity={1}
     collapsable={false}
-    focusable={true}
-    onClick={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
+    delayLongPress={600}
+    enabled={true}
+    handlerTag={31}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
     style={
-      {
-        "backgroundColor": "#FFFFFF",
-        "opacity": 1,
-      }
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": undefined,
+          "margin": undefined,
+          "marginBottom": undefined,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
     }
+    underlayColor="#E4E7EA"
   >
     <View
+      collapsable={false}
       style={
-        [
-          {
-            "alignItems": "center",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 16,
-          },
-          {
-            "borderColor": "#EC0D2A",
-          },
-        ]
+        {
+          "backgroundColor": "#E4E7EA",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": undefined,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
       }
+    />
+    <View
+      style={{}}
     >
-      <Text
+      <View
         style={
           [
             {
-              "backgroundColor": "transparent",
-              "fontFamily": "Inter",
-              "fontSize": 14,
-              "fontWeight": "400",
-              "textAlign": "left",
+              "alignItems": "center",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "flexDirection": "row",
+              "height": 48,
+              "paddingLeft": 16,
             },
             {
-              "color": "#D40C26",
+              "borderColor": "#EC0D2A",
             },
           ]
         }
       >
-        Invalid Date
-      </Text>
-      <Text
-        allowFontScaling={false}
-        selectable={false}
-        style={
-          [
-            {
-              "color": "#EC0D2A",
-              "fontSize": 20,
-            },
+        <Text
+          style={
             [
               {
-                "lineHeight": 20,
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 14,
+                "fontWeight": "400",
+                "textAlign": "left",
               },
               {
-                "position": "absolute",
-                "right": 16,
+                "color": "#D40C26",
               },
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
-          ]
-        }
-      >
-        
-      </Text>
+            ]
+          }
+        >
+          Invalid Date
+        </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#EC0D2A",
+                "fontSize": 20,
+              },
+              [
+                {
+                  "lineHeight": 20,
+                },
+                {
+                  "position": "absolute",
+                  "right": 16,
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
-  </View>
+  </RNGestureHandlerButton>
   <Text
     style={
       [
@@ -2644,107 +2719,130 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
     >
       Set a date
     </Text>
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={32}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#FFFFFF",
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": undefined,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
       <View
+        collapsable={false}
         style={
-          [
-            {
-              "alignItems": "center",
-              "borderRadius": 4,
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "height": 48,
-              "paddingLeft": 16,
-            },
-            {
-              "borderColor": "#CBCED1",
-            },
-          ]
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": undefined,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
         }
+      />
+      <View
+        style={{}}
       >
-        <Text
+        <View
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 14,
-                "fontWeight": "400",
-                "textAlign": "left",
+                "alignItems": "center",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "height": 48,
+                "paddingLeft": 16,
               },
               {
-                "color": "#1F2329",
+                "borderColor": "#CBCED1",
               },
             ]
           }
         >
-          Invalid Date
-        </Text>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#6C727A",
-                "fontSize": 20,
-              },
+          <Text
+            style={
               [
                 {
-                  "lineHeight": 20,
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "textAlign": "left",
                 },
                 {
-                  "position": "absolute",
-                  "right": 16,
+                  "color": "#1F2329",
                 },
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
+              ]
+            }
+          >
+            Invalid Date
+          </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 20,
+                },
+                [
+                  {
+                    "lineHeight": 20,
+                  },
+                  {
+                    "position": "absolute",
+                    "right": 16,
+                  },
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
 ]
 `;
@@ -2860,47 +2958,44 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
         </Text>
       </View>
     </View>
-    <View
+    <RNGestureHandlerButton
       accessibilityLabel="Change"
       accessibilityRole="button"
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": false,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
+      enabled={true}
+      hitSlop={
         {
-          "backgroundColor": "#156FF5",
-          "borderRadius": 4,
-          "justifyContent": "center",
-          "marginBottom": 16,
-          "opacity": 1,
-          "paddingHorizontal": 16,
-          "paddingVertical": 14,
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+          "top": 0,
         }
       }
+      rippleColor="transparent"
+      style={
+        [
+          {},
+          [
+            {
+              "justifyContent": "center",
+              "paddingHorizontal": 16,
+              "paddingVertical": 14,
+            },
+            {
+              "borderRadius": 4,
+              "marginBottom": 12,
+            },
+            {
+              "backgroundColor": "#156FF5",
+            },
+            {},
+            {
+              "marginBottom": 16,
+            },
+          ],
+        ]
+      }
+      testOnly_onPress={[Function]}
     >
       <Text
         style={
@@ -2921,7 +3016,7 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
       >
         Change
       </Text>
-    </View>
+    </RNGestureHandlerButton>
   </View>,
   <View
     style={
@@ -3512,113 +3607,135 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
     >
       Share with...
     </Text>
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={36}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderRadius": 4,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
       <View
+        collapsable={false}
         style={
-          [
-            {
-              "alignItems": "center",
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "minHeight": 48,
-              "paddingBottom": 0,
-              "paddingHorizontal": 8,
-            },
-            {
-              "borderRadius": 4,
-            },
-            {
-              "borderColor": "#9EA2A8",
-            },
-            undefined,
-          ]
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
         }
+      />
+      <View
+        style={{}}
       >
-        <Text
+        <View
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "paddingLeft": 6,
-                "textAlign": "left",
+                "alignItems": "center",
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "minHeight": 48,
+                "paddingBottom": 0,
+                "paddingHorizontal": 8,
               },
               {
-                "color": "#6C727A",
+                "borderRadius": 4,
               },
+              {
+                "borderColor": "#9EA2A8",
+              },
+              undefined,
             ]
           }
         >
-          Search
-        </Text>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#6C727A",
-                "fontSize": 22,
-              },
+          <Text
+            style={
               [
                 {
-                  "lineHeight": 22,
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "paddingLeft": 6,
+                  "textAlign": "left",
                 },
                 {
-                  "position": "absolute",
-                  "right": 16,
+                  "color": "#6C727A",
                 },
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
+              ]
+            }
+          >
+            Search
+          </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 22,
+                },
+                [
+                  {
+                    "lineHeight": 22,
+                  },
+                  {
+                    "position": "absolute",
+                    "right": 16,
+                  },
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
     <Text
       style={
         [
@@ -3664,196 +3781,241 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
     >
       Share with...
     </Text>
-    <View
-      accessibilityState={
-        {
-          "busy": undefined,
-          "checked": undefined,
-          "disabled": undefined,
-          "expanded": undefined,
-          "selected": undefined,
-        }
-      }
-      accessibilityValue={
-        {
-          "max": undefined,
-          "min": undefined,
-          "now": undefined,
-          "text": undefined,
-        }
-      }
-      accessible={true}
+    <RNGestureHandlerButton
+      activeOpacity={1}
       collapsable={false}
-      focusable={true}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      delayLongPress={600}
+      enabled={true}
+      handlerTag={37}
+      handlerType="NativeViewGestureHandler"
+      innerRef={null}
+      onActiveStateChange={[Function]}
+      onGestureHandlerEvent={[Function]}
+      onGestureHandlerStateChange={[Function]}
+      onPress={[Function]}
+      rippleColor="#E4E7EA"
       style={
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderRadius": 4,
-          "opacity": 1,
-        }
+        [
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 4,
+            "margin": undefined,
+            "marginBottom": undefined,
+            "marginEnd": undefined,
+            "marginHorizontal": undefined,
+            "marginLeft": undefined,
+            "marginRight": undefined,
+            "marginStart": undefined,
+            "marginTop": undefined,
+            "marginVertical": undefined,
+          },
+          {
+            "cursor": undefined,
+          },
+        ]
       }
+      underlayColor="#E4E7EA"
     >
       <View
+        collapsable={false}
         style={
-          [
-            {
-              "alignItems": "center",
-              "borderWidth": 1,
-              "flexDirection": "row",
-              "minHeight": 48,
-              "paddingBottom": 0,
-              "paddingHorizontal": 8,
-            },
-            {
-              "borderRadius": 4,
-            },
-            {
-              "borderColor": "#9EA2A8",
-            },
-            undefined,
-          ]
+          {
+            "backgroundColor": "#E4E7EA",
+            "borderBottomLeftRadius": undefined,
+            "borderBottomRightRadius": undefined,
+            "borderRadius": 4,
+            "borderTopLeftRadius": undefined,
+            "borderTopRightRadius": undefined,
+            "bottom": 0,
+            "left": 0,
+            "opacity": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
         }
+      />
+      <View
+        style={{}}
       >
         <View
           style={
-            {
-              "flexDirection": "row",
-              "flexWrap": "wrap",
-              "marginRight": 50,
-              "paddingTop": 8,
-            }
-          }
-        >
-          <View
-            accessibilityState={
-              {
-                "busy": undefined,
-                "checked": undefined,
-                "disabled": undefined,
-                "expanded": undefined,
-                "selected": undefined,
-              }
-            }
-            accessibilityValue={
-              {
-                "max": undefined,
-                "min": undefined,
-                "now": undefined,
-                "text": undefined,
-              }
-            }
-            accessible={true}
-            collapsable={false}
-            focusable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
-            style={
-              {
-                "alignItems": "center",
-                "backgroundColor": "#F2F3F5",
-                "borderRadius": 2,
-                "flexDirection": "row",
-                "height": 28,
-                "marginBottom": 8,
-                "marginRight": 8,
-                "opacity": 1,
-                "paddingHorizontal": 4,
-              }
-            }
-            testID="multi-select-chip-1"
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "500",
-                    "paddingHorizontal": 8,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                  },
-                ]
-              }
-            >
-              John
-            </Text>
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#6C727A",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </View>
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
             [
               {
-                "color": "#6C727A",
-                "fontSize": 22,
+                "alignItems": "center",
+                "borderWidth": 1,
+                "flexDirection": "row",
+                "minHeight": 48,
+                "paddingBottom": 0,
+                "paddingHorizontal": 8,
               },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                {
-                  "position": "absolute",
-                  "right": 16,
-                },
-              ],
               {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
+                "borderRadius": 4,
               },
-              {},
+              {
+                "borderColor": "#9EA2A8",
+              },
+              undefined,
             ]
           }
         >
-          
-        </Text>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "flexWrap": "wrap",
+                "marginRight": 50,
+                "paddingTop": 8,
+              }
+            }
+          >
+            <RNGestureHandlerButton
+              activeOpacity={1}
+              collapsable={false}
+              delayLongPress={600}
+              enabled={true}
+              handlerTag={38}
+              handlerType="NativeViewGestureHandler"
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
+              onPress={[Function]}
+              rippleColor="#E4E7EA"
+              style={
+                [
+                  {
+                    "backgroundColor": "#F2F3F5",
+                    "borderRadius": 2,
+                    "margin": undefined,
+                    "marginBottom": 8,
+                    "marginEnd": undefined,
+                    "marginHorizontal": undefined,
+                    "marginLeft": undefined,
+                    "marginRight": 8,
+                    "marginStart": undefined,
+                    "marginTop": undefined,
+                    "marginVertical": undefined,
+                  },
+                  {
+                    "cursor": undefined,
+                  },
+                ]
+              }
+              testID="multi-select-chip-1"
+              underlayColor="#E4E7EA"
+            >
+              <View
+                collapsable={false}
+                style={
+                  {
+                    "backgroundColor": "#E4E7EA",
+                    "borderBottomLeftRadius": undefined,
+                    "borderBottomRightRadius": undefined,
+                    "borderRadius": 2,
+                    "borderTopLeftRadius": undefined,
+                    "borderTopRightRadius": undefined,
+                    "bottom": 0,
+                    "left": 0,
+                    "opacity": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              />
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "height": 28,
+                    "paddingHorizontal": 4,
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "500",
+                        "paddingHorizontal": 8,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
+                  }
+                >
+                  John
+                </Text>
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 16,
+                      },
+                      [
+                        {
+                          "lineHeight": 16,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
+          </View>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 22,
+                },
+                [
+                  {
+                    "lineHeight": 22,
+                  },
+                  {
+                    "position": "absolute",
+                    "right": 16,
+                  },
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
-    </View>
+    </RNGestureHandlerButton>
     <Text
       style={
         [

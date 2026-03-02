@@ -74,7 +74,6 @@ const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVi
 	'use memo';
 
 	const { user } = useContext(MessageContext);
-	const { colors } = useTheme();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const _onPress = async () => {
@@ -103,7 +102,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, author, msg }: IMessageVi
 	return (
 		<View style={{ gap: 4 }}>
 			{msg ? <Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} /> : null}
-			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
+			<Touchable onPress={_onPress} style={messageStyles.image}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
 			</Touchable>
 		</View>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
 import { type IUser } from '../../../../definitions';
 import { type VideoConferenceType } from '../../../../definitions/IVideoConference';
@@ -10,6 +9,7 @@ import { useVideoConf } from '../../../../lib/hooks/useVideoConf';
 import { CallParticipants, type TCallUsers } from './CallParticipants';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
+import Touch from '../../../Touch';
 
 export default function VideoConferenceEnded({
 	users,
@@ -32,11 +32,11 @@ export default function VideoConferenceEnded({
 		<VideoConferenceBaseContainer variant='ended'>
 			{type === 'direct' ? (
 				<>
-					<Touchable style={style.callToActionCallBack} onPress={showInitCallActionSheet}>
+					<Touch style={style.callToActionCallBack} onPress={showInitCallActionSheet}>
 						<Text style={style.callToActionCallBackText}>
 							{createdBy.username === username ? i18n.t('Call_again') : i18n.t('Call_back')}
 						</Text>
-					</Touchable>
+					</Touch>
 					<Text style={style.callBack}>{i18n.t('Call_was_not_answered')}</Text>
 				</>
 			) : (

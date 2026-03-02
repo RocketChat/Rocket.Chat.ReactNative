@@ -10,7 +10,6 @@ import {
 	type ViewStyle
 } from 'react-native';
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
-import Touchable from 'react-native-platform-touchable';
 import { A11y } from 'react-native-a11y-order';
 
 import i18n from '../../i18n';
@@ -20,6 +19,7 @@ import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
+import Touch from '../Touch';
 
 const styles = StyleSheet.create({
 	error: {
@@ -72,6 +72,10 @@ const styles = StyleSheet.create({
 	},
 	iconRight: {
 		right: 12
+	},
+	clearInputIcon: {
+		width: 20,
+		height: 20
 	}
 });
 
@@ -194,9 +198,15 @@ export const FormTextInput = ({
 						) : null}
 
 						{showClearInput ? (
-							<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
+							<Touch
+								testID='clear-text-input'
+								onPress={() => onClearInput?.()}
+								accessible
+								accessibilityLabel={i18n.t('Clear_input')}
+								rectButtonStyle={[styles.iconContainer, styles.iconRight]}
+								style={styles.clearInputIcon}>
 								<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
-							</Touchable>
+							</Touch>
 						) : null}
 
 						{iconRight && !showClearInput ? (
@@ -212,7 +222,7 @@ export const FormTextInput = ({
 
 						{secureTextEntry ? (
 							<A11y.Index index={2} style={[styles.iconContainer, styles.iconRight]}>
-								<Touchable
+								<Touch
 									accessible
 									accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
 									onPress={() => setShowPassword(!showPassword)}>
@@ -222,7 +232,7 @@ export const FormTextInput = ({
 										size={20}
 										color={colors.fontDefault}
 									/>
-								</Touchable>
+								</Touch>
 							</A11y.Index>
 						) : null}
 

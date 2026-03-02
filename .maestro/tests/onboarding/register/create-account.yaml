@@ -28,7 +28,7 @@ tags:
 - tapOn:
     id: register-view-confirm-password
 - inputText: ${output.user.password}
-- hideKeyboard
+- runFlow: '../../../helpers/hide-keyboard.yaml'
 - scrollUntilVisible:
     element:
       id: register-view-submit

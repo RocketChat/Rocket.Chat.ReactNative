@@ -31,7 +31,6 @@ const Discussion = React.memo(
 				<View style={[styles.buttonContainer, { gap: 8 }]}>
 					<Touchable
 						onPress={onDiscussionPress}
-						background={Touchable.Ripple(colors.surfaceNeutral)}
 						style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
 						hitSlop={BUTTON_HIT_SLOP}>
 						<View style={styles.buttonInnerContainer}>

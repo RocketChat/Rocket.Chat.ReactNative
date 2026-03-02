@@ -2,6 +2,7 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { InteractionManager, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
@@ -78,7 +79,7 @@ const JoinCode = React.memo(
 
 		return (
 			<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
-				<View style={styles.container} testID='join-code'>
+				<GestureHandlerRootView style={styles.container} testID='join-code'>
 					<View
 						style={[
 							styles.content,
@@ -122,7 +123,7 @@ const JoinCode = React.memo(
 							/>
 						</View>
 					</View>
-				</View>
+				</GestureHandlerRootView>
 			</Modal>
 		);
 	})
