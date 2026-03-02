@@ -849,5 +849,18 @@
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
   "Your_Password_Must_Have": "Ваш пароль должен иметь:",
-  "Your_workspace": "Ваш сервер"
+  "Your_workspace": "Ваш сервер",
+  "Timestamp_Picker": "Дата и время",
+  "Timestamp_Picker_Date": "Дата",
+  "Timestamp_Picker_Time": "Время",
+  "Timestamp_Picker_Format": "Формат",
+  "Timestamp_Picker_Preview": "Предпросмотр",
+  "Timestamp_Picker_Add": "Добавить в сообщение",
+  "Timestamp_Picker_Timezone": "Часовой пояс",
+  "Timestamp_Short_Time": "Краткое время (13:30)",
+  "Timestamp_Long_Time": "Полное время (13:30:00)",
+  "Timestamp_Short_Date": "Краткая дата (11.07.2025)",
+  "Timestamp_Long_Date": "Полная дата (11 июля 2025)",
+  "Timestamp_Full": "Полное (пятница, 11 июля 2025, 13:30)",
+  "Timestamp_Relative": "Относительное (3 часа назад)"
 }

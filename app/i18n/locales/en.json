@@ -1023,5 +1023,18 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_Password_Must_Have": "Your password must have:",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
+  "Timestamp_Picker": "Date & Time",
+  "Timestamp_Picker_Date": "Date",
+  "Timestamp_Picker_Time": "Time",
+  "Timestamp_Picker_Format": "Format",
+  "Timestamp_Picker_Preview": "Preview",
+  "Timestamp_Picker_Add": "Add to message",
+  "Timestamp_Picker_Timezone": "Timezone",
+  "Timestamp_Short_Time": "Short Time (1:30 PM)",
+  "Timestamp_Long_Time": "Long Time (1:30:00 PM)",
+  "Timestamp_Short_Date": "Short Date (11/07/2025)",
+  "Timestamp_Long_Date": "Long Date (July 11, 2025)",
+  "Timestamp_Full": "Full (Friday, July 11, 2025 1:30 PM)",
+  "Timestamp_Relative": "Relative (3 hours ago)"
 }

@@ -576,5 +576,18 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
+  "Timestamp_Picker": "日付と時刻",
+  "Timestamp_Picker_Date": "日付",
+  "Timestamp_Picker_Time": "時刻",
+  "Timestamp_Picker_Format": "形式",
+  "Timestamp_Picker_Preview": "プレビュー",
+  "Timestamp_Picker_Add": "メッセージに追加",
+  "Timestamp_Picker_Timezone": "タイムゾーン",
+  "Timestamp_Short_Time": "短い時刻 (午後1:30)",
+  "Timestamp_Long_Time": "長い時刻 (午後1:30:00)",
+  "Timestamp_Short_Date": "短い日付 (2025/7/11)",
+  "Timestamp_Long_Date": "長い日付 (2025年7月11日)",
+  "Timestamp_Full": "完全 (2025年7月11日金曜日 午後1:30)",
+  "Timestamp_Relative": "相対 (3時間前)"
 }
