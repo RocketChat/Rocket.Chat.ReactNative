@@ -40,7 +40,7 @@ interface IMessageContainerProps {
 	highlighted?: boolean;
 	getCustomEmoji: TGetCustomEmoji;
 	onLongPress?: (item: TAnyMessageModel) => void;
-	onReactionPress?: (emoji: string, id: string) => Promise<boolean> | void;
+	onReactionPress?: (emoji: string, id: string) => Promise<boolean>;
 	onEncryptedPress?: () => void;
 	onDiscussionPress?: (item: TAnyMessageModel) => void;
 	onThreadPress?: (item: TAnyMessageModel) => void;
