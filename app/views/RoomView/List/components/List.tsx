@@ -30,7 +30,7 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			}
 		}
 	});
-
+	// rollback test
 	return (
 		<View style={styles.list}>
 			{/* @ts-ignore */}
