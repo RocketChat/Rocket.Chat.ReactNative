@@ -5,6 +5,8 @@ import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { mediaSessionInstance } from '../../../lib/services/voip/MediaSessionInstance';
 import type { TSubscriptionModel } from '../../../definitions';
 import { useMediaCallPermission } from '../../../lib/hooks/useMediaCallPermission';
+import NewMediaCall from '../../../containers/NewMediaCall';
+import { showActionSheetRef } from '../../../containers/ActionSheet';
 
 export const HeaderCallButton = ({
 	rid,
@@ -24,8 +26,12 @@ export const HeaderCallButton = ({
 
 	if (hasMediaCallPermission) {
 		const handlePress = () => {
-			if (!room) return;
-			mediaSessionInstance.startCallByRoom(room);
+			// if (!room) return;
+			// mediaSessionInstance.startCallByRoom(room);
+			showActionSheetRef({
+				children: <NewMediaCall />,
+				snaps: [480]
+			});
 		};
 
 		return (
