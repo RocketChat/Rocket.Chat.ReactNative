@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { BorderlessButton } from 'react-native-gesture-handler'
 
 import { Bold, Italic, Strike } from './index';
 import I18n from '../../../../i18n';
@@ -37,25 +38,29 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].fontInfo }]}>
-			{(block => {
-				const blockArray = Array.isArray(block) ? block : [block];
-				return blockArray.map(blockInArray => {
-					switch (blockInArray.type) {
-						case 'PLAIN_TEXT':
-							return blockInArray.value;
-						case 'STRIKE':
-							return <Strike value={blockInArray.value} />;
-						case 'ITALIC':
-							return <Italic value={blockInArray.value} />;
-						case 'BOLD':
-							return <Bold value={blockInArray.value} />;
-						default:
-							return null;
-					}
-				});
-			})(label)}
-		</Text>
+		<BorderlessButton onPress={handlePress} onLongPress={onLongPress} >
+			<View style={{ transform: [{ translateY: 4 }] }}>
+				<Text style={[styles.link, { color: themes[theme].fontInfo }]}>
+					{(block => {
+						const blockArray = Array.isArray(block) ? block : [block];
+						return blockArray.map(blockInArray => {
+							switch (blockInArray.type) {
+								case 'PLAIN_TEXT':
+									return blockInArray.value;
+								case 'STRIKE':
+									return <Strike value={blockInArray.value} />;
+								case 'ITALIC':
+									return <Italic value={blockInArray.value} />;
+								case 'BOLD':
+									return <Bold value={blockInArray.value} />;
+								default:
+									return null;
+							}
+						});
+					})(label)}
+				</Text>
+			</View>
+		</BorderlessButton>
 	);
 };
 
