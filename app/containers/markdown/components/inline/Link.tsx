@@ -38,7 +38,7 @@ const Link = ({ value }: ILinkProps) => {
 	const onLongPress = () => {
 		if (process.env.RUNNING_E2E_TESTS === 'true') {
 			Alert.alert('Link Long Pressed', src.value);
-			return;
+			return; 
 		}
 		Clipboard.setString(src.value);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
