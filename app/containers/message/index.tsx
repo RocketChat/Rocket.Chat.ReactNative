@@ -240,21 +240,26 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 				if (alreadyReacted) {
 					// remove
-					const newUsers = updated[index].usernames.filter(u => u !== username);
+					const currentReaction = updated[index];
+					const newUsers = currentReaction.usernames.filter(u => u !== username);
+					const newNames = currentReaction.names.filter((_, i) => currentReaction.usernames[i] !== username);
 
 					if (newUsers.length === 0) {
 						updated.splice(index, 1);
 					} else {
 						updated[index] = {
-							...updated[index],
-							usernames: newUsers
+							...currentReaction,
+							usernames: newUsers,
+							names: newNames
 						};
 					}
 				} else {
 					// add
+					const currentReaction = updated[index];
 					updated[index] = {
-						...updated[index],
-						usernames: [...updated[index].usernames, username]
+						...currentReaction,
+						usernames: [...currentReaction.usernames, username],
+						names: [...currentReaction.names, username]
 					};
 				}
 			} else {
@@ -271,7 +276,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 		// still call server
 
-		const success = await onReactionPress?.(emoji, item.id);
+		const success = await onReactionPress(emoji, item.id);
 		if (!success) {
 			Alert.alert(i18n.t('Error'), i18n.t('Reaction_Failed'));
 			// rollback on failure
