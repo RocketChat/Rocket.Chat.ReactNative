@@ -2,6 +2,7 @@ import {
 	MediaCallWebRTCProcessor,
 	type ClientMediaSignal,
 	type IClientMediaCall,
+	type CallActorType,
 	type MediaSignalingSession,
 	type WebRTCProcessorConfig
 } from '@rocket.chat/media-signaling';
@@ -17,6 +18,8 @@ import { parseStringToIceServers } from './parseStringToIceServers';
 import CallIdUUIDModule from '../../native/NativeCallIdUUID';
 import type { IceServer } from '../../../definitions/Voip';
 import type { IDDPMessage } from '../../../definitions/IDDPMessage';
+import type { ISubscription, TSubscriptionModel } from '../../../definitions';
+import { getUidDirectMessage } from '../../methods/helpers/helpers';
 
 class MediaSessionInstance {
 	private iceServers: IceServer[] = [];
@@ -75,8 +78,10 @@ class MediaSessionInstance {
 				const callUUID = CallIdUUIDModule.toUUID(call.callId);
 				console.log('[VoIP] New call UUID:', callUUID);
 
-				// const displayName = call.contact.displayName || call.contact.username || 'Unknown';
-				// RNCallKeep.displayIncomingCall(callUUID, displayName, displayName, 'generic', false);
+				if (call.role === 'caller') {
+					useCallStore.getState().setCall(call, callUUID);
+					Navigation.navigate('CallView', { callUUID });
+				}
 
 				call.emitter.on('ended', () => {
 					RNCallKeep.endCall(callUUID);
@@ -101,6 +106,18 @@ class MediaSessionInstance {
 			RNCallKeep.endCall(callUUID);
 			alert('Call not found'); // TODO: Show error message?
 		}
+	};
+
+	public startCallByRoom = (room: TSubscriptionModel | ISubscription) => {
+		const otherUserId = getUidDirectMessage(room);
+		if (otherUserId) {
+			this.startCall(otherUserId, 'user');
+		}
+	};
+
+	public startCall = (userId: string, actor: CallActorType) => {
+		console.log('[VoIP] Starting call:', userId);
+		this.instance?.startCall(actor, userId);
 	};
 
 	public endCall = (callUUID: string) => {

@@ -32,7 +32,7 @@ const Title = () => {
 
 	return (
 		<View style={styles.headerTitleContainer} testID='call-view-header-title'>
-			<Status id={contact.id || ''} size={12} />
+			<Status id={contact.id || ''} size={16} />
 			<Text style={[styles.headerTitleText, { color: colors.fontDefault }]} numberOfLines={1}>
 				{caller}
 				{isConnected && callStartTime ? <Timer /> : null}

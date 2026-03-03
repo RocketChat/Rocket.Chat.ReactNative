@@ -173,14 +173,10 @@ export const useCallStore = create<CallStore>((set, get) => ({
 	},
 
 	endCall: () => {
-		const { call, callState, callUUID } = get();
+		const { call, callUUID } = get();
 
 		if (call) {
-			if (callState === 'ringing') {
-				call.reject();
-			} else {
-				call.hangup();
-			}
+			call.hangup();
 		}
 
 		if (callUUID) {

@@ -181,17 +181,17 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
               [
                 {
                   "color": "#6C727A",
-                  "fontSize": 12,
+                  "fontSize": 16,
                 },
                 [
                   {
-                    "lineHeight": 12,
+                    "lineHeight": 16,
                   },
                   [
                     {
-                      "height": 12,
+                      "height": 16,
                       "textAlignVertical": "center",
-                      "width": 12,
+                      "width": 16,
                     },
                     undefined,
                   ],
@@ -228,7 +228,7 @@ exports[`Story Snapshots: ActiveCall should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16254:59:32
+              16448:41:15
             </Text>
           </Text>
         </View>
@@ -527,17 +527,17 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
               [
                 {
                   "color": "#6C727A",
-                  "fontSize": 12,
+                  "fontSize": 16,
                 },
                 [
                   {
-                    "lineHeight": 12,
+                    "lineHeight": 16,
                   },
                   [
                     {
-                      "height": 12,
+                      "height": 16,
                       "textAlignVertical": "center",
-                      "width": 12,
+                      "width": 16,
                     },
                     undefined,
                   ],
@@ -574,7 +574,7 @@ exports[`Story Snapshots: Collapsed should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16254:59:32
+              16448:41:15
             </Text>
           </Text>
         </View>
@@ -873,17 +873,17 @@ exports[`Story Snapshots: ConnectingCall should match snapshot 1`] = `
               [
                 {
                   "color": "#6C727A",
-                  "fontSize": 12,
+                  "fontSize": 16,
                 },
                 [
                   {
-                    "lineHeight": 12,
+                    "lineHeight": 16,
                   },
                   [
                     {
-                      "height": 12,
+                      "height": 16,
                       "textAlignVertical": "center",
-                      "width": 12,
+                      "width": 16,
                     },
                     undefined,
                   ],
@@ -1215,17 +1215,17 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
               [
                 {
                   "color": "#6C727A",
-                  "fontSize": 12,
+                  "fontSize": 16,
                 },
                 [
                   {
-                    "lineHeight": 12,
+                    "lineHeight": 16,
                   },
                   [
                     {
-                      "height": 12,
+                      "height": 16,
                       "textAlignVertical": "center",
-                      "width": 12,
+                      "width": 16,
                     },
                     undefined,
                   ],
@@ -1262,7 +1262,7 @@ exports[`Story Snapshots: Focused should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16254:59:32
+              16448:41:15
             </Text>
           </Text>
         </View>
@@ -1581,17 +1581,17 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
               [
                 {
                   "color": "#6C727A",
-                  "fontSize": 12,
+                  "fontSize": 16,
                 },
                 [
                   {
-                    "lineHeight": 12,
+                    "lineHeight": 16,
                   },
                   [
                     {
-                      "height": 12,
+                      "height": 16,
                       "textAlignVertical": "center",
-                      "width": 12,
+                      "width": 16,
                     },
                     undefined,
                   ],
@@ -1628,7 +1628,7 @@ exports[`Story Snapshots: WithRemoteHeld should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16254:59:32
+              16448:41:15
             </Text>
           </Text>
         </View>
@@ -1927,17 +1927,17 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
               [
                 {
                   "color": "#6C727A",
-                  "fontSize": 12,
+                  "fontSize": 16,
                 },
                 [
                   {
-                    "lineHeight": 12,
+                    "lineHeight": 16,
                   },
                   [
                     {
-                      "height": 12,
+                      "height": 16,
                       "textAlignVertical": "center",
-                      "width": 12,
+                      "width": 16,
                     },
                     undefined,
                   ],
@@ -1974,7 +1974,7 @@ exports[`Story Snapshots: WithRemoteMuted should match snapshot 1`] = `
             Bob Burnquist
             <Text>
                - 
-              16254:59:32
+              16448:41:15
             </Text>
           </Text>
         </View>
