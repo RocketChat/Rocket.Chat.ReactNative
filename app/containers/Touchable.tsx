@@ -33,22 +33,20 @@ const Touchable = React.forwardRef<
 	React.ElementRef<typeof TouchableOpacity> | React.ElementRef<typeof TouchableNativeFeedback>,
 	ITouchProps
 >(
-	(
-		{
-			children,
-			onPress,
-			android_rippleColor,
-			accessible,
-			accessibilityLabel,
-			accessibilityHint,
-			accessibilityActions,
-			onAccessibilityAction,
-			style,
-			rectButtonStyle,
-			enabled,
-			...props
-		}
-	) => {
+	({
+		children,
+		onPress,
+		android_rippleColor,
+		accessible,
+		accessibilityLabel,
+		accessibilityHint,
+		accessibilityActions,
+		onAccessibilityAction,
+		style,
+		rectButtonStyle,
+		enabled,
+		...props
+	}) => {
 		const { colors } = useTheme();
 		// The background color must be applied to the RectButton, not the View.
 		// If set on the View, the touch opacity animation won't work properly.
