@@ -34,13 +34,7 @@ describe('NewMessageView Item', () => {
 	it('should render correctly', () => {
 		const { getByTestId } = render(
 			<Wrapper>
-				<Item
-					userId='user123'
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		expect(getByTestId('new-message-view-item-john.doe')).toBeTruthy();
@@ -49,13 +43,7 @@ describe('NewMessageView Item', () => {
 	it('should display the name', () => {
 		const { getByText } = render(
 			<Wrapper>
-				<Item
-					userId='user123'
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		expect(getByText('John Doe')).toBeTruthy();
@@ -100,13 +88,7 @@ describe('NewMessageView Item', () => {
 		mockUseMediaCallPermission.mockReturnValue(true);
 		const { getByTestId } = render(
 			<Wrapper>
-				<Item
-					userId='user123'
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('new-message-view-item-john.doe-call'));
@@ -118,13 +100,7 @@ describe('NewMessageView Item', () => {
 		mockUseMediaCallPermission.mockReturnValue(false);
 		const { queryByTestId } = render(
 			<Wrapper>
-				<Item
-					userId='user123'
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		expect(queryByTestId('new-message-view-item-john.doe-call')).toBeNull();
@@ -134,13 +110,7 @@ describe('NewMessageView Item', () => {
 		mockUseMediaCallPermission.mockReturnValue(true);
 		const { getByTestId } = render(
 			<Wrapper>
-				<Item
-					userId={''}
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item userId={''} name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('new-message-view-item-john.doe-call'));
@@ -150,13 +120,7 @@ describe('NewMessageView Item', () => {
 	it('should have correct accessibility label', () => {
 		const { getByLabelText } = render(
 			<Wrapper>
-				<Item
-					userId='user123'
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		expect(getByLabelText('John Doe')).toBeTruthy();
@@ -166,13 +130,7 @@ describe('NewMessageView Item', () => {
 		mockUseMediaCallPermission.mockReturnValue(false);
 		const { toJSON } = render(
 			<Wrapper>
-				<Item
-					userId='user123'
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		expect(toJSON()).toMatchSnapshot();
