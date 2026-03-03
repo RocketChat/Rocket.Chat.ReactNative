@@ -26,7 +26,7 @@ import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import Quote from './Components/Attachments/Quote';
 import translationLanguages from '../../lib/constants/translationLanguages';
-import Touch from '../Touch';
+import Touchable from '../Touchable';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -237,7 +237,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	return (
 		<A11y.Order>
 			<A11y.Index index={1}>
-				<Touch
+				<Touchable
 					onLongPress={onLongPress}
 					onPress={onPress}
 					enabled={
@@ -245,7 +245,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 					}
 					style={{ backgroundColor }}>
 					<Message {...props} />
-				</Touch>
+				</Touchable>
 			</A11y.Index>
 		</A11y.Order>
 	);

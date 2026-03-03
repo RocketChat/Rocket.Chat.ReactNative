@@ -1342,26 +1342,61 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
           }
         }
       >
-        <Text
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={1}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
           onLongPress={[Function]}
           onPress={[Function]}
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
+                "opacity": 1,
               },
               {
-                "color": "#095AD2",
+                "cursor": undefined,
               },
             ]
           }
         >
-          Markdown link
-        </Text>
+          <View
+            style={
+              {
+                "transform": [
+                  {
+                    "translateY": 4,
+                  },
+                ],
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              Markdown link
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
         <Text
           accessibilityLabel=": "
           style={
@@ -1444,26 +1479,61 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
           }
         }
       >
-        <Text
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={2}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
           onLongPress={[Function]}
           onPress={[Function]}
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
+                "opacity": 1,
               },
               {
-                "color": "#095AD2",
+                "cursor": undefined,
               },
             ]
           }
         >
-          Formatted Link
-        </Text>
+          <View
+            style={
+              {
+                "transform": [
+                  {
+                    "translateY": 4,
+                  },
+                ],
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              Formatted Link
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
         <Text
           accessibilityLabel=": "
           style={
@@ -1546,26 +1616,61 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
           }
         }
       >
-        <Text
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={3}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
           onLongPress={[Function]}
           onPress={[Function]}
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
+                "opacity": 1,
               },
               {
-                "color": "#095AD2",
+                "cursor": undefined,
               },
             ]
           }
         >
-          Markdown link
-        </Text>
+          <View
+            style={
+              {
+                "transform": [
+                  {
+                    "translateY": 4,
+                  },
+                ],
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              Markdown link
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
         <Text
           accessibilityLabel=" and the text with default style"
           style={
@@ -1621,26 +1726,61 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
           }
         }
       >
-        <Text
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={4}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
           onLongPress={[Function]}
           onPress={[Function]}
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
+                "opacity": 1,
               },
               {
-                "color": "#095AD2",
+                "cursor": undefined,
               },
             ]
           }
         >
-          Markdown link
-        </Text>
+          <View
+            style={
+              {
+                "transform": [
+                  {
+                    "translateY": 4,
+                  },
+                ],
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              Markdown link
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
         <Text
           accessibilityLabel=" and the text continues on the next line"
           style={
@@ -1808,26 +1948,61 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              handlerTag={5}
+              handlerType="NativeViewGestureHandler"
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
               onLongPress={[Function]}
               onPress={[Function]}
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
+                    "opacity": 1,
                   },
                   {
-                    "color": "#095AD2",
+                    "cursor": undefined,
                   },
                 ]
               }
             >
-              Rocket.Chat
-            </Text>
+              <View
+                style={
+                  {
+                    "transform": [
+                      {
+                        "translateY": 4,
+                      },
+                    ],
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#095AD2",
+                      },
+                    ]
+                  }
+                >
+                  Rocket.Chat
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
           </Text>
         </Text>
       </View>
@@ -2089,26 +2264,61 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               }
             }
           >
-            <Text
+            <RNGestureHandlerButton
+              activeOpacity={0.3}
+              borderless={true}
+              collapsable={false}
+              delayLongPress={600}
+              handlerTag={6}
+              handlerType="NativeViewGestureHandler"
+              innerRef={null}
+              onActiveStateChange={[Function]}
+              onGestureHandlerEvent={[Function]}
+              onGestureHandlerStateChange={[Function]}
               onLongPress={[Function]}
               onPress={[Function]}
               style={
                 [
                   {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
+                    "opacity": 1,
                   },
                   {
-                    "color": "#095AD2",
+                    "cursor": undefined,
                   },
                 ]
               }
             >
-              Rocket.Chat
-            </Text>
+              <View
+                style={
+                  {
+                    "transform": [
+                      {
+                        "translateY": 4,
+                      },
+                    ],
+                  }
+                }
+              >
+                <Text
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#095AD2",
+                      },
+                    ]
+                  }
+                >
+                  Rocket.Chat
+                </Text>
+              </View>
+            </RNGestureHandlerButton>
           </Text>
         </Text>
       </View>
@@ -3544,26 +3754,61 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         >
           This is 
         </Text>
-        <Text
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={7}
+          handlerType="NativeViewGestureHandler"
+          innerRef={null}
+          onActiveStateChange={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
           onLongPress={[Function]}
           onPress={[Function]}
           style={
             [
               {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
+                "opacity": 1,
               },
               {
-                "color": "#095AD2",
+                "cursor": undefined,
               },
             ]
           }
         >
-          Rocket.Chat
-        </Text>
+          <View
+            style={
+              {
+                "transform": [
+                  {
+                    "translateY": 4,
+                  },
+                ],
+              }
+            }
+          >
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#095AD2",
+                  },
+                ]
+              }
+            >
+              Rocket.Chat
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
       </Text>
     </Text>
   </View>
