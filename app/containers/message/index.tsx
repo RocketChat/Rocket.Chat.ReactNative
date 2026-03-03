@@ -274,12 +274,18 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			return { proxyReactions: updated };
 		});
 
-		// still call server
-
+		// update on server
 		const success = await onReactionPress(emoji, item.id);
+
+		// if fails use server's state as source of truth
 		if (!success) {
 			Alert.alert(i18n.t('Error'), i18n.t('Reaction_Failed'));
 			// rollback on failure
+			this.setState({ proxyReactions: undefined });
+			return;
+		}
+
+		if (!this.subscription) {
 			this.setState({ proxyReactions: undefined });
 		}
 	};
