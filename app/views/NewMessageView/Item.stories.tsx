@@ -2,6 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import Item from './Item';
+import { mockedStore } from '../../reducers/mockedStore';
+import { setUser } from '../../actions/login';
+import { setPermissions } from '../../actions/permissions';
+import { setEnterpriseModules } from '../../actions/enterpriseModules';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,9 +17,24 @@ const styles = StyleSheet.create({
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => <View style={styles.container}>{children}</View>;
 
+const withVoiceCallEnabled = (Story: React.ComponentType) => {
+	mockedStore.dispatch(setEnterpriseModules(['teams-voip']));
+	mockedStore.dispatch(setPermissions({ 'allow-internal-voice-calls': ['user'], 'allow-external-voice-calls': ['user'] }));
+	mockedStore.dispatch(setUser({ roles: ['user'] }));
+	return <Story />;
+};
+
+const withVoiceCallDisabled = (Story: React.ComponentType) => {
+	mockedStore.dispatch(setEnterpriseModules([]));
+	mockedStore.dispatch(setPermissions({ 'allow-internal-voice-calls': [], 'allow-external-voice-calls': [] }));
+	mockedStore.dispatch(setUser({ roles: ['user'] }));
+	return <Story />;
+};
+
 export default {
 	title: 'NewMessageView/Item',
-	component: Item
+	component: Item,
+	decorators: [withVoiceCallEnabled]
 };
 
 export const Default = () => (
@@ -25,20 +44,8 @@ export const Default = () => (
 			name='John Doe'
 			username='john.doe'
 			onPress={() => {}}
-			testID='new-message-view-item-john.doe'
-		/>
-	</Wrapper>
-);
-
-export const WithLongPress = () => (
-	<Wrapper>
-		<Item
-			userId='user123'
-			name='Jane Smith'
-			username='jane.smith'
-			onPress={() => {}}
 			onLongPress={() => {}}
-			testID='new-message-view-item-jane.smith'
+			testID='new-message-view-item-john.doe'
 		/>
 	</Wrapper>
 );
@@ -54,3 +61,12 @@ export const LongName = () => (
 		/>
 	</Wrapper>
 );
+
+export const NoVoiceCallPermission = {
+	render: () => (
+		<Wrapper>
+			<Item userId='user123' name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
+		</Wrapper>
+	),
+	decorators: [withVoiceCallDisabled]
+};

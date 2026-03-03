@@ -171,6 +171,7 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     onActiveStateChange={[Function]}
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
+    onLongPress={[Function]}
     onPress={[Function]}
     rippleColor="#D7DBE0"
     style={
@@ -467,7 +468,7 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
 </View>
 `;
 
-exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
+exports[`Story Snapshots: NoVoiceCallPermission should match snapshot 1`] = `
 <View
   style={
     {
@@ -478,7 +479,7 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
   }
 >
   <RNGestureHandlerButton
-    accessibilityLabel="Jane Smith"
+    accessibilityLabel="John Doe"
     accessibilityRole="button"
     activeOpacity={0.105}
     collapsable={false}
@@ -489,7 +490,6 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
     onActiveStateChange={[Function]}
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
-    onLongPress={[Function]}
     onPress={[Function]}
     rippleColor="#D7DBE0"
     style={
@@ -502,7 +502,7 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
         },
       ]
     }
-    testID="new-message-view-item-jane.smith"
+    testID="new-message-view-item-john.doe"
     underlayColor="#D7DBE0"
   >
     <View
@@ -537,7 +537,7 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
       }
     >
       <View
-        accessibilityLabel="jane.smith's avatar"
+        accessibilityLabel="john.doe's avatar"
         accessible={true}
         style={
           [
@@ -576,7 +576,7 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
             [
               {
                 "headers": undefined,
-                "uri": "https://open.rocket.chat/avatar/jane.smith?format=png&size=60",
+                "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
               },
             ]
           }
@@ -619,7 +619,7 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
             ]
           }
         >
-          Jane Smith
+          John Doe
         </Text>
       </View>
     </View>

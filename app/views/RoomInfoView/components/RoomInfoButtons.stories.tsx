@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { RoomInfoButtons, RoomInfoVideoConfOverrideContext } from './RoomInfoButtons';
+import { RoomInfoButtons } from './RoomInfoButtons';
 import type { ISubscription } from '../../../definitions';
 import { SubscriptionType } from '../../../definitions';
 import { clearEnterpriseModules, setEnterpriseModules } from '../../../actions/enterpriseModules';
 import { setPermissions } from '../../../actions/permissions';
 import { setUser } from '../../../actions/login';
 import { mockedStore } from '../../../reducers/mockedStore';
+import { addSettings } from '../../../actions/settings';
 
 const styles = StyleSheet.create({
 	container: {
@@ -52,33 +53,24 @@ const defaultHandlers = {
 	showActionSheet: () => {}
 };
 
-const withVoiceCallEnabled = (Story: React.ComponentType) => {
+const withVoiceAndVideoCallEnabled = (Story: React.ComponentType) => {
 	mockedStore.dispatch(setEnterpriseModules(['teams-voip']));
+	mockedStore.dispatch(addSettings({ VideoConf_Enable_DMs: true }));
 	mockedStore.dispatch(
 		setPermissions({
 			'allow-internal-voice-calls': ['user'],
-			'allow-external-voice-calls': ['user']
+			'allow-external-voice-calls': ['user'],
+			'call-management': ['user']
 		})
 	);
 	mockedStore.dispatch(setUser({ roles: ['user'] }));
 	return <Story />;
 };
 
-const withVideoCallEnabled = (Story: React.ComponentType) => (
-	<RoomInfoVideoConfOverrideContext.Provider
-		value={{
-			callEnabled: true,
-			disabledTooltip: false,
-			showInitCallActionSheet: async () => {}
-		}}>
-		<Story />
-	</RoomInfoVideoConfOverrideContext.Provider>
-);
-
 export default {
 	title: 'RoomInfoView/RoomInfoButtons',
 	component: RoomInfoButtons,
-	decorators: [withVoiceCallEnabled, withVideoCallEnabled]
+	decorators: [withVoiceAndVideoCallEnabled]
 };
 
 export const Default = () => (
@@ -90,7 +82,7 @@ export const Default = () => (
 			isDirect={true}
 			fromRid='room1'
 			roomFromRid={undefined}
-			serverVersion='7.0.0'
+			serverVersion='8.0.0'
 			itsMe={false}
 			{...defaultHandlers}
 		/>
@@ -122,22 +114,6 @@ export const WithRoomFromRid = () => (
 			isDirect={true}
 			fromRid='room1'
 			roomFromRid={createMockRoom()}
-			serverVersion='7.0.0'
-			itsMe={false}
-			{...defaultHandlers}
-		/>
-	</Wrapper>
-);
-
-export const WithIgnoredUser = () => (
-	<Wrapper>
-		<RoomInfoButtons
-			rid='room1'
-			room={createMockRoom({ ignored: ['user123'] })}
-			roomUserId='user123'
-			isDirect={true}
-			fromRid='room1'
-			roomFromRid={undefined}
 			serverVersion='7.0.0'
 			itsMe={false}
 			{...defaultHandlers}
