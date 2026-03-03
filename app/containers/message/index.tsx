@@ -241,8 +241,9 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 				if (alreadyReacted) {
 					// remove
 					const currentReaction = updated[index];
+					console.log(currentReaction)
 					const newUsers = currentReaction.usernames.filter(u => u !== username);
-					const newNames = currentReaction.names.filter((_, i) => currentReaction.usernames[i] !== username);
+					const newNames = currentReaction.usernames.filter((_, i) => currentReaction.usernames[i] !== username);
 
 					if (newUsers.length === 0) {
 						updated.splice(index, 1);
@@ -259,7 +260,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					updated[index] = {
 						...currentReaction,
 						usernames: [...currentReaction.usernames, username],
-						names: [...currentReaction.names, username]
+						names: [...currentReaction.usernames, username]
 					};
 				}
 			} else {
