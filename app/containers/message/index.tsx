@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert, Keyboard } from 'react-native';
+import { dequal } from 'dequal';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -120,11 +121,11 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		} = this.props;
 
 		// optimistic UI updates
-		if (nextState.proxyReactions !== proxyReactions) {
+		if (!dequal(nextState.proxyReactions, proxyReactions)) {
 			return true;
 		}
 
-		if (nextProps.item.reactions !== item.reactions) {
+		if (!dequal(nextProps.item.reactions, item.reactions)) {
 			return true;
 		}
 		if (nextProps.showUnreadSeparator !== showUnreadSeparator) {
@@ -221,74 +222,78 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		}
 	};
 
-	onReactionPress = async (emoji: string) => {
-		const { onReactionPress, item, user } = this.props;
-		const { username } = user;
+	// proxy reaction utility functions
+	private removeUserFromReaction = (reaction: IReaction, username: string): IReaction | null => {
+		const usernames = reaction.usernames.filter(u => u !== username);
+		const names = usernames;
 
-		if (!onReactionPress) {
-			return;
+		if (usernames.length === 0) return null; // remove entirely
+
+		return { ...reaction, usernames, names };
+	};
+
+	private addUserToReaction = (reaction: IReaction, username: string): IReaction => ({
+		...reaction,
+		usernames: [...reaction.usernames, username],
+		names: [...reaction.usernames, username]
+	});
+
+	private toggleReactionInList = (reactions: IReaction[], emoji: string, username: string): IReaction[] => {
+		let updated = [...reactions];
+		const index = updated.findIndex(r => r.emoji === emoji);
+
+		if (index === -1) {
+			// New reaction
+			updated.push({ _id: `${emoji}-${Date.now()}-${Math.random()}`, emoji, usernames: [username], names: [username] });
+			return updated;
 		}
 
-		this.setState(prev => {
-			const current = prev.proxyReactions ?? item.reactions ?? [];
+		const alreadyReacted = updated[index].usernames.includes(username);
 
-			const updated = [...current];
-			const index = updated.findIndex(r => r.emoji === emoji);
+		if (alreadyReacted) {
+			const next = this.removeUserFromReaction(updated[index], username);
 
-			if (index > -1) {
-				const alreadyReacted = updated[index].usernames.includes(username);
-
-				if (alreadyReacted) {
-					// remove
-					const currentReaction = updated[index];
-					console.log(currentReaction)
-					const newUsers = currentReaction.usernames.filter(u => u !== username);
-					const newNames = currentReaction.usernames.filter((_, i) => currentReaction.usernames[i] !== username);
-
-					if (newUsers.length === 0) {
-						updated.splice(index, 1);
-					} else {
-						updated[index] = {
-							...currentReaction,
-							usernames: newUsers,
-							names: newNames
-						};
-					}
-				} else {
-					// add
-					const currentReaction = updated[index];
-					updated[index] = {
-						...currentReaction,
-						usernames: [...currentReaction.usernames, username],
-						names: [...currentReaction.usernames, username]
-					};
-				}
-			} else {
-				updated.push({
-					_id: `${emoji}-${Date.now()}`,
-					emoji,
-					usernames: [username],
-					names: [username]
-				});
+			if (next === null) {
+				updated = updated.filter((_, i) => i !== index);
+				return updated;
 			}
 
-			return { proxyReactions: updated };
-		});
+			updated = updated.map((r, i) => (i === index ? next : r));
+			return updated;
+		}
 
-		// update on server
+		updated[index] = this.addUserToReaction(updated[index], username);
+		return updated;
+	};
+
+	private applyOptimisticReaction = (emoji: string, username: string) => {
+		this.setState(prev => {
+			const current = prev.proxyReactions ?? this.props.item.reactions ?? [];
+			return { proxyReactions: this.toggleReactionInList(current, emoji, username) };
+		});
+	};
+
+	private rollbackReaction = () => {
+		Alert.alert(i18n.t('Error'), i18n.t('Reaction_Failed'));
+		this.setState({ proxyReactions: undefined });
+	};
+
+	onReactionPress = async (emoji: string) => {
+		const {
+			onReactionPress,
+			item,
+			user: { username }
+		} = this.props;
+		if (!onReactionPress) return;
+
+		// proxy reactions first for instant update
+		this.applyOptimisticReaction(emoji, username);
+
+		// then update on server
 		const success = await onReactionPress(emoji, item.id);
 
-		// if fails use server's state as source of truth
-		if (!success) {
-			Alert.alert(i18n.t('Error'), i18n.t('Reaction_Failed'));
-			// rollback on failure
-			this.setState({ proxyReactions: undefined });
-			return;
-		}
-
-		if (!this.subscription) {
-			this.setState({ proxyReactions: undefined });
-		}
+		if (!success) return this.rollbackReaction();
+		if (!this.subscription) this.setState({ proxyReactions: undefined });
 	};
 
 	onReactionLongPress = () => {
