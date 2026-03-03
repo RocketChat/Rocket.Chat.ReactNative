@@ -19,6 +19,7 @@ import { search as searchMethod } from '../../lib/methods/search';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import Item from './Item';
 import HeaderNewMessage from './HeaderNewMessage';
+import { getUidDirectMessage } from '../../lib/methods/helpers/helpers';
 
 const QUERY_SIZE = 50;
 
@@ -88,10 +89,11 @@ const NewMessageView = () => {
 				renderItem={({ item }) => {
 					const itemSearch = item as ISearch;
 					const itemModel = item as TSubscriptionModel;
+					const userId = itemSearch.search ? itemSearch._id : getUidDirectMessage(itemModel);
 
 					return (
 						<Item
-							room={itemModel}
+							userId={userId}
 							name={useRealName && itemSearch.fname ? itemSearch.fname : itemModel.name}
 							username={itemSearch.search ? itemSearch.username : itemModel.name}
 							onPress={() => goRoom(itemModel)}

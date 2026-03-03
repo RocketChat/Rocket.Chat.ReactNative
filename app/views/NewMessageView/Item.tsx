@@ -7,7 +7,7 @@ import { CustomIcon } from '../../containers/CustomIcon';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
-import type { TSubscriptionModel } from '../../definitions';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	button: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 });
 
 interface IItem {
-	room: TSubscriptionModel;
+	userId: string;
 	name: string;
 	username: string;
 	onPress(): void;
@@ -46,12 +46,12 @@ interface IItem {
 	onLongPress?: () => void;
 }
 
-const Item = ({ room, name, username, onPress, testID, onLongPress }: IItem) => {
+const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) => {
 	const { colors } = useTheme();
 
 	const handleCallPress = () => {
-		if (!room) return;
-		mediaSessionInstance.startCallByRoom(room);
+		if (!userId) return;
+		mediaSessionInstance.startCall(userId, 'user');
 	};
 
 	return (
@@ -59,8 +59,8 @@ const Item = ({ room, name, username, onPress, testID, onLongPress }: IItem) => 
 			onPress={onPress}
 			onLongPress={onLongPress}
 			testID={testID}
-			underlayColor={colors.surfaceNeutral}
-			rippleColor={colors.surfaceNeutral}
+			underlayColor={colors.surfaceSelected}
+			rippleColor={colors.surfaceSelected}
 			style={{ backgroundColor: colors.surfaceLight }}
 			accessibilityLabel={name}
 			accessibilityRole='button'>
@@ -71,7 +71,13 @@ const Item = ({ room, name, username, onPress, testID, onLongPress }: IItem) => 
 						{name}
 					</Text>
 				</View>
-				<BorderlessButton onPress={handleCallPress} testID={`${testID}-call`} style={styles.iconContainer}>
+				<BorderlessButton
+					onPress={handleCallPress}
+					testID={`${testID}-call`}
+					rippleColor={colors.surfaceSelected}
+					style={styles.iconContainer}
+					accessibilityLabel={I18n.t('Voice_call')}
+					accessibilityRole='button'>
 					<CustomIcon name={'phone'} size={22} color={colors.fontDefault} />
 				</BorderlessButton>
 			</View>

@@ -31,7 +31,7 @@ export default function CallSection({
 				disabled={disabledTooltip || disabled}
 			/>
 			<List.Separator />
-			{!callEnabled ? (
+			{callEnabled ? (
 				<>
 					<List.Item
 						title={'Video_call'}
