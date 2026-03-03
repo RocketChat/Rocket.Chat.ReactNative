@@ -43,7 +43,7 @@ const createMockRoom = (overrides: Partial<TSubscriptionModel> = {}): TSubscript
 		roomUpdatedAt: new Date(),
 		ro: false,
 		...overrides
-	}) as TSubscriptionModel;
+	} as TSubscriptionModel);
 
 describe('NewMessageView Item', () => {
 	beforeEach(() => {
@@ -120,13 +120,7 @@ describe('NewMessageView Item', () => {
 		const mockRoom = createMockRoom();
 		const { getByTestId } = render(
 			<Wrapper>
-				<Item
-					room={mockRoom}
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item room={mockRoom} name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('new-message-view-item-john.doe-call'));
@@ -137,13 +131,7 @@ describe('NewMessageView Item', () => {
 	it('should not call startCallByRoom when room is undefined and call button is pressed', () => {
 		const { getByTestId } = render(
 			<Wrapper>
-				<Item
-					room={null as any}
-					name='John Doe'
-					username='john.doe'
-					onPress={() => {}}
-					testID='new-message-view-item-john.doe'
-				/>
+				<Item room={null as any} name='John Doe' username='john.doe' onPress={() => {}} testID='new-message-view-item-john.doe' />
 			</Wrapper>
 		);
 		fireEvent.press(getByTestId('new-message-view-item-john.doe-call'));
