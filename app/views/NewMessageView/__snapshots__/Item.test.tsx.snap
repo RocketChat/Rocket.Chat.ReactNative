@@ -1,5 +1,154 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`NewMessageView Item should match snapshot when hasMediaCallPermission is false 1`] = `
+<RNGestureHandlerButton
+  accessibilityLabel="John Doe"
+  accessibilityRole="button"
+  activeOpacity={0.105}
+  collapsable={false}
+  delayLongPress={600}
+  handlerTag={16}
+  handlerType="NativeViewGestureHandler"
+  innerRef={null}
+  onActiveStateChange={[Function]}
+  onGestureHandlerEvent={[Function]}
+  onGestureHandlerStateChange={[Function]}
+  onPress={[Function]}
+  rippleColor="#D7DBE0"
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      {
+        "cursor": undefined,
+      },
+    ]
+  }
+  testID="new-message-view-item-john.doe"
+  underlayColor="#D7DBE0"
+>
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "#D7DBE0",
+        "borderBottomLeftRadius": undefined,
+        "borderBottomRightRadius": undefined,
+        "borderRadius": undefined,
+        "borderTopLeftRadius": undefined,
+        "borderTopRightRadius": undefined,
+        "bottom": 0,
+        "left": 0,
+        "opacity": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  />
+  <View
+    style={
+      [
+        {
+          "flexDirection": "row",
+        },
+        {
+          "height": 54,
+        },
+      ]
+    }
+  >
+    <View
+      accessibilityLabel="john.doe's avatar"
+      accessible={true}
+      style={
+        [
+          {
+            "borderRadius": 4,
+            "height": 30,
+            "width": 30,
+          },
+          {
+            "marginHorizontal": 12,
+            "marginVertical": 12,
+          },
+        ]
+      }
+      testID="avatar"
+    >
+      <ViewManagerAdapter_ExpoImage
+        borderRadius={4}
+        containerViewRef={"[React.ref]"}
+        contentFit="cover"
+        contentPosition={
+          {
+            "left": "50%",
+            "top": "50%",
+          }
+        }
+        height={30}
+        nativeViewRef={"[React.ref]"}
+        onError={[Function]}
+        onLoad={[Function]}
+        onLoadStart={[Function]}
+        onProgress={[Function]}
+        placeholder={[]}
+        priority="high"
+        source={
+          [
+            {
+              "headers": undefined,
+              "uri": "https://open.rocket.chat/avatar/john.doe?format=png&size=60",
+            },
+          ]
+        }
+        style={
+          {
+            "borderRadius": 4,
+            "height": 30,
+            "width": 30,
+          }
+        }
+        transition={null}
+        width={30}
+      />
+    </View>
+    <View
+      style={
+        {
+          "flex": 1,
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "marginRight": 12,
+        }
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "500",
+              "lineHeight": 26,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        John Doe
+      </Text>
+    </View>
+  </View>
+</RNGestureHandlerButton>
+`;
+
 exports[`Story Snapshots: Default should match snapshot 1`] = `
 <View
   style={
@@ -16,14 +165,14 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
     activeOpacity={0.105}
     collapsable={false}
     delayLongPress={600}
-    handlerTag={15}
+    handlerTag={17}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-    rippleColor="#E4E7EA"
+    rippleColor="#D7DBE0"
     style={
       [
         {
@@ -35,13 +184,13 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
       ]
     }
     testID="new-message-view-item-john.doe"
-    underlayColor="#E4E7EA"
+    underlayColor="#D7DBE0"
   >
     <View
       collapsable={false}
       style={
         {
-          "backgroundColor": "#E4E7EA",
+          "backgroundColor": "#D7DBE0",
           "borderBottomLeftRadius": undefined,
           "borderBottomRightRadius": undefined,
           "borderRadius": undefined,
@@ -154,59 +303,6 @@ exports[`Story Snapshots: Default should match snapshot 1`] = `
           John Doe
         </Text>
       </View>
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={16}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          [
-            {
-              "alignSelf": "center",
-              "opacity": 1,
-              "paddingHorizontal": 15,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
-        testID="new-message-view-item-john.doe-call"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </RNGestureHandlerButton>
     </View>
   </RNGestureHandlerButton>
 </View>
@@ -228,14 +324,14 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
     activeOpacity={0.105}
     collapsable={false}
     delayLongPress={600}
-    handlerTag={17}
+    handlerTag={18}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
     onGestureHandlerEvent={[Function]}
     onGestureHandlerStateChange={[Function]}
     onPress={[Function]}
-    rippleColor="#E4E7EA"
+    rippleColor="#D7DBE0"
     style={
       [
         {
@@ -247,13 +343,13 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
       ]
     }
     testID="new-message-view-item-long.name"
-    underlayColor="#E4E7EA"
+    underlayColor="#D7DBE0"
   >
     <View
       collapsable={false}
       style={
         {
-          "backgroundColor": "#E4E7EA",
+          "backgroundColor": "#D7DBE0",
           "borderBottomLeftRadius": undefined,
           "borderBottomRightRadius": undefined,
           "borderRadius": undefined,
@@ -366,271 +462,6 @@ exports[`Story Snapshots: LongName should match snapshot 1`] = `
           Very Long Display Name That Might Get Truncated
         </Text>
       </View>
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={18}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          [
-            {
-              "alignSelf": "center",
-              "opacity": 1,
-              "paddingHorizontal": 15,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
-        testID="new-message-view-item-long.name-call"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </RNGestureHandlerButton>
-    </View>
-  </RNGestureHandlerButton>
-</View>
-`;
-
-exports[`Story Snapshots: WithCustomStyle should match snapshot 1`] = `
-<View
-  style={
-    {
-      "flex": 1,
-      "minHeight": 100,
-      "padding": 24,
-    }
-  }
->
-  <RNGestureHandlerButton
-    accessibilityLabel="Bob Burnquist"
-    accessibilityRole="button"
-    activeOpacity={0.105}
-    collapsable={false}
-    delayLongPress={600}
-    handlerTag={19}
-    handlerType="NativeViewGestureHandler"
-    innerRef={null}
-    onActiveStateChange={[Function]}
-    onGestureHandlerEvent={[Function]}
-    onGestureHandlerStateChange={[Function]}
-    onPress={[Function]}
-    rippleColor="#E4E7EA"
-    style={
-      [
-        {
-          "backgroundColor": "#FFFFFF",
-        },
-        {
-          "cursor": undefined,
-        },
-      ]
-    }
-    testID="new-message-view-item-bob.burnquist"
-    underlayColor="#E4E7EA"
-  >
-    <View
-      collapsable={false}
-      style={
-        {
-          "backgroundColor": "#E4E7EA",
-          "borderBottomLeftRadius": undefined,
-          "borderBottomRightRadius": undefined,
-          "borderRadius": undefined,
-          "borderTopLeftRadius": undefined,
-          "borderTopRightRadius": undefined,
-          "bottom": 0,
-          "left": 0,
-          "opacity": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      }
-    />
-    <View
-      style={
-        [
-          {
-            "flexDirection": "row",
-          },
-          {
-            "height": 54,
-          },
-        ]
-      }
-    >
-      <View
-        accessibilityLabel="bob.burnquist's avatar"
-        accessible={true}
-        style={
-          [
-            {
-              "borderRadius": 4,
-              "height": 30,
-              "width": 30,
-            },
-            {
-              "marginHorizontal": 12,
-              "marginVertical": 12,
-            },
-          ]
-        }
-        testID="avatar"
-      >
-        <ViewManagerAdapter_ExpoImage
-          borderRadius={4}
-          containerViewRef={"[React.ref]"}
-          contentFit="cover"
-          contentPosition={
-            {
-              "left": "50%",
-              "top": "50%",
-            }
-          }
-          height={30}
-          nativeViewRef={"[React.ref]"}
-          onError={[Function]}
-          onLoad={[Function]}
-          onLoadStart={[Function]}
-          onProgress={[Function]}
-          placeholder={[]}
-          priority="high"
-          source={
-            [
-              {
-                "headers": undefined,
-                "uri": "https://open.rocket.chat/avatar/bob.burnquist?format=png&size=60",
-              },
-            ]
-          }
-          style={
-            {
-              "borderRadius": 4,
-              "height": 30,
-              "width": 30,
-            }
-          }
-          transition={null}
-          width={30}
-        />
-      </View>
-      <View
-        style={
-          {
-            "flex": 1,
-            "flexDirection": "column",
-            "justifyContent": "center",
-            "marginRight": 12,
-          }
-        }
-      >
-        <Text
-          numberOfLines={1}
-          style={
-            [
-              {
-                "backgroundColor": "transparent",
-                "fontFamily": "Inter",
-                "fontSize": 18,
-                "fontWeight": "500",
-                "lineHeight": 26,
-                "textAlign": "left",
-              },
-              {
-                "color": "#2F343D",
-              },
-            ]
-          }
-        >
-          Bob Burnquist
-        </Text>
-      </View>
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={20}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          [
-            {
-              "alignSelf": "center",
-              "opacity": 1,
-              "paddingHorizontal": 15,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
-        testID="new-message-view-item-bob.burnquist-call"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </RNGestureHandlerButton>
     </View>
   </RNGestureHandlerButton>
 </View>
@@ -652,7 +483,7 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
     activeOpacity={0.105}
     collapsable={false}
     delayLongPress={600}
-    handlerTag={21}
+    handlerTag={19}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -660,7 +491,7 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
     onGestureHandlerStateChange={[Function]}
     onLongPress={[Function]}
     onPress={[Function]}
-    rippleColor="#E4E7EA"
+    rippleColor="#D7DBE0"
     style={
       [
         {
@@ -672,13 +503,13 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
       ]
     }
     testID="new-message-view-item-jane.smith"
-    underlayColor="#E4E7EA"
+    underlayColor="#D7DBE0"
   >
     <View
       collapsable={false}
       style={
         {
-          "backgroundColor": "#E4E7EA",
+          "backgroundColor": "#D7DBE0",
           "borderBottomLeftRadius": undefined,
           "borderBottomRightRadius": undefined,
           "borderRadius": undefined,
@@ -791,59 +622,6 @@ exports[`Story Snapshots: WithLongPress should match snapshot 1`] = `
           Jane Smith
         </Text>
       </View>
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={22}
-        handlerType="NativeViewGestureHandler"
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          [
-            {
-              "alignSelf": "center",
-              "opacity": 1,
-              "paddingHorizontal": 15,
-            },
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
-        testID="new-message-view-item-jane.smith-call"
-      >
-        <Text
-          allowFontScaling={false}
-          selectable={false}
-          style={
-            [
-              {
-                "color": "#2F343D",
-                "fontSize": 22,
-              },
-              [
-                {
-                  "lineHeight": 22,
-                },
-                undefined,
-              ],
-              {
-                "fontFamily": "custom",
-                "fontStyle": "normal",
-                "fontWeight": "normal",
-              },
-              {},
-            ]
-          }
-        >
-          
-        </Text>
-      </RNGestureHandlerButton>
     </View>
   </RNGestureHandlerButton>
 </View>

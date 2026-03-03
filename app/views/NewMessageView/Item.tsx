@@ -8,6 +8,7 @@ import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
 import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstance';
 import I18n from '../../i18n';
+import { useMediaCallPermission } from '../../lib/hooks/useMediaCallPermission';
 
 const styles = StyleSheet.create({
 	button: {
@@ -48,6 +49,7 @@ interface IItem {
 
 const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) => {
 	const { colors } = useTheme();
+	const hasMediaCallPermission = useMediaCallPermission();
 
 	const handleCallPress = () => {
 		if (!userId) return;
@@ -71,15 +73,17 @@ const Item = ({ userId, name, username, onPress, testID, onLongPress }: IItem) =
 						{name}
 					</Text>
 				</View>
-				<BorderlessButton
-					onPress={handleCallPress}
-					testID={`${testID}-call`}
-					rippleColor={colors.surfaceSelected}
-					style={styles.iconContainer}
-					accessibilityLabel={I18n.t('Voice_call')}
-					accessibilityRole='button'>
-					<CustomIcon name={'phone'} size={22} color={colors.fontDefault} />
-				</BorderlessButton>
+				{hasMediaCallPermission ? (
+					<BorderlessButton
+						onPress={handleCallPress}
+						testID={`${testID}-call`}
+						rippleColor={colors.surfaceSelected}
+						style={styles.iconContainer}
+						accessibilityLabel={I18n.t('Voice_call')}
+						accessibilityRole='button'>
+						<CustomIcon name={'phone'} size={22} color={colors.fontDefault} />
+					</BorderlessButton>
+				) : null}
 			</View>
 		</RectButton>
 	);

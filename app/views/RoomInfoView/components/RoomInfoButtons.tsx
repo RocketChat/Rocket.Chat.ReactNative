@@ -13,6 +13,7 @@ import { useE2EEWarning } from '../hooks';
 import { useActionSheet } from '../../../containers/ActionSheet';
 import type { TActionSheetOptionsItem } from '../../../containers/ActionSheet';
 import { mediaSessionInstance } from '../../../lib/services/voip/MediaSessionInstance';
+import { useMediaCallPermission } from '../../../lib/hooks/useMediaCallPermission';
 
 type ButtonConfig = {
 	label: string;
@@ -87,6 +88,7 @@ export const RoomInfoButtons = ({
 	const room = roomFromRid || roomFromProps;
 	const { showActionSheet } = useActionSheet();
 	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
+	const hasMediaCallPermission = useMediaCallPermission();
 
 	// Following the web behavior, when is a DM with myself, shouldn't appear block or ignore option
 	const isDmWithMyself = room?.uids?.filter((uid: string) => uid !== roomUserId).length === 0;
@@ -100,8 +102,7 @@ export const RoomInfoButtons = ({
 	const renderBlockUser = !itsMe && isDirectFromSaved && isFromDm && !isDmWithMyself;
 	const renderReportUser =
 		!itsMe && isDirectFromSaved && !isDmWithMyself && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0');
-
-	const showCall = !hasE2EEWarning && callEnabled && !roomFromRid;
+	const renderVideoCall = !hasE2EEWarning && callEnabled && !roomFromRid;
 
 	const handleVoiceCall = () => {
 		if (!room) return;
@@ -120,15 +121,15 @@ export const RoomInfoButtons = ({
 			label: i18n.t('Voice_call'),
 			iconName: 'phone',
 			onPress: handleVoiceCall,
-			enabled: !disabledTooltip,
-			show: showCall
+			enabled: true,
+			show: hasMediaCallPermission
 		},
 		{
 			label: i18n.t('Video_call'),
 			iconName: 'camera',
 			onPress: showInitCallActionSheet,
 			enabled: !disabledTooltip,
-			show: showCall
+			show: renderVideoCall
 		},
 		{
 			label: i18n.t(isIgnored ? 'Unignore' : 'Ignore'),
