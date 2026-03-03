@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
@@ -24,13 +24,13 @@ import database from '../lib/database';
 import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
-import { appStart, setIsFirstServerLogin } from '../actions/app';
+import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
-import { type IServerInfo, RootEnum, type TServerModel } from '../definitions';
-import { CERTIFICATE_KEY, CURRENT_SERVER, FIRST_START, TOKEN_KEY } from '../lib/constants/keys';
+import { type IApplicationState, type IServerInfo, RootEnum, type TServerModel } from '../definitions';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants/keys';
 import { checkSupportedVersions } from '../lib/methods/checkSupportedVersions';
 import { getLoginSettings, setSettings } from '../lib/methods/getSettings';
 import { getServerInfo } from '../lib/methods/getServerInfo';
@@ -199,13 +199,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
-		const isFirstServerLogin = UserPreferences.getBool(`${server}-${FIRST_START}`);
-		if (isFirstServerLogin == null) {
-			UserPreferences.setBool(`${server}-${FIRST_START}`, false);
-			yield put(setIsFirstServerLogin(true));
-		} else {
-			yield put(setIsFirstServerLogin(isFirstServerLogin));
-		}
+		const state: IApplicationState = yield select((state: IApplicationState) => state);
+		syncWatchOSQuickRepliesWithServer(state);
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors

@@ -69,6 +69,7 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
         _ session: WCSession,
         didReceiveApplicationContext applicationContext: [String: Any]
     ) {
+        print(applicationContext)
         guard
             let serverString = applicationContext["server"] as? String,
             let replies = applicationContext["quickReplies"] as? [String]
@@ -76,6 +77,8 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
             print("Invalid context")
             return
         }
+        
+        print(applicationContext)
 
         // if server exists, update in DB directly
         if let server = serversDB.server(url: URL(string: serverString)!) {
@@ -86,6 +89,7 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
             var allReplies = UserDefaults.standard.dictionary(forKey: "pendingQuickReplies") as? [String: [String]] ?? [:]
             allReplies[serverString] = replies
             UserDefaults.standard.set(allReplies, forKey: "pendingQuickReplies")
+            print(allReplies[serverString])
         }
     }
 }

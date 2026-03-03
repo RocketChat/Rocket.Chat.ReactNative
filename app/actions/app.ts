@@ -21,11 +21,7 @@ interface ISetNetInfoState extends Action {
 	netInfoState: NetInfoStateType;
 }
 
-interface ISetFirstServerLogin extends Action {
-	isFirstServerLogin: boolean;
-}
-
-export type TActionApp = IAppStart & ISetMasterDetail & ISetNotificationPresenceCap & ISetNetInfoState & ISetFirstServerLogin;
+export type TActionApp = IAppStart & ISetMasterDetail & ISetNotificationPresenceCap & ISetNetInfoState;
 
 interface Params {
 	root: RootEnum;
@@ -76,12 +72,5 @@ export function setNetInfoState(netInfoState: NetInfoStateType): ISetNetInfoStat
 	return {
 		type: APP.SET_NET_INFO_STATE,
 		netInfoState
-	};
-}
-
-export function setIsFirstServerLogin(isFirstServerLogin: boolean): ISetFirstServerLogin {
-	return {
-		type: APP.SET_FIRST_LOGIN,
-		isFirstServerLogin
 	};
 }

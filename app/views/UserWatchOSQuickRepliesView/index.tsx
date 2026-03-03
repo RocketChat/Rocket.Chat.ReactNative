@@ -12,7 +12,7 @@ import userPreferences, { useUserPreferences } from '../../lib/methods/userPrefe
 import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '../../lib/constants/keys';
 import { syncWatchOSQuickReplies } from '../../lib/methods/WatchOSQuickReplies/syncReplies';
 import { checkWatch } from '../../lib/methods/WatchOSQuickReplies/getWatchStatus';
-import { useAppSelector } from '../../lib/hooks/useAppSelector';
+// import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 interface IUserWatchOSQuickRepliesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserWatchOSQuickRepliesView'>;
@@ -22,8 +22,8 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	const currentServer = userPreferences.getString(CURRENT_SERVER);
 	const [quickReplies, setQuickReplies] = useUserPreferences<string[]>(`${currentServer}-${WATCHOS_QUICKREPLIES}`, []);
 	const [input, setInput] = useState<string>('');
-	const appleWatchReplies = useAppSelector(state => state.settings.Apple_Watch_Quick_Actions);
-	const isFirstLogin = useAppSelector(state => state.app.isFirstServerLogin);
+	// const appleWatchReplies = useAppSelector(state => state.settings.Apple_Watch_Quick_Actions);
+	// const isFirstLogin = useAppSelector(state => state.app.isFirstServerLogin);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -54,14 +54,14 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		syncWatchOSQuickReplies();
 	};
 
-	useEffect(() => {
-		if (appleWatchReplies && isFirstLogin && typeof appleWatchReplies === 'string') {
-			const replies = appleWatchReplies.split(',');
-			setQuickReplies(replies);
-			syncWatchOSQuickReplies();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [appleWatchReplies, isFirstLogin]);
+	// useEffect(() => {
+	// 	if (appleWatchReplies && isFirstLogin && typeof appleWatchReplies === 'string') {
+	// 		const replies = appleWatchReplies.split(',');
+	// 		setQuickReplies(replies);
+	// 		syncWatchOSQuickReplies();
+	// 	}
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [appleWatchReplies, isFirstLogin]);
 
 	return (
 		<SafeAreaView testID='preferences-view'>
