@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import { type Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { BorderlessButton } from 'react-native-gesture-handler'
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { Bold, Italic, Strike } from './index';
 import I18n from '../../../../i18n';
@@ -38,7 +38,7 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<BorderlessButton onPress={handlePress} onLongPress={onLongPress} >
+		<BorderlessButton onPress={handlePress} onLongPress={onLongPress}>
 			<View style={{ transform: [{ translateY: 4 }] }}>
 				<Text style={[styles.link, { color: themes[theme].fontInfo }]}>
 					{(block => {
