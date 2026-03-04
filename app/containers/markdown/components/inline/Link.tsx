@@ -36,6 +36,9 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	const onLongPress = () => {
+		if (!src.value) {
+			return;
+		}
 		if (process.env.RUNNING_E2E_TESTS === 'true') {
 			Alert.alert('Link Long Pressed', src.value);
 			return;

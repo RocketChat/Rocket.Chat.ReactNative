@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
+import { Pressable } from 'react-native-gesture-handler';
 
 import MessageContext from './Context';
-import Touch from '../Touch';
 
 const RCTouchable: any = React.memo(({ children, ...props }: any) => {
 	'use memo';
@@ -9,9 +9,9 @@ const RCTouchable: any = React.memo(({ children, ...props }: any) => {
 	const { onLongPress } = useContext(MessageContext);
 
 	return (
-		<Touch onLongPress={onLongPress} {...props}>
+		<Pressable onLongPress={onLongPress} {...props}>
 			{children}
-		</Touch>
+		</Pressable>
 	);
 });
 
