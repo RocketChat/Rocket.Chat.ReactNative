@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
-import { getPeerAutocompleteOptions, type TPeerInfo, type TPeerOption } from './getPeerAutocompleteOptions';
+import { getPeerAutocompleteOptions, type TPeerInfo, type TPeerItem } from './getPeerAutocompleteOptions';
 
 type TPeerAutocompleteState = {
-	options: TPeerOption[];
+	options: TPeerItem[];
 	selectedPeer: TPeerInfo | null;
 	filter: string;
 };
@@ -38,7 +38,7 @@ export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get
 
 			set({ options });
 		} catch {
-			// Keep current data on failure as requested
+			console.log('Failed to fetch options');
 		}
 	},
 
