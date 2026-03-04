@@ -75,14 +75,19 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-        <!-- Custom Firebase Messaging Service for Rocket.Chat notifications -->
+        <!-- Custom Firebase Messaging Service - extends ExpoFirebaseMessagingService -->
+        <!-- This replaces expo-notifications' default service to avoid conflicts -->
         <service
             android:name="chat.rocket.reactnative.notification.RCFirebaseMessagingService"
             android:exported="false">
-            <intent-filter android:priority="100">
+            <intent-filter android:priority="-1">
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <!-- Remove expo's default FirebaseMessagingService to avoid duplicate registration -->
+        <service
+            android:name="expo.modules.notifications.service.ExpoFirebaseMessagingService"
+            tools:node="remove" />
         <receiver
             android:name="chat.rocket.reactnative.notification.ReplyBroadcast"
             android:enabled="true"

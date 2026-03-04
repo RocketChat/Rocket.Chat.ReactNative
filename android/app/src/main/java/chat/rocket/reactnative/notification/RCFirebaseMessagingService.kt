@@ -2,16 +2,20 @@ package chat.rocket.reactnative.notification
 
 import android.os.Bundle
 import android.util.Log
-import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import expo.modules.notifications.service.ExpoFirebaseMessagingService
 
 /**
  * Custom Firebase Messaging Service for Rocket.Chat.
  *
- * Handles incoming FCM messages and routes them to CustomPushNotification
- * for advanced processing (E2E decryption, MessagingStyle, direct reply, etc.)
+ * Extends ExpoFirebaseMessagingService to integrate with expo-notifications
+ * while adding custom notification processing (E2E decryption, MessagingStyle, direct reply, etc.)
+ *
+ * This ensures:
+ * - expo-notifications properly handles FCM token generation (fixes TOO_MANY_REGISTRATION)
+ * - CustomPushNotification processes messages for advanced features
  */
-class RCFirebaseMessagingService : FirebaseMessagingService() {
+class RCFirebaseMessagingService : ExpoFirebaseMessagingService() {
 
     companion object {
         private const val TAG = "RocketChat.FCM"
@@ -19,6 +23,9 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "FCM message received from: ${remoteMessage.from}")
+
+        // First, let expo-notifications handle the message (for token/listener management)
+        super.onMessageReceived(remoteMessage)
 
         val data = remoteMessage.data
         if (data.isEmpty()) {
@@ -33,7 +40,7 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
             }
         }
 
-        // Process the notification
+        // Process the notification with custom handling
         try {
             val notification = CustomPushNotification(this, bundle)
             notification.onReceived()
@@ -43,9 +50,13 @@ class RCFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        Log.d(TAG, "FCM token refreshed")
-        // Token handling is done by expo-notifications JS layer
-        // which uses getDevicePushTokenAsync()
+        Log.d(TAG, "FCM token refreshed: ${token.take(10)}...")
+        // Let expo-notifications handle token updates
         super.onNewToken(token)
+    }
+
+    override fun onDeletedMessages() {
+        Log.d(TAG, "FCM messages deleted")
+        super.onDeletedMessages()
     }
 }

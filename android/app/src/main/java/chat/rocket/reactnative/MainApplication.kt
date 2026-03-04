@@ -24,15 +24,13 @@ import chat.rocket.reactnative.scroll.InvertedScrollPackage
 
 /**
  * Main Application class.
- * 
+ *
  * NOTIFICATION ARCHITECTURE:
  * - JS layer uses expo-notifications for token registration and event handling
- * - Native layer uses RCFirebaseMessagingService + CustomPushNotification for:
- *   - FCM message handling
- *   - Notification display with MessagingStyle
- *   - E2E encrypted message decryption
- *   - Direct reply functionality
- *   - Message-id-only notification loading
+ * - Native layer uses expo-notifications' ExpoFirebaseMessagingService for FCM
+ * - Custom notification handling (E2E decryption, MessagingStyle, etc.) is handled via:
+ *   - CustomPushNotification for advanced notification features
+ *   - NativePushNotificationAndroid module for bridging to JS
  */
 open class MainApplication : Application(), ReactApplication {
 
