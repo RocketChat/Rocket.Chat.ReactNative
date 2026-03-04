@@ -1,5 +1,6 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 
 import { type IActiveUsers } from '../../reducers/activeUsers';
 import { store as reduxStore } from '../store/auxStore';
@@ -87,24 +88,30 @@ export async function getUsersPresence(usersParams: string[]) {
 
 				const db = database.active;
 				const userCollection = db.get('users');
-				users.forEach(async (user: IUser) => {
-					try {
-						const userRecord = await userCollection.find(user._id);
-						await db.write(async () => {
-							await userRecord.update(u => {
+				try {
+					const userIds = users.map((u: IUser) => u._id);
+					const existingRecords = await userCollection.query(Q.where('id', Q.oneOf(userIds))).fetch();
+					const existingRecordsMap = new Map(existingRecords.map(u => [u.id, u]));
+
+					const operations = users.map((user: IUser) => {
+						const existingRecord = existingRecordsMap.get(user._id);
+						if (existingRecord) {
+							return existingRecord.prepareUpdate(u => {
 								Object.assign(u, user);
 							});
+						}
+						return userCollection.prepareCreate(u => {
+							u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
+							Object.assign(u, user);
 						});
-					} catch (e) {
-						// User not found
-						await db.write(async () => {
-							await userCollection.create(u => {
-								u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
-								Object.assign(u, user);
-							});
-						});
-					}
-				});
+					});
+
+					await db.write(async () => {
+						await db.batch(...operations);
+					});
+				} catch (e) {
+					// do nothing
+				}
 			}
 		} catch {
 			// do nothing
@@ -117,7 +124,7 @@ let usersTimer: ReturnType<typeof setTimeout> | null = null;
 export function getUserPresence(uid: string) {
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			getUsersPresence(usersBatch);
+			getUsersPresence([...new Set(usersBatch)]);
 			usersBatch = [];
 			usersTimer = null;
 		}, 2000);
