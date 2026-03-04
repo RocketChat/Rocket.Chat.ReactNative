@@ -77,19 +77,20 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
             print("Invalid context")
             return
         }
-        
-        print(applicationContext)
 
         // if server exists, update in DB directly
-        if let server = serversDB.server(url: URL(string: serverString)!) {
-            server.quickReplies = replies
-            serversDB.save()
-        } else {
-            // Server not in CoreData yet, save quick replies temporarily and restore when server is available
-            var allReplies = UserDefaults.standard.dictionary(forKey: "pendingQuickReplies") as? [String: [String]] ?? [:]
-            allReplies[serverString] = replies
-            UserDefaults.standard.set(allReplies, forKey: "pendingQuickReplies")
-            print(allReplies[serverString])
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+
+            if let server = self.serversDB.server(url: URL(string: serverString)!) {
+                server.quickReplies = replies
+                self.serversDB.save()
+            } else {
+                var allReplies = UserDefaults.standard.dictionary(forKey: "pendingQuickReplies") as? [String: [String]] ?? [:]
+                allReplies[serverString] = replies
+                UserDefaults.standard.set(allReplies, forKey: "pendingQuickReplies")
+                print(allReplies[serverString] ?? [])
+            }
         }
     }
 }

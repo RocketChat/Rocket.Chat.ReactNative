@@ -11,7 +11,6 @@ import Chip from '../../containers/Chip';
 import userPreferences, { useUserPreferences } from '../../lib/methods/userPreferences';
 import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '../../lib/constants/keys';
 import { syncWatchOSQuickReplies } from '../../lib/methods/WatchOSQuickReplies/syncReplies';
-import { checkWatch } from '../../lib/methods/WatchOSQuickReplies/getWatchStatus';
 // import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 interface IUserWatchOSQuickRepliesViewProps {
@@ -32,12 +31,7 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	}, [navigation]);
 
 	useEffect(() => {
-		const load = () => {
-			const status = checkWatch();
-			console.log(status);
-			syncWatchOSQuickReplies();
-		};
-		load();
+		syncWatchOSQuickReplies();
 	}, []);
 
 	const removeQuickReply = (reply: string) => {
@@ -53,15 +47,6 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 		setInput('');
 		syncWatchOSQuickReplies();
 	};
-
-	// useEffect(() => {
-	// 	if (appleWatchReplies && isFirstLogin && typeof appleWatchReplies === 'string') {
-	// 		const replies = appleWatchReplies.split(',');
-	// 		setQuickReplies(replies);
-	// 		syncWatchOSQuickReplies();
-	// 	}
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [appleWatchReplies, isFirstLogin]);
 
 	return (
 		<SafeAreaView testID='preferences-view'>

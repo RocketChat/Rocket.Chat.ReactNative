@@ -13,14 +13,12 @@ const syncWatchOSQuickRepliesWithServer = (state: IApplicationState) => {
 
 	const isRepliesAvailable = getWatchOSRepliesForServer(server);
 
-	console.log(isRepliesAvailable);
 	// we use apple watch settings from server on first login
 	if (!isRepliesAvailable && appleWatchReplies && typeof appleWatchReplies === 'string') {
 		const quickRepliesMMKVKey = `${server}-${WATCHOS_QUICKREPLIES}`;
 
 		const replies = appleWatchReplies.split(',');
 		UserPreferences.setArray(quickRepliesMMKVKey, replies);
-		console.log(UserPreferences.getArray(quickRepliesMMKVKey));
 	}
 	syncWatchOSQuickReplies();
 };
