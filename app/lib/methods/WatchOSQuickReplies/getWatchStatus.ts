@@ -26,7 +26,6 @@ export const shouldShowWatchAppOptions = (): boolean => {
 	if (isAndroid || !NativeWatchModule) return false;
 	const watchStatus = checkWatch();
 
-	console.log(watchStatus);
 	if (!watchStatus.isWatchSupported || !watchStatus.isWatchAppInstalled) return false;
 	return true;
 };
