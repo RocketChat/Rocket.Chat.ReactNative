@@ -91,13 +91,11 @@ export async function getUsersPresence(usersParams: string[]) {
 				const userCollection = db.get('users');
 				try {
 					const userIds = users.map((u: IUser) => u._id);
-					const existingRecords = (
-						await Promise.all(
-							Array.from({ length: Math.ceil(userIds.length / 900) }, (_, i) => userIds.slice(i * 900, (i + 1) * 900)).map(chunk =>
-								userCollection.query(Q.where('id', Q.oneOf(chunk))).fetch()
-							)
-						)
-					).flat();
+					const chunks: string[][] = [];
+					for (let i = 0; i < userIds.length; i += 900) {
+						chunks.push(userIds.slice(i, i + 900));
+					}
+					const existingRecords = (await Promise.all(chunks.map(chunk => userCollection.query(Q.where('id', Q.oneOf(chunk))).fetch()))).flat();
 					const existingRecordsMap = new Map<string, TUserModel>(existingRecords.map(u => [u.id, u]));
 
 					const operations: Model[] = users.map((user: IUser) => {
@@ -119,7 +117,25 @@ export async function getUsersPresence(usersParams: string[]) {
 						});
 					} catch (e) {
 						log(e);
-						await Promise.allSettled(operations.map((operation: Model) => db.write(() => db.batch(operation))));
+						const failedOperations: Model[] = [];
+						for (const operation of operations) {
+							try {
+								// eslint-disable-next-line no-await-in-loop
+								await db.write(() => db.batch(operation));
+							} catch (operationError: any) {
+								log({
+									message: 'Fallback per-operation write failed',
+									operationId: operation.id,
+									operationTable: operation.collection.table,
+									error: operationError?.message || operationError
+								});
+								failedOperations.push(operation);
+							}
+						}
+						// If we want to escalate all failures at the end:
+						if (failedOperations.length > 0) {
+							log({ message: `Fallback completed with ${failedOperations.length} failed operations` });
+						}
 					}
 				} catch (e) {
 					log(e);
