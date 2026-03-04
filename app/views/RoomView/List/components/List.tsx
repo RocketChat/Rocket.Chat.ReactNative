@@ -50,9 +50,8 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 							nextFocusUp,
 							// @ts-ignore Android-only props not in ViewProps types
 							nextFocusDown
-						}
-					: null)}
-			>
+					  }
+					: null)}>
 				{renderItem(info)}
 			</View>
 		);
