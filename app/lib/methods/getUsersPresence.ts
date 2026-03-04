@@ -1,13 +1,13 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
+import { type Model, Q } from '@nozbe/watermelondb';
 
 import { type IActiveUsers } from '../../reducers/activeUsers';
 import { store as reduxStore } from '../store/auxStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';
-import { type IUser } from '../../definitions';
+import { type IUser, type TUserModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
 import userPreferences from './userPreferences';
@@ -91,19 +91,19 @@ export async function getUsersPresence(usersParams: string[]) {
 				const userCollection = db.get('users');
 				try {
 					const userIds = users.map((u: IUser) => u._id);
-					let existingRecords: any[] = [];
-					for (let i = 0; i < userIds.length; i += 900) {
-						const chunk = userIds.slice(i, i + 900);
-						// eslint-disable-next-line no-await-in-loop
-						const recordsChunk = await userCollection.query(Q.where('id', Q.oneOf(chunk))).fetch();
-						existingRecords = existingRecords.concat(recordsChunk);
-					}
-					const existingRecordsMap = new Map(existingRecords.map(u => [u.id, u]));
+					const existingRecords = (
+						await Promise.all(
+							Array.from({ length: Math.ceil(userIds.length / 900) }, (_, i) => userIds.slice(i * 900, (i + 1) * 900)).map(chunk =>
+								userCollection.query(Q.where('id', Q.oneOf(chunk))).fetch()
+							)
+						)
+					).flat();
+					const existingRecordsMap = new Map<string, TUserModel>(existingRecords.map(u => [u.id, u]));
 
-					const operations = users.map((user: IUser) => {
+					const operations: Model[] = users.map((user: IUser) => {
 						const existingRecord = existingRecordsMap.get(user._id);
 						if (existingRecord) {
-							return existingRecord.prepareUpdate((u: any) => {
+							return existingRecord.prepareUpdate((u: TUserModel) => {
 								Object.assign(u, user);
 							});
 						}
@@ -119,23 +119,14 @@ export async function getUsersPresence(usersParams: string[]) {
 						});
 					} catch (e) {
 						log(e);
-						for (const operation of operations) {
-							try {
-								// eslint-disable-next-line no-await-in-loop
-								await db.write(async () => {
-									await db.batch(operation);
-								});
-							} catch (fallbackError) {
-								log(fallbackError);
-							}
-						}
+						await Promise.allSettled(operations.map((operation: Model) => db.write(() => db.batch(operation))));
 					}
 				} catch (e) {
-					// do nothing
+					log(e);
 				}
 			}
-		} catch {
-			// do nothing
+		} catch (e) {
+			log(e);
 		}
 	}
 }
