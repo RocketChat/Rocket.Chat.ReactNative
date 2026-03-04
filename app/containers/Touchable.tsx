@@ -30,20 +30,23 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 const Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
 const Touchable = React.forwardRef<View, ITouchProps>(
-	({
-		children,
-		onPress,
-		android_rippleColor,
-		accessible,
-		accessibilityLabel,
-		accessibilityHint,
-		accessibilityActions,
-		onAccessibilityAction,
-		style,
-		rectButtonStyle,
-		enabled = true,
-		...props
-	}, ref) => {
+	(
+		{
+			children,
+			onPress,
+			android_rippleColor,
+			accessible,
+			accessibilityLabel,
+			accessibilityHint,
+			accessibilityActions,
+			onAccessibilityAction,
+			style,
+			rectButtonStyle,
+			enabled = true,
+			...props
+		},
+		ref
+	) => {
 		const { colors } = useTheme();
 		// The background color must be applied to the RectButton, not the View.
 		// If set on the View, the touch opacity animation won't work properly.
