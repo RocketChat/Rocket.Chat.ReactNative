@@ -34,7 +34,7 @@ tags:
 - tapOn:
     id: create-channel-name
 - inputText: ${channelName}
-- hideKeyboard
+- runFlow: '../../../helpers/hide-keyboard.yaml'
 
 - runFlow:
     when:
