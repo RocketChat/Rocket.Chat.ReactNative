@@ -33,7 +33,7 @@ export const SelectedPeer = () => {
 					<>
 						<Avatar text={selectedPeer.username || selectedPeer.displayName} size={28} />
 						<View style={styles.statusWrap}>
-							<Status id={selectedPeer.userId} status={selectedPeer.status || 'offline'} size={20} />
+							<Status id={selectedPeer.userId} size={20} />
 						</View>
 					</>
 				)}

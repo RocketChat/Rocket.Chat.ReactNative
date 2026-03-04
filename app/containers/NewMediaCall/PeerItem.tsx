@@ -21,7 +21,7 @@ export const PeerItem = ({ item, onSelectOption }: { item: TPeerItem; onSelectOp
 			)}
 			{!isSip ? (
 				<View style={styles.statusWrap}>
-					<Status id={item.value} status={item.status || 'offline'} size={20} />
+					<Status id={item.value} size={20} />
 				</View>
 			) : null}
 			<Text style={[styles.rowName, { color: colors.fontDefault }]} numberOfLines={1}>

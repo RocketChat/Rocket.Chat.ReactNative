@@ -9,23 +9,6 @@ import { mediaSessionInstance } from '../../lib/services/voip/MediaSessionInstan
 import { hideActionSheetRef } from '../ActionSheet';
 import sharedStyles from '../../views/Styles';
 
-const styles = StyleSheet.create({
-	callButton: {
-		height: 52,
-		marginTop: 32,
-		borderRadius: 4,
-		alignItems: 'center',
-		justifyContent: 'center',
-		flexDirection: 'row',
-		gap: 4
-	},
-	callText: {
-		fontSize: 16,
-		lineHeight: 24,
-		...sharedStyles.textMedium
-	}
-});
-
 export const CreateCall = () => {
 	const { colors } = useTheme();
 
@@ -68,3 +51,20 @@ export const CreateCall = () => {
 		</Pressable>
 	);
 };
+
+const styles = StyleSheet.create({
+	callButton: {
+		height: 52,
+		marginTop: 32,
+		borderRadius: 4,
+		alignItems: 'center',
+		justifyContent: 'center',
+		flexDirection: 'row',
+		gap: 4
+	},
+	callText: {
+		fontSize: 16,
+		lineHeight: 24,
+		...sharedStyles.textMedium
+	}
+});

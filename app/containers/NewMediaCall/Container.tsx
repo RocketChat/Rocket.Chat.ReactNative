@@ -9,32 +9,6 @@ import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { useDebounce } from '../../lib/methods/helpers';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		paddingHorizontal: 16
-	},
-	title: {
-		fontSize: 20,
-		lineHeight: 28,
-		marginTop: 4,
-		...sharedStyles.textBold
-	},
-	searchContainer: {
-		marginTop: 28,
-		marginBottom: 8
-	},
-	searchInputContainer: {
-		marginBottom: 0
-	},
-	inputLabel: {
-		fontSize: 16,
-		lineHeight: 24,
-		marginBottom: 16,
-		...sharedStyles.textRegular
-	}
-});
-
 export const Container = ({ children }: { children: React.ReactElement[] }) => {
 	const { colors } = useTheme();
 
@@ -74,3 +48,30 @@ export const Container = ({ children }: { children: React.ReactElement[] }) => {
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		paddingHorizontal: 16,
+		paddingTop: 16
+	},
+	title: {
+		fontSize: 20,
+		lineHeight: 28,
+		marginTop: 4,
+		...sharedStyles.textBold
+	},
+	searchContainer: {
+		marginTop: 28,
+		marginBottom: 8
+	},
+	searchInputContainer: {
+		marginBottom: 0
+	},
+	inputLabel: {
+		fontSize: 16,
+		lineHeight: 24,
+		marginBottom: 16,
+		...sharedStyles.textRegular
+	}
+});
