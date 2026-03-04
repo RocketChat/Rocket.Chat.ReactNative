@@ -13,6 +13,7 @@ import { compareServerVersion } from './helpers';
 import userPreferences from './userPreferences';
 import { NOTIFICATION_PRESENCE_CAP } from '../constants/notifications';
 import { setNotificationPresenceCap } from '../../actions/app';
+import log from './helpers/log';
 
 export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {
 	activeUsersSubTimeout: false
@@ -90,13 +91,19 @@ export async function getUsersPresence(usersParams: string[]) {
 				const userCollection = db.get('users');
 				try {
 					const userIds = users.map((u: IUser) => u._id);
-					const existingRecords = await userCollection.query(Q.where('id', Q.oneOf(userIds))).fetch();
+					let existingRecords: any[] = [];
+					for (let i = 0; i < userIds.length; i += 900) {
+						const chunk = userIds.slice(i, i + 900);
+						// eslint-disable-next-line no-await-in-loop
+						const recordsChunk = await userCollection.query(Q.where('id', Q.oneOf(chunk))).fetch();
+						existingRecords = existingRecords.concat(recordsChunk);
+					}
 					const existingRecordsMap = new Map(existingRecords.map(u => [u.id, u]));
 
 					const operations = users.map((user: IUser) => {
 						const existingRecord = existingRecordsMap.get(user._id);
 						if (existingRecord) {
-							return existingRecord.prepareUpdate(u => {
+							return existingRecord.prepareUpdate((u: any) => {
 								Object.assign(u, user);
 							});
 						}
@@ -106,9 +113,23 @@ export async function getUsersPresence(usersParams: string[]) {
 						});
 					});
 
-					await db.write(async () => {
-						await db.batch(...operations);
-					});
+					try {
+						await db.write(async () => {
+							await db.batch(...operations);
+						});
+					} catch (e) {
+						log(e);
+						for (const operation of operations) {
+							try {
+								// eslint-disable-next-line no-await-in-loop
+								await db.write(async () => {
+									await db.batch(operation);
+								});
+							} catch (fallbackError) {
+								log(fallbackError);
+							}
+						}
+					}
 				} catch (e) {
 					// do nothing
 				}
