@@ -312,5 +312,8 @@ export const defaultSettings = {
 	VoIP_TeamCollab_Ice_Gathering_Timeout: {
 		type: 'valueAsNumber'
 	},
+	VoIP_TeamCollab_SIP_Integration_For_Internal_Calls: {
+		type: 'valueAsBoolean'
+	},
 	...deprecatedSettings
 } as const;
