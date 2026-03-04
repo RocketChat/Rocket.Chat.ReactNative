@@ -60,7 +60,9 @@ extension ServersLoader: ServersLoading {
             session.sendMessage { result in
                 switch result {
                 case .success(let message):
+                    let group = DispatchGroup()
                     for server in message.servers {
+                        group.enter()
                         DispatchQueue.main.async {
                             self.database.process(updatedServer: server)
                             if let savedServer = self.database.server(
@@ -68,10 +70,13 @@ extension ServersLoader: ServersLoading {
                             ) {
                                 self.applyPendingQuickReplies(for: savedServer)
                             }
+                            group.leave()
                         }
                     }
 
-                    promise(.success(()))
+                    group.notify(queue: .main) {
+                        promise(.success(()))
+                    }
                 case .failure(let error):
                     promise(.failure(error))
                 }
