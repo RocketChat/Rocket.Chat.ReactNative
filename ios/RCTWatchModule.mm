@@ -64,72 +64,76 @@ NSString *mmkvCurrentServerKey = @"currentServer";
 }
 
 #pragma mark - spec methods (declared in spec)
-- (void)syncQuickReplies {
+- (NSString *)syncQuickReplies {
     
     if(![self isWatchSupported] || ![self isWatchAppInstalled]){
-        return;
+        return @"[ERROR]: WatchApp not supported";
     }
     
     NSString *currentServer = [self getValueFromMMKV:mmkvCurrentServerKey];
     if (!currentServer || currentServer.length == 0) {
         RCTLogInfo(@"No current server found");
-        return;
+        return @"[ERROR]: No current server found";
     }
     
     // key: server-RC_WATCHOS_QUICKREPLIES
     NSString *quickRepliesKey = [NSString
-        stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
-
+                                 stringWithFormat:@"%@-%@", currentServer, mmkvQuickRepliesKey];
+    
     // get replies stored in MMKV
     NSString *replies = [self getValueFromMMKV:quickRepliesKey];
-
+    
     if (replies && replies.length > 0) {
         NSData *data = [replies dataUsingEncoding:NSUTF8StringEncoding];
-
+        
         // string to json conversion
         NSError *error = nil;
         id json = [NSJSONSerialization
-            JSONObjectWithData:data
-                       options:NSJSONReadingMutableContainers
-                         error:&error];
-
+                   JSONObjectWithData:data
+                   options:NSJSONReadingMutableContainers
+                   error:&error];
+        
         if (error) {
-            std::string message =
-                error ? [[error localizedDescription] UTF8String]
-                      : "JSON parse error";
-            throw std::runtime_error(message);
+            NSString *message =
+            error ? [NSString stringWithFormat:@"%@/%@",@"[ERROR]: ",[error localizedDescription]]
+            : @"[ERROR]: JSON parse error";
+            return message;
         } else {
             // quick replies are stored as array of strings
             if ([json isKindOfClass:[NSArray class]]) {
                 NSArray *array = (NSArray *)json;
                 try {
                     NSError *error = nil;
-
+                    
                     // Update WCSession application context with quickreplies and current server of mobile app
                     BOOL success = [_session updateApplicationContext:@{
                         @"quickReplies" : array,
                         @"server" : currentServer
                     }
                                                                 error:&error];
-
+                    
                     if (!success || error) {
-                        std::string message =
-                            error ? [[error localizedDescription] UTF8String]
-                                  : "Unknown Watch error";
-                        throw std::runtime_error(message);
+                        NSString *message =
+                        error ? [NSString stringWithFormat:@"%@/%@",@"[ERROR]: ",[error localizedDescription]]
+                        : @"[ERROR]: Unknown Watch error";
+                        return message;
                     }
+                    
+                    NSString *replies = [array componentsJoinedByString:@", "];
+                    return replies;
                 } catch (const std::exception &e) {
-                    std::string message = "Watch sync exception";
-                    throw std::runtime_error(message);
+                    NSString *message = @"[ERROR]: Watch sync exception";
                     RCTLogError(@"Watch sync exception: %s", e.what());
+                    return message;
                 }
             } else {
-                std::string message = "Parsed JSON but unknown type";
-                throw std::runtime_error(message);
+                NSString *message = @"[ERROR]: Parsed JSON but unknown type";
+                return message;
             }
         }
     } else {
         RCTLogInfo(@"No replies found in MMKV");
+        return @"[ERROR]: quick replies not found in MMKV";
     }
 }
 

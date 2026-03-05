@@ -18,8 +18,10 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
         super.init()
         session.delegate = self
         session.activate()
+        
+        // print("Watch session activating...")
     }
-
+    
     func sendMessage(
         completionHandler:
             @escaping (Result<WatchMessage, ServersLoadingError>) -> Void
@@ -63,13 +65,17 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
     ) {
 
     }
+    
 
     // quick replies
     func session(
         _ session: WCSession,
         didReceiveApplicationContext applicationContext: [String: Any]
     ) {
-        print(applicationContext)
+        
+        // for debug
+        // print("received Context:", applicationContext)
+        
         guard
             let serverString = applicationContext["server"] as? String,
             let replies = applicationContext["quickReplies"] as? [String]
@@ -77,6 +83,9 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
             print("Invalid context")
             return
         }
+        
+        // for debug
+        // print(serverString,replies)
 
         // if server exists, update in DB directly
         DispatchQueue.main.async { [weak self] in
@@ -85,11 +94,12 @@ final class WatchSession: NSObject, WatchSessionProtocol, WCSessionDelegate {
             if let server = self.serversDB.server(url: URL(string: serverString)!) {
                 server.quickReplies = replies
                 self.serversDB.save()
+                // print("saved to db", server.name)
             } else {
                 var allReplies = UserDefaults.standard.dictionary(forKey: "pendingQuickReplies") as? [String: [String]] ?? [:]
                 allReplies[serverString] = replies
                 UserDefaults.standard.set(allReplies, forKey: "pendingQuickReplies")
-                print(allReplies[serverString] ?? [])
+                // print(allReplies[serverString] ?? [])
             }
         }
     }

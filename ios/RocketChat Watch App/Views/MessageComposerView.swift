@@ -56,10 +56,6 @@ struct MessageComposerView: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                } else {
-                    Color.clear
-                        .frame(height: 1)
-                        .id(anchorID)
                 }
             }
 

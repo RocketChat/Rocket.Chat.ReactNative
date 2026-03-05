@@ -2,7 +2,7 @@ import type { TurboModule } from 'react-native';
 import { Platform, TurboModuleRegistry } from 'react-native';
 
 export interface Spec extends TurboModule {
-	syncQuickReplies(): void;
+	syncQuickReplies(): string;
 	isWatchSupported(): boolean;
 	isWatchPaired(): boolean;
 	isWatchAppInstalled(): boolean;

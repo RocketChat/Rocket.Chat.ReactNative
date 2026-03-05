@@ -11,7 +11,6 @@ import Chip from '../../containers/Chip';
 import userPreferences, { useUserPreferences } from '../../lib/methods/userPreferences';
 import { CURRENT_SERVER, WATCHOS_QUICKREPLIES } from '../../lib/constants/keys';
 import { syncWatchOSQuickReplies } from '../../lib/methods/WatchOSQuickReplies/syncReplies';
-// import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 interface IUserWatchOSQuickRepliesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserWatchOSQuickRepliesView'>;
@@ -21,8 +20,6 @@ const UserWatchOSQuickRepliesView = ({ navigation }: IUserWatchOSQuickRepliesVie
 	const currentServer = userPreferences.getString(CURRENT_SERVER);
 	const [quickReplies, setQuickReplies] = useUserPreferences<string[]>(`${currentServer}-${WATCHOS_QUICKREPLIES}`, []);
 	const [input, setInput] = useState<string>('');
-	// const appleWatchReplies = useAppSelector(state => state.settings.Apple_Watch_Quick_Actions);
-	// const isFirstLogin = useAppSelector(state => state.app.isFirstServerLogin);
 
 	useEffect(() => {
 		navigation.setOptions({
