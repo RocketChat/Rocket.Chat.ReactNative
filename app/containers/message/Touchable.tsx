@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Pressable } from 'react-native-gesture-handler';
+import { Pressable } from 'react-native';
 
 import MessageContext from './Context';
 
