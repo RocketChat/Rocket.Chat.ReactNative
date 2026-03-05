@@ -72,8 +72,8 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 			text = atMentioned.name;
 		}
 
-		// not enough information on mentions to navigate to team info, so we don't handle onPress
 		return (
+			// not enough information on mentions to navigate to team info, so we don't handle onPress
 			<Text style={[styles.mention, mentionStyle, ...style]} onPress={atMentioned?.type === 'team' ? undefined : handlePress}>
 				{preffix}
 				{text}
