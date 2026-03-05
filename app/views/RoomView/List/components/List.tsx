@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { isIOS } from '../../../../lib/methods/helpers';
@@ -22,6 +22,39 @@ const styles = StyleSheet.create({
 const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
+	const { data, renderItem, ...flatListProps } = props;
+
+	const renderItemWithFocus: IListProps['renderItem'] = info => {
+		if (!renderItem) {
+			return null as any;
+		}
+
+		if (Platform.OS !== 'android') {
+			return renderItem(info);
+		}
+
+		const total = data?.length || 0;
+		const { index } = info;
+
+		const nextFocusUp = index < total - 1 ? index + 1 : undefined;
+		const nextFocusDown = index > 0 ? index + 1 : undefined;
+		return (
+			<View
+				nativeID={`${index}`}
+				focusable
+				{...(Platform.OS === 'android'
+					? {
+							// @ts-ignore Android-only props not in ViewProps types; accepts native component refs
+							nextFocusUp,
+							// @ts-ignore Android-only props not in ViewProps types; accepts native component refs
+							nextFocusDown
+					  }
+					: null)}>
+				{renderItem(info)}
+			</View>
+		);
+	};
+
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
@@ -36,15 +69,18 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 		<View style={styles.list}>
 			{/* @ts-ignore */}
 			<Animated.FlatList
+				{...flatListProps}
 				accessibilityElementsHidden={isAutocompleteVisible}
 				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
 				ref={listRef}
 				keyExtractor={item => item.id}
+				data={data}
+				renderItem={renderItemWithFocus}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted
-				renderScrollComponent={isIOS ? undefined : props => <InvertedScrollView {...props} />}
+				inverted={props.inverted || true}
+				renderScrollComponent={isIOS ? undefined : scrollProps => <InvertedScrollView {...scrollProps} />}
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}
@@ -52,7 +88,6 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 				windowSize={10}
 				scrollEventThrottle={16}
 				onScroll={scrollHandler}
-				{...props}
 				{...scrollPersistTaps}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
