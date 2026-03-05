@@ -1,9 +1,14 @@
 import React, { useContext } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, type PressableProps } from 'react-native';
 
 import MessageContext from './Context';
 
-const RCTouchable: any = React.memo(({ children, ...props }: any) => {
+interface IProps extends PressableProps {
+	children: React.ReactNode;
+	onLongPress?: () => void;
+}
+
+const RCTouchable: React.FC<IProps> = React.memo(({ children, ...props }) => {
 	'use memo';
 
 	const { onLongPress } = useContext(MessageContext);
