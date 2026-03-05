@@ -108,7 +108,8 @@ NSString *mmkvCurrentServerKey = @"currentServer";
                     // Update WCSession application context with quickreplies and current server of mobile app
                     BOOL success = [_session updateApplicationContext:@{
                         @"quickReplies" : array,
-                        @"server" : currentServer
+                        @"server" : currentServer,
+                        @"_t" : @(arc4random())
                     }
                                                                 error:&error];
                     

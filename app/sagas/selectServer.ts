@@ -44,7 +44,6 @@ import { appSelector } from '../lib/hooks/useAppSelector';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
-import { syncWatchOSQuickReplies } from '../lib/methods/WatchOSQuickReplies/syncReplies';
 import syncWatchOSQuickRepliesWithServer from '../lib/methods/WatchOSQuickReplies/syncWatchOSRepliesWithServer';
 
 const getServerVersion = function (version: string | null) {
@@ -278,11 +277,8 @@ function* handleServerFinishAdd() {
 
 		if (shouldShowWatchAppOptions()) {
 			// case: when new server is added and switched
-			// sets the local mmkv
+			// sets the local mmkv and syncs
 			syncWatchOSQuickRepliesWithServer(state);
-
-			// sets the watch app quick replies
-			syncWatchOSQuickReplies();
 		}
 	} catch (e) {
 		log(e);
