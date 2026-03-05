@@ -28,13 +28,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={1}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -43,93 +56,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="private channel"
-            >
-              private channel
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -158,13 +93,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={2}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -173,93 +121,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="public channel"
-            >
-              public channel
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -288,13 +158,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={3}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -303,106 +186,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              accessibilityLabel="discussion"
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="discussion"
-            >
-              discussion
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -431,13 +223,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={4}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -446,93 +251,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#6C727A",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="omnichannel"
-            >
-              omnichannel
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -561,13 +288,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={5}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -576,93 +316,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="private team"
-            >
-              private team
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -691,13 +353,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={6}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -706,93 +381,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="public team"
-            >
-              public team
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -821,13 +418,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={7}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -836,93 +446,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="group dm"
-            >
-              group dm
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -951,13 +483,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={8}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -966,93 +511,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="online dm"
-            >
-              online dm
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -1081,13 +548,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={9}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -1096,93 +576,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="away dm"
-            >
-              away dm
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -1211,13 +613,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={10}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -1226,93 +641,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="busy dm"
-            >
-              busy dm
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -1341,13 +678,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={11}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -1356,93 +706,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="loading dm"
-            >
-              loading dm
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -1471,13 +743,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={12}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -1486,93 +771,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="offline dm"
-            >
-              offline dm
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -1601,13 +808,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={13}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -1616,93 +836,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="classified"
-            >
-              classified
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -1731,13 +873,26 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={14}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -1746,93 +901,15 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="classified"
-            >
-              classified
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
 ]
@@ -1866,13 +943,26 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={15}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -1881,126 +971,15 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              title
-            </Text>
-          </View>
-          <Text
-            accessibilityLabel="subtitle"
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                  "lineHeight": undefined,
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                  "fontSize": 12,
-                },
-              ]
-            }
-            testID="markdown-preview-subtitle"
-          >
-            subtitle
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -2029,13 +1008,26 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={16}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -2044,126 +1036,15 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#F2F3F5",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#F2F3F5",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              title
-            </Text>
-          </View>
-          <Text
-            accessibilityLabel="subtitle"
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#E4E7EA",
-                  "lineHeight": undefined,
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                  "fontSize": 12,
-                },
-              ]
-            }
-            testID="markdown-preview-subtitle"
-          >
-            subtitle
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -2192,13 +1073,26 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={17}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -2207,126 +1101,15 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#F2F3F5",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#F2F3F5",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              title
-            </Text>
-          </View>
-          <Text
-            accessibilityLabel="subtitle"
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#E4E7EA",
-                  "lineHeight": undefined,
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#9EA2A8",
-                  "fontSize": 12,
-                },
-              ]
-            }
-            testID="markdown-preview-subtitle"
-          >
-            subtitle
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
 ]
@@ -2360,13 +1143,26 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={18}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -2375,134 +1171,15 @@ exports[`Story Snapshots: Thread should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              accessibilityLabel="title"
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="markdown-preview-title"
-            >
-              title
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#6C727A",
-                  },
-                ]
-              }
-            >
-              parent title
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -2535,13 +1212,26 @@ preview
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={19}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -2550,138 +1240,15 @@ preview
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              accessibilityLabel="markdown preview #3 4 5"
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="markdown
-preview
-#3
-4
-5"
-            >
-              markdown preview #3 4 5
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#6C727A",
-                  },
-                ]
-              }
-            >
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
 ]
@@ -2715,13 +1282,26 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={20}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -2730,93 +1310,15 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="title"
-            >
-              title
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -2845,13 +1347,26 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={21}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -2860,93 +1375,15 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-            >
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-            </Text>
-          </View>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -2975,13 +1412,26 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={22}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -2990,126 +1440,15 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              title
-            </Text>
-          </View>
-          <Text
-            accessibilityLabel="subtitle"
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                  "lineHeight": undefined,
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                  "fontSize": 12,
-                },
-              ]
-            }
-            testID="markdown-preview-subtitle"
-          >
-            subtitle
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -3138,13 +1477,26 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={23}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -3153,126 +1505,15 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              title
-            </Text>
-          </View>
-          <Text
-            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                  "lineHeight": undefined,
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                  "fontSize": 12,
-                },
-              ]
-            }
-            testID="markdown-preview-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -3301,13 +1542,26 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={24}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -3316,127 +1570,15 @@ exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-            >
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-            </Text>
-          </View>
-          <Text
-            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontSize": 16,
-                  "fontWeight": "400",
-                  "lineHeight": 22,
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#2F343D",
-                  "lineHeight": undefined,
-                },
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                  "fontSize": 12,
-                },
-              ]
-            }
-            testID="markdown-preview-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
 ]
@@ -3470,13 +1612,26 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={25}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -3485,126 +1640,15 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              title
-            </Text>
-          </View>
-          <Text
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                  "fontSize": 12,
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontWeight": "600",
-                  "textAlign": "left",
-                }
-              }
-            >
-              user 1
-               
-            </Text>
-            is typing
-            ...
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -3633,13 +1677,26 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={26}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -3648,126 +1705,15 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              title
-            </Text>
-          </View>
-          <Text
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                  "fontSize": 12,
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontWeight": "600",
-                  "textAlign": "left",
-                }
-              }
-            >
-              user 1 and user 2
-               
-            </Text>
-            are typing
-            ...
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
   <View
@@ -3796,13 +1742,26 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
         ]
       }
     >
-      <RNGestureHandlerButton
-        collapsable={false}
-        delayLongPress={600}
-        enabled={true}
-        exclusive={true}
-        handlerTag={27}
-        handlerType="NativeViewGestureHandler"
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        focusable={false}
         hitSlop={
           {
             "bottom": 5,
@@ -3811,126 +1770,15 @@ exports[`Story Snapshots: Typing should match snapshot 1`] = `
             "top": 5,
           }
         }
-        innerRef={null}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        rippleColor="transparent"
-        style={
-          [
-            undefined,
-            {
-              "cursor": undefined,
-            },
-          ]
-        }
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
         testID="room-header"
-        touchSoundDisabled={false}
-      >
-        <View
-          accessible={true}
-          collapsable={false}
-          style={
-            {
-              "opacity": 1,
-            }
-          }
-        >
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                  [
-                    {
-                      "lineHeight": 16,
-                    },
-                    [
-                      {
-                        "marginRight": 4,
-                      },
-                      undefined,
-                    ],
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "flexShrink": 1,
-                    "fontFamily": "Inter",
-                    "fontWeight": "600",
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#1F2329",
-                    "fontSize": 16,
-                  },
-                ]
-              }
-            >
-              title
-            </Text>
-          </View>
-          <Text
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "Inter",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                {
-                  "color": "#6C727A",
-                  "fontSize": 12,
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "Inter",
-                  "fontWeight": "600",
-                  "textAlign": "left",
-                }
-              }
-            >
-              user 1, user 2, user 3, user 4, user 5
-               
-            </Text>
-            are typing
-            ...
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
+      />
     </View>
   </View>,
 ]
