@@ -55,8 +55,9 @@ const setStoreByVariant = (variant: 'empty' | 'searching' | 'userSelected' | 'si
 			filter: '',
 			options: [],
 			selectedPeer: {
-				userId: 'user-1',
-				displayName: 'Alice Johnson',
+				type: 'user',
+				value: 'alice.johnson',
+				label: 'Alice Johnson',
 				username: 'alice.johnson'
 			}
 		});
@@ -66,7 +67,7 @@ const setStoreByVariant = (variant: 'empty' | 'searching' | 'userSelected' | 'si
 	usePeerAutocompleteStore.setState({
 		filter: '',
 		options: [],
-		selectedPeer: { number: '+55 11 99999-9999' }
+		selectedPeer: { type: 'sip', value: '+5511999999999', label: '+55 11 99999-9999' }
 	});
 };
 

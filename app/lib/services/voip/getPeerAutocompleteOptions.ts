@@ -6,10 +6,6 @@ export type TPeerItem =
 	| { type: 'user'; value: string; label: string; username?: string; callerId?: string; status?: TUserStatus }
 	| { type: 'sip'; value: string; label: string };
 
-export type TPeerInfo =
-	| { userId: string; displayName: string; username?: string; callerId?: string; status?: TUserStatus }
-	| { number: string };
-
 type TUserAutocompleteResponse = {
 	success?: boolean;
 	items?: Array<{
@@ -21,23 +17,15 @@ type TUserAutocompleteResponse = {
 	}>;
 };
 
-const getExtensionFromPeerInfo = (peerInfo?: TPeerInfo | null): string | undefined => {
-	if (!peerInfo) {
+const getExtensionFromPeerInfo = (peerInfo?: TPeerItem | null): string | undefined => {
+	if (!peerInfo || !('callerId' in peerInfo)) {
 		return undefined;
 	}
 
-	if ('callerId' in peerInfo) {
-		return peerInfo.callerId;
-	}
-
-	if ('number' in peerInfo) {
-		return peerInfo.number;
-	}
-
-	return undefined;
+	return peerInfo.callerId;
 };
 
-const getPeerUsername = (peerInfo?: TPeerInfo | null): string | undefined => {
+const getPeerUsername = (peerInfo?: TPeerItem | null): string | undefined => {
 	if (!peerInfo || !('username' in peerInfo)) {
 		return undefined;
 	}
@@ -51,7 +39,7 @@ export const getPeerAutocompleteOptions = async ({
 	peerInfo
 }: {
 	filter: string;
-	peerInfo?: TPeerInfo | null;
+	peerInfo?: TPeerItem | null;
 }): Promise<TPeerItem[]> => {
 	const term = filter.trim();
 	if (!term) {

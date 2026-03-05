@@ -30,7 +30,7 @@ export const HeaderCallButton = ({
 			if (!room) return;
 			const otherUserId = getUidDirectMessage(room);
 			if (!otherUserId) return;
-			usePeerAutocompleteStore.getState().setSelectedPeer({ userId: otherUserId, displayName: room.name });
+			usePeerAutocompleteStore.getState().setSelectedPeer({ type: 'user', value: otherUserId, label: room.name });
 			showActionSheetRef({
 				children: <NewMediaCall />
 			});

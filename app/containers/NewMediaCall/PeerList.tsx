@@ -1,6 +1,6 @@
 import { FlatList } from 'react-native';
 
-import type { TPeerInfo, TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
+import type { TPeerItem } from '../../lib/services/voip/getPeerAutocompleteOptions';
 import { PeerItem } from './PeerItem';
 import * as List from '../List';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
@@ -15,18 +15,19 @@ export const PeerList = () => {
 	if (selectedPeer) return null;
 
 	const handleSelectOption = (option: TPeerItem) => {
-		const peerInfo: TPeerInfo =
+		const peerItem: TPeerItem =
 			option.type === 'sip'
-				? { number: option.label }
+				? { type: 'sip', value: option.value, label: option.label }
 				: {
-						userId: option.value,
-						displayName: option.label,
+						type: 'user',
+						value: option.value,
+						label: option.label,
 						username: option.username,
 						callerId: option.callerId,
 						status: option.status
 				  };
 
-		setSelectedPeer(peerInfo);
+		setSelectedPeer(peerItem);
 		setFilter('');
 		fetchOptions('');
 	};

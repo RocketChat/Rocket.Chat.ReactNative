@@ -30023,6 +30023,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                         [
                           {
                             "height": 22,
+                            "textAlign": "center",
                             "textAlignVertical": "center",
                             "width": 22,
                           },
@@ -35642,6 +35643,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                         [
                           {
                             "height": 22,
+                            "textAlign": "center",
                             "textAlignVertical": "center",
                             "width": 22,
                           },
@@ -36272,6 +36274,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                         [
                           {
                             "height": 22,
+                            "textAlign": "center",
                             "textAlignVertical": "center",
                             "width": 22,
                           },

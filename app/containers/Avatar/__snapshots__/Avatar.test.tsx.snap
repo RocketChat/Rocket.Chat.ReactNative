@@ -398,6 +398,7 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
           [
             {
               "height": 24,
+              "textAlign": "center",
               "textAlignVertical": "center",
               "width": 24,
             },

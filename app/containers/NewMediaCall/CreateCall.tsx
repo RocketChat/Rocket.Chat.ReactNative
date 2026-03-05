@@ -20,9 +20,9 @@ export const CreateCall = () => {
 		}
 
 		if ('number' in selectedPeer) {
-			mediaSessionInstance.startCall(selectedPeer.number, 'sip');
+			mediaSessionInstance.startCall(selectedPeer.value, 'sip');
 		} else {
-			mediaSessionInstance.startCall(selectedPeer.userId, 'user');
+			mediaSessionInstance.startCall(selectedPeer.value, 'user');
 		}
 
 		hideActionSheetRef();

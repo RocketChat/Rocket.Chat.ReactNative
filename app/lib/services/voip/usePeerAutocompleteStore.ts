@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { getPeerAutocompleteOptions, type TPeerInfo, type TPeerItem } from './getPeerAutocompleteOptions';
+import { getPeerAutocompleteOptions, type TPeerItem } from './getPeerAutocompleteOptions';
 
 type TPeerAutocompleteState = {
 	options: TPeerItem[];
@@ -42,7 +42,7 @@ export const usePeerAutocompleteStore = create<TPeerAutocompleteStore>((set, get
 		}
 	},
 
-	setSelectedPeer: (peer: TPeerInfo | null) => {
+	setSelectedPeer: (peer: TPeerItem | null) => {
 		set({ selectedPeer: peer });
 	},
 
