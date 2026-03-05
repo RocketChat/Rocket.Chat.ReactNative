@@ -1,0 +1,778 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: All should match snapshot 1`] = `
+<View
+  style={
+    {
+      "flex": 1,
+      "padding": 16,
+    }
+  }
+>
+  <RCTScrollView
+    ItemSeparatorComponent={
+      {
+        "$$typeof": Symbol(react.memo),
+        "compare": null,
+        "type": [Function],
+      }
+    }
+    contentContainerStyle={
+      {
+        "flexShrink": 1,
+      }
+    }
+    data={
+      [
+        {
+          "label": "+55 11 98888-7777",
+          "type": "sip",
+          "value": "+5511988887777",
+        },
+        {
+          "label": "Alice Johnson",
+          "type": "user",
+          "username": "alice.johnson",
+          "value": "user-1",
+        },
+        {
+          "label": "Long display name to validate text truncation behavior for PeerItem in narrow widths",
+          "type": "user",
+          "username": "very.long.username",
+          "value": "user-2",
+        },
+        {
+          "label": "Bob Smith",
+          "type": "user",
+          "username": "bob.smith",
+          "value": "user-3",
+        },
+      ]
+    }
+    getItem={[Function]}
+    getItemCount={[Function]}
+    keyExtractor={[Function]}
+    keyboardShouldPersistTaps="always"
+    onContentSizeChange={[Function]}
+    onLayout={[Function]}
+    onMomentumScrollBegin={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={0.0001}
+    stickyHeaderIndices={[]}
+    viewabilityConfigCallbackPairs={[]}
+  >
+    <View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+                "paddingHorizontal": 12,
+                "paddingVertical": 10,
+              },
+              {
+                "backgroundColor": "#FFFFFF",
+              },
+            ]
+          }
+          testID="new-media-call-option-+5511988887777"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "width": 28,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "lineHeight": 26,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              +55 11 98888-7777
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              undefined,
+              {
+                "backgroundColor": "#CBCED1",
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+                "paddingHorizontal": 12,
+                "paddingVertical": 10,
+              },
+              {
+                "backgroundColor": "#FFFFFF",
+              },
+            ]
+          }
+          testID="new-media-call-option-user-1"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "width": 28,
+              }
+            }
+          >
+            <View
+              accessibilityLabel="alice.johnson's avatar"
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 28,
+                    "width": 28,
+                  },
+                  undefined,
+                ]
+              }
+              testID="avatar"
+            >
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={"[React.ref]"}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={28}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                source={
+                  [
+                    {
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/alice.johnson?format=png&size=56",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "borderRadius": 4,
+                    "height": 28,
+                    "width": 28,
+                  }
+                }
+                transition={null}
+                width={28}
+              />
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    [
+                      {
+                        "height": 20,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 20,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "lineHeight": 26,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Alice Johnson
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              undefined,
+              {
+                "backgroundColor": "#CBCED1",
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+                "paddingHorizontal": 12,
+                "paddingVertical": 10,
+              },
+              {
+                "backgroundColor": "#FFFFFF",
+              },
+            ]
+          }
+          testID="new-media-call-option-user-2"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "width": 28,
+              }
+            }
+          >
+            <View
+              accessibilityLabel="very.long.username's avatar"
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 28,
+                    "width": 28,
+                  },
+                  undefined,
+                ]
+              }
+              testID="avatar"
+            >
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={"[React.ref]"}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={28}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                source={
+                  [
+                    {
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/very.long.username?format=png&size=56",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "borderRadius": 4,
+                    "height": 28,
+                    "width": 28,
+                  }
+                }
+                transition={null}
+                width={28}
+              />
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    [
+                      {
+                        "height": 20,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 20,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "lineHeight": 26,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Long display name to validate text truncation behavior for PeerItem in narrow widths
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            [
+              {
+                "height": 0.5,
+              },
+              undefined,
+              {
+                "backgroundColor": "#CBCED1",
+              },
+            ]
+          }
+        />
+      </View>
+      <View
+        onFocusCapture={[Function]}
+        onLayout={[Function]}
+        style={null}
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 4,
+                "paddingHorizontal": 12,
+                "paddingVertical": 10,
+              },
+              {
+                "backgroundColor": "#FFFFFF",
+              },
+            ]
+          }
+          testID="new-media-call-option-user-3"
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "width": 28,
+              }
+            }
+          >
+            <View
+              accessibilityLabel="bob.smith's avatar"
+              accessible={true}
+              style={
+                [
+                  {
+                    "borderRadius": 4,
+                    "height": 28,
+                    "width": 28,
+                  },
+                  undefined,
+                ]
+              }
+              testID="avatar"
+            >
+              <ViewManagerAdapter_ExpoImage
+                borderRadius={4}
+                containerViewRef={"[React.ref]"}
+                contentFit="cover"
+                contentPosition={
+                  {
+                    "left": "50%",
+                    "top": "50%",
+                  }
+                }
+                height={28}
+                nativeViewRef={"[React.ref]"}
+                onError={[Function]}
+                onLoad={[Function]}
+                onLoadStart={[Function]}
+                onProgress={[Function]}
+                placeholder={[]}
+                priority="high"
+                source={
+                  [
+                    {
+                      "headers": {
+                        "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                      },
+                      "uri": "https://open.rocket.chat/avatar/bob.smith?format=png&size=56",
+                    },
+                  ]
+                }
+                style={
+                  {
+                    "borderRadius": 4,
+                    "height": 28,
+                    "width": 28,
+                  }
+                }
+                transition={null}
+                width={28}
+              />
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+                "flexDirection": "row",
+                "gap": 4,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#6C727A",
+                    "fontSize": 20,
+                  },
+                  [
+                    {
+                      "lineHeight": 20,
+                    },
+                    [
+                      {
+                        "height": 20,
+                        "textAlign": "center",
+                        "textAlignVertical": "center",
+                        "width": 20,
+                      },
+                      undefined,
+                    ],
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "lineHeight": 26,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              Bob Smith
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

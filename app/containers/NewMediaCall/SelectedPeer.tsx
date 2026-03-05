@@ -22,7 +22,8 @@ export const SelectedPeer = () => {
 					style={styles.removeButton}
 					accessibilityRole='button'
 					accessibilityLabel={I18n.t('Remove')}
-					testID='new-media-call-clear-selected-peer'>
+					testID='new-media-call-clear-selected-peer'
+					android_ripple={{ color: colors.surfaceSelected }}>
 					<CustomIcon name='close' size={16} color={colors.buttonFontSecondary} />
 				</Pressable>
 			</View>
