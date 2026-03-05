@@ -4,13 +4,13 @@ import { getPeerAutocompleteOptions, type TPeerInfo, type TPeerItem } from './ge
 
 type TPeerAutocompleteState = {
 	options: TPeerItem[];
-	selectedPeer: TPeerInfo | null;
+	selectedPeer: TPeerItem | null;
 	filter: string;
 };
 
 type TPeerAutocompleteActions = {
 	fetchOptions: (filter: string) => Promise<void>;
-	setSelectedPeer: (peer: TPeerInfo | null) => void;
+	setSelectedPeer: (peer: TPeerItem | null) => void;
 	setFilter: (filter: string) => void;
 	clearSelection: () => void;
 };

@@ -9,7 +9,7 @@ import { textInputDebounceTime } from '../../lib/constants/debounceConfig';
 import { useDebounce } from '../../lib/methods/helpers';
 import { usePeerAutocompleteStore } from '../../lib/services/voip/usePeerAutocompleteStore';
 
-export const Container = ({ children }: { children: React.ReactElement[] }) => {
+export const Container = ({ children }: { children: React.ReactElement[] | React.ReactElement }) => {
 	const { colors } = useTheme();
 
 	const filter = usePeerAutocompleteStore(state => state.filter);

@@ -4,7 +4,7 @@ import * as HeaderButton from '../../../containers/Header/components/HeaderButto
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import type { TSubscriptionModel } from '../../../definitions';
 import { useMediaCallPermission } from '../../../lib/hooks/useMediaCallPermission';
-import NewMediaCall from '../../../containers/NewMediaCall';
+import { NewMediaCall } from '../../../containers/NewMediaCall';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import { getUidDirectMessage } from '../../../lib/methods/helpers/helpers';
 import { usePeerAutocompleteStore } from '../../../lib/services/voip/usePeerAutocompleteStore';
