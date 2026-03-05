@@ -33,22 +33,20 @@ const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 			return renderItem(info);
 		}
 
-		const total = data?.length ?? 0;
+		const total = data?.length || 0;
 		const { index } = info;
-		const itemId = `room-message-${index}`;
 
-		const nextFocusUp = index < total - 1 ? `room-message-${index + 1}` : undefined;
-		const nextFocusDown = index > 0 ? `room-message-${index - 1}` : undefined;
-
+		const nextFocusUp = index < total - 1 ? index + 1 : undefined;
+		const nextFocusDown = index > 0 ? index + 1 : undefined;
 		return (
 			<View
-				nativeID={itemId}
+				nativeID={`${index}`}
 				focusable
 				{...(Platform.OS === 'android'
 					? {
-							// @ts-ignore Android-only props not in ViewProps types
+							// @ts-ignore Android-only props not in ViewProps types; accepts native component refs
 							nextFocusUp,
-							// @ts-ignore Android-only props not in ViewProps types
+							// @ts-ignore Android-only props not in ViewProps types; accepts native component refs
 							nextFocusDown
 					  }
 					: null)}>
