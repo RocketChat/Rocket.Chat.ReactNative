@@ -97,6 +97,7 @@ import { type IMessageComposerRef, MessageComposerContainer } from '../../contai
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
 import { type IListContainerRef, type TListRef } from './List/definitions';
+import { enableRoomViewKeyboardA11y, disableKeyboardA11y } from '../../lib/native/KeyboardInversionA11yAndroid';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
@@ -235,6 +236,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				} else {
 					EventEmitter.addEventListener('connected', this.handleConnected);
 				}
+				// Enable hardware keyboard a11y inversion for this room on Android
+				enableRoomViewKeyboardA11y('room-view');
 			}
 			if (this.jumpToMessageId) {
 				this.jumpToMessage(this.jumpToMessageId);
@@ -385,6 +388,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (!this.tmid) {
 			await AudioManager.unloadRoomAudios(this.rid);
 		}
+		disableKeyboardA11y();
 	}
 
 	canForwardGuest = async () => {
