@@ -29,13 +29,13 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
       Title
     </Text>
     <A11yOrderView
-      orderKey=":r0:"
+      orderKey="«r0»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r0:"
+        orderKey="«r0»"
       >
         <View
           style={
@@ -718,13 +718,13 @@ exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
       Description
     </Text>
     <A11yOrderView
-      orderKey=":r1:"
+      orderKey="«r1»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r1:"
+        orderKey="«r1»"
       >
         <View
           style={
@@ -1002,6 +1002,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Primary Action"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1012,6 +1013,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1063,6 +1065,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Secondary"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1073,6 +1076,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1124,6 +1128,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Danger Action"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1134,6 +1139,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1185,6 +1191,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 4"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1195,6 +1202,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1246,6 +1254,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 5"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1256,6 +1265,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1314,6 +1324,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 6 - Hidden"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1324,6 +1335,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1382,6 +1394,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 7 - Hidden"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1392,6 +1405,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1450,6 +1464,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Button 8 - Hidden"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1460,6 +1475,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1510,6 +1526,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="Show more"
     accessibilityRole="button"
+    accessible={true}
     collapsable={false}
     enabled={true}
     hitSlop={
@@ -1520,6 +1537,7 @@ exports[`Story Snapshots: ModalActionsWithShowMore should match snapshot 1`] = `
         "top": 0,
       }
     }
+    onLayout={[Function]}
     rippleColor="transparent"
     style={
       [
@@ -1867,7 +1885,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={28}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -2041,7 +2059,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={29}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -2215,7 +2233,7 @@ exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={30}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       hitSlop={
         {
@@ -2343,7 +2361,7 @@ exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={31}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     innerRef={null}
     onActiveStateChange={[Function]}
@@ -2494,13 +2512,13 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
     }
   >
     <A11yOrderView
-      orderKey=":r2:"
+      orderKey="«r2»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r2:"
+        orderKey="«r2»"
       >
         <View
           style={
@@ -2598,13 +2616,13 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
       Outgoing Title
     </Text>
     <A11yOrderView
-      orderKey=":r3:"
+      orderKey="«r3»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r3:"
+        orderKey="«r3»"
       >
         <View
           style={
@@ -2724,7 +2742,7 @@ exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={32}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -2961,6 +2979,7 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Change"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -2971,6 +2990,7 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -3081,13 +3101,13 @@ exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
       Describe your update
     </Text>
     <A11yOrderView
-      orderKey=":r4:"
+      orderKey="«r4»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r4:"
+        orderKey="«r4»"
       >
         <View
           style={
@@ -3211,13 +3231,13 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
       First field
     </Text>
     <A11yOrderView
-      orderKey=":r5:"
+      orderKey="«r5»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r5:"
+        orderKey="«r5»"
       >
         <View
           style={
@@ -3315,13 +3335,13 @@ exports[`Story Snapshots: ModalInputWithAddField should match snapshot 1`] = `
       Second field
     </Text>
     <A11yOrderView
-      orderKey=":r6:"
+      orderKey="«r6»"
     >
       <A11yIndexView
         importantForAccessibility="yes"
         orderFocusType={0}
         orderIndex={1}
-        orderKey=":r6:"
+        orderKey="«r6»"
       >
         <View
           style={
@@ -3481,13 +3501,13 @@ exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
     Label
   </Text>
   <A11yOrderView
-    orderKey=":r7:"
+    orderKey="«r7»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r7:"
+      orderKey="«r7»"
     >
       <View
         style={
@@ -3612,7 +3632,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={36}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -3786,7 +3806,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
       collapsable={false}
       delayLongPress={600}
       enabled={true}
-      handlerTag={37}
+      handlerTag={-1}
       handlerType="NativeViewGestureHandler"
       innerRef={null}
       onActiveStateChange={[Function]}
@@ -3874,7 +3894,7 @@ exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
               collapsable={false}
               delayLongPress={600}
               enabled={true}
-              handlerTag={38}
+              handlerTag={-1}
               handlerType="NativeViewGestureHandler"
               innerRef={null}
               onActiveStateChange={[Function]}
@@ -4066,13 +4086,13 @@ exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
     Label
   </Text>
   <A11yOrderView
-    orderKey=":r8:"
+    orderKey="«r8»"
   >
     <A11yIndexView
       importantForAccessibility="yes"
       orderFocusType={0}
       orderIndex={1}
-      orderKey=":r8:"
+      orderKey="«r8»"
     >
       <View
         style={

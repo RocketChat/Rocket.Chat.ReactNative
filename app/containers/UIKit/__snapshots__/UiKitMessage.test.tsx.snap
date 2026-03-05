@@ -6,6 +6,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Approve"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -16,6 +17,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -67,6 +69,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Deny"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -77,6 +80,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -128,6 +132,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Deny"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -138,6 +143,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -189,6 +195,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Deny"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -199,6 +206,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -250,6 +258,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Deny"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -260,6 +269,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -318,6 +328,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Deny"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -328,6 +339,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -386,6 +398,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="Deny"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -396,6 +409,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -446,6 +460,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="Show more"
     accessibilityRole="button"
+    accessible={true}
     collapsable={false}
     enabled={true}
     hitSlop={
@@ -456,6 +471,7 @@ exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
         "top": 0,
       }
     }
+    onLayout={[Function]}
     rippleColor="transparent"
     style={
       [
@@ -988,6 +1004,7 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="button"
     accessibilityRole="button"
+    accessible={true}
     collapsable={false}
     enabled={true}
     hitSlop={
@@ -998,6 +1015,7 @@ exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
         "top": 0,
       }
     }
+    onLayout={[Function]}
     rippleColor="transparent"
     style={
       [
@@ -1127,6 +1145,7 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
   <RNGestureHandlerButton
     accessibilityLabel="Select a date"
     accessibilityRole="button"
+    accessible={true}
     collapsable={false}
     enabled={true}
     hitSlop={
@@ -1137,6 +1156,7 @@ exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
         "top": 0,
       }
     }
+    onLayout={[Function]}
     rippleColor="transparent"
     style={
       [
@@ -1462,6 +1482,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="2 selecteds"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1472,6 +1493,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1596,6 +1618,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
     <RNGestureHandlerButton
       accessibilityLabel="0 selecteds"
       accessibilityRole="button"
+      accessible={true}
       collapsable={false}
       enabled={true}
       hitSlop={
@@ -1606,6 +1629,7 @@ exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
           "top": 0,
         }
       }
+      onLayout={[Function]}
       rippleColor="transparent"
       style={
         [
@@ -1736,7 +1760,7 @@ exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
     collapsable={false}
     delayLongPress={600}
     enabled={true}
-    handlerTag={37}
+    handlerTag={-1}
     handlerType="NativeViewGestureHandler"
     hitSlop={
       {

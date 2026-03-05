@@ -40,13 +40,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -174,13 +168,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -276,13 +264,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -364,15 +346,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -679,13 +653,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -813,13 +781,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -915,13 +877,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1003,15 +959,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -1359,13 +1307,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1493,13 +1435,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1595,13 +1531,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -1683,15 +1613,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -2039,13 +1961,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2173,13 +2089,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2275,13 +2185,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2363,15 +2267,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -2719,13 +2615,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2853,13 +2743,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -2955,13 +2839,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -3043,15 +2921,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -3399,13 +3269,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -3533,13 +3397,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -3635,13 +3493,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -3723,15 +3575,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -4079,13 +3923,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4213,13 +4051,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4315,13 +4147,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4403,15 +4229,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -4759,13 +4577,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4893,13 +4705,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -4995,13 +4801,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5083,15 +4883,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -5439,13 +5231,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5573,13 +5359,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5675,13 +5455,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -5763,15 +5537,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -6119,13 +5885,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6253,13 +6013,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6355,13 +6109,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6443,15 +6191,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -6799,13 +6539,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -6933,13 +6667,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -7035,13 +6763,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -7123,15 +6845,7 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -7483,13 +7197,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -7617,13 +7325,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -7719,13 +7421,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 80,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -7807,15 +7503,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
     </View>
   </View>
   <View
-    style={
-      {
-        "transform": [
-          {
-            "translateX": 0,
-          },
-        ],
-      }
-    }
+    style={[Function]}
   >
     <RNGestureHandlerButton
       activeOpacity={1}
@@ -8111,13 +7799,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8245,13 +7927,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8347,13 +8023,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8435,15 +8105,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -8791,13 +8453,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -8925,13 +8581,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9027,13 +8677,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9115,15 +8759,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -9471,13 +9107,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9605,13 +9235,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9707,13 +9331,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -9795,15 +9413,7 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -10136,13 +9746,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10270,13 +9874,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10372,13 +9970,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10460,15 +10052,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -10760,13 +10344,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10894,13 +10472,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -10996,13 +10568,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -11084,15 +10650,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -11328,13 +10886,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -11462,13 +11014,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -11564,13 +11110,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -11652,15 +11192,7 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -11937,13 +11469,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12071,13 +11597,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12173,13 +11693,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12261,15 +11775,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -12607,13 +12113,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12741,13 +12241,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12843,13 +12337,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -12931,15 +12419,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -13277,13 +12757,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -13411,13 +12885,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -13513,13 +12981,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -13601,15 +13063,7 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -13911,13 +13365,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14045,13 +13493,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14147,13 +13589,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14235,15 +13671,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -14563,13 +13991,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14697,13 +14119,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14799,13 +14215,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
             {
               "height": 60,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -14887,15 +14297,7 @@ exports[`Story Snapshots: InvitedRoom should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -15220,13 +14622,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -15354,13 +14750,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -15456,13 +14846,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -15544,15 +14928,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -15875,13 +15251,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16009,13 +15379,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16111,13 +15475,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16199,15 +15557,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -16530,13 +15880,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16664,13 +16008,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16766,13 +16104,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -16854,15 +16186,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -17185,13 +16509,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -17319,13 +16637,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -17421,13 +16733,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -17509,15 +16815,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -17840,13 +17138,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -17974,13 +17266,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18076,13 +17362,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18164,15 +17444,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -18551,13 +17823,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18685,13 +17951,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18787,13 +18047,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -18875,15 +18129,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -19262,13 +18508,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -19396,13 +18636,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -19498,13 +18732,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -19586,15 +18814,7 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -19978,13 +19198,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20112,13 +19326,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20214,13 +19422,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20302,15 +19504,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -20602,13 +19796,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20736,13 +19924,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20838,13 +20020,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -20926,15 +20102,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -21226,13 +20394,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -21360,13 +20522,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -21462,13 +20618,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -21550,15 +20700,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -21850,13 +20992,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -21984,13 +21120,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22086,13 +21216,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22174,15 +21298,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -22474,13 +21590,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22608,13 +21718,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22710,13 +21814,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -22798,15 +21896,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -23098,13 +22188,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23232,13 +22316,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23334,13 +22412,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23422,15 +22494,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -23722,13 +22786,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23856,13 +22914,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -23958,13 +23010,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24046,15 +23092,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -24346,13 +23384,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24480,13 +23512,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24582,13 +23608,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -24670,15 +23690,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -24970,13 +23982,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25104,13 +24110,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25206,13 +24206,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25294,15 +24288,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -25594,13 +24580,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25728,13 +24708,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25830,13 +24804,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -25918,15 +24886,7 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -26223,13 +25183,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -26357,13 +25311,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -26459,13 +25407,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -26547,15 +25489,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -26883,13 +25817,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27017,13 +25945,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27119,13 +26041,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27207,15 +26123,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -27575,13 +26483,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27709,13 +26611,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27811,13 +26707,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -27899,15 +26789,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -28235,13 +27117,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -28369,13 +27245,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -28471,13 +27341,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -28559,15 +27423,7 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -28931,13 +27787,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -29065,13 +27915,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 0,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -29167,13 +28011,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
           {
             "height": 75,
           },
-          {
-            "transform": [
-              {
-                "translateX": 80,
-              },
-            ],
-          },
+          [Function],
         ]
       }
     >
@@ -29255,15 +28093,7 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
     </View>
   </View>
   <View
-    style={
-      {
-        "transform": [
-          {
-            "translateX": 0,
-          },
-        ],
-      }
-    }
+    style={[Function]}
   >
     <RNGestureHandlerButton
       activeOpacity={1}
@@ -29559,13 +28389,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -29693,13 +28517,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -29795,13 +28613,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -29883,15 +28695,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -30190,13 +28994,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -30324,13 +29122,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -30426,13 +29218,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -30514,15 +29300,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -30814,13 +29592,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -30948,13 +29720,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31050,13 +29816,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31138,15 +29898,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -31438,13 +30190,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31572,13 +30318,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31674,13 +30414,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -31762,15 +30496,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -32062,13 +30788,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32196,13 +30916,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32298,13 +31012,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32386,15 +31094,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -32686,13 +31386,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32820,13 +31514,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -32922,13 +31610,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33010,15 +31692,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -33310,13 +31984,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33444,13 +32112,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33546,13 +32208,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -33634,15 +32290,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -33934,13 +32582,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34068,13 +32710,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34170,13 +32806,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34258,15 +32888,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -34558,13 +33180,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34692,13 +33308,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34794,13 +33404,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -34882,15 +33486,7 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -35187,13 +33783,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -35321,13 +33911,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -35423,13 +34007,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -35511,15 +34089,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
@@ -35818,13 +34388,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -35952,13 +34516,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 0,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -36054,13 +34612,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
             {
               "height": 75,
             },
-            {
-              "transform": [
-                {
-                  "translateX": 80,
-                },
-              ],
-            },
+            [Function],
           ]
         }
       >
@@ -36142,15 +34694,7 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
       </View>
     </View>
     <View
-      style={
-        {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
+      style={[Function]}
     >
       <RNGestureHandlerButton
         activeOpacity={1}
