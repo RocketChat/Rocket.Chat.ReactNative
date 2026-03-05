@@ -2,7 +2,8 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { Image } from 'expo-image';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 
 import * as List from '../../List';
 import { textParser } from '../utils';
@@ -33,28 +34,34 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 	const iconName = selected ? 'checkbox-checked' : 'checkbox-unchecked';
 	const iconColor = selected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
 
+	const handleSelect = () => onSelect(item);
+	const tap = Gesture.Tap().onStart(() => {
+		runOnJS(handleSelect)();
+	});
+
 	return (
-		<Touchable
-			accessible
-			accessibilityLabel={`${textParser([item.text])}. ${selected ? I18n.t('Selected') : ''}`}
-			accessibilityRole='checkbox'
-			testID={`multi-select-item-${itemName}`}
-			key={itemName}
-			onPress={() => onSelect(item)}>
-			<View style={styles.item}>
-				<View style={styles.flexZ}>
-					{item.imageUrl ? <Image style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
+		<GestureDetector gesture={tap}>
+			<Touchable
+				accessible
+				accessibilityLabel={`${textParser([item.text])}. ${selected ? I18n.t('Selected') : ''}`}
+				accessibilityRole='checkbox'
+				testID={`multi-select-item-${itemName}`}
+				key={itemName}>
+				<View style={styles.item}>
+					<View style={styles.flexZ}>
+						{item.imageUrl ? <Image style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
+					</View>
+					<View style={styles.flex}>
+						<Text numberOfLines={1} style={{ color: colors.fontTitlesLabels }}>
+							{textParser([item.text])}
+						</Text>
+					</View>
+					<View style={styles.flexZ}>
+						<CustomIcon color={iconColor} size={22} name={iconName} />
+					</View>
 				</View>
-				<View style={styles.flex}>
-					<Text numberOfLines={1} style={{ color: colors.fontTitlesLabels }}>
-						{textParser([item.text])}
-					</Text>
-				</View>
-				<View style={styles.flexZ}>
-					<CustomIcon color={iconColor} size={22} name={iconName} />
-				</View>
-			</View>
-		</Touchable>
+			</Touchable>
+		</GestureDetector>
 	);
 };
 
