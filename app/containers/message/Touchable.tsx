@@ -9,7 +9,7 @@ const RCTouchable: any = React.memo(({ children, ...props }: any) => {
 	const { onLongPress } = useContext(MessageContext);
 
 	return (
-		<Pressable onLongPress={onLongPress} {...props}>
+		<Pressable {...props} onLongPress={onLongPress}>
 			{children}
 		</Pressable>
 	);
