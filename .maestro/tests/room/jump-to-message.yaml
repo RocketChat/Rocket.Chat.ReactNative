@@ -147,7 +147,7 @@ tags:
     element:
       id: 'message-content-50'
     direction: DOWN
-    timeout: 60000
+    timeout: 60000 
 - scrollUntilVisible:
     element:
       text: '.*Load newer.*'
