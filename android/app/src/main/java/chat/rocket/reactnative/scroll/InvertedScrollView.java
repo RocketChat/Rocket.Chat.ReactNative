@@ -1,80 +1,23 @@
 package chat.rocket.reactnative.scroll;
 
 import android.view.View;
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.views.scroll.ReactScrollView;
+import com.facebook.react.views.view.ReactViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 
-// When a FlatList is inverted (inverted={true}), React Native uses scaleY: -1 transform which
-// visually inverts the list but Android still reports children in array order. This view overrides
-// addChildrenForAccessibility to reverse the order so TalkBack matches the visual order, and also
-// adjusts keyboard/D-pad focus navigation to behave like a non-inverted list.
+/**
+ * Content view for inverted FlatLists. Reports its children to accessibility in reversed order so
+ * TalkBack traversal matches the visual order (newest-first) when used inside InvertedScrollView.
+ */
+public class InvertedScrollContentView extends ReactViewGroup {
 
-public class InvertedScrollView extends ReactScrollView {
-
-  private boolean mIsInvertedVirtualizedList = false;
-
-  public InvertedScrollView(ReactContext context) {
+  public InvertedScrollContentView(android.content.Context context) {
     super(context);
-  }
-
-  
-  // Set whether this ScrollView is used for an inverted virtualized list. When true, we reverse the
-  // accessibility traversal order to match the visual order.
-
-  public void setIsInvertedVirtualizedList(boolean isInverted) {
-    mIsInvertedVirtualizedList = isInverted;
-  }
-
-  @Override
-  public View focusSearch(View focused, int direction) {
-    if (mIsInvertedVirtualizedList) {
-      switch (direction) {
-        case View.FOCUS_DOWN:
-          direction = View.FOCUS_UP;
-          break;
-        case View.FOCUS_UP:
-          direction = View.FOCUS_DOWN;
-          break;
-        case View.FOCUS_FORWARD:
-          direction = View.FOCUS_BACKWARD;
-          break;
-        case View.FOCUS_BACKWARD:
-          direction = View.FOCUS_FORWARD;
-          break;
-        default:
-          break;
-      }
-    }
-    return super.focusSearch(focused, direction);
-  }
-
-  @Override
-  public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
-    int initialSize = views.size();
-
-    super.addFocusables(views, direction, focusableMode);
-
-    if (!mIsInvertedVirtualizedList) {
-      return;
-    }
-
-    if (direction == View.FOCUS_FORWARD || direction == View.FOCUS_BACKWARD) {
-      int newSize = views.size();
-      int addedCount = newSize - initialSize;
-      if (addedCount > 1) {
-        java.util.List<View> subList = views.subList(initialSize, newSize);
-        Collections.reverse(subList);
-      }
-    }
   }
 
   @Override
   public void addChildrenForAccessibility(ArrayList<View> outChildren) {
     super.addChildrenForAccessibility(outChildren);
-    if (mIsInvertedVirtualizedList) {
-      Collections.reverse(outChildren);
-    }
+    Collections.reverse(outChildren);
   }
 }
