@@ -7,7 +7,7 @@ import {
 	type AccessibilityActionEvent,
 	type AccessibilityActionInfo,
 	TouchableNativeFeedback,
-	TouchableHighlight,
+	TouchableOpacity,
 	type TouchableWithoutFeedbackProps,
 	type ColorValue
 } from 'react-native';
@@ -29,7 +29,7 @@ export interface ITouchProps extends TouchableWithoutFeedbackProps {
 	underlayColor?: ColorValue;
 }
 
-const Component = isIOS ? TouchableHighlight : TouchableNativeFeedback;
+const Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
 const Touchable = React.forwardRef<View, ITouchProps>(
 	(
@@ -82,7 +82,7 @@ const Touchable = React.forwardRef<View, ITouchProps>(
 			marginTop
 		};
 		const touchableProps = isIOS
-			? { underlayColor: underlayColor ?? colors.surfaceNeutral, activeOpacity: 1 }
+			? {}
 			: { background: TouchableNativeFeedback.Ripple(android_rippleColor ?? colors.surfaceNeutral, false) };
 
 		return (
