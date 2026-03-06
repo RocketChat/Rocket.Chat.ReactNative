@@ -52,7 +52,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 			logEvent(events.FP_FORGOT_PASSWORD);
 			setIsFetching(true);
 			const result = await forgotPassword(email);
-			if (result.success) {
+			if (result) {
 				navigation.pop();
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			}

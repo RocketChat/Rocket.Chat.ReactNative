@@ -7,6 +7,7 @@ import { type RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
+import { type ChatGetMessage } from '@rocket.chat/rest-typings';
 
 const COUNT = 50;
 
@@ -24,12 +25,12 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 			return;
 		}
 
-		const params = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
+		const params: ChatGetMessage = { roomId, showThreadMessages: false, count: COUNT, ...(lastTs && { latest: lastTs }) };
 
 		let data;
 		switch (apiType) {
 			case 'channels':
-				data = await sdk.get('channels.history', params);
+				data = await sdk.get('/v1/chat.getMessage', params);
 				break;
 			case 'groups':
 				data = await sdk.get('groups.history', params);
