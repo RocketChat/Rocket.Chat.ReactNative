@@ -677,9 +677,21 @@ export const getRoomRoles = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = (): Promise<{ [service: string]: IAvatarSuggestion }> =>
+export const getAvatarSuggestion = async (): Promise<{ [service: string]: IAvatarSuggestion }> => {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0')) {
+		// RC 5.4.0
+		const result = await sdk.get('users.getAvatarSuggestion');
+		if (result.success && 'suggestions' in result) {
+			return result.suggestions;
+		}
+		return {};
+	}
+
 	// RC 0.51.0
-	sdk.methodCallWrapper('getAvatarSuggestion');
+	return sdk.methodCallWrapper('getAvatarSuggestion');
+};
 
 export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
